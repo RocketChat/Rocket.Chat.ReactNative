@@ -185,20 +185,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            }
           }
         >
           Alice Johnson
@@ -319,20 +315,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            }
           }
         >
           +55 11 99999-9999
@@ -515,20 +507,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            }
           }
         >
           Long display name to validate text truncation behavior for PeerItem in narrow widths

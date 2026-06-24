@@ -1,20 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View } from 'react-native';
 import { Fragment, type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { useActionSheet } from '../../containers/ActionSheet';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme, rt) => ({
+	optionsContainer: {
+		backgroundColor: theme.colors.surfaceRoom,
+		marginBottom: rt.insets.bottom
+	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 16,
+		color: theme.colors.fontInfo
 	}
-});
+}));
 
 type TKey = 'desktopNotifications' | 'pushNotifications' | 'emailNotificationMode';
 
@@ -35,12 +39,10 @@ const ListPicker = ({
 	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
-	const { colors } = useTheme();
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
-	const insets = useSafeAreaInsets();
 
 	const getOptions = (): ReactElement => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<View style={styles.optionsContainer}>
 			<List.Separator />
 			{OPTIONS[preference].map(i => (
 				<Fragment key={i.value}>
@@ -67,7 +69,7 @@ const ListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
+			right={() => <Text style={styles.pickerText}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

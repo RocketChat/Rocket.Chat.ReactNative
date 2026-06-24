@@ -1,29 +1,34 @@
 import { Fragment } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Text } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
+import { StyleSheet } from 'react-native-unistyles';
 
 import * as List from '../../../../containers/List';
-import { useTheme } from '../../../../theme';
 import { type TServerHistoryModel } from '../../../../definitions';
 import ServersHistoryItem from '../ServersHistoryItem';
 import I18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme, rt) => ({
+	outerContainer: {
+		backgroundColor: theme.colors.surfaceLight,
+		paddingBottom: rt.insets.bottom
+	},
 	header: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		alignItems: 'center',
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		borderColor: theme.colors.strokeLight
 	},
 	headerText: {
 		fontSize: 16,
 		marginLeft: 12,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	}
-});
+}));
 
 interface IServersHistoryActionSheetContent {
 	serversHistory: TServerHistoryModel[];
@@ -36,13 +41,10 @@ export const ServersHistoryActionSheetContent = ({
 	onPressServerHistory,
 	onDelete
 }: IServersHistoryActionSheetContent) => {
-	const { colors } = useTheme();
-	const { bottom } = useSafeAreaInsets();
-
 	return (
-		<View style={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}>
-			<View style={[styles.header, { borderColor: colors.strokeLight }]}>
-				<Text style={[styles.headerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
+		<View style={styles.outerContainer}>
+			<View style={styles.header}>
+				<Text style={styles.headerText}>{I18n.t('Workspaces')}</Text>
 			</View>
 			<List.Separator />
 			{serversHistory.map(item => (

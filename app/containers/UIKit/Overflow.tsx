@@ -1,6 +1,7 @@
 import { useState, createRef, type RefObject } from 'react';
-import { FlatList, StyleSheet, Text, type View } from 'react-native';
+import { FlatList, Text, type View } from 'react-native';
 import Popover from 'react-native-popover-view';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';

@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { Platform, type StyleProp, StyleSheet, View, type ViewProps, type ViewStyle } from 'react-native';
+import { Platform, type StyleProp, View, type ViewProps, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { isAndroid, isIOS, isTablet } from '../../../../lib/methods/helpers/deviceInfo';
 

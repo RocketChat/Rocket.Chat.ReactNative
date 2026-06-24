@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../Styles';
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	container: {
 		flex: 1
 	},
@@ -84,5 +84,8 @@ export default StyleSheet.create({
 	reactionPickerSearchbar: {
 		paddingHorizontal: 20,
 		minHeight: 48
+	},
+	emptyHeaderLeft: {
+		height: 37 * rt.fontScale
 	}
-});
+}));

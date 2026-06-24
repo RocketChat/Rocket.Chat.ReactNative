@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../Styles';
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	container: {
 		flex: 1
 	},
@@ -49,5 +49,8 @@ export default StyleSheet.create({
 	},
 	addServerButtonContainer: {
 		padding: 16
+	},
+	serversListContainer: {
+		marginBottom: rt.insets.bottom
 	}
-});
+}));

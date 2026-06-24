@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import type { ReactNode, ComponentType } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import CallerInfo from './CallerInfo';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';

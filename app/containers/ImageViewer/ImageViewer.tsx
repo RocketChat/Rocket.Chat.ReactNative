@@ -1,13 +1,13 @@
 import { useRef, useState, type ReactElement } from 'react';
-import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
+import { type LayoutChangeEvent, type StyleProp, type ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Image, type ImageStyle } from 'expo-image';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Touch from '../Touch';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
-import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 
 interface ImageViewerProps {
@@ -23,9 +23,10 @@ interface ImageViewerProps {
 	isAnimated?: boolean;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: theme.colors.surfaceNeutral
 	},
 	flex: {
 		width: '100%',
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%'
 	}
-});
+}));
 
 export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
@@ -132,12 +133,10 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
-	const { colors } = useTheme();
-
 	const accessibilityLabel = altText?.trim() || I18n.t('A11y_image_no_description');
 
 	return (
-		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View importantForAccessibility='no' style={[styles.container, { width, height }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
 					{isAnimated ? (

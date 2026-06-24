@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { hasIcon, CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -12,15 +13,16 @@ const iconAliases: Record<string, string> = {
 	'audio-disabled': 'volume-off'
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	frame: {
 		width: 28,
 		height: 28,
 		borderRadius: 4,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		backgroundColor: theme.colors.surfaceTint
 	}
-});
+}));
 
 export const resolveIconName = (icon: string) => {
 	if (hasIcon(icon)) {
@@ -58,5 +60,5 @@ export const Icon = ({ element }: { element: IIcon }) => {
 		return renderedIcon;
 	}
 
-	return <View style={[styles.frame, { backgroundColor: colors.surfaceTint }]}>{renderedIcon}</View>;
+	return <View style={styles.frame}>{renderedIcon}</View>;
 };

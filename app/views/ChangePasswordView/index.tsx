@@ -1,11 +1,12 @@
 import { useLayoutEffect, useState } from 'react';
-import { AccessibilityInfo, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, Text, View } from 'react-native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { twoFactor } from '../../lib/services/twoFactor';
 import { type ProfileStackParamList } from '../../stacks/types';
@@ -32,7 +33,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	disabled: {
 		opacity: 0.3
 	},
@@ -43,13 +44,18 @@ const styles = StyleSheet.create({
 	createNewPasswordTitle: {
 		...sharedStyles.textBold,
 		lineHeight: 36,
-		fontSize: 24
+		fontSize: 24,
+		color: theme.colors.fontTitlesLabels
 	},
 	containerScrollView: {
 		paddingTop: 32,
-		gap: 24
+		gap: 24,
+		backgroundColor: theme.colors.surfaceTint
+	},
+	safeArea: {
+		backgroundColor: theme.colors.surfaceTint
 	}
-});
+}));
 
 const isFromRoute = (navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>, routeName: string) =>
 	navigation.getState()?.routes?.[0]?.name === routeName;
@@ -185,16 +191,12 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	return (
 		<KeyboardView backgroundColor={colors.surfaceTint}>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.surfaceTint }} testID='change-password-view'>
+			<SafeAreaView style={styles.safeArea} testID='change-password-view'>
 				<ScrollView
-					contentContainerStyle={[
-						sharedStyles.containerScrollView,
-						styles.containerScrollView,
-						{ backgroundColor: colors.surfaceTint }
-					]}
+					contentContainerStyle={[sharedStyles.containerScrollView, styles.containerScrollView]}
 					testID='change-password-view-list'
 					{...scrollPersistTaps}>
-					<Text style={{ ...styles.createNewPasswordTitle, color: colors.fontTitlesLabels }}>Create new password</Text>
+					<Text style={styles.createNewPasswordTitle}>Create new password</Text>
 
 					<View style={{ gap: 12 }}>
 						{fromProfileView ? (

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { createStaticNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
@@ -13,9 +13,8 @@ import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
 import AuthLoadingView from './views/AuthLoadingView';
 import SetUsernameView from './views/SetUsernameView';
-import { ThemeContext } from './theme';
+import { useTheme } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
-import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 
@@ -59,14 +58,14 @@ const RootNavigator = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
-	return <Navigator screenOptions={{ navigationBarColor: themes[theme].surfaceLight }} />;
+	const { colors } = useTheme();
+	return <Navigator screenOptions={{ navigationBarColor: colors.surfaceLight }} />;
 });
 
 const AppNavigation = createStaticNavigation(RootNavigator);
 
 const AppContainer = () => {
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	const root = useSelector((state: IApplicationState) => state.app.root);
 
 	useEffect(() => {

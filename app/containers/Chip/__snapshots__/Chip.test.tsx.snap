@@ -82,18 +82,14 @@ exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Full Width Text With Long Text That Should Be Wrapped
@@ -208,7 +204,9 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
             ]
@@ -239,18 +237,14 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Rocket.Cat
@@ -391,7 +385,9 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
             ]
@@ -422,18 +418,14 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Short
@@ -550,18 +542,14 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Without Avatar
@@ -678,18 +666,14 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Without Avatar and Icon
@@ -804,7 +788,9 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
             ]
@@ -835,18 +821,14 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Without Icon

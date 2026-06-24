@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ImageBackground, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
@@ -10,7 +11,7 @@ export interface IBackgroundContainer {
 	loading?: boolean;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1
 	},
@@ -27,16 +28,17 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingHorizontal: 24,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter
+		...sharedStyles.textAlignCenter,
+		color: theme.colors.fontHint
 	}
-});
+}));
 
 const BackgroundContainer = ({ text, loading }: IBackgroundContainer): ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
 			<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
-			{text && !loading ? <Text style={[styles.text, { color: themes[theme].fontHint }]}>{text}</Text> : null}
+			{text && !loading ? <Text style={styles.text}>{text}</Text> : null}
 			{/* @ts-ignore */}
 			{loading ? <ActivityIndicator style={styles.text} color={themes[theme].fontHint} /> : null}
 		</View>

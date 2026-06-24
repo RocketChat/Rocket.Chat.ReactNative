@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useComposerAttachments, useMessageComposerApi } from '../../context';
 import { useActionSheet } from '../../../ActionSheet';

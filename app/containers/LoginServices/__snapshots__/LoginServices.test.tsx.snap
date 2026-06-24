@@ -84,47 +84,35 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "flex": 1,
-            "height": 1,
-          },
-          {
-            "backgroundColor": "#CBCED1",
-          },
-        ]
+        {
+          "backgroundColor": "#CBCED1",
+          "flex": 1,
+          "height": 1,
+        }
       }
     />
     <Text
       style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "500",
-            "marginHorizontal": 12,
-            "textAlign": "left",
-          },
-          {
-            "color": "#6C727A",
-          },
-        ]
+        {
+          "backgroundColor": "transparent",
+          "color": "#6C727A",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "marginHorizontal": 12,
+          "textAlign": "left",
+        }
       }
     >
       OR
     </Text>
     <View
       style={
-        [
-          {
-            "flex": 1,
-            "height": 1,
-          },
-          {
-            "backgroundColor": "#CBCED1",
-          },
-        ]
+        {
+          "backgroundColor": "#CBCED1",
+          "flex": 1,
+          "height": 1,
+        }
       }
     />
   </View>,
@@ -210,47 +198,35 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "flex": 1,
-            "height": 1,
-          },
-          {
-            "backgroundColor": "#CBCED1",
-          },
-        ]
+        {
+          "backgroundColor": "#CBCED1",
+          "flex": 1,
+          "height": 1,
+        }
       }
     />
     <Text
       style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "500",
-            "marginHorizontal": 12,
-            "textAlign": "left",
-          },
-          {
-            "color": "#6C727A",
-          },
-        ]
+        {
+          "backgroundColor": "transparent",
+          "color": "#6C727A",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "marginHorizontal": 12,
+          "textAlign": "left",
+        }
       }
     >
       OR
     </Text>
     <View
       style={
-        [
-          {
-            "flex": 1,
-            "height": 1,
-          },
-          {
-            "backgroundColor": "#CBCED1",
-          },
-        ]
+        {
+          "backgroundColor": "#CBCED1",
+          "flex": 1,
+          "height": 1,
+        }
       }
     />
   </View>,

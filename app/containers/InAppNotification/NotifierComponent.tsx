@@ -1,12 +1,10 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
@@ -31,7 +29,7 @@ export interface INotifierComponent {
 const AVATAR_SIZE = 48;
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme, rt) => ({
 	container: {
 		paddingHorizontal: 14,
 		paddingRight: 30,
@@ -39,7 +37,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginHorizontal: 10,
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 4
+		borderRadius: 4,
+		backgroundColor: theme.colors.surfaceLight,
+		borderColor: theme.colors.strokeLight,
+		marginTop: rt.insets.top
 	},
 	content: {
 		flexDirection: 'row',
@@ -55,23 +56,23 @@ const styles = StyleSheet.create({
 	roomName: {
 		fontSize: 17,
 		lineHeight: 20,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	message: {
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontTitlesLabels
 	},
 	small: {
 		width: '50%',
 		alignSelf: 'center'
 	}
-});
+}));
 
 const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierComponent) => {
-	const { theme } = useTheme();
 	const { rowHeight } = useResponsiveLayout();
-	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
@@ -97,16 +98,7 @@ const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierCompo
 	return (
 		<View
 			testID={`in-app-notification-${text}`}
-			style={[
-				styles.container,
-				isMasterDetail && styles.small,
-				{
-					backgroundColor: themes[theme].surfaceLight,
-					borderColor: themes[theme].strokeLight,
-					marginTop: insets.top,
-					height: rowHeight
-				}
-			]}>
+			style={[styles.container, isMasterDetail && styles.small, { height: rowHeight }]}>
 			<Touch
 				style={styles.content}
 				rectButtonStyle={styles.content}
@@ -115,10 +107,10 @@ const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierCompo
 				testID={`in-app-notification-${text}`}>
 				<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 				<View style={styles.inner}>
-					<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+					<Text style={styles.roomName} numberOfLines={1}>
 						{title}
 					</Text>
-					<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+					<Text style={styles.message} numberOfLines={1}>
 						{text}
 					</Text>
 				</View>

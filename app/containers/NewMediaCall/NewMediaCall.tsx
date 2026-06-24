@@ -1,22 +1,19 @@
 import { type ReactElement, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { PeerList } from './PeerList';
 import { SelectedPeer } from './SelectedPeer';
 import { CreateCall } from './CreateCall';
 import { FilterHeader } from './FilterHeader';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { useTheme } from '../../theme';
 
 export const NewMediaCall = (): ReactElement => {
-	const { colors } = useTheme();
 	const reset = usePeerAutocompleteStore(state => state.reset);
-	const { bottom } = useSafeAreaInsets();
 	useEffect(() => () => reset(), [reset]);
 
 	return (
-		<View style={[styles.screen, { backgroundColor: colors.surfaceLight, paddingBottom: bottom + 16 }]}>
+		<View style={styles.screen}>
 			<FilterHeader />
 			<SelectedPeer />
 			<PeerList />
@@ -25,9 +22,11 @@ export const NewMediaCall = (): ReactElement => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme, rt) => ({
 	screen: {
 		paddingHorizontal: 16,
-		paddingTop: 16
+		paddingTop: 16,
+		backgroundColor: theme.colors.surfaceLight,
+		paddingBottom: rt.insets.bottom + 16
 	}
-});
+}));

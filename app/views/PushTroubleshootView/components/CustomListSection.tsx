@@ -1,9 +1,10 @@
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { Header } from '../../../containers/List';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((_theme, rt) => ({
 	container: {
 		marginBottom: 16
 	},
@@ -14,8 +15,13 @@ const styles = StyleSheet.create({
 	},
 	statusContainer: {
 		marginRight: 12
+	},
+	statusSize: {
+		width: 10 * rt.fontScale,
+		height: 10 * rt.fontScale,
+		borderRadius: 5 * rt.fontScale
 	}
-});
+}));
 
 interface ICustomListSection {
 	children: (ReactElement | null)[] | ReactElement | null;
@@ -32,20 +38,12 @@ const CustomHeader = ({
 	title: string;
 	translateTitle?: boolean;
 	statusColor?: string;
-}) => {
-	const { fontScale } = useWindowDimensions();
-	const statusSize = {
-		width: 10 * fontScale,
-		height: 10 * fontScale,
-		borderRadius: 5 * fontScale
-	};
-	return (
-		<View style={styles.headerContainer}>
-			<Header {...{ title, translateTitle }} />
-			{statusColor ? <View style={[styles.statusContainer, { backgroundColor: statusColor }, statusSize]} /> : null}
-		</View>
-	);
-};
+}) => (
+	<View style={styles.headerContainer}>
+		<Header {...{ title, translateTitle }} />
+		{statusColor ? <View style={[styles.statusContainer, { backgroundColor: statusColor }, styles.statusSize]} /> : null}
+	</View>
+);
 
 const CustomListSection = ({ children, title, translateTitle, statusColor }: ICustomListSection) => (
 	<View style={styles.container}>

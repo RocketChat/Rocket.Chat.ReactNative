@@ -1,5 +1,6 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 import { type BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import ActivityIndicator from '../ActivityIndicator';
 import { BUTTON_HIT_SLOP } from '../message/utils';
@@ -9,19 +10,21 @@ import { useBlockContext } from './utils';
 import { Icon } from './Icon';
 import { type IIconButton, type IText } from './interfaces';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	button: {
 		width: 32,
 		height: 32,
 		borderWidth: 1,
 		borderRadius: 8,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		borderColor: theme.colors.strokeLight,
+		backgroundColor: theme.colors.surfaceLight
 	},
 	loading: {
 		padding: 0
 	}
-});
+}));
 
 const getLabel = (label?: string | IText, fallback?: string) => {
 	if (typeof label === 'string') {
@@ -55,14 +58,7 @@ export const IconButton = ({ element, context }: { element: IIconButton; context
 			disabled={loading}
 			hitSlop={BUTTON_HIT_SLOP}
 			android_ripple={{ color: colors.surfaceNeutral, borderless: false }}
-			style={({ pressed }) => [
-				styles.button,
-				{
-					borderColor: colors.strokeLight,
-					backgroundColor: colors.surfaceLight,
-					opacity: pressed ? 0.7 : 1
-				}
-			]}
+			style={({ pressed }) => [styles.button, { opacity: pressed ? 0.7 : 1 }]}
 			accessibilityRole={element.url ? 'link' : 'button'}
 			accessibilityLabel={label}>
 			{loading ? <ActivityIndicator style={styles.loading} /> : <Icon element={element.icon} />}

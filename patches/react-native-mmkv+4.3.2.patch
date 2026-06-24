@@ -1,11 +1,11 @@
 diff --git a/node_modules/react-native-mmkv/src/createMMKV/createMMKV.ts b/node_modules/react-native-mmkv/src/createMMKV/createMMKV.ts
-index d5142f9..5da521f 100644
+index 2d5b8c348..9c9ae2da1 100644
 --- a/node_modules/react-native-mmkv/src/createMMKV/createMMKV.ts
 +++ b/node_modules/react-native-mmkv/src/createMMKV/createMMKV.ts
-@@ -2,15 +2,15 @@ import type { MMKV } from '../specs/MMKV.nitro'
- import type { Configuration } from '../specs/MMKVFactory.nitro'
+@@ -3,15 +3,15 @@ import type { Configuration } from '../specs/MMKVFactory.nitro'
  import { Platform } from 'react-native'
  import { addMemoryWarningListener } from '../addMemoryWarningListener/addMemoryWarningListener'
+ import { addContentChangedListener } from '../addContentChangedListener/addContentChangedListener'
 -import { isTest } from '../isTest'
 -import { createMockMMKV } from './createMockMMKV'
 +// import { isTest } from '../isTest'

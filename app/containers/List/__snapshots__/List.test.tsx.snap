@@ -20,12 +20,10 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -128,12 +126,10 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -236,12 +232,10 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -393,12 +387,10 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -550,12 +542,10 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -590,18 +580,14 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       <Text
         accessibilityRole="header"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#6C727A",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
         Chats
@@ -618,18 +604,14 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       <Text
         accessibilityRole="header"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#6C727A",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -883,18 +865,14 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             All
@@ -978,12 +956,10 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1132,12 +1108,10 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1288,12 +1262,10 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1321,12 +1293,10 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1524,12 +1494,10 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1727,12 +1695,10 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1930,12 +1896,10 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -2078,18 +2042,14 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               <Text
                 numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#6C727A",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -2152,12 +2112,10 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -2178,10 +2136,8 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
   style={
     [
       {
-        "flex": 1,
-      },
-      {
         "backgroundColor": "#F2F3F5",
+        "flex": 1,
       },
       undefined,
     ]
@@ -2213,12 +2169,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2293,12 +2247,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2373,12 +2325,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2394,12 +2344,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2474,12 +2422,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2554,12 +2500,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2582,18 +2526,14 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -2603,12 +2543,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2683,12 +2621,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2763,12 +2699,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2782,19 +2716,15 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -2819,18 +2749,14 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -2840,12 +2766,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -2920,12 +2844,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -3000,12 +2922,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -3019,19 +2939,15 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -3063,12 +2979,10 @@ exports[`Story Snapshots: Separator should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3096,12 +3010,10 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3176,12 +3088,10 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3252,18 +3162,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             All
@@ -3275,12 +3181,10 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3352,18 +3256,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -3375,12 +3275,10 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3452,18 +3350,14 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -3475,12 +3369,10 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3501,10 +3393,8 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
   style={
     [
       {
-        "flex": 1,
-      },
-      {
         "backgroundColor": "#F2F3F5",
+        "flex": 1,
       },
       undefined,
     ]
@@ -3543,18 +3433,14 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -3564,12 +3450,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -3758,18 +3642,14 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -3832,12 +3712,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -4028,18 +3906,14 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -4102,12 +3976,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -4121,19 +3993,15 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -4158,18 +4026,14 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -4179,12 +4043,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -4373,18 +4235,14 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -4447,12 +4305,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -4643,18 +4499,14 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -4717,12 +4569,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -4736,19 +4586,15 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -4773,10 +4619,8 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
   style={
     [
       {
+        "backgroundColor": "#F2F3F5",
         "flex": 1,
-      },
-      {
-        "backgroundColor": "#080808",
       },
       undefined,
     ]
@@ -4815,18 +4659,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -4836,12 +4676,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#1f2329",
-              },
             ]
           }
         />
@@ -4872,7 +4710,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={12}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5030,18 +4868,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -5104,12 +4938,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#1f2329",
-              },
             ]
           }
         />
@@ -5140,7 +4972,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={13}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5300,18 +5132,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -5374,12 +5202,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#1f2329",
-              },
             ]
           }
         />
@@ -5393,19 +5219,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -5430,18 +5252,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -5451,12 +5269,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#1f2329",
-              },
             ]
           }
         />
@@ -5487,7 +5303,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={14}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5645,18 +5461,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -5719,12 +5531,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#1f2329",
-              },
             ]
           }
         />
@@ -5755,7 +5565,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={15}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5915,18 +5725,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -5989,12 +5795,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#1f2329",
-              },
             ]
           }
         />
@@ -6008,19 +5812,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -6052,12 +5852,10 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -6132,12 +5930,10 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -6286,12 +6082,10 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -6312,10 +6106,8 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
   style={
     [
       {
+        "backgroundColor": "#F2F3F5",
         "flex": 1,
-      },
-      {
-        "backgroundColor": "#1A1E23",
       },
       undefined,
     ]
@@ -6354,18 +6146,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -6375,12 +6163,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#333842",
-              },
             ]
           }
         />
@@ -6411,7 +6197,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={17}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6569,18 +6355,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -6643,12 +6425,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#333842",
-              },
             ]
           }
         />
@@ -6679,7 +6459,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={18}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6839,18 +6619,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -6913,12 +6689,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#333842",
-              },
             ]
           }
         />
@@ -6932,19 +6706,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -6969,18 +6739,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -6990,12 +6756,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#333842",
-              },
             ]
           }
         />
@@ -7026,7 +6790,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={19}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7184,18 +6948,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -7258,12 +7018,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#333842",
-              },
             ]
           }
         />
@@ -7294,7 +7052,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={-1}
+            handlerTag={20}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7454,18 +7212,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -7528,12 +7282,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#333842",
-              },
             ]
           }
         />
@@ -7547,19 +7299,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -7584,10 +7332,8 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
   style={
     [
       {
-        "flex": 1,
-      },
-      {
         "backgroundColor": "#F2F3F5",
+        "flex": 1,
       },
       undefined,
     ]
@@ -7679,12 +7425,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -7765,12 +7509,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -7851,12 +7593,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -7937,12 +7677,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8023,12 +7761,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8109,12 +7845,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8195,12 +7929,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8281,12 +8013,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8367,12 +8097,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8453,12 +8181,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8539,12 +8265,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8563,12 +8287,10 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -8598,12 +8320,10 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -8724,12 +8444,10 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -8853,12 +8571,10 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -8975,18 +8691,14 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -9047,12 +8759,10 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -9176,12 +8886,10 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -9202,10 +8910,8 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
   style={
     [
       {
-        "flex": 1,
-      },
-      {
         "backgroundColor": "#F2F3F5",
+        "flex": 1,
       },
       undefined,
     ]
@@ -9244,18 +8950,14 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -9265,12 +8967,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -9459,18 +9159,14 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -9533,12 +9229,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -9729,18 +9423,14 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -9803,12 +9493,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -9822,19 +9510,15 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -9859,18 +9543,14 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           <Text
             accessibilityRole="header"
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             Chats
@@ -9880,12 +9560,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -10074,18 +9752,14 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -10148,12 +9822,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -10344,18 +10016,14 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   <Text
                     numberOfLines={1}
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#6C727A",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
                     All
@@ -10418,12 +10086,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               undefined,
-              {
-                "backgroundColor": "#CBCED1",
-              },
             ]
           }
         />
@@ -10437,19 +10103,15 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             Chats

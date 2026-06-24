@@ -1,4 +1,5 @@
-import { I18nManager, StyleSheet } from 'react-native';
+import { I18nManager } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import sharedStyles from '../Styles';

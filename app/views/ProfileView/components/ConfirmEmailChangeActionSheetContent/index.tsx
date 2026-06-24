@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
@@ -9,12 +10,13 @@ import Button from '../../../../containers/Button';
 import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { useActionSheet } from '../../../../containers/ActionSheet';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	subtitleText: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
 		lineHeight: 24,
-		paddingBottom: 8
+		paddingBottom: 8,
+		color: theme.colors.fontTitlesLabels
 	},
 	button: { flex: 1 },
 	footerButtonsContainer: {
@@ -25,7 +27,8 @@ const styles = StyleSheet.create({
 	titleContainerText: {
 		...sharedStyles.textBold,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontDefault
 	},
 	inputContainer: {
 		marginBottom: 0,
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	}
-});
+}));
 
 const FooterButtons = ({
 	cancelAction = () => {},
@@ -91,11 +94,9 @@ const ConfirmEmailChangeActionSheetContent = ({
 	return (
 		<View style={sharedStyles.containerScrollView} testID='profile-view-enter-password-sheet'>
 			<View accessible accessibilityLabel={I18n.t('Please_enter_your_password')} style={styles.titleContainer}>
-				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{I18n.t('Please_enter_your_password')}</Text>
+				<Text style={styles.titleContainerText}>{I18n.t('Please_enter_your_password')}</Text>
 			</View>
-			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
-				{I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-			</Text>
+			<Text style={styles.subtitleText}>{I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}</Text>
 			<ControlledFormTextInput
 				control={control}
 				name='password'

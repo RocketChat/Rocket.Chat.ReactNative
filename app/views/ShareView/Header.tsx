@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../i18n';
 import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
@@ -13,7 +14,7 @@ import { getMessageById } from '../../lib/database/services/Message';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		marginRight: isAndroid ? 15 : 5,
@@ -33,9 +34,10 @@ const styles = StyleSheet.create({
 	name: {
 		fontSize: 16,
 		...sharedStyles.textSemibold,
-		flex: 1
+		flex: 1,
+		color: theme.colors.fontDefault
 	}
-});
+}));
 
 interface IHeader {
 	room: ISubscription;
@@ -106,7 +108,7 @@ const Header = memo(({ room, thread }: IHeader) => {
 					</Text>
 				</Text>
 				<CustomIcon name={icon} size={16} color={textColor} />
-				<Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
+				<Text style={styles.name} numberOfLines={1}>
 					{title}
 				</Text>
 			</View>

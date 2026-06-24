@@ -1,8 +1,9 @@
 import { Component, Fragment } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';

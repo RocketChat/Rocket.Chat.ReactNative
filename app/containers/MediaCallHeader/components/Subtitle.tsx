@@ -1,22 +1,22 @@
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { useTheme } from '../../../theme';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import I18n from '../../../i18n';
 import sharedStyles from '../../../views/Styles';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	headerSubtitle: {
 		...sharedStyles.textRegular,
 		fontSize: 12,
-		lineHeight: 16
+		lineHeight: 16,
+		color: theme.colors.fontSecondaryInfo
 	}
-});
+}));
 
 const Subtitle = () => {
 	'use memo';
 
-	const { colors } = useTheme();
 	const contact = useCallStore(state => state.contact);
 	const extension = contact.sipExtension;
 	const remoteHeld = useCallStore(state => state.remoteHeld);
@@ -42,10 +42,7 @@ const Subtitle = () => {
 	}
 
 	return (
-		<Text
-			style={[styles.headerSubtitle, { color: colors.fontSecondaryInfo }]}
-			testID='call-view-header-subtitle'
-			numberOfLines={1}>
+		<Text style={styles.headerSubtitle} testID='call-view-header-subtitle' numberOfLines={1}>
 			{subtitle}
 		</Text>
 	);

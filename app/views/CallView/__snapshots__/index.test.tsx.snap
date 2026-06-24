@@ -20,10 +20,8 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -187,7 +185,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -894,10 +892,8 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -1061,7 +1057,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -1774,10 +1770,8 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -1941,7 +1935,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -2648,10 +2642,8 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -2815,7 +2807,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -3522,10 +3514,8 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -3689,7 +3679,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -4396,10 +4386,8 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -4563,7 +4551,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -5420,7 +5408,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -6266,7 +6254,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -7118,7 +7106,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -7964,7 +7952,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -8810,7 +8798,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -9656,7 +9644,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -10502,7 +10490,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,
@@ -11198,10 +11186,8 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
     style={
       [
         {
-          "flex": 1,
-        },
-        {
           "backgroundColor": "#F2F3F5",
+          "flex": 1,
         },
         [
           {
@@ -11365,7 +11351,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
       style={
         [
           {
-            "borderTopWidth": 0.5,
+            "borderTopWidth": 1,
             "bottom": 0,
             "gap": 24,
             "left": 0,

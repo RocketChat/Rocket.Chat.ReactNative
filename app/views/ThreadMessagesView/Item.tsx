@@ -1,17 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants/colors';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import ThreadDetails from '../../containers/ThreadDetails';
 import { type TThreadModel } from '../../definitions';
 import Touch from '../../containers/Touch';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
+	touchable: {
+		backgroundColor: theme.colors.surfaceRoom
+	},
 	container: {
 		flexDirection: 'row',
 		padding: 16
@@ -28,12 +30,14 @@ const styles = StyleSheet.create({
 	title: {
 		flexShrink: 1,
 		fontSize: 18,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	time: {
 		fontSize: 14,
 		marginLeft: 4,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	avatar: {
 		marginRight: 8
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
 	markdown: {
 		flex: 1
 	}
-});
+}));
 
 export interface IItem {
 	item: TThreadModel;
@@ -66,7 +70,6 @@ export interface IItem {
 }
 
 const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): ReactElement => {
-	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
@@ -74,18 +77,15 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 	}
 
 	return (
-		<Touch
-			onPress={() => onPress(item)}
-			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].surfaceRoom }}>
+		<Touch onPress={() => onPress(item)} testID={`thread-messages-view-${item.msg}`} style={styles.touchable}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={styles.title} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
+						<Text style={styles.time}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} />

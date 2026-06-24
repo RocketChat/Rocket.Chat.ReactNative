@@ -1,6 +1,7 @@
 import { useEffect, type ReactElement } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useUserPreferences } from '../lib/methods/userPreferences';
 import { type TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
@@ -9,17 +10,18 @@ import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { ALERT_DISPLAY_TYPE_PREFERENCES_KEY } from '../lib/constants/keys';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	toast: {
 		maxWidth: 300,
-		padding: 10
+		padding: 10,
+		backgroundColor: theme.colors.surfaceDark
 	},
 	text: {
 		fontSize: 14,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	}
-});
+}));
 
 export const LISTENER = 'Toast';
 
@@ -55,7 +57,7 @@ const Toast = (): ReactElement => {
 		<EasyToast
 			ref={getToastRef}
 			position='center'
-			style={[styles.toast, { backgroundColor: colors.surfaceDark }]}
+			style={styles.toast}
 			textStyle={[styles.text, { color: theme === 'light' ? colors.fontWhite : colors.fontPureBlack }]}
 			opacity={0.9}
 		/>

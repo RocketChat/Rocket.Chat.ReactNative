@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -12,17 +13,19 @@ import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	subtitleText: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontTitlesLabels
 	},
 	titleContainerText: {
 		...sharedStyles.textBold,
 		fontSize: 16,
 		lineHeight: 24,
-		paddingLeft: 12
+		paddingLeft: 12,
+		color: theme.colors.fontDefault
 	},
 	titleContainer: {
 		paddingRight: 80,
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
 	removedRoomsAlert: {
 		marginBottom: 36
 	}
-});
+}));
 
 interface IConfirmDeleteAccountContent {
 	password: string;
@@ -63,11 +66,9 @@ const ConfirmDeleteAccountContent = ({
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_question_mark')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
-				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{i18n.t('Are_you_sure_question_mark')}</Text>
+				<Text style={styles.titleContainerText}>{i18n.t('Are_you_sure_question_mark')}</Text>
 			</View>
-			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
-				{i18n.t('Deleting_a_user_will_delete_all_messages')}
-			</Text>
+			<Text style={styles.subtitleText}>{i18n.t('Deleting_a_user_will_delete_all_messages')}</Text>
 			{changeOwnerRooms ? <AlertText text={changeOwnerRooms} style={styles.changeOwnerRoomsAlert} /> : null}
 			{removedRooms ? <AlertText text={removedRooms} style={styles.removedRoomsAlert} /> : null}
 

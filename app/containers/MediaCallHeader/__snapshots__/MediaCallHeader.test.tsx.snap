@@ -14,16 +14,16 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
-          "borderBottomWidth": 0.5,
+          "borderBottomWidth": 1,
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingBottom": 12,
           "paddingHorizontal": 12,
+          "paddingTop": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingTop": 12,
         },
         [Function],
       ]
@@ -213,19 +213,15 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "600",
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "lineHeight": 24,
+                "textAlign": "left",
+              }
             }
           >
             Bob Burnquist
@@ -342,16 +338,16 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
-          "borderBottomWidth": 0.5,
+          "borderBottomWidth": 1,
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingBottom": 12,
           "paddingHorizontal": 12,
+          "paddingTop": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingTop": 12,
         },
         [Function],
       ]
@@ -541,19 +537,15 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "600",
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "lineHeight": 24,
+                "textAlign": "left",
+              }
             }
           >
             Bob Burnquist
@@ -670,16 +662,16 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
-          "borderBottomWidth": 0.5,
+          "borderBottomWidth": 1,
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingBottom": 12,
           "paddingHorizontal": 12,
+          "paddingTop": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingTop": 12,
         },
         [Function],
       ]
@@ -869,19 +861,15 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "600",
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "lineHeight": 24,
+                "textAlign": "left",
+              }
             }
           >
             Bob Burnquist
@@ -890,19 +878,15 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 12,
-                "fontWeight": "400",
-                "lineHeight": 16,
-                "textAlign": "left",
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#6C727A",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "lineHeight": 16,
+              "textAlign": "left",
+            }
           }
           testID="call-view-header-subtitle"
         >
@@ -1015,16 +999,16 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
-          "borderBottomWidth": 0.5,
+          "borderBottomWidth": 1,
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingBottom": 12,
           "paddingHorizontal": 12,
+          "paddingTop": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingTop": 12,
         },
         [Function],
       ]
@@ -1214,19 +1198,15 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "600",
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "lineHeight": 24,
+                "textAlign": "left",
+              }
             }
           >
             Bob Burnquist
@@ -1339,10 +1319,14 @@ exports[`Story Snapshots: NoCall should match snapshot 1`] = `
 >
   <View
     style={
-      {
-        "backgroundColor": "#E4E7EA",
-        "paddingTop": 0,
-      }
+      [
+        {
+          "paddingTop": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
     }
     testID="media-call-header-empty"
   />
@@ -1363,16 +1347,16 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
-          "borderBottomWidth": 0.5,
+          "borderBottomWidth": 1,
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingBottom": 12,
           "paddingHorizontal": 12,
+          "paddingTop": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingTop": 12,
         },
         [Function],
       ]
@@ -1562,19 +1546,15 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "600",
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "lineHeight": 24,
+                "textAlign": "left",
+              }
             }
           >
             Bob Burnquist
@@ -1587,19 +1567,15 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 12,
-                "fontWeight": "400",
-                "lineHeight": 16,
-                "textAlign": "left",
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#6C727A",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "lineHeight": 16,
+              "textAlign": "left",
+            }
           }
           testID="call-view-header-subtitle"
         >
@@ -1712,16 +1688,16 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
-          "borderBottomWidth": 0.5,
+          "borderBottomWidth": 1,
           "flexDirection": "row",
           "justifyContent": "space-between",
           "paddingBottom": 12,
           "paddingHorizontal": 12,
+          "paddingTop": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingTop": 12,
         },
         [Function],
       ]
@@ -1911,19 +1887,15 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "600",
-                  "lineHeight": 24,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "lineHeight": 24,
+                "textAlign": "left",
+              }
             }
           >
             Bob Burnquist
@@ -1936,19 +1908,15 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 12,
-                "fontWeight": "400",
-                "lineHeight": 16,
-                "textAlign": "left",
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#6C727A",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "lineHeight": 16,
+              "textAlign": "left",
+            }
           }
           testID="call-view-header-subtitle"
         >

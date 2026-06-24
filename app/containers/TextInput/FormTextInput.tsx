@@ -1,7 +1,6 @@
 import { useMemo, useState, type ReactElement, type Ref } from 'react';
 import {
 	type StyleProp,
-	StyleSheet,
 	Text,
 	type TextInput as RNTextInput,
 	type TextInputProps,
@@ -10,6 +9,7 @@ import {
 	type ViewStyle
 } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
+import { StyleSheet } from 'react-native-unistyles';
 
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -20,11 +20,12 @@ import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
 import Touch from '../Touch';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	error: {
 		...sharedStyles.textRegular,
 		lineHeight: 20,
-		fontSize: 14
+		fontSize: 14,
+		color: theme.colors.fontDanger
 	},
 	inputContainer: {
 		marginBottom: 10,
@@ -39,11 +40,13 @@ const styles = StyleSheet.create({
 	label: {
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	required: {
 		fontSize: 14,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontSecondaryInfo
 	},
 	input: {
 		...sharedStyles.textRegular,
@@ -51,7 +54,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 14,
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 4,
+		backgroundColor: theme.colors.surfaceLight,
+		borderColor: theme.colors.strokeMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
 		width: 20,
 		height: 20
 	}
-});
+}));
 
 export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
@@ -152,11 +158,8 @@ export const FormTextInput = ({
 			<A11y.Index index={1}>
 				<View style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text accessible={false} style={[styles.label, { color: colors.fontTitlesLabels }]}>
-							{label}{' '}
-							{required && (
-								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
-							)}
+						<Text accessible={false} style={styles.label}>
+							{label} {required && <Text style={styles.required}>{`(${i18n.t('Required')})`}</Text>}
 						</Text>
 					) : null}
 
@@ -168,11 +171,6 @@ export const FormTextInput = ({
 								styles.input,
 								iconLeft && styles.inputIconLeft,
 								secureTextEntry || iconRight || showClearInput ? styles.inputIconRight : {},
-								{
-									backgroundColor: colors.surfaceLight,
-									borderColor: colors.strokeMedium,
-									color: colors.fontTitlesLabels
-								},
 								inputError
 									? {
 											borderColor: colors.buttonBackgroundDangerDefault
@@ -256,7 +254,7 @@ export const FormTextInput = ({
 					{showErrorMessage && inputError ? (
 						<View accessible={false} style={styles.errorContainer}>
 							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
-							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
+							<Text accessible={false} style={styles.error}>
 								{inputError}
 							</Text>
 						</View>

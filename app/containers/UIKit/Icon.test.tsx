@@ -2,6 +2,7 @@ import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 
 import { Icon, resolveIconName } from './Icon';
+import { colors } from '../../lib/constants/colors';
 
 const mockHasIcon = jest.fn();
 const mockCustomIcon = jest.fn(() => <Text testID='custom-icon'>icon</Text>);
@@ -18,8 +19,7 @@ jest.mock('../../theme', () => ({
 			fontDanger: '#d00000',
 			fontSecondaryInfo: '#0060d0',
 			statusFontWarning: '#d09000',
-			statusFontDanger: '#ff2020',
-			surfaceTint: '#f2f2f2'
+			statusFontDanger: '#ff2020'
 		}
 	})
 }));
@@ -79,7 +79,7 @@ describe('UIKit Icon', () => {
 		);
 		expect(toJSON()).toMatchObject({
 			props: {
-				style: expect.arrayContaining([expect.objectContaining({ backgroundColor: '#f2f2f2' })])
+				style: expect.objectContaining({ backgroundColor: colors.light.surfaceTint })
 			}
 		});
 	});

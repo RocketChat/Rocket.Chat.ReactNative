@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
 import { isIOS } from '../../../../lib/methods/helpers';

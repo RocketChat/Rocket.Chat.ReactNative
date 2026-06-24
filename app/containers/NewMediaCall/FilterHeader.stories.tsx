@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { type ComponentType } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { FilterHeader } from './FilterHeader';

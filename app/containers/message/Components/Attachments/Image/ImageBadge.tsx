@@ -1,17 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../../../../views/Styles';
-import { useTheme } from '../../../../../theme';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		padding: 4,
-		borderRadius: 4
+		borderRadius: 4,
+		backgroundColor: theme.colors.surfaceNeutral
 	},
 	title: {
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		color: theme.colors.fontTitlesLabels
 	}
-});
+}));
 
 interface IImageBadge {
 	title: string;
@@ -20,10 +22,9 @@ interface IImageBadge {
 const ImageBadge = ({ title }: IImageBadge) => {
 	'use memo';
 
-	const { colors } = useTheme();
 	return (
-		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
-			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
+		<View style={styles.container}>
+			<Text style={styles.title}>{title}</Text>
 		</View>
 	);
 };

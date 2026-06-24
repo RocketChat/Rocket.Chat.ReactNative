@@ -1,15 +1,17 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { useTheme } from '../../theme';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import Chip from '../Chip';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	list: {
 		flex: 1,
-		maxHeight: '25%'
+		maxHeight: '25%',
+		backgroundColor: theme.colors.surfaceTint,
+		borderColor: theme.colors.strokeLight
 	},
 	invitedHeader: {
 		marginVertical: 12,
@@ -20,13 +22,14 @@ const styles = StyleSheet.create({
 	},
 	invitedCount: {
 		fontSize: 12,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	invitedList: {
 		gap: 8,
 		paddingHorizontal: 4
 	}
-});
+}));
 
 export interface ISelectedUsers {
 	users: ISelectedUser[];
@@ -35,27 +38,17 @@ export interface ISelectedUsers {
 }
 
 const SelectedUsers = ({ users, useRealName, onPress }: ISelectedUsers) => {
-	const { colors } = useTheme();
-
 	return (
 		<>
 			<View style={styles.invitedHeader}>
-				<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
-					{I18n.t('N_Selected_members', { n: users.length })}
-				</Text>
+				<Text style={styles.invitedCount}>{I18n.t('N_Selected_members', { n: users.length })}</Text>
 			</View>
 			<FlatList
 				data={users}
 				extraData={users}
 				numColumns={2}
 				keyExtractor={item => item._id}
-				style={[
-					styles.list,
-					{
-						backgroundColor: colors.surfaceTint,
-						borderColor: colors.strokeLight
-					}
-				]}
+				style={styles.list}
 				contentContainerStyle={styles.invitedList}
 				renderItem={({ item }) => {
 					const name = useRealName && item.fname ? item.fname : item.name;

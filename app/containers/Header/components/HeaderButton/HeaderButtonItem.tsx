@@ -1,6 +1,7 @@
 import { memo, type ReactElement } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';

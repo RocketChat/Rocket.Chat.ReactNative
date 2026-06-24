@@ -1,9 +1,9 @@
 import isEmpty from 'lodash/isEmpty';
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';

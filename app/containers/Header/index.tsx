@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
+import { type LayoutChangeEvent, View } from 'react-native';
 import { type NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 import HeaderTitle from './components/HeaderTitle';
@@ -17,10 +17,6 @@ const Header = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useMasterDetail();
-	const { fontScale } = useWindowDimensions();
-	// It helps create an empty view to properly align the header when there is no component on the right.
-	// 32.5 is the value I found that makes it work correctly on both platforms.
-	const size = 32.5 * fontScale;
 
 	const isRoomViewMasterDetail =
 		!isMasterDetail ||
@@ -50,7 +46,7 @@ const Header = ({ options, navigation, route }: IHeader) => {
 			return null;
 		}
 
-		return <View style={{ width: isAndroid ? undefined : size, height: size }} />;
+		return <View style={isAndroid ? styles.headerPlaceholderAndroid : styles.headerPlaceholderIOS} />;
 	};
 
 	return (

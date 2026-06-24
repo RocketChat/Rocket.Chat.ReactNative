@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../../containers/ActionSheet';
 import { CustomIcon } from '../../../containers/CustomIcon';
@@ -8,7 +9,7 @@ import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import { type TAlertDisplayType } from '..';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	leftTitleContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -17,7 +18,8 @@ const styles = StyleSheet.create({
 	leftTitle: {
 		...sharedStyles.textMedium,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontDefault
 	},
 	rightContainer: {
 		flex: 1
@@ -25,14 +27,15 @@ const styles = StyleSheet.create({
 	rightTitle: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontInfo
 	},
 	rightTitleContainer: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'flex-end'
 	}
-});
+}));
 
 type TOPTIONS = { label: string; value: TAlertDisplayType; description: string | null }[];
 
@@ -90,12 +93,12 @@ const ListPicker = ({
 			onPress={openOptions}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
+					<Text style={styles.leftTitle}>{title}</Text>
 				</View>
 			)}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
+					<Text style={styles.rightTitle}>{option?.label}</Text>
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}

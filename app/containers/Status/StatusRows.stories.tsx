@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import StatusRows from './StatusRows';
 import { themes } from '../../lib/constants/colors';

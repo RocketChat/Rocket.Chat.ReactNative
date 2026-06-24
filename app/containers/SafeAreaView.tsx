@@ -1,15 +1,14 @@
 import { memo, type ReactElement } from 'react';
-import { StyleSheet, type ViewProps } from 'react-native';
+import { type ViewProps } from 'react-native';
 import { SafeAreaView as SafeAreaContext } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { themes } from '../lib/constants/colors';
-import { useTheme } from '../theme';
-
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	view: {
-		flex: 1
+		flex: 1,
+		backgroundColor: theme.colors.surfaceHover
 	}
-});
+}));
 
 type SupportedChildren = ReactElement | ReactElement[] | null;
 type TSafeAreaViewChildren = SupportedChildren | SupportedChildren[];
@@ -19,16 +18,10 @@ interface ISafeAreaView extends ViewProps {
 	children: TSafeAreaViewChildren;
 }
 
-const SafeAreaView = memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => {
-	const { theme } = useTheme();
-	return (
-		<SafeAreaContext
-			style={[styles.view, { backgroundColor: themes[theme].surfaceHover }, style]}
-			edges={vertical ? ['right', 'left'] : undefined}
-			{...props}>
-			{children}
-		</SafeAreaContext>
-	);
-});
+const SafeAreaView = memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => (
+	<SafeAreaContext style={[styles.view, style]} edges={vertical ? ['right', 'left'] : undefined} {...props}>
+		{children}
+	</SafeAreaContext>
+));
 
 export default SafeAreaView;

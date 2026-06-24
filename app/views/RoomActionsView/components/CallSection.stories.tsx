@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { type ComponentType, type ReactNode } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import CallSection from './CallSection';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';

@@ -1,21 +1,24 @@
 import { memo } from 'react';
-import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { type StyleProp, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
 import { useTheme } from '../../theme';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((_theme, rt) => ({
 	unreadNumberContainerNormal: {
 		paddingVertical: 3,
 		paddingHorizontal: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginLeft: 10
+		marginLeft: 10,
+		borderRadius: 10.5 * rt.fontScale
 	},
 	unreadNumberContainerSmall: {
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		borderRadius: 10.5 * rt.fontScale
 	},
 	unreadText: {
 		fontSize: 13,
@@ -24,7 +27,7 @@ const styles = StyleSheet.create({
 	textSmall: {
 		fontSize: 10
 	}
-});
+}));
 
 export interface IUnreadBadge {
 	unread?: number;
@@ -107,14 +110,13 @@ const UnreadBadge = memo(
 		if (small) {
 			minWidth = 11 + text.length * 5;
 		}
-		const borderRadius = 10.5 * fontScale;
 		const testId = getTestId(userMentions, groupMentions, text);
 
 		return (
 			<View
 				style={[
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
+					{ backgroundColor, minWidth: minWidth * fontScale },
 					style
 				]}
 				testID={testId}>

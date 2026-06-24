@@ -267,13 +267,13 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -380,25 +380,21 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -717,13 +713,13 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -830,25 +826,21 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -1351,13 +1343,13 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -1464,25 +1456,21 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -1985,13 +1973,13 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -2017,25 +2005,21 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -2611,13 +2595,13 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -2643,25 +2627,21 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -3237,13 +3217,13 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -3269,25 +3249,21 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -3863,13 +3839,13 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -3895,25 +3871,21 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -4489,13 +4461,13 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -4521,25 +4493,21 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -5115,13 +5083,13 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -5147,25 +5115,21 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -5741,13 +5705,13 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -5773,25 +5737,21 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -6367,13 +6327,13 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -6399,25 +6359,21 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -6993,13 +6949,13 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -7025,25 +6981,21 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -7619,13 +7571,13 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -7651,25 +7603,21 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -8245,13 +8193,13 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -8277,25 +8225,21 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -8871,13 +8815,13 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -8903,25 +8847,21 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -9341,13 +9281,13 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -9373,25 +9313,21 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"
@@ -9806,10 +9742,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         [
           {
             "flex": 1,
+            "marginBottom": 0,
           },
           {
             "backgroundColor": "#FFFFFF",
-            "marginBottom": 0,
           },
         ]
       }
@@ -11256,13 +11192,13 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
     style={
       [
         {
+          "borderTopColor": "#CBCED1",
           "borderTopWidth": 1,
           "minHeight": 48,
           "paddingHorizontal": 16,
         },
         {
           "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
         },
       ]
     }
@@ -11288,25 +11224,21 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
         testID="message-composer-input"
         underlineColorAndroid="transparent"

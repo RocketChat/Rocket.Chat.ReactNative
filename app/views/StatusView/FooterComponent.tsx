@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Button from '../../containers/Button';
 import I18n from '../../i18n';

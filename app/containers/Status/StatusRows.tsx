@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle } from 'react-native';
+import { type StyleProp, Text, type TextStyle, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Status from '.';
 import { CustomIcon } from '../CustomIcon';

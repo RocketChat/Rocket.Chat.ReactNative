@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
@@ -21,7 +22,7 @@ export const SelectedPeerInner = ({ selectedPeer }: { selectedPeer: TPeerItem | 
 
 	return (
 		<View style={styles.container}>
-			<View style={[styles.selectedTag, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
+			<View style={styles.selectedTag}>
 				<PeerItemInner item={selectedPeer} />
 				<BorderlessButton
 					onPress={() => setSelectedPeer(null)}
@@ -39,7 +40,7 @@ export const SelectedPeerInner = ({ selectedPeer }: { selectedPeer: TPeerItem | 
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -51,9 +52,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		flexDirection: 'row',
 		alignItems: 'center',
-		gap: 10
+		gap: 10,
+		backgroundColor: theme.colors.buttonBackgroundSecondaryDefault
 	},
 	removeButton: {
 		padding: 2
 	}
-});
+}));

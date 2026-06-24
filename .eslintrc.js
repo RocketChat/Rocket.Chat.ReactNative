@@ -157,7 +157,7 @@ module.exports = {
 			}
 		},
 		{
-			files: ['jest.setup.js', '__mocks__/**/*.js', '**/*.test.{js,ts,tsx}'],
+			files: ['jest.setup.js', 'jest.unistyles-mock.js', 'jest.unistyles-setup.js', '__mocks__/**/*.js', '**/*.test.{js,ts,tsx}'],
 			extends: ['plugin:jest/recommended']
 		},
 		{

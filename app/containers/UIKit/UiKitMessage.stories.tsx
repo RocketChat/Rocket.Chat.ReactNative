@@ -10,7 +10,8 @@ import {
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
+import ThemeStory from '../../stories/ThemeStory';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
@@ -559,9 +560,9 @@ const getInfoCardAction = ({
 });
 
 const ThemedStory = ({ theme, story }: { theme: TSupportedThemes; story: () => ReactElement }) => (
-	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+	<ThemeStory theme={theme}>
 		<View style={{ padding: 10, gap: 10, backgroundColor: colors[theme].surfaceTint }}>{story()}</View>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
 const ThemedStoryInfoCardList = () => (

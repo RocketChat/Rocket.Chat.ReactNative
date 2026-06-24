@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Text, View, useWindowDimensions } from 'react-native';
+import { Text, View } from 'react-native';
 import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import Plain from '../Plain';
@@ -35,7 +35,6 @@ function getEmojiToken(block: EmojiProps, isAvatar: boolean) {
 const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmojiProps) => {
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
-	const { fontScale } = useWindowDimensions();
 	const { fontScaleLimited } = useResponsiveLayout();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const spaceLeft = index && index > 0 ? ' ' : '';
@@ -50,16 +49,6 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	const emoji = getCustomEmoji?.(block.value?.value.replace(/\:/g, ''));
 	const isAsciiEmoji = !!block?.shortCode && block.value?.value !== block?.shortCode;
 	const displayAsciiEmoji = !convertAsciiEmoji && isAsciiEmoji && !!block.value;
-	const customEmojiSize = {
-		width: 15 * fontScale,
-		height: 15 * fontScale
-	};
-
-	const customEmojiBigSize = {
-		width: 30 * fontScale,
-		height: 30 * fontScale
-	};
-
 	const avatarStyle = {
 		fontSize: 30 * fontScaleLimited,
 		lineHeight: 30 * fontScaleLimited,
@@ -70,7 +59,7 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	if (emoji) {
 		return (
 			<View style={{ transform: [{ translateY: isBigEmoji || isAvatar ? 0 : 3 }] }}>
-				<CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />
+				<CustomEmoji style={[isBigEmoji ? styles.customEmojiBigSize : styles.customEmojiSize, style]} emoji={emoji} />
 			</View>
 		);
 	}

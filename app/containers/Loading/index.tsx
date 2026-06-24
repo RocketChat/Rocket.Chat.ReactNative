@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactElement } from 'react';
-import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
+import { View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
 	Extrapolate,
@@ -11,8 +11,9 @@ import Animated, {
 	withTiming
 } from 'react-native-reanimated';
 import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native-unistyles';
+import { useAnimatedTheme } from 'react-native-unistyles/reanimated';
 
-import { useTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 
 const LOADING_EVENT = 'LOADING_EVENT';
@@ -22,17 +23,20 @@ export const LOADING_IMAGE_TEST_ID = 'loading-image';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	backdropOverlay: {
+		backgroundColor: theme.colors.backdropColor
+	},
 	image: {
 		width: PixelRatio.get() * 40,
 		height: PixelRatio.get() * 40
 	}
-});
+}));
 
 interface ILoadingEvent {
 	visible: boolean;
@@ -47,7 +51,7 @@ const Loading = (): ReactElement | null => {
 	const [onCancel, setOnCancel] = useState<null | Function>(null);
 	const opacity = useSharedValue(0);
 	const scale = useSharedValue(1);
-	const { colors } = useTheme();
+	const theme = useAnimatedTheme();
 
 	const onEventReceived = ({ visible: _visible, onCancel: _onCancel = null }: ILoadingEvent) => {
 		if (_visible) {
@@ -96,7 +100,7 @@ const Loading = (): ReactElement | null => {
 	};
 
 	const animatedOpacity = useAnimatedStyle(() => ({
-		opacity: interpolate(opacity.value, [0, 1], [0, colors.backdropOpacity], Extrapolate.CLAMP)
+		opacity: interpolate(opacity.value, [0, 1], [0, theme.value.colors.backdropOpacity], Extrapolate.CLAMP)
 	}));
 	const animatedScale = useAnimatedStyle(() => ({ transform: [{ scale: interpolate(scale.value, [0, 0.5, 1], [1, 1.1, 1]) }] }));
 
@@ -107,15 +111,7 @@ const Loading = (): ReactElement | null => {
 		<View style={StyleSheet.absoluteFill} testID={LOADING_TEST_ID}>
 			<TouchableWithoutFeedback onPress={() => onCancelHandler()} testID={LOADING_BUTTON_TEST_ID}>
 				<View style={styles.container}>
-					<Animated.View
-						style={[
-							{
-								...StyleSheet.absoluteFillObject,
-								backgroundColor: colors.backdropColor
-							},
-							animatedOpacity
-						]}
-					/>
+					<Animated.View style={[StyleSheet.absoluteFill, styles.backdropOverlay, animatedOpacity]} />
 					<AnimatedImage
 						source={require('../../static/images/logo.png')}
 						style={[styles.image, animatedScale]}

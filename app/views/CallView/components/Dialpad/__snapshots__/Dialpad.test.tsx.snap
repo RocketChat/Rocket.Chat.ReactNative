@@ -69,14 +69,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               placeholderTextColor="#9EA2A8"
               style={
                 [
-                  {
-                    "color": "#1F2329",
-                  },
                   [
                     {
-                      "backgroundColor": "transparent",
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
                       "borderRadius": 4,
                       "borderWidth": 1,
+                      "color": "#1F2329",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -86,15 +85,11 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     },
                     undefined,
                     {},
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderColor": "#9EA2A8",
-                      "color": "#1F2329",
-                    },
                     {},
                     undefined,
                   ],
                   {
+                    "color": "#1F2329",
                     "textAlign": "auto",
                   },
                 ]
@@ -1380,14 +1375,13 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 placeholderTextColor="#9EA2A8"
                 style={
                   [
-                    {
-                      "color": "#1F2329",
-                    },
                     [
                       {
-                        "backgroundColor": "transparent",
+                        "backgroundColor": "#FFFFFF",
+                        "borderColor": "#9EA2A8",
                         "borderRadius": 4,
                         "borderWidth": 1,
+                        "color": "#1F2329",
                         "fontFamily": "Inter",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -1397,15 +1391,11 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                       },
                       undefined,
                       {},
-                      {
-                        "backgroundColor": "#FFFFFF",
-                        "borderColor": "#9EA2A8",
-                        "color": "#1F2329",
-                      },
                       {},
                       undefined,
                     ],
                     {
+                      "color": "#1F2329",
                       "textAlign": "auto",
                     },
                   ]
@@ -2692,14 +2682,13 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 placeholderTextColor="#9EA2A8"
                 style={
                   [
-                    {
-                      "color": "#1F2329",
-                    },
                     [
                       {
-                        "backgroundColor": "transparent",
+                        "backgroundColor": "#FFFFFF",
+                        "borderColor": "#9EA2A8",
                         "borderRadius": 4,
                         "borderWidth": 1,
+                        "color": "#1F2329",
                         "fontFamily": "Inter",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -2709,15 +2698,11 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                       },
                       undefined,
                       {},
-                      {
-                        "backgroundColor": "#FFFFFF",
-                        "borderColor": "#9EA2A8",
-                        "color": "#1F2329",
-                      },
                       {},
                       undefined,
                     ],
                     {
+                      "color": "#1F2329",
                       "textAlign": "auto",
                     },
                   ]
@@ -3997,14 +3982,13 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               placeholderTextColor="#9EA2A8"
               style={
                 [
-                  {
-                    "color": "#1F2329",
-                  },
                   [
                     {
-                      "backgroundColor": "transparent",
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
                       "borderRadius": 4,
                       "borderWidth": 1,
+                      "color": "#1F2329",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -4014,15 +3998,11 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
                     },
                     undefined,
                     {},
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderColor": "#9EA2A8",
-                      "color": "#1F2329",
-                    },
                     {},
                     undefined,
                   ],
                   {
+                    "color": "#1F2329",
                     "textAlign": "auto",
                   },
                 ]

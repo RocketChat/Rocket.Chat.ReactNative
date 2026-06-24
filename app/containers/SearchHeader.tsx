@@ -1,4 +1,5 @@
-import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
+import { type StyleProp, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../i18n';
 import { useTheme } from '../theme';

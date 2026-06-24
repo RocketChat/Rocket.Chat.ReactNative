@@ -1,8 +1,8 @@
-import { useContext, type ComponentType } from 'react';
+import { type ComponentType } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { type StaticParamList, type StaticScreenProps } from '@react-navigation/native';
 
-import { ThemeContext } from '../theme';
+import { useTheme } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import SelectServerView from '../views/SelectServerView';
 import ShareListView from '../views/ShareListView';
@@ -27,7 +27,7 @@ const ShareExtension = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 

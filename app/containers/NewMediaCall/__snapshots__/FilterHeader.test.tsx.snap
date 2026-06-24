@@ -10,20 +10,16 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
 >
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 20,
-          "fontWeight": "700",
-          "lineHeight": 28,
-          "marginTop": 4,
-          "textAlign": "left",
-        },
-        {
-          "color": "#1F2329",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#1F2329",
+        "fontFamily": "Inter",
+        "fontSize": 20,
+        "fontWeight": "700",
+        "lineHeight": 28,
+        "marginTop": 4,
+        "textAlign": "left",
+      }
     }
   >
     New call
@@ -77,14 +73,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               placeholderTextColor="#9EA2A8"
               style={
                 [
-                  {
-                    "color": "#1F2329",
-                  },
                   [
                     {
-                      "backgroundColor": "transparent",
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
                       "borderRadius": 4,
                       "borderWidth": 1,
+                      "color": "#1F2329",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -96,15 +91,11 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     {
                       "paddingRight": 45,
                     },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderColor": "#9EA2A8",
-                      "color": "#1F2329",
-                    },
                     {},
                     undefined,
                   ],
                   {
+                    "color": "#1F2329",
                     "textAlign": "auto",
                   },
                 ]
@@ -155,20 +146,16 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
   </View>
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 24,
-          "marginBottom": 16,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#2F343D",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "lineHeight": 24,
+        "marginBottom": 16,
+        "textAlign": "left",
+      }
     }
   >
     Enter username or number
@@ -186,20 +173,16 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
 >
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 20,
-          "fontWeight": "700",
-          "lineHeight": 28,
-          "marginTop": 4,
-          "textAlign": "left",
-        },
-        {
-          "color": "#1F2329",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#1F2329",
+        "fontFamily": "Inter",
+        "fontSize": 20,
+        "fontWeight": "700",
+        "lineHeight": 28,
+        "marginTop": 4,
+        "textAlign": "left",
+      }
     }
   >
     New call
@@ -253,14 +236,13 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
               placeholderTextColor="#9EA2A8"
               style={
                 [
-                  {
-                    "color": "#1F2329",
-                  },
                   [
                     {
-                      "backgroundColor": "transparent",
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
                       "borderRadius": 4,
                       "borderWidth": 1,
+                      "color": "#1F2329",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -272,15 +254,11 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
                     {
                       "paddingRight": 45,
                     },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderColor": "#9EA2A8",
-                      "color": "#1F2329",
-                    },
                     {},
                     undefined,
                   ],
                   {
+                    "color": "#1F2329",
                     "textAlign": "auto",
                   },
                 ]
@@ -331,20 +309,16 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
   </View>
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 24,
-          "marginBottom": 16,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#2F343D",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "lineHeight": 24,
+        "marginBottom": 16,
+        "textAlign": "left",
+      }
     }
   >
     Enter username or number

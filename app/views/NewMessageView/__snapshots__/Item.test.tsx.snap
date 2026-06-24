@@ -19,6 +19,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
     [
       {
         "backgroundColor": "#FFFFFF",
+        "height": 54,
       },
       {
         "cursor": undefined,
@@ -54,6 +55,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
           "flexDirection": "row",
         },
         {
+          "backgroundColor": "#FFFFFF",
           "height": 54,
         },
       ]
@@ -129,19 +131,15 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       <Text
         numberOfLines={1}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "500",
-              "lineHeight": 26,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "fontFamily": "Inter",
+            "fontSize": 18,
+            "fontWeight": "500",
+            "lineHeight": 26,
+            "textAlign": "left",
+          }
         }
       >
         John Doe
@@ -180,6 +178,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       [
         {
           "backgroundColor": "#FFFFFF",
+          "height": 54,
         },
         {
           "cursor": undefined,
@@ -215,6 +214,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             "flexDirection": "row",
           },
           {
+            "backgroundColor": "#FFFFFF",
             "height": 54,
           },
         ]
@@ -290,19 +290,15 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            }
           }
         >
           John Doe
@@ -403,6 +399,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
       [
         {
           "backgroundColor": "#FFFFFF",
+          "height": 54,
         },
         {
           "cursor": undefined,
@@ -438,6 +435,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
             "flexDirection": "row",
           },
           {
+            "backgroundColor": "#FFFFFF",
             "height": 54,
           },
         ]
@@ -513,19 +511,15 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            }
           }
         >
           Very Long Display Name That Might Get Truncated
@@ -626,6 +620,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
       [
         {
           "backgroundColor": "#FFFFFF",
+          "height": 54,
         },
         {
           "cursor": undefined,
@@ -661,6 +656,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
             "flexDirection": "row",
           },
           {
+            "backgroundColor": "#FFFFFF",
             "height": 54,
           },
         ]
@@ -736,19 +732,15 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         <Text
           numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#2F343D",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            }
           }
         >
           John Doe

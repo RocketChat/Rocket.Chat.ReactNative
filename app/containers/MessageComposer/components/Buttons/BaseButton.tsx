@@ -1,5 +1,6 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../../../i18n';
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';
@@ -24,11 +25,9 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 	'use memo';
 
 	const { setFocused } = useMessageComposerApi();
-	const { fontScale } = useWindowDimensions();
-	const size = 24 * fontScale;
 
 	return (
-		<BorderlessButton style={[styles.button, { width: size, height: size }]} onPress={() => onPress()} hitSlop={hitSlop}>
+		<BorderlessButton style={styles.button} onPress={() => onPress()} hitSlop={hitSlop}>
 			<View
 				accessible
 				accessibilityLabel={I18n.t(accessibilityLabel)}
@@ -42,9 +41,11 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((_theme, rt) => ({
 	button: {
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		width: 24 * rt.fontScale,
+		height: 24 * rt.fontScale
 	}
-});
+}));

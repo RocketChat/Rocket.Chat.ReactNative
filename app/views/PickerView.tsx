@@ -1,5 +1,6 @@
 import { type ReactElement, useLayoutEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
+import { FlatList, Text, type TextInputProps } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import * as List from '../containers/List';
@@ -13,14 +14,15 @@ import { useTheme } from '../theme';
 import { type IOptionsField } from './NotificationPreferencesView/options';
 import sharedStyles from './Styles';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	noResult: {
 		fontSize: 16,
 		paddingVertical: 56,
 		...sharedStyles.textSemibold,
-		...sharedStyles.textAlignCenter
+		...sharedStyles.textAlignCenter,
+		color: theme.colors.fontTitlesLabels
 	}
-});
+}));
 
 interface IItem {
 	item: IOptionsField;
@@ -54,8 +56,6 @@ const PickerView = (): ReactElement => {
 	const {
 		params: { title, data: paramData, value: paramValue, total: paramTotal, onSearch, onChangeValue, onEndReached }
 	} = useAppRoute<TNavigation, 'PickerView'>();
-
-	const { colors } = useTheme();
 
 	const [data, setData] = useState(paramData);
 	const [total, setTotal] = useState(paramTotal ?? 0);
@@ -107,9 +107,7 @@ const PickerView = (): ReactElement => {
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
 				ListFooterComponent={List.Separator}
-				ListEmptyComponent={() => (
-					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
-				)}
+				ListEmptyComponent={() => <Text style={styles.noResult}>{I18n.t('No_results_found')}</Text>}
 			/>
 		</SafeAreaView>
 	);

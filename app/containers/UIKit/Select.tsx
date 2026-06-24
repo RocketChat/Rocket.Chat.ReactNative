@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';

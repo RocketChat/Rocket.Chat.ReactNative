@@ -1,5 +1,6 @@
 import { useState, useRef, createRef, type ReactElement } from 'react';
-import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
+import { Text, type TextInputProps, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
@@ -9,11 +10,12 @@ import Button from '../../Button';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	subtitleText: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontTitlesLabels
 	},
 	buttonSeparator: {
 		marginRight: 12
@@ -25,7 +27,8 @@ const styles = StyleSheet.create({
 	titleContainerText: {
 		...sharedStyles.textBold,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontDefault
 	},
 	titleContainer: {
 		paddingRight: 80,
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	}
-});
+}));
 
 const FooterButtons = ({
 	cancelAction = () => {},
@@ -167,9 +170,9 @@ const ActionSheetContentWithInputAndSubmit = ({
 			<>
 				<View accessible accessibilityLabel={title} style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
+					<Text style={[styles.titleContainerText, { paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
 				</View>
-				{description ? <Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text> : null}
+				{description ? <Text style={styles.subtitleText}>{description}</Text> : null}
 				{customText}
 			</>
 			{showInput ? renderInputs() : null}

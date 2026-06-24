@@ -1,8 +1,9 @@
-import { Platform, StyleSheet, type TextStyle } from 'react-native';
+import { Platform, type TextStyle, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
-const defaultTextStyle: TextStyle = {
+const defaultTextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
 	...Platform.select({
@@ -10,9 +11,9 @@ const defaultTextStyle: TextStyle = {
 			includeFontPadding: false
 		}
 	})
-};
+} satisfies TextStyle;
 
-export default StyleSheet.create({
+const sharedStyles = {
 	container: {
 		flex: 1,
 		flexDirection: 'column'
@@ -124,4 +125,6 @@ export default StyleSheet.create({
 	inputLastChild: {
 		marginBottom: 15
 	}
-});
+} satisfies Record<string, ViewStyle | TextStyle>;
+
+export default sharedStyles;

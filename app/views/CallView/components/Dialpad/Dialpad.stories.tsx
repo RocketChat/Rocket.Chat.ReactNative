@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import type { ComponentType, ReactNode } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Dialpad from './Dialpad';
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';

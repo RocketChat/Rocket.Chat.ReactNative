@@ -1,7 +1,8 @@
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import { useContext, useState, memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { themes } from '../../../../../lib/constants/colors';
 import { type IAttachment } from '../../../../../definitions/IAttachment';
@@ -14,7 +15,7 @@ import MessageContext from '../../../Context';
 import Touchable from '../../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../../utils';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	button: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -42,7 +43,8 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontSize: 15,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		color: theme.colors.fontDefault
 	},
 	marginTop: {
 		marginTop: 4
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	}
-});
+}));
 
 interface IMessageAttText {
 	text?: string;
@@ -102,7 +104,6 @@ const Fields = memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
 		'use memo';
 
-		const { theme } = useTheme();
 		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
@@ -113,7 +114,7 @@ const Fields = memo(
 			<>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
+						<Text testID='collapsibleQuoteTouchableFieldTitle' style={styles.fieldTitle}>
 							{field.title}
 						</Text>
 						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />

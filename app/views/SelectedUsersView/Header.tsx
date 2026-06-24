@@ -1,27 +1,30 @@
 import { useRef } from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { themes } from '../../lib/constants/colors';
 import SearchBox from '../../containers/SearchBox';
 import I18n from '../../i18n';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
-import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Chip from '../../containers/Chip';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
+	container: {
+		backgroundColor: theme.colors.surfaceRoom
+	},
 	selectedText: {
 		marginLeft: 16,
 		marginBottom: 12,
 		fontSize: 12,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontHint
 	},
 	contentContainerList: {
 		paddingHorizontal: 16,
 		marginBottom: 16
 	}
-});
+}));
 
 const Header = ({
 	onChangeText,
@@ -33,7 +36,6 @@ const Header = ({
 	onPressItem: (userItem: ISelectedUser) => void;
 }) => {
 	const flatlist = useRef<FlatList<ISelectedUser>>(null);
-	const { theme } = useTheme();
 	const { users } = useAppSelector(state => ({
 		users: state.selectedUsers.users
 	}));
@@ -41,13 +43,11 @@ const Header = ({
 	const onContentSizeChange = () => flatlist?.current?.scrollToEnd({ animated: true });
 
 	return (
-		<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
+		<View style={styles.container}>
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>
-					<Text style={[styles.selectedText, { color: themes[theme].fontHint }]}>
-						{I18n.t('N_Selected_members', { n: users.length })}
-					</Text>
+					<Text style={styles.selectedText}>{I18n.t('N_Selected_members', { n: users.length })}</Text>
 					<FlatList
 						data={users}
 						ref={(ref: FlatList<ISelectedUser> | null) => {

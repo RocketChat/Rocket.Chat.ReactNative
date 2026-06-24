@@ -89,18 +89,14 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       >
         <Text
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#1F2329",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#1F2329",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Load more
@@ -286,18 +282,14 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       >
         <Text
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#1F2329",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#1F2329",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Load older
@@ -392,18 +384,14 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       >
         <Text
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#1F2329",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "color": "#1F2329",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "textAlign": "left",
+            }
           }
         >
           Load newer
@@ -450,7 +438,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={5}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -510,18 +498,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load older
@@ -696,7 +680,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={6}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -862,20 +846,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -1461,7 +1441,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={7}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1521,18 +1501,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load newer
@@ -1567,7 +1543,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={8}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1627,18 +1603,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load more
@@ -1813,7 +1785,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={9}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -1979,20 +1951,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -2718,7 +2686,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={10}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -2884,20 +2852,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -3048,7 +3012,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={11}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -3108,18 +3072,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load older
@@ -3294,7 +3254,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={12}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -3460,20 +3420,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -4059,7 +4015,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={13}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -4119,18 +4075,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load newer
@@ -4165,7 +4117,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={14}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -4225,18 +4177,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load more
@@ -4411,7 +4359,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={15}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -4577,20 +4525,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -5316,7 +5260,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={16}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -5482,20 +5426,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -5646,7 +5586,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={17}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -5706,18 +5646,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load older
@@ -5892,7 +5828,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={18}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -6058,20 +5994,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -6657,7 +6589,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={19}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -6717,18 +6649,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load newer
@@ -6763,7 +6691,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={20}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -6823,18 +6751,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              }
             }
           >
             Load more
@@ -7009,7 +6933,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={21}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -7175,20 +7099,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello
@@ -7914,7 +7834,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             collapsable={false}
                             delayLongPress={600}
                             enabled={true}
-                            handlerTag={-1}
+                            handlerTag={22}
                             handlerType="NativeViewGestureHandler"
                             innerRef={null}
                             onActiveStateChange={[Function]}
@@ -8080,20 +8000,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             <Text
                               numberOfLines={1}
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
+                                {
+                                  "backgroundColor": "transparent",
+                                  "color": "#1F2329",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                }
                               }
                             >
                               diego.mello

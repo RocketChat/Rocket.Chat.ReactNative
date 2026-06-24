@@ -1,8 +1,9 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 import { useEffect, useRef, type ReactElement } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
@@ -80,12 +81,12 @@ export const SendThreadToChannel = (): ReactElement | null => {
 				size={24}
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
-			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
+			<Text style={styles.text}>{I18n.t('Message_composer_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		marginLeft: 8,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault
 	}
-});
+}));

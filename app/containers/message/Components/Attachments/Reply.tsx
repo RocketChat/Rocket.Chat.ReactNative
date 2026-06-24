@@ -1,7 +1,8 @@
 import { dequal } from 'dequal';
 import { useContext, useState, memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants/colors';
@@ -19,7 +20,7 @@ import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
@@ -35,7 +36,11 @@ const styles = StyleSheet.create({
 		paddingLeft: 8
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0
 	},
 	authorContainer: {
 		flex: 1,
@@ -52,7 +57,8 @@ const styles = StyleSheet.create({
 	author: {
 		fontSize: 16,
 		...sharedStyles.textMedium,
-		flexShrink: 1
+		flexShrink: 1,
+		color: theme.colors.fontHint
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -65,7 +71,8 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontDefault
 	},
 	fieldValue: {
 		fontSize: 14,
@@ -88,9 +95,10 @@ const styles = StyleSheet.create({
 	title: {
 		flex: 1,
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontDefault
 	}
-});
+}));
 
 interface IMessageReply {
 	attachment: IAttachment;
@@ -108,12 +116,12 @@ const Title = memo(
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
-					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint }]}>
+					<Text numberOfLines={1} style={styles.author}>
 						{attachment.author_name}
 					</Text>
 				) : null}
 				{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
-				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
+				{attachment.title ? <Text style={styles.title}>{attachment.title}</Text> : null}
 			</View>
 		);
 	}
@@ -173,15 +181,7 @@ const UrlImage = memo(
 );
 
 const Fields = memo(
-	({
-		attachment,
-		theme,
-		getCustomEmoji
-	}: {
-		attachment: IAttachment;
-		theme: TSupportedThemes;
-		getCustomEmoji: TGetCustomEmoji;
-	}) => {
+	({ attachment, getCustomEmoji }: { attachment: IAttachment; theme: TSupportedThemes; getCustomEmoji: TGetCustomEmoji }) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -194,7 +194,7 @@ const Fields = memo(
 			<View style={styles.fieldsContainer}>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
+						<Text style={styles.fieldTitle}>{field.title}</Text>
 						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}

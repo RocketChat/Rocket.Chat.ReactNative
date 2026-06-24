@@ -1,23 +1,24 @@
 import { useState } from 'react';
-import { StyleSheet, type TextInputProps, View } from 'react-native';
+import { type TextInputProps, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { FormTextInput } from '../TextInput';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
+	searchbox: {
+		backgroundColor: theme.colors.surfaceRoom
+	},
 	inputContainer: {
 		marginHorizontal: 12,
 		marginTop: 16,
 		// override the default margin bottom of the FormTextInput
 		marginBottom: 16
 	}
-});
+}));
 
 const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) => {
 	const [text, setText] = useState('');
-
-	const { colors } = useTheme();
 
 	const internalOnChangeText = (value: string) => {
 		setText(value);
@@ -25,7 +26,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 	};
 
 	return (
-		<View testID='searchbox' style={{ backgroundColor: colors.surfaceRoom }}>
+		<View testID='searchbox' style={styles.searchbox}>
 			<FormTextInput
 				autoCapitalize='none'
 				autoCorrect={false}

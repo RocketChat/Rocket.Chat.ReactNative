@@ -1,6 +1,6 @@
-import { themes } from '../../../../lib/constants/colors';
 import ServersHistoryItemComponent, { type IServersHistoryItem } from '.';
-import { ThemeContext, type TSupportedThemes } from '../../../../theme';
+import { type TSupportedThemes } from '../../../../theme';
+import ThemeStory from '../../../../stories/ThemeStory';
 import { type TServerHistoryModel } from '../../../../definitions';
 import {
 	BASE_ROW_HEIGHT,
@@ -41,11 +41,7 @@ const ServersHistoryItem = ({
 	onPress?: IServersHistoryItem['onPress'];
 	onDeletePress?: IServersHistoryItem['onDeletePress'];
 }) => (
-	<ThemeContext.Provider
-		value={{
-			theme,
-			colors: themes[theme]
-		}}>
+	<ThemeStory theme={theme}>
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>
 			<ServersHistoryItemComponent
 				item={{ ...defaultItem, ...item } as TServerHistoryModel}
@@ -53,7 +49,7 @@ const ServersHistoryItem = ({
 				onDeletePress={onDeletePress || (() => alert('Delete'))}
 			/>
 		</ResponsiveLayoutContext.Provider>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
 export const Content = () => (

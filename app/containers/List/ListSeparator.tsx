@@ -1,14 +1,13 @@
 import { memo } from 'react';
-import { StyleSheet, View, type ViewStyle } from 'react-native';
+import { View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
-
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	separator: {
-		height: StyleSheet.hairlineWidth
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: theme.colors.strokeLight
 	}
-});
+}));
 
 interface IListSeparator {
 	style?: ViewStyle;
@@ -17,9 +16,7 @@ interface IListSeparator {
 const ListSeparator = memo(({ style }: IListSeparator) => {
 	'use memo';
 
-	const { theme } = useTheme();
-
-	return <View style={[styles.separator, style, { backgroundColor: themes[theme].strokeLight }]} />;
+	return <View style={[styles.separator, style]} />;
 });
 
 ListSeparator.displayName = 'List.Separator';

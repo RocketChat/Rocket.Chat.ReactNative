@@ -1,15 +1,14 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { createChannelRequest } from '../../actions/createChannel';
-import { themes } from '../../lib/constants/colors';
 import SearchBox from '../../containers/SearchBox';
 import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
-import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
 import { compareServerVersion } from '../../lib/methods/helpers';
@@ -17,16 +16,16 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
 import ButtonCreate from './ButtonCreate';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
-		paddingTop: 16
+		paddingTop: 16,
+		backgroundColor: theme.colors.surfaceTint
 	}
-});
+}));
 
 const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChangeText: (text: string) => void }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
-	const { theme } = useTheme();
 
 	const serverVersion = useAppSelector(state => state.server.version as string);
 
@@ -70,7 +69,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	return (
 		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].surfaceTint }]}>
+			<View style={styles.container}>
 				{createPublicChannelPermission || createPrivateChannelPermission ? (
 					<ButtonCreate
 						onPress={createChannel}

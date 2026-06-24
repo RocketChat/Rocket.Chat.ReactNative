@@ -1,8 +1,7 @@
 import { memo } from 'react';
-import { View, type ViewProps, StyleSheet } from 'react-native';
+import { View, type ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { useTheme } from '../../../../theme';
+import { StyleSheet } from 'react-native-unistyles';
 
 interface IHeaderContainer extends ViewProps {
 	addExtraNotchPadding?: boolean;
@@ -15,28 +14,35 @@ const HeaderContainer = memo(({ isMasterDetail = false, customRightIcon, customL
 	'use memo';
 
 	const insets = useSafeAreaInsets();
-	const { colors } = useTheme();
 	const paddingTop = 4;
 	const paddingBottom = 4;
 	const paddingRight = isMasterDetail || !customRightIcon ? 4 : 16;
 
 	return (
 		<View
-			style={{
-				alignItems: 'center',
-				flexDirection: 'row',
-				paddingBottom,
-				paddingTop,
-				paddingRight: paddingRight + insets.right,
-				paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
-				gap: isMasterDetail ? 4 : 12,
-				backgroundColor: colors.surfaceNeutral,
-				borderBottomWidth: StyleSheet.hairlineWidth,
-				borderBottomColor: colors.strokeLight
-			}}>
+			style={[
+				styles.container,
+				{
+					paddingBottom,
+					paddingTop,
+					paddingRight: paddingRight + insets.right,
+					paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
+					gap: isMasterDetail ? 4 : 12
+				}
+			]}>
 			{children}
 		</View>
 	);
 });
+
+const styles = StyleSheet.create(theme => ({
+	container: {
+		alignItems: 'center',
+		flexDirection: 'row',
+		backgroundColor: theme.colors.surfaceNeutral,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomColor: theme.colors.strokeLight
+	}
+}));
 
 export default HeaderContainer;

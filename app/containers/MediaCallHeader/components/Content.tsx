@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';

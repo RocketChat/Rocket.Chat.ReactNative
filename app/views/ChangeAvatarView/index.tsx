@@ -213,7 +213,7 @@ const ChangeAvatarView = () => {
 		<KeyboardView>
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
-					contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 32 }}
+					contentContainerStyle={[sharedStyles.containerScrollView, { paddingTop: 32 }]}
 					testID='change-avatar-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>

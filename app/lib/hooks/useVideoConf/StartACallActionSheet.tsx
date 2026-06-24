@@ -1,8 +1,8 @@
 import { CameraView } from 'expo-camera';
 import { useState, useEffect, type ReactElement } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useWindowDimensions, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useAppSelector } from '../useAppSelector';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
@@ -21,7 +21,6 @@ export default function StartACallActionSheet({ rid, roomType }: { rid: string; 
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
 	const [containerWidth, setContainerWidth] = useState(0);
-	const { bottom } = useSafeAreaInsets();
 	const { height, width } = useWindowDimensions();
 
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -42,7 +41,7 @@ export default function StartACallActionSheet({ rid, roomType }: { rid: string; 
 
 	return (
 		<View
-			style={[style.actionSheetContainer, { paddingBottom: bottom, height: actionSheetContainerHeight }]}
+			style={[style.actionSheetContainer, { height: actionSheetContainerHeight }]}
 			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			{calling && roomType === SubscriptionType.DIRECT ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
@@ -83,9 +82,10 @@ export default function StartACallActionSheet({ rid, roomType }: { rid: string; 
 	);
 }
 
-const style = StyleSheet.create({
+const style = StyleSheet.create((_theme, rt) => ({
 	actionSheetContainer: {
-		paddingHorizontal: 24
+		paddingHorizontal: 24,
+		paddingBottom: rt.insets.bottom
 	},
 	actionSheetPhotoContainer: {
 		justifyContent: 'center',
@@ -99,4 +99,4 @@ const style = StyleSheet.create({
 	cameraContainer: {
 		flex: 1
 	}
-});
+}));

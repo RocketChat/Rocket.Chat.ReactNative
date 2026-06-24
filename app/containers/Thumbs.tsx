@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { FlatList, Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { FlatList, Image, View, type StyleProp, type ViewStyle } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { BUTTON_HIT_SLOP } from './message/utils';
 import { CustomIcon } from './CustomIcon';
@@ -12,10 +13,11 @@ export const THUMBS_HEIGHT = 74;
 
 const THUMB_SIZE = 64;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	list: {
 		height: THUMBS_HEIGHT,
-		paddingHorizontal: 8
+		paddingHorizontal: 8,
+		backgroundColor: theme.colors.surfaceLight
 	},
 	dangerIcon: {
 		position: 'absolute',
@@ -30,7 +32,9 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderRadius: 14,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		backgroundColor: theme.colors.fontDefault,
+		borderColor: theme.colors.surfaceHover
 	},
 	removeView: {
 		width: 28,
@@ -38,7 +42,8 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderRadius: 14,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		borderColor: theme.colors.surfaceHover
 	},
 	item: {
 		paddingTop: 8,
@@ -51,19 +56,20 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderWidth: 1
+		borderWidth: 1,
+		borderColor: theme.colors.strokeLight
 	}
-});
+}));
 
 const ThumbContent = memo(({ path, mime }: { path: string; mime?: string }) => {
 	const { colors } = useTheme();
 
 	if (mime?.startsWith('image/')) {
-		return <Image source={{ uri: path }} style={[styles.thumb, { borderColor: colors.strokeLight }]} />;
+		return <Image source={{ uri: path }} style={styles.thumb} />;
 	}
 
 	return (
-		<View style={[styles.thumb, { borderColor: colors.strokeLight, backgroundColor: colors.surfaceNeutral }]}>
+		<View style={[styles.thumb, { backgroundColor: colors.surfaceNeutral }]}>
 			<CustomIcon name={mime?.startsWith('video/') ? 'video' : 'attach'} size={28} color={colors.badgeBackgroundLevel2} />
 		</View>
 	);
@@ -122,14 +128,14 @@ const Thumb = ({
 				<ThumbContent path={item.path} mime={item.mime} />
 				<RectButton
 					hitSlop={BUTTON_HIT_SLOP}
-					style={[styles.removeButton, { backgroundColor: colors.fontDefault, borderColor: colors.surfaceHover }]}
+					style={styles.removeButton}
 					activeOpacity={1}
 					rippleColor={colors.surfaceNeutral}
 					onPress={() => onRemove(item)}
 					accessibilityLabel={removeAccessibilityLabel}
 					accessibilityHint={removeAccessibilityHint}
 					testID={removeTestID}>
-					<View style={[styles.removeView, { borderColor: colors.surfaceHover }]}>
+					<View style={styles.removeView}>
 						<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
 					</View>
 				</RectButton>
@@ -155,7 +161,6 @@ const Thumbs = ({
 	getRemoveAccessibilityHint,
 	getRemoveTestID
 }: IThumbs) => {
-	const { colors } = useTheme();
 	if (!attachments?.length) {
 		return null;
 	}
@@ -178,7 +183,7 @@ const Thumbs = ({
 				/>
 			)}
 			showsHorizontalScrollIndicator={false}
-			style={[styles.list, { backgroundColor: colors.surfaceLight }, style]}
+			style={[styles.list, style]}
 			contentContainerStyle={contentContainerStyle}
 			testID={testID}
 		/>

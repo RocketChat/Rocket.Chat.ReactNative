@@ -1,22 +1,22 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
-import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		paddingVertical: 8,
 		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontHint
 	}
-});
+}));
 
 interface IListHeader {
 	title: string;
@@ -27,11 +27,9 @@ interface IListHeader {
 const ListHeader = memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
 	'use memo';
 
-	const { theme } = useTheme();
-
 	return (
 		<View style={styles.container}>
-			<Text accessibilityRole='header' style={[styles.title, { color: themes[theme].fontHint }]} numberOfLines={numberOfLines}>
+			<Text accessibilityRole='header' style={styles.title} numberOfLines={numberOfLines}>
 				{translateTitle ? I18n.t(title) : title}
 			</Text>
 		</View>

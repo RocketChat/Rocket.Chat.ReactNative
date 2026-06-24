@@ -1,15 +1,15 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Image } from 'expo-image';
 import { memo } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { isTablet } from '../../lib/methods/helpers';
-import { useTheme } from '../../theme';
 
 const SIZE = 96;
 const MARGIN_TOP = isTablet ? 0 : 64;
 const BORDER_RADIUS = 8;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		marginBottom: 16,
 		width: '100%',
@@ -20,9 +20,10 @@ const styles = StyleSheet.create({
 	image: {
 		width: SIZE,
 		height: SIZE,
-		borderRadius: BORDER_RADIUS
+		borderRadius: BORDER_RADIUS,
+		borderColor: theme.colors.strokeLight
 	}
-});
+}));
 
 interface IServerAvatar {
 	url: string;
@@ -30,14 +31,8 @@ interface IServerAvatar {
 }
 
 // TODO: missing skeleton
-const ServerAvatar = memo(({ url, image }: IServerAvatar) => {
-	const { colors } = useTheme();
-
-	return (
-		<View style={styles.container}>
-			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
-		</View>
-	);
-});
+const ServerAvatar = memo(({ url, image }: IServerAvatar) => (
+	<View style={styles.container}>{image && <Image style={styles.image} source={{ uri: `${url}/${image}` }} />}</View>
+));
 
 export default ServerAvatar;

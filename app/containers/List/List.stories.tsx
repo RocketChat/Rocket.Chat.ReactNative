@@ -3,9 +3,9 @@ import { FlatList } from 'react-native';
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
 import { longText } from '../../../.rnstorybook/utils';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
 import { ResponsiveLayoutContext } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { themes } from '../../lib/constants/colors';
+import ThemeStory from '../../stories/ThemeStory';
 
 export default {
 	title: 'List'
@@ -231,15 +231,15 @@ const ListFull = () => (
 	</SafeAreaView>
 );
 
-const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
+const ThemeVariant = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeStory theme={theme}>
 		<ListFull />
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const WithDarkTheme = () => <ThemeStory theme='dark' />;
+export const WithDarkTheme = () => <ThemeVariant theme='dark' />;
 
-export const WithBlackTheme = () => <ThemeStory theme='black' />;
+export const WithBlackTheme = () => <ThemeVariant theme='black' />;
 
 const FontStory = ({ fontScale }: { fontScale: number }) => (
 	// @ts-ignore - story overrides fontScale only; ListItem reads only that

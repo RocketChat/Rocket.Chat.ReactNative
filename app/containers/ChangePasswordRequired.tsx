@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type NavigationProp, type NavigationState } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { logout } from '../actions/login';
 import I18n from '../i18n';
@@ -24,12 +25,12 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 	};
 
 	return (
-		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
+		<View style={[styles.container, { paddingTop: 120 }]}>
 			<View style={styles.iconContainer}>
 				<CustomIcon name='info' size={36} color={colors.statusFontWarning} />
 			</View>
-			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('You_need_to_change_your_password')}</Text>
-			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
+			<Text style={styles.title}>{I18n.t('You_need_to_change_your_password')}</Text>
+			<Text style={styles.description}>{I18n.t('To_continue_using_RocketChat')}</Text>
 			<Button
 				testID='change-password-required-button'
 				title={I18n.t('Change_password')}
@@ -47,11 +48,11 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		padding: 16,
-		backgroundColor: '#fff'
+		backgroundColor: theme.colors.surfaceLight
 	},
 	iconContainer: {
 		alignItems: 'center',
@@ -61,12 +62,14 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		lineHeight: 30,
 		marginBottom: 24,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		color: theme.colors.fontTitlesLabels
 	},
 	description: {
 		fontSize: 16,
 		lineHeight: 24,
 		marginBottom: 24,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault
 	}
-});
+}));

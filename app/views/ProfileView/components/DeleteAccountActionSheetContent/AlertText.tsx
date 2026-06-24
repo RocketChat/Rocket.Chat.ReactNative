@@ -1,16 +1,17 @@
-import { StyleSheet, Text, type TextStyle } from 'react-native';
+import { Text, type TextStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../Styles';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	text: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
 		lineHeight: 24,
-		marginBottom: 24
+		marginBottom: 24,
+		color: theme.colors.fontDanger
 	}
-});
+}));
 
 interface IAlertText {
 	text: string;
@@ -18,8 +19,7 @@ interface IAlertText {
 }
 
 const AlertText = ({ text, style }: IAlertText) => {
-	const { colors } = useTheme();
-	return <Text style={[styles.text, { color: colors.fontDanger }, style]}>{text}</Text>;
+	return <Text style={[styles.text, style]}>{text}</Text>;
 };
 
 export default AlertText;

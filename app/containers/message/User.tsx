@@ -1,8 +1,8 @@
 import { useContext, memo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
-import { useTheme } from '../../theme';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
@@ -11,7 +11,7 @@ import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
@@ -26,11 +26,13 @@ const styles = StyleSheet.create({
 		flexShrink: 1,
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	usernameInfoMessage: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	titleContainer: {
 		flexShrink: 1,
@@ -40,9 +42,10 @@ const styles = StyleSheet.create({
 	},
 	alias: {
 		fontSize: 14,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	}
-});
+}));
 
 interface IMessageUser {
 	isHeader?: boolean;
@@ -83,12 +86,11 @@ const User = memo(
 		'use memo';
 
 		const { user } = useContext(MessageContext);
-		const { colors } = useTheme();
 		const { isLargeFontScale } = useResponsiveLayout();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
-			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
+			const aliasUsername = alias ? <Text style={styles.alias}> @{username}</Text> : null;
 			const itsMe = author?._id === user.id;
 
 			const onUserPress = () => {
@@ -108,7 +110,7 @@ const User = memo(
 
 			if (messageHaveAuthorName(type as MessageTypesValues)) {
 				return (
-					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
+					<Text style={styles.usernameInfoMessage} onPress={onUserPress}>
 						{textContent}
 					</Text>
 				);
@@ -117,7 +119,7 @@ const User = memo(
 			return (
 				<View style={styles.container}>
 					<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
-						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={styles.username} numberOfLines={1}>
 							{textContent}
 						</Text>
 						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}

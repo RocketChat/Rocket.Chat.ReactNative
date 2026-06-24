@@ -738,10 +738,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
           "padding": 4,
         },
         {
-          "marginVertical": 6,
-        },
-        {
           "color": "#2F343D",
+          "marginVertical": 6,
         },
       ]
     }
@@ -775,10 +773,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
           "padding": 4,
         },
         {
-          "marginVertical": 6,
-        },
-        {
           "color": "#2F343D",
+          "marginVertical": 6,
         },
       ]
     }
@@ -812,10 +808,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
           "padding": 4,
         },
         {
-          "marginVertical": 6,
-        },
-        {
           "color": "#2F343D",
+          "marginVertical": 6,
         },
       ]
     }
@@ -849,10 +843,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
           "padding": 4,
         },
         {
-          "marginVertical": 6,
-        },
-        {
           "color": "#2F343D",
+          "marginVertical": 6,
         },
       ]
     }
@@ -886,10 +878,8 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
           "padding": 4,
         },
         {
-          "marginVertical": 6,
-        },
-        {
           "color": "#2F343D",
+          "marginVertical": 6,
         },
       ]
     }
@@ -932,17 +922,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
     >
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#F7F8FA",
-              "borderColor": "#EBECEF",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -954,7 +940,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "#0d0d0d",
               },
             ]
           }
@@ -978,18 +964,14 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#F7F8FA",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -998,7 +980,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#6C727A",
+                        "color": "#9EA2A8",
                         "fontSize": 20,
                       },
                       [
@@ -1046,7 +1028,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#2F343D",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -1082,7 +1064,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "lineHeight": 22,
                             },
                             {
-                              "color": "#2F343D",
+                              "color": "#E4E7EA",
                             },
                             {
                               "fontSize": 14,
@@ -1149,7 +1131,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#2F343D",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -1185,7 +1167,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "lineHeight": 22,
                             },
                             {
-                              "color": "#2F343D",
+                              "color": "#E4E7EA",
                             },
                             {
                               "fontSize": 14,
@@ -1205,17 +1187,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#F7F8FA",
-              "borderColor": "#EBECEF",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -1227,7 +1205,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "#0d0d0d",
               },
             ]
           }
@@ -1251,18 +1229,14 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#F7F8FA",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -1271,7 +1245,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#6C727A",
+                        "color": "#9EA2A8",
                         "fontSize": 20,
                       },
                       [
@@ -1319,7 +1293,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#2F343D",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -1355,7 +1329,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "lineHeight": 22,
                             },
                             {
-                              "color": "#2F343D",
+                              "color": "#E4E7EA",
                             },
                             {
                               "fontSize": 14,
@@ -1422,7 +1396,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#2F343D",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -1458,7 +1432,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "lineHeight": 22,
                             },
                             {
-                              "color": "#2F343D",
+                              "color": "#E4E7EA",
                             },
                             {
                               "fontSize": 14,
@@ -1478,17 +1452,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#F7F8FA",
-              "borderColor": "#EBECEF",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -1500,511 +1470,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#FFFFFF",
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "flexWrap": "wrap",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#F7F8FA",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#8E6300",
-                        "fontSize": 20,
-                      },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "gap": 2,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="Voice call not answered"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
-                        }
-                      >
-                        Voice call not answered
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#F7F8FA",
-              "borderColor": "#EBECEF",
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "padding": 16,
-              },
-              {
-                "backgroundColor": "#FFFFFF",
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "flexWrap": "wrap",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#F7F8FA",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#9B1325",
-                        "fontSize": 20,
-                      },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "gap": 2,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="Voice call failed"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
-                        }
-                      >
-                        Voice call failed
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "backgroundColor": "#1F2329",
-          "gap": 10,
-          "padding": 10,
-        }
-      }
-    >
-      <View
-        style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "padding": 16,
-              },
-              {
-                "backgroundColor": "#262931",
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "flexWrap": "wrap",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#1F2329",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#9EA2A8",
-                        "fontSize": 20,
-                      },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "gap": 2,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#C1C7D0",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="Voice call ended"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
-                        }
-                      >
-                        Voice call ended
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "padding": 16,
-              },
-              {
-                "backgroundColor": undefined,
+                "backgroundColor": "#0d0d0d",
               },
             ]
           }
@@ -2029,409 +1495,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
               <View
                 style={
                   {
-                    "gap": 2,
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
                   }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#C1C7D0",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="00:06"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
-                        }
-                      >
-                        00:06
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "padding": 16,
-              },
-              {
-                "backgroundColor": "#262931",
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "flexWrap": "wrap",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#1F2329",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    [
-                      {
-                        "color": "#9EA2A8",
-                        "fontSize": 20,
-                      },
-                      [
-                        {
-                          "lineHeight": 20,
-                        },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "gap": 2,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#C1C7D0",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="Voice call transferred"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
-                        }
-                      >
-                        Voice call transferred
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "padding": 16,
-              },
-              {
-                "backgroundColor": undefined,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "flexWrap": "wrap",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "gap": 2,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#C1C7D0",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="00:06"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
-                        }
-                      >
-                        00:06
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "padding": 16,
-              },
-              {
-                "backgroundColor": "#262931",
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "flexWrap": "wrap",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "marginHorizontal": 4,
-                }
-              }
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#1F2329",
-                    },
-                  ]
                 }
               >
                 <Text
@@ -2488,7 +1558,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#C1C7D0",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -2524,7 +1594,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "lineHeight": 22,
                             },
                             {
-                              "color": "#C1C7D0",
+                              "color": "#E4E7EA",
                             },
                             {
                               "fontSize": 14,
@@ -2544,17 +1614,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -2566,7 +1632,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#262931",
+                "backgroundColor": "#0d0d0d",
               },
             ]
           }
@@ -2590,18 +1656,14 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#1F2329",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -2658,7 +1720,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#C1C7D0",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -2694,7 +1756,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "lineHeight": 22,
                             },
                             {
-                              "color": "#C1C7D0",
+                              "color": "#E4E7EA",
                             },
                             {
                               "fontSize": 14,
@@ -2716,7 +1778,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
     <View
       style={
         {
-          "backgroundColor": "#16181a",
+          "backgroundColor": "#1F2329",
           "gap": 10,
           "padding": 10,
         }
@@ -2724,17 +1786,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
     >
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#16181a",
-              "borderColor": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -2770,18 +1828,14 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#16181a",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -2997,17 +2051,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#16181a",
-              "borderColor": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -3043,18 +2093,14 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#16181a",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -3270,17 +2316,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#16181a",
-              "borderColor": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -3316,18 +2358,14 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#16181a",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -3440,17 +2478,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "borderRadius": 4,
-              "borderWidth": 0.5,
-              "overflow": "hidden",
-            },
-            {
-              "backgroundColor": "#16181a",
-              "borderColor": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -3486,18 +2520,878 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 4,
-                      "height": 28,
-                      "justifyContent": "center",
-                      "width": 28,
-                    },
-                    {
-                      "backgroundColor": "#16181a",
-                    },
-                  ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#D88892",
+                        "fontSize": 20,
+                      },
+                      [
+                        {
+                          "lineHeight": 20,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "gap": 2,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Voice call failed"
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                            {
+                              "fontSize": 14,
+                            },
+                          ]
+                        }
+                      >
+                        Voice call failed
+                      </Text>
+                    </Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "backgroundColor": "#16181a",
+          "gap": 10,
+          "padding": 10,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "padding": 16,
+              },
+              {
+                "backgroundColor": "#0d0d0d",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#9EA2A8",
+                        "fontSize": 20,
+                      },
+                      [
+                        {
+                          "lineHeight": 20,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "gap": 2,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Voice call ended"
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                            {
+                              "fontSize": 14,
+                            },
+                          ]
+                        }
+                      >
+                        Voice call ended
+                      </Text>
+                    </Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "padding": 16,
+              },
+              {
+                "backgroundColor": undefined,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "gap": 2,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="00:06"
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                            {
+                              "fontSize": 14,
+                            },
+                          ]
+                        }
+                      >
+                        00:06
+                      </Text>
+                    </Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "padding": 16,
+              },
+              {
+                "backgroundColor": "#0d0d0d",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#9EA2A8",
+                        "fontSize": 20,
+                      },
+                      [
+                        {
+                          "lineHeight": 20,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "gap": 2,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Voice call transferred"
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                            {
+                              "fontSize": 14,
+                            },
+                          ]
+                        }
+                      >
+                        Voice call transferred
+                      </Text>
+                    </Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "padding": 16,
+              },
+              {
+                "backgroundColor": undefined,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "gap": 2,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="00:06"
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                            {
+                              "fontSize": 14,
+                            },
+                          ]
+                        }
+                      >
+                        00:06
+                      </Text>
+                    </Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "padding": 16,
+              },
+              {
+                "backgroundColor": "#0d0d0d",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#C7AA66",
+                        "fontSize": 20,
+                      },
+                      [
+                        {
+                          "lineHeight": 20,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "gap": 2,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Voice call not answered"
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#E4E7EA",
+                            },
+                            {
+                              "fontSize": 14,
+                            },
+                          ]
+                        }
+                      >
+                        Voice call not answered
+                      </Text>
+                    </Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderColor": "#EBECEF",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "padding": 16,
+              },
+              {
+                "backgroundColor": "#0d0d0d",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "marginHorizontal": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#F7F8FA",
+                    "borderRadius": 4,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
                 }
               >
                 <Text
@@ -3616,17 +3510,13 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
 exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "borderRadius": 4,
-        "borderWidth": 0.5,
-        "overflow": "hidden",
-      },
-      {
-        "backgroundColor": "#F7F8FA",
-        "borderColor": "#EBECEF",
-      },
-    ]
+    {
+      "backgroundColor": "#F7F8FA",
+      "borderColor": "#EBECEF",
+      "borderRadius": 4,
+      "borderWidth": 1,
+      "overflow": "hidden",
+    }
   }
 >
   <View
@@ -4047,17 +3937,13 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
 exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "borderRadius": 4,
-        "borderWidth": 0.5,
-        "overflow": "hidden",
-      },
-      {
-        "backgroundColor": "#F7F8FA",
-        "borderColor": "#EBECEF",
-      },
-    ]
+    {
+      "backgroundColor": "#F7F8FA",
+      "borderColor": "#EBECEF",
+      "borderRadius": 4,
+      "borderWidth": 1,
+      "overflow": "hidden",
+    }
   }
 >
   <View
@@ -4121,18 +4007,14 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
       >
         <View
           style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 4,
-                "height": 28,
-                "justifyContent": "center",
-                "width": 28,
-              },
-              {
-                "backgroundColor": "#F7F8FA",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "backgroundColor": "#F7F8FA",
+              "borderRadius": 4,
+              "height": 28,
+              "justifyContent": "center",
+              "width": 28,
+            }
           }
         >
           <Text
@@ -4172,18 +4054,14 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
       >
         <View
           style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 4,
-                "height": 28,
-                "justifyContent": "center",
-                "width": 28,
-              },
-              {
-                "backgroundColor": "#F7F8FA",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "backgroundColor": "#F7F8FA",
+              "borderRadius": 4,
+              "height": 28,
+              "justifyContent": "center",
+              "width": 28,
+            }
           }
         >
           <Text
@@ -4223,18 +4101,14 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
       >
         <View
           style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 4,
-                "height": 28,
-                "justifyContent": "center",
-                "width": 28,
-              },
-              {
-                "backgroundColor": "#F7F8FA",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "backgroundColor": "#F7F8FA",
+              "borderRadius": 4,
+              "height": 28,
+              "justifyContent": "center",
+              "width": 28,
+            }
           }
         >
           <Text
@@ -4274,18 +4148,14 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
       >
         <View
           style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 4,
-                "height": 28,
-                "justifyContent": "center",
-                "width": 28,
-              },
-              {
-                "backgroundColor": "#F7F8FA",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "backgroundColor": "#F7F8FA",
+              "borderRadius": 4,
+              "height": 28,
+              "justifyContent": "center",
+              "width": 28,
+            }
           }
         >
           <Text
@@ -4548,17 +4418,13 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
 exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "borderRadius": 4,
-        "borderWidth": 0.5,
-        "overflow": "hidden",
-      },
-      {
-        "backgroundColor": "#F7F8FA",
-        "borderColor": "#EBECEF",
-      },
-    ]
+    {
+      "backgroundColor": "#F7F8FA",
+      "borderColor": "#EBECEF",
+      "borderRadius": 4,
+      "borderWidth": 1,
+      "overflow": "hidden",
+    }
   }
 >
   <View

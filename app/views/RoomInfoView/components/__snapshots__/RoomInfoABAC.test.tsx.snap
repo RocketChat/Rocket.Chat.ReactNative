@@ -24,13 +24,11 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               {
                 "marginBottom": 20,
-              },
-              {
-                "backgroundColor": "#1f2329",
               },
             ]
           }
@@ -277,13 +275,11 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               {
                 "marginBottom": 20,
-              },
-              {
-                "backgroundColor": "#1f2329",
               },
             ]
           }
@@ -942,13 +938,11 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               {
                 "marginBottom": 20,
-              },
-              {
-                "backgroundColor": "#333842",
               },
             ]
           }
@@ -1195,13 +1189,11 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               {
                 "marginBottom": 20,
-              },
-              {
-                "backgroundColor": "#333842",
               },
             ]
           }
@@ -1860,13 +1852,11 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               {
                 "marginBottom": 20,
-              },
-              {
-                "backgroundColor": "#CBCED1",
               },
             ]
           }
@@ -2113,13 +2103,11 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "backgroundColor": "#CBCED1",
+                "height": 1,
               },
               {
                 "marginBottom": 20,
-              },
-              {
-                "backgroundColor": "#CBCED1",
               },
             ]
           }

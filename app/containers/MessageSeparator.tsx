@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import dayjs from '../lib/dayjs';
 import I18n from '../i18n';

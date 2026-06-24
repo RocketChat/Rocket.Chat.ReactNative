@@ -1,5 +1,6 @@
 import { createContext, type ReactElement, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 export const WidthAwareContext = createContext(0);
 

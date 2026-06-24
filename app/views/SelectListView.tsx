@@ -1,7 +1,8 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { Component } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
@@ -18,13 +19,20 @@ import sharedStyles from './Styles';
 import { type TDataSelect } from '../definitions/IDataSelect';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	buttonText: {
 		fontSize: 16,
 		margin: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault
+	},
+	infoTextContainer: {
+		backgroundColor: theme.colors.surfaceRoom
+	},
+	listContent: {
+		backgroundColor: theme.colors.surfaceRoom
 	}
-});
+}));
 
 interface ISelectListViewState {
 	data?: TDataSelect[];
@@ -95,14 +103,11 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 		navigation.setOptions(options);
 	};
 
-	renderInfoText = () => {
-		const { theme } = this.props;
-		return (
-			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
-				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
-			</View>
-		);
-	};
+	renderInfoText = () => (
+		<View style={styles.infoTextContainer}>
+			<Text style={styles.buttonText}>{I18n.t(this.infoText)}</Text>
+		</View>
+	);
 
 	renderSearch = () => <SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />;
 
@@ -190,7 +195,6 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 
 	render() {
 		const { data, isSearching, dataFiltered } = this.state;
-		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
 				<FlatList
@@ -199,7 +203,7 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
+					contentContainerStyle={styles.listContent}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>

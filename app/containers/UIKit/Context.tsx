@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type IContext } from './interfaces';
 

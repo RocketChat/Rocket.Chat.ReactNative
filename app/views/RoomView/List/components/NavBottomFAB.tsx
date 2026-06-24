@@ -1,20 +1,21 @@
 import { memo, type ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
-import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
 import { EDGE_DISTANCE } from '../constants';
 import i18n from '../../../../i18n';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		position: 'absolute',
 		right: EDGE_DISTANCE,
 		bottom: EDGE_DISTANCE
 	},
 	button: {
-		borderRadius: 25
+		borderRadius: 25,
+		backgroundColor: theme.colors.surfaceRoom
 	},
 	content: {
 		width: 50,
@@ -22,13 +23,12 @@ const styles = StyleSheet.create({
 		borderRadius: 25,
 		borderWidth: 1,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		borderColor: theme.colors.strokeLight
 	}
-});
+}));
 
 const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Function }): ReactElement | null => {
-	const { colors } = useTheme();
-
 	if (!visible) {
 		return null;
 	}
@@ -39,9 +39,9 @@ const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Fu
 				accessible
 				accessibilityLabel={i18n.t('Jump_to_last_message')}
 				onPress={() => onPress()}
-				style={[styles.button, { backgroundColor: colors.surfaceRoom }]}
+				style={styles.button}
 				testID='nav-jump-to-bottom'>
-				<View style={[styles.content, { borderColor: colors.strokeLight }]}>
+				<View style={styles.content}>
 					<CustomIcon name='chevron-down' size={36} />
 				</View>
 			</Touch>

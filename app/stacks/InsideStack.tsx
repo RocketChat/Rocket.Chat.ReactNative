@@ -1,4 +1,4 @@
-import { useContext, type ComponentType } from 'react';
+import { type ComponentType } from 'react';
 import { I18nManager } from 'react-native';
 import {
 	createNativeStackNavigator,
@@ -8,7 +8,7 @@ import {
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { type StaticScreenProps } from '@react-navigation/native';
 
-import { ThemeContext } from '../theme';
+import { useTheme } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
@@ -205,7 +205,7 @@ const ChatsStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -223,7 +223,7 @@ const ProfileStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -247,7 +247,7 @@ const SettingsStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -259,7 +259,7 @@ const AdminPanelStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -273,7 +273,7 @@ const AccessibilityStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -295,7 +295,7 @@ const DrawerStack = createDrawerNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { colors } = useContext(ThemeContext);
+	const { colors } = useTheme();
 	return (
 		<Navigator
 			drawerContent={({ navigation }) => <Sidebar navigation={navigation as any} />}
@@ -316,7 +316,7 @@ const NewMessageStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -329,7 +329,7 @@ const E2ESaveYourPasswordStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -342,7 +342,7 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -380,7 +380,7 @@ const InsideStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 

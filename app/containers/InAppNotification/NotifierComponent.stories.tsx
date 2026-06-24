@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 
-import { ThemeContext, type TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants/colors';
+import { type TSupportedThemes } from '../../theme';
+import ThemeStory from '../../stories/ThemeStory';
 import NotifierComponent from './NotifierComponent';
 import { SubscriptionType } from '../../definitions';
 import {
@@ -34,9 +34,9 @@ const baseNotification = {
 };
 
 const Wrapper = ({ children, theme = 'light' }: { children: ReactNode; theme?: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
+	<ThemeStory theme={theme}>
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>{children}</ResponsiveLayoutContext.Provider>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
 export default {

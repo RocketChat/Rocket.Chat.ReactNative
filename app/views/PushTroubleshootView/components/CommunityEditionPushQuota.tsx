@@ -1,5 +1,6 @@
-import { Alert, StyleSheet, Text } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';

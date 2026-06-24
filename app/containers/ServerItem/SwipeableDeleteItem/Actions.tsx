@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	interpolate,
@@ -11,6 +11,7 @@ import Animated, {
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { scheduleOnRN } from 'react-native-worklets';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
@@ -99,9 +100,7 @@ export const DeleteAction = memo(
 		const viewHeight = { height: rowHeight + SERVER_ITEM_PADDING_VERTICAL };
 
 		return (
-			<View
-				style={[styles.actionsLeftContainer, viewHeight, { backgroundColor: colors.buttonBackgroundDangerDefault }]}
-				pointerEvents='box-none'>
+			<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
 				<Animated.View
 					style={[
 						styles.actionRightButtonContainer,
@@ -115,7 +114,7 @@ export const DeleteAction = memo(
 						accessible
 						accessibilityLabel={I18n.t('Delete')}
 						testID={testID}
-						style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundDangerDefault }]}
+						style={styles.actionButton}
 						onPress={onDeletePress}>
 						<CustomIcon size={24} name='delete' color={colors.fontWhite} />
 					</RectButton>
@@ -125,12 +124,13 @@ export const DeleteAction = memo(
 	}
 );
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	actionsLeftContainer: {
 		flexDirection: 'row',
 		position: 'absolute',
 		left: 0,
-		right: 0
+		right: 0,
+		backgroundColor: theme.colors.buttonBackgroundDangerDefault
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
 		width: 80,
 		height: '100%',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		backgroundColor: theme.colors.buttonBackgroundDangerDefault
 	}
-});
+}));

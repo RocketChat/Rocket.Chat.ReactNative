@@ -1,6 +1,6 @@
-import { themes } from '../../lib/constants/colors';
 import ServerItemComponent, { type IServerItem } from '.';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
+import ThemeStory from '../../stories/ThemeStory';
 
 export default {
 	title: 'ServerItem'
@@ -25,13 +25,9 @@ const ServerItem = ({
 	onDeletePress?: IServerItem['onDeletePress'];
 	hasCheck?: IServerItem['hasCheck'];
 }) => (
-	<ThemeContext.Provider
-		value={{
-			theme,
-			colors: themes[theme]
-		}}>
+	<ThemeStory theme={theme}>
 		<ServerItemComponent item={{ ...defaultItem, ...item }} onPress={onPress} onDeletePress={onDeletePress} hasCheck={hasCheck} />
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
 export const Content = () => (

@@ -1,9 +1,9 @@
 import { useContext, useState, type ReactElement } from 'react';
-import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Pressable, FlatList } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import { MessageInnerContext } from '../context';
-import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { type IEmoji } from '../../../definitions';
@@ -21,7 +21,6 @@ const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 export const EmojiSearchbar = (): ReactElement => {
 	'use memo';
 
-	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 	const { closeEmojiSearchbar } = useEmojiKeyboard();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
@@ -42,7 +41,7 @@ export const EmojiSearchbar = (): ReactElement => {
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceLight }}>
+		<View style={styles.wrapper}>
 			<FlatList
 				horizontal
 				data={searchText ? emojis : frequentlyUsed}
@@ -50,7 +49,7 @@ export const EmojiSearchbar = (): ReactElement => {
 				showsHorizontalScrollIndicator={false}
 				ListEmptyComponent={() => (
 					<View style={styles.emptyContainer} testID='no-results-found'>
-						<Text style={[styles.emptyText, { color: colors.fontHint }]}>{I18n.t('No_results_found')}</Text>
+						<Text style={styles.emptyText}>{I18n.t('No_results_found')}</Text>
 					</View>
 				)}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
@@ -73,7 +72,10 @@ export const EmojiSearchbar = (): ReactElement => {
 	);
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
+	wrapper: {
+		backgroundColor: theme.colors.surfaceLight
+	},
 	listContainer: {
 		height: EMOJI_BUTTON_SIZE,
 		margin: 8,
@@ -100,9 +102,10 @@ const styles = StyleSheet.create({
 	},
 	emptyText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 16,
+		color: theme.colors.fontHint
 	},
 	inputContainer: {
 		flex: 1
 	}
-});
+}));

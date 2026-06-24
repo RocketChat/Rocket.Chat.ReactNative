@@ -1,5 +1,6 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { type BigEmoji as BigEmojiProps } from '@rocket.chat/message-parser';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Emoji from './Emoji';
 

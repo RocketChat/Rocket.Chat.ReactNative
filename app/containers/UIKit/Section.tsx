@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { themes } from '../../lib/constants/colors';
 import { type IAccessoryComponent, type IFields, type ISection } from './interfaces';
 import { useTheme } from '../../theme';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	content: {
 		marginBottom: 8
 	},
@@ -20,18 +20,17 @@ const styles = StyleSheet.create({
 		padding: 4
 	},
 	field: {
-		marginVertical: 6
+		marginVertical: 6,
+		color: theme.colors.fontDefault
 	}
-});
+}));
 
 const Accessory = ({ element, parser }: IAccessoryComponent) => parser.renderAccessories({ ...element }, BlockContext.SECTION);
 
-const Fields = ({ fields, parser, theme }: IFields) => (
+const Fields = ({ fields, parser }: IFields) => (
 	<>
 		{fields.map((field, index) => (
-			<Text
-				key={`${(field as any).type || 'field'}-${index}`}
-				style={[styles.text, styles.field, { color: themes[theme].fontDefault }]}>
+			<Text key={`${(field as any).type || 'field'}-${index}`} style={[styles.text, styles.field]}>
 				{parser.text(field)}
 			</Text>
 		))}

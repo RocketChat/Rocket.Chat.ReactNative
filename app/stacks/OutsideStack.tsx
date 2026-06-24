@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import { createNativeStackNavigator, createNativeStackScreen } from '@react-navigation/native-stack';
 import { type StaticParamList } from '@react-navigation/native';
 
-import { ThemeContext } from '../theme';
+import { useTheme } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
@@ -26,7 +25,7 @@ const Outside = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -44,7 +43,7 @@ const OutsideModal = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 

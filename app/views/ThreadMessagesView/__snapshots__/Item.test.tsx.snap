@@ -7,12 +7,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -180,38 +178,30 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -327,19 +317,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -384,19 +370,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -531,12 +513,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -704,38 +684,30 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -851,19 +823,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -908,19 +876,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -1055,12 +1019,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -1228,38 +1190,30 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -1375,19 +1329,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -1432,19 +1382,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -1739,38 +1685,30 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -1886,19 +1824,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -1943,19 +1877,15 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -2090,12 +2020,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -2110,12 +2038,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -2283,38 +2209,30 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -2414,19 +2332,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -2471,19 +2385,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -2618,12 +2528,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -2791,38 +2699,30 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -2922,19 +2822,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -2979,19 +2875,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -3126,12 +3018,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3299,38 +3189,30 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -3430,19 +3312,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-+999"
                     >
@@ -3487,19 +3365,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       +999
@@ -3634,12 +3508,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -3807,38 +3679,30 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -3938,19 +3802,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -3995,19 +3855,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -4142,12 +3998,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -4315,38 +4169,30 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   Rocket Cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -4446,19 +4292,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -4503,19 +4345,15 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -4650,12 +4488,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -4663,19 +4499,17 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
 </RCTScrollView>
 `;
 
-exports[`Story Snapshots: Themes should match snapshot 1`] = `
+exports[`Story Snapshots: ThemeBlack should match snapshot 1`] = `
 <RCTScrollView>
   <View>
     <View
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -4706,1029 +4540,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
-        style={
-          [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
-        testID="thread-messages-view-Message content"
-        underlayColor="#E4E7EA"
-      >
-        <View
-          collapsable={false}
-          style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          style={{}}
-        >
-          <View
-            style={
-              {
-                "flexDirection": "row",
-                "padding": 16,
-              }
-            }
-          >
-            <View
-              accessibilityLabel="rocket.cat's avatar"
-              accessible={true}
-              style={
-                [
-                  {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                  {
-                    "marginRight": 8,
-                  },
-                ]
-              }
-              testID="avatar"
-            >
-              <ViewManagerAdapter_ExpoImage
-                borderRadius={4}
-                containerViewRef={{"current":"Object"}}
-                contentFit="cover"
-                contentPosition={
-                  {
-                    "left": "50%",
-                    "top": "50%",
-                  }
-                }
-                height={36}
-                nativeViewRef={{"current":"NativeComponent"}}
-                onError={[Function]}
-                onLoad={[Function]}
-                onLoadStart={[Function]}
-                onProgress={[Function]}
-                placeholder={[]}
-                priority="high"
-                source={
-                  [
-                    {
-                      "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                      },
-                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                    },
-                  ]
-                }
-                style={
-                  {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  }
-                }
-                transition={null}
-                width={36}
-              />
-            </View>
-            <View
-              style={
-                {
-                  "flex": 1,
-                  "flexDirection": "column",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "marginBottom": 2,
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
-                  }
-                >
-                  rocket.cat
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  November 10, 2020
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  accessibilityLabel="Message content"
-                  numberOfLines={2}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "flex": 1,
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Message content"
-                >
-                  Message content
-                </Text>
-                <View
-                  style={
-                    [
-                      {
-                        "alignSelf": "center",
-                        "borderRadius": 4,
-                        "height": 8,
-                        "marginHorizontal": 8,
-                        "width": 8,
-                      },
-                      {
-                        "backgroundColor": "#F5455C",
-                      },
-                    ]
-                  }
-                />
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
-                    },
-                    {
-                      "marginTop": 8,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    {
-                      "flex": 1,
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "flexDirection": "row",
-                        "marginRight": 8,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#2F343D",
-                            "fontSize": 24,
-                          },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
-                      }
-                      testID="thread-count-1"
-                    >
-                      1
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "flexDirection": "row",
-                        "marginRight": 8,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#2F343D",
-                            "fontSize": 24,
-                          },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#6C727A",
-                          },
-                        ]
-                      }
-                    >
-                      1
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <ExternalKeyboardView
-                    canBeFocused={true}
-                    enableA11yFocus={false}
-                    enableContextMenu={false}
-                    group={false}
-                    haloEffect={true}
-                    hasKeyDownPress={false}
-                    hasKeyUpPress={true}
-                    hasOnFocusChanged={true}
-                    lockFocus={0}
-                    onContextMenuPress={[Function]}
-                    onFocusChange={[Function]}
-                    onKeyUpPress={[Function]}
-                    orderIndex={-1}
-                    screenAutoA11yFocusDelay={300}
-                    style={
-                      [
-                        undefined,
-                        undefined,
-                      ]
-                    }
-                  >
-                    <RNGestureHandlerButton
-                      activeOpacity={1}
-                      collapsable={false}
-                      delayLongPress={600}
-                      enabled={true}
-                      handlerTag={-1}
-                      handlerType="NativeViewGestureHandler"
-                      innerRef={null}
-                      onActiveStateChange={[Function]}
-                      onGestureHandlerEvent={[Function]}
-                      onGestureHandlerStateChange={[Function]}
-                      onPress={[Function]}
-                      rippleColor="#E4E7EA"
-                      style={
-                        [
-                          {
-                            "backgroundColor": undefined,
-                            "borderRadius": undefined,
-                            "margin": undefined,
-                            "marginBottom": undefined,
-                            "marginEnd": undefined,
-                            "marginHorizontal": undefined,
-                            "marginLeft": undefined,
-                            "marginRight": undefined,
-                            "marginStart": undefined,
-                            "marginTop": undefined,
-                            "marginVertical": undefined,
-                          },
-                          {
-                            "cursor": undefined,
-                          },
-                        ]
-                      }
-                      underlayColor="#E4E7EA"
-                    >
-                      <View
-                        collapsable={false}
-                        style={
-                          {
-                            "backgroundColor": "#E4E7EA",
-                            "borderBottomLeftRadius": undefined,
-                            "borderBottomRightRadius": undefined,
-                            "borderRadius": undefined,
-                            "borderTopLeftRadius": undefined,
-                            "borderTopRightRadius": undefined,
-                            "bottom": 0,
-                            "left": 0,
-                            "opacity": 0,
-                            "position": "absolute",
-                            "right": 0,
-                            "top": 0,
-                          }
-                        }
-                      />
-                      <View
-                        accessibilityLabel="Follow thread"
-                        style={{}}
-                      >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
-                          style={
-                            [
-                              {
-                                "color": "#2F343D",
-                                "fontSize": 24,
-                              },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
-                            ]
-                          }
-                        >
-                          
-                        </Text>
-                      </View>
-                    </RNGestureHandlerButton>
-                  </ExternalKeyboardView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
-    </ExternalKeyboardView>
-    <ExternalKeyboardView
-      canBeFocused={true}
-      enableA11yFocus={false}
-      enableContextMenu={false}
-      group={false}
-      haloEffect={true}
-      hasKeyDownPress={false}
-      hasKeyUpPress={true}
-      hasOnFocusChanged={true}
-      lockFocus={0}
-      onContextMenuPress={[Function]}
-      onFocusChange={[Function]}
-      onKeyUpPress={[Function]}
-      orderIndex={-1}
-      screenAutoA11yFocusDelay={300}
-      style={
-        [
-          undefined,
-          undefined,
-        ]
-      }
-    >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#2D3039"
-        style={
-          [
-            {
-              "backgroundColor": "#1F2329",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
-        testID="thread-messages-view-Message content"
-        underlayColor="#2D3039"
-      >
-        <View
-          collapsable={false}
-          style={
-            {
-              "backgroundColor": "#2D3039",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          style={{}}
-        >
-          <View
-            style={
-              {
-                "flexDirection": "row",
-                "padding": 16,
-              }
-            }
-          >
-            <View
-              accessibilityLabel="rocket.cat's avatar"
-              accessible={true}
-              style={
-                [
-                  {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  },
-                  {
-                    "marginRight": 8,
-                  },
-                ]
-              }
-              testID="avatar"
-            >
-              <ViewManagerAdapter_ExpoImage
-                borderRadius={4}
-                containerViewRef={{"current":"Object"}}
-                contentFit="cover"
-                contentPosition={
-                  {
-                    "left": "50%",
-                    "top": "50%",
-                  }
-                }
-                height={36}
-                nativeViewRef={{"current":"NativeComponent"}}
-                onError={[Function]}
-                onLoad={[Function]}
-                onLoadStart={[Function]}
-                onProgress={[Function]}
-                placeholder={[]}
-                priority="high"
-                source={
-                  [
-                    {
-                      "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                      },
-                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                    },
-                  ]
-                }
-                style={
-                  {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
-                  }
-                }
-                transition={null}
-                width={36}
-              />
-            </View>
-            <View
-              style={
-                {
-                  "flex": 1,
-                  "flexDirection": "column",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "marginBottom": 2,
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  rocket.cat
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  November 10, 2020
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  accessibilityLabel="Message content"
-                  numberOfLines={2}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#C1C7D0",
-                        "lineHeight": undefined,
-                      },
-                      {
-                        "flex": 1,
-                      },
-                    ]
-                  }
-                  testID="markdown-preview-Message content"
-                >
-                  Message content
-                </Text>
-                <View
-                  style={
-                    [
-                      {
-                        "alignSelf": "center",
-                        "borderRadius": 4,
-                        "height": 8,
-                        "marginHorizontal": 8,
-                        "width": 8,
-                      },
-                      {
-                        "backgroundColor": "#B43C4C",
-                      },
-                    ]
-                  }
-                />
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "flex": 1,
-                      "flexDirection": "row",
-                    },
-                    {
-                      "marginTop": 8,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    {
-                      "flex": 1,
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "flexDirection": "row",
-                        "marginRight": 8,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#C1C7D0",
-                            "fontSize": 24,
-                          },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#9EA2A8",
-                          },
-                        ]
-                      }
-                      testID="thread-count-1"
-                    >
-                      1
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "flexDirection": "row",
-                        "marginRight": 8,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#C1C7D0",
-                            "fontSize": 24,
-                          },
-                          [
-                            {
-                              "lineHeight": 24,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#9EA2A8",
-                          },
-                        ]
-                      }
-                    >
-                      1
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <ExternalKeyboardView
-                    canBeFocused={true}
-                    enableA11yFocus={false}
-                    enableContextMenu={false}
-                    group={false}
-                    haloEffect={true}
-                    hasKeyDownPress={false}
-                    hasKeyUpPress={true}
-                    hasOnFocusChanged={true}
-                    lockFocus={0}
-                    onContextMenuPress={[Function]}
-                    onFocusChange={[Function]}
-                    onKeyUpPress={[Function]}
-                    orderIndex={-1}
-                    screenAutoA11yFocusDelay={300}
-                    style={
-                      [
-                        undefined,
-                        undefined,
-                      ]
-                    }
-                  >
-                    <RNGestureHandlerButton
-                      activeOpacity={1}
-                      collapsable={false}
-                      delayLongPress={600}
-                      enabled={true}
-                      handlerTag={-1}
-                      handlerType="NativeViewGestureHandler"
-                      innerRef={null}
-                      onActiveStateChange={[Function]}
-                      onGestureHandlerEvent={[Function]}
-                      onGestureHandlerStateChange={[Function]}
-                      onPress={[Function]}
-                      rippleColor="#2D3039"
-                      style={
-                        [
-                          {
-                            "backgroundColor": undefined,
-                            "borderRadius": undefined,
-                            "margin": undefined,
-                            "marginBottom": undefined,
-                            "marginEnd": undefined,
-                            "marginHorizontal": undefined,
-                            "marginLeft": undefined,
-                            "marginRight": undefined,
-                            "marginStart": undefined,
-                            "marginTop": undefined,
-                            "marginVertical": undefined,
-                          },
-                          {
-                            "cursor": undefined,
-                          },
-                        ]
-                      }
-                      underlayColor="#2D3039"
-                    >
-                      <View
-                        collapsable={false}
-                        style={
-                          {
-                            "backgroundColor": "#2D3039",
-                            "borderBottomLeftRadius": undefined,
-                            "borderBottomRightRadius": undefined,
-                            "borderRadius": undefined,
-                            "borderTopLeftRadius": undefined,
-                            "borderTopRightRadius": undefined,
-                            "bottom": 0,
-                            "left": 0,
-                            "opacity": 0,
-                            "position": "absolute",
-                            "right": 0,
-                            "top": 0,
-                          }
-                        }
-                      />
-                      <View
-                        accessibilityLabel="Follow thread"
-                        style={{}}
-                      >
-                        <Text
-                          allowFontScaling={false}
-                          selectable={false}
-                          style={
-                            [
-                              {
-                                "color": "#C1C7D0",
-                                "fontSize": 24,
-                              },
-                              [
-                                {
-                                  "lineHeight": 24,
-                                },
-                                undefined,
-                              ],
-                              {
-                                "fontFamily": "custom",
-                                "fontStyle": "normal",
-                                "fontWeight": "normal",
-                              },
-                              {},
-                            ]
-                          }
-                        >
-                          
-                        </Text>
-                      </View>
-                    </RNGestureHandlerButton>
-                  </ExternalKeyboardView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
-    </ExternalKeyboardView>
-    <ExternalKeyboardView
-      canBeFocused={true}
-      enableA11yFocus={false}
-      enableContextMenu={false}
-      group={false}
-      haloEffect={true}
-      hasKeyDownPress={false}
-      hasKeyUpPress={true}
-      hasOnFocusChanged={true}
-      lockFocus={0}
-      onContextMenuPress={[Function]}
-      onFocusChange={[Function]}
-      onKeyUpPress={[Function]}
-      orderIndex={-1}
-      screenAutoA11yFocusDelay={300}
-      style={
-        [
-          undefined,
-          undefined,
-        ]
-      }
-    >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
+        handlerTag={20}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -5739,7 +4551,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         style={
           [
             {
-              "backgroundColor": "#000000",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": undefined,
               "margin": undefined,
               "marginBottom": undefined,
@@ -5865,38 +4677,30 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 <Text
                   numberOfLines={1}
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 18,
-                        "fontWeight": "500",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
                   }
                 >
                   rocket.cat
                 </Text>
                 <Text
                   style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "marginLeft": 4,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
                   }
                 >
                   November 10, 2020
@@ -6012,19 +4816,15 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#9EA2A8",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                       testID="thread-count-1"
                     >
@@ -6069,19 +4869,15 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     <Text
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 10,
-                            "fontWeight": "600",
-                            "marginLeft": 2,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#9EA2A8",
-                          },
-                        ]
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       1
@@ -6123,7 +4919,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       collapsable={false}
                       delayLongPress={600}
                       enabled={true}
-                      handlerTag={-1}
+                      handlerTag={19}
                       handlerType="NativeViewGestureHandler"
                       innerRef={null}
                       onActiveStateChange={[Function]}
@@ -6216,12 +5012,1058 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ThemeDark should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        [
           {
             "backgroundColor": "#CBCED1",
+            "height": 1,
           },
+          undefined,
+        ]
+      }
+    />
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={22}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="thread-messages-view-Message content"
+        underlayColor="#2D3039"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={{}}
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "padding": 16,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="rocket.cat's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginRight": 8,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  }
+                }
+                transition={null}
+                width={36}
+              />
+            </View>
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "column",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginBottom": 2,
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Message content"
+                  numberOfLines={2}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#C1C7D0",
+                        "lineHeight": undefined,
+                      },
+                      {
+                        "flex": 1,
+                      },
+                    ]
+                  }
+                  testID="markdown-preview-Message content"
+                >
+                  Message content
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignSelf": "center",
+                        "borderRadius": 4,
+                        "height": 8,
+                        "marginHorizontal": 8,
+                        "width": 8,
+                      },
+                      {
+                        "backgroundColor": "#B43C4C",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    },
+                    {
+                      "marginTop": 8,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "marginRight": 8,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#C1C7D0",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            undefined,
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
+                      }
+                      testID="thread-count-1"
+                    >
+                      1
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "marginRight": 8,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#C1C7D0",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            undefined,
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      1
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <ExternalKeyboardView
+                    canBeFocused={true}
+                    enableA11yFocus={false}
+                    enableContextMenu={false}
+                    group={false}
+                    haloEffect={true}
+                    hasKeyDownPress={false}
+                    hasKeyUpPress={true}
+                    hasOnFocusChanged={true}
+                    lockFocus={0}
+                    onContextMenuPress={[Function]}
+                    onFocusChange={[Function]}
+                    onKeyUpPress={[Function]}
+                    orderIndex={-1}
+                    screenAutoA11yFocusDelay={300}
+                    style={
+                      [
+                        undefined,
+                        undefined,
+                      ]
+                    }
+                  >
+                    <RNGestureHandlerButton
+                      activeOpacity={1}
+                      collapsable={false}
+                      delayLongPress={600}
+                      enabled={true}
+                      handlerTag={21}
+                      handlerType="NativeViewGestureHandler"
+                      innerRef={null}
+                      onActiveStateChange={[Function]}
+                      onGestureHandlerEvent={[Function]}
+                      onGestureHandlerStateChange={[Function]}
+                      onPress={[Function]}
+                      rippleColor="#2D3039"
+                      style={
+                        [
+                          {
+                            "backgroundColor": undefined,
+                            "borderRadius": undefined,
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "cursor": undefined,
+                          },
+                        ]
+                      }
+                      underlayColor="#2D3039"
+                    >
+                      <View
+                        collapsable={false}
+                        style={
+                          {
+                            "backgroundColor": "#2D3039",
+                            "borderBottomLeftRadius": undefined,
+                            "borderBottomRightRadius": undefined,
+                            "borderRadius": undefined,
+                            "borderTopLeftRadius": undefined,
+                            "borderTopRightRadius": undefined,
+                            "bottom": 0,
+                            "left": 0,
+                            "opacity": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                      <View
+                        accessibilityLabel="Follow thread"
+                        style={{}}
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          selectable={false}
+                          style={
+                            [
+                              {
+                                "color": "#C1C7D0",
+                                "fontSize": 24,
+                              },
+                              [
+                                {
+                                  "lineHeight": 24,
+                                },
+                                undefined,
+                              ],
+                              {
+                                "fontFamily": "custom",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              {},
+                            ]
+                          }
+                        >
+                          
+                        </Text>
+                      </View>
+                    </RNGestureHandlerButton>
+                  </ExternalKeyboardView>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#CBCED1",
+            "height": 1,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ThemeLight should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#CBCED1",
+            "height": 1,
+          },
+          undefined,
+        ]
+      }
+    />
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={24}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="thread-messages-view-Message content"
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={{}}
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "padding": 16,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="rocket.cat's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginRight": 8,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  }
+                }
+                transition={null}
+                width={36}
+              />
+            </View>
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "column",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginBottom": 2,
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  rocket.cat
+                </Text>
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#6C727A",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Message content"
+                  numberOfLines={2}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#2F343D",
+                        "lineHeight": undefined,
+                      },
+                      {
+                        "flex": 1,
+                      },
+                    ]
+                  }
+                  testID="markdown-preview-Message content"
+                >
+                  Message content
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignSelf": "center",
+                        "borderRadius": 4,
+                        "height": 8,
+                        "marginHorizontal": 8,
+                        "width": 8,
+                      },
+                      {
+                        "backgroundColor": "#F5455C",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "flexDirection": "row",
+                    },
+                    {
+                      "marginTop": 8,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "marginRight": 8,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#2F343D",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            undefined,
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
+                      }
+                      testID="thread-count-1"
+                    >
+                      1
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "marginRight": 8,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#2F343D",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            undefined,
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "color": "#6C727A",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "600",
+                          "marginLeft": 2,
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      1
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <ExternalKeyboardView
+                    canBeFocused={true}
+                    enableA11yFocus={false}
+                    enableContextMenu={false}
+                    group={false}
+                    haloEffect={true}
+                    hasKeyDownPress={false}
+                    hasKeyUpPress={true}
+                    hasOnFocusChanged={true}
+                    lockFocus={0}
+                    onContextMenuPress={[Function]}
+                    onFocusChange={[Function]}
+                    onKeyUpPress={[Function]}
+                    orderIndex={-1}
+                    screenAutoA11yFocusDelay={300}
+                    style={
+                      [
+                        undefined,
+                        undefined,
+                      ]
+                    }
+                  >
+                    <RNGestureHandlerButton
+                      activeOpacity={1}
+                      collapsable={false}
+                      delayLongPress={600}
+                      enabled={true}
+                      handlerTag={23}
+                      handlerType="NativeViewGestureHandler"
+                      innerRef={null}
+                      onActiveStateChange={[Function]}
+                      onGestureHandlerEvent={[Function]}
+                      onGestureHandlerStateChange={[Function]}
+                      onPress={[Function]}
+                      rippleColor="#E4E7EA"
+                      style={
+                        [
+                          {
+                            "backgroundColor": undefined,
+                            "borderRadius": undefined,
+                            "margin": undefined,
+                            "marginBottom": undefined,
+                            "marginEnd": undefined,
+                            "marginHorizontal": undefined,
+                            "marginLeft": undefined,
+                            "marginRight": undefined,
+                            "marginStart": undefined,
+                            "marginTop": undefined,
+                            "marginVertical": undefined,
+                          },
+                          {
+                            "cursor": undefined,
+                          },
+                        ]
+                      }
+                      underlayColor="#E4E7EA"
+                    >
+                      <View
+                        collapsable={false}
+                        style={
+                          {
+                            "backgroundColor": "#E4E7EA",
+                            "borderBottomLeftRadius": undefined,
+                            "borderBottomRightRadius": undefined,
+                            "borderRadius": undefined,
+                            "borderTopLeftRadius": undefined,
+                            "borderTopRightRadius": undefined,
+                            "bottom": 0,
+                            "left": 0,
+                            "opacity": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                      <View
+                        accessibilityLabel="Follow thread"
+                        style={{}}
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          selectable={false}
+                          style={
+                            [
+                              {
+                                "color": "#2F343D",
+                                "fontSize": 24,
+                              },
+                              [
+                                {
+                                  "lineHeight": 24,
+                                },
+                                undefined,
+                              ],
+                              {
+                                "fontFamily": "custom",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              {},
+                            ]
+                          }
+                        >
+                          
+                        </Text>
+                      </View>
+                    </RNGestureHandlerButton>
+                  </ExternalKeyboardView>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#CBCED1",
+            "height": 1,
+          },
+          undefined,
         ]
       }
     />

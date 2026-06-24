@@ -1,4 +1,5 @@
-import { Pressable, type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Pressable, type StyleProp, Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Avatar from './Avatar';
 import { CustomIcon, type TIconsName } from './CustomIcon';
@@ -7,7 +8,7 @@ import { isIOS } from '../lib/methods/helpers';
 import { useTheme } from '../theme';
 import i18n from '../i18n';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	button: {
 		height: 54
 	},
@@ -26,13 +27,14 @@ const styles = StyleSheet.create({
 	},
 	name: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontDefault
 	},
 	icon: {
 		marginHorizontal: 15,
 		alignSelf: 'center'
 	}
-});
+}));
 
 interface IUserItem {
 	name: string;
@@ -68,7 +70,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			<View style={[styles.container, styles.button, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={styles.name} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>

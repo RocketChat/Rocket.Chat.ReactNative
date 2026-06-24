@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import ScreenLockedView from './ScreenLockedView';
 import EventEmitter from '../lib/methods/helpers/events';

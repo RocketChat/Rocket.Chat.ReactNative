@@ -1,9 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect, useRef, type ReactElement } from 'react';
-import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
+import { ScrollView, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
@@ -16,21 +17,22 @@ import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
-import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { showErrorAlert, useDebounce } from '../lib/methods/helpers';
 import { Separator } from '../containers/List';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	info: {
 		fontSize: 16,
 		lineHeight: 24,
 		marginTop: 24,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault
 	},
 	content: {
-		gap: 32
+		gap: 32,
+		backgroundColor: theme.colors.surfaceRoom
 	},
 	e2eePasswordInput: {
 		marginBottom: 0
@@ -38,14 +40,13 @@ const styles = StyleSheet.create({
 	forgotE2EEPasswordButton: {
 		marginTop: 0
 	}
-});
+}));
 
 interface IE2EEnterYourPasswordView {
 	navigation: NativeStackNavigationProp<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
 }
 
 const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): ReactElement => {
-	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);
 	const prevEncryptionFailure = useRef<boolean>(encryptionFailure);
@@ -123,12 +124,9 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 
 	return (
 		<KeyboardView>
-			<ScrollView
-				{...scrollPersistTaps}
-				style={sharedStyles.container}
-				contentContainerStyle={{ ...sharedStyles.containerScrollView }}>
-				<SafeAreaView style={{ ...styles.content, backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
-					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
+			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+				<SafeAreaView style={styles.content} testID='e2e-enter-your-password-view'>
+					<Text style={styles.info}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 
 					<ControlledFormTextInput
 						name='password'

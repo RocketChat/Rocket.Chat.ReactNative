@@ -1,5 +1,6 @@
 import { useContext, type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type IUserMessage } from '../../../../definitions';
 import { type IAttachment } from '../../../../definitions/IAttachment';
@@ -22,7 +23,7 @@ import messageStyles from '../../styles';
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	cancelContainer: {
 		position: 'absolute',
 		top: 8,
@@ -30,9 +31,10 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textRegular,
-		fontSize: 12
+		fontSize: 12,
+		color: theme.colors.fontSecondaryInfo
 	}
-});
+}));
 
 interface IMessageVideo {
 	file: IAttachment;
@@ -42,14 +44,11 @@ interface IMessageVideo {
 	msg?: string;
 }
 
-const CancelIndicator = () => {
-	const { colors } = useTheme();
-	return (
-		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
-		</View>
-	);
-};
+const CancelIndicator = () => (
+	<View style={styles.cancelContainer}>
+		<Text style={styles.text}>{I18n.t('Cancel')}</Text>
+	</View>
+);
 
 const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encrypted: boolean }) => {
 	const { colors } = useTheme();

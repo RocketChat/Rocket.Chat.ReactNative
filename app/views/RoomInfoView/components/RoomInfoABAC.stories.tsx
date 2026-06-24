@@ -3,8 +3,8 @@ import { type ReactNode } from 'react';
 
 import { RoomInfoABAC } from './RoomInfoABAC';
 import type { TSupportedThemes } from '../../../theme';
-import { ThemeContext } from '../../../theme';
 import { colors } from '../../../lib/constants/colors';
+import ThemeStory from '../../../stories/ThemeStory';
 
 export default {
 	title: 'RoomInfoView/RoomInfoABAC',
@@ -31,9 +31,9 @@ const Story = () => (
 );
 
 const ThemeProvider = ({ children, theme }: { children: ReactNode; theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+	<ThemeStory theme={theme}>
 		<View style={{ backgroundColor: colors[theme].surfaceRoom }}>{children}</View>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
 export const Light = () => (

@@ -1,9 +1,9 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { type FontVariant, Text } from 'react-native';
 import { type Audio } from 'expo-av';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../../../views/Styles';
-import { useTheme } from '../../../../theme';
 import { formatTime } from './utils';
 
 export interface IDurationRef {
@@ -11,7 +11,6 @@ export interface IDurationRef {
 }
 
 export const Duration = forwardRef<IDurationRef>((_, ref) => {
-	const [styles] = useStyle();
 	const [duration, setDuration] = useState('00:00');
 
 	useImperativeHandle(ref, () => ({
@@ -28,16 +27,12 @@ export const Duration = forwardRef<IDurationRef>((_, ref) => {
 	return <Text style={styles.text}>{duration}</Text>;
 });
 
-function useStyle() {
-	const { colors } = useTheme();
-	const styles = {
-		text: {
-			marginLeft: 12,
-			fontSize: 16,
-			...sharedStyles.textRegular,
-			color: colors.fontDefault,
-			fontVariant: ['tabular-nums'] as FontVariant[]
-		}
-	} as const;
-	return [styles, colors] as const;
-}
+const styles = StyleSheet.create(theme => ({
+	text: {
+		marginLeft: 12,
+		fontSize: 16,
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault,
+		fontVariant: ['tabular-nums'] as FontVariant[]
+	}
+}));

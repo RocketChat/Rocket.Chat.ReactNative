@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useContext, type ReactElement } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { type ReactElement } from 'react';
+import { Text } from 'react-native';
 import {
 	UiKitParserMessage,
 	UiKitParserModal,
@@ -10,12 +10,12 @@ import {
 	type Markdown as IMarkdown,
 	type PlainText
 } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
 import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
-import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { Divider } from './Divider';
 import { Section } from './Section';
@@ -30,7 +30,7 @@ import { Overflow } from './Overflow';
 import { Icon } from './Icon';
 import { IconButton } from './IconButton';
 import { InfoCard } from './InfoCard';
-import { ThemeContext } from '../../theme';
+import { useTheme } from '../../theme';
 import {
 	type IActions,
 	type IButton,
@@ -79,13 +79,13 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 	}
 
 	plain_text(element: PlainText, context: BlockContext): ReactElement {
-		const { theme } = useContext(ThemeContext);
+		const { colors } = useTheme();
 
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
 			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
 		}
-		return <Text style={[styles.text, { color: themes[theme].fontDefault }]}>{element.text}</Text>;
+		return <Text style={[styles.text, { color: colors.fontDefault }]}>{element.text}</Text>;
 	}
 
 	mrkdwn(element: IMarkdown, context: BlockContext): ReactElement {
@@ -159,7 +159,7 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 	}
 
 	context(args: IContext): ReactElement {
-		const { theme } = useContext(ThemeContext);
+		const { theme } = useTheme();
 		return <Context {...args} theme={theme} parser={this.current} />;
 	}
 
@@ -205,7 +205,7 @@ class ModalParser extends UiKitParserModal<ReactElement> {
 
 	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number): ReactElement {
 		const [{ error }] = useBlockContext({ ...element, appId, blockId, actionId: element.actionId || '' }, context);
-		const { theme } = useContext(ThemeContext);
+		const { theme } = useTheme();
 		return (
 			<Input
 				parser={this.current}

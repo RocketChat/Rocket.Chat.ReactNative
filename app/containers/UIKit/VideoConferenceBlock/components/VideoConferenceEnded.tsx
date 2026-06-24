@@ -8,7 +8,7 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
 import { useIsInActiveVoipCall } from '../../../../lib/services/voip/isInActiveVoipCall';
 import { CallParticipants, type TCallUsers } from './CallParticipants';
-import useStyle from './styles';
+import styles from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 import Touch from '../../../Touch';
 
@@ -23,7 +23,6 @@ export default function VideoConferenceEnded({
 	createdBy: Pick<IUser, '_id' | 'username' | 'name'>;
 	rid: string;
 }): ReactElement {
-	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
 	const { showInitCallActionSheet } = useVideoConf(rid);
 	const isInActiveVoipCall = useIsInActiveVoipCall();
@@ -34,19 +33,19 @@ export default function VideoConferenceEnded({
 		<VideoConferenceBaseContainer variant='ended'>
 			{type === 'direct' ? (
 				<>
-					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInActiveVoipCall}>
-						<Text style={style.callToActionCallBackText}>
+					<Touch style={styles.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInActiveVoipCall}>
+						<Text style={styles.callToActionCallBackText}>
 							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
 					</Touch>
-					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>
+					<Text style={styles.callBack}>{i18n.t('Call_was_not_answered')}</Text>
 				</>
 			) : (
 				<>
 					{users.length && !onlyAuthorOnCall ? (
 						<CallParticipants users={users} />
 					) : (
-						<Text style={style.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
+						<Text style={styles.notAnswered}>{i18n.t('Call_was_not_answered')}</Text>
 					)}
 				</>
 			)}

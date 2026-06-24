@@ -20,12 +20,10 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -270,12 +268,10 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -303,12 +299,10 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -555,12 +549,10 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -588,12 +580,10 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />
@@ -838,12 +828,10 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "backgroundColor": "#CBCED1",
+            "height": 1,
           },
           undefined,
-          {
-            "backgroundColor": "#CBCED1",
-          },
         ]
       }
     />

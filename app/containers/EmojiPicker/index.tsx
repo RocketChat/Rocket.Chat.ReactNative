@@ -1,7 +1,6 @@
 import { useCallback, useState, type ReactElement } from 'react';
 import { View } from 'react-native';
 import { type Route } from 'reanimated-tab-view';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
@@ -28,7 +27,6 @@ const EmojiPicker = ({
 	bottomSheet = false
 }: IEmojiPickerProps): ReactElement | null => {
 	const [parentWidth, setParentWidth] = useState(0);
-	const { bottom } = useSafeAreaInsets();
 	const { colors } = useTheme();
 
 	const handleEmojiSelect = useCallback(
@@ -62,7 +60,7 @@ const EmojiPicker = ({
 
 	return (
 		<View
-			style={[styles.emojiPickerContainer, { marginBottom: bottom, backgroundColor: colors.surfaceLight }]}
+			style={[styles.emojiPickerContainer, { backgroundColor: colors.surfaceLight }]}
 			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory

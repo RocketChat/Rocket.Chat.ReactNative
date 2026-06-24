@@ -6,19 +6,19 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
     [
       {
         "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#CBCED1",
         "borderRadius": 4,
-        "borderWidth": 0.5,
+        "borderWidth": 1,
         "flexDirection": "row",
         "marginHorizontal": 10,
+        "marginTop": 0,
         "paddingHorizontal": 14,
         "paddingRight": 30,
       },
       false,
       {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#CBCED1",
         "height": 75,
-        "marginTop": 0,
       },
     ]
   }
@@ -51,7 +51,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -186,19 +186,15 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 17,
-                  "fontWeight": "500",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 17,
+                "fontWeight": "500",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             general
@@ -206,19 +202,15 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 17,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 17,
+                "textAlign": "left",
+              }
             }
           >
             Hey! How are you doing?
@@ -254,7 +246,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={2}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -352,19 +344,19 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
     [
       {
         "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#CBCED1",
         "borderRadius": 4,
-        "borderWidth": 0.5,
+        "borderWidth": 1,
         "flexDirection": "row",
         "marginHorizontal": 10,
+        "marginTop": 0,
         "paddingHorizontal": 14,
         "paddingRight": 30,
       },
       false,
       {
-        "backgroundColor": "#FFFFFF",
-        "borderColor": "#CBCED1",
         "height": 75,
-        "marginTop": 0,
       },
     ]
   }
@@ -397,7 +389,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={3}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -532,19 +524,15 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 17,
-                  "fontWeight": "500",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 17,
+                "fontWeight": "500",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             diego.mello
@@ -552,19 +540,15 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 17,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 17,
+                "textAlign": "left",
+              }
             }
           >
             Hey! How are you doing?
@@ -600,7 +584,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={4}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -698,19 +682,19 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
     [
       {
         "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#CBCED1",
         "borderRadius": 4,
-        "borderWidth": 0.5,
+        "borderWidth": 1,
         "flexDirection": "row",
         "marginHorizontal": 10,
+        "marginTop": 0,
         "paddingHorizontal": 14,
         "paddingRight": 30,
       },
       false,
       {
-        "backgroundColor": "#0d0d0d",
-        "borderColor": "#1f2329",
         "height": 75,
-        "marginTop": 0,
       },
     ]
   }
@@ -743,7 +727,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={5}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -878,19 +862,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 17,
-                  "fontWeight": "500",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 17,
+                "fontWeight": "500",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             general
@@ -898,19 +878,15 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 17,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 17,
+                "textAlign": "left",
+              }
             }
           >
             Hey! How are you doing?
@@ -946,7 +922,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={6}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -1044,19 +1020,19 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
     [
       {
         "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#CBCED1",
         "borderRadius": 4,
-        "borderWidth": 0.5,
+        "borderWidth": 1,
         "flexDirection": "row",
         "marginHorizontal": 10,
+        "marginTop": 0,
         "paddingHorizontal": 14,
         "paddingRight": 30,
       },
       false,
       {
-        "backgroundColor": "#262931",
-        "borderColor": "#333842",
         "height": 75,
-        "marginTop": 0,
       },
     ]
   }
@@ -1089,7 +1065,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={7}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -1224,19 +1200,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 17,
-                  "fontWeight": "500",
-                  "lineHeight": 20,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 17,
+                "fontWeight": "500",
+                "lineHeight": 20,
+                "textAlign": "left",
+              }
             }
           >
             general
@@ -1244,19 +1216,15 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "400",
-                  "lineHeight": 17,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#F2F3F5",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#1F2329",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "lineHeight": 17,
+                "textAlign": "left",
+              }
             }
           >
             Hey! How are you doing?
@@ -1292,7 +1260,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={-1}
+      handlerTag={8}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {

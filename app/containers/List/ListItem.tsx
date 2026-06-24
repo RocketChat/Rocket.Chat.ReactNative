@@ -1,14 +1,6 @@
 import { useMemo, memo, type ReactElement } from 'react';
-import {
-	I18nManager,
-	type StyleProp,
-	StyleSheet,
-	Text,
-	type TextStyle,
-	View,
-	type AccessibilityRole,
-	type ViewStyle
-} from 'react-native';
+import { I18nManager, type StyleProp, Text, type TextStyle, View, type AccessibilityRole, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Touch from '../Touch';
 import sharedStyles from '../../views/Styles';
@@ -25,7 +17,7 @@ import { isIOS } from '../../lib/methods/helpers';
 // Maestro fail to click on child component when we enable accessibility in parent component on iOS
 const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -60,12 +52,13 @@ const styles = StyleSheet.create({
 	},
 	subtitle: {
 		fontSize: 14,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	actionIndicator: {
 		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	}
-});
+}));
 
 interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
 
@@ -195,7 +188,7 @@ const Content = memo(
 							) : null}
 						</View>
 						{subtitle ? (
-							<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+							<Text style={styles.subtitle} numberOfLines={1}>
 								{translateSubtitle ? I18n.t(subtitle) : subtitle}
 							</Text>
 						) : null}

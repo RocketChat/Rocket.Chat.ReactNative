@@ -1,7 +1,7 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useState, Fragment, type ReactElement } from 'react';
 import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
 import * as List from '../../../containers/List';
@@ -23,7 +23,6 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 	const [pendingValue, setPendingValue] = useState<ClearAfterValue>(initialValue);
 	const { colors } = useTheme();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
-	const insets = useSafeAreaInsets();
 	const pendingDate = initialDate ?? new Date();
 
 	const openAndroidDateTimePicker = (baseDate: Date) => {
@@ -69,7 +68,7 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<View style={[localStyles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<List.Separator />
 			{CLEAR_AFTER_OPTIONS.map(option => (
 				<Fragment key={option.value}>
@@ -87,5 +86,11 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 		</View>
 	);
 };
+
+const localStyles = StyleSheet.create((_theme, rt) => ({
+	container: {
+		marginBottom: rt.insets.bottom
+	}
+}));
 
 export default ClearAfterSheetContent;

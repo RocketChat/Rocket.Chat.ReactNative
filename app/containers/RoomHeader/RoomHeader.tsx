@@ -1,7 +1,8 @@
 import { memo, type ReactElement } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useIsAccessibilityNavigationEnabled } from '../../lib/hooks/useIsAccessibilityNavigationEnabled';
@@ -28,7 +29,7 @@ const SUBTITLE_SIZE = 12;
 
 const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		justifyContent: 'center'
@@ -39,11 +40,13 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	subtitle: {
 		flexShrink: 1,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
 	clockIcon: {
 		marginRight: 4
 	}
-});
+}));
 
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
@@ -106,7 +109,7 @@ const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFun
 			usersText = usersTyping.join(', ');
 		}
 		return (
-			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+			<Text style={[styles.subtitle, { fontSize }]} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
 				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
 			</Text>
@@ -124,21 +127,20 @@ const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFun
 			return (
 				<View style={styles.titleContainer}>
 					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={styles.clockIcon} />
-					<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />
+					<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize }]} />
 				</View>
 			);
 		}
-		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
+		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize }]} />;
 	}
 
 	return null;
 });
 
 const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
-	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
-	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
+	const titleStyle = { fontSize: TITLE_SIZE * scale };
 	if (!tmid && !prid) {
 		return (
 			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
@@ -181,7 +183,6 @@ const Header = ({
 		teamMain,
 		type
 	});
-	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 	const portrait = height > width;
 	let scale = 1;
@@ -217,7 +218,7 @@ const Header = ({
 					teamMain={teamMain}
 					abacAttributes={abacAttributes}
 				/>
-				<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+				<Text style={styles.subtitle} numberOfLines={1}>
 					{parentTitle}
 				</Text>
 			</View>

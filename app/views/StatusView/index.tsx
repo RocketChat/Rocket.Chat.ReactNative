@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { StyleSheet } from 'react-native-unistyles';
 
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
@@ -22,7 +23,6 @@ import { setUserStatus } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlertWithEMessage, compareServerVersion } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { useTheme } from '../../theme';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 import { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
@@ -57,7 +57,7 @@ const STATUS: IStatus[] = [
 	}
 ];
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	inputContainer: {
 		paddingHorizontal: 16,
 		marginTop: 24,
@@ -67,8 +67,11 @@ const styles = StyleSheet.create({
 		borderRadius: 0,
 		borderTopWidth: 1,
 		borderBottomWidth: 1
+	},
+	list: {
+		backgroundColor: theme.colors.surfaceTint
 	}
-});
+}));
 
 const Status = ({
 	statusType,
@@ -137,7 +140,6 @@ const StatusView = (): ReactElement => {
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
-	const { colors } = useTheme();
 
 	const submit = async () => {
 		const { status } = inputValues;
@@ -243,7 +245,7 @@ const StatusView = (): ReactElement => {
 						onSubmit={submit}
 					/>
 				}
-				style={{ backgroundColor: colors.surfaceTint }}
+				style={styles.list}
 			/>
 		</SafeAreaView>
 	);

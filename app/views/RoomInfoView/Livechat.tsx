@@ -1,29 +1,27 @@
 import { type ReactElement, useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type ISubscription } from '../../definitions';
 import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { type ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
 import { getDepartmentInfo } from '../../lib/services/restApi';
-import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	title: {
 		fontSize: 16,
 		paddingHorizontal: 20,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	}
-});
+}));
 
-const Title = ({ title }: { title: string }) => {
-	const { colors } = useTheme();
-	return <Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>;
-};
+const Title = ({ title }: { title: string }) => <Text style={styles.title}>{title}</Text>;
 
 const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }): ReactElement => {
 	const [department, setDepartment] = useState<ILivechatDepartment>({} as ILivechatDepartment);

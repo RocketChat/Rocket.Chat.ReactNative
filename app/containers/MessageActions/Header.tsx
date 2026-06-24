@@ -1,8 +1,7 @@
 import { memo } from 'react';
-import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { FlatList, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { type TSupportedThemes, useTheme } from '../../theme';
-import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { addFrequentlyUsed } from '../../lib/methods/emojis';
@@ -24,12 +23,10 @@ type TOnReaction = ({ emoji }: { emoji?: IEmoji }) => void;
 interface THeaderItem {
 	item: IEmoji;
 	onReaction: TOnReaction;
-	theme: TSupportedThemes;
 }
 
 interface THeaderFooter {
 	onReaction: TOnReaction;
-	theme: TSupportedThemes;
 }
 
 export const HEADER_HEIGHT = 54;
@@ -37,11 +34,12 @@ const ITEM_SIZE = 36;
 const CONTAINER_MARGIN = 8;
 const ITEM_MARGIN = 8;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		alignItems: 'center',
 		marginHorizontal: CONTAINER_MARGIN,
-		paddingBottom: 16
+		paddingBottom: 16,
+		backgroundColor: theme.colors.surfaceLight
 	},
 	headerItem: {
 		height: ITEM_SIZE,
@@ -49,7 +47,8 @@ const styles = StyleSheet.create({
 		borderRadius: ITEM_SIZE / 2,
 		marginHorizontal: ITEM_MARGIN,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		backgroundColor: theme.colors.surfaceHover
 	},
 	headerIcon: {
 		...sharedStyles.textAlignCenter,
@@ -59,10 +58,13 @@ const styles = StyleSheet.create({
 	customEmoji: {
 		height: 20,
 		width: 20
+	},
+	flatList: {
+		backgroundColor: theme.colors.surfaceLight
 	}
-});
+}));
 
-const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
+const HeaderItem = ({ item, onReaction }: THeaderItem) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const unicodeEmoji = formatShortnameToUnicode(`:${item}:`);
 	return (
@@ -71,7 +73,7 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 			accessible
 			accessibilityLabel={I18n.t('React_with_emojjname', { emojiName: item })}
 			onPress={() => onReaction({ emoji: item })}
-			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
+			style={styles.headerItem}>
 			{typeof item === 'string' ? (
 				<Text style={styles.headerIcon}>{unicodeEmoji}</Text>
 			) : (
@@ -80,20 +82,19 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 		</Touch>
 	);
 };
-const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
+const HeaderFooter = ({ onReaction }: THeaderFooter) => (
 	<Touch
 		testID='add-reaction'
 		accessible
 		accessibilityLabel={I18n.t('Select_emoji_reaction')}
 		onPress={(param: any) => onReaction(param)}
-		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
+		style={styles.headerItem}>
 		<CustomIcon name='reaction-add' size={24} />
 	</Touch>
 );
 
 const Header = memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
 	const { width } = useWindowDimensions();
-	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);
 	const size = (isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
 	const quantity = Math.trunc(size / (ITEM_SIZE + ITEM_MARGIN * 2) - 1);
@@ -105,21 +106,21 @@ const Header = memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
 		}
 	};
 
-	const renderItem = ({ item }: { item: IEmoji }) => <HeaderItem item={item} onReaction={onReaction} theme={theme} />;
+	const renderItem = ({ item }: { item: IEmoji }) => <HeaderItem item={item} onReaction={onReaction} />;
 
-	const renderFooter = () => <HeaderFooter onReaction={onReaction} theme={theme} />;
+	const renderFooter = () => <HeaderFooter onReaction={onReaction} />;
 
 	if (!loaded) {
 		return null;
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].surfaceLight }]}>
+		<View style={styles.container}>
 			<FlatList
 				data={frequentlyUsed.slice(0, quantity)}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].surfaceLight }}
+				style={styles.flatList}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

@@ -1,16 +1,16 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import SearchHeader from '../../../containers/SearchHeader';
 import I18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import ServersList from './ServersList';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme, rt) => ({
 	container: {
 		flex: 1,
 		justifyContent: 'center'
@@ -22,13 +22,18 @@ const styles = StyleSheet.create({
 	title: {
 		flexShrink: 1,
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	subtitle: {
 		fontSize: 14,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
+	},
+	searchHeader: {
+		height: 37 * rt.fontScale
 	}
-});
+}));
 
 // search and searchEnabled need to be props because Header is used on react-navigation, which does not support context
 const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string) => void; searchEnabled: boolean }) => {
@@ -41,17 +46,13 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
 	const server = useAppSelector(state => state.server.server);
 	const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
-	const { colors } = useTheme();
-	const { fontScale } = useWindowDimensions();
 
 	const onPress = () => {
 		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 	};
 
 	if (searchEnabled) {
-		// This value is necessary to keep the alignment in MasterDetail.
-		const height = 37 * fontScale;
-		return <SearchHeader onSearchChangeText={search} testID='rooms-list-view-search-input' style={{ height }} />;
+		return <SearchHeader onSearchChangeText={search} testID='rooms-list-view-search-input' style={styles.searchHeader} />;
 	}
 	let subtitle;
 	if (supportedVersionsStatus === 'expired') {
@@ -69,15 +70,12 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
 			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
 				<View style={styles.button}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					<Text style={styles.title} numberOfLines={1}>
 						{serverName}
 					</Text>
 				</View>
 				{subtitle ? (
-					<Text
-						testID='rooms-list-header-server-subtitle'
-						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-						numberOfLines={1}>
+					<Text testID='rooms-list-header-server-subtitle' style={styles.subtitle} numberOfLines={1}>
 						{subtitle}
 					</Text>
 				) : null}

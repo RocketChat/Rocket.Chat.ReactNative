@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, memo, type ReactElement } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
@@ -12,7 +11,7 @@ import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';
 import { CallHeader } from '../../CallHeader';
-import { useStyle } from './style';
+import { styles } from './style';
 import useUserData from '../../../lib/hooks/useUserData';
 import Ringer, { ERingerSounds } from '../../Ringer';
 import Touch from '../../Touch';
@@ -40,8 +39,6 @@ const IncomingCallHeader = memo(
 		const [audio, setAudio] = useState(true);
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
-		const styles = useStyle();
-		const insets = useSafeAreaInsets();
 
 		useEffect(() => {
 			const focusOnIncomingCall = setTimeout(() => {
@@ -62,13 +59,7 @@ const IncomingCallHeader = memo(
 						accessible={true}
 						accessibilityRole='button'
 						accessibilityLabel={`${i18n.t('Incoming_call_from')} ${roomName}`}
-						style={[
-							styles.container,
-							isMasterDetail && styles.small,
-							{
-								marginTop: insets.top
-							}
-						]}>
+						style={[styles.container, isMasterDetail && styles.small]}>
 						<A11y.Index index={2} style={{ flex: 1 }}>
 							<CallHeader
 								title={i18n.t('Incoming_call_from')}

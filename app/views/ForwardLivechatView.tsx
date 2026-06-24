@@ -1,7 +1,8 @@
 import isEmpty from 'lodash/isEmpty';
 import { useEffect, useState, type ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { forwardRoom, type ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
@@ -11,15 +12,15 @@ import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { usersAutoComplete, getRoomInfo, getDepartments } from '../lib/services/restApi';
 import { type TNavigation } from '../stacks/stackType';
-import { useTheme } from '../theme';
 import { type IOptionsField } from './NotificationPreferencesView/options';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
-		padding: 16
+		padding: 16,
+		backgroundColor: theme.colors.surfaceHover
 	}
-});
+}));
 
 const COUNT_DEPARTMENT = 50;
 
@@ -35,7 +36,6 @@ const ForwardLivechatView = (): ReactElement => {
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState({} as IServerRoom);
 	const dispatch = useDispatch();
-	const { colors } = useTheme();
 
 	const handleGetDepartments = async (text = '', offset = 0) => {
 		try {
@@ -145,7 +145,7 @@ const ForwardLivechatView = (): ReactElement => {
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.surfaceHover }]}>
+		<View style={styles.container}>
 			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} />
 			<OrSeparator />
 			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} />

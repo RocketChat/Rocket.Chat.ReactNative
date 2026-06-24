@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -8,9 +9,9 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 
-const styles = StyleSheet.create({
-	title: { ...sharedStyles.textRegular, fontSize: 16 }
-});
+const styles = StyleSheet.create(theme => ({
+	title: { ...sharedStyles.textRegular, fontSize: 16, color: theme.colors.fontHint }
+}));
 
 const OPTIONS = {
 	alsoSendThreadToChannel: [
@@ -71,7 +72,7 @@ const ListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
-			right={() => <Text style={[styles.title, { color: colors.fontHint }]}>{label}</Text>}
+			right={() => <Text style={styles.title}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

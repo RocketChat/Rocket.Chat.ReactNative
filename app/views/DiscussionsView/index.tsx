@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { type IMessageFromServer, type TThreadModel } from '../../definitions';
@@ -14,7 +15,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
-import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
 import { getDiscussions } from '../../lib/services/restApi';
@@ -24,11 +24,14 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	contentContainer: {
 		marginBottom: 30
+	},
+	list: {
+		backgroundColor: theme.colors.surfaceRoom
 	}
-});
+}));
 
 const DiscussionsView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>>();
@@ -47,8 +50,6 @@ const DiscussionsView = () => {
 	const total = useRef(0);
 	const searchText = useRef('');
 	const offset = useRef(0);
-
-	const { colors } = useTheme();
 
 	const load = async () => {
 		if (loading) {
@@ -175,7 +176,7 @@ const DiscussionsView = () => {
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item._id}
-				style={{ backgroundColor: colors.surfaceRoom }}
+				style={styles.list}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}

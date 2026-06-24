@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';

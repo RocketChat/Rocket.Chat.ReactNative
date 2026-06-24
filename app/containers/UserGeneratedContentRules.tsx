@@ -1,4 +1,5 @@
-import { View, StyleSheet, Text, type ViewStyle } from 'react-native';
+import { View, Text, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';

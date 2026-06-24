@@ -4,8 +4,9 @@ import { Header, HeaderBackground, SafeAreaProviderCompat } from '@react-navigat
 import { NavigationContainer } from '@react-navigation/native';
 
 import * as HeaderButton from '.';
-import { type TColors, ThemeContext, type TSupportedThemes } from '../../../../theme';
+import { type TColors, type TSupportedThemes } from '../../../../theme';
 import { colors } from '../../../../lib/constants/colors';
+import ThemeStory from '../../../../stories/ThemeStory';
 
 interface IHeader {
 	left?: () => ReactElement | null;
@@ -113,8 +114,8 @@ export const Badge = () => (
 	</>
 );
 
-const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+const ThemeVariant = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeStory theme={theme}>
 		<View style={{ flexDirection: 'column' }}>
 			<HeaderExample
 				left={() => (
@@ -132,16 +133,12 @@ const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 				colors={colors[theme]}
 			/>
 		</View>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const Themes = () => (
-	<>
-		<ThemeStory theme='light' />
-		<ThemeStory theme='dark' />
-		<ThemeStory theme='black' />
-	</>
-);
+export const ThemeLight = () => <ThemeVariant theme='light' />;
+export const ThemeDark = () => <ThemeVariant theme='dark' />;
+export const ThemeBlack = () => <ThemeVariant theme='black' />;
 
 export const Common = () => (
 	<>

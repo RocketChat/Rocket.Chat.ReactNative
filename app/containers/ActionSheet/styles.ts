@@ -1,15 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	container: {
 		overflow: 'hidden'
 	},
 	item: {
 		paddingHorizontal: 16,
 		alignItems: 'center',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		height: 48 * rt.fontScale
 	},
 	separator: {
 		marginHorizontal: 16
@@ -39,7 +40,11 @@ export default StyleSheet.create({
 		margin: 8
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0
 	},
 	button: {
 		marginHorizontal: 16,
@@ -71,4 +76,4 @@ export default StyleSheet.create({
 		height: '100%',
 		flex: 0
 	}
-});
+}));

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
@@ -15,7 +16,6 @@ import { removeUser as removeUserAction } from '../../actions/selectedUsers';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import { useTheme } from '../../theme';
 import { Review } from '../../lib/methods/helpers/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { type ChatsStackParamList } from '../../stacks/types';
@@ -26,10 +26,11 @@ import { type ISelectedUser } from '../../reducers/selectedUsers';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import SelectedUsers from '../../containers/SelectedUsers';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	containerTextInput: {
 		paddingHorizontal: 16,
-		marginTop: 32
+		marginTop: 32,
+		borderColor: theme.colors.strokeLight
 	},
 	containerStyle: {
 		marginBottom: 16
@@ -37,8 +38,11 @@ const styles = StyleSheet.create({
 	buttonCreate: {
 		marginTop: 32,
 		marginHorizontal: 16
+	},
+	safeArea: {
+		backgroundColor: theme.colors.surfaceTint
 	}
-});
+}));
 
 export interface IFormData {
 	channelName: string;
@@ -87,7 +91,6 @@ const CreateChannelView = () => {
 	const { params } = useRoute<RouteProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const isTeam = params?.isTeam || false;
 	const teamId = params?.teamId;
-	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const inputValues = watch();
 
@@ -133,9 +136,9 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView>
-			<SafeAreaView style={{ backgroundColor: colors.surfaceTint }} testID='create-channel-view'>
+			<SafeAreaView style={styles.safeArea} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
+					<View style={styles.containerTextInput}>
 						<ControlledFormTextInput
 							required
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}

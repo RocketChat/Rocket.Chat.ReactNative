@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';
@@ -20,9 +21,53 @@ type InvitedRoomProps = {
 	onReject: () => Promise<void>;
 };
 
+const styles = StyleSheet.create(theme => ({
+	root: {
+		flex: 1,
+		backgroundColor: theme.colors.surfaceRoom
+	},
+	container: {
+		flex: 1,
+		marginHorizontal: 24,
+		justifyContent: 'center'
+	},
+	textView: { alignItems: 'center' },
+	icon: {
+		width: 58,
+		height: 58,
+		borderRadius: 30,
+		marginBottom: GAP,
+		backgroundColor: theme.colors.surfaceNeutral,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	title: {
+		...sharedStyles.textBold,
+		fontSize: 24,
+		lineHeight: 32,
+		textAlign: 'center',
+		color: theme.colors.fontTitlesLabels,
+		marginBottom: GAP
+	},
+	description: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		lineHeight: 24,
+		textAlign: 'center',
+		color: theme.colors.fontDefault
+	},
+	username: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		lineHeight: 24,
+		textAlign: 'center',
+		color: theme.colors.fontDefault,
+		marginBottom: GAP
+	}
+}));
+
 export const InvitedRoom = ({ title, description, inviter, loading, onAccept, onReject }: InvitedRoomProps): ReactElement => {
 	const { colors } = useTheme();
-	const styles = useStyle();
 
 	return (
 		<View style={styles.root}>
@@ -48,53 +93,4 @@ export const InvitedRoom = ({ title, description, inviter, loading, onAccept, on
 			</View>
 		</View>
 	);
-};
-
-const useStyle = () => {
-	const { colors } = useTheme();
-	const styles = StyleSheet.create({
-		root: {
-			flex: 1,
-			backgroundColor: colors.surfaceRoom
-		},
-		container: {
-			flex: 1,
-			marginHorizontal: 24,
-			justifyContent: 'center'
-		},
-		textView: { alignItems: 'center' },
-		icon: {
-			width: 58,
-			height: 58,
-			borderRadius: 30,
-			marginBottom: GAP,
-			backgroundColor: colors.surfaceNeutral,
-			alignItems: 'center',
-			justifyContent: 'center'
-		},
-		title: {
-			...sharedStyles.textBold,
-			fontSize: 24,
-			lineHeight: 32,
-			textAlign: 'center',
-			color: colors.fontTitlesLabels,
-			marginBottom: GAP
-		},
-		description: {
-			...sharedStyles.textRegular,
-			fontSize: 16,
-			lineHeight: 24,
-			textAlign: 'center',
-			color: colors.fontDefault
-		},
-		username: {
-			...sharedStyles.textRegular,
-			fontSize: 16,
-			lineHeight: 24,
-			textAlign: 'center',
-			color: colors.fontDefault,
-			marginBottom: GAP
-		}
-	});
-	return styles;
 };

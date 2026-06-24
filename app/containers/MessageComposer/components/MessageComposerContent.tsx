@@ -1,5 +1,6 @@
 import { memo, type ReactElement, type RefObject } from 'react';
-import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { type LayoutChangeEvent, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TMessageAction } from '../../../views/RoomView/context';
 import { type IComposerInput } from '../interfaces';
@@ -38,7 +39,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 		return (
 			<View
 				nativeID={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID}
-				style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]}
+				style={[styles.container, { backgroundColor }]}
 				testID='message-composer'
 				onLayout={onLayout}>
 				<View style={styles.input}>
@@ -56,13 +57,14 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 	}
 );
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		borderTopWidth: 1,
 		paddingHorizontal: 16,
-		minHeight: MIN_HEIGHT
+		minHeight: MIN_HEIGHT,
+		borderTopColor: theme.colors.strokeLight
 	},
 	input: {
 		flexDirection: 'row'
 	}
-});
+}));

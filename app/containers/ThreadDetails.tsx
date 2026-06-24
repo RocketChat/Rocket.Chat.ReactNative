@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Touch from './Touch';
 import { CustomIcon } from './CustomIcon';
-import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
-import { useTheme } from '../theme';
 import { type TThreadModel } from '../definitions/IThread';
 import i18n from '../i18n';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
@@ -26,7 +25,8 @@ const styles = StyleSheet.create({
 	detailText: {
 		fontSize: 10,
 		marginLeft: 2,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontSecondaryInfo
 	},
 	badgeContainer: {
 		flexDirection: 'row',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		marginRight: 8
 	}
-});
+}));
 
 interface IThreadDetails {
 	item: Pick<TThreadModel, 'tcount' | 'replies' | 'id'>;
@@ -51,7 +51,6 @@ interface IThreadDetails {
 }
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
-	const { theme } = useTheme();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {
 		count = '+999';
@@ -69,17 +68,14 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name='threads' size={24} />
-					<Text
-						testID={`thread-count-${count}`}
-						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
-						numberOfLines={1}>
+					<Text testID={`thread-count-${count}`} style={styles.detailText} numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name='user' size={24} />
-					<Text style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={styles.detailText} numberOfLines={1}>
 						{replies}
 					</Text>
 				</View>

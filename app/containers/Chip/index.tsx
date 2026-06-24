@@ -1,11 +1,12 @@
-import { Pressable, StyleSheet, View, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, View, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import Avatar from '../Avatar';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	pressable: {
 		paddingHorizontal: 4,
 		marginHorizontal: 4,
@@ -28,9 +29,10 @@ const styles = StyleSheet.create({
 	},
 	name: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontDefault
 	}
-});
+}));
 
 export interface IChip {
 	avatar?: string;
@@ -63,7 +65,7 @@ const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={[styles.textContainer, fullWidth && { maxWidth: undefined }]}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={styles.name} numberOfLines={1}>
 						{text}
 					</Text>
 				</View>

@@ -1,5 +1,6 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../../../theme';
 import Button from '../../../../containers/Button';

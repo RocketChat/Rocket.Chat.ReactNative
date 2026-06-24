@@ -1,4 +1,5 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 
@@ -7,7 +8,7 @@ const codeFontFamily = Platform.select({
 	android: { fontFamily: 'monospace' }
 });
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	blocks: {
 		gap: 2
 	},
@@ -165,5 +166,13 @@ export default StyleSheet.create({
 	},
 	listPrefix: {
 		fontVariant: ['tabular-nums']
+	},
+	customEmojiSize: {
+		width: 15 * rt.fontScale,
+		height: 15 * rt.fontScale
+	},
+	customEmojiBigSize: {
+		width: 30 * rt.fontScale,
+		height: 30 * rt.fontScale
 	}
-});
+}));

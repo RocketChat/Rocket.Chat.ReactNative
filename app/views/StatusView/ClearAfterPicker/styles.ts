@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../Styles';
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	pickerText: {
 		...sharedStyles.textRegular,
 		fontSize: 16
@@ -22,6 +22,7 @@ export default StyleSheet.create({
 	},
 	datePickerContainer: {
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: rt.insets.bottom
 	}
-});
+}));

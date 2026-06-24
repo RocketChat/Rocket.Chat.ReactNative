@@ -510,7 +510,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -1152,7 +1152,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -1282,6 +1282,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -1289,7 +1290,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#9EA2A8",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -1835,7 +1835,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -1965,6 +1965,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -1972,7 +1973,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#9EA2A8",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -2518,7 +2518,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -2648,6 +2648,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -2655,7 +2656,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F5455C",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -3201,7 +3201,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -3331,6 +3331,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -3338,7 +3339,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F38C39",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -3884,7 +3884,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -4014,6 +4014,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -4021,7 +4022,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -4567,7 +4567,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -4697,6 +4697,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -4704,7 +4705,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F5455C",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -5250,7 +5250,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -5380,6 +5380,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -5387,7 +5388,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F38C39",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -5933,7 +5933,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -6063,6 +6063,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -6070,7 +6071,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F5455C",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -6616,7 +6616,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -6746,6 +6746,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -6753,7 +6754,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F38C39",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -7299,7 +7299,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -7429,6 +7429,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -7436,7 +7437,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -7986,7 +7986,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               style={
                 [
                   {
-                    "borderBottomWidth": 0.5,
+                    "borderBottomWidth": 1,
                     "flex": 1,
                     "paddingRight": 14,
                     "paddingVertical": 10,
@@ -8617,7 +8617,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -8747,6 +8747,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -8754,7 +8755,6 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -9300,7 +9300,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -9430,6 +9430,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -9437,7 +9438,6 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#9EA2A8",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -9983,7 +9983,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -10595,7 +10595,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -10725,6 +10725,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                         [
                           {
                             "alignItems": "center",
+                            "borderRadius": 10.5,
                             "justifyContent": "center",
                             "marginLeft": 10,
                             "paddingHorizontal": 5,
@@ -10732,7 +10733,6 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 10.5,
                             "minWidth": 21,
                           },
                           undefined,
@@ -11222,7 +11222,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -11793,7 +11793,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -12451,7 +12451,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -12582,6 +12582,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       [
                         {
                           "alignItems": "center",
+                          "borderRadius": 10.5,
                           "justifyContent": "center",
                           "marginLeft": 10,
                           "paddingHorizontal": 5,
@@ -12589,7 +12590,6 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         },
                         {
                           "backgroundColor": "#095AD2",
-                          "borderRadius": 10.5,
                           "minWidth": 21,
                         },
                         undefined,
@@ -13124,7 +13124,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -13255,6 +13255,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       [
                         {
                           "alignItems": "center",
+                          "borderRadius": 10.5,
                           "justifyContent": "center",
                           "marginLeft": 10,
                           "paddingHorizontal": 5,
@@ -13262,7 +13263,6 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         },
                         {
                           "backgroundColor": "#095AD2",
-                          "borderRadius": 10.5,
                           "minWidth": 21,
                         },
                         undefined,
@@ -13797,7 +13797,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -14444,7 +14444,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -15099,7 +15099,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -15759,7 +15759,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -16417,7 +16417,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -17075,7 +17075,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -17733,7 +17733,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -18391,7 +18391,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -18553,6 +18553,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "alignItems": "center",
+                          "borderRadius": 10.5,
                           "justifyContent": "center",
                           "marginLeft": 10,
                           "paddingHorizontal": 5,
@@ -18560,7 +18561,6 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         },
                         {
                           "backgroundColor": "#9EA2A8",
-                          "borderRadius": 10.5,
                           "minWidth": 21,
                         },
                         undefined,
@@ -19105,7 +19105,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -19267,6 +19267,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "alignItems": "center",
+                          "borderRadius": 10.5,
                           "justifyContent": "center",
                           "marginLeft": 10,
                           "paddingHorizontal": 5,
@@ -19274,7 +19275,6 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         },
                         {
                           "backgroundColor": "#9EA2A8",
-                          "borderRadius": 10.5,
                           "minWidth": 21,
                         },
                         undefined,
@@ -19819,7 +19819,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -19981,6 +19981,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "alignItems": "center",
+                          "borderRadius": 10.5,
                           "justifyContent": "center",
                           "marginLeft": 10,
                           "paddingHorizontal": 5,
@@ -19988,7 +19989,6 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         },
                         {
                           "backgroundColor": "#095AD2",
-                          "borderRadius": 10.5,
                           "minWidth": 21,
                         },
                         undefined,
@@ -20538,7 +20538,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -21165,7 +21165,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -21792,7 +21792,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -22419,7 +22419,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -23046,7 +23046,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -23673,7 +23673,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -24300,7 +24300,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -24927,7 +24927,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -25554,7 +25554,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -26181,7 +26181,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -26813,7 +26813,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -27476,7 +27476,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -28171,7 +28171,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -28834,7 +28834,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -29533,7 +29533,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
               style={
                 [
                   {
-                    "borderBottomWidth": 0.5,
+                    "borderBottomWidth": 1,
                     "flex": 1,
                     "paddingRight": 14,
                     "paddingVertical": 10,
@@ -30164,7 +30164,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -30799,7 +30799,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -31426,7 +31426,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -32053,7 +32053,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -32680,7 +32680,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -33307,7 +33307,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -33934,7 +33934,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -34561,7 +34561,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -35188,7 +35188,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -35820,7 +35820,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,
@@ -36455,7 +36455,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderBottomWidth": 0.5,
+                      "borderBottomWidth": 1,
                       "flex": 1,
                       "paddingRight": 14,
                       "paddingVertical": 10,

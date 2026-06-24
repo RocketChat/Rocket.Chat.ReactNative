@@ -19,7 +19,7 @@ const ReadReceipt = memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabl
 				name={iconName}
 				color={iconColor}
 				size={25}
-				style={{ ...styles.rightIcons, marginTop }}
+				style={[styles.rightIcons, { marginTop }]}
 				testID={isUnread ? 'read-receipt-unread' : 'read-receipt-read'}
 			/>
 		);

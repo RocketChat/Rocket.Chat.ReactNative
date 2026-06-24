@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import dayjs from '../../../../lib/dayjs';
 import { useTheme } from '../../../../theme';
@@ -12,7 +13,7 @@ import { MarkdownPreview } from '../../../markdown';
 export const Quote = ({ messageId }: { messageId: string }) => {
 	'use memo';
 
-	const [styles, colors] = useStyle();
+	const { colors } = useTheme();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
 	const { onRemoveQuoteMessage } = useRoomContext();
@@ -53,44 +54,40 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 	);
 };
 
-function useStyle() {
-	const { colors } = useTheme();
-	const style = {
-		root: {
-			backgroundColor: colors.surfaceTint,
-			height: 64,
-			width: 320,
-			borderColor: colors.strokeExtraLight,
-			borderLeftColor: colors.strokeMedium,
-			borderWidth: 1,
-			borderTopRightRadius: 4,
-			borderBottomRightRadius: 4,
-			paddingLeft: 16,
-			padding: 8,
-			marginRight: 8
-		},
-		header: { flexDirection: 'row', alignItems: 'center' },
-		title: { flexDirection: 'row', flex: 1, alignItems: 'center' },
-		username: {
-			...sharedStyles.textBold,
-			color: colors.fontTitlesLabels,
-			fontSize: 14,
-			lineHeight: 20,
-			flexShrink: 1,
-			paddingRight: 4
-		},
-		time: {
-			...sharedStyles.textRegular,
-			color: colors.fontAnnotation,
-			fontSize: 12,
-			lineHeight: 16
-		},
-		message: {
-			...sharedStyles.textRegular,
-			color: colors.fontDefault,
-			fontSize: 14,
-			lineHeight: 20
-		}
-	} as const;
-	return [style, colors] as const;
-}
+const styles = StyleSheet.create(theme => ({
+	root: {
+		backgroundColor: theme.colors.surfaceTint,
+		height: 64,
+		width: 320,
+		borderColor: theme.colors.strokeExtraLight,
+		borderLeftColor: theme.colors.strokeMedium,
+		borderWidth: 1,
+		borderTopRightRadius: 4,
+		borderBottomRightRadius: 4,
+		paddingLeft: 16,
+		padding: 8,
+		marginRight: 8
+	},
+	header: { flexDirection: 'row', alignItems: 'center' },
+	title: { flexDirection: 'row', flex: 1, alignItems: 'center' },
+	username: {
+		...sharedStyles.textBold,
+		color: theme.colors.fontTitlesLabels,
+		fontSize: 14,
+		lineHeight: 20,
+		flexShrink: 1,
+		paddingRight: 4
+	},
+	time: {
+		...sharedStyles.textRegular,
+		color: theme.colors.fontAnnotation,
+		fontSize: 12,
+		lineHeight: 16
+	},
+	message: {
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault,
+		fontSize: 14,
+		lineHeight: 20
+	}
+}));

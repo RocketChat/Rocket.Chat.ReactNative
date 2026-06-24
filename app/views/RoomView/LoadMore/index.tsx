@@ -1,6 +1,7 @@
 import { memo, type ReactElement, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type MessageType, type RoomType } from '../../../definitions';
@@ -12,7 +13,7 @@ import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	button: {
 		paddingVertical: 16,
 		alignItems: 'center',
@@ -20,9 +21,10 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	}
-});
+}));
 
 const LoadMore = memo(
 	({
@@ -67,11 +69,7 @@ const LoadMore = memo(
 			<>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
-					{loading ? (
-						<ActivityIndicator color={colors.fontSecondaryInfo} />
-					) : (
-						<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
-					)}
+					{loading ? <ActivityIndicator color={colors.fontSecondaryInfo} /> : <Text style={styles.text}>{I18n.t(text)}</Text>}
 				</Touch>
 			</>
 		);

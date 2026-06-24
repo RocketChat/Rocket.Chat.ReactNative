@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Button from '../Button';
 import I18n from '../../i18n';

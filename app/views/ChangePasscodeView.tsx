@@ -1,9 +1,9 @@
 import { useEffect, useState, memo } from 'react';
-import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { hasNotch } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';

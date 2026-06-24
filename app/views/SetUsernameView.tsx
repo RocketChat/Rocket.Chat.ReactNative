@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { loginRequest } from '../actions/login';
 import Button from '../containers/Button';
@@ -22,12 +23,16 @@ import sharedStyles from './Styles';
 import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	loginTitle: {
 		marginVertical: 0,
-		marginTop: 15
+		marginTop: 15,
+		color: theme.colors.fontTitlesLabels
+	},
+	subtitle: {
+		color: theme.colors.fontTitlesLabels
 	}
-});
+}));
 
 interface ISubmit {
 	username: string;
@@ -94,10 +99,8 @@ const SetUsernameView = () => {
 		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>
-					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>
-						{I18n.t('Username')}
-					</Text>
-					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.fontTitlesLabels }]}>
+					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle]}>{I18n.t('Username')}</Text>
+					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, styles.subtitle]}>
 						{I18n.t('Set_username_subtitle')}
 					</Text>
 					<ControlledFormTextInput
@@ -111,13 +114,7 @@ const SetUsernameView = () => {
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
 					/>
-					<Text
-						style={[
-							sharedStyles.loginTitle,
-							sharedStyles.textBold,
-							styles.loginTitle,
-							{ color: colors.fontTitlesLabels, marginBottom: 10 }
-						]}>
+					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { marginBottom: 10 }]}>
 						{I18n.t('Name')}
 					</Text>
 					<ControlledFormTextInput

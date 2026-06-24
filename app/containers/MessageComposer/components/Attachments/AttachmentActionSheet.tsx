@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Button from '../../../Button';
 import { CustomIcon } from '../../../CustomIcon';
@@ -17,7 +18,7 @@ const PREVIEW_HEIGHT = 240;
 // Height of the action sheet's handle/grabber row.
 const ANDROID_SHEET_HANDLE_HEIGHT = 48;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		paddingHorizontal: 24
@@ -29,7 +30,8 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 24,
 		marginBottom: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault
 	},
 	preview: {
 		height: PREVIEW_HEIGHT,
@@ -37,7 +39,8 @@ const styles = StyleSheet.create({
 		marginBottom: 24,
 		alignItems: 'center',
 		justifyContent: 'center',
-		overflow: 'hidden'
+		overflow: 'hidden',
+		backgroundColor: theme.colors.surfaceNeutral
 	},
 	image: {
 		width: '100%',
@@ -47,13 +50,15 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 18,
 		marginBottom: 6,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	helper: {
 		fontSize: 13,
 		lineHeight: 18,
 		marginBottom: 12,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	input: {
 		height: 160,
@@ -65,9 +70,12 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 22,
 		textAlignVertical: 'top',
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault,
+		borderColor: theme.colors.strokeLight,
+		backgroundColor: theme.colors.surfaceLight
 	}
-});
+}));
 
 const Preview = ({ attachment }: { attachment: IShareAttachment }) => {
 	const { colors } = useTheme();
@@ -77,7 +85,7 @@ const Preview = ({ attachment }: { attachment: IShareAttachment }) => {
 	}
 
 	return (
-		<View style={[styles.preview, { backgroundColor: colors.surfaceNeutral }]}>
+		<View style={styles.preview}>
 			<CustomIcon
 				name={attachment.mime?.startsWith('video/') ? 'video' : 'attach'}
 				size={40}
@@ -113,16 +121,16 @@ export const AttachmentActionSheet = ({ attachment, onSave }: AttachmentActionSh
 			contentContainerStyle={[styles.contentContainer, { paddingBottom }]}
 			keyboardShouldPersistTaps='handled'
 			showsVerticalScrollIndicator={false}>
-			<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault }]}>
+			<Text numberOfLines={1} style={styles.title}>
 				{attachment.filename}
 			</Text>
-			<View style={[styles.preview, { backgroundColor: colors.surfaceNeutral }]}>
+			<View style={styles.preview}>
 				<Preview attachment={attachment} />
 			</View>
 			{showAltTextInput ? (
 				<>
-					<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</Text>
-					<Text style={[styles.helper, { color: colors.fontSecondaryInfo }]}>{I18n.t('Alt_text_description')}</Text>
+					<Text style={styles.label}>{I18n.t('Alt_text')}</Text>
+					<Text style={styles.helper}>{I18n.t('Alt_text_description')}</Text>
 					<TextInput
 						accessibilityLabel={I18n.t('Alt_text')}
 						multiline
@@ -130,14 +138,7 @@ export const AttachmentActionSheet = ({ attachment, onSave }: AttachmentActionSh
 						onChangeText={setAltText}
 						placeholder={I18n.t('Alt_text_placeholder')}
 						placeholderTextColor={colors.fontSecondaryInfo}
-						style={[
-							styles.input,
-							{
-								color: colors.fontDefault,
-								borderColor: colors.strokeLight,
-								backgroundColor: colors.surfaceLight
-							}
-						]}
+						style={styles.input}
 					/>
 				</>
 			) : null}

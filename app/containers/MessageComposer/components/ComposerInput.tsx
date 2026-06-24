@@ -1,8 +1,9 @@
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
@@ -369,7 +370,7 @@ export const ComposerInput = memo(
 
 		return (
 			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
+				style={styles.textInput}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
 				ref={component => {
@@ -393,7 +394,7 @@ export const ComposerInput = memo(
 	})
 );
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	textInput: {
 		flex: 1,
 		minHeight: MIN_HEIGHT,
@@ -403,6 +404,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		textAlignVertical: 'center',
 		...sharedStyles.textRegular,
-		lineHeight: 22
+		lineHeight: 22,
+		color: theme.colors.fontDefault
 	}
-});
+}));

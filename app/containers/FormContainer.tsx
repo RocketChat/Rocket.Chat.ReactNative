@@ -1,10 +1,10 @@
 import { type ReactElement } from 'react';
-import { type ScrollViewProps, StyleSheet, View } from 'react-native';
+import { type ScrollViewProps, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
-import { useTheme } from '../theme';
 import AppVersion from './AppVersion';
 import { isTablet } from '../lib/methods/helpers';
 import SafeAreaView from './SafeAreaView';
@@ -15,11 +15,14 @@ interface IFormContainer extends ScrollViewProps {
 	showAppVersion?: boolean;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	scrollView: {
 		minHeight: '100%'
+	},
+	background: {
+		backgroundColor: theme.colors.surfaceRoom
 	}
-});
+}));
 
 export const FormContainerInner = ({
 	children,
@@ -33,22 +36,18 @@ export const FormContainerInner = ({
 	</View>
 );
 
-const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer) => {
-	const { colors } = useTheme();
-
-	return (
-		<KeyboardAwareScrollView
-			style={[sharedStyles.container, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
-			bottomOffset={20}
-			{...scrollPersistTaps}
-			{...props}>
-			<SafeAreaView testID={testID} style={{ backgroundColor: colors.surfaceRoom }}>
-				{children}
-				<>{showAppVersion && <AppVersion />}</>
-			</SafeAreaView>
-		</KeyboardAwareScrollView>
-	);
-};
+const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer) => (
+	<KeyboardAwareScrollView
+		style={[sharedStyles.container, styles.background]}
+		contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
+		bottomOffset={20}
+		{...scrollPersistTaps}
+		{...props}>
+		<SafeAreaView testID={testID} style={styles.background}>
+			{children}
+			<>{showAppVersion && <AppVersion />}</>
+		</SafeAreaView>
+	</KeyboardAwareScrollView>
+);
 
 export default FormContainer;

@@ -1,4 +1,4 @@
-import { useContext, type ComponentType } from 'react';
+import { type ComponentType } from 'react';
 import {
 	createNativeStackNavigator,
 	createNativeStackScreen,
@@ -7,7 +7,7 @@ import {
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 
-import { ThemeContext } from '../../theme';
+import { useTheme } from '../../theme';
 import { defaultHeader, themedHeader, drawerStyle } from '../../lib/methods/helpers/navigation';
 import withNavigation from '../../lib/navigation/withNavigation';
 import { isIOS } from '../../lib/methods/helpers';
@@ -166,7 +166,7 @@ const ChatsStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
@@ -252,7 +252,7 @@ const ModalStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
@@ -296,7 +296,7 @@ const InsideStack = createNativeStackNavigator({
 }).with(({ Navigator }) => {
 	'use memo';
 
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 

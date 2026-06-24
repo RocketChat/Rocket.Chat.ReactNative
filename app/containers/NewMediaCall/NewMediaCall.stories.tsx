@@ -1,5 +1,6 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { type ComponentType } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { NewMediaCall } from './NewMediaCall';

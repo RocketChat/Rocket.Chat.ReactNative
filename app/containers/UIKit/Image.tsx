@@ -1,6 +1,7 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import ImageContainer from '../message/Components/Attachments/Image';
 import Navigation from '../../lib/navigation/appNavigation';

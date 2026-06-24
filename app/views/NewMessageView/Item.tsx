@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Avatar from '../../containers/Avatar';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -47,13 +48,13 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 			testID={testID}
 			underlayColor={colors.surfaceSelected}
 			rippleColor={colors.surfaceSelected}
-			style={{ backgroundColor: colors.surfaceLight }}
+			style={styles.button}
 			accessibilityLabel={name}
 			accessibilityRole='button'>
 			<View style={[styles.container, styles.button]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={styles.name} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>
@@ -77,9 +78,10 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 
 export default Item;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	button: {
-		height: 54
+		height: 54,
+		backgroundColor: theme.colors.surfaceLight
 	},
 	container: {
 		flexDirection: 'row'
@@ -97,10 +99,11 @@ const styles = StyleSheet.create({
 	name: {
 		fontSize: 18,
 		lineHeight: 26,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontDefault
 	},
 	iconContainer: {
 		paddingHorizontal: 15,
 		alignSelf: 'center'
 	}
-});
+}));

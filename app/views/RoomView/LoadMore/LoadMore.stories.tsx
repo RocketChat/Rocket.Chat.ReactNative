@@ -1,11 +1,12 @@
 import { ScrollView } from 'react-native';
 
 import { longText } from '../../../../.rnstorybook/utils';
-import { ThemeContext, type TSupportedThemes } from '../../../theme';
+import { type TSupportedThemes } from '../../../theme';
 import { Message } from '../../../containers/message/Message.stories';
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { themes } from '../../../lib/constants/colors';
 import LoadMoreComponent from '.';
+import ThemeStory from '../../../stories/ThemeStory';
 
 export default {
 	title: 'RoomView/LoadMore'
@@ -24,8 +25,8 @@ export const Basic = () => (
 	</>
 );
 
-const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
+const ThemeVariant = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeStory theme={theme}>
 		<ScrollView style={{ backgroundColor: themes[theme].surfaceRoom }}>
 			<LoadMore loaderId='5' type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />
@@ -38,11 +39,11 @@ const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 			<Message msg='This is the second message' isHeader={false} theme={theme} />
 			<Message msg='This is the first message' theme={theme} />
 		</ScrollView>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const LightTheme = () => <ThemeStory theme='light' />;
+export const LightTheme = () => <ThemeVariant theme='light' />;
 
-export const DarkTheme = () => <ThemeStory theme='dark' />;
+export const DarkTheme = () => <ThemeVariant theme='dark' />;
 
-export const BlackTheme = () => <ThemeStory theme='black' />;
+export const BlackTheme = () => <ThemeVariant theme='black' />;

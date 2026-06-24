@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useTheme } from '../theme';
@@ -26,7 +27,6 @@ type TCallHeader = {
 };
 
 export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): ReactElement => {
-	const style = useStyle();
 	const { colors } = useTheme();
 	const calling = useAppSelector(state => state.videoConf.calling);
 
@@ -42,17 +42,17 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 	return (
 		<A11y.Order>
 			<View>
-				<View style={style.actionSheetHeader}>
-					<View style={style.rowContainer}>
-						<Text style={style.actionSheetHeaderTitle}>{title}</Text>
+				<View style={styles.actionSheetHeader}>
+					<View style={styles.rowContainer}>
+						<Text style={styles.actionSheetHeaderTitle}>{title}</Text>
 						{calling && direct ? <DotsLoader /> : null}
 					</View>
-					<View style={style.actionSheetHeaderButtons}>
+					<View style={styles.actionSheetHeaderButtons}>
 						<A11y.Index index={1}>
 							<Touch
 								accessibilityLabel={cam ? I18n.t('Turn_camera_off') : I18n.t('Turn_camera_on')}
 								onPress={() => setCam(!cam)}
-								style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
+								style={[styles.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 								hitSlop={BUTTON_HIT_SLOP}
 								enabled={!calling}>
 								<CustomIcon name={cam ? 'camera-filled' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
@@ -62,7 +62,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 							<Touch
 								accessibilityLabel={mic ? I18n.t('Turn_mic_off') : I18n.t('Turn_mic_on')}
 								onPress={() => setMic(!mic)}
-								style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
+								style={[styles.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 								hitSlop={BUTTON_HIT_SLOP}
 								enabled={!calling}>
 								<CustomIcon name={mic ? 'mic' : 'mic-off'} size={24} color={handleColors(mic).icon} />
@@ -70,10 +70,10 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 						</A11y.Index>
 					</View>
 				</View>
-				<View style={style.actionSheetUsernameContainer}>
+				<View style={styles.actionSheetUsernameContainer}>
 					<AvatarContainer text={avatar} size={36} />
-					{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
-					<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
+					{direct ? <StatusContainer size={16} id={uid} style={styles.statusContainerMargin} /> : null}
+					<Text style={[styles.actionSheetUsername, { marginLeft: !direct ? 8 : 0 }]} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>
@@ -82,34 +82,30 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 	);
 };
 
-function useStyle() {
-	const { colors } = useTheme();
-	const style = StyleSheet.create({
-		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
-		actionSheetHeaderTitle: {
-			fontSize: 14,
-			...sharedStyles.textBold,
-			color: colors.fontDefault
-		},
-		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
-		iconCallContainer: {
-			padding: 6,
-			borderRadius: 4
-		},
-		iconCallContainerRight: {
-			padding: 6,
-			borderRadius: 4,
-			marginRight: 6
-		},
-		actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
-		actionSheetUsername: {
-			fontSize: 16,
-			...sharedStyles.textBold,
-			color: colors.fontDefault,
-			flexShrink: 1
-		},
-		rowContainer: { flexDirection: 'row' },
-		statusContainerMargin: { marginLeft: 8, marginRight: 6 }
-	});
-	return style;
-}
+const styles = StyleSheet.create(theme => ({
+	actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
+	actionSheetHeaderTitle: {
+		fontSize: 14,
+		...sharedStyles.textBold,
+		color: theme.colors.fontDefault
+	},
+	actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
+	iconCallContainer: {
+		padding: 6,
+		borderRadius: 4
+	},
+	iconCallContainerRight: {
+		padding: 6,
+		borderRadius: 4,
+		marginRight: 6
+	},
+	actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
+	actionSheetUsername: {
+		fontSize: 16,
+		...sharedStyles.textBold,
+		color: theme.colors.fontDefault,
+		flexShrink: 1
+	},
+	rowContainer: { flexDirection: 'row' },
+	statusContainerMargin: { marginLeft: 8, marginRight: 6 }
+}));

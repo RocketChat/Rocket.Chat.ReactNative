@@ -1,8 +1,9 @@
 import { type ReactNode } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
+import { TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import { type NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
@@ -25,7 +26,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0
 	}
 });
 
@@ -51,13 +56,7 @@ export const ModalContainer = ({ navigation, children, theme }: IModalContainer)
 			<TouchableWithoutFeedback onPress={() => navigation.pop()}>
 				<View style={styles.backdrop} />
 			</TouchableWithoutFeedback>
-			<View
-				style={{
-					...sharedStyles.modalFormSheet,
-					height: heightModal
-				}}>
-				{children}
-			</View>
+			<View style={[sharedStyles.modalFormSheet, { height: heightModal }]}>{children}</View>
 		</View>
 	);
 };

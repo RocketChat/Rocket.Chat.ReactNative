@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 import i18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';
-import useStyle from './styles';
+import styles from './styles';
 
 type VideoConfMessageIconProps = {
 	variant: 'ended' | 'incoming' | 'outgoing' | 'issue';
@@ -13,7 +13,6 @@ type VideoConfMessageIconProps = {
 
 export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMessageIconProps): ReactElement => {
 	const { colors } = useTheme();
-	const style = useStyle();
 
 	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
 		ended: {
@@ -43,18 +42,14 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 	};
 
 	return (
-		<View style={style.container}>
-			<View style={style.callInfoContainer}>
-				<View
-					style={{
-						...style.iconContainer,
-						backgroundColor: iconStyle[variant].backgroundColor
-					}}>
+		<View style={styles.container}>
+			<View style={styles.callInfoContainer}>
+				<View style={[styles.iconContainer, { backgroundColor: iconStyle[variant].backgroundColor }]}>
 					<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
 				</View>
-				<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
+				<Text style={styles.infoContainerText}>{iconStyle[variant].label}</Text>
 			</View>
-			<View style={style.callToActionContainer}>{children}</View>
+			<View style={styles.callToActionContainer}>{children}</View>
 		</View>
 	);
 };

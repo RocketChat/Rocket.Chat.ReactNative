@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import dayjs from '../../lib/dayjs';
-import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
@@ -11,7 +11,7 @@ import DiscussionDetails from './DiscussionDetails';
 import { type IMessageFromServer } from '../../definitions';
 import Touch from '../../containers/Touch';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flexDirection: 'row',
 		padding: 16
@@ -28,12 +28,14 @@ const styles = StyleSheet.create({
 	title: {
 		flexShrink: 1,
 		fontSize: 18,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	time: {
 		fontSize: 14,
 		marginLeft: 4,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	avatar: {
 		marginRight: 8
@@ -43,8 +45,11 @@ const styles = StyleSheet.create({
 	},
 	markdown: {
 		flex: 1
+	},
+	touchable: {
+		backgroundColor: theme.colors.surfaceRoom
 	}
-});
+}));
 
 export interface IItem {
 	item: IMessageFromServer;
@@ -52,7 +57,6 @@ export interface IItem {
 }
 
 const Item = ({ item, onPress }: IItem): ReactElement => {
-	const { colors } = useTheme();
 	const username = item?.u?.username;
 	let messageTime = '';
 	let messageDate = '';
@@ -63,15 +67,15 @@ const Item = ({ item, onPress }: IItem): ReactElement => {
 	}
 
 	return (
-		<Touch onPress={() => onPress(item)} testID={`discussions-view-${item.msg}`} style={{ backgroundColor: colors.surfaceRoom }}>
+		<Touch onPress={() => onPress(item)} testID={`discussions-view-${item.msg}`} style={styles.touchable}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={styles.title} numberOfLines={1}>
 							{username}
 						</Text>
-						{messageTime ? <Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</Text> : null}
+						{messageTime ? <Text style={styles.time}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
 						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} /> : null}

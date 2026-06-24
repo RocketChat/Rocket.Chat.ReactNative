@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 import { isTablet } from '../../lib/methods/helpers';
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	root: {
 		flexDirection: 'row'
 	},
@@ -41,7 +41,8 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		minWidth: 46.3,
 		gap: 4,
-		paddingHorizontal: 4
+		paddingHorizontal: 4,
+		height: 28 * rt.fontScale
 	},
 	reactionCount: {
 		fontSize: 14,
@@ -163,4 +164,4 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		gap: 8
 	}
-});
+}));

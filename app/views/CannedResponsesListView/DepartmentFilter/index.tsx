@@ -1,5 +1,5 @@
 import { FlatList, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
@@ -16,15 +16,9 @@ interface IDepartmentFilterProps {
 
 const DepartmentFilter = ({ currentDepartment, onDepartmentSelected, departments }: IDepartmentFilterProps) => {
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.surfaceRoom,
-				borderColor: colors.strokeLight,
-				marginBottom: insets.bottom
-			}}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceRoom, borderColor: colors.strokeLight }]}>
 			<FlatList
 				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
 				data={departments}
@@ -37,5 +31,11 @@ const DepartmentFilter = ({ currentDepartment, onDepartmentSelected, departments
 		</View>
 	);
 };
+
+const styles = StyleSheet.create((_theme, rt) => ({
+	container: {
+		marginBottom: rt.insets.bottom
+	}
+}));
 
 export default DepartmentFilter;

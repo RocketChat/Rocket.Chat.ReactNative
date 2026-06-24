@@ -1,7 +1,8 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShallow } from 'zustand/react/shallow';
+import { StyleSheet } from 'react-native-unistyles';
+import { useAnimatedTheme } from 'react-native-unistyles/reanimated';
 
 import { useTheme } from '../../theme';
 import Collapse from './components/Collapse';
@@ -10,22 +11,26 @@ import { useCallStore, useControlsVisible } from '../../lib/services/voip/useCal
 import { Content } from './components/Content';
 import { CONTROLS_ANIMATION_DURATION } from '../../views/CallView/styles';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((_theme, rt) => ({
 	header: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 12,
 		paddingBottom: 12,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		paddingTop: rt.insets.top + 12
+	},
+	emptyHeader: {
+		paddingTop: rt.insets.top
 	}
-});
+}));
 
 const MediaCallHeader = () => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
+	const theme = useAnimatedTheme();
 	const call = useCallStore(useShallow(state => state.call));
 	const focused = useCallStore(state => state.focused);
 	const controlsVisible = useControlsVisible();
@@ -41,26 +46,21 @@ const MediaCallHeader = () => {
 				})
 			}
 		],
-		backgroundColor: withTiming(shouldHide ? 'transparent' : colors.surfaceNeutral, { duration: CONTROLS_ANIMATION_DURATION }),
-		borderBottomColor: withTiming(shouldHide ? 'transparent' : colors.strokeLight, { duration: CONTROLS_ANIMATION_DURATION })
+		backgroundColor: withTiming(shouldHide ? 'transparent' : theme.value.colors.surfaceNeutral, {
+			duration: CONTROLS_ANIMATION_DURATION
+		}),
+		borderBottomColor: withTiming(shouldHide ? 'transparent' : theme.value.colors.strokeLight, {
+			duration: CONTROLS_ANIMATION_DURATION
+		})
 	}));
 
-	const defaultHeaderStyle = {
-		backgroundColor: colors.surfaceNeutral,
-		paddingTop: insets.top
-	};
-
 	if (!call) {
-		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;
+		return <View style={[styles.emptyHeader, { backgroundColor: colors.surfaceNeutral }]} testID='media-call-header-empty' />;
 	}
 
 	return (
 		<Animated.View
-			style={[
-				styles.header,
-				{ ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 },
-				animatedStyle
-			]}
+			style={[styles.header, { backgroundColor: colors.surfaceNeutral, borderBottomColor: colors.strokeLight }, animatedStyle]}
 			pointerEvents={shouldHide ? 'none' : 'auto'}
 			testID='media-call-header'>
 			<Collapse />

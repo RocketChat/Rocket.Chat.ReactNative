@@ -1,12 +1,12 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { type ComponentType, type ReactNode } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import CallView from '.';
 import CallerInfo from './components/CallerInfo';
 import { CallButtons } from './components/CallButtons';
 import { styles as callViewStyles } from './styles';
-import { useTheme } from '../../theme';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { ActionSheetProvider } from '../../containers/ActionSheet';
 import {
@@ -15,11 +15,14 @@ import {
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1
+	},
+	tabletContent: {
+		backgroundColor: theme.colors.surfaceLight
 	}
-});
+}));
 
 const mockCallStartTime = 1713340800000;
 
@@ -131,12 +134,11 @@ export const WithDialpad = () => {
 
 // Tablet / wide layout stories — force layoutMode='wide' via ResponsiveLayoutContext width
 const TabletCallView = () => {
-	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
 	if (!call) return null;
 	return (
 		<ResponsiveLayoutContext.Provider value={{ ...responsiveLayoutProviderLargeFontValue(1), width: 700 }}>
-			<View style={[callViewStyles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
+			<View style={[callViewStyles.contentContainer, styles.tabletContent]}>
 				<CallerInfo />
 				<CallButtons />
 			</View>

@@ -1,6 +1,7 @@
 import { type FC } from 'react';
-import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { type StyleProp, Text, type TextStyle, type ViewStyle } from 'react-native';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';

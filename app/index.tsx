@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { withUnistyles } from 'react-native-unistyles';
 
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
@@ -14,22 +15,12 @@ import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import StatusBar from './containers/StatusBar';
-import ThemeContextProvider from './containers/ThemeContextProvider';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import { type IThemePreference } from './definitions/ITheme';
-import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import {
-	getTheme,
-	initialTheme,
-	newThemeState,
-	setNativeTheme,
-	subscribeTheme,
-	unsubscribeTheme
-} from './lib/methods/helpers/theme';
+import { setNativeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
 import {
@@ -39,17 +30,18 @@ import {
 } from './lib/services/voip/MediaCallEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { type TSupportedThemes } from './theme';
+import { useThemePreferencesStore } from './lib/theme/themePreferencesStore';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
 enableScreens();
 initStore(store);
 
-interface IState {
-	theme: TSupportedThemes;
-	themePreferences: IThemePreference;
-}
+const ThemedSafeAreaProvider = withUnistyles(
+	SafeAreaProvider,
+	// @ts-expect-error — withUnistyles Mappings type excludes 'style', but the runtime accepts it
+	(theme: { colors: { surfaceRoom: string } }) => ({ style: { backgroundColor: theme.colors.surfaceRoom } })
+);
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
@@ -74,7 +66,7 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
-export default class Root extends Component<{}, IState> {
+export default class Root extends Component {
 	private listenerTimeout!: any;
 	private videoConfActionCleanup?: () => void;
 	private mediaCallEventCleanup?: () => void;
@@ -83,12 +75,7 @@ export default class Root extends Component<{}, IState> {
 		super(props);
 		this.init();
 		this.initCrashReport();
-		const theme = initialTheme();
-		this.state = {
-			theme: getTheme(theme),
-			themePreferences: theme
-		};
-		setNativeTheme(theme);
+		setNativeTheme(useThemePreferencesStore.getState().themePreferences);
 	}
 
 	private getMediaCallEventsAdapters(): MediaCallEventsAdapters {
@@ -158,18 +145,6 @@ export default class Root extends Component<{}, IState> {
 		store.dispatch(appInit());
 	};
 
-	setTheme = (newTheme = {}) => {
-		// change theme state
-		this.setState(
-			prevState => newThemeState(prevState, newTheme as IThemePreference),
-			() => {
-				const { themePreferences } = this.state;
-				// subscribe to Appearance changes
-				subscribeTheme(themePreferences, this.setTheme);
-			}
-		);
-	};
-
 	initCrashReport = () => {
 		getAllowCrashReport().then(allowCrashReport => {
 			toggleCrashErrorsReport(allowCrashReport);
@@ -180,30 +155,27 @@ export default class Root extends Component<{}, IState> {
 	};
 
 	render() {
-		const { themePreferences, theme } = this.state;
 		return (
-			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
+			<ThemedSafeAreaProvider>
 				<Provider store={store}>
-					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
-						<ResponsiveLayoutProvider>
-							<GestureHandlerRootView>
-								<KeyboardProvider>
-									<ActionSheetProvider>
-										<StatusBar />
-										<AppContainer />
-										<TwoFactor />
-										<ScreenLockedView />
-										<ChangePasscodeView />
-										<InAppNotification />
-										<Toast />
-										<Loading />
-									</ActionSheetProvider>
-								</KeyboardProvider>
-							</GestureHandlerRootView>
-						</ResponsiveLayoutProvider>
-					</ThemeContextProvider>
+					<ResponsiveLayoutProvider>
+						<GestureHandlerRootView>
+							<KeyboardProvider>
+								<ActionSheetProvider>
+									<StatusBar />
+									<AppContainer />
+									<TwoFactor />
+									<ScreenLockedView />
+									<ChangePasscodeView />
+									<InAppNotification />
+									<Toast />
+									<Loading />
+								</ActionSheetProvider>
+							</KeyboardProvider>
+						</GestureHandlerRootView>
+					</ResponsiveLayoutProvider>
 				</Provider>
-			</SafeAreaProvider>
+			</ThemedSafeAreaProvider>
 		);
 	}
 }

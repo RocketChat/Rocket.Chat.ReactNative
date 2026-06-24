@@ -1,19 +1,17 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Markdown, { MarkdownPreview } from '.';
-import { themes } from '../../lib/constants/colors';
 import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
 
-const theme = 'light';
-
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		marginHorizontal: 15,
-		backgroundColor: themes[theme].surfaceRoom,
+		backgroundColor: theme.colors.surfaceRoom,
 		marginVertical: 50
 	}
-});
+}));
 
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';

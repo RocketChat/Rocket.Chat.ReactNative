@@ -1,12 +1,13 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 import { type IMessageFromServer } from '../../definitions';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		marginTop: 8,
@@ -25,9 +26,10 @@ const styles = StyleSheet.create({
 	detailText: {
 		fontSize: 10,
 		marginLeft: 2,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontSecondaryInfo
 	}
-});
+}));
 
 interface IDiscussionDetails {
 	item: IMessageFromServer;
@@ -46,14 +48,14 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): ReactElement => 
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={colors.fontSecondaryInfo} />
-					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={styles.detailText} numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'clock'} size={24} color={colors.fontSecondaryInfo} />
-					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={styles.detailText} numberOfLines={1}>
 						{date}
 					</Text>
 				</View>

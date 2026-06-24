@@ -1,8 +1,9 @@
 import { forwardRef, memo, useImperativeHandle, useState } from 'react';
-import { InteractionManager, StyleSheet, Text, View } from 'react-native';
+import { InteractionManager, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';

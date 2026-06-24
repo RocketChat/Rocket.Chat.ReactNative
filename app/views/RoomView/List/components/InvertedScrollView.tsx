@@ -1,5 +1,6 @@
 import { Component, type ComponentType, createRef, type MutableRefObject } from 'react';
-import { Platform, StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
+import { Platform, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 // NativeComponentRegistry.get() registers components as proper Fabric host components.
@@ -156,7 +157,7 @@ export default class InvertedScrollView extends Component<Props> {
 			<NativeInvertedScrollView
 				ref={this.setNativeRef}
 				{...rest}
-				style={StyleSheet.compose(baseStyle, style)}
+				style={StyleSheet.compose(baseStyle as any, style)}
 				onLayout={this.handleLayout}>
 				<NativeInvertedScrollContentView
 					onLayout={onContentSizeChange ? this.handleContentOnLayout : undefined}
@@ -177,13 +178,13 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 		flexShrink: 1,
 		flexDirection: 'column',
-		overflow: 'scroll'
+		overflow: 'scroll' as any
 	},
 	baseHorizontal: {
 		flexGrow: 1,
 		flexShrink: 1,
 		flexDirection: 'row',
-		overflow: 'scroll'
+		overflow: 'scroll' as any
 	},
 	contentContainerHorizontal: {
 		flexDirection: 'row'

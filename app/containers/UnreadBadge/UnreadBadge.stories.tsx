@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { themes } from '../../lib/constants/colors';
 import UnreadBadge from '.';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
+import ThemeStory from '../../stories/ThemeStory';
 
 export default {
 	title: 'Unread Badge'
@@ -59,21 +59,17 @@ export const DifferentMentionTypes = () => (
 	</StoryTester>
 );
 
-const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
+const ThemeVariant = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeStory theme={theme}>
 		<StoryTester>
 			<UnreadBadge unread={1} />
 			<UnreadBadge unread={1} userMentions={1} />
 			<UnreadBadge unread={1} groupMentions={1} />
 			<UnreadBadge tunread={[1]} />
 		</StoryTester>
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const Themes = () => (
-	<>
-		<ThemeStory theme='light' />
-		<ThemeStory theme='dark' />
-		<ThemeStory theme='black' />
-	</>
-);
+export const ThemeLight = () => <ThemeVariant theme='light' />;
+export const ThemeDark = () => <ThemeVariant theme='dark' />;
+export const ThemeBlack = () => <ThemeVariant theme='black' />;

@@ -15,6 +15,7 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
       [
         {
           "backgroundColor": "transparent",
+          "color": "#2F343D",
           "fontFamily": "Inter",
           "fontSize": 16,
           "fontWeight": "400",
@@ -22,7 +23,6 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
           "textAlignVertical": "center",
         },
         {
-          "color": "#2F343D",
           "height": 0,
         },
       ]
@@ -38,6 +38,7 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
       [
         {
           "backgroundColor": "transparent",
+          "color": "#2F343D",
           "fontFamily": "Inter",
           "fontSize": 16,
           "fontWeight": "400",
@@ -45,7 +46,6 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
           "textAlignVertical": "center",
         },
         {
-          "color": "#2F343D",
           "height": 0,
         },
       ]
@@ -61,6 +61,7 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
       [
         {
           "backgroundColor": "transparent",
+          "color": "#2F343D",
           "fontFamily": "Inter",
           "fontSize": 16,
           "fontWeight": "400",
@@ -68,7 +69,6 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
           "textAlignVertical": "center",
         },
         {
-          "color": "#2F343D",
           "height": 0,
         },
       ]

@@ -30,20 +30,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "flexDirection": "row",
-            "flexShrink": 1,
-            "gap": 10,
-            "minHeight": 48,
-            "paddingHorizontal": 10,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-        ]
+        {
+          "alignItems": "center",
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "flexShrink": 1,
+          "gap": 10,
+          "minHeight": 48,
+          "paddingHorizontal": 10,
+        }
       }
     >
       <View
@@ -166,20 +162,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "500",
-                  "lineHeight": 26,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "500",
+                "lineHeight": 26,
+                "textAlign": "left",
+              }
             }
           >
             Alice Johnson
@@ -265,20 +257,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "flexDirection": "row",
-            "flexShrink": 1,
-            "gap": 10,
-            "minHeight": 48,
-            "paddingHorizontal": 10,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-        ]
+        {
+          "alignItems": "center",
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "flexShrink": 1,
+          "gap": 10,
+          "minHeight": 48,
+          "paddingHorizontal": 10,
+        }
       }
     >
       <View
@@ -339,20 +327,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "500",
-                  "lineHeight": 26,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "500",
+                "lineHeight": 26,
+                "textAlign": "left",
+              }
             }
           >
             +55 11 99999-9999
@@ -438,20 +422,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "flexDirection": "row",
-            "flexShrink": 1,
-            "gap": 10,
-            "minHeight": 48,
-            "paddingHorizontal": 10,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-        ]
+        {
+          "alignItems": "center",
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "flexShrink": 1,
+          "gap": 10,
+          "minHeight": 48,
+          "paddingHorizontal": 10,
+        }
       }
     >
       <View
@@ -574,20 +554,16 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "500",
-                  "lineHeight": 26,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "500",
+                "lineHeight": 26,
+                "textAlign": "left",
+              }
             }
           >
             Long display name to validate text truncation behavior for SelectedPeer in narrow widths
@@ -686,20 +662,16 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "flexDirection": "row",
-            "flexShrink": 1,
-            "gap": 10,
-            "minHeight": 48,
-            "paddingHorizontal": 10,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-        ]
+        {
+          "alignItems": "center",
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "flexShrink": 1,
+          "gap": 10,
+          "minHeight": 48,
+          "paddingHorizontal": 10,
+        }
       }
     >
       <View
@@ -822,20 +794,16 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "500",
-                  "lineHeight": 26,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "500",
+                "lineHeight": 26,
+                "textAlign": "left",
+              }
             }
           >
             Long display name to validate text truncation behavior for SelectedPeer in narrow widths
@@ -934,20 +902,16 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "flexDirection": "row",
-            "flexShrink": 1,
-            "gap": 10,
-            "minHeight": 48,
-            "paddingHorizontal": 10,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-        ]
+        {
+          "alignItems": "center",
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "flexShrink": 1,
+          "gap": 10,
+          "minHeight": 48,
+          "paddingHorizontal": 10,
+        }
       }
     >
       <View
@@ -1008,20 +972,16 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "500",
-                  "lineHeight": 26,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "500",
+                "lineHeight": 26,
+                "textAlign": "left",
+              }
             }
           >
             +55 11 99999-9999
@@ -1120,20 +1080,16 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "flexDirection": "row",
-            "flexShrink": 1,
-            "gap": 10,
-            "minHeight": 48,
-            "paddingHorizontal": 10,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-        ]
+        {
+          "alignItems": "center",
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "flexShrink": 1,
+          "gap": 10,
+          "minHeight": 48,
+          "paddingHorizontal": 10,
+        }
       }
     >
       <View
@@ -1256,20 +1212,16 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           <Text
             numberOfLines={1}
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "500",
-                  "lineHeight": 26,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "color": "#2F343D",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "500",
+                "lineHeight": 26,
+                "textAlign": "left",
+              }
             }
           >
             Alice Johnson

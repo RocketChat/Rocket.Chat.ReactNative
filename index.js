@@ -1,3 +1,4 @@
+import './app/unistyles';
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry, LogBox, PermissionsAndroid, Platform } from 'react-native';

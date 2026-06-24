@@ -1,9 +1,10 @@
 import { useCallback, useContext, useEffect, useLayoutEffect, useState, memo, type ReactElement } from 'react';
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import { dequal } from 'dequal';
 import axios from 'axios';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Touchable from './Touchable';
@@ -17,7 +18,7 @@ import MessageContext from './Context';
 import { type IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
@@ -32,31 +33,32 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontInfo
 	},
 	description: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	loading: {
 		flex: 1,
 		height: 150
 	}
-});
+}));
 
 const UrlContent = ({ title, description }: { title: string; description: string }) => {
 	'use memo';
 
-	const { colors } = useTheme();
 	return (
 		<View style={styles.textContainer}>
 			{title ? (
-				<Text style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
+				<Text style={styles.title} numberOfLines={2}>
 					{title}
 				</Text>
 			) : null}
 			{description ? (
-				<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
+				<Text style={styles.description} numberOfLines={2}>
 					{description}
 				</Text>
 			) : null}

@@ -1,6 +1,7 @@
 import { Appearance } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SystemUI from 'expo-system-ui';
+import { UnistylesRuntime } from 'react-native-unistyles';
 
 import { type IThemePreference, type TThemeMode } from '../../../definitions/ITheme';
 import { themes } from '../../constants/colors';
@@ -50,6 +51,11 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 
 export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
+	try {
+		UnistylesRuntime.setTheme(theme);
+	} catch {
+		// Unistyles not configured yet — ignore
+	}
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
 		try {

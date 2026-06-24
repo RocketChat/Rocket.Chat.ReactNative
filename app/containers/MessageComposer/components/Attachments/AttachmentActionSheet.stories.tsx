@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { AttachmentActionSheet } from './AttachmentActionSheet';
 import { selectServerRequest } from '../../../../actions/server';

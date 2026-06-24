@@ -1,15 +1,14 @@
 import { Fragment, type ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { type MediaDownloadOption } from '../../lib/constants/mediaAutoDownload';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme, rt) => ({
 	leftTitleContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -18,7 +17,8 @@ const styles = StyleSheet.create({
 	leftTitle: {
 		...sharedStyles.textMedium,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontDefault
 	},
 	rightContainer: {
 		flex: 1
@@ -26,14 +26,19 @@ const styles = StyleSheet.create({
 	rightTitle: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontHint
 	},
 	rightTitleContainer: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'flex-end'
+	},
+	optionsContainer: {
+		backgroundColor: theme.colors.surfaceRoom,
+		marginBottom: rt.insets.bottom
 	}
-});
+}));
 
 type TOPTIONS = { label: string; value: MediaDownloadOption }[];
 
@@ -67,12 +72,10 @@ const ListPicker = ({
 	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
-	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): ReactElement => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<View style={styles.optionsContainer}>
 			<List.Separator />
 			{OPTIONS.map(i => (
 				<Fragment key={i.value}>
@@ -101,12 +104,12 @@ const ListPicker = ({
 			onPress={() => showActionSheet({ children: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
+					<Text style={styles.leftTitle}>{title}</Text>
 				</View>
 			)}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</Text>
+					<Text style={styles.rightTitle}>{label}</Text>
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}

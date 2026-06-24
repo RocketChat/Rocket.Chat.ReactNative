@@ -1,20 +1,20 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type IAvatar } from '../../definitions';
 import Avatar from '../../containers/Avatar';
-import { useTheme } from '../../theme';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		width: 64,
 		height: 64,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 20,
-
-		borderRadius: 4
+		borderRadius: 4,
+		backgroundColor: theme.colors.strokeLight
 	}
-});
+}));
 
 const AvatarSuggestionItem = ({
 	item,
@@ -28,14 +28,10 @@ const AvatarSuggestionItem = ({
 	onPress: Function;
 	text?: string;
 	accessibilityLabel?: string;
-}) => {
-	const { colors } = useTheme();
-
-	return (
-		<View key={item?.service} testID={testID} style={[styles.container, { backgroundColor: colors.strokeLight }]}>
-			<Avatar accessibilityLabel={accessibilityLabel} avatar={item?.url} text={text} size={64} onPress={() => onPress(item)} />
-		</View>
-	);
-};
+}) => (
+	<View key={item?.service} testID={testID} style={styles.container}>
+		<Avatar accessibilityLabel={accessibilityLabel} avatar={item?.url} text={text} size={64} onPress={() => onPress(item)} />
+	</View>
+);
 
 export default AvatarSuggestionItem;

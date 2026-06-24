@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../Styles';
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	list: {
 		flex: 1
 	},
@@ -35,5 +35,8 @@ export default StyleSheet.create({
 	globalUsersTextContainer: {
 		flex: 1,
 		flexDirection: 'column'
+	},
+	optionsContentContainer: {
+		marginBottom: rt.insets.bottom
 	}
-});
+}));

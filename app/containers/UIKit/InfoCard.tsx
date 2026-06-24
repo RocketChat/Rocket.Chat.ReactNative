@@ -1,14 +1,17 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import { type IIcon, type IIconButton, type IInfoCard, type IInfoCardRow } from './interfaces';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	card: {
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 4,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		backgroundColor: theme.colors.surfaceTint,
+		borderColor: theme.colors.strokeExtraLight
 	},
 	row: {
 		flexDirection: 'row',
@@ -24,7 +27,7 @@ const styles = StyleSheet.create({
 	rowElement: {
 		marginHorizontal: 4
 	}
-});
+}));
 
 const renderRowElement = (parser: IInfoCard['parser'], element: IInfoCardRow['elements'][number], key: string) => {
 	if (element.type === 'icon' && parser.icon) {
@@ -76,7 +79,7 @@ export const InfoCard = ({ rows, parser, appId, blockId }: IInfoCard) => {
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.card, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
+		<View style={styles.card}>
 			{rows.map((row, index) => (
 				<View
 					key={`${blockId || 'info-card'}-${index}`}

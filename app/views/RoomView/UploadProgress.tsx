@@ -1,8 +1,9 @@
 import { Component } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { type Observable, type Subscription } from 'rxjs';
 import { A11y } from 'react-native-a11y-order';
+import { StyleSheet } from 'react-native-unistyles';
 
 import database from '../../lib/database';
 import log from '../../lib/methods/helpers/log';
@@ -15,7 +16,7 @@ import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '..
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		position: 'absolute',
 		top: 0,
@@ -26,7 +27,9 @@ const styles = StyleSheet.create({
 		height: 54,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		justifyContent: 'center',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		backgroundColor: theme.colors.surfaceTint,
+		borderColor: theme.colors.strokeLight
 	},
 	row: {
 		flexDirection: 'row',
@@ -40,19 +43,22 @@ const styles = StyleSheet.create({
 	descriptionText: {
 		fontSize: 16,
 		lineHeight: 20,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
 	},
 	progress: {
 		position: 'absolute',
 		bottom: 0,
-		height: 3
+		height: 3,
+		backgroundColor: theme.colors.badgeBackgroundLevel2
 	},
 	tryAgainButtonText: {
 		fontSize: 16,
 		lineHeight: 20,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.badgeBackgroundLevel2
 	}
-});
+}));
 
 interface IUploadProgressProps {
 	width: number;
@@ -179,9 +185,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					<A11y.Index index={1}>
 						<View accessible accessibilityLabel={`${I18n.t('Uploading')} ${item.name}`} key='row' style={styles.row}>
 							<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
-							<Text
-								style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
-								numberOfLines={1}>
+							<Text style={[styles.descriptionContainer, styles.descriptionText]} numberOfLines={1}>
 								{I18n.t('Uploading')} {item.name}
 							</Text>
 							<A11y.Index index={2}>
@@ -197,13 +201,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 						</View>
 					</A11y.Index>
 				</A11y.Order>,
-				<View
-					key='progress'
-					style={[
-						styles.progress,
-						{ width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].badgeBackgroundLevel2 }
-					]}
-				/>
+				<View key='progress' style={[styles.progress, { width: (width * (item.progress ?? 0)) / 100 }]} />
 			];
 		}
 		return (
@@ -212,14 +210,12 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					<View accessible accessibilityLabel={`${I18n.t('Error_uploading')} ${item.name}`} style={styles.row}>
 						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
 						<View style={styles.descriptionContainer}>
-							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+							<Text style={styles.descriptionText} numberOfLines={1}>
 								{I18n.t('Error_uploading')} {item.name}
 							</Text>
 							<A11y.Index index={2}>
 								<TouchableOpacity onPress={() => this.tryAgain(item)}>
-									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
-										{I18n.t('Try_again')}
-									</Text>
+									<Text style={styles.tryAgainButtonText}>{I18n.t('Try_again')}</Text>
 								</TouchableOpacity>
 							</A11y.Index>
 						</View>
@@ -240,24 +236,11 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 	};
 
 	// TODO: transform into stateless and update based on its own observable changes
-	renderItem = (item: TUploadModel, index: number) => {
-		const { theme } = this.props;
-
-		return (
-			<View
-				key={item.path}
-				style={[
-					styles.item,
-					index !== 0 ? { marginTop: 4 } : {},
-					{
-						backgroundColor: themes[theme!].surfaceTint,
-						borderColor: themes[theme!].strokeLight
-					}
-				]}>
-				{this.renderItemContent(item)}
-			</View>
-		);
-	};
+	renderItem = (item: TUploadModel, index: number) => (
+		<View key={item.path} style={[styles.item, index !== 0 ? { marginTop: 4 } : {}]}>
+			{this.renderItemContent(item)}
+		</View>
+	);
 
 	render() {
 		const { uploads } = this.state;

@@ -1,8 +1,9 @@
 import { useState, useLayoutEffect } from 'react';
-import { StyleSheet, ScrollView, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../i18n';
 import { type ChatsStackParamList } from '../stacks/types';
@@ -18,7 +19,7 @@ import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import { closeLivechat } from '../lib/methods/helpers/closeLivechat';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		flex: 1,
 		padding: 16
@@ -26,10 +27,11 @@ const styles = StyleSheet.create({
 	subtitleText: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	buttonMarginVertical: { marginVertical: 20 }
-});
+}));
 
 const CloseLivechatView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CloseLivechatView'>>();
@@ -93,7 +95,7 @@ const CloseLivechatView = () => {
 
 					{requestTags ? (
 						<>
-							<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
+							<Text style={styles.subtitleText}>{I18n.t('Tags')}</Text>
 							<MultiSelect
 								options={tagsList?.map(({ name }) => ({ text: { text: name }, value: name }))}
 								onChange={({ value }: { value: string[] }) => {

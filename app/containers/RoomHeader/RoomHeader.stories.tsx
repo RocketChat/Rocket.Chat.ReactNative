@@ -1,9 +1,10 @@
 import { Dimensions, View } from 'react-native';
 
 import { longText } from '../../../.rnstorybook/utils';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
-import { colors, themes } from '../../lib/constants/colors';
+import { type TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants/colors';
 import RoomHeaderComponent from './RoomHeader';
+import ThemeStory from '../../stories/ThemeStory';
 
 const { width, height } = Dimensions.get('window');
 
@@ -87,19 +88,15 @@ export const Thread = () => (
 	</>
 );
 
-const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+const ThemeVariant = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeStory theme={theme}>
 		<HeaderExample title={() => <RoomHeader subtitle='subtitle' />} theme={theme} />
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const Themes = () => (
-	<>
-		<ThemeStory theme='light' />
-		<ThemeStory theme='dark' />
-		<ThemeStory theme='black' />
-	</>
-);
+export const ThemeLight = () => <ThemeVariant theme='light' />;
+export const ThemeDark = () => <ThemeVariant theme='dark' />;
+export const ThemeBlack = () => <ThemeVariant theme='black' />;
 
 export const DM_Status = () => {
 	const futureExpiry = '2030-06-15T19:00:00.000Z';

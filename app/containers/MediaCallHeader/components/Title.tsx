@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { useTheme } from '../../../theme';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import sharedStyles from '../../../views/Styles';
 import Timer from './Timer';
 import Status from '../../Status';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	headerTitleContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
 	headerTitleText: {
 		...sharedStyles.textSemibold,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontDefault
 	}
-});
+}));
 
 const Title = () => {
 	'use memo';
 
-	const { colors } = useTheme();
 	const callState = useCallStore(state => state.callState);
 	const callStartTime = useCallStore(state => state.callStartTime);
 	const contact = useCallStore(state => state.contact);
@@ -33,7 +33,7 @@ const Title = () => {
 	return (
 		<View style={styles.headerTitleContainer} testID='call-view-header-title'>
 			<Status id={contact.id || ''} size={16} />
-			<Text style={[styles.headerTitleText, { color: colors.fontDefault }]} numberOfLines={1}>
+			<Text style={styles.headerTitleText} numberOfLines={1}>
 				{caller}
 				{isConnected && callStartTime ? <Timer /> : null}
 			</Text>

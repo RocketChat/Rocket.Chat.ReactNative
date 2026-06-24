@@ -1,11 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
-import { useTheme } from '../theme';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		position: 'absolute',
 		bottom: 12,
@@ -14,12 +14,14 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 4,
 		borderRadius: 4,
 		height: 20,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		backgroundColor: theme.colors.surfaceNeutral
 	},
 	label: {
 		fontSize: 14,
 		lineHeight: 20,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		color: theme.colors.fontTitlesLabels
 	},
 	altTextContent: {
 		...sharedStyles.containerScrollView
@@ -28,24 +30,24 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 24,
 		marginBottom: 12,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	altTextBody: {
 		fontSize: 16,
 		lineHeight: 24,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontDefault
 	}
-});
+}));
 
 const AltTextActionSheetContent = ({ altText }: { altText: string }) => {
 	'use memo';
 
-	const { colors } = useTheme();
-
 	return (
 		<View style={styles.altTextContent}>
-			<Text style={[styles.altTextTitle, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</Text>
-			<Text style={[styles.altTextBody, { color: colors.fontDefault }]}>{altText}</Text>
+			<Text style={styles.altTextTitle}>{I18n.t('Alt_text')}</Text>
+			<Text style={styles.altTextBody}>{altText}</Text>
 		</View>
 	);
 };
@@ -58,7 +60,6 @@ type TAltTextLabelProps = {
 const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
 	'use memo';
 
-	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 
 	if (!altText) {
@@ -78,8 +79,8 @@ const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
 			onPress={handleOpenAltText}
 			accessibilityRole='button'
 			accessibilityLabel={I18n.t('Alt_text')}
-			style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
-			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
+			style={styles.container}>
+			<Text style={styles.label}>{I18n.t('Alt')}</Text>
 		</Pressable>
 	);
 };

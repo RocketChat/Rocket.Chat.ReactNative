@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 
 export const EMOJI_BUTTON_SIZE = 44;
 export const EMOJI_SIZE = EMOJI_BUTTON_SIZE - 16;
 
-export default StyleSheet.create({
+export default StyleSheet.create((_theme, rt) => ({
 	container: {
 		flex: 1
 	},
@@ -67,7 +67,7 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	emojiPickerContainer: { flex: 1 },
+	emojiPickerContainer: { flex: 1, marginBottom: rt.insets.bottom },
 	input: {
 		height: 32,
 		borderWidth: 0,
@@ -77,4 +77,4 @@ export default StyleSheet.create({
 	textInputContainer: {
 		marginBottom: 0
 	}
-});
+}));

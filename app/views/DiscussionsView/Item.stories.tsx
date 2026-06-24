@@ -1,8 +1,8 @@
 import { ScrollView } from 'react-native';
 
 import * as List from '../../containers/List';
-import { colors } from '../../lib/constants/colors';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
+import ThemeStory from '../../stories/ThemeStory';
 import Item, { type IItem } from './Item';
 
 const author = {
@@ -74,16 +74,12 @@ export const Content = () => (
 	</>
 );
 
-const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
-	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+const ThemeVariant = ({ theme }: { theme: TSupportedThemes }) => (
+	<ThemeStory theme={theme}>
 		<BaseItem />
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const Themes = () => (
-	<>
-		<ThemeStory theme='light' />
-		<ThemeStory theme='dark' />
-		<ThemeStory theme='black' />
-	</>
-);
+export const ThemeLight = () => <ThemeVariant theme='light' />;
+export const ThemeDark = () => <ThemeVariant theme='dark' />;
+export const ThemeBlack = () => <ThemeVariant theme='black' />;

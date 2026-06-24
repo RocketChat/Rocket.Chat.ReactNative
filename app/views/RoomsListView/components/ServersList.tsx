@@ -1,6 +1,5 @@
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 
@@ -38,7 +37,6 @@ const ServersList = () => {
 	const server = useAppSelector(state => state.server.server);
 	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		const init = () => {
@@ -123,11 +121,7 @@ const ServersList = () => {
 
 	return (
 		<View
-			style={{
-				backgroundColor: colors.surfaceLight,
-				borderColor: colors.strokeLight,
-				marginBottom: insets.bottom
-			}}
+			style={[styles.serversListContainer, { backgroundColor: colors.surfaceLight, borderColor: colors.strokeLight }]}
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
 				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>

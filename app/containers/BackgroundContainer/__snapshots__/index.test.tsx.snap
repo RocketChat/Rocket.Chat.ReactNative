@@ -92,6 +92,7 @@ exports[`Story Snapshots: BlackThemeLoading should match snapshot 1`] = `
     style={
       {
         "backgroundColor": "transparent",
+        "color": "#6C727A",
         "fontFamily": "Inter",
         "fontSize": 16,
         "fontWeight": "400",
@@ -151,23 +152,19 @@ exports[`Story Snapshots: BlackThemeText should match snapshot 1`] = `
   </View>
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        {
-          "color": "#9EA2A8",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#6C727A",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   >
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -222,6 +219,7 @@ exports[`Story Snapshots: DarkThemeLoading should match snapshot 1`] = `
     style={
       {
         "backgroundColor": "transparent",
+        "color": "#6C727A",
         "fontFamily": "Inter",
         "fontSize": 16,
         "fontWeight": "400",
@@ -281,23 +279,19 @@ exports[`Story Snapshots: DarkThemeText should match snapshot 1`] = `
   </View>
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        {
-          "color": "#9EA2A8",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#6C727A",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   >
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -352,6 +346,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
     style={
       {
         "backgroundColor": "transparent",
+        "color": "#6C727A",
         "fontFamily": "Inter",
         "fontSize": 16,
         "fontWeight": "400",
@@ -411,23 +406,19 @@ exports[`Story Snapshots: LongText should match snapshot 1`] = `
   </View>
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        {
-          "color": "#6C727A",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#6C727A",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   >
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -479,23 +470,19 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
   </View>
   <Text
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        {
-          "color": "#6C727A",
-        },
-      ]
+      {
+        "backgroundColor": "transparent",
+        "color": "#6C727A",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   >
     Text here

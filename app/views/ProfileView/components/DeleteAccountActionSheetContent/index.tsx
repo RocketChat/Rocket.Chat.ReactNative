@@ -1,8 +1,9 @@
-import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, View } from 'react-native';
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { type ReactElement } from 'react';
+import { StyleSheet } from 'react-native-unistyles';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -17,17 +18,19 @@ import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { getTranslations } from './getTranslations';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	subtitleText: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		color: theme.colors.fontTitlesLabels
 	},
 	titleContainerText: {
 		...sharedStyles.textBold,
 		fontSize: 16,
 		lineHeight: 24,
-		paddingLeft: 12
+		paddingLeft: 12,
+		color: theme.colors.fontDefault
 	},
 	titleContainer: {
 		paddingRight: 80,
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
 		marginTop: 12,
 		marginBottom: 36
 	}
-});
+}));
 
 const DeleteAccountActionSheetContent = (): ReactElement => {
 	const { colors } = useTheme();
@@ -92,13 +95,9 @@ const DeleteAccountActionSheetContent = (): ReactElement => {
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_you_want_to_delete_your_account')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
-				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>
-					{i18n.t('Are_you_sure_you_want_to_delete_your_account')}
-				</Text>
+				<Text style={styles.titleContainerText}>{i18n.t('Are_you_sure_you_want_to_delete_your_account')}</Text>
 			</View>
-			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
-				{i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-			</Text>
+			<Text style={styles.subtitleText}>{i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}</Text>
 
 			<ControlledFormTextInput
 				control={control}

@@ -1,12 +1,12 @@
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../../../i18n';
 import { type TCertificatePicker } from '../../definitions';
 import Button from '../../../../containers/Button';
 import sharedStyles from '../../../Styles';
-import { useTheme } from '../../../../theme';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		paddingTop: 12,
 		paddingBottom: 24,
@@ -23,21 +23,19 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 14,
 		textAlign: 'center',
-		lineHeight: 20
+		lineHeight: 20,
+		color: theme.colors.fontSecondaryInfo
 	}
-});
+}));
 
 const CertificatePicker = ({ connecting, certificate, chooseCertificate, handleRemove, showBottomInfo }: TCertificatePicker) => {
-	const { colors } = useTheme();
 	if (!showBottomInfo) {
 		return null;
 	}
 
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.buttonPrompt, { color: colors.fontSecondaryInfo }]}>
-				{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
-			</Text>
+			<Text style={styles.buttonPrompt}>{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}</Text>
 			<Button
 				onPress={certificate ? handleRemove : chooseCertificate}
 				testID='new-server-choose-certificate'

@@ -1,13 +1,12 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 import I18n from '../../i18n';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		paddingTop: 8,
 		paddingHorizontal: PADDING_HORIZONTAL
@@ -15,9 +14,10 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		lineHeight: 20,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		color: theme.colors.fontHint
 	}
-});
+}));
 
 interface IListInfo {
 	info: string;
@@ -27,10 +27,9 @@ interface IListInfo {
 const ListInfo = memo(({ info, translateInfo = true }: IListInfo) => {
 	'use memo';
 
-	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</Text>
+			<Text style={styles.text}>{translateInfo ? I18n.t(info) : info}</Text>
 		</View>
 	);
 });

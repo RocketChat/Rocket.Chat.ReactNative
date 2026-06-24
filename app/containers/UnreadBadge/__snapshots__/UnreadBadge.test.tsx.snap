@@ -16,11 +16,11 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 16,
         },
         undefined,
@@ -56,11 +56,11 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 26,
         },
         undefined,
@@ -96,6 +96,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -103,7 +104,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -137,6 +137,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -144,7 +145,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -178,6 +178,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -185,7 +186,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -219,6 +219,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -226,7 +227,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -260,6 +260,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -267,7 +268,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#095AD2",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -315,6 +315,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -322,7 +323,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -356,6 +356,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -363,7 +364,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -397,6 +397,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -404,7 +405,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -438,6 +438,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -445,7 +446,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -479,6 +479,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -486,7 +487,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#095AD2",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -520,6 +520,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -527,7 +528,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -561,6 +561,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -568,7 +569,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -616,6 +616,7 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -623,7 +624,6 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -657,6 +657,7 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
           "marginLeft": 10,
           "paddingHorizontal": 5,
@@ -664,7 +665,6 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 21,
         },
         undefined,
@@ -712,11 +712,11 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 16,
         },
         undefined,
@@ -752,11 +752,11 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
       [
         {
           "alignItems": "center",
+          "borderRadius": 10.5,
           "justifyContent": "center",
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
           "minWidth": 26,
         },
         undefined,
@@ -790,532 +790,536 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
 </View>
 `;
 
-exports[`Story Snapshots: Themes should match snapshot 1`] = `
-[
+exports[`Story Snapshots: ThemeBlack should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
   <View
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "space-evenly",
-      }
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
     }
+    testID="unread-badge-1"
   >
-    <View
+    <Text
+      numberOfLines={1}
       style={
         [
           {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#9EA2A8",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
           },
           undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
-      testID="unread-badge-1"
     >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#F5455C",
-            "borderRadius": 10.5,
-            "minWidth": 21,
-          },
-          undefined,
-        ]
-      }
-      testID="mention-badge-1"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#F38C39",
-            "borderRadius": 10.5,
-            "minWidth": 21,
-          },
-          undefined,
-        ]
-      }
-      testID="group-mention-badge-1"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#095AD2",
-            "borderRadius": 10.5,
-            "minWidth": 21,
-          },
-          undefined,
-        ]
-      }
-      testID="unread-badge-1"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-  </View>,
+      1
+    </Text>
+  </View>
   <View
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "space-evenly",
-      }
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#B43C4C",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
     }
+    testID="mention-badge-1"
   >
-    <View
+    <Text
+      numberOfLines={1}
       style={
         [
           {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#9EA2A8",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
           },
           undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
-      testID="unread-badge-1"
     >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#B43C4C",
-            "borderRadius": 10.5,
-            "minWidth": 21,
-          },
-          undefined,
-        ]
-      }
-      testID="mention-badge-1"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#955828",
-            "borderRadius": 10.5,
-            "minWidth": 21,
-          },
-          undefined,
-        ]
-      }
-      testID="group-mention-badge-1"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#245399",
-            "borderRadius": 10.5,
-            "minWidth": 21,
-          },
-          undefined,
-        ]
-      }
-      testID="unread-badge-1"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-  </View>,
+      1
+    </Text>
+  </View>
   <View
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "space-evenly",
-      }
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#955828",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
     }
+    testID="group-mention-badge-1"
   >
-    <View
+    <Text
+      numberOfLines={1}
       style={
         [
           {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#9EA2A8",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
           },
           undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
-      testID="unread-badge-1"
     >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#245399",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="unread-badge-1"
+  >
+    <Text
+      numberOfLines={1}
       style={
         [
           {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#B43C4C",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
           },
           undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
-      testID="mention-badge-1"
     >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
+      1
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ThemeDark should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="unread-badge-1"
+  >
+    <Text
+      numberOfLines={1}
       style={
         [
           {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#955828",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
           },
           undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
-      testID="group-mention-badge-1"
     >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-    <View
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#B43C4C",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="mention-badge-1"
+  >
+    <Text
+      numberOfLines={1}
       style={
         [
           {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
-          },
-          {
-            "backgroundColor": "#245399",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
           },
           undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
-      testID="unread-badge-1"
     >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            undefined,
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        1
-      </Text>
-    </View>
-  </View>,
-]
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#955828",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="group-mention-badge-1"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#245399",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="unread-badge-1"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ThemeLight should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="unread-badge-1"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F5455C",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="mention-badge-1"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F38C39",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="group-mention-badge-1"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 10.5,
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#095AD2",
+          "minWidth": 21,
+        },
+        undefined,
+      ]
+    }
+    testID="unread-badge-1"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+</View>
 `;

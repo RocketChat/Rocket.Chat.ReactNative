@@ -55,14 +55,13 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
             returnKeyType="search"
             style={
               [
-                {
-                  "color": "#1F2329",
-                },
                 [
                   {
-                    "backgroundColor": "transparent",
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
                     "borderRadius": 4,
                     "borderWidth": 1,
+                    "color": "#1F2329",
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -74,15 +73,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   {
                     "paddingRight": 45,
                   },
-                  {
-                    "backgroundColor": "#FFFFFF",
-                    "borderColor": "#9EA2A8",
-                    "color": "#1F2329",
-                  },
                   {},
                   undefined,
                 ],
                 {
+                  "color": "#1F2329",
                   "textAlign": "auto",
                 },
               ]

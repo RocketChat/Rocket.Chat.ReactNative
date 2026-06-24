@@ -1,7 +1,7 @@
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
 import { longText } from '../../../.rnstorybook/utils';
 import BackgroundContainer, { type IBackgroundContainer } from '.';
-import { themes } from '../../lib/constants/colors';
+import ThemeStory from '../../stories/ThemeStory';
 
 export default {
 	title: 'BackgroundContainer'
@@ -19,16 +19,16 @@ interface ThemeStoryProps extends IBackgroundContainer {
 	theme: TSupportedThemes;
 }
 
-const ThemeStory = ({ theme, ...props }: ThemeStoryProps) => (
-	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
+const ThemeVariant = ({ theme, ...props }: ThemeStoryProps) => (
+	<ThemeStory theme={theme}>
 		<BackgroundContainer {...props} />
-	</ThemeContext.Provider>
+	</ThemeStory>
 );
 
-export const DarkThemeLoading = () => <ThemeStory theme='dark' loading />;
+export const DarkThemeLoading = () => <ThemeVariant theme='dark' loading />;
 
-export const DarkThemeText = () => <ThemeStory theme='dark' text={longText} />;
+export const DarkThemeText = () => <ThemeVariant theme='dark' text={longText} />;
 
-export const BlackThemeLoading = () => <ThemeStory theme='black' loading />;
+export const BlackThemeLoading = () => <ThemeVariant theme='black' loading />;
 
-export const BlackThemeText = () => <ThemeStory theme='black' text={longText} />;
+export const BlackThemeText = () => <ThemeVariant theme='black' text={longText} />;

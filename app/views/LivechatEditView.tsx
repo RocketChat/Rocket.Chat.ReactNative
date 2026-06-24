@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import log from '../lib/methods/helpers/log';
 import { type TSupportedThemes, withTheme } from '../theme';
@@ -31,24 +32,26 @@ import sharedStyles from './Styles';
 import { getAgentDepartments, getCustomFields, editLivechat, getTagsList } from '../lib/services/restApi';
 import { usePermissions } from '../lib/hooks/usePermissions';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(theme => ({
 	container: {
 		padding: 16
 	},
 	title: {
 		fontSize: 20,
 		paddingVertical: 10,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		color: theme.colors.fontTitlesLabels
 	},
 	label: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		color: theme.colors.fontTitlesLabels
 	},
 	multiSelect: {
 		marginBottom: 10
 	}
-});
+}));
 
 interface ILivechatEditViewProps {
 	user: IUser;
@@ -59,8 +62,7 @@ interface ILivechatEditViewProps {
 	editLivechatRoomCustomfields: string[] | undefined;
 }
 
-const Title = ({ title, theme }: ITitle) =>
-	title ? <Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{title}</Text> : null;
+const Title = ({ title }: ITitle) => (title ? <Text style={styles.title}>{title}</Text> : null);
 
 const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
@@ -268,7 +270,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
-					<Text style={[styles.label, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
+					<Text style={styles.label}>{I18n.t('Tags')}</Text>
 					<MultiSelect
 						options={tagOptions}
 						onChange={({ value }: { value: string[] }) => {

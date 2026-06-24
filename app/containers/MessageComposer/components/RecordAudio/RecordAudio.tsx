@@ -4,6 +4,7 @@ import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../../../theme';
 import { BaseButton } from '../Buttons';
@@ -24,7 +25,7 @@ import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
-	const [styles, colors] = useStyle();
+	const { colors } = useTheme();
 	const recordingRef = useRef<Audio.Recording | null>(null);
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const numberOfTriesRef = useRef(0);
@@ -158,48 +159,44 @@ export const RecordAudio = (): ReactElement | null => {
 	);
 };
 
-function useStyle() {
-	const { colors } = useTheme();
-	const style = {
-		review: {
-			borderTopWidth: 1,
-			paddingHorizontal: 16,
-			paddingBottom: 12,
-			backgroundColor: colors.surfaceLight,
-			borderTopColor: colors.strokeLight
-		},
-		recording: {
-			borderTopWidth: 1,
-			paddingHorizontal: 16,
-			paddingBottom: 8,
-			backgroundColor: colors.surfaceLight,
-			borderTopColor: colors.strokeLight
-		},
-		duration: {
-			flexDirection: 'row',
-			paddingVertical: 24,
-			justifyContent: 'center',
-			alignItems: 'center'
-		},
-		audioPlayer: {
-			flexDirection: 'row',
-			paddingVertical: 8
-		},
-		buttons: {
-			flexDirection: 'row',
-			justifyContent: 'center',
-			alignItems: 'center'
-		},
-		recordingNote: {
-			flex: 1,
-			justifyContent: 'center',
-			alignItems: 'center'
-		},
-		recordingNoteText: {
-			fontSize: 14,
-			...sharedStyles.textRegular,
-			color: colors.fontSecondaryInfo
-		}
-	} as const;
-	return [style, colors] as const;
-}
+const styles = StyleSheet.create(theme => ({
+	review: {
+		borderTopWidth: 1,
+		paddingHorizontal: 16,
+		paddingBottom: 12,
+		backgroundColor: theme.colors.surfaceLight,
+		borderTopColor: theme.colors.strokeLight
+	},
+	recording: {
+		borderTopWidth: 1,
+		paddingHorizontal: 16,
+		paddingBottom: 8,
+		backgroundColor: theme.colors.surfaceLight,
+		borderTopColor: theme.colors.strokeLight
+	},
+	duration: {
+		flexDirection: 'row',
+		paddingVertical: 24,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	audioPlayer: {
+		flexDirection: 'row',
+		paddingVertical: 8
+	},
+	buttons: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	recordingNote: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	recordingNoteText: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		color: theme.colors.fontSecondaryInfo
+	}
+}));
