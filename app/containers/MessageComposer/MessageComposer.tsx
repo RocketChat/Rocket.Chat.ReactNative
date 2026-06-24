@@ -246,6 +246,7 @@ export const MessageComposer = ({
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
 				action={action}
+				showEmojiSearchbar={showEmojiSearchbar}
 				composerInputComponentRef={composerInputComponentRef}
 				composerInputRef={composerInputRef}
 				onLayout={handleLayout}>

@@ -17,7 +17,8 @@ import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
-import { withDimensions } from '../dimensions';
+import { withDimensions } from '../lib/hooks/withDimensions';
+import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
@@ -579,7 +580,6 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions['add-team-channel'],
 	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
@@ -597,4 +597,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(TeamChannelsView))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(withMasterDetail(TeamChannelsView)))));

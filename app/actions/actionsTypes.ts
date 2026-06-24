@@ -39,7 +39,6 @@ export const APP = createRequestTypes('APP', [
 	'READY',
 	'INIT',
 	'INIT_LOCAL_SETTINGS',
-	'SET_MASTER_DETAIL',
 	'SET_NOTIFICATION_PRESENCE_CAP',
 	'SET_NET_INFO_STATE'
 ]);

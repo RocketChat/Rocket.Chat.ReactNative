@@ -6,6 +6,7 @@ import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelHea
 import { E2E_BANNER_TYPE } from '../../../lib/constants/keys';
 import { themes } from '../../../lib/constants/colors';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useTheme } from '../../../theme';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
@@ -18,7 +19,7 @@ const ListHeader = () => {
 	const { theme } = useTheme();
 	const { searchEnabled } = useContext(RoomsSearchContext);
 	const encryptionBanner = useAppSelector(state => state.encryption.banner);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation<any>();
 
 	if (searchEnabled) {
