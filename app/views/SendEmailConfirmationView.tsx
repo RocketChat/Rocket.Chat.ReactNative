@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { type OutsideParamList } from '../stacks/types';
@@ -12,9 +12,10 @@ import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 import { sendConfirmationEmail } from '../lib/services/restApi';
 
-const SendEmailConfirmationView = () => {
+type SendEmailConfirmationViewProps = StaticScreenProps<{ user?: string }>;
+
+const SendEmailConfirmationView = ({ route }: SendEmailConfirmationViewProps) => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'SendEmailConfirmationView'>>();
-	const route = useRoute<RouteProp<OutsideParamList, 'SendEmailConfirmationView'>>();
 
 	const [email, setEmail] = useState('');
 	const [invalidEmail, setInvalidEmail] = useState(true);

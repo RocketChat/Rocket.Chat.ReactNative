@@ -18,6 +18,7 @@ import { getServerInfo } from '../lib/methods/getServerInfo';
 import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import { showToast } from '../lib/methods/helpers/showToast';
@@ -66,7 +67,7 @@ const navigate = function* navigate({ params }) {
 					...room
 				};
 
-				const isMasterDetail = yield select(state => state.app.isMasterDetail);
+				const isMasterDetail = getIsMasterDetail();
 				const jumpToMessageId = params.messageId;
 				yield waitForNavigationReady();
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
@@ -279,7 +280,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 		const subsCollection = db.get('subscriptions');
 		const room = yield subsCollection.find(params.rid);
 		if (room) {
-			const isMasterDetail = yield select(state => state.app.isMasterDetail);
+			const isMasterDetail = getIsMasterDetail();
 			yield navigateToRoom({ item: room, isMasterDetail });
 			const uid = params.caller?._id;
 			const { rid, callId, event } = params;

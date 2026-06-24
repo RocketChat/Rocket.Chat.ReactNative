@@ -13,7 +13,7 @@ import Markdown from '../containers/markdown';
 import { type ICannedResponse } from '../definitions/ICannedResponse';
 import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -87,7 +87,7 @@ const CannedResponseDetail = () => {
 
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
-	const { isMasterDetail } = useAppSelector(state => state.app);
+	const isMasterDetail = useMasterDetail();
 
 	useEffect(() => {
 		navigation.setOptions({

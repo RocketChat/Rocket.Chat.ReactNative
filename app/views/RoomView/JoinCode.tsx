@@ -9,9 +9,9 @@ import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants/colors';
-import { type IApplicationState } from '../../definitions';
 import { joinRoom } from '../../lib/services/restApi';
 import { type TSupportedThemes } from '../../theme';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	container: {
@@ -129,8 +129,6 @@ const JoinCode = memo(
 	})
 );
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(JoinCode);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withMasterDetail(JoinCode));

@@ -10,6 +10,7 @@ import { getUserSelector } from '../../selectors/login';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { type INotificationPreferences } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -29,10 +30,8 @@ const UserNotificationPreferencesView = () => {
 	const [loading, setLoading] = useState(true);
 
 	const navigation = useNavigation<TNavigation>();
-	const { userId, isMasterDetail } = useAppSelector(state => ({
-		userId: getUserSelector(state).id,
-		isMasterDetail: state.app.isMasterDetail
-	}));
+	const userId = useAppSelector(state => getUserSelector(state).id);
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
