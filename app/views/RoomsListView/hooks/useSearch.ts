@@ -86,7 +86,6 @@ export const useSearch = () => {
 		try {
 			const localData = await searchLocal({ text });
 			if (isStale()) return;
-			console.log('localData', localData);
 			dispatch({ type: 'SEARCH_LOCAL', payload: localData as IRoomItem[] });
 
 			const result = await searchRemote({ text, localData });

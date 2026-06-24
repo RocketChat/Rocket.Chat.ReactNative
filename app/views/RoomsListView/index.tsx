@@ -108,8 +108,6 @@ const RoomsListView = memo(function RoomsListView() {
 	};
 
 	if (searchEnabled && searchResults.length === 0) {
-		// Only block on the spinner while we have nothing to show yet. Once local results
-		// are painted, fall through to the list even if the remote request is still in flight.
 		if (searching) {
 			return <ActivityIndicator />;
 		}
