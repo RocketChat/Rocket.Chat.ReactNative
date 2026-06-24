@@ -12,7 +12,7 @@
         <item name="postBootSplashTheme">@style/AppTheme</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-         <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
     </style>
 
     <!--  https://github.com/facebook/react-native/blob/d1ab03235cb4b93304150878d2b9057ab45bba77/ReactAndroid/src/main/res/views/modal/values/themes.xml#L5  -->
