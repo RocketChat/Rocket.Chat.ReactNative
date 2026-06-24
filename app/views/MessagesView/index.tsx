@@ -36,6 +36,7 @@ import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 interface IMessagesViewProps {
 	user: {
@@ -382,8 +383,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(MessagesView))));
