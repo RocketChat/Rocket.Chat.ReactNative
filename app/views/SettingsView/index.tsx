@@ -18,6 +18,7 @@ import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants/links';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { clearCache } from '../../lib/methods/clearCache';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers';
@@ -39,7 +40,7 @@ const SettingsView = (): ReactElement => {
 	const { colors, theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const { server, version } = useAppSelector(state => state.server);
 
 	useLayoutEffect(() => {

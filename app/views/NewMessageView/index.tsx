@@ -18,6 +18,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
 import { searchLocal, searchRemote } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
 import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
@@ -38,14 +39,14 @@ const NewMessageView = () => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 
-	const { isMasterDetail, maxUsers, useRealName } = useAppSelector(
+	const { maxUsers, useRealName } = useAppSelector(
 		state => ({
-			isMasterDetail: state.app.isMasterDetail,
 			maxUsers: (state.settings.DirectMesssage_maxUsers as number) || 1,
 			useRealName: state.settings.UI_Use_Real_Name as boolean
 		}),
 		shallowEqual
 	);
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({

@@ -10,12 +10,13 @@ import styles from '../styles';
 import { type DrawerParamList } from '../../../stacks/types';
 import * as List from '../../../containers/List';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const { username, name } = useAppSelector(getUserSelector, shallowEqual);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server.server);

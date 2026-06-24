@@ -24,6 +24,7 @@ import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
 import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
@@ -42,7 +43,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		blockUnauthenticatedAccess,
 		encryptionEnabled,
 		failure,
-		isMasterDetail,
 		loading,
 		result,
 		serverVersion,
@@ -59,10 +59,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		result: state.createDiscussion.result as IResult,
 		blockUnauthenticatedAccess: !!(state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true),
 		serverVersion: state.server.version as string,
-		isMasterDetail: state.app.isMasterDetail,
 		encryptionEnabled: state.encryption.enabled,
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
+	const isMasterDetail = useMasterDetail();
 
 	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
