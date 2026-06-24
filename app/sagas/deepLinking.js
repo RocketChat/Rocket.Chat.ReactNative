@@ -161,6 +161,12 @@ const handleShareExtension = function* handleOpen({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
+	// A deep-link cold start dispatches deepLinkingOpen and returns before appInit()
+	// (see app/index.tsx), so restore() never opens the encrypted servers DB. Open it
+	// here before any servers-DB read (getServerById / database.servers); the getter throws
+	// otherwise. initServers() is idempotent — a no-op on a warm launch where restore() ran.
+	yield call(database.initServers);
+
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -301,6 +307,10 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 	params.host = host;
+
+	// Push-tap cold start can reach here before appInit() opened the encrypted servers DB.
+	// Idempotent — a no-op on a warm launch. See handleOpen for the full rationale.
+	yield call(database.initServers);
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),

@@ -52,6 +52,9 @@ jest.mock('../../lib/services/restApi', () => ({
 jest.mock('../../lib/database', () => ({
 	__esModule: true,
 	default: {
+		// Idempotent encrypted-servers-DB opener; the cold-start deep-link paths must
+		// invoke it before any servers-DB read (the real getter throws otherwise).
+		initServers: jest.fn(() => Promise.resolve()),
 		active: {
 			get: jest.fn()
 		}
@@ -657,5 +660,67 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 
 		// Socket connected → gate released, loginRequest dispatched.
 		expect(loginRequested()).toBe(true);
+	});
+});
+
+// ─── Cold-start servers-DB init (regression: "accessed before initServers() resolved") ───
+//
+// On a deep-link / push cold start, app/index.tsx dispatches the deep-link action and
+// returns BEFORE appInit(), so restore() never opens the encrypted servers DB. The handlers
+// must open it themselves (idempotently) before the first servers-DB read — otherwise
+// database.servers throws "accessed before initServers() resolved" and the saga task dies,
+// so login never completes and rooms-list-view never appears (every deep-link E2E shard fails).
+
+describe('deepLinking saga — cold-start opens the encrypted servers DB before reading it', () => {
+	beforeEach(() => {
+		jest.useFakeTimers();
+
+		jest.mocked(database.initServers).mockClear();
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(database.active.get).mockReset();
+
+		// Unknown server, no stored token → reaches getServerById then bails at getServerInfo.
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(null);
+		// success:false short-circuits to fallbackNavigation — keeps each test self-contained.
+		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
+		jest.mocked(database.active.get).mockReturnValue({
+			find: jest.fn().mockResolvedValue(null)
+		} as any);
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('handleOpen calls database.initServers before getServerById', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(database.initServers).toHaveBeenCalledTimes(1);
+		const initOrder = jest.mocked(database.initServers).mock.invocationCallOrder[0];
+		const getByIdOrder = jest.mocked(getServerById).mock.invocationCallOrder[0];
+		expect(initOrder).toBeLessThan(getByIdOrder);
+	});
+
+	it('handleClickCallPush calls database.initServers before getServerById', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeParams({ token: TOKEN, rid: 'room-1' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(database.initServers).toHaveBeenCalledTimes(1);
+		const initOrder = jest.mocked(database.initServers).mock.invocationCallOrder[0];
+		const getByIdOrder = jest.mocked(getServerById).mock.invocationCallOrder[0];
+		expect(initOrder).toBeLessThan(getByIdOrder);
 	});
 });
