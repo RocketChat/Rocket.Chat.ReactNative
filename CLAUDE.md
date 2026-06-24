@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using pnpm (version pinned in `package.json#packageManager`, activated via corepack). Supports iOS 13.4+ and Android 6.0+. 
+Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using pnpm (version pinned in `package.json#packageManager`, activated via corepack). Supports iOS 13.4+ and Android 6.0+.
 
 - React 19.1, React Native 0.81, Expo 54
 - TypeScript with strict mode, baseUrl set to `app/` (imports resolve from there)
