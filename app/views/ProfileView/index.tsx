@@ -52,7 +52,7 @@ const MAX_NICKNAME_LENGTH = 120;
 // https://github.com/RocketChat/Rocket.Chat/blob/develop/apps/meteor/app/lib/server/functions/validateUsername.ts
 const DEFAULT_USERNAME_VALIDATION = '[0-9a-zA-Z-_.]+';
 
-const isValidUsername = (username: string, pattern: string) => {
+const isValidUsername = (username: string, pattern: string): boolean => {
 	try {
 		return new RegExp(`^(${pattern || DEFAULT_USERNAME_VALIDATION})$`).test(username);
 	} catch {
@@ -77,7 +77,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		Accounts_AllowUsernameChange,
 		Accounts_CustomFields,
 		UTF8_User_Names_Validation,
-		isMasterDetail,
 		serverVersion,
 		user
 	} = useAppSelector(state => ({
