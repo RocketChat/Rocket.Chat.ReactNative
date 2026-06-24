@@ -55,7 +55,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 		try {
 			NavigationBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content');
 		} catch (error) {
-			// do nothing
+			// Do nothing
 		}
 	}
 	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
