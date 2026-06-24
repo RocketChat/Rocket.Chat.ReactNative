@@ -98,6 +98,10 @@ export default class RoomSubscription {
 			return;
 		}
 		try {
+			if (this.promises) {
+				const oldSubs = await this.promises;
+				oldSubs.forEach(sub => sub.unsubscribe().catch(() => {}));
+			}
 			this.promises = sdk.subscribeRoom(this.rid);
 			await this.promises;
 			if (!this.isAlive) {

@@ -122,7 +122,12 @@ describe('RoomSubscription', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockSubscribeRoom.mockResolvedValue([]);
 		sub = new RoomSubscription(rid);
+	});
+
+	afterEach(() => {
+		mockSubscribeRoom.mockReset();
 	});
 
 	describe('subscribe', () => {
@@ -180,7 +185,7 @@ describe('RoomSubscription', () => {
 			expect(mockSubscribeRoom).not.toHaveBeenCalled();
 		});
 
-		it('tracks the re-subscribed promise so unsubscribe tears down the fresh subscriptions, not the stale ones', async () => {
+		it('tears down stale subscriptions on reconnect and tracks fresh ones for later cleanup', async () => {
 			const staleSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
@@ -189,8 +194,42 @@ describe('RoomSubscription', () => {
 			await sub.handleConnected();
 			await sub.unsubscribe();
 
+			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
-			expect(staleSub.unsubscribe).not.toHaveBeenCalled();
+		});
+
+		it('does not accumulate subscriptions across repeated handleConnected calls (simulates sequential reopen)', async () => {
+			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
+
+			await sub.subscribe();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+
+			// First reopen → tears down [first], creates [second]
+			await sub.handleConnected();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
+			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(second.unsubscribe).not.toHaveBeenCalled();
+
+			// Second reopen → tears down [second], creates []
+			await sub.handleConnected();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
+			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+
+			// Final cleanup → empty batch, no more unsubscribes
+			await sub.unsubscribe();
+			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not call onStreamData inside handleConnected (listeners persist across reopen)', async () => {
+			await sub.subscribe();
+			mockOnStreamData.mockClear();
+
+			await sub.handleConnected();
+
+			expect(mockOnStreamData).not.toHaveBeenCalled();
 		});
 	});
 
