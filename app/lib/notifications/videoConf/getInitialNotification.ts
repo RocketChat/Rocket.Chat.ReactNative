@@ -5,6 +5,7 @@ import { DeviceEventEmitter, Platform } from 'react-native';
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import { store } from '../../store/auxStore';
 import NativeVideoConfModule from '../../native/NativeVideoConfAndroid';
+import { isNotificationProcessed, markNotificationAsProcessed } from '../deduplicator';
 
 /**
  * Sets up listener for video conference actions from native side.
@@ -16,6 +17,13 @@ export const setupVideoConfActionListener = (): (() => void) | undefined => {
 			try {
 				const data = JSON.parse(actionJson);
 				if (data?.notificationType === 'videoconf') {
+					const callId = data?.callId;
+					if (callId && isNotificationProcessed(callId)) {
+						return;
+					}
+					if (callId) {
+						markNotificationAsProcessed(callId);
+					}
 					store.dispatch(deepLinkingClickCallPush(data));
 				}
 			} catch (error) {
@@ -41,6 +49,13 @@ export const getInitialNotification = async (): Promise<boolean> => {
 			if (pendingAction) {
 				const data = JSON.parse(pendingAction);
 				if (data?.notificationType === 'videoconf') {
+					const callId = data?.callId;
+					if (callId && isNotificationProcessed(callId)) {
+						return false;
+					}
+					if (callId) {
+						markNotificationAsProcessed(callId);
+					}
 					store.dispatch(deepLinkingClickCallPush(data));
 					return true;
 				}
@@ -66,6 +81,19 @@ export const getInitialNotification = async (): Promise<boolean> => {
 				if (payload.ejson) {
 					const ejsonData = EJSON.parse(payload.ejson);
 					if (ejsonData?.notificationType === 'videoconf') {
+						const notificationId = notification.request.identifier;
+						const callId = ejsonData?.callId;
+
+						if (isNotificationProcessed(notificationId) || (callId && isNotificationProcessed(callId))) {
+							return false;
+						}
+
+						// Mark as processed
+						markNotificationAsProcessed(notificationId);
+						if (callId) {
+							markNotificationAsProcessed(callId);
+						}
+
 						// Accept/Decline actions or default tap (treat as accept)
 						let event = 'accept';
 						if (actionIdentifier === 'DECLINE_ACTION') {
@@ -83,3 +111,4 @@ export const getInitialNotification = async (): Promise<boolean> => {
 
 	return false;
 };
+

@@ -6,6 +6,7 @@ import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLin
 import { type INotification, SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
 import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
+import { isNotificationProcessed, markNotificationAsProcessed } from './deduplicator';
 
 interface IEjson {
 	rid: string;
@@ -24,6 +25,18 @@ export const onNotification = (push: INotification): void => {
 		if (push?.payload?.ejson) {
 			try {
 				const notification = EJSON.parse(push.payload.ejson);
+				const notificationId = push.identifier;
+				const callId = notification?.callId;
+
+				if (isNotificationProcessed(notificationId) || (callId && isNotificationProcessed(callId))) {
+					return;
+				}
+
+				markNotificationAsProcessed(notificationId);
+				if (callId) {
+					markNotificationAsProcessed(callId);
+				}
+
 				store.dispatch(
 					deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' })
 				);
@@ -40,6 +53,18 @@ export const onNotification = (push: INotification): void => {
 
 			// Handle video conf notification tap (default action) - treat as accept
 			if (notification?.notificationType === 'videoconf') {
+				const notificationId = push.identifier;
+				const callId = notification?.callId;
+
+				if (isNotificationProcessed(notificationId) || (callId && isNotificationProcessed(callId))) {
+					return;
+				}
+
+				markNotificationAsProcessed(notificationId);
+				if (callId) {
+					markNotificationAsProcessed(callId);
+				}
+
 				store.dispatch(deepLinkingClickCallPush({ ...notification, event: 'accept' }));
 				return;
 			}
