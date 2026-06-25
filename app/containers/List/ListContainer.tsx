@@ -6,7 +6,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 16
+		paddingTop: 16
 	}
 });
 
@@ -21,7 +21,7 @@ const ListContainer = ({ children, contentContainerStyle, ...props }: IListConta
 
 	return (
 		<ScrollView
-			contentContainerStyle={[contentContainerStyle || styles.container, { paddingBottom: Math.max(16, bottom) }]}
+			contentContainerStyle={[contentContainerStyle || styles.container, { paddingBottom: bottom }]}
 			scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			{...scrollPersistTaps}
 			{...props}>
