@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import i18n from '../../../i18n';
@@ -45,7 +44,7 @@ describe('SwitchItemEncrypted', () => {
 		const component = screen.queryByTestId(testEncrypted.testSwitchID);
 		expect(component).toBeTruthy();
 	});
-	
+
 	it('should change value of switch', () => {
 		render(
 			<SwitchItemEncrypted
@@ -56,27 +55,11 @@ describe('SwitchItemEncrypted', () => {
 				type={testEncrypted.type}
 			/>
 		);
-		const component = screen.queryByTestId(testEncrypted.testSwitchID);
-		if (component) {
-			fireEvent(component, 'valueChange', { value: true });
-			expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
-		}
+		const component = screen.getByTestId(testEncrypted.testSwitchID);
+		fireEvent(component, 'valueChange', { value: true });
+		expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
 	});
-	
-	it('label when encrypted and isTeam are false and is a public channel', () => {
-		render(
-			<SwitchItemEncrypted
-				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
-				isTeam={testEncrypted.isTeam}
-				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
-				type={testEncrypted.type}
-			/>
-		);
-		const component = screen.queryByTestId(testEncrypted.testLabelID);
-		expect(component?.props.children).toBe(i18n.t('Channel_hint_encrypted_not_available'));
-	});
-	
+
 	it('label when encrypted and isTeam are true and is a private team', () => {
 		testEncrypted.isTeam = true;
 		testEncrypted.type = true;

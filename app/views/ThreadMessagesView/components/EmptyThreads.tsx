@@ -1,5 +1,3 @@
-import React from 'react';
-
 import I18n from '../../../i18n';
 import BackgroundContainer from '../../../containers/BackgroundContainer';
 import { Filter } from '../filters';

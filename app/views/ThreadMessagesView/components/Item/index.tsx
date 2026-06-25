@@ -1,14 +1,14 @@
-import React from 'react';
 import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { type ReactElement } from 'react';
 
 import { useTheme } from '../../../../theme';
 import Avatar from '../../../../containers/Avatar';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
 import { MarkdownPreview } from '../../../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../../../lib/methods/helpers/room';
 import ThreadDetails from '../../../../containers/ThreadDetails';
-import { TThreadModel } from '../../../../definitions';
+import { type TThreadModel } from '../../../../definitions';
+import Touch from '../../../../containers/Touch';
 import styles from './styles';
 
 export interface IItem {
@@ -20,7 +20,7 @@ export interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): React.ReactElement => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): ReactElement => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
@@ -29,7 +29,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 	}
 
 	return (
-		<Touchable
+		<Touch
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
 			style={{ backgroundColor: themes[theme].surfaceRoom }}>
@@ -43,13 +43,13 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />
+						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} />
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
 					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />
 				</View>
 			</View>
-		</Touchable>
+		</Touch>
 	);
 };
 

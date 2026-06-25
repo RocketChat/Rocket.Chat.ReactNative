@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { ROOMS } from './actionsTypes';
 
@@ -43,24 +43,5 @@ export function roomsFailure(err: string): IRoomsFailure {
 export function roomsRefresh(): Action {
 	return {
 		type: ROOMS.REFRESH
-	};
-}
-
-export function setSearch(searchText: string): ISetSearch {
-	return {
-		type: ROOMS.SET_SEARCH,
-		searchText
-	};
-}
-
-export function openSearchHeader(): Action {
-	return {
-		type: ROOMS.OPEN_SEARCH_HEADER
-	};
-}
-
-export function closeSearchHeader(): Action {
-	return {
-		type: ROOMS.CLOSE_SEARCH_HEADER
 	};
 }

@@ -1,15 +1,15 @@
-import moment from 'moment';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useContext, memo } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
+import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
-import messageStyles from './styles';
 import { messageHaveAuthorName } from './utils';
+import MessageTime from './Time';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		flexShrink: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		gap: 4
 	},
 	alias: {
 		fontSize: 14,
@@ -64,7 +65,7 @@ interface IMessageUser {
 	isTranslated: boolean;
 }
 
-const User = React.memo(
+const User = memo(
 	({
 		isHeader,
 		useRealName,
@@ -79,13 +80,15 @@ const User = React.memo(
 		isTranslated,
 		...props
 	}: IMessageUser) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
+		const { isLargeFontScale } = useResponsiveLayout();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
-			const time = moment(ts).format(timeFormat);
 			const itsMe = author?._id === user.id;
 
 			const onUserPress = () => {
@@ -113,12 +116,12 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+					<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						<Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
-					</TouchableOpacity>
+						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
+					</Pressable>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}

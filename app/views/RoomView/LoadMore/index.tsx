@@ -1,16 +1,16 @@
-import React, { ReactElement, useEffect } from 'react';
+import { memo, type ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { MessageTypeLoad } from '../../../lib/constants';
-import { MessageType, RoomType } from '../../../definitions';
+import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { type MessageType, type RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import MessageSeparator from '../../../containers/MessageSeparator';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	button: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = React.memo(
+const LoadMore = memo(
 	({
 		rid,
 		t,
@@ -42,7 +42,7 @@ const LoadMore = React.memo(
 		separator?: ReactElement | null;
 		dateSeparator?: Date | string | null;
 		showUnreadSeparator?: boolean;
-	}): React.ReactElement => {
+	}): ReactElement => {
 		const { colors } = useTheme();
 		const dispatch = useDispatch();
 		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));

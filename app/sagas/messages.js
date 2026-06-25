@@ -1,11 +1,13 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 
 import { MESSAGES } from '../actions/actionsTypes';
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import { Services } from '../lib/services';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
+import { editMessage } from '../lib/services/restApi';
+import { createDirectMessage } from '../lib/methods/createDirectMessage';
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
@@ -14,14 +16,14 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const subsCollection = db.get('subscriptions');
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
 
-		const isMasterDetail = yield select(state => state.app.isMasterDetail);
+		const isMasterDetail = getIsMasterDetail();
 
 		if (subscriptions.length) {
-			goRoom({ item: subscriptions[0], isMasterDetail, popToRoot: true, messageId: message.id });
+			goRoom({ item: subscriptions[0], isMasterDetail, messageId: message.id });
 		} else {
-			const result = yield Services.createDirectMessage(username);
+			const result = yield createDirectMessage(username);
 			if (result?.success) {
-				goRoom({ item: result?.room, isMasterDetail, popToRoot: true, messageId: message.id });
+				goRoom({ item: result?.room, isMasterDetail, messageId: message.id });
 			}
 		}
 	} catch (e) {

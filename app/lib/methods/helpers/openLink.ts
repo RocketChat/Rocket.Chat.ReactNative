@@ -2,8 +2,8 @@ import { Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
-import { themes } from '../../constants';
-import { TSupportedThemes } from '../../../theme';
+import { themes } from '../../constants/colors';
+import { type TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
 import ensureSecureProtocol from './ensureSecureProtocol';
 import log from './log';
@@ -23,15 +23,15 @@ const appSchemeURL = (url: string, browser: string): string => {
 	const { protocol } = parsedUrl;
 	const isSecure = ['https:'].includes(protocol);
 
-	if (browser === 'googlechrome') {
+	if (browser === 'Chrome') {
 		if (!isSecure) {
 			schemeUrl = url.replace(protocol, scheme.chrome);
 		} else {
 			schemeUrl = url.replace(protocol, scheme.chromeSecure);
 		}
-	} else if (browser === 'firefox') {
+	} else if (browser === 'Firefox') {
 		schemeUrl = `${scheme.firefox}//open-url?url=${url}`;
-	} else if (browser === 'brave') {
+	} else if (browser === 'Brave') {
 		schemeUrl = `${scheme.brave}//open-url?url=${url}`;
 	}
 
@@ -39,8 +39,8 @@ const appSchemeURL = (url: string, browser: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
-	const telRegExp = new RegExp(/^(tel:)/);
-	if (telRegExp.test(url)) {
+	const phoneOrEmailRegExp = new RegExp(/^(tel:|mailto:)/);
+	if (phoneOrEmailRegExp.test(url)) {
 		try {
 			await Linking.openURL(url);
 			return;
@@ -52,7 +52,7 @@ const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise
 	url = ensureSecureProtocol(url);
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
-		if (browser === 'inApp') {
+		if (browser === 'In_app') {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].surfaceNeutral,
 				controlsColor: themes[theme].fontSecondaryInfo,

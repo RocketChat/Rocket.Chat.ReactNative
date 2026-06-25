@@ -1,0 +1,5987 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="John Doe. Online."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#158D65",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Online"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-Online"
+          >
+            Online
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="John Doe. Away."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#AC892F",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Away"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-Away"
+          >
+            Away
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="John Doe. Busy."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#D40C26",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Busy"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-Busy"
+          >
+            Busy
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="John Doe. Offline."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Offline"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-Offline"
+          >
+            Offline
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Online John Doe In a meeting."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#158D65",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="In a meeting"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-In a meeting"
+          >
+            In a meeting
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Online John Doe In a meeting, Until Jun 15, 7:00 PM."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#158D65",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 12,
+                  },
+                  [
+                    {
+                      "lineHeight": 12,
+                    },
+                    {
+                      "marginRight": 4,
+                    },
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityLabel="In a meeting"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 12,
+                  },
+                ]
+              }
+              testID="markdown-preview-In a meeting"
+            >
+              In a meeting
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Away John Doe having lunch (clock icon should be visible), Until 1:00 PM."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#AC892F",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 12,
+                  },
+                  [
+                    {
+                      "lineHeight": 12,
+                    },
+                    {
+                      "marginRight": 4,
+                    },
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityLabel="having lunch (clock icon should be visible)"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 12,
+                  },
+                ]
+              }
+              testID="markdown-preview-having lunch (clock icon should be visible)"
+            >
+              having lunch (clock icon should be visible)
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Online John Doe In a meeting (past expiry — clock icon should be hidden)."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#158D65",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="In a meeting (past expiry — clock icon should be hidden)"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-In a meeting (past expiry — clock icon should be hidden)"
+          >
+            In a meeting (past expiry — clock icon should be hidden)
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Icons should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel private channel ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="private channel"
+            >
+              private channel
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="public channel public channel ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="public channel"
+            >
+              public channel
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Discussion discussion ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityLabel="discussion"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="discussion"
+            >
+              discussion
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Omnichannel omnichannel ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="omnichannel"
+            >
+              omnichannel
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private team private team ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="private team"
+            >
+              private team
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Team public team ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="public team"
+            >
+              public team
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="Message group dm ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="group dm"
+            >
+              group dm
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel online dm ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="online dm"
+            >
+              online dm
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel away dm ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="away dm"
+            >
+              away dm
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel busy dm ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="busy dm"
+            >
+              busy dm
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel loading dm ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="loading dm"
+            >
+              loading dm
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel offline dm ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="offline dm"
+            >
+              offline dm
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel classified ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="classified"
+            >
+              classified
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private team classified ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="classified"
+            >
+              classified
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Themes should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-subtitle"
+          >
+            subtitle
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#2D3039",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#F2F3F5",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#F2F3F5",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#C1C7D0",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-subtitle"
+          >
+            subtitle
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#16181a",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#F2F3F5",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#F2F3F5",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#E4E7EA",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-subtitle"
+          >
+            subtitle
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Thread should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title parent title."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="title"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="markdown-preview-title"
+            >
+              title
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              parent title
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel markdown
+preview
+#3
+4
+5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="markdown preview #3 4 5"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="markdown
+preview
+#3
+4
+5"
+            >
+              markdown preview #3 4 5
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="title"
+            >
+              title
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-subtitle"
+          >
+            subtitle
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+            testID="markdown-preview-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Typing should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                }
+              }
+            >
+              user 1
+               
+            </Text>
+            is typing
+            ...
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                }
+              }
+            >
+              user 1 and user 2
+               
+            </Text>
+            are typing
+            ...
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <ExternalKeyboardView
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                }
+              }
+            >
+              user 1, user 2, user 3, user 4, user 5
+               
+            </Text>
+            are typing
+            ...
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+]
+`;

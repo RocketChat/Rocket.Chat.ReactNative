@@ -1,24 +1,26 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
+import { type NavigatorScreenParams } from '@react-navigation/core';
 
 import {
-	IAttachment,
-	ICannedResponse,
-	ILivechatDepartment,
-	ILivechatTag,
-	IMessage,
-	IServer,
-	ISubscription,
-	SubscriptionType,
-	TAnyMessageModel,
-	TChangeAvatarViewContext,
-	TDataSelect,
-	TMessageAction,
-	TSubscriptionModel,
-	TThreadModel
+	type IAttachment,
+	type ICannedResponse,
+	type ILivechatDepartment,
+	type ILivechatTag,
+	type IMessage,
+	type IServer,
+	type ISubscription,
+	type SubscriptionType,
+	type TAnyMessageModel,
+	type TChangeAvatarViewContext,
+	type TDataSelect,
+	type TMessageAction,
+	type TSubscriptionModel,
+	type TThreadModel
 } from '../definitions';
-import { ModalStackParamList } from './MasterDetailStack/types';
-import { TNavigation } from './stackType';
+import { type ModalStackParamList } from './MasterDetailStack/types';
+import { type TNavigation } from './stackType';
 
+// Hand-written rather than StaticParamList-inferred: views use composite navigation props spanning
+// cross-stack destinations (ModalStackNavigator, E2E stacks), and explicit params avoid implicit `any`.
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
@@ -43,7 +45,7 @@ export type ChatsStackParamList = {
 				usedCannedResponse?: string;
 				status?: string;
 		  }
-		| undefined; // Navigates back to RoomView already on stack
+		| undefined;
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
@@ -119,6 +121,9 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
+	E2EEToggleRoomView: {
+		rid: string;
+	};
 	NotificationPrefView: {
 		rid: string;
 		room: TSubscriptionModel;
@@ -132,7 +137,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser: any; // TODO: Change
+		roomUser: any;
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -143,18 +148,16 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	CreateChannelView: {
-		isTeam?: boolean; // TODO: To check
+		isTeam?: boolean;
 		teamId?: string;
 	};
 	AddChannelTeamView: {
 		teamId: string;
+		rid: string;
+		t: 'c' | 'p';
 	};
 	AddExistingChannelView: {
 		teamId: string;
-	};
-	MarkdownTableView: {
-		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
-		tableWidth: number;
 	};
 	ReadReceiptsView: {
 		messageId: string;
@@ -197,14 +200,17 @@ export type ProfileStackParamList = {
 		room?: ISubscription;
 		t?: SubscriptionType;
 	};
+	ChangePasswordView: undefined;
 };
 
+// Cross-stack entries (ProfileView, DisplayPrefsView, AccessibilityAndAppearanceView) are reachable
+// from SettingsView via the drawer/accessibility stack.
 export type SettingsStackParamList = {
+	LegalView: undefined;
 	SettingsView: undefined;
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
 	LanguageView: undefined;
-	ThemeView: undefined;
 	DefaultBrowserView: undefined;
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
@@ -212,10 +218,17 @@ export type SettingsStackParamList = {
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type AdminPanelStackParamList = {
 	AdminPanelView: undefined;
+};
+
+export type AccessibilityStackParamList = {
+	AccessibilityAndAppearanceView: undefined;
+	DisplayPrefsView: undefined;
+	ThemeView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
@@ -227,20 +240,21 @@ export type DrawerParamList = {
 	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
 	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
 	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
-	DisplayPrefStackNavigator: NavigatorScreenParams<DisplayPrefStackParamList>;
+	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
 };
 
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
+	SelectedUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
 		nextAction?: Function;
-	}; // TODO: Change
+		showSkipText?: boolean;
+	};
 	CreateChannelView?: {
-		isTeam?: boolean; // TODO: To check
+		isTeam?: boolean;
 		teamId?: string;
 	};
 	CreateDiscussionView: {
@@ -262,6 +276,7 @@ export type E2ESaveYourPasswordStackParamList = {
 
 export type E2EEnterYourPasswordStackParamList = {
 	E2EEnterYourPasswordView: undefined;
+	E2EEncryptionSecurityView: undefined;
 };
 
 export type InsideStackParamList = {
@@ -283,40 +298,9 @@ export type InsideStackParamList = {
 		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 	ModalBlockView: {
-		data: any; // TODO: Change;
+		data: any;
 	};
+	CallView: undefined;
 };
 
-export type OutsideParamList = {
-	NewServerView: undefined;
-	WorkspaceView: undefined;
-	LoginView: {
-		title: string;
-		username?: string;
-	};
-	ForgotPasswordView: {
-		title: string;
-	};
-	SendEmailConfirmationView: {
-		user?: string;
-	};
-	RegisterView: {
-		title: string;
-		username?: string;
-	};
-	LegalView: undefined;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-};
-
-export type OutsideModalParamList = {
-	OutsideStack: NavigatorScreenParams<OutsideParamList>;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-};
+export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';

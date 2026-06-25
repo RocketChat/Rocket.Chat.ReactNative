@@ -1,37 +1,40 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { ResizeMode, Video } from 'expo-av';
-import React from 'react';
+import { useCallback, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
-import { isImageBase64 } from '../lib/methods';
+import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
+import AltTextLabel from '../containers/AltTextLabel';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
-import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
-import { IAttachment } from '../definitions';
+import { type IAttachment } from '../definitions';
 import I18n from '../i18n';
-import { useAppSelector } from '../lib/hooks';
+import { useAltTextSupported } from '../lib/hooks/useAltTextSupported';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
-import { TNavigation } from '../stacks/stackType';
+import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
 
 const RenderContent = ({
 	setLoading,
-	attachment
+	attachment,
+	altText
 }: {
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 	attachment: IAttachment;
+	altText?: string;
 }) => {
-	const videoRef = React.useRef<Video>(null);
+	const videoRef = useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
@@ -44,7 +47,7 @@ const RenderContent = ({
 		shallowEqual
 	);
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		const blurSub = navigation.addListener('blur', () => {
 			if (videoRef.current && videoRef.current.stopAsync) {
 				videoRef.current.stopAsync();
@@ -58,12 +61,15 @@ const RenderContent = ({
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
+		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(url);
 		return (
 			<ImageViewer
 				uri={uri}
 				onLoadEnd={() => setLoading(false)}
 				width={width}
 				height={height - insets.top - insets.bottom - (headerHeight || 0)}
+				altText={altText}
+				isAnimated={isAnimated}
 			/>
 		);
 	}
@@ -93,13 +99,15 @@ const RenderContent = ({
 	return null;
 };
 
-const AttachmentView = (): React.ReactElement => {
+const AttachmentView = (): ReactElement => {
 	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const {
 		params: { attachment }
 	} = useAppRoute<TNavigation, 'AttachmentView'>();
-	const [loading, setLoading] = React.useState(true);
+	const [loading, setLoading] = useState(true);
 	const { colors } = useTheme();
+	const isAltTextSupported = useAltTextSupported();
+	const altText = isAltTextSupported && attachment.image_url ? attachment.description || attachment.altText : undefined;
 
 	const { baseUrl, user, Allow_Save_Media_to_Gallery } = useAppSelector(
 		state => ({
@@ -110,34 +118,25 @@ const AttachmentView = (): React.ReactElement => {
 		shallowEqual
 	);
 
-	const setHeader = () => {
-		let { title } = attachment;
+	const getTitle = useCallback(() => {
+		const { image_url, video_url, title_link, title } = attachment;
 
-		try {
-			if (title) {
-				title = decodeURI(title);
+		if (title) {
+			try {
+				return decodeURI(title);
+			} catch {
+				return title;
 			}
-		} catch {
-			// Do nothing
 		}
-		const options = {
-			title: title || '',
-			headerLeft: () => (
-				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.fontDefault} />
-			),
-			headerRight: () =>
-				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url) ? (
-					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
-				) : null
-		};
-		navigation.setOptions(options);
-	};
 
-	React.useLayoutEffect(() => {
-		setHeader();
-	}, [navigation]);
+		const url = image_url ?? video_url ?? title_link;
+		if (!url) return '';
 
-	const handleSave = async () => {
+		const parts = url.split('/');
+		return parts.at(-1);
+	}, [attachment]);
+
+	const handleSave = useCallback(async () => {
 		const { title_link, image_url, image_type, video_url, video_type } = attachment;
 		// When the attachment is a video, the video_url refers to local file and the title_link to the link
 		const url = video_url || title_link || image_url;
@@ -179,12 +178,36 @@ const AttachmentView = (): React.ReactElement => {
 			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		setLoading(false);
-	};
+	}, [attachment, baseUrl, user.id, user.token]);
+
+	useLayoutEffect(() => {
+		const title = getTitle();
+		navigation.setOptions({
+			title: title || '',
+			headerLeft: () => (
+				<HeaderButton.CloseModal
+					testID='close-attachment-view'
+					navigation={navigation}
+					color={colors.fontDefault}
+					style={{ marginRight: -12 }}
+				/>
+			),
+			headerRight:
+				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
+					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
+					: undefined
+		});
+	}, [Allow_Save_Media_to_Gallery, attachment.image_url, colors.fontDefault, getTitle, handleSave, navigation]);
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
-			<StatusBar barStyle='light-content' backgroundColor={colors.surfaceDark} />
-			<RenderContent attachment={attachment} setLoading={setLoading} />
+			<RenderContent attachment={attachment} setLoading={setLoading} altText={altText} />
+
+			{altText ? (
+				<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
+					<AltTextLabel testID='attachment-view-alt-text-label' altText={altText} />
+				</View>
+			) : null}
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>
 	);

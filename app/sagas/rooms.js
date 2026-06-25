@@ -8,7 +8,8 @@ import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import buildMessage from '../lib/methods/helpers/buildMessage';
-import { getRooms, subscribeRooms } from '../lib/methods';
+import { getRooms } from '../lib/methods/getRooms';
+import { subscribeRooms } from '../lib/methods/subscribeRooms';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -16,7 +17,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	try {
 		const serverRecord = yield serversCollection.find(server);
 
-		return serversDB.action(async () => {
+		return serversDB.write(async () => {
 			await serverRecord.update(record => {
 				record.roomsUpdatedAt = newRoomsUpdatedAt;
 			});
@@ -82,6 +83,9 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				...subsToUpdate.map(subscription => {
 					try {
 						const newSub = subscriptions.find(s => s._id === subscription._id);
+						if (!newSub) {
+							return null;
+						}
 						return subscription.prepareUpdate(() => {
 							if (newSub.announcement) {
 								if (newSub.announcement !== subscription.announcement) {
@@ -123,8 +127,8 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				})
 			];
 
-			yield db.action(async () => {
-				await db.batch(...allRecords);
+			yield db.write(async () => {
+				await db.batch(allRecords);
 			});
 		}
 

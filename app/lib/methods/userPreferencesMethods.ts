@@ -1,4 +1,4 @@
-import { IPreferences } from '../../definitions';
+import { type IPreferences } from '../../definitions';
 import userPreferences from './userPreferences';
 
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';

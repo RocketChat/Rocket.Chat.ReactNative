@@ -1,13 +1,13 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, type MutableRefObject } from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { Subscription, Observable } from 'rxjs';
+import { type Subscription, type Observable } from 'rxjs';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { Services } from '../../../lib/services';
-import { TThreadModel } from '../../../definitions';
+import { getSyncThreadsList, getThreadsList } from '../../../lib/services/restApi';
+import { type TThreadModel } from '../../../definitions';
 import { sanitizeLikeString } from '../../../lib/database/utils';
-import { Filter } from '../filters';
-import { ISearchThreadMessages } from '../definitions';
+import { type Filter } from '../filters';
+import { type ISearchThreadMessages } from '../definitions';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
 import updateThreads from '../methods/updateThreads';
@@ -16,7 +16,7 @@ interface IUseThreadsProps {
 	search: ISearchThreadMessages;
 	currentFilter: Filter;
 	subscription: any;
-	threadsSubscription: React.MutableRefObject<Subscription | null>;
+	threadsSubscription: MutableRefObject<Subscription | null>;
 	rid: string;
 }
 
@@ -51,7 +51,7 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThre
 		setLoading(true);
 
 		try {
-			const result = await Services.getThreadsList({
+			const result = await getThreadsList({
 				rid,
 				count: API_FETCH_COUNT,
 				offset,
@@ -76,7 +76,7 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThre
 	const sync = async (updatedSince: Date) => {
 		setLoading(true);
 		try {
-			const result = await Services.getSyncThreadsList({
+			const result = await getSyncThreadsList({
 				rid,
 				updatedSince: updatedSince.toISOString()
 			});

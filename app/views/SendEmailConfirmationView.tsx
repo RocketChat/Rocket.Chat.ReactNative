@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { OutsideParamList } from '../stacks/types';
+import { type OutsideParamList } from '../stacks/types';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
@@ -8,12 +10,13 @@ import I18n from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { IBaseScreen } from '../definitions';
-import { Services } from '../lib/services';
+import { sendConfirmationEmail } from '../lib/services/restApi';
 
-type ISendEmailConfirmationViewProps = IBaseScreen<OutsideParamList, 'SendEmailConfirmationView'>;
+type SendEmailConfirmationViewProps = StaticScreenProps<{ user?: string }>;
 
-const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmationViewProps): React.ReactElement => {
+const SendEmailConfirmationView = ({ route }: SendEmailConfirmationViewProps) => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'SendEmailConfirmationView'>>();
+
 	const [email, setEmail] = useState('');
 	const [invalidEmail, setInvalidEmail] = useState(true);
 	const [isFetching, setIsFetching] = useState(false);
@@ -31,7 +34,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 		}
 		try {
 			setIsFetching(true);
-			const result = await Services.sendConfirmationEmail(email);
+			const result = await sendConfirmationEmail(email);
 			if (result.success) {
 				navigation.pop();
 				showErrorAlert(I18n.t('Verify_email_desc'));
@@ -51,7 +54,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 		if (route.params?.user) {
 			validate(route.params.user);
 		}
-	}, []);
+	}, [navigation, route.params?.user]);
 
 	return (
 		<FormContainer testID='send-email-confirmation-view'>

@@ -1,6 +1,6 @@
-import { IServerSubscription, RoomType } from '../../definitions';
+import { type IServerSubscription, type RoomType } from '../../definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { Services } from '../services';
+import { getRoomInfo as getRoomInfoService } from '../services/restApi';
 
 export interface IRoomInfoResult {
 	rid: IServerSubscription['rid'];
@@ -21,7 +21,7 @@ const getRoomInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 		};
 	}
 
-	result = await Services.getRoomInfo(rid);
+	result = await getRoomInfoService(rid);
 	if (result?.success) {
 		return {
 			rid,

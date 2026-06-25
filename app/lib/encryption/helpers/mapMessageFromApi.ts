@@ -1,4 +1,4 @@
-import { IMessage } from '../../../definitions';
+import { type IMessage } from '../../../definitions';
 
 export const mapMessageFromAPI = ({ attachments, tlm, ts, _updatedAt, ...message }: IMessage) => ({
 	...message,

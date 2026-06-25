@@ -1,25 +1,69 @@
-import React from 'react';
-import { FlatList } from 'react-native-gesture-handler';
+import { memo, type ReactElement } from 'react';
+import { FlatList } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { IEmoji } from '../../definitions/IEmoji';
+import { type ICustomEmojis, type IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
 import { EMOJI_BUTTON_SIZE } from './styles';
+import { emojisByCategory } from '../../lib/constants/emojis';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
+import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
 
-interface IEmojiCategoryProps {
-	emojis: IEmoji[];
-	onEmojiSelected: (emoji: IEmoji) => void;
-	tabLabel?: string; // needed for react-native-scrollable-tab-view only
-	parentWidth: number;
-}
+// Minimum visible space below the last emoji row when the picker is rendered
+// inside a bottom sheet: one emoji row + a small offset, so the last row
+// clears the sheet's bottom interaction area. The container's
+// `marginBottom: safeAreaBottom` already supplies part of this on devices with
+// a home indicator; the FlatList only tops up whatever is missing.
+const BOTTOM_SHEET_EXTRA_OFFSET = 24;
+const MIN_BOTTOM_SHEET_BREATHING_ROOM = EMOJI_BUTTON_SIZE + BOTTOM_SHEET_EXTRA_OFFSET;
 
-const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryProps): React.ReactElement | null => {
+const useEmojis = (category?: TEmojiCategory) => {
+	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
+	const allCustomEmojis: ICustomEmojis = useAppSelector(
+		state => state.customEmojis,
+		() => true
+	);
+	if (!category) {
+		return [];
+	}
+	const customEmojis = Object.keys(allCustomEmojis)
+		.filter(item => item === allCustomEmojis[item].name)
+		.map(item => ({
+			name: allCustomEmojis[item].name,
+			extension: allCustomEmojis[item].extension
+		}));
+
+	if (!loaded) {
+		return [];
+	}
+	if (category === 'frequentlyUsed') {
+		return frequentlyUsed;
+	}
+	if (category === 'custom') {
+		return customEmojis;
+	}
+	return emojisByCategory[category];
+};
+
+const EmojiCategory = ({
+	parentWidth,
+	category,
+	emojis,
+	onEmojiSelected,
+	bottomSheet = false
+}: IEmojiCategoryProps): ReactElement | null => {
+	const items = useEmojis(category);
+	const { bottom } = useSafeAreaInsets();
+
 	if (!parentWidth) {
 		return null;
 	}
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
+	const contentPaddingBottom = bottomSheet ? Math.max(0, MIN_BOTTOM_SHEET_BREATHING_ROOM - bottom) : undefined;
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
@@ -27,16 +71,18 @@ const EmojiCategory = ({ onEmojiSelected, emojis, parentWidth }: IEmojiCategoryP
 		<FlatList
 			key={`emoji-category-${parentWidth}`}
 			keyExtractor={item => (typeof item === 'string' ? item : item.name)}
-			data={emojis}
+			data={emojis || items}
 			renderItem={renderItem}
 			numColumns={numColumns}
-			initialNumToRender={45}
-			removeClippedSubviews
-			contentContainerStyle={{ marginHorizontal }}
+			contentContainerStyle={{
+				marginHorizontal,
+				...(contentPaddingBottom != null && { paddingBottom: contentPaddingBottom })
+			}}
 			{...scrollPersistTaps}
-			keyboardDismissMode={'none'}
+			keyboardDismissMode='none'
+			nestedScrollEnabled
 		/>
 	);
 };
 
-export default EmojiCategory;
+export default memo(EmojiCategory);

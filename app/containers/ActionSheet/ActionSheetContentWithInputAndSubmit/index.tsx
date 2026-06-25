@@ -1,9 +1,8 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState, useRef, createRef, type ReactElement } from 'react';
+import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
 
-import { CustomIcon, TIconsName } from '../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
@@ -12,24 +11,25 @@ import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
 	subtitleText: {
-		fontSize: 14,
 		...sharedStyles.textRegular,
-		marginBottom: 10
+		fontSize: 16,
+		lineHeight: 24
 	},
 	buttonSeparator: {
-		marginRight: 8
+		marginRight: 12
 	},
 	footerButtonsContainer: {
 		flexDirection: 'row',
 		paddingTop: 16
 	},
 	titleContainerText: {
+		...sharedStyles.textBold,
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		lineHeight: 24
 	},
 	titleContainer: {
 		paddingRight: 80,
-		marginBottom: 16,
+		marginBottom: 12,
 		flexDirection: 'row',
 		alignItems: 'center'
 	}
@@ -44,7 +44,7 @@ const FooterButtons = ({
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = '',
 	testID = ''
-}): React.ReactElement => {
+}): ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>
@@ -53,8 +53,8 @@ const FooterButtons = ({
 					styles.buttonSeparator,
 					{ flex: 1, backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }
 				]}
-				color={colors.backdropColor}
 				title={cancelTitle}
+				color={colors.buttonFontSecondary}
 				onPress={cancelAction}
 				testID={`${testID}-cancel`}
 			/>
@@ -84,7 +84,8 @@ const ActionSheetContentWithInputAndSubmit = ({
 	confirmBackgroundColor,
 	showInput = true,
 	inputs = [],
-	isDisabled
+	isDisabled,
+	autoComplete = undefined
 }: {
 	onSubmit: (inputValue: string | string[]) => void;
 	onCancel?: () => void;
@@ -96,15 +97,16 @@ const ActionSheetContentWithInputAndSubmit = ({
 	confirmTitle?: string;
 	iconName?: TIconsName;
 	iconColor?: string;
-	customText?: React.ReactElement;
+	customText?: ReactElement;
 	confirmBackgroundColor?: string;
 	showInput?: boolean;
 	inputs?: { placeholder: string; secureTextEntry?: boolean; key: string }[];
 	isDisabled?: (inputValues: string[]) => boolean;
-}): React.ReactElement => {
+	autoComplete?: TextInputProps['autoComplete'];
+}): ReactElement => {
 	const { colors } = useTheme();
 	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
-	const inputRefs = useRef(inputs.map(() => React.createRef()));
+	const inputRefs = useRef(inputs.map(() => createRef()));
 
 	const handleInputChange = (value: string, index: number) => {
 		const newInputValues = [...inputValues];
@@ -120,7 +122,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 				<FormTextInput
 					key={inputConfig.key}
 					value={inputValues[index]}
-					placeholder={inputConfig.placeholder}
 					onChangeText={value => handleInputChange(value, index)}
 					onSubmitEditing={() => {
 						if (index < inputs.length - 1) {
@@ -135,7 +136,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 					inputRef={inputRefs.current[index] as any}
 					testID={`${testID}-input-${inputConfig.key}`}
 					secureTextEntry={inputConfig.secureTextEntry}
-					bottomSheet={isIOS}
 				/>
 			));
 		}
@@ -143,7 +143,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 		return (
 			<FormTextInput
 				value={inputValues[0]}
-				placeholder={placeholder}
 				onChangeText={value => handleInputChange(value, 0)}
 				onSubmitEditing={() => {
 					setTimeout(() => {
@@ -151,9 +150,11 @@ const ActionSheetContentWithInputAndSubmit = ({
 					}, 100);
 					if (inputValues[0]) onSubmit(inputValues[0]);
 				}}
+				accessibilityLabel={placeholder}
+				autoComplete={autoComplete}
 				testID={`${testID}-input`}
 				secureTextEntry={secureTextEntry}
-				bottomSheet={isIOS}
+				containerStyle={{ marginTop: 12, marginBottom: 36 }}
 			/>
 		);
 	};
@@ -164,9 +165,9 @@ const ActionSheetContentWithInputAndSubmit = ({
 	return (
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<>
-				<View style={styles.titleContainer}>
+				<View accessible accessibilityLabel={title} style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 16 : 0 }]}>{title}</Text>
+					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
 				</View>
 				{description ? <Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text> : null}
 				{customText}

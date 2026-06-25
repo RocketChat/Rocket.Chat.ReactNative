@@ -1,14 +1,21 @@
-import React, { useCallback, useMemo } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { memo, type ReactElement } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardFocusView } from 'react-native-external-keyboard';
 
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useIsAccessibilityNavigationEnabled } from '../../lib/hooks/useIsAccessibilityNavigationEnabled';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { CustomIcon } from '../CustomIcon';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
-import { isIOS } from '../../lib/methods/helpers';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
+import { type IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -23,6 +30,7 @@ const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		justifyContent: 'center'
 	},
 	titleContainer: {
@@ -39,13 +47,17 @@ const styles = StyleSheet.create({
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
+	},
+	clockIcon: {
+		marginRight: 4
 	}
 });
 
 type TRoomHeaderSubTitle = {
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	subtitle?: string;
-	renderFunc?: () => React.ReactElement;
+	formattedStatusExpiry?: string;
+	renderFunc?: () => ReactElement;
 	scale: number;
 };
 
@@ -60,6 +72,7 @@ type TRoomHeaderHeaderTitle = {
 interface IRoomHeader {
 	title?: string;
 	subtitle?: string;
+	statusExpiresAt?: string;
 	type: string;
 	width: number;
 	height: number;
@@ -68,17 +81,20 @@ interface IRoomHeader {
 	tmid?: string;
 	teamMain?: boolean;
 	status?: TUserStatus;
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	isGroupChat?: boolean;
 	parentTitle?: string;
-	onPress: Function;
+	onPress: () => void;
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
 	rightButtonsWidth?: number;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+type IRoomHeaderProps = IRoomHeader;
+
+const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -104,18 +120,28 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 	// subtitle
 	if (subtitle) {
+		if (formattedStatusExpiry) {
+			return (
+				<View style={styles.titleContainer}>
+					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={styles.clockIcon} />
+					<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />
+				</View>
+			);
+		}
 		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
+	const { isLargeFontScale } = useResponsiveLayout();
+
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
+			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
 				{title}
 			</Text>
 		);
@@ -124,80 +150,96 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
-const Header = React.memo(
-	({
-		title,
-		subtitle,
-		parentTitle,
-		type,
-		status,
-		width,
-		height,
-		roomUserId,
-		prid,
-		tmid,
-		onPress,
+const Header = ({
+	title,
+	subtitle,
+	statusExpiresAt,
+	parentTitle,
+	type,
+	status,
+	width,
+	height,
+	roomUserId,
+	prid,
+	tmid,
+	onPress,
+	isGroupChat,
+	teamMain,
+	testID,
+	usersTyping = [],
+	sourceType,
+	disabled,
+	abacAttributes
+}: IRoomHeaderProps) => {
+	'use memo';
+
+	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
+		prid,
+		roomUserId,
+		status,
 		teamMain,
-		testID,
-		usersTyping = [],
-		sourceType,
-		disabled,
-		rightButtonsWidth = 0
-	}: IRoomHeader) => {
-		const { colors } = useTheme();
-		const portrait = height > width;
-		let scale = 1;
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		type
+	});
+	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
+	const portrait = height > width;
+	let scale = 1;
+	const isMasterDetail = useMasterDetail();
+	// Only move focus to the header for accessibility navigation (screen reader or physical
+	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
+	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
+	const formattedStatusExpiry = formatStatusExpiry(statusExpiresAt);
+	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
+	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
+		? `${subtitleAccessibilityLabel || ''}, ${formattedStatusExpiry}`
+		: subtitleAccessibilityLabel || '';
+	const accessibilityLabel =
+		type === 'd' && subtitleAccessibilityLabel === statusAccessibilityLabel
+			? `${title}. ${fullSubtitleAccessibilityLabel}.`
+			: `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel}.`;
 
-		if (!portrait && !tmid && !isMasterDetail) {
-			if (usersTyping.length > 0 || subtitle) {
-				scale = 0.8;
-			}
+	if (!portrait && !tmid && !isMasterDetail) {
+		if (usersTyping.length > 0 || subtitle) {
+			scale = 0.8;
 		}
+	}
 
-		let renderFunc;
-		if (tmid) {
-			renderFunc = () => (
-				<View style={styles.titleContainer}>
-					<RoomTypeIcon
-						userId={roomUserId}
-						type={prid ? 'discussion' : type}
-						isGroupChat={isGroupChat}
-						status={status}
-						teamMain={teamMain}
-					/>
-					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-						{parentTitle}
-					</Text>
-				</View>
-			);
-		}
+	let renderFunc;
+	if (tmid) {
+		renderFunc = () => (
+			<View style={styles.titleContainer}>
+				<RoomTypeIcon
+					userId={roomUserId}
+					type={prid ? 'discussion' : type}
+					isGroupChat={isGroupChat}
+					status={status}
+					teamMain={teamMain}
+					abacAttributes={abacAttributes}
+				/>
+				<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					{parentTitle}
+				</Text>
+			</View>
+		);
+	}
 
-		const handleOnPress = useCallback(() => onPress(), []);
+	const handleOnPress = () => onPress();
 
-		const accessibilityLabel = useMemo(() => {
-			if (tmid) {
-				return `${title} ${parentTitle}`;
-			}
-			return title;
-		}, [title, parentTitle, tmid]);
-
-		return (
-			<TouchableOpacity
-				testID='room-header'
-				accessibilityLabel={accessibilityLabel}
-				onPress={handleOnPress}
-				style={[
-					styles.container,
-					{
-						opacity: disabled ? 0.5 : 1,
-						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0)
-					}
-				]}
-				disabled={disabled}
-				hitSlop={HIT_SLOP}
-				accessibilityRole='header'>
+	return (
+		<KeyboardFocusView
+			// Grab focus natively as soon as the header mounts. This handles master-detail,
+			// where the room list and room share the screen and focus would otherwise stay on
+			// the room item, as well as moving screen-reader focus via enableA11yFocus.
+			autoFocus={autoFocusHeader && !disabled}
+			enableA11yFocus={autoFocusHeader && !disabled}
+			focusable={!disabled}
+			canBeFocused={!disabled}
+			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+			accessible
+			accessibilityLabel={accessibilityLabel}
+			accessibilityRole='header'>
+			<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
@@ -207,14 +249,21 @@ const Header = React.memo(
 							status={status}
 							teamMain={teamMain}
 							sourceType={sourceType}
+							abacAttributes={abacAttributes}
 						/>
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>
-				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+				<SubTitle
+					usersTyping={tmid ? [] : usersTyping}
+					subtitle={subtitle}
+					formattedStatusExpiry={formattedStatusExpiry}
+					renderFunc={renderFunc}
+					scale={scale}
+				/>
 			</TouchableOpacity>
-		);
-	}
-);
+		</KeyboardFocusView>
+	);
+};
 
 export default Header;

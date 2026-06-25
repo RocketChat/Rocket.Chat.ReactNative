@@ -1,0 +1,119 @@
+name: 'Build iOS'
+description: 'Build iOS app'
+inputs:
+  BUILD_VERSION:
+    description: 'Build version'
+    required: true
+  APP_STORE_CONNECT_API_KEY_BASE64:
+    description: 'Base64 encoded App Store Connect API Key'
+    required: true
+  MATCH_KEYCHAIN_NAME:
+    description: 'Match Keychain Name'
+    required: true
+  MATCH_KEYCHAIN_PASSWORD:
+    description: 'Match Keychain Password'
+    required: true
+  MATCH_PASSWORD:
+    description: 'Match Password'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ID:
+    description: 'App Store Connect API Key ID'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+    description: 'App Store Connect API Key Issuer ID'
+    required: true
+  FASTLANE_REPO_PAT:
+    description: 'Fastlane Repo PAT'
+    required: true
+  BUGSNAG_KEY_OFFICIAL:
+    description: 'Bugsnag API Key'
+    required: true
+  GOOGLE_SERVICES_IOS:
+    description: 'Google service file'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Remove simulator and its cache
+      run : |
+        xcrun simctl delete all
+        sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
+      shell: bash
+
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+      with:
+        xcode-version: '26.2.0'
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Pod Cache
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: |
+          ~/.pods
+          ios/Pods
+        key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+        restore-keys: |
+          pods-v1-
+
+    - name: pod install
+      run: |
+        pnpm pod-install
+      shell: bash
+
+    - name: Decode p8
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+
+    - name: Configure Info.plist and build version
+      working-directory: ios
+      run: |
+        agvtool new-version -all ${{ inputs.BUILD_VERSION }}
+        /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
+        /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
+      shell: bash
+
+    - name: Set Google Services
+      working-directory: ios
+      run: |
+        if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+          echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
+        fi
+      shell: bash
+
+    - name: Build iOS app
+      working-directory: ios
+      run: bundle exec fastlane ios build
+      env:
+        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
+        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
+        MATCH_PASSWORD: ${{ inputs.MATCH_PASSWORD }}
+        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
+      shell: bash
+
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: ios-build
+        path: ios/Rocket.Chat.ipa
+
+    - name: Upload Rocket.Chat.app.dSYM.zip
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: ios-build-dSYM
+        path: ios/Rocket.Chat.app.dSYM.zip
+
+    - name: Upload RocketChatRN/Info.plist
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: ios-build-info-plist
+        path: ios/RocketChatRN/Info.plist

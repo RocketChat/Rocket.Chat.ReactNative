@@ -1,0 +1,31 @@
+appId: ${APP_ID}
+name: Verify Message Unread
+tags:
+  - 'flow'
+---
+- runFlow:
+    file: '../../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+- runFlow:
+    file: '../../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- runFlow: '../utils/enter-e2e-key.yaml'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'read-receipt-unread'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Message was not read.*'
+          timeout: 60000

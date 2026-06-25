@@ -1,4 +1,3 @@
-.circleci/
 .github/
 build/
 node_modules/
@@ -9,6 +8,8 @@ android/
 ios/
 patches/
 scripts/
+
+.worktrees/
 
 .bettercodehub.yml
 .buckconfig
@@ -21,6 +22,7 @@ README.md
 SECURITY.md
 npm-debug.log
 yarn-error.log
+pnpm-lock.yaml
 
 .storybook/
 

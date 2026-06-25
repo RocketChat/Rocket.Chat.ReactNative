@@ -1,24 +1,34 @@
+import { InteractionManager } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
+import I18n from 'i18n-js';
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
-import { appInit, appStart } from '../actions/app';
+import { appInit, appStart, appReady } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import database from '../lib/database';
-import { canOpenRoom, getServerInfo } from '../lib/methods';
-import { getUidDirectMessage } from '../lib/methods/helpers';
+import { getServerById } from '../lib/database/services/Server';
+import { canOpenRoom } from '../lib/methods/canOpenRoom';
+import { getServerInfo } from '../lib/methods/getServerInfo';
+import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
-import { Services } from '../lib/services';
+import { loginOAuthOrSso } from '../lib/services/connect';
+import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
+import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
+import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
 const roomTypes = {
 	channel: 'c',
@@ -39,7 +49,6 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 };
 
 const navigate = function* navigate({ params }) {
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
 		let name;
@@ -58,14 +67,56 @@ const navigate = function* navigate({ params }) {
 					...room
 				};
 
-				const isMasterDetail = yield select(state => state.app.isMasterDetail);
+				const isMasterDetail = getIsMasterDetail();
 				const jumpToMessageId = params.messageId;
-
-				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
+				yield waitForNavigationReady();
+				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 			}
 		} else {
 			yield handleInviteLink({ params });
 		}
+	}
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+};
+
+/**
+ * After native VoIP accept fails: reset call state, end CallKit session, land inside root,
+ * optionally open DM via same pipeline as deep links (`direct/username`), then toast/dialog per a11y.
+ */
+const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
+	try {
+		const { callId, username } = params;
+		resetVoipState();
+		if (callId) {
+			RNCallKeep.endCall(callId);
+		}
+
+		yield call(waitForNavigationReady);
+
+		const navigateParams = {
+			...params,
+			path: username ? `direct/${username}` : params.path
+		};
+		yield navigate({ params: navigateParams });
+
+		yield call(
+			() =>
+				new Promise(resolve => {
+					InteractionManager.runAfterInteractions(() => resolve());
+				})
+		);
+
+		showToast(I18n.t('VoIP_Call_Issue'));
+	} catch (e) {
+		log(e);
+	}
+};
+
+const completeDeepLinkNavigation = function* completeDeepLinkNavigation(params) {
+	if (params.voipAcceptFailed) {
+		yield call(handleVoipAcceptFailed, params);
+	} else {
+		yield navigate({ params });
 	}
 };
 
@@ -80,7 +131,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
 	try {
-		yield Services.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
 		log(e);
 	}
@@ -97,7 +148,11 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	yield localAuthenticate(server);
-	yield put(selectServerRequest(server));
+	const serverRecord = yield getServerById(server);
+	if (!serverRecord) {
+		return;
+	}
+	yield put(selectServerRequest(server, serverRecord.version));
 	if (sdk.current?.client?.host !== server) {
 		yield take(types.LOGIN.SUCCESS);
 	}
@@ -110,67 +165,165 @@ const handleOpen = function* handleOpen({ params }) {
 		yield handleShareExtension({ params });
 		return;
 	}
-
-	const serversDB = database.servers;
-	const serversCollection = serversDB.get('servers');
-
-	let { host } = params;
-
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
 		return;
 	}
 
 	// If there's no host on the deep link params and the app is opened, just call appInit()
+	let { host } = params;
 	if (!host) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+			return;
+		}
 		yield fallbackNavigation();
 		return;
 	}
 
 	// If there's host, continue
-	if (!/^(http|https)/.test(host)) {
-		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${host}`;
-		} else {
-			host = `https://${host}`;
-		}
-	} else {
-		// Notification should always come from https
-		host = host.replace('http://', 'https://');
-	}
-	// remove last "/" from host
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
-	}
+	host = normalizeDeepLinkingServerHost(host);
+	params.host = host;
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
 		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
 	]);
 
+	const serverRecord = yield getServerById(host);
+
 	// TODO: needs better test
 	// if deep link is from same server
-	if (server === host && user) {
+	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
 			yield localAuthenticate(host);
-			yield put(selectServerRequest(host));
+			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
-		yield navigate({ params });
+		yield completeDeepLinkNavigation(params);
 	} else {
 		// search if deep link's server already exists
 		try {
-			const hostServerRecord = yield serversCollection.find(host);
-			if (hostServerRecord && user) {
+			if (user && serverRecord) {
 				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, hostServerRecord.version, true, true));
+				yield put(selectServerRequest(host, serverRecord.version, true, true));
 				yield take(types.LOGIN.SUCCESS);
-				yield navigate({ params });
+				yield completeDeepLinkNavigation(params);
 				return;
 			}
 		} catch (e) {
 			// do nothing?
+		}
+		// if deep link is from a different server
+		const result = yield getServerInfo(host);
+		if (!result.success) {
+			if (params.voipAcceptFailed) {
+				yield call(handleVoipAcceptFailed, params);
+				return;
+			}
+			// Fallback to prevent the app from being stuck on splash screen
+			yield fallbackNavigation();
+			return;
+		}
+		// if the host is different from the current one, we need to connect to it before navigating
+		const hostAlreadyConnected = sdk.current?.client?.host === host;
+		if (!hostAlreadyConnected) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			yield put(serverInitAdd(server));
+			yield delay(1000);
+			EventEmitter.emit('NewServer', { server: host });
+		}
+
+		if (params.token) {
+			if (!hostAlreadyConnected) {
+				yield take(types.SERVER.SELECT_SUCCESS);
+				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+				const connected = yield select(state => state.meteor.connected);
+				if (!connected) {
+					yield take(types.METEOR.SUCCESS);
+				}
+			}
+			yield put(loginRequest({ resume: params.token }, true));
+			yield take(types.LOGIN.SUCCESS);
+			yield put(appReady({}));
+			// Wait for the login saga's appStart(ROOT_INSIDE) before navigating, so
+			// InsideStack is mounted and goRoom dispatches into the correct stack.
+			const currentRoot = yield select(state => state.app.root);
+			if (currentRoot !== RootEnum.ROOT_INSIDE) {
+				yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+			}
+			yield completeDeepLinkNavigation(params);
+		} else {
+			yield handleInviteLink({ params, requireLogin: true });
+		}
+	}
+};
+
+const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
+	try {
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
+		const room = yield subsCollection.find(params.rid);
+		if (room) {
+			const isMasterDetail = getIsMasterDetail();
+			yield navigateToRoom({ item: room, isMasterDetail });
+			const uid = params.caller?._id;
+			const { rid, callId, event } = params;
+			if (event === 'accept') {
+				yield call(notifyUser, `${uid}/video-conference`, {
+					action: 'accepted',
+					params: { uid, rid, callId }
+				});
+				yield videoConfJoin(callId, true, false, true);
+			} else if (event === 'decline') {
+				yield call(notifyUser, `${uid}/video-conference`, {
+					action: 'rejected',
+					params: { uid, rid, callId }
+				});
+			}
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const handleClickCallPush = function* handleClickCallPush({ params }) {
+	let { host } = params;
+
+	if (!host) {
+		return;
+	}
+
+	host = normalizeDeepLinkingServerHost(host);
+	if (!host) {
+		return;
+	}
+	params.host = host;
+
+	const [server, user] = yield all([
+		UserPreferences.getString(CURRENT_SERVER),
+		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+	]);
+
+	const serverRecord = yield getServerById(host);
+
+	if (server === host && user && serverRecord) {
+		const connected = yield select(state => state.server.connected);
+		if (!connected) {
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host, serverRecord.version, true));
+			yield take(types.LOGIN.SUCCESS);
+		}
+		yield handleNavigateCallRoom({ params });
+	} else {
+		if (user && serverRecord) {
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host, serverRecord.version, true, true));
+			yield take(types.LOGIN.SUCCESS);
+			yield handleNavigateCallRoom({ params });
+			return;
 		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
@@ -183,93 +336,13 @@ const handleOpen = function* handleOpen({ params }) {
 		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
-
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
-			yield put(loginRequest({ resume: params.token }, true));
-			yield take(types.LOGIN.SUCCESS);
-			yield navigate({ params });
-		} else {
-			yield handleInviteLink({ params, requireLogin: true });
-		}
-	}
-};
-
-const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-	const db = database.active;
-	const subsCollection = db.get('subscriptions');
-	const room = yield subsCollection.find(params.rid);
-	if (room) {
-		const isMasterDetail = yield select(state => state.app.isMasterDetail);
-		yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
-		const uid = params.caller._id;
-		const { rid, callId, event } = params;
-		if (event === 'accept') {
-			yield call(Services.notifyUser, `${uid}/video-conference`, {
-				action: 'accepted',
-				params: { uid, rid, callId }
-			});
-			yield videoConfJoin(callId, true, false, true);
-		} else if (event === 'decline') {
-			yield call(Services.notifyUser, `${uid}/video-conference`, {
-				action: 'rejected',
-				params: { uid, rid, callId }
-			});
-		}
-	}
-};
-
-const handleClickCallPush = function* handleOpen({ params }) {
-	const serversDB = database.servers;
-	const serversCollection = serversDB.get('servers');
-
-	let { host } = params;
-
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
-	}
-
-	const [server, user] = yield all([
-		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
-	]);
-
-	if (server === host && user) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host));
-			yield take(types.LOGIN.SUCCESS);
-		}
-		yield handleNavigateCallRoom({ params });
-	} else {
-		// search if deep link's server already exists
-		try {
-			const hostServerRecord = yield serversCollection.find(host);
-			if (hostServerRecord && user) {
-				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, hostServerRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
-				yield handleNavigateCallRoom({ params });
-				return;
+			// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+			const connected = yield select(state => state.meteor.connected);
+			if (!connected) {
+				yield take(types.METEOR.SUCCESS);
 			}
-		} catch (e) {
-			// do nothing?
-		}
-		// if deep link is from a different server
-		const result = yield Services.getServerInfo(host);
-		if (!result.success) {
-			// Fallback to prevent the app from being stuck on splash screen
-			yield fallbackNavigation();
-			return;
-		}
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		yield put(serverInitAdd(server));
-		yield delay(1000);
-		EventEmitter.emit('NewServer', { server: host });
-		if (params.token) {
-			yield take(types.SERVER.SELECT_SUCCESS);
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });

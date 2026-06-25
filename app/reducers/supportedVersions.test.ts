@@ -1,4 +1,4 @@
-import { TSVMessage } from '../definitions';
+import { type TSVMessage } from '../definitions';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import { mockedStore } from './mockedStore';
 import { initialState } from './supportedVersions';

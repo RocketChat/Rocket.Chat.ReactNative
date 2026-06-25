@@ -1,7 +1,8 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
-import { IUserEmail, IUserSettings } from './IUser';
-import { TUserStatus } from './TUserStatus';
+import { type IUserEmail, type IUserSettings } from './IUser';
+import { type TStatusSource } from './TStatusSource';
+import { type TUserStatus } from './TUserStatus';
 
 export interface ILoggedUser {
 	id: string;
@@ -10,7 +11,10 @@ export interface ILoggedUser {
 	name?: string;
 	language?: string;
 	status: TUserStatus;
+	statusDefault?: TUserStatus;
 	statusText?: string;
+	statusExpiresAt?: string;
+	statusSource?: TStatusSource;
 	customFields?: {
 		[key: string]: any;
 	};
@@ -19,7 +23,6 @@ export interface ILoggedUser {
 	roles?: string[];
 	avatarETag?: string;
 	showMessageInMainThread?: boolean;
-	isFromWebView?: boolean;
 	enableMessageParserEarlyAdoption: boolean;
 	alsoSendThreadToChannel: 'default' | 'always' | 'never';
 	bio?: string;

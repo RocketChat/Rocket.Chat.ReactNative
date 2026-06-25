@@ -1,0 +1,17 @@
+name: Setup Node
+description: Setup node and pnpm via corepack, with pnpm store cache
+runs:
+  using: "composite"
+  steps:
+    - name: Enable corepack
+      shell: bash
+      run: corepack enable
+
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      with:
+        node-version: 'lts/*'
+        cache: 'pnpm'
+
+    - name: Install JS dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

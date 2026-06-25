@@ -1,4 +1,5 @@
-import { IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
+import { type ICredentials } from '../../../definitions';
+import { type IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
 import log from './log';
 
 type TEventEmitterEmmitArgs =
@@ -12,6 +13,7 @@ type TEventEmitterEmmitArgs =
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }
+	| { params: ICredentials }
 	| IEmitUserInteraction;
 
 class EventEmitter {

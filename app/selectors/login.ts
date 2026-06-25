@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { IApplicationState, IUser } from '../definitions';
+import { type IApplicationState, type IUser } from '../definitions';
 
 export interface IServices {
 	facebook: { clientId: string };

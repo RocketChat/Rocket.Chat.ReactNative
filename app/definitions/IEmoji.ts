@@ -1,4 +1,4 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
 export interface IFrequentlyUsedEmoji {
 	content: string;

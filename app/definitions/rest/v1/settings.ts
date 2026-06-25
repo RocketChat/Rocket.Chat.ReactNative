@@ -1,5 +1,5 @@
-import { ISetting, ISettingColor } from '../../ISetting';
-import { PaginatedResult } from '../helpers/PaginatedResult';
+import { type ISetting, type ISettingColor } from '../../ISetting';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 type SettingsUpdateProps = SettingsUpdatePropDefault | SettingsUpdatePropsActions | SettingsUpdatePropsColor;
 

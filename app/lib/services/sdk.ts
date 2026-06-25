@@ -5,7 +5,13 @@ import isEmpty from 'lodash/isEmpty';
 import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
-import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
+import {
+	type Serialized,
+	type MatchPathPattern,
+	type OperationParams,
+	type PathFor,
+	type ResultFor
+} from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
@@ -105,7 +111,10 @@ class Sdk {
 	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.current.methodCall(...args, this.code || '');
+				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
+				const { code } = this;
+				this.code = null;
+				const result = await this.current.methodCall(...args, ...(code ? [code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -166,7 +175,9 @@ class Sdk {
 		return Promise.all([
 			this.subscribe('stream-room-messages', args[0], ...args),
 			eventUserTyping,
-			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args)
+			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args),
+			this.subscribe(topic, `${args[0]}/deleteMessageBulk`, ...args),
+			this.subscribe(topic, `${args[0]}/messagesRead`, ...args)
 		]);
 	}
 

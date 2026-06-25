@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
-import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
+import { type FC } from 'react';
+import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps extends PlatformTouchableProps {
+interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -17,6 +17,7 @@ interface IButtonProps extends PlatformTouchableProps {
 	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 	small?: boolean;
+	disabled?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -25,9 +26,9 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	normalButton: {
-		paddingHorizontal: 14,
-		justifyContent: 'center',
-		height: 48
+		paddingVertical: 14,
+		paddingHorizontal: 16,
+		justifyContent: 'center'
 	},
 	smallButton: {
 		paddingHorizontal: 12,
@@ -38,12 +39,17 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
+	smallText: {
+		...sharedStyles.textBold,
+		fontSize: 12,
+		lineHeight: 18
+	},
 	disabled: {
 		opacity: 0.3
 	}
 });
 
-const Button: React.FC<IButtonProps> = ({
+const Button: FC<IButtonProps> = ({
 	type = 'primary',
 	disabled,
 	loading,
@@ -75,18 +81,22 @@ const Button: React.FC<IButtonProps> = ({
 		style
 	];
 
-	const textStyle = [styles.text, { color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize }, styleText];
+	const textStyle = [
+		{ color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize },
+		small ? styles.smallText : styles.text,
+		styleText
+	];
 
 	return (
-		<Touchable
+		<RectButton
 			onPress={onPress}
-			disabled={isDisabled}
+			enabled={!isDisabled}
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
-			{loading ? <ActivityIndicator color={resolvedTextColor} /> : <Text style={textStyle}>{title}</Text>}
-		</Touchable>
+			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
+		</RectButton>
 	);
 };
 

@@ -1,6 +1,6 @@
-import { TLoggedUserModel } from '../../../definitions';
+import { type TLoggedUserModel } from '../../../definitions';
 import database from '..';
-import { TServerDatabase } from '../interfaces';
+import { type TServerDatabase } from '../interfaces';
 import { LOGGED_USERS_TABLE } from '../model';
 
 const getCollection = (db: TServerDatabase) => db.get(LOGGED_USERS_TABLE);

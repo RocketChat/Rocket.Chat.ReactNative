@@ -1,0 +1,42 @@
+appId: ${APP_ID}
+name: Login with Deeplink
+tags:
+  - 'util'
+
+---
+- stopApp: ${APP_ID}
+- runFlow:
+    when:
+      true: CLEAR_STATE
+    commands:
+      - clearState: ${APP_ID}
+- setPermissions:
+    permissions:
+      all: allow
+- evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
+- runFlow:
+    file: 'open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - runFlow:
+          when:
+            visible: '.*Pixel Launcher.*'
+          commands:
+            - tapOn: 'Close App'
+- retry:
+    maxRetries: 3
+    commands:
+      # Cold-boot emulators can show "System UI isn't responding" over the app
+      - runFlow:
+          when:
+            visible: ".*isn't responding.*"
+          commands:
+            - tapOn: 'Wait'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view'
+          timeout: 60000

@@ -2,17 +2,12 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ITEM_HEIGHT = 48;
-
 export default StyleSheet.create({
 	container: {
-		overflow: 'hidden',
-		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16
+		overflow: 'hidden'
 	},
 	item: {
 		paddingHorizontal: 16,
-		height: ITEM_HEIGHT,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -24,7 +19,13 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
+		lineHeight: 22,
 		...sharedStyles.textMedium
+	},
+	subtitle: {
+		fontSize: 14,
+		lineHeight: 20,
+		...sharedStyles.textRegular
 	},
 	handle: {
 		justifyContent: 'center',
@@ -40,15 +41,10 @@ export default StyleSheet.create({
 	backdrop: {
 		...StyleSheet.absoluteFillObject
 	},
-	bottomSheet: {
-		width: '50%',
-		marginHorizontal: '25%'
-	},
 	button: {
 		marginHorizontal: 16,
 		paddingHorizontal: 14,
 		justifyContent: 'center',
-		height: ITEM_HEIGHT,
 		borderRadius: 4,
 		marginBottom: 12
 	},
@@ -68,6 +64,11 @@ export default StyleSheet.create({
 		marginRight: 8
 	},
 	contentContainer: {
-		flex: 1
+		flex: 0
+	},
+	fullContainer: {
+		width: '100%',
+		height: '100%',
+		flex: 0
 	}
 });

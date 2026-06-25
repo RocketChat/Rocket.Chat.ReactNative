@@ -1,8 +1,8 @@
-import React from 'react';
-import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-native';
+import { type ReactElement } from 'react';
+import { ActivityIndicator, type ActivityIndicatorProps, StyleSheet } from 'react-native';
 
 import { useTheme } from '../theme';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 
 interface IActivityIndicator extends ActivityIndicatorProps {
 	absolute?: boolean;
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator): React.ReactElement => {
+const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator): ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<ActivityIndicator

@@ -1,5 +1,5 @@
 import { store as reduxStore } from '../../store/auxStore';
-import { ISubscription } from '../../../definitions';
+import { type ISubscription } from '../../../definitions';
 import { hasPermission } from './helpers';
 
 const canPostReadOnly = async (room: Partial<ISubscription>, username: string) => {

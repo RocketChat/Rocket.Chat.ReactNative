@@ -1,15 +1,17 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 
 import Touchable from '../../Touchable';
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { BUTTON_HIT_SLOP } from '../../utils';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
 import MessageContext from '../../Context';
 import { useTheme } from '../../../../theme';
 
-const MessageError = React.memo(
+const MessageError = memo(
 	({ hasError }: { hasError: boolean }) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { onErrorPress } = useContext(MessageContext);
 

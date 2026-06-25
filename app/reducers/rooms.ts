@@ -1,4 +1,4 @@
-import { IRoomsAction } from '../actions/rooms';
+import { type IRoomsAction } from '../actions/rooms';
 import { ROOMS } from '../actions/actionsTypes';
 
 export interface IRooms {
@@ -6,17 +6,13 @@ export interface IRooms {
 	refreshing: boolean;
 	failure: boolean;
 	errorMessage: Record<string, any> | string;
-	searchText: string;
-	showSearchHeader: boolean;
 }
 
 export const initialState: IRooms = {
 	isFetching: false,
 	refreshing: false,
 	failure: false,
-	errorMessage: {},
-	searchText: '',
-	showSearchHeader: false
+	errorMessage: {}
 };
 
 export default function rooms(state = initialState, action: IRoomsAction): IRooms {
@@ -47,21 +43,6 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				...state,
 				isFetching: true,
 				refreshing: true
-			};
-		case ROOMS.SET_SEARCH:
-			return {
-				...state,
-				searchText: action.searchText
-			};
-		case ROOMS.OPEN_SEARCH_HEADER:
-			return {
-				...state,
-				showSearchHeader: true
-			};
-		case ROOMS.CLOSE_SEARCH_HEADER:
-			return {
-				...state,
-				showSearchHeader: false
 			};
 		default:
 			return state;

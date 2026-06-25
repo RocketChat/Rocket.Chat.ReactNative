@@ -1,11 +1,10 @@
-import React from 'react';
+import { memo, type ReactElement } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,12 +20,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AuthLoadingView = React.memo((): React.ReactElement => {
+const AuthLoadingView = memo((): ReactElement => {
 	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
-			<StatusBar />
 			{text ? (
 				<>
 					<ActivityIndicator color={colors.fontSecondaryInfo} size='large' />

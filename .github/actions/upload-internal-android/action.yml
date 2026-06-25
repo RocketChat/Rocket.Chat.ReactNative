@@ -1,0 +1,82 @@
+name: 'Upload Android'
+description: 'Downloads AAB + Manifest, uploads to Play Store'
+inputs:
+  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+    description: 'Google service account key for upload'
+    required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
+  BUILD_VERSION:
+    description: 'Build version for build'
+    required: true
+  trigger:
+    description: 'Trigger for build'
+    required: false
+    default: pr
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download AAB
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        name: android-aab
+        path: android/app/build/outputs/bundle/release/
+
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+        working-directory: android
+
+    - name: Store the Google service account key
+      working-directory: android
+      run: |
+        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
+      shell: bash
+
+    - name: Fastlane Play Store Upload
+      working-directory: android
+      run: |
+        set -o pipefail
+        output=$(bundle exec fastlane android internal_app_sharing 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
+
+        echo "$output"
+
+        url=$(echo "$output" | grep -o 'https://play\.google\.com/apps/test/[^ ]*' | head -n 1)
+
+        if [[ -z "$url" ]]; then
+          echo "❌ Could not find internal sharing URL."
+          exit 1
+        fi
+
+        gradle_file="app/build.gradle"
+        version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
+
+        echo "Parsed URL: $url"
+        echo "versionName: $version_name"
+
+        echo "INTERNAL_SHARING_URL=$url" >> $GITHUB_ENV
+        echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Share Internal App Sharing Link
+      if: ${{ inputs.trigger == 'pr' }}
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
+      run: |
+        if [[ -z "$INTERNAL_SHARING_URL" ]]; then
+          echo "No internal sharing URL found in env"
+          exit 1
+        fi
+
+        version_info="Rocket.Chat $VERSION_NAME.$BUILD_VERSION"
+
+        message="**Android Build Available**"$'\n\n'"$version_info"$'\n\n'"Internal App Sharing: $INTERNAL_SHARING_URL"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
+      shell: bash

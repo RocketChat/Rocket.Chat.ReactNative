@@ -1,16 +1,17 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, memo, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
-import { IApplicationState } from '../../definitions';
-import { Services } from '../../lib/services';
-import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { joinRoom } from '../../lib/services/restApi';
+import { type TSupportedThemes } from '../../theme';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,7 +55,7 @@ export interface IJoinCode {
 	show: () => void;
 }
 
-const JoinCode = React.memo(
+const JoinCode = memo(
 	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
@@ -66,7 +67,7 @@ const JoinCode = React.memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await Services.joinRoom(rid, code, t as any);
+				await joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {
@@ -78,19 +79,23 @@ const JoinCode = React.memo(
 
 		return (
 			<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
-				<View style={styles.container} testID='join-code'>
+				<GestureHandlerRootView style={styles.container} testID='join-code'>
 					<View
 						style={[
 							styles.content,
 							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 							{ backgroundColor: themes[theme].surfaceRoom }
-						]}
-					>
+						]}>
 						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
-							// TODO: find a way to type this ref
-							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+							inputRef={(e: any) => {
+								if (e) {
+									InteractionManager.runAfterInteractions(() => {
+										e.focus();
+									});
+								}
+							}}
 							returnKeyType='send'
 							autoCapitalize='none'
 							onChangeText={setCode}
@@ -118,14 +123,12 @@ const JoinCode = React.memo(
 							/>
 						</View>
 					</View>
-				</View>
+				</GestureHandlerRootView>
 			</Modal>
 		);
 	})
 );
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(JoinCode);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withMasterDetail(JoinCode));

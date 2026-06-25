@@ -1,5 +1,5 @@
 import { ROLES } from '../actions/actionsTypes';
-import { IActionRoles } from '../actions/roles';
+import { type IActionRoles } from '../actions/roles';
 
 export type IRoles = Record<string, string>;
 

@@ -1,6 +1,6 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
-import { IMessage } from './IMessage';
+import { type IMessage } from './IMessage';
 
 export interface IThreadMessage extends IMessage {
 	tmsg?: string;

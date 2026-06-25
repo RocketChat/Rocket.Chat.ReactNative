@@ -1,26 +1,26 @@
-import React, { useEffect, useReducer, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { useEffect, useReducer, useRef, memo } from 'react';
+import { type Subscription } from 'rxjs';
+import { AccessibilityInfo } from 'react-native';
 
+import { useActionSheet } from '../ActionSheet';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isGroupChat } from '../../lib/methods/helpers';
-import { formatDate } from '../../lib/methods/helpers/room';
-import { IRoomItemContainerProps } from './interfaces';
+import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
+import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
-import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
-
-export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
+import { getRoomActionsOptions } from './getRoomActionsOptions';
+import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
-const RoomItemContainer = React.memo(
+const RoomItemContainer = memo(
 	({
 		item,
 		id,
 		onPress,
 		onLongPress,
 		width,
-		toggleFav,
-		toggleRead,
-		hideChannel,
 		isFocused,
 		showLastMessage,
 		username,
@@ -33,6 +33,8 @@ const RoomItemContainer = React.memo(
 		getIsRead = () => false,
 		swipeEnabled = true
 	}: IRoomItemContainerProps) => {
+		const { showActionSheet } = useActionSheet();
+		const serverVersion = useAppSelector(state => state.server.version);
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
 		const avatar = getRoomAvatar(item);
@@ -42,6 +44,7 @@ const RoomItemContainer = React.memo(
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
+		const accessibilityDate = formatDateAccessibility(item.roomUpdatedAt);
 
 		useEffect(() => {
 			const init = () => {
@@ -59,24 +62,43 @@ const RoomItemContainer = React.memo(
 
 		const handleOnPress = () => onPress(item);
 
-		const handleOnLongPress = () => onLongPress && onLongPress(item);
+		const handleOnLongPress = async () => {
+			if (onLongPress) {
+				onLongPress(item);
+				return;
+			}
+			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
+			const hasExternalKeyboard = isExternalKeyboardConnected();
+
+			if (item.separator || !swipeEnabled || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
+				return;
+			}
+			showActionSheet({
+				options: getRoomActionsOptions({
+					rid: item.rid,
+					type: item.t,
+					isRead,
+					favorite: !!item.f,
+					serverVersion
+				})
+			});
+		};
 
 		return (
 			<RoomItem
 				name={name}
 				avatar={avatar}
 				isGroupChat={isGroupChat(item)}
+				isInvited={isInviteSubscription(item)}
 				isRead={isRead}
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
 				date={date}
+				accessibilityDate={accessibilityDate}
 				width={width}
 				favorite={item.f}
 				rid={item.rid}
 				userId={userId}
-				toggleFav={toggleFav}
-				toggleRead={toggleRead}
-				hideChannel={hideChannel}
 				testID={testID}
 				type={item.t}
 				isFocused={isFocused}
@@ -101,6 +123,7 @@ const RoomItemContainer = React.memo(
 				displayMode={displayMode}
 				status={item.t === 'l' ? item?.visitor?.status : null}
 				sourceType={item.t === 'l' ? item.source : null}
+				abacAttributes={item.abacAttributes}
 			/>
 		);
 	},

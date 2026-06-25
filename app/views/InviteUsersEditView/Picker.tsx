@@ -1,11 +1,10 @@
-import React from 'react';
-import { TextInputProps } from 'react-native';
+import { type TextInputProps } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useDispatch } from 'react-redux';
 
 import { inviteLinksSetParams } from '../../actions/inviteLinks';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import I18n from '../../i18n';
 import styles from './styles';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -57,7 +56,7 @@ const OPTIONS = {
 	]
 };
 
-const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }): JSX.Element => {
+const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }) => {
 	const { colors } = useTheme();
 	const inviteLinkParam = useAppSelector(state => state.inviteLinks[param]);
 	const dispatch = useDispatch();

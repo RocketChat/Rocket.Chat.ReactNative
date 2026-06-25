@@ -1,10 +1,10 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
-import { IMessageFromServer } from '../../definitions';
+import { type IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,7 +34,7 @@ interface IDiscussionDetails {
 	date: string;
 }
 
-const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactElement => {
+const DiscussionDetails = ({ item, date }: IDiscussionDetails): ReactElement => {
 	const { colors } = useTheme();
 	let count: string | number | undefined = item.dcount;
 	if (count && count >= 1000) {
@@ -42,7 +42,7 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactEleme
 	}
 
 	return (
-		<View style={[styles.container]}>
+		<View style={styles.container}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={colors.fontSecondaryInfo} />

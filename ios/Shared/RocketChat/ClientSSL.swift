@@ -5,7 +5,7 @@ struct ClientSSL: Codable {
 	let password: String
 }
 
-extension MMKV {
+extension MMKVBridge {
 	func clientSSL(for url: URL) -> ClientSSL? {
 		let server = url.absoluteString.removeTrailingSlash()
 		let host = url.host ?? ""

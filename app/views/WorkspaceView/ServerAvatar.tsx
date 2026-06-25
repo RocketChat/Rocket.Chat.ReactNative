@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
+import { memo } from 'react';
 
 import { isTablet } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
@@ -30,12 +30,12 @@ interface IServerAvatar {
 }
 
 // TODO: missing skeleton
-const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
+const ServerAvatar = memo(({ url, image }: IServerAvatar) => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={styles.container}>
-			{image && <FastImage style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
+			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
 		</View>
 	);
 });

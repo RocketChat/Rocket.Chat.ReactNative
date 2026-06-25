@@ -1,8 +1,8 @@
-import { TextInput } from 'react-native';
+import { type TextInput } from 'react-native';
 
-import { TSupportedThemes } from '../theme';
-import { ILivechatVisitor } from './ILivechatVisitor';
-import { ISubscription } from './ISubscription';
+import { type TSupportedThemes } from '../theme';
+import { type ILivechatVisitor } from './ILivechatVisitor';
+import { type ISubscription } from './ISubscription';
 
 export interface ITitle {
 	title: string;

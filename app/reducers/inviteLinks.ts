@@ -1,4 +1,4 @@
-import { TActionInviteLinks } from '../actions/inviteLinks';
+import { type TActionInviteLinks } from '../actions/inviteLinks';
 import { INVITE_LINKS } from '../actions/actionsTypes';
 
 export type TInvite = { url: string; expires: string; maxUses: number; uses: number; [x: string]: any };

@@ -1,11 +1,17 @@
-import React from 'react';
-import Animated from 'react-native-reanimated';
+import { type SharedValue } from 'react-native-reanimated';
+import { type ReactElement } from 'react';
 
-import { TSupportedThemes } from '../../theme';
-import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource } from '../../definitions';
+import { type TSupportedThemes } from '../../theme';
+import {
+	type TUserStatus,
+	type ILastMessage,
+	type SubscriptionType,
+	type IOmnichannelSource,
+	type ISubscription
+} from '../../definitions';
 
 export interface ILeftActionsProps {
-	transX: Animated.SharedValue<number>;
+	transX: SharedValue<number>;
 	isRead: boolean;
 	width: number;
 	onToggleReadPress(): void;
@@ -13,7 +19,7 @@ export interface ILeftActionsProps {
 }
 
 export interface IRightActionsProps {
-	transX: Animated.SharedValue<number>;
+	transX: SharedValue<number>;
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;
@@ -35,11 +41,12 @@ export interface IUpdatedAtProps {
 
 export interface IWrapperProps {
 	accessibilityLabel: string;
+	accessibilityHint?: string;
 	avatar: string;
 	type: string;
 	userId: string | null;
 	rid: string;
-	children: React.ReactElement;
+	children: ReactElement;
 	displayMode: string;
 	prid: string;
 	showLastMessage: boolean;
@@ -61,6 +68,7 @@ export interface ITypeIconProps {
 	size?: number;
 	style?: object;
 	sourceType: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 interface IRoomItemTouchables {
@@ -101,6 +109,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	testID: string;
 	status: TUserStatus;
 	isGroupChat: boolean;
+	isInvited?: boolean;
 	isRead: boolean;
 	teamMain: boolean;
 	date: string;
@@ -117,6 +126,8 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	size?: number;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	accessibilityDate: string;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface ILastMessageProps {
@@ -129,7 +140,7 @@ export interface ILastMessageProps {
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
-	children: JSX.Element;
+	children: ReactElement;
 	type: SubscriptionType;
 	testID: string;
 	width: number;
@@ -154,4 +165,10 @@ export interface IIconOrAvatar {
 	teamMain: boolean;
 	showLastMessage: boolean;
 	sourceType: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
+}
+
+export interface IRoomItem extends ISubscription {
+	search?: boolean;
+	outside?: boolean;
 }

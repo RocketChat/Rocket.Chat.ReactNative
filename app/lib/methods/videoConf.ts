@@ -1,9 +1,9 @@
-import { PermissionsAndroid, Permission } from 'react-native';
+import { PermissionsAndroid, type Permission } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import i18n from '../../i18n';
 import navigation from '../navigation/appNavigation';
-import { Services } from '../services';
+import { videoConferenceJoin } from '../services/restApi';
 import { isAndroid, showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
@@ -28,7 +28,7 @@ export const handleAndroidBltPermission = async (): Promise<void> => {
 
 export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
 	try {
-		const result = await Services.videoConferenceJoin(callId, cam, mic);
+		const result = await videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {

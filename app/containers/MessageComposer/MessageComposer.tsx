@@ -1,106 +1,94 @@
-import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
-import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
+import { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
+import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
-import { useFocusEffect } from '@react-navigation/native';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import { Autocomplete, Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel } from './components';
-import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
+import { Autocomplete } from './components';
+import { MIN_HEIGHT } from './constants';
 import {
 	MessageInnerContext,
 	useAlsoSendThreadToChannel,
+	useComposerAttachments,
 	useMessageComposerApi,
-	useRecordingAudio,
-	useShowEmojiKeyboard,
-	useShowEmojiSearchbar
+	useRecordingAudio
 } from './context';
-import { IComposerInput, ITrackingView } from './interfaces';
-import { isIOS } from '../../lib/methods/helpers';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import { useTheme } from '../../theme';
+import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { IEmoji } from '../../definitions';
+import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { generateTriggerId } from '../../lib/methods';
-import { Services } from '../../lib/services';
+import { generateTriggerId } from '../../lib/methods/actions';
+import { runSlashCommand } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
-import { prepareQuoteMessage } from './helpers';
-import { RecordAudio } from './components/RecordAudio';
-import { useKeyboardListener } from './hooks';
-import { emitter } from '../../lib/methods/helpers/emitter';
-
-const styles = StyleSheet.create({
-	container: {
-		borderTopWidth: 1,
-		paddingHorizontal: 16,
-		minHeight: MIN_HEIGHT
-	},
-	input: {
-		flexDirection: 'row'
-	}
-});
-
-require('./components/EmojiKeyboard');
+import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
+import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
+import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
+import EmojiPicker from '../EmojiPicker';
+import { MessageComposerContent } from './components/MessageComposerContent';
+import { useTheme } from '../../theme';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { getUserSelector } from '../../selectors/login';
+import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
+import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
 
 export const MessageComposer = ({
 	forwardedRef,
 	children
 }: {
-	forwardedRef: any;
-	children?: ReactElement;
+	forwardedRef: Ref<IMessageComposerRef>;
+	children?: ReactElement | null;
 }): ReactElement | null => {
+	'use memo';
+
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
 		getText: () => '',
 		getSelection: () => ({ start: 0, end: 0 }),
 		setInput: () => {},
-		onAutocompleteItemSelected: () => {}
+		onAutocompleteItemSelected: () => {},
+		focus: () => {}
 	});
-	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
-	const { colors, theme } = useTheme();
-	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
-	const showEmojiKeyboard = useShowEmojiKeyboard();
-	const showEmojiSearchbar = useShowEmojiSearchbar();
+	const contentHeight = useSharedValue(MIN_HEIGHT);
+	useCloseKeyboardWhenOrientationChanges();
+	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const {
-		openSearchEmojiKeyboard,
-		closeEmojiKeyboard,
-		closeSearchEmojiKeyboard,
-		setTrackingViewHeight,
-		setAlsoSendThreadToChannel
-	} = useMessageComposerApi();
+	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
-	useKeyboardListener(trackingViewRef);
-
-	useFocusEffect(
-		useCallback(() => {
-			trackingViewRef.current?.resetTracking();
-		}, [recordingAudio])
-	);
-
-	useImperativeHandle(forwardedRef, () => ({
-		closeEmojiKeyboardAndAction,
-		getText: composerInputComponentRef.current?.getText,
-		setInput: composerInputComponentRef.current?.setInput
-	}));
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const { colors } = useTheme();
+	const user = useAppSelector(state => getUserSelector(state));
+	const server = useAppSelector(state => state.server.server);
+	const altTextSupported = useAltTextSupported();
+	const attachments = useComposerAttachments();
 
 	useBackHandler(() => {
 		if (showEmojiSearchbar) {
-			closeSearchEmojiKeyboard();
+			resetKeyboard();
 			return true;
 		}
 		return false;
 	});
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
-		if (showEmojiKeyboard) {
-			closeEmojiKeyboard();
-		}
-		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
+		resetKeyboard();
+		action && action(params);
+	};
+
+	useImperativeHandle(forwardedRef, () => ({
+		closeEmojiKeyboardAndAction,
+		getText: () => composerInputComponentRef.current.getText(),
+		setInput: (...args: Parameters<IMessageComposerRef['setInput']>) => composerInputComponentRef.current.setInput(...args),
+		focus: () => composerInputComponentRef.current.focus()
+	}));
+
+	const handleLayout = (event: LayoutChangeEvent) => {
+		const { height } = event.nativeEvent.layout;
+		contentHeight.value = height;
 	};
 
 	const handleSendMessage = async () => {
@@ -110,6 +98,9 @@ export const MessageComposer = ({
 			setAlsoSendThreadToChannel(false);
 		}
 
+		// Hide autocomplete
+		setAutocompleteParams({ text: '', type: null, params: '' });
+
 		if (sharing) {
 			onSendMessage?.();
 			return;
@@ -118,7 +109,41 @@ export const MessageComposer = ({
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
 		if (action === 'edit') {
-			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
+			const updatedAttachments = attachments.length
+				? attachments.map(({ description, altText, fileId, filename }) =>
+						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
+				  )
+				: undefined;
+			editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid, attachments: updatedAttachments });
+			clearAttachments();
+			return;
+		}
+
+		if (attachments.length) {
+			let quotedMessage: string | undefined;
+
+			if (action === 'quote') {
+				quotedMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
+			}
+
+			try {
+				await sendAttachments({
+					attachments,
+					rid,
+					tmid,
+					server,
+					user: { id: user.id, token: user.token },
+					altTextSupported,
+					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+				});
+				clearAttachments();
+				setQuotesAndText?.('', []);
+				return;
+			} catch (e) {
+				log(e);
+				composerInputComponentRef.current.setInput(textFromInput);
+				return;
+			}
 		}
 
 		if (action === 'quote') {
@@ -139,7 +164,7 @@ export const MessageComposer = ({
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
 				} catch (e) {
 					log(e);
 				}
@@ -151,8 +176,7 @@ export const MessageComposer = ({
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
 	};
 
-	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
-		const { eventType, emoji } = params;
+	const onKeyboardItemSelected = (eventType: EventTypes, emoji?: IEmoji) => {
 		const text = composerInputComponentRef.current.getText();
 		let newText = '';
 		// if input has an active cursor
@@ -175,16 +199,15 @@ export const MessageComposer = ({
 			case EventTypes.EMOJI_PRESSED:
 				let emojiText = '';
 				if (typeof emoji === 'string') {
-					emojiText = shortnameToUnicode(`:${emoji}:`);
-				} else {
+					emojiText = formatShortnameToUnicode(`:${emoji}:`);
+				} else if (emoji?.name) {
 					emojiText = `:${emoji.name}:`;
 				}
-				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
-				newCursor = cursor + emojiText.length;
-				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+				const { updatedCursor, updatedText } = insertEmojiAtCursor(text, emojiText, cursor);
+				composerInputComponentRef.current.setInput(updatedText, { start: updatedCursor, end: updatedCursor });
 				break;
 			case EventTypes.SEARCH_PRESSED:
-				openSearchEmojiKeyboard();
+				openEmojiSearchbar();
 				break;
 			default:
 			// Do nothing
@@ -192,60 +215,51 @@ export const MessageComposer = ({
 	};
 
 	const onEmojiSelected = (emoji: IEmoji) => {
-		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
+		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	const onKeyboardResigned = () => {
-		if (!showEmojiSearchbar) {
-			closeEmojiKeyboard();
+	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+
+	const accessibilityFocusOnInput = () => {
+		const node = findNodeHandle(composerInputRef.current);
+		if (node) {
+			AccessibilityInfo.setAccessibilityFocus(node);
 		}
 	};
 
-	const onHeightChanged = (height: number) => {
-		setTrackingViewHeight(height);
-		emitter.emit(`setComposerHeight${tmid ? 'Thread' : ''}`, height);
-	};
+	const emojiKeyboardStyle = useAnimatedStyle(() => ({
+		height: keyboardHeight.value
+	}));
 
-	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
-
-	const renderContent = () => {
-		if (recordingAudio) {
-			return <RecordAudio />;
-		}
-		return (
-			<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
-				<View style={styles.input}>
-					<Left />
-					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-					<Right />
-				</View>
-				<Quotes />
-				<Toolbar />
-				<EmojiSearchbar />
-				<SendThreadToChannel />
-				{children}
-			</View>
-		);
-	};
+	const autocompleteStyle = useAnimatedStyle(() => ({
+		bottom: keyboardHeight.value + contentHeight.value - 4
+	}));
 
 	return (
-		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<KeyboardAccessoryView
-				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
-				renderContent={renderContent}
-				kbInputRef={composerInputRef}
-				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-				kbInitialProps={{ theme }}
-				onKeyboardResigned={onKeyboardResigned}
-				onItemSelected={onKeyboardItemSelected}
-				trackInteractive
-				requiresSameParentToManageScrollView
-				addBottomView
-				bottomViewColor={backgroundColor}
-				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
-				onHeightChanged={onHeightChanged}
+		<MessageInnerContext.Provider
+			value={{
+				sendMessage: handleSendMessage,
+				onEmojiSelected,
+				closeEmojiKeyboardAndAction,
+				focus: focusComposerInput
+			}}>
+			<MessageComposerContent
+				recordingAudio={recordingAudio}
+				action={action}
+				showEmojiSearchbar={showEmojiSearchbar}
+				composerInputComponentRef={composerInputComponentRef}
+				composerInputRef={composerInputRef}
+				onLayout={handleLayout}>
+				{children}
+			</MessageComposerContent>
+			<Animated.View style={[emojiKeyboardStyle, { backgroundColor: colors.surfaceLight }]}>
+				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
+			</Animated.View>
+			<Autocomplete
+				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
+				style={autocompleteStyle}
+				accessibilityFocusOnInput={accessibilityFocusOnInput}
 			/>
-			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>
 	);
 };

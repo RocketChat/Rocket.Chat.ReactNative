@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: Invalid Workspace
+tags:
+  - test-2
+
+---
+- runFlow: ../../../helpers/launch-app.yaml
+- tapOn:
+    text: 'Workspace URL. Required.'
+- inputText:
+    id: 'new-server-view-input'
+    text: 'https://invalid.workspace.url'
+- tapOn: 'Connect'
+- assertVisible: .*Invalid URL.*

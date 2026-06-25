@@ -1,30 +1,12 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
+import { useState, type ReactElement } from 'react';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { isIOS } from '../../lib/methods/helpers';
+import { type IEmojiSearchBarProps } from './interfaces';
+import styles from './styles';
 
-const styles = StyleSheet.create({
-	input: {
-		height: 32,
-		borderWidth: 0,
-		paddingVertical: 0,
-		borderRadius: 4
-	},
-	textInputContainer: {
-		marginBottom: 0
-	}
-});
-
-interface IEmojiSearchBarProps {
-	onBlur?: TextInputProps['onBlur'];
-	onChangeText: TextInputProps['onChangeText'];
-	bottomSheet?: boolean;
-}
-
-export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): React.ReactElement => {
+export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 
@@ -37,6 +19,7 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 
 	return (
 		<FormTextInput
+			accessibilityLabel={I18n.t('Search_emoji')}
 			autoCapitalize='none'
 			autoCorrect={false}
 			autoComplete='off'
@@ -54,7 +37,6 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 			onBlur={onBlur}
 			iconRight={'search'}
 			testID='emoji-searchbar-input'
-			bottomSheet={bottomSheet && isIOS}
 			autoFocus={!bottomSheet} // focus on input when not in reaction picker
 		/>
 	);

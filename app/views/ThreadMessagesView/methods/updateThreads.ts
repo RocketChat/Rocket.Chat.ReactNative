@@ -1,6 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { IMessage, TThreadModel } from '../../../definitions';
+import { type IMessage, type TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import protectedFunction from '../../../lib/methods/helpers/protectedFunction';
 import buildMessage from '../../../lib/methods/helpers/buildMessage';

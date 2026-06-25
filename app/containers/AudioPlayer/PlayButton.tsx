@@ -1,12 +1,13 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import RCActivityIndicator from '../ActivityIndicator';
 import { AUDIO_BUTTON_HIT_SLOP } from './constants';
-import { TAudioState } from './types';
+import { type TAudioState } from './types';
 import NativeButton from '../NativeButton';
+import getPlayButtonAccessibilityLabel from './getPlayButtonAccessibilityLabel';
 
 interface IButton {
 	disabled?: boolean;
@@ -40,11 +41,14 @@ const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boo
 	);
 };
 
-const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.ReactElement => {
+const PlayButton = ({ onPress, disabled = false, audioState }: IButton): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<NativeButton
+			testID='play-button'
+			accessible
+			accessibilityLabel={getPlayButtonAccessibilityLabel(audioState)}
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 			disabled={disabled}
 			onPress={onPress}

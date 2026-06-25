@@ -1,18 +1,18 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
-import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
-import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
+import { type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+import Touch from '../Touch';
 
 export interface INotifierComponent {
 	notification: {
@@ -20,7 +20,7 @@ export interface INotifierComponent {
 		payload: {
 			sender: { username: string };
 			type: SubscriptionType;
-			message?: { message: string; t?: string };
+			message?: { message?: string; msg?: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;
@@ -33,22 +33,21 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const styles = StyleSheet.create({
 	container: {
-		height: ROW_HEIGHT,
 		paddingHorizontal: 14,
+		paddingRight: 30,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between',
 		marginHorizontal: 10,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 4
 	},
 	content: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	inner: {
-		flex: 1
+		flex: 1,
+		marginRight: 10
 	},
 	avatar: {
 		marginRight: 10
@@ -63,17 +62,15 @@ const styles = StyleSheet.create({
 		lineHeight: 17,
 		...sharedStyles.textRegular
 	},
-	close: {
-		marginLeft: 10
-	},
 	small: {
 		width: '50%',
 		alignSelf: 'center'
 	}
 });
 
-const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
+const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
+	const { rowHeight } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
@@ -93,48 +90,44 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			prid
 		};
 
-		goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
+		goRoom({ item, isMasterDetail, jumpToMessageId: _id });
 		hideNotification();
 	};
 
 	return (
 		<View
+			testID={`in-app-notification-${text}`}
 			style={[
 				styles.container,
 				isMasterDetail && styles.small,
 				{
 					backgroundColor: themes[theme].surfaceLight,
 					borderColor: themes[theme].strokeLight,
-					marginTop: insets.top
+					marginTop: insets.top,
+					height: rowHeight
 				}
 			]}>
-			<Touchable
+			<Touch
 				style={styles.content}
+				rectButtonStyle={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}
 				testID={`in-app-notification-${text}`}>
-				<>
-					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
-					<View style={styles.inner}>
-						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-							{title}
-						</Text>
-						<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-							{text}
-						</Text>
-					</View>
-				</>
-			</Touchable>
-			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
-				<CustomIcon name='close' size={20} style={styles.close} />
-			</Touchable>
+				<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
+				<View style={styles.inner}>
+					<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						{title}
+					</Text>
+					<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						{text}
+					</Text>
+				</View>
+			</Touch>
+			<Touch onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP}>
+				<CustomIcon name='close' size={20} />
+			</Touch>
 		</View>
 	);
 });
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(NotifierComponent);
+export default withMasterDetail(NotifierComponent);

@@ -1,26 +1,35 @@
-import React from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import { Component, createRef, type RefObject } from 'react';
+import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import moment from 'moment';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
+import { type NavigatorScreenParams } from '@react-navigation/native';
 
-import { getRoutingConfig } from '../../lib/services/restApi';
+import { type TNavigation } from 'stacks/stackType';
+
+import dayjs from '../../lib/dayjs';
+import {
+	getRoutingConfig,
+	getUserInfo,
+	editMessage,
+	setReaction,
+	joinRoom,
+	toggleFollowMessage
+} from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
-import MessageActions, { IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
+import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
+import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
-import StatusBar from '../../containers/StatusBar';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -32,7 +41,8 @@ import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { withDimensions } from '../../dimensions';
+import { withDimensions } from '../../lib/hooks/withDimensions';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import { sendLoadingEvent } from '../../containers/Loading';
 import getThreadName from '../../lib/methods/getThreadName';
@@ -44,41 +54,37 @@ import Banner from './Banner';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
-import JoinCode, { IJoinCode } from './JoinCode';
+import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
 import {
-	IApplicationState,
-	IAttachment,
-	IMessage,
-	IOmnichannelSource,
-	ISubscription,
-	IVisitor,
+	type IApplicationState,
+	type IAttachment,
+	type IMessage,
+	type IMessageEditAttachment,
+	type IOmnichannelSource,
+	type ISubscription,
+	type IVisitor,
 	SubscriptionType,
-	TAnyMessageModel,
-	TSubscriptionModel,
-	IEmoji,
-	TGetCustomEmoji,
-	RoomType
+	type TAnyMessageModel,
+	type TSubscriptionModel,
+	type IEmoji,
+	type TGetCustomEmoji,
+	type RoomType
 } from '../../definitions';
-import {
-	E2E_MESSAGE_TYPE,
-	E2E_STATUS,
-	MESSAGE_TYPE_ANY_LOAD,
-	MessageTypeLoad,
-	themes,
-	NOTIFICATION_IN_APP_VIBRATION
-} from '../../lib/constants';
-import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import {
-	callJitsi,
-	loadSurroundingMessages,
-	loadThreadMessages,
-	readMessages,
-	sendMessage,
-	triggerBlockAction
-} from '../../lib/methods';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
+import { themes } from '../../lib/constants/colors';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { callJitsi } from '../../lib/methods/callJitsi';
+import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
+import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
+import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
+import { readMessages } from '../../lib/methods/readMessages';
+import { sendMessage } from '../../lib/methods/sendMessage';
+import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import {
 	isGroupChat,
 	getUidDirectMessage,
@@ -88,39 +94,43 @@ import {
 	isIOS,
 	hasPermission
 } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
-import { IListContainerRef, TListRef } from './List/definitions';
+import { type IListContainerRef, type TListRef } from './List/definitions';
+import { resolveJumpAnchor } from './services/resolveJumpAnchor';
+import { type TGetMessageInfoResult } from './services/getMessageInfo';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
-import { hasE2EEWarning, isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { IRoomViewProps, IRoomViewState } from './definitions';
+import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
+import { InvitedRoom } from './components/InvitedRoom';
+import { getInvitationData } from '../../lib/methods/getInvitationData';
+import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
-class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef>;
-	private joinCode: React.RefObject<IJoinCode>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
+	private joinCode: RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef>;
+	private list: RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
-	private retryInit = 0;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
@@ -132,7 +142,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -178,7 +187,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
 			isOnHold: false,
-			rightButtonsWidth: 0
+			isAutocompleteVisible: false,
+			showMissingE2EEKey: false,
+			showE2EEDisabledRoom: false
 		};
 
 		this.setHeader();
@@ -191,11 +202,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		this.setReadOnly();
+		this.updateE2EEState();
 
-		this.messageComposerRef = React.createRef();
-		this.list = React.createRef();
-		this.flatList = React.createRef();
-		this.joinCode = React.createRef();
+		this.messageComposerRef = createRef();
+		this.list = createRef();
+		this.flatList = createRef();
+		this.joinCode = createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {
@@ -217,15 +229,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
 			if (this.rid) {
-				this.sub?.subscribe?.();
+				try {
+					this.sub?.subscribe?.();
+				} catch (e) {
+					log(e);
+				}
 				if (isAuthenticated) {
 					this.init();
 				} else {
 					EventEmitter.addEventListener('connected', this.handleConnected);
 				}
 			}
-			if (this.jumpToMessageId) {
-				this.jumpToMessage(this.jumpToMessageId);
+			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
+			// rows and is fired from init()'s success path instead (see init) — firing it here would race
+			// loadThreadMessages and park on the live tail.
+			if (this.jumpToMessageId && !this.tmid) {
+				this.consumeJumpParam(this.jumpToMessageId);
 			}
 			if (this.jumpToThreadId && !this.jumpToMessageId) {
 				this.navToThread({ tmid: this.jumpToThreadId });
@@ -245,7 +264,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
-		const { roomUpdate, member, isOnHold } = state;
+		const { roomUpdate, member, isOnHold, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = state;
 		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -260,6 +279,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return true;
 		}
 		if (isOnHold !== nextState.isOnHold) {
+			return true;
+		}
+		if (isAutocompleteVisible !== nextState.isAutocompleteVisible) {
+			return true;
+		}
+		if (showMissingE2EEKey !== nextState.showMissingE2EEKey) {
+			return true;
+		}
+		if (showE2EEDisabledRoom !== nextState.showE2EEDisabledRoom) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -279,11 +307,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined, rightButtonsWidth } = this.state;
-		const { insets, route } = this.props;
+		const { roomUpdate, joined } = this.state;
+		const { insets, route, encryptionEnabled } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.jumpToMessage(route?.params?.jumpToMessageId);
+			this.consumeJumpParam(route?.params?.jumpToMessageId);
 		}
 
 		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
@@ -302,21 +330,32 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
-		if (
-			insets.left !== prevProps.insets.left ||
-			insets.right !== prevProps.insets.right ||
-			rightButtonsWidth !== prevState.rightButtonsWidth
-		) {
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 		this.setReadOnly();
+
+		if (
+			encryptionEnabled !== prevProps.encryptionEnabled ||
+			roomUpdate.encrypted !== prevState.roomUpdate.encrypted ||
+			roomUpdate.E2EKey !== prevState.roomUpdate.E2EKey
+		) {
+			this.updateE2EEState();
+		}
+
+		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
+			this.init();
+		}
 	}
 
 	updateOmnichannel = async () => {
-		const canForwardGuest = await this.canForwardGuest();
+		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+			this.canForwardGuest(),
+			this.canReturnQueue(),
+			this.canViewCannedResponse()
+		]);
 		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
 		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 		if (this.mounted) {
 			this.setHeader();
@@ -346,9 +385,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
-		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -423,10 +459,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } =
-			this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
+		const {
+			room,
+			unreadsCount,
+			roomUserId,
+			joined,
+			canForwardGuest,
+			canReturnQueue,
+			canPlaceLivechatOnHold,
+			showMissingE2EEKey,
+			showE2EEDisabledRoom
+		} = this.state;
+		const { navigation, isMasterDetail, baseUrl, user, route } = this.props;
 		const { rid, tmid } = this;
+
+		if (!rid) {
+			// Adding an empty View to prevent rendering the back button while maintaining the same header height.
+			const height = 37 * PixelRatio.getFontScale();
+			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
+			return;
+		}
 		if (!room.rid) {
 			return;
 		}
@@ -466,34 +518,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			visitor = room.visitor;
 		}
 
-		const onLayout = ({ nativeEvent }: { nativeEvent: any }) => {
-			this.setState({ rightButtonsWidth: nativeEvent.layout.width });
-		};
-
 		const t = room?.t;
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 		const iSubRoom = room as ISubscription;
-		const e2eeWarning = !!(
-			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
-		);
+		const e2eeWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
 		navigation.setOptions({
-			headerLeft: () =>
-				isIOS && (unreadsCount || isMasterDetail) ? (
-					<LeftButtons
-						rid={rid}
-						tmid={tmid}
-						unreadsCount={unreadsCount}
-						baseUrl={baseUrl}
-						userId={userId}
-						token={token}
-						title={avatar}
-						theme={theme}
-						t={t}
-						goRoomActionsView={this.goRoomActionsView}
-						isMasterDetail={isMasterDetail}
-					/>
-				) : undefined,
+			headerLeft: () => (
+				<LeftButtons
+					rid={rid}
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					t={t}
+					goRoomActionsView={this.goRoomActionsView}
+					isMasterDetail={isMasterDetail}
+				/>
+			),
 			headerTitle: () => (
 				<RoomHeader
 					prid={prid}
@@ -509,12 +553,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
-					disabled={e2eeWarning}
-					rightButtonsWidth={rightButtonsWidth}
+					abacAttributes={iSubRoom.abacAttributes}
+					disabled={isInviteSubscription(iSubRoom)}
 				/>
 			),
 			headerRight: () => (
 				<RightButtons
+					roomName={title}
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
@@ -528,8 +573,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
-					onLayout={onLayout}
 					hasE2EEWarning={e2eeWarning}
+					teamMain={teamMain}
+					isGroupChat={isGroupChatConst}
 				/>
 			)
 		});
@@ -540,6 +586,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore — navigation types expect a literal screen name
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
@@ -552,7 +599,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					joined,
 					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 				}
-			});
+			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
 		} else if (this.rid && this.t) {
 			navigation.push('RoomActionsView', {
 				rid: this.rid,
@@ -572,6 +619,38 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState({ readOnly });
 	};
 
+	updateE2EEState = () => {
+		const { room } = this.state;
+		const { encryptionEnabled } = this.props;
+
+		if (!('encrypted' in room)) {
+			if (this.mounted) {
+				this.setState({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
+			}
+			return;
+		}
+
+		const showMissingE2EEKey = isMissingRoomE2EEKey({
+			encryptionEnabled,
+			roomEncrypted: room.encrypted,
+			E2EKey: room.E2EKey
+		});
+
+		const showE2EEDisabledRoom = isE2EEDisabledEncryptedRoom({
+			encryptionEnabled,
+			roomEncrypted: room.encrypted
+		});
+
+		if (this.mounted) {
+			this.setState({ showMissingE2EEKey, showE2EEDisabledRoom });
+		} else {
+			// @ts-ignore
+			this.state.showMissingE2EEKey = showMissingE2EEKey;
+			// @ts-ignore
+			this.state.showE2EEDisabledRoom = showE2EEDisabledRoom;
+		}
+	};
+
 	init = async () => {
 		try {
 			this.setState({ loading: true });
@@ -579,8 +658,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!this.rid) {
 				return;
 			}
+
+			if ('id' in room && isInviteSubscription(room)) {
+				this.setState({ loading: false });
+				return;
+			}
+
 			if (this.tmid) {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
+				// Thread jump: fire here, not in componentDidMount — the thread window is populated now, so
+				// the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
+				// Read-and-clear so other init() callers can't re-fire it.
+				if (this.jumpToMessageId) {
+					const messageId = this.jumpToMessageId;
+					this.jumpToMessageId = undefined;
+					this.consumeJumpParam(messageId);
+				}
 			} else {
 				const newLastOpen = new Date();
 				await RoomServices.getMessages({
@@ -606,12 +699,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInit += 1;
-			if (this.retryInit <= 1) {
-				this.retryInitTimeout = setTimeout(() => {
-					this.init();
-				}, 300);
-			}
+			this.retryInitTimeout = setTimeout(() => {
+				this.init();
+			}, 300);
 		}
 	};
 
@@ -624,7 +714,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomUserId = getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await Services.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;
 				}
@@ -712,10 +802,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: IMessageEditAttachment[];
+		}
+	) => {
 		try {
 			this.resetAction();
-			await Services.editMessage(message);
+			await editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -780,9 +874,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction
+				onClose: this.resetAction,
+				fullContainer: true
 			});
-		}, 100);
+		}, 300);
 	};
 
 	onReactionInit = (messageId: string) => {
@@ -826,7 +921,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				shortname = emoji.name;
 			}
-			await Services.setReaction(shortname, messageId);
+			await setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
@@ -839,7 +934,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
-			enableContentPanningGesture: false
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
@@ -897,7 +993,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onThreadPress = debounce((item: TAnyMessageModel) => this.navToThread(item), 1000, true);
 
-	shouldNavigateToRoom = (message: IMessage) => {
+	shouldNavigateToRoom = (message: TGetMessageInfoResult) => {
 		if (message.tmid && message.tmid === this.tmid) {
 			return false;
 		}
@@ -920,6 +1016,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		} catch (e) {
 			log(e);
 		}
+	};
+
+	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
+	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
+	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
+	consumeJumpParam = (messageId: string) => {
+		this.jumpToMessageId = undefined;
+		this.jumpToMessage(messageId);
+		this.props.navigation.setParams({ jumpToMessageId: undefined });
 	};
 
 	jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
@@ -947,12 +1052,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
 				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
+				 *
+				 * The fetched Chunk lets us re-anchor the Message Window onto the target in ONE step: if a
+				 * Newer Loader brackets the target's Chunk it is non-contiguous with the Live Tail, so we
+				 * derive a finite upper ts bound (highTs) for an Anchored Window centered on it. A
+				 * contiguous target resolves to null and stays a Live Window. Thread/local targets are
+				 * never anchored.
 				 */
-				if (message.fromServer && !message.tmid && this.rid) {
-					await loadSurroundingMessages({ messageId, rid: this.rid });
-				}
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				this.cancelJumpToMessage();
+				const inWindow = this.list.current?.isMessageInWindow(message.id) ?? false;
+				const highTs = await resolveJumpAnchor(
+					this.rid,
+					{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
+					inWindow,
+					{ loadSurroundingMessages, getLocalAnchorTs: RoomServices.getLocalAnchorTs }
+				);
+				// Synchronization needed for Fabric to work
+				await new Promise(res => setTimeout(res, 100));
+				// The list hook resolves on real completion (or via its own safety net), so we no longer
+				// race a 5s timeout that could yank a valid in-flight scroll.
+				await this.list.current?.jumpToMessage(message.id, highTs);
+				sendLoadingEvent({ visible: false });
 			}
 		} catch (error: any) {
 			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
@@ -981,8 +1100,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	handleRoomRemoved = ({ rid }: { rid: string }) => {
 		const { room } = this.state;
+		const { isMasterDetail } = this.props;
 		if (rid === this.rid) {
-			Navigation.navigate('RoomsListView');
+			Navigation.popToTop(isMasterDetail);
 			!this.isOmnichannel &&
 				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
@@ -1030,10 +1150,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
+			const { serverVersion } = this.props;
 
 			if (this.isOmnichannel) {
 				if ('_id' in room) {
-					await takeInquiry(room._id);
+					await takeInquiry(room._id, serverVersion as string);
 				}
 				this.onJoin();
 			} else {
@@ -1041,7 +1162,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (joinCodeRequired) {
 					this.joinCode.current?.show();
 				} else {
-					await Services.joinRoom(rid, null, this.t as any);
+					await joinRoom(rid, null, this.t as any);
 					this.onJoin();
 				}
 			}
@@ -1086,7 +1207,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!threadMessageId) {
 				return;
 			}
-			await Services.toggleFollowMessage(threadMessageId, !isFollowingThread);
+			await toggleFollowMessage(threadMessageId, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -1113,7 +1234,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToThread = async (item: TAnyMessageModel | { tmid: string }) => {
+	navToThread = async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -1125,7 +1246,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			let name = '';
 			let jumpToMessageId = '';
 			if ('id' in item) {
-				name = item.tmsg ?? '';
+				name = 'tmsg' in item ? item.tmsg ?? '' : '';
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
@@ -1142,7 +1263,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 				name = result;
 			}
-			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+			if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
 			if (!jumpToMessageId) {
@@ -1171,8 +1292,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToRoom = async (message: TAnyMessageModel) => {
+	navToRoom = async (message: TGetMessageInfoResult) => {
 		const { isMasterDetail } = this.props;
+		if (!message.rid) return;
 		const roomInfo = await getRoomInfo(message.rid);
 
 		return goRoom({
@@ -1184,6 +1306,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	// OLD METHOD - support versions before 5.0.0
 	handleEnterCall = () => {
+		if (isInActiveVoipCall()) return;
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
@@ -1276,6 +1399,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	getText = () => this.messageComposerRef.current?.getText();
 
+	getFederatedFooterDescription = (room: IRoomFederated) => {
+		const { isFederationEnabled, isFederationModuleEnabled } = this.props;
+
+		if (!isRoomNativeFederated(room)) {
+			return I18n.t('Federation_Matrix_room_description_invalid_version');
+		}
+
+		if (!isFederationEnabled) {
+			return I18n.t('Federation_Matrix_room_description_disabled');
+		}
+
+		if (!isFederationModuleEnabled) {
+			return I18n.t('Federation_Matrix_room_description_missing_module');
+		}
+
+		return undefined;
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -1292,14 +1433,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
+		const federated = 'id' in room && isRoomFederated(room);
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
-			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
+			showUnreadSeparator = lastOpen ? dayjs(item.ts).isAfter(lastOpen) : false;
 		} else {
 			showUnreadSeparator =
-				(lastOpen && moment(item.ts).isSameOrAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen)) ?? false;
-			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
+				(lastOpen &&
+					(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
+					dayjs(previousItem.ts).isBefore(lastOpen)) ??
+				false;
+			if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
 			}
 		}
@@ -1356,7 +1501,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
 					useRealName={useRealName}
-					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
@@ -1442,7 +1587,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+
+		if ('id' in room && isRoomFederated(room)) {
+			const description = this.getFederatedFooterDescription(room);
+
+			if (description) {
+				return (
+					<View style={styles.readOnly}>
+						<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{description}</Text>
+					</View>
+				);
+			}
+		}
+
+		return (
+			<MessageComposerContainer ref={this.messageComposerRef}>
+				<ComposerAttachments />
+			</MessageComposerContainer>
+		);
 	};
 
 	renderActions = () => {
@@ -1454,7 +1616,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={(ref: IMessageActions | null) => {
+						this.messageActions = ref;
+					}}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1466,15 +1630,32 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions
+					ref={(ref: IMessageErrorActions | null) => {
+						this.messageErrorActions = ref;
+					}}
+					tmid={this.tmid}
+				/>
 			</>
 		);
 	};
 
+	updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
+		if (!!updatedAutocompleteVisible && !this.state.isAutocompleteVisible) {
+			// timeout to prevent conflict with default keyboard announcement.
+			setTimeout(() => {
+				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
+			}, 800);
+		}
+		if (updatedAutocompleteVisible !== this.state.isAutocompleteVisible) {
+			this.setState({ isAutocompleteVisible: updatedAutocompleteVisible });
+		}
+	};
+
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, action, selectedMessages } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
+		const { room, action, selectedMessages, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = this.state;
+		const { user, baseUrl, theme, width, serverVersion, navigation } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1482,14 +1663,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			({ bannerClosed, announcement } = room);
 		}
 
+		if ('id' in room && isInviteSubscription(room)) {
+			const { title, description, inviter, accept, reject } = getInvitationData(room);
+
+			return (
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view-invited'>
+					<InvitedRoom title={title} description={description} inviter={inviter} onAccept={accept} onReject={reject} />
+				</SafeAreaView>
+			);
+		}
+
 		if ('encrypted' in room) {
 			// Missing room encryption key
-			if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: room.encrypted, E2EKey: room.E2EKey })) {
+			if (showMissingE2EEKey) {
 				return <MissingRoomE2EEKey />;
 			}
 
 			// Encrypted room, but user session is not encrypted
-			if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: room.encrypted })) {
+			if (showE2EEDisabledRoom) {
 				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
 			}
 		}
@@ -1499,10 +1690,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				value={{
 					rid,
 					t,
+					room,
 					tmid: this.tmid,
 					sharing: false,
 					action,
 					selectedMessages,
+					updateAutocompleteVisible: this.updateAutocompleteVisible,
+					isAutocompleteVisible,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
 					editCancel: this.onEditCancel,
 					editRequest: this.onEditRequest,
@@ -1511,15 +1705,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					<StatusBar />
-					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+					{!this.tmid ? (
+						<Banner
+							title={I18n.t('Announcement')}
+							text={announcement}
+							bannerClosed={bannerClosed}
+							closeBanner={this.closeBanner}
+						/>
+					) : null}
 					<List
 						ref={this.list}
 						listRef={this.flatList}
 						rid={rid}
+						t={t as RoomType}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
-						loading={loading}
 						hideSystemMessages={this.hideSystemMessages}
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}
@@ -1536,7 +1736,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
-	isMasterDetail: state.app.isMasterDetail,
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
@@ -1551,7 +1750,11 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
 	inAppFeedback: state.inAppFeedback,
-	encryptionEnabled: state.encryption.enabled
+	encryptionEnabled: state.encryption.enabled,
+	isFederationEnabled: (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean,
+	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
+export default connect(mapStateToProps)(
+	withDimensions(withTheme(withSafeAreaInsets(withActionSheet(withMasterDetail(RoomView)))))
+);

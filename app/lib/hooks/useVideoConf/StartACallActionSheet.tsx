@@ -1,10 +1,10 @@
-import { Camera, CameraType } from 'expo-camera';
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { CameraView } from 'expo-camera';
+import { useState, useEffect, type ReactElement } from 'react';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
-import { useAppSelector } from '..';
+import { useAppSelector } from '../useAppSelector';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
 import AvatarContainer from '../../../containers/Avatar';
 import Button from '../../../containers/Button';
@@ -16,26 +16,22 @@ import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import useUserData from '../useUserData';
 
-export default function StartACallActionSheet({
-	rid,
-	roomType
-}: {
-	rid: string;
-	roomType?: SubscriptionType;
-}): React.ReactElement {
+export default function StartACallActionSheet({ rid, roomType }: { rid: string; roomType?: SubscriptionType }): ReactElement {
 	const { colors } = useTheme();
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
 	const [containerWidth, setContainerWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
+	const { height, width } = useWindowDimensions();
 
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const calling = useAppSelector(state => state.videoConf.calling);
 	const dispatch = useDispatch();
 
 	const user = useUserData(rid);
-
-	React.useEffect(
+	const isPortrait = height > width;
+	const actionSheetContainerHeight = isPortrait ? '90%' : '75%';
+	useEffect(
 		() => () => {
 			if (calling) {
 				dispatch(cancelCall({}));
@@ -46,7 +42,7 @@ export default function StartACallActionSheet({
 
 	return (
 		<View
-			style={[style.actionSheetContainer, { paddingBottom: bottom }]}
+			style={[style.actionSheetContainer, { paddingBottom: bottom, height: actionSheetContainerHeight }]}
 			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			{calling && roomType === SubscriptionType.DIRECT ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
@@ -66,7 +62,7 @@ export default function StartACallActionSheet({
 					{ backgroundColor: cam ? undefined : colors.surfaceNeutral, width: containerWidth }
 				]}>
 				{cam ? (
-					<Camera style={[style.cameraContainer, { width: containerWidth }]} type={CameraType.front} />
+					<CameraView style={[style.cameraContainer, { width: containerWidth }]} facing='front' />
 				) : (
 					<AvatarContainer size={62} text={username} rid={rid} type={user.type} />
 				)}
@@ -89,8 +85,7 @@ export default function StartACallActionSheet({
 
 const style = StyleSheet.create({
 	actionSheetContainer: {
-		paddingHorizontal: 24,
-		flex: 1
+		paddingHorizontal: 24
 	},
 	actionSheetPhotoContainer: {
 		justifyContent: 'center',

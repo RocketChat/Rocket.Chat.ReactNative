@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: Search room
+tags:
+  - 'util'
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    id: 'rooms-list-view-search'
+- tapOn:
+    id: 'rooms-list-view-search-input'
+- inputText:
+    text: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${ROOM}'
+    timeout: 60000

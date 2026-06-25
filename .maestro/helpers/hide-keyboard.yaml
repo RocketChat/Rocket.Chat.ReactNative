@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+name: Hide Keyboard
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - hideKeyboard
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: 1%,20%

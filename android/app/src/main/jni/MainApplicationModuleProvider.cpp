@@ -17,6 +17,12 @@ std::shared_ptr<TurboModule> MainApplicationModuleProvider(
   //    return module;
   // }
   // return rncore_ModuleProvider(moduleName, params);
+  
+  // Custom TurboModules
+  if (moduleName == "SSLPinning") {
+    return std::make_shared<JavaTurboModule>(moduleName, params);
+  }
+  
   return rncore_ModuleProvider(moduleName, params);
 }
 

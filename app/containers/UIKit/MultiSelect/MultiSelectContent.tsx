@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
+import { useState, memo, type Dispatch, type SetStateAction } from 'react';
 import { View } from 'react-native';
 
+import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import I18n from '../../../i18n';
 import Items from './Items';
 import styles from './styles';
 import { useTheme } from '../../../theme';
-import { IItemData } from '.';
+import { type IItemData } from '.';
 import { debounce } from '../../../lib/methods/helpers/debounce';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useActionSheet } from '../../ActionSheet';
 
 interface IMultiSelectContentProps {
 	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;
 	options?: IItemData[];
 	multiselect: boolean;
-	select: React.Dispatch<any>;
+	select: Dispatch<any>;
 	onChange: ({ value }: { value: string[] }) => void;
-	setCurrentValue: React.Dispatch<React.SetStateAction<string>>;
+	setCurrentValue: Dispatch<SetStateAction<string>>;
 	onHide: Function;
 	selectedItems: IItemData[];
 }
 
-export const MultiSelectContent = React.memo(
+export const MultiSelectContent = memo(
 	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
 		const { colors } = useTheme();
 		const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);
@@ -61,7 +61,7 @@ export const MultiSelectContent = React.memo(
 					setItems(options?.filter((option: any) => textParser([option.text]).toLowerCase().includes(text.toLowerCase())));
 				}
 			},
-			onSearch ? 300 : 0
+			onSearch ? textInputDebounceTime : 0
 		);
 
 		return (
@@ -72,7 +72,6 @@ export const MultiSelectContent = React.memo(
 						onChangeText={handleSearch}
 						placeholder={I18n.t('Search')}
 						inputStyle={{ backgroundColor: colors.surfaceLight }}
-						bottomSheet={isIOS}
 						onSubmitEditing={() => {
 							setTimeout(() => {
 								hideActionSheet();

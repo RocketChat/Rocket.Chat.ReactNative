@@ -1,0 +1,88 @@
+name: 'Upload Android'
+description: 'Downloads AAB + Manifest, uploads to Play Store'
+inputs:
+  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+    description: 'Google service account key for upload'
+    required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
+  BUILD_VERSION:
+    description: 'Build version for build'
+    required: true
+  trigger:
+    description: 'Trigger for build'
+    required: true
+    default: pr
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download AAB
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        name: android-aab
+        path: android/app/build/outputs/bundle/release/
+
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+        working-directory: android
+
+    - name: Store the Google service account key
+      working-directory: android
+      run: |
+        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
+      shell: bash
+
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      if: ${{ inputs.trigger == 'develop' || inputs.trigger == 'pr' }}
+      with:
+        name: release-changelog
+        path: .
+
+    - name: Prepare Play Store changelog metadata
+      if: ${{ inputs.trigger == 'develop' || inputs.trigger == 'pr' }}
+      run: |
+        mkdir -p android/fastlane/metadata/android/en-US/changelogs
+
+        if [[ "${{ inputs.trigger }}" == "pr" ]]; then
+          cp changelog.txt "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
+        elif [ -f changelog.txt ]; then
+          node .github/scripts/changelog.js cap
+        else
+          printf "Internal improvements and bug fixes" > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
+        fi
+      shell: bash
+      env:
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
+
+    - name: Fastlane Play Store Upload
+      working-directory: android
+      run: |
+        if [[ ${{ inputs.trigger }} == "pr" ]]; then
+          bundle exec fastlane android beta
+        fi
+        if [[ ${{ inputs.trigger }} == "develop" ]]; then
+          bundle exec fastlane android open_testing
+        fi
+      shell: bash
+
+    - name: Leave a comment on PR
+      if: ${{ inputs.trigger == 'pr' }}
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
+      run: |
+        gradle_file="android/app/build.gradle"
+        VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
+
+        version_info="Rocket.Chat $VERSION_NAME.$BUILD_VERSION"
+
+        message="**Android Build Available**"$'\n\n'"$version_info"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
+      shell: bash

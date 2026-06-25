@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Subscription } from 'rxjs';
+import { useEffect, useRef, useState, type MutableRefObject } from 'react';
+import { type Subscription } from 'rxjs';
 
-import { IUser, TSubscriptionModel } from '../../../definitions';
+import { type IUser, type TSubscriptionModel } from '../../../definitions';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
 
 interface IUseSubscriptionProps {
 	user: IUser;
 	rid: string;
-	threadsSubscription: React.MutableRefObject<Subscription | null>;
+	threadsSubscription: MutableRefObject<Subscription | null>;
 }
 
 const useSubscription = ({ rid, threadsSubscription }: IUseSubscriptionProps) => {

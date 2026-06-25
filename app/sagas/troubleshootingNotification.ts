@@ -1,12 +1,12 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 import { call, takeLatest, put } from 'typed-redux-saga';
-import notifee, { AuthorizationStatus } from '@notifee/react-native';
+import * as Notifications from 'expo-notifications';
 
 import { TROUBLESHOOTING_NOTIFICATION } from '../actions/actionsTypes';
 import { setTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import { pushInfo } from '../lib/services/restApi';
 import log from '../lib/methods/helpers/log';
-import { appSelector } from '../lib/hooks';
+import { appSelector } from '../lib/hooks/useAppSelector';
 import { compareServerVersion } from '../lib/methods/helpers';
 
 interface IGenericAction extends Action {
@@ -19,8 +19,8 @@ function* init() {
 	let defaultPushGateway = false;
 	let pushGatewayEnabled = false;
 	try {
-		const { authorizationStatus } = yield* call(notifee.getNotificationSettings);
-		deviceNotificationEnabled = authorizationStatus > AuthorizationStatus.DENIED;
+		const { status } = yield* call(Notifications.getPermissionsAsync);
+		deviceNotificationEnabled = status === 'granted';
 	} catch (e) {
 		log(e);
 	}
