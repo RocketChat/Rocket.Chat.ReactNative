@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import { type IMessage, type SubscriptionType } from '../../../definitions';
-import fetchMessages from '../methods/fetchMessages';
+import { type IMessage } from '../../../definitions';
 
-interface IUseMessage {
-	rid: string;
-	t: SubscriptionType;
-	screenName: string;
-	userId: string;
+interface IUseMessages {
+	fetchMessages: (offset: number) => Promise<any>;
 }
 
-export const useMessages = ({ rid, screenName, t, userId }: IUseMessage) => {
+export const useMessages = ({ fetchMessages }: IUseMessages) => {
 	const [loading, setLoading] = useState(false);
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [total, setTotal] = useState(-1);
@@ -21,7 +17,7 @@ export const useMessages = ({ rid, screenName, t, userId }: IUseMessage) => {
 		setLoading(true);
 
 		try {
-			const result = await fetchMessages({ t, rid, screenName, userId, offset: messages.length });
+			const result = await fetchMessages(messages.length);
 			if (result?.success) {
 				const urlRenderMessages = result?.messages?.map((message: IMessage) => ({
 					...message,

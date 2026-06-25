@@ -10,7 +10,6 @@ import { SubscriptionType, type IAttachment, type IMessage, type TGetCustomEmoji
 import { type IMessagesViewProps, type IParams } from './definitions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { type TIconsName } from '../../containers/CustomIcon';
 import Navigation from '../../lib/navigation/appNavigation';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -21,18 +20,14 @@ import AudioManager from '../../lib/methods/AudioManager';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import useMessages from './hooks/useMessages';
-import getContentTestId from './methods/getContentTestId';
-import getListEmptyMessage from './methods/getListEmptyMessage';
-import getActionTitle from './methods/getActionTitle';
-import getActionIcon from './methods/getActionIcon';
-import performMessageAction from './methods/performMessageAction';
+import { messagesViewContent } from './messagesViewContent';
 import styles from './styles';
 
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
 	const screenName: string = route.params?.name;
-	const testID = getContentTestId({ screenName });
+	const content = messagesViewContent[screenName];
 	const { theme } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
@@ -42,16 +37,17 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		customEmojis: state.customEmojis,
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
-	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({ rid, t, screenName, userId: user.id });
+	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({
+		fetchMessages: offset => content.fetch({ rid, t, userId: user.id, offset })
+	});
 
 	const handleShowActionSheet = (message: IMessage) => {
-		const title = getActionTitle(screenName) as string;
-		const icon = getActionIcon(screenName) as TIconsName;
+		if (!content.action) return;
 		showActionSheet({
 			options: [
 				{
-					title,
-					icon,
+					title: I18n.t(content.action.titleI18n),
+					icon: content.action.icon,
 					onPress: () => onActionPress(message)
 				}
 			],
@@ -61,7 +57,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 
 	const onActionPress = async (message: IMessage) => {
 		try {
-			const result = await performMessageAction(screenName, message);
+			const result = await content.action?.press(message);
 
 			if (result?.success) {
 				updateMessageOnActionPress(message?._id);
@@ -150,11 +146,14 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 			);
 		}
 
-		if (screenName === 'Pinned' || screenName === 'Starred') {
-			return <Message {...renderItemCommonProps} msg={item.msg} theme={theme} onLongPress={() => handleShowActionSheet(item)} />;
-		}
-
-		return <Message {...renderItemCommonProps} msg={item.msg} theme={theme} />;
+		return (
+			<Message
+				{...renderItemCommonProps}
+				msg={item.msg}
+				theme={theme}
+				onLongPress={content.action ? () => handleShowActionSheet(item) : undefined}
+			/>
+		);
 	};
 
 	useLayoutEffect(() => {
@@ -169,14 +168,14 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 
 	if (!loading && messages.length === 0) {
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{getListEmptyMessage({ screenName })}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={content.testID}>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(content.emptyMessageI18n)}</Text>
 			</View>
 		);
 	}
 
 	return (
-		<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
+		<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={content.testID}>
 			<StatusBar />
 			<FlatList
 				data={messages}
