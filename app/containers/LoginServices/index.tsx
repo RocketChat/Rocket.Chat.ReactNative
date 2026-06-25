@@ -1,33 +1,14 @@
-import React, { useState } from 'react';
+import { useState, type ReactElement } from 'react';
 import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { type IServices } from '../../selectors/login';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { type IItemService, type IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
-import Service from './Service';
+import ServiceList from './ServiceList';
 
-const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server, collapsed }: IServiceList) => (
-	<>
-		{Object.values(services).map((service: IItemService, index: number) => {
-			if (index > 2 && collapsed) return null;
-			return (
-				<Service
-					key={service._id}
-					CAS_enabled={CAS_enabled}
-					CAS_login_url={CAS_login_url}
-					Gitlab_URL={Gitlab_URL}
-					server={server}
-					service={service}
-				/>
-			);
-		})}
-	</>
-);
-
-const LoginServices = ({ separator }: { separator: boolean }): React.ReactElement => {
+const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	const [collapsed, setCollapsed] = useState(true);
 
 	const { Gitlab_URL, CAS_enabled, CAS_login_url } = useAppSelector(
@@ -39,9 +20,14 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 		shallowEqual
 	);
 	const server = useAppSelector(state => state.server.server);
-	const services = useAppSelector(state => state.login.services as IServices, shallowEqual);
-	const { length } = Object.values(services);
-
+	const allServices = useAppSelector(state => state.login.services as IServices, shallowEqual);
+	const filteredServices = Object.fromEntries(
+		Object.entries(allServices).filter(([, service]) => !service.hideButtonOnMobile)
+	) as IServices;
+	const { length } = Object.values(filteredServices);
+	// If server returns any of the services with hideButtonOnMobile, we need to show login on web button
+	const enableLoginOnWebButton = Object.values(allServices).length > length;
+	const totalServices = length + Number(enableLoginOnWebButton);
 	const heightButtons = useSharedValue(SERVICES_COLLAPSED_HEIGHT);
 
 	const animatedStyle = useAnimatedStyle(() => ({
@@ -50,38 +36,50 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 	}));
 
 	const onPressButtonSeparator = () => {
-		heightButtons.value = collapsed ? SERVICE_HEIGHT * length : SERVICES_COLLAPSED_HEIGHT;
+		heightButtons.value = collapsed ? SERVICE_HEIGHT * totalServices : SERVICES_COLLAPSED_HEIGHT;
 		setCollapsed(prevState => !prevState);
 	};
 
-	if (length > 3 && separator) {
+	if (totalServices > 3 && separator) {
 		return (
 			<>
 				<Animated.View style={animatedStyle}>
 					<ServiceList
-						services={services}
+						services={filteredServices}
 						CAS_enabled={CAS_enabled}
 						CAS_login_url={CAS_login_url}
 						Gitlab_URL={Gitlab_URL}
 						server={server}
 						collapsed={collapsed}
+						showLoginOnWebButton={enableLoginOnWebButton}
 					/>
 				</Animated.View>
-				<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
+				<ServicesSeparator
+					totalServices={totalServices}
+					separator={separator}
+					collapsed={collapsed}
+					onPress={onPressButtonSeparator}
+				/>
 			</>
 		);
 	}
 	return (
 		<>
 			<ServiceList
-				services={services}
+				services={filteredServices}
 				CAS_enabled={CAS_enabled}
 				CAS_login_url={CAS_login_url}
 				Gitlab_URL={Gitlab_URL}
 				server={server}
 				collapsed={collapsed}
+				showLoginOnWebButton={enableLoginOnWebButton}
 			/>
-			<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
+			<ServicesSeparator
+				totalServices={totalServices}
+				separator={separator}
+				collapsed={collapsed}
+				onPress={onPressButtonSeparator}
+			/>
 		</>
 	);
 };

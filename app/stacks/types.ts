@@ -19,6 +19,8 @@ import {
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
+// Hand-written rather than StaticParamList-inferred: views use composite navigation props spanning
+// cross-stack destinations (ModalStackNavigator, E2E stacks), and explicit params avoid implicit `any`.
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
@@ -43,7 +45,7 @@ export type ChatsStackParamList = {
 				usedCannedResponse?: string;
 				status?: string;
 		  }
-		| undefined; // Navigates back to RoomView already on stack
+		| undefined;
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
@@ -135,7 +137,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser: any; // TODO: Change
+		roomUser: any;
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -146,7 +148,7 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	CreateChannelView: {
-		isTeam?: boolean; // TODO: To check
+		isTeam?: boolean;
 		teamId?: string;
 	};
 	AddChannelTeamView: {
@@ -201,6 +203,8 @@ export type ProfileStackParamList = {
 	ChangePasswordView: undefined;
 };
 
+// Cross-stack entries (ProfileView, DisplayPrefsView, AccessibilityAndAppearanceView) are reachable
+// from SettingsView via the drawer/accessibility stack.
 export type SettingsStackParamList = {
 	LegalView: undefined;
 	SettingsView: undefined;
@@ -248,9 +252,9 @@ export type NewMessageStackParamList = {
 		buttonText?: string;
 		nextAction?: Function;
 		showSkipText?: boolean;
-	}; // TODO: Change
+	};
 	CreateChannelView?: {
-		isTeam?: boolean; // TODO: To check
+		isTeam?: boolean;
 		teamId?: string;
 	};
 	CreateDiscussionView: {
@@ -294,41 +298,9 @@ export type InsideStackParamList = {
 		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 	ModalBlockView: {
-		data: any; // TODO: Change;
+		data: any;
 	};
 	CallView: undefined;
 };
 
-export type OutsideParamList = {
-	NewServerView: undefined;
-	WorkspaceView: undefined;
-	LoginView: {
-		title: string;
-		username?: string;
-	};
-	ForgotPasswordView: {
-		title: string;
-	};
-	SendEmailConfirmationView: {
-		user?: string;
-	};
-	RegisterView: {
-		title: string;
-		username?: string;
-	};
-	LegalView: undefined;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-};
-
-export type OutsideModalParamList = {
-	OutsideStack: NavigatorScreenParams<OutsideParamList>;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-};
+export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';

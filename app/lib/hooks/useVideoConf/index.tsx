@@ -1,5 +1,5 @@
-import { useCameraPermissions } from 'expo-camera';
-import React, { useMemo } from 'react';
+import { Camera } from 'expo-camera';
+import { useMemo } from 'react';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
 import i18n from '../../../i18n';
@@ -33,7 +33,6 @@ export const useVideoConf = (
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
-	const [permission, requestPermission] = useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);
@@ -66,9 +65,10 @@ export const useVideoConf = (
 					fullContainer: true
 				});
 
+				const permission = await Camera.getCameraPermissionsAsync();
 				if (!permission?.granted) {
 					try {
-						await requestPermission();
+						await Camera.requestCameraPermissionsAsync();
 						handleAndroidBltPermission();
 					} catch (error) {
 						log(error);

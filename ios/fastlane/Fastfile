@@ -52,6 +52,9 @@ platform :ios do
 
     if changelog
         pilot_options[:changelog] = changelog
+    end
+
+    if ENV["TRIGGER"] == "develop"
         pilot_options[:distribute_external] = true
         pilot_options[:notify_external_testers] = true
         pilot_options[:groups] = ["External Testers"]

@@ -1,4 +1,4 @@
-import React, { type ReactElement, forwardRef } from 'react';
+import { forwardRef, type ReactElement } from 'react';
 
 import { MessageComposerProvider } from './context';
 import { type IMessageComposerContainerProps, type IMessageComposerRef } from './interfaces';

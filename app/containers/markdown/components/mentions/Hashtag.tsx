@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { Text } from 'react-native';
 
 import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
 import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
@@ -22,11 +22,11 @@ interface IHashtag {
 	channels?: IUserChannel[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
+const Hashtag = memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
 	const { theme } = useTheme();
 	const { textStyle } = useContext(MarkdownContext);
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
 	const handlePress = async () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);

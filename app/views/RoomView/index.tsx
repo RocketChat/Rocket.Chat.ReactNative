@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -41,7 +41,8 @@ import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { withDimensions } from '../../dimensions';
+import { withDimensions } from '../../lib/hooks/withDimensions';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import { sendLoadingEvent } from '../../containers/Loading';
 import getThreadName from '../../lib/methods/getThreadName';
@@ -99,6 +100,8 @@ import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
+import { resolveJumpAnchor } from './services/resolveJumpAnchor';
+import { type TGetMessageInfoResult } from './services/getMessageInfo';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
@@ -112,16 +115,16 @@ import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
-class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
-	private joinCode: React.RefObject<IJoinCode | null>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
+	private joinCode: RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef | null>;
+	private list: RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
@@ -201,10 +204,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setReadOnly();
 		this.updateE2EEState();
 
-		this.messageComposerRef = React.createRef();
-		this.list = React.createRef();
-		this.flatList = React.createRef();
-		this.joinCode = React.createRef();
+		this.messageComposerRef = createRef();
+		this.list = createRef();
+		this.flatList = createRef();
+		this.joinCode = createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {
@@ -237,8 +240,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					EventEmitter.addEventListener('connected', this.handleConnected);
 				}
 			}
-			if (this.jumpToMessageId) {
-				this.jumpToMessage(this.jumpToMessageId);
+			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
+			// rows and is fired from init()'s success path instead (see init) — firing it here would race
+			// loadThreadMessages and park on the live tail.
+			if (this.jumpToMessageId && !this.tmid) {
+				this.consumeJumpParam(this.jumpToMessageId);
 			}
 			if (this.jumpToThreadId && !this.jumpToMessageId) {
 				this.navToThread({ tmid: this.jumpToThreadId });
@@ -305,7 +311,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { insets, route, encryptionEnabled } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.jumpToMessage(route?.params?.jumpToMessageId);
+			this.consumeJumpParam(route?.params?.jumpToMessageId);
 		}
 
 		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
@@ -344,10 +350,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	updateOmnichannel = async () => {
-		const canForwardGuest = await this.canForwardGuest();
+		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+			this.canForwardGuest(),
+			this.canReturnQueue(),
+			this.canViewCannedResponse()
+		]);
 		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
 		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 		if (this.mounted) {
 			this.setHeader();
@@ -658,6 +666,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 			if (this.tmid) {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
+				// Thread jump: fire here, not in componentDidMount — the thread window is populated now, so
+				// the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
+				// Read-and-clear so other init() callers can't re-fire it.
+				if (this.jumpToMessageId) {
+					const messageId = this.jumpToMessageId;
+					this.jumpToMessageId = undefined;
+					this.consumeJumpParam(messageId);
+				}
 			} else {
 				const newLastOpen = new Date();
 				await RoomServices.getMessages({
@@ -977,7 +993,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onThreadPress = debounce((item: TAnyMessageModel) => this.navToThread(item), 1000, true);
 
-	shouldNavigateToRoom = (message: IMessage) => {
+	shouldNavigateToRoom = (message: TGetMessageInfoResult) => {
 		if (message.tmid && message.tmid === this.tmid) {
 			return false;
 		}
@@ -1000,6 +1016,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		} catch (e) {
 			log(e);
 		}
+	};
+
+	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
+	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
+	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
+	consumeJumpParam = (messageId: string) => {
+		this.jumpToMessageId = undefined;
+		this.jumpToMessage(messageId);
+		this.props.navigation.setParams({ jumpToMessageId: undefined });
 	};
 
 	jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
@@ -1027,14 +1052,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
 				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
+				 *
+				 * The fetched Chunk lets us re-anchor the Message Window onto the target in ONE step: if a
+				 * Newer Loader brackets the target's Chunk it is non-contiguous with the Live Tail, so we
+				 * derive a finite upper ts bound (highTs) for an Anchored Window centered on it. A
+				 * contiguous target resolves to null and stays a Live Window. Thread/local targets are
+				 * never anchored.
 				 */
-				if (message.fromServer && !message.tmid && this.rid) {
-					await loadSurroundingMessages({ messageId, rid: this.rid });
-				}
+				const inWindow = this.list.current?.isMessageInWindow(message.id) ?? false;
+				const highTs = await resolveJumpAnchor(
+					this.rid,
+					{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
+					inWindow,
+					{ loadSurroundingMessages, getLocalAnchorTs: RoomServices.getLocalAnchorTs }
+				);
 				// Synchronization needed for Fabric to work
 				await new Promise(res => setTimeout(res, 100));
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				this.cancelJumpToMessage();
+				// The list hook resolves on real completion (or via its own safety net), so we no longer
+				// race a 5s timeout that could yank a valid in-flight scroll.
+				await this.list.current?.jumpToMessage(message.id, highTs);
+				sendLoadingEvent({ visible: false });
 			}
 		} catch (error: any) {
 			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
@@ -1197,7 +1234,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToThread = async (item: TAnyMessageModel | { tmid: string }) => {
+	navToThread = async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -1209,7 +1246,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			let name = '';
 			let jumpToMessageId = '';
 			if ('id' in item) {
-				name = item.tmsg ?? '';
+				name = 'tmsg' in item ? item.tmsg ?? '' : '';
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
@@ -1226,7 +1263,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 				name = result;
 			}
-			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+			if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
 			if (!jumpToMessageId) {
@@ -1255,8 +1292,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToRoom = async (message: TAnyMessageModel) => {
+	navToRoom = async (message: TGetMessageInfoResult) => {
 		const { isMasterDetail } = this.props;
+		if (!message.rid) return;
 		const roomInfo = await getRoomInfo(message.rid);
 
 		return goRoom({
@@ -1698,7 +1736,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
-	isMasterDetail: state.app.isMasterDetail,
 	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
@@ -1718,4 +1755,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
+export default connect(mapStateToProps)(
+	withDimensions(withTheme(withSafeAreaInsets(withActionSheet(withMasterDetail(RoomView)))))
+);

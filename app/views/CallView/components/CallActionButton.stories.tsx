@@ -1,5 +1,5 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { type ComponentType, type ReactNode } from 'react';
 
 import CallActionButton from './CallActionButton';
 import {
@@ -40,13 +40,13 @@ const responsiveLayoutProviderLargeFontValue = (fontScale: number) => {
 	};
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 export default {
 	title: 'CallView/CallActionButton',
 	component: CallActionButton,
 	decorators: [
-		(Story: React.ComponentType) => (
+		(Story: ComponentType) => (
 			<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
 				<Wrapper>
 					<Story />
