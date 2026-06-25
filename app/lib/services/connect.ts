@@ -247,6 +247,15 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					}
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
+
+					// If it's the logged user, push the new etag through setUser so the
+					// servers-DB logged-user record (observed by useAvatarETag) updates,
+					// refreshing the avatar in ProfileView, SidebarView, etc.
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser?.username === username) {
+						store.dispatch(setUser({ avatarETag: etag }));
+					}
+
 					const db = database.active;
 					const userCollection = db.get('users');
 					try {
