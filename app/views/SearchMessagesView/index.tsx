@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
-import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';

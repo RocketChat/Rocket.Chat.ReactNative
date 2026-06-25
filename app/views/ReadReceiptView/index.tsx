@@ -5,8 +5,8 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type RouteProp } from '@react-navigation/core';
 import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
-import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 import dayjs from '../../lib/dayjs';
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
