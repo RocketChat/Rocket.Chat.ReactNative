@@ -69,8 +69,7 @@ const ScreenLockConfigView = (): ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: I18n.t('Screen_lock') });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [navigation]);
 
 	useEffect(() => {
 		const init = async () => {
@@ -87,8 +86,7 @@ const ScreenLockConfigView = (): ReactElement => {
 			setBiometryLabel(await supportedBiometryLabel());
 		};
 		init();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [server]);
 
 	const save = async (nextAutoLock: boolean, nextAutoLockTime: number | null) => {
 		logEvent(events.SLC_SAVE_SCREEN_LOCK);
