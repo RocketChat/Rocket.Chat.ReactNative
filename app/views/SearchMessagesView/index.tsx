@@ -4,9 +4,9 @@ import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -361,6 +361,4 @@ const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 
-const SearchMessagesViewWithInsets = withSafeAreaInsets(SearchMessagesView);
-hoistNonReactStatics(SearchMessagesViewWithInsets, SearchMessagesView);
-export default connect(mapStateToProps)(withTheme(withMasterDetail(SearchMessagesViewWithInsets)));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

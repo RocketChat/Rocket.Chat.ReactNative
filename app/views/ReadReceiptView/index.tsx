@@ -3,9 +3,9 @@ import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/core';
-import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 
 import dayjs from '../../lib/dayjs';
 import * as List from '../../containers/List';
@@ -172,6 +172,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat as string
 });
 
-const ReadReceiptViewWithInsets = withSafeAreaInsets(ReadReceiptView);
-hoistNonReactStatics(ReadReceiptViewWithInsets, ReadReceiptView);
-export default connect(mapStateToProps)(withTheme(ReadReceiptViewWithInsets));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ReadReceiptView)));
