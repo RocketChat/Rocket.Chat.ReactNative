@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { type IMessage } from '../../../definitions';
 
@@ -7,13 +7,15 @@ interface IUseMessages {
 }
 
 export const useMessages = ({ fetchMessages }: IUseMessages) => {
-	const [loading, setLoading] = useState(false);
+	const loadingRef = useRef(false);
+	const [loading, setLoading] = useState(true);
 	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [total, setTotal] = useState(-1);
 
 	const load = async () => {
-		if (messages.length === total || loading) return;
+		if (loadingRef.current || messages.length === total) return;
 
+		loadingRef.current = true;
 		setLoading(true);
 
 		try {
@@ -29,12 +31,13 @@ export const useMessages = ({ fetchMessages }: IUseMessages) => {
 						url: url.url
 					}))
 				}));
-				setMessages([...messages, ...urlRenderMessages]);
+				setMessages(prevMessages => [...prevMessages, ...urlRenderMessages]);
 				setTotal(result.total);
 			}
 		} catch (error) {
 			console.error(error);
 		} finally {
+			loadingRef.current = false;
 			setLoading(false);
 		}
 	};

@@ -3,6 +3,8 @@ import { type IMessage, type SubscriptionType } from '../../definitions';
 import { Encryption } from '../../lib/encryption';
 import { getFiles, getMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
 
+export type TMessagesViewScreen = 'Files' | 'Mentions' | 'Starred' | 'Pinned';
+
 interface IFetchParams {
 	rid: string;
 	t: SubscriptionType;
@@ -31,7 +33,7 @@ const fetchFiles = async ({ rid, t, offset }: IFetchParams) => {
 	}
 };
 
-export const messagesViewContent: Record<string, IMessagesViewContent> = {
+export const messagesViewContent: Record<TMessagesViewScreen, IMessagesViewContent> = {
 	Files: {
 		testID: 'room-files-view',
 		emptyMessageI18n: 'No_files',

@@ -20,13 +20,13 @@ import AudioManager from '../../lib/methods/AudioManager';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import useMessages from './hooks/useMessages';
-import { messagesViewContent } from './messagesViewContent';
+import { messagesViewContent, type TMessagesViewScreen } from './messagesViewContent';
 import styles from './styles';
 
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
-	const screenName: string = route.params?.name;
+	const screenName = route.params?.name as TMessagesViewScreen;
 	const content = messagesViewContent[screenName];
 	const { theme } = useTheme();
 	const { showActionSheet } = useActionSheet();
@@ -38,7 +38,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
 	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({
-		fetchMessages: offset => content.fetch({ rid, t, userId: user.id, offset })
+		fetchMessages: offset => (content ? content.fetch({ rid, t, userId: user.id, offset }) : Promise.resolve(undefined))
 	});
 
 	const handleShowActionSheet = (message: IMessage) => {
@@ -165,6 +165,10 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 			AudioManager.pauseAudio();
 		};
 	}, []);
+
+	if (!content) {
+		return null;
+	}
 
 	if (!loading && messages.length === 0) {
 		return (
