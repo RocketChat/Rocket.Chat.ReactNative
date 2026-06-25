@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import React, { type ReactElement, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import {
 	RecordingPresets,
 	requestRecordingPermissionsAsync,
@@ -35,7 +35,8 @@ export const RecordAudio = (): ReactElement | null => {
 	const recorderState = useAudioRecorderState(audioRecorder);
 
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
-	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
+	const numberOfTriesRef = useRef(0);
+	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
 	const server = useAppSelector(state => state.server.server);

@@ -1,6 +1,6 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { type Dispatch } from 'redux';
 import { type Observable, type Subscription } from 'rxjs';
@@ -30,6 +30,7 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
 import { type TColors, type TSupportedThemes, withTheme } from '../../theme';
 import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -565,10 +566,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled as boolean,
-	isMasterDetail: state.app.isMasterDetail,
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
 	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications,
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption']
 });
 
-export default connect(mapStateToProps)(withTheme(RightButtonsContainer));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(RightButtonsContainer)));

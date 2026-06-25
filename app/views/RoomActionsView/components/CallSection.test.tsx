@@ -1,6 +1,6 @@
-import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import CallSection from './CallSection';
 import { mockedStore } from '../../../reducers/mockedStore';
@@ -50,7 +50,7 @@ jest.mock('../../../lib/services/restApi', () => ({
 
 const mockVideoConferenceGetCapabilities = jest.mocked(restApi.videoConferenceGetCapabilities);
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionModel =>
 	({

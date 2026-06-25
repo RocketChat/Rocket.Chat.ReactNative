@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useRef } from 'react';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 
 const DTMF_ASSETS: Record<string, ReturnType<typeof require>> = {
@@ -22,7 +22,7 @@ interface DialpadContextValue {
 
 const DialpadContext = createContext<DialpadContextValue>({ playTone: () => {} });
 
-export const DialpadProvider = ({ children }: { children: React.ReactNode }) => {
+export const DialpadProvider = ({ children }: { children: ReactNode }) => {
 	const soundsRef = useRef<Record<string, ReturnType<typeof createAudioPlayer>>>({});
 
 	useEffect(() => {

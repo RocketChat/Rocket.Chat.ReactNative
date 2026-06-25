@@ -1,5 +1,5 @@
 import { useAudioPlayer } from 'expo-audio';
-import React, { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',
@@ -11,7 +11,7 @@ const RINGER_SOUND_FILES = {
 	[ERingerSounds.RINGTONE]: require('./ringtone.mp3')
 } as const;
 
-const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
+const Ringer = memo(({ ringer }: { ringer: ERingerSounds }) => {
 	const player = useAudioPlayer(RINGER_SOUND_FILES[ringer]);
 
 	useEffect(() => {

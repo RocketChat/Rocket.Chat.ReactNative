@@ -1,10 +1,10 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { type Observable, type Subscription } from 'rxjs';
+import { Component } from 'react';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -43,6 +43,7 @@ import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers'
 import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
 import UserPreferences from '../../lib/methods/userPreferences';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -67,7 +68,7 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	isMasterDetail: boolean;
 }
 
-class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
+class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
 	private mounted: boolean;
 
 	private rid: string;
@@ -532,8 +533,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name as boolean,
-	isMasterDetail: state.app.isMasterDetail
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(ThreadMessagesView)));

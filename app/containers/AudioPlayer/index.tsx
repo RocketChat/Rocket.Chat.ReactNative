@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
@@ -115,14 +115,19 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		if (fileUri) {
-			InteractionManager.runAfterInteractions(() => {
-				audioUri.current = AudioManager.loadAudio({ msgId, rid, uri: fileUri });
-				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+		if (fileUri && isDownloaded) {
+			const task = InteractionManager.runAfterInteractions(async () => {
+				try {
+					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+					AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+				} catch {
+					// do nothing
+				}
 			});
+			return () => task.cancel();
 		}
-	}, [fileUri]);
+	}, [fileUri, isDownloaded]);
 
 	useEffect(() => {
 		if (paused) {

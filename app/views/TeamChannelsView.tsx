@@ -1,8 +1,8 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import React from 'react';
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
+import { Component } from 'react';
 
 import { deleteRoom } from '../actions/room';
 import { type DisplayMode } from '../lib/constants/constantDisplayMode';
@@ -17,7 +17,8 @@ import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
-import { withDimensions } from '../dimensions';
+import { withDimensions } from '../lib/hooks/withDimensions';
+import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
@@ -94,7 +95,7 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	showAvatar: boolean;
 	displayMode: DisplayMode;
 }
-class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
+class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
 	private joined: boolean;
 	private teamChannels: TSubscriptionModel[];
@@ -579,7 +580,6 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions['add-team-channel'],
 	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
@@ -597,4 +597,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(TeamChannelsView))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(withMasterDetail(TeamChannelsView)))));

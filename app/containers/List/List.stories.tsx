@@ -1,11 +1,10 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
 import { longText } from '../../../.rnstorybook/utils';
 import { ThemeContext, type TSupportedThemes } from '../../theme';
-import { DimensionsContext } from '../../dimensions';
+import { ResponsiveLayoutContext } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { themes } from '../../lib/constants/colors';
 
 export default {
@@ -243,10 +242,10 @@ export const WithDarkTheme = () => <ThemeStory theme='dark' />;
 export const WithBlackTheme = () => <ThemeStory theme='black' />;
 
 const FontStory = ({ fontScale }: { fontScale: number }) => (
-	// @ts-ignore
-	<DimensionsContext.Provider value={{ fontScale }}>
+	// @ts-ignore - story overrides fontScale only; ListItem reads only that
+	<ResponsiveLayoutContext.Provider value={{ fontScale }}>
 		<ListFull />
-	</DimensionsContext.Provider>
+	</ResponsiveLayoutContext.Provider>
 );
 
 /**

@@ -1,5 +1,5 @@
 import { requestRecordingPermissionsAsync, getRecordingPermissionsAsync } from 'expo-audio';
-import React, { useContext } from 'react';
+import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';
 
@@ -12,7 +12,7 @@ import { MessageInnerContext, useComposerAttachments, useMessageComposerApi, use
 import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 
-export const MicOrSendButton = (): React.ReactElement | null => {
+export const MicOrSendButton = (): ReactElement | null => {
 	'use memo';
 
 	const { rid, sharing } = useRoomContext();
