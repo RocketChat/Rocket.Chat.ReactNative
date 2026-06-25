@@ -60,7 +60,7 @@ const SelectServerView = () => {
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout} // Refactor row_height
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: bottom }]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: Math.max(16, bottom) }]}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				removeClippedSubviews

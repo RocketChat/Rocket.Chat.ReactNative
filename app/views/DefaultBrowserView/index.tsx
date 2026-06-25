@@ -88,7 +88,7 @@ const DefaultBrowserView = () => {
 			<FlatList
 				data={DEFAULT_BROWSERS.concat(supported)}
 				keyExtractor={item => item.value}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: bottom }]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: Math.max(16, bottom) }]}
 				renderItem={({ item }) => (
 					<List.Radio
 						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}

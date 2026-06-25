@@ -97,7 +97,7 @@ const LanguageView = () => {
 				keyExtractor={item => item.value}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: bottom }]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: Math.max(16, bottom) }]}
 				renderItem={({ item }) => (
 					<ListRadio
 						testID={`language-view-${item.value}`}
