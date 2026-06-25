@@ -95,3 +95,7 @@ pnpm storybook-generate    # Generate story snapshots
 - `index.js` — registers app, conditionally loads Storybook
 - `app/index.tsx` — Redux provider, theme, navigation, notifications setup
 - `app/AppContainer.tsx` — root navigation container
+
+## Continuous Integration
+
+CI triggers, call graph, and manual gates: see `.github/README.md`.
