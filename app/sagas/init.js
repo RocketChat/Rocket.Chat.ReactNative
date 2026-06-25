@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
@@ -21,8 +21,53 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
+const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
+
+/**
+ * One-time migration: move auth tokens from the legacy non-server-scoped slot
+ * `${TOKEN_KEY}-${userId}` to the server-scoped slot `${TOKEN_KEY}-${server}-${userId}`.
+ * See `getUserTokenKey` for why the legacy scheme was ambiguous (token confusion).
+ *
+ * Done in two passes so a userId shared by multiple servers is copied to every server's
+ * slot before any legacy slot is removed.
+ */
+const migrateTokenKeysToServerScoped = function* migrateTokenKeysToServerScoped() {
+	try {
+		if (UserPreferences.getBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED)) {
+			return;
+		}
+		const serversDB = database.servers;
+		const servers = yield serversDB.get('servers').query().fetch();
+		const legacyKeys = [];
+		// Pass 1: copy each server's token into the new server-scoped slot.
+		for (let i = 0; i < servers.length; i += 1) {
+			const server = servers[i].id;
+			const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+			if (!userId) {
+				continue;
+			}
+			const newKey = getUserTokenKey(server, userId);
+			if (!UserPreferences.getString(newKey)) {
+				const legacyKey = `${TOKEN_KEY}-${userId}`;
+				const token = UserPreferences.getString(legacyKey);
+				if (token) {
+					UserPreferences.setString(newKey, token);
+					legacyKeys.push(legacyKey);
+				}
+			}
+		}
+		// Pass 2: drop the legacy slots now that every server has been migrated.
+		legacyKeys.forEach(key => UserPreferences.removeItem(key));
+		UserPreferences.setBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED, true);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const restore = function* restore() {
 	try {
+		yield call(migrateTokenKeysToServerScoped);
+
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 

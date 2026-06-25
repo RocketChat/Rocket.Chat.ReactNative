@@ -8,7 +8,14 @@ import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
+import {
+	CURRENT_SERVER,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	TOKEN_KEY,
+	getUserTokenKey
+} from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
@@ -17,6 +24,8 @@ import { _activeUsersSubTimeout } from './getUsersPresence';
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
+		UserPreferences.removeItem(getUserTokenKey(server, userId));
+		// Also remove the legacy non-server-scoped token slot, in case this server predates the migration.
 		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
@@ -64,7 +73,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 	try {
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		if (userId) {
-			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
+			const resume = UserPreferences.getString(getUserTokenKey(server, userId));
 
 			try {
 				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });

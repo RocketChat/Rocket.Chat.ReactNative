@@ -29,7 +29,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../lib/constants/keys';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -171,7 +171,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					requirePasswordChange: userRecord.requirePasswordChange
 				};
 			} else {
-				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
+				const token = UserPreferences.getString(getUserTokenKey(server, userId));
 				if (token) {
 					user = { token };
 				}

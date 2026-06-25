@@ -82,6 +82,12 @@ jest.mock('i18n-js', () => ({
 	default: { t: (k: string) => k }
 }));
 
+// Deep-link resume login asks for confirmation before authenticating. Default to confirming
+// (invoke onPress) so the existing login-path tests run; the decline path is covered explicitly.
+jest.mock('../../lib/methods/helpers/info', () => ({
+	showConfirmationAlert: jest.fn(({ onPress }: { onPress: () => void }) => onPress())
+}));
+
 // Mock helpers to avoid auxStore (getUidDirectMessage / getRoomTitle call reduxStore.getState())
 jest.mock('../../lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => null),
@@ -100,11 +106,12 @@ import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
 import { connectSuccess } from '../../actions/connect';
 import { appStart } from '../../actions/app';
-import { LOGIN } from '../../actions/actionsTypes';
+import { APP, LOGIN } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
+import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { getServerById } from '../../lib/database/services/Server';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
@@ -303,6 +310,26 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 		// Socket connected → gate released, loginRequest dispatched.
 		expect(loginRequested()).toBe(true);
+	});
+
+	// Security: a deep-link resume token must not silently authenticate. If the user declines
+	// the confirmation, no login is attempted and the app lands outside (manual login screen).
+	it('does not dispatch loginRequest when the deep-link login confirmation is declined', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+
+		const { store, actions } = setupRecordingStore();
+		const loginRequested = () => actions.some(a => a.type === LOGIN.REQUEST);
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		// User declined → confirmation shown, no login, parked outside.
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(loginRequested()).toBe(false);
+		expect(actions.some(a => a.type === APP.START && (a as any).root === RootEnum.ROOT_OUTSIDE)).toBe(true);
 	});
 
 	/**

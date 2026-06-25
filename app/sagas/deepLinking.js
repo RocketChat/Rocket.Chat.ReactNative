@@ -21,6 +21,7 @@ import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showConfirmationAlert } from '../lib/methods/helpers/info';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
@@ -36,6 +37,23 @@ const roomTypes = {
 	group: 'p',
 	channels: 'l'
 };
+
+/**
+ * A `rocketchat://auth?host=…&token=…` deep link can silently authenticate the user to an
+ * arbitrary server. Any app (or web page) can fire it, so before consuming a resume token for a
+ * server the user is not already signed in to, ask for explicit confirmation. Resolves true if
+ * the user confirms, false otherwise.
+ */
+const confirmDeepLinkLogin = host =>
+	new Promise(resolve => {
+		showConfirmationAlert({
+			title: I18n.t('Deep_link_login_title'),
+			message: I18n.t('Deep_link_login_description', { server: host }),
+			confirmationText: I18n.t('Login'),
+			onPress: () => resolve(true),
+			onCancel: () => resolve(false)
+		});
+	});
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
 	if (params.path && params.path.startsWith('invite/')) {
@@ -236,6 +254,13 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 
 		if (params.token) {
+			// A resume token in a deep link silently authenticates the user to `host`. Since any
+			// app or web page can fire this link, require explicit confirmation before consuming it.
+			const confirmed = yield call(confirmDeepLinkLogin, host);
+			if (!confirmed) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				return;
+			}
 			if (!hostAlreadyConnected) {
 				yield take(types.SERVER.SELECT_SUCCESS);
 				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.

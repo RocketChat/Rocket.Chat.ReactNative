@@ -230,6 +230,8 @@
   "Dark": "Dark",
   "Dark_level": "Dark level",
   "decline": "Decline",
+  "Deep_link_login_title": "Sign in to this server?",
+  "Deep_link_login_description": "A link is asking to sign you in to {{server}}. Only continue if you opened this link yourself and trust it.",
   "Default": "Default",
   "Default_browser": "Default browser",
   "Defined_user_as_role": "defined {{user}} as {{role}}",

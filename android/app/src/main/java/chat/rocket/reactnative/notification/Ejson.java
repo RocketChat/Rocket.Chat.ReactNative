@@ -135,32 +135,47 @@ public class Ejson {
     }
 
     public String token() {
+        String serverURL = serverURL();
         String userId = userId();
         MMKV mmkv = getMMKV();
-        
+
         if (mmkv == null) {
             Log.e(TAG, "token() called but MMKV is null");
             return "";
         }
-        
+
         if (userId == null || userId.isEmpty()) {
             Log.w(TAG, "token() called but userId is null or empty");
             return "";
         }
-        
-        String key = TOKEN_KEY.concat(userId);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Looking up token with key: " + key);
+
+        // Server-scoped key: reactnativemeteor_usertoken-{server}-{userId}.
+        // Keep this format in sync with getUserTokenKey() on the JS side. The token used to be
+        // stored under reactnativemeteor_usertoken-{userId} (no server component), which let a
+        // lookup resolve a token belonging to a different server when two servers shared a userId
+        // (token confusion). Read the server-scoped slot first and only fall back to the legacy
+        // slot for the window between an app update and the JS migration running on next launch.
+        String token = null;
+        if (serverURL != null && !serverURL.isEmpty()) {
+            String key = TOKEN_KEY.concat(serverURL).concat("-").concat(userId);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Looking up token with server-scoped key");
+            }
+            token = mmkv.decodeString(key);
         }
-        
-        String token = mmkv.decodeString(key);
-        
+
+        if (token == null || token.isEmpty()) {
+            // Legacy fallback (pre-migration). Safe because the exported-receiver vector that
+            // abused this ambiguity is closed (ReplyBroadcast/DismissNotification are not exported).
+            token = mmkv.decodeString(TOKEN_KEY.concat(userId));
+        }
+
         if (token == null || token.isEmpty()) {
             Log.w(TAG, "No token found in MMKV for userId");
         } else if (BuildConfig.DEBUG) {
             Log.d(TAG, "Successfully retrieved token from MMKV");
         }
-        
+
         return token != null ? token : "";
     }
 
