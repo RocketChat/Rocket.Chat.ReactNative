@@ -29,29 +29,6 @@ interface IItem {
 	disabled?: boolean;
 }
 
-const defaultAutoLockOptions: IItem[] = [
-	{
-		title: I18n.t('Local_authentication_auto_lock_60'),
-		value: 60
-	},
-	{
-		title: I18n.t('Local_authentication_auto_lock_300'),
-		value: 300
-	},
-	{
-		title: I18n.t('Local_authentication_auto_lock_900'),
-		value: 900
-	},
-	{
-		title: I18n.t('Local_authentication_auto_lock_1800'),
-		value: 1800
-	},
-	{
-		title: I18n.t('Local_authentication_auto_lock_3600'),
-		value: 3600
-	}
-];
-
 const ScreenLockConfigView = (): ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'ScreenLockConfigView'>>();
 	const { colors } = useTheme();
@@ -177,7 +154,13 @@ const ScreenLockConfigView = (): ReactElement => {
 		if (!autoLock) {
 			return null;
 		}
-		let items: IItem[] = [...defaultAutoLockOptions];
+		let items: IItem[] = [
+			{ title: I18n.t('Local_authentication_auto_lock_60'), value: 60 },
+			{ title: I18n.t('Local_authentication_auto_lock_300'), value: 300 },
+			{ title: I18n.t('Local_authentication_auto_lock_900'), value: 900 },
+			{ title: I18n.t('Local_authentication_auto_lock_1800'), value: 1800 },
+			{ title: I18n.t('Local_authentication_auto_lock_3600'), value: 3600 }
+		];
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [
 				{
