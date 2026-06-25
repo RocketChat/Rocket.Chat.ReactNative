@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import { type Observable, type Subscription } from 'rxjs';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 import { Component } from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
-import { withSafeAreaInsets, type EdgeInsets } from 'react-native-safe-area-context';
 
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
@@ -86,7 +84,6 @@ interface IOnPressTouch {
 
 interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackType, 'RoomActionsView'> {
 	userId: string;
-	insets: EdgeInsets;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
 	jitsiEnableChannels: boolean;
@@ -1092,7 +1089,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate, hasE2EEWarning } = this.state;
-		const { isMasterDetail, navigation, userId, insets } = this.props;
+		const { isMasterDetail, navigation, userId } = this.props;
 		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
 		const itsMe = t === SubscriptionType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
@@ -1349,6 +1346,4 @@ const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomA
 	};
 };
 
-const RoomActionsViewWithInsets = withSafeAreaInsets(RoomActionsView);
-hoistNonReactStatics(RoomActionsViewWithInsets, RoomActionsView);
-export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(withMasterDetail(RoomActionsViewWithInsets)))));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(withMasterDetail(RoomActionsView)))));
