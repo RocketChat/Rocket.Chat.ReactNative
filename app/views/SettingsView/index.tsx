@@ -4,7 +4,6 @@ import { type ReactElement, useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
 import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { appStart } from '../../actions/app';
@@ -43,7 +42,6 @@ const SettingsView = (): ReactElement => {
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
 	const { server, version } = useAppSelector(state => state.server);
-	const { bottom } = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -138,7 +136,7 @@ const SettingsView = (): ReactElement => {
 
 	return (
 		<SafeAreaView testID='settings-view'>
-			<List.Container contentContainerStyle={{ paddingBottom: bottom }}>
+			<List.Container>
 				{isMasterDetail ? (
 					<>
 						<List.Section>

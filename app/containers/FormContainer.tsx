@@ -41,7 +41,7 @@ const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IF
 	return (
 		<KeyboardAwareScrollView
 			style={[sharedStyles.container, { backgroundColor: colors.surfaceRoom }]}
-			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView, { paddingBottom: bottom }]}
+			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView, { paddingBottom: Math.max(24, bottom) }]}
 			bottomOffset={20}
 			{...scrollPersistTaps}
 			{...props}>

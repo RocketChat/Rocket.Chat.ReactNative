@@ -3,7 +3,6 @@ import { Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -22,7 +21,6 @@ const E2EEncryptionSecurityView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const { bottom } = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -52,7 +50,7 @@ const E2EEncryptionSecurityView = () => {
 	};
 
 	return (
-		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}>
+		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
 			<List.Container>
 				<View style={styles.container}>
 					<ChangePassword />
