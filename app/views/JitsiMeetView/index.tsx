@@ -4,7 +4,6 @@ import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -15,6 +14,7 @@ import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoCo
 import { getUserSelector } from '../../selectors/login';
 import { type ChatsStackParamList } from '../../stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const JitsiMeetView = (): ReactElement => {
 	const {
@@ -106,7 +106,7 @@ const JitsiMeetView = (): ReactElement => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			{authModal && <JitsiAuthModal setAuthModal={setAuthModal} callUrl={callUrl} />}
+			{authModal ? <JitsiAuthModal setAuthModal={setAuthModal} callUrl={callUrl} /> : null}
 			{cookiesSet ? (
 				<WebView
 					source={{

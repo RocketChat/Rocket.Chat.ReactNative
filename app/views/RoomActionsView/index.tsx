@@ -8,7 +8,7 @@ import { type Observable, type Subscription } from 'rxjs';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 import { Component } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { withSafeAreaInsets, type EdgeInsets } from 'react-native-safe-area-context';
 
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
@@ -86,7 +86,7 @@ interface IOnPressTouch {
 
 interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackType, 'RoomActionsView'> {
 	userId: string;
-	insets: { bottom: number; top: number; left: number; right: number };
+	insets: EdgeInsets;
 	jitsiEnabled: boolean;
 	jitsiEnableTeams: boolean;
 	jitsiEnableChannels: boolean;
