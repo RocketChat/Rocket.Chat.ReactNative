@@ -1,6 +1,5 @@
 import * as LocalAuthentication from 'expo-local-authentication';
 import RNBootSplash from 'react-native-bootsplash';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { sha256 } from 'js-sha256';
 
 import dayjs from '../../dayjs';
@@ -48,7 +47,11 @@ export const saveLastLocalAuthenticationSession = async (
 	});
 };
 
-export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
+export const resetAttempts = (): Promise<void> => {
+	UserPreferences.removeItem(LOCKED_OUT_TIMER_KEY);
+	UserPreferences.removeItem(ATTEMPTS_KEY);
+	return Promise.resolve();
+};
 
 const openModal = (hasBiometry: boolean, force?: boolean) =>
 	new Promise<void>((resolve, reject) => {
