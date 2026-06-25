@@ -6,7 +6,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 16
+		paddingVertical: 16
 	}
 });
 
