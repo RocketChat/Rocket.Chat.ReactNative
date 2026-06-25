@@ -40,4 +40,30 @@ describe('Markdown textStyle integration', () => {
 
 		expect(onLinkPress).toHaveBeenCalledWith('https://rocket.chat');
 	});
+
+	it('propagates custom color in textStyle to link, mention, hashtag and plain text', () => {
+		const onLinkPress = jest.fn();
+		const textStyle = { color: 'red' };
+
+		const { getByLabelText, getByText } = render(
+			<Markdown
+				msg='hello [my link](https://rocket.chat) @rocket.cat #general'
+				textStyle={textStyle}
+				onLinkPress={onLinkPress}
+				mentions={[{ _id: 'u1', username: 'rocket.cat', name: 'Rocket Cat', type: 'user' }]}
+				username='another.user'
+				channels={[{ _id: 'r1', name: 'general' }]}
+			/>
+		);
+
+		const plainTextNode = getByLabelText('hello ');
+		const linkNode = getByText('my link');
+		const mentionNode = getByText('@rocket.cat');
+		const hashtagNode = getByText('#general');
+
+		expect(plainTextNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
+		expect(linkNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
+		expect(mentionNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
+		expect(hashtagNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
+	});
 });

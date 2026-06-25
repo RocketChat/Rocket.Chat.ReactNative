@@ -57,10 +57,10 @@ const Hashtag = memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
 			<Text
 				style={[
 					styles.mention,
-					...(textStyle ? [textStyle] : []),
 					{
 						color: themes[theme].fontInfo
-					}
+					},
+					...(textStyle ? [textStyle] : [])
 				]}
 				onPress={handlePress}>
 				{`${preffix}${hashtag}`}
@@ -68,7 +68,7 @@ const Hashtag = memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
 		);
 	}
 	return (
-		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }]}>{`#${hashtag}`}</Text>
+		<Text style={[styles.text, { color: themes[theme].fontDefault }, ...(textStyle ? [textStyle] : [])]}>{`#${hashtag}`}</Text>
 	);
 });
 

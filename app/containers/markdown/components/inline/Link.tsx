@@ -49,7 +49,7 @@ const Link = ({ value }: ILinkProps) => {
 
 	return (
 		<Text
-			style={[styles.link, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontInfo }]}
+			style={[styles.link, { color: themes[theme].fontInfo }, ...(textStyle ? [textStyle] : [])]}
 			onPress={handlePress}
 			onLongPress={onLongPress}>
 			{(block => {
