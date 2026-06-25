@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -145,7 +145,7 @@ const ScreenLockConfigView = (): ReactElement => {
 	const renderItem = ({ item }: { item: IItem }) => {
 		const { title, value, disabled } = item;
 		return (
-			<>
+			<Fragment key={value}>
 				<List.Item
 					title={title}
 					onPress={() => changeAutoLockTime(value)}
@@ -156,7 +156,7 @@ const ScreenLockConfigView = (): ReactElement => {
 					additionalAccessibilityLabelCheck
 				/>
 				<List.Separator />
-			</>
+			</Fragment>
 		);
 	};
 

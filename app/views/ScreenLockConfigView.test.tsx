@@ -119,6 +119,7 @@ describe('ScreenLockConfigView', () => {
 		const cb = update.mock.calls[update.mock.calls.length - 1][0];
 		cb(recordArg);
 		expect(recordArg.autoLock).toBe(false);
+		expect(recordArg.autoLockTime).toBe(DEFAULT_AUTO_LOCK);
 	});
 
 	it('toggle biometry calls userPreferences.setBool with flipped value', async () => {
