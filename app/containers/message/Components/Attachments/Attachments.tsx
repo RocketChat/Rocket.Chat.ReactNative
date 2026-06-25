@@ -1,54 +1,50 @@
-import React, { useContext } from 'react';
+import { useContext, memo, type FC } from 'react';
 import { dequal } from 'dequal';
+import { View } from 'react-native';
 
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-import { Reply } from './components';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
+import Reply from './Reply';
 import MessageContext from '../../Context';
-import { IMessageAttachments } from '../../interfaces';
-import { IAttachment } from '../../../../definitions';
+import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
+import { isContentAttachment } from './utils';
 
-const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+const Attachments: FC<IMessageAttachments> = memo(
+	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
+		'use memo';
+
 		const { translateLanguage } = useContext(MessageContext);
 
-		if (!attachments || attachments.length === 0) {
+		const nonQuoteAttachments = attachments?.filter(isContentAttachment);
+
+		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;
 		}
 
-		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = nonQuoteAttachments.map((file, index) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
-			if (file && file.image_url) {
+
+			if (file.image_url) {
 				return (
 					<Image
 						key={file.image_url}
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
-						style={style}
-						isReply={isReply}
 						author={author}
 						msg={msg}
+						imagePreview={file.image_preview}
+						imageType={file.image_type}
 					/>
 				);
 			}
 
-			if (file && file.audio_url) {
-				return (
-					<Audio
-						key={file.audio_url}
-						file={file}
-						getCustomEmoji={getCustomEmoji}
-						isReply={isReply}
-						style={style}
-						author={author}
-						msg={msg}
-					/>
-				);
+			if (file.audio_url) {
+				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
 			}
 
 			if (file.video_url) {
@@ -58,36 +54,49 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
-						style={style}
-						isReply={isReply}
 						author={author}
 						msg={msg}
 					/>
 				);
 			}
 
-			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
+			if (file.actions && file.actions.length > 0) {
+				return (
+					<AttachedActions
+						key={file.title_link || file.message_link || `actions-${index}`}
+						attachment={file}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return (
-					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
+					<CollapsibleQuote
+						key={file.title_link || file.message_link || `collapsible-${index}`}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+					/>
 				);
 			}
 
-			return (
-				<Reply
-					key={index}
-					index={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					msg={msg}
-					showAttachment={showAttachment}
-				/>
-			);
+			if (file.attachments?.length) {
+				return (
+					<Reply
+						key={file.title_link || file.message_link || `reply-${index}`}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						showAttachment={showAttachment}
+						msg={msg}
+					/>
+				);
+			}
+
+			return null;
 		});
-		return <>{attachmentsElements}</>;
+
+		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );

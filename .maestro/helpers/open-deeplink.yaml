@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: Open Deep Link
+tags:
+  - 'util'
+
+---
+- openLink:
+    link: ${link}
+- runFlow:
+    when:
+      visible: '.*Open in.*'
+      platform: iOS
+    commands:
+      - tapOn:
+          text: '^Open$'
+          optional: true
+- runFlow:
+    when:
+      visible: '.*Would like to send you notifications.*'
+      platform: iOS
+    commands:
+      - tapOn: 'Allow'

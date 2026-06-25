@@ -1,18 +1,26 @@
-import React from 'react';
+import { memo } from 'react';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
 
-const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
+const ReadReceipt = memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
+	'use memo';
+
 	const { colors } = useTheme();
+	const isUnread = unread || unread === null;
+	const iconName = isUnread ? 'check-single' : 'check-double';
+	const iconColor = isUnread ? colors.fontAnnotation : colors.fontInfo;
+	const marginTop = -5;
+
 	if (isReadReceiptEnabled) {
 		return (
 			<CustomIcon
-				name='check'
-				color={!unread && unread !== null ? colors.badgeBackgroundLevel2 : colors.fontHint}
-				size={16}
-				style={styles.rightIcons}
+				name={iconName}
+				color={iconColor}
+				size={25}
+				style={{ ...styles.rightIcons, marginTop }}
+				testID={isUnread ? 'read-receipt-unread' : 'read-receipt-read'}
 			/>
 		);
 	}

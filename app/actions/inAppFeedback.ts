@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { IN_APP_FEEDBACK } from './actionsTypes';
 

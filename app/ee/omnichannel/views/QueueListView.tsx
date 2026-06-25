@@ -1,25 +1,25 @@
-import React, { useEffect, useRef } from 'react';
-import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, ListRenderItem } from 'react-native';
+import { useEffect, useRef, memo } from 'react';
+import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FlatList, type ListRenderItem, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
-import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
+import RoomItem from '../../../containers/RoomItem';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
-import { useDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
-import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import * as HeaderButton from '../../../containers/HeaderButton';
+import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
-import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants';
-import { ChatsStackParamList } from '../../../stacks/types';
-import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { type IOmnichannelRoom, type IApplicationState } from '../../../definitions';
+import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants/tablet';
+import { type ChatsStackParamList } from '../../../stacks/types';
+import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'QueueListView'>,
@@ -27,18 +27,15 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => ({
-	length: ROW_HEIGHT,
-	offset: ROW_HEIGHT * index,
-	index
-});
+
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
-const QueueListView = React.memo(() => {
+const QueueListView = memo(() => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { colors } = useTheme();
-	const { width } = useDimensions();
+	const { width } = useResponsiveLayout();
+	const { fontScale } = useWindowDimensions();
 
 	const { username } = useSelector(
 		(state: IApplicationState) => ({
@@ -57,7 +54,7 @@ const QueueListView = React.memo(() => {
 		shallowEqual
 	);
 
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
 
@@ -71,6 +68,15 @@ const QueueListView = React.memo(() => {
 		navigation.setOptions(options);
 	}, [isMasterDetail, navigation]);
 
+	const getItemLayout = (_data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
+		const rowHeight = 75 * fontScale;
+		return {
+			length: rowHeight,
+			offset: rowHeight * index,
+			index
+		};
+	};
+
 	const onPressItem = (item = {} as IOmnichannelRoom) => {
 		logEvent(events.QL_GO_ROOM);
 		goRoom({
@@ -79,8 +85,7 @@ const QueueListView = React.memo(() => {
 				// we're calling v as visitor on our mergeSubscriptionsRooms
 				visitor: item.v
 			},
-			isMasterDetail,
-			popToRoot: true
+			isMasterDetail
 		});
 	};
 
@@ -105,7 +110,6 @@ const QueueListView = React.memo(() => {
 
 	return (
 		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<StatusBar />
 			<FlatList
 				ref={getScrollRef}
 				data={queued}

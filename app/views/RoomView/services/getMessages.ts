@@ -1,4 +1,6 @@
-import { loadMessagesForRoom, loadMissedMessages, RoomTypes } from '../../../lib/methods';
+import { loadMessagesForRoom } from '../../../lib/methods/loadMessagesForRoom';
+import { loadMissedMessages } from '../../../lib/methods/loadMissedMessages';
+import { type RoomTypes } from '../../../lib/methods/roomTypeToApiType';
 
 interface IBaseParams {
 	rid: string;
@@ -12,17 +14,11 @@ interface ILoadMissedMessagesParams extends IBaseParams {
 	lastOpen: Date;
 }
 
-const getMessages = async (params: ILoadMissedMessagesParams | ILoadMessagesForRoomParams): Promise<void> => {
-	try {
-		if ('lastOpen' in params) {
-			await loadMissedMessages(params);
-		} else {
-			await loadMessagesForRoom(params);
-		}
-	} catch (e) {
-		// Offline first
+const getMessages = (params: ILoadMissedMessagesParams | ILoadMessagesForRoomParams): Promise<void> => {
+	if ('lastOpen' in params) {
+		return loadMissedMessages(params);
 	}
-	return Promise.resolve();
+	return loadMessagesForRoom(params);
 };
 
 export default getMessages;

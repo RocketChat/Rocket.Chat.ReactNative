@@ -1,7 +1,7 @@
-import { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
-import { IServices } from '../../selectors/login';
-import { TIconsName } from '../CustomIcon';
+import { type IServices } from '../../selectors/login';
+import { type TIconsName } from '../CustomIcon';
 
 type TAuthType = 'oauth' | 'oauth_custom' | 'saml' | 'cas' | 'apple';
 
@@ -24,6 +24,7 @@ export interface IItemService {
 	authorizePath: string;
 	clientId: string;
 	scope: string;
+	hideButtonOnMobile?: boolean;
 }
 
 export interface IServiceLogin {
@@ -50,10 +51,11 @@ export interface IServiceList {
 	CAS_login_url: string;
 	Gitlab_URL: string;
 	server: string;
+	collapsed: boolean;
 }
 
 export interface IServicesSeparator {
-	services: IServices;
+	totalServices: number;
 	separator: boolean;
 	collapsed: boolean;
 	onPress(): void;

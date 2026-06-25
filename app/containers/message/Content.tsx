@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { Text, View } from 'react-native';
 import { dequal } from 'dequal';
 
@@ -6,15 +6,17 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
-import { messageHaveAuthorName, getInfoMessage } from './utils';
+import { messageHaveAuthorName, getInfoMessage, getPreviewMessageFromAttachment } from './utils';
 import MessageContext from './Context';
-import { IMessageContent } from './interfaces';
+import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import { MessageTypesValues } from '../../definitions';
+import { themes } from '../../lib/constants/colors';
+import { type MessageTypesValues } from '../../definitions';
 
-const Content = React.memo(
+const Content = memo(
 	(props: IMessageContent) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
@@ -46,26 +48,28 @@ const Content = React.memo(
 				<Text
 					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
 					accessibilityLabel={I18n.t('Encrypted_message')}
-				>
+					testID='message-encrypted'>
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <MarkdownPreview msg={props.msg} />;
-		} else {
+			const previewMsg =
+				props.msg ||
+				(props.attachments?.length
+					? getPreviewMessageFromAttachment(props.attachments[0], props.autoTranslateLanguage)
+					: undefined);
+			content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
+		} else if (props.msg) {
 			content = (
 				<Markdown
 					msg={props.msg}
 					md={props.type !== 'e2e' ? props.md : undefined}
 					getCustomEmoji={props.getCustomEmoji}
-					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
-					tmid={props.tmid}
 					useRealName={props.useRealName}
-					theme={theme}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}
 				/>
@@ -73,10 +77,18 @@ const Content = React.memo(
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Message_Ignored')}</Text>;
+			content = (
+				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
+					{I18n.t('Message_Ignored')}
+				</Text>
+			);
 		}
 
-		return <View style={props.isTemp && styles.temp}>{content}</View>;
+		return content ? (
+			<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+				{content}
+			</View>
+		) : null;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.isTemp !== nextProps.isTemp) {
@@ -94,6 +106,15 @@ const Content = React.memo(
 		if (prevProps.isIgnored !== nextProps.isIgnored) {
 			return false;
 		}
+		if (prevProps.tmid !== nextProps.tmid) {
+			return false;
+		}
+		if (prevProps.isThreadRoom !== nextProps.isThreadRoom) {
+			return false;
+		}
+		if (prevProps.autoTranslateLanguage !== nextProps.autoTranslateLanguage) {
+			return false;
+		}
 		if (!dequal(prevProps.md, nextProps.md)) {
 			return false;
 		}
@@ -101,6 +122,9 @@ const Content = React.memo(
 			return false;
 		}
 		if (!dequal(prevProps.channels, nextProps.channels)) {
+			return false;
+		}
+		if (!dequal(prevProps.attachments, nextProps.attachments)) {
 			return false;
 		}
 		return true;

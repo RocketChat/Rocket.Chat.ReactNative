@@ -11,17 +11,19 @@ let enhancers;
 
 if (__DEV__) {
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	const Reactotron = require('reactotron-react-native').default;
-	sagaMiddleware = createSagaMiddleware({
-		sagaMonitor: Reactotron.createSagaMonitor()
-	});
+	const { actionBuffer } = require('./actionBuffer');
+	// Uncomment the next line (and the applyMiddleware(logger) line below) to print every action + next state to Metro.
+	// const { logger } = require('./reduxLogger');
+
+	sagaMiddleware = createSagaMiddleware();
 
 	enhancers = compose(
 		applyAppStateMiddleware(),
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
-		Reactotron.createEnhancer()
+		applyMiddleware(actionBuffer())
+		// applyMiddleware(logger)
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();
@@ -30,5 +32,9 @@ if (__DEV__) {
 
 const store = createStore(reducers, enhancers);
 sagaMiddleware.run(sagas);
+
+if (__DEV__) {
+	(global as any).reduxStore = store;
+}
 
 export default store;

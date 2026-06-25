@@ -1,26 +1,19 @@
-import React from 'react';
-import { StyleProp } from 'react-native';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
+import { memo } from 'react';
+import { Image } from 'expo-image';
 
-import { useAppSelector } from '../../lib/hooks';
-import { ICustomEmoji } from '../../definitions';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { type ICustomEmojiProps } from './interfaces';
 
-interface ICustomEmojiProps {
-	emoji: ICustomEmoji;
-	style: StyleProp<ImageStyle>;
-}
-
-const CustomEmoji = React.memo(
+const CustomEmoji = memo(
 	({ emoji, style }: ICustomEmojiProps) => {
 		const baseUrl = useAppSelector(state => state.server.server);
 		return (
-			<FastImage
+			<Image
 				style={style}
 				source={{
-					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`,
-					priority: FastImage.priority.high
+					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`
 				}}
-				resizeMode={FastImage.resizeMode.contain}
+				contentFit='contain'
 			/>
 		);
 	},

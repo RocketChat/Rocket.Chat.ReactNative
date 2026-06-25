@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+tags:
+  - 'util'
+
+---
+- tapOn:
+    id: action-sheet-handle
+- extendedWaitUntil:
+    notVisible:
+      id: action-sheet-handle
+    timeout: 60000

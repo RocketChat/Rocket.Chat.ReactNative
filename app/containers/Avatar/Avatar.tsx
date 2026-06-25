@@ -1,15 +1,17 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import Touchable from 'react-native-platform-touchable';
+import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
+import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
-import Emoji from '../markdown/Emoji';
-import { IAvatar } from './interfaces';
+import { type IAvatar } from './interfaces';
+import MarkdownContext from '../markdown/contexts/MarkdownContext';
+import I18n from '../../i18n';
+import Touch from '../Touch';
 
-const Avatar = React.memo(
+const Avatar = memo(
 	({
 		server,
 		style,
@@ -31,12 +33,15 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
-		cdnPrefix
+		cdnPrefix,
+		accessibilityLabel,
+		accessible = true
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
 
+		const avatarAccessibilityLabel = accessibilityLabel ?? I18n.t('Avatar_Photo', { username: text });
 		const avatarStyle = {
 			width: size,
 			height: size,
@@ -45,7 +50,18 @@ const Avatar = React.memo(
 
 		let image;
 		if (emoji) {
-			image = <Emoji getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />;
+			image = (
+				<MarkdownContext.Provider
+					value={{
+						getCustomEmoji
+					}}>
+					<Emoji
+						block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
+						style={avatarStyle}
+						isAvatar={true}
+					/>
+				</MarkdownContext.Provider>
+			);
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
@@ -68,23 +84,31 @@ const Avatar = React.memo(
 			}
 
 			image = (
-				<FastImage
+				<Image
 					style={avatarStyle}
 					source={{
 						uri,
-						headers: RocketChatSettings.customHeaders,
-						priority: FastImage.priority.high
+						headers: RocketChatSettings.customHeaders
 					}}
+					priority='high'
 				/>
 			);
 		}
 
 		if (onPress) {
-			image = <Touchable onPress={onPress}>{image}</Touchable>;
+			image = (
+				<Touch accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
+					{image}
+				</Touch>
+			);
 		}
 
 		return (
-			<View style={[avatarStyle, style]} testID='avatar'>
+			<View
+				accessible={accessible}
+				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
+				style={[avatarStyle, style]}
+				testID='avatar'>
 				{image}
 				{children}
 			</View>

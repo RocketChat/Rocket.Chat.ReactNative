@@ -1,8 +1,6 @@
-import React from 'react';
-
 import * as List from '../../containers/List';
-import { themes } from '../../lib/constants';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { themes } from '../../lib/constants/colors';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { useTheme } from '../../theme';
 
 interface IButton {
@@ -23,6 +21,7 @@ const ButtonCreate = ({ onPress, testID, title, icon }: IButton) => {
 				left={() => <CustomIcon name={icon} size={24} color={themes[theme].fontDefault} />}
 				right={() => <CustomIcon name={'chevron-right'} size={24} color={themes[theme].fontDefault} />}
 				title={title}
+				backgroundColor={themes[theme].surfaceLight}
 			/>
 			<List.Separator />
 		</>

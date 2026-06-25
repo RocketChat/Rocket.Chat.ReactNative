@@ -1,6 +1,6 @@
-import { Options } from 'react-native-image-crop-picker';
+import { type Options } from 'react-native-image-crop-picker';
 
-import { TMarkdownStyle } from './interfaces';
+import { type TMarkdownStyle } from './interfaces';
 
 export const IMAGE_PICKER_CONFIG = {
 	cropping: true,
@@ -20,8 +20,6 @@ export const LIBRARY_PICKER_CONFIG: Options = {
 export const VIDEO_PICKER_CONFIG: Options = {
 	mediaType: 'video'
 };
-
-export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;
 
 export const MIN_HEIGHT = 48;
 export const MAX_HEIGHT = 200;

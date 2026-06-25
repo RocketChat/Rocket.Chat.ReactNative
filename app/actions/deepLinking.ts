@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { DEEP_LINKING } from './actionsTypes';
 
@@ -10,6 +10,9 @@ interface IParams {
 	fullURL: string;
 	type: string;
 	token: string;
+	callId?: string;
+	username?: string;
+	voipAcceptFailed?: boolean;
 }
 
 interface IDeepLinkingOpen extends Action {

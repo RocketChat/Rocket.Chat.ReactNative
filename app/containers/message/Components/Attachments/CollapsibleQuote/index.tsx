@@ -1,11 +1,11 @@
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
-import React, { useContext, useState } from 'react';
+import { useContext, useState, memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../../../lib/constants';
-import { IAttachment } from '../../../../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import { themes } from '../../../../../lib/constants/colors';
+import { type IAttachment } from '../../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
 	button: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 6,
 		borderWidth: 1,
 		borderRadius: 4,
 		minHeight: 40
@@ -34,8 +33,7 @@ const styles = StyleSheet.create({
 	fieldContainer: {
 		flexDirection: 'column',
 		paddingLeft: 10,
-		paddingTop: 10,
-		paddingBottom: 10
+		paddingVertical: 10
 	},
 	fieldText: {
 		fontSize: 15,
@@ -58,9 +56,6 @@ const styles = StyleSheet.create({
 	},
 	touchableContainer: {
 		flexDirection: 'row'
-	},
-	markdownFontSize: {
-		fontSize: 15
 	},
 	iconContainer: {
 		width: 20,
@@ -85,28 +80,28 @@ interface IMessageFields {
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
-	index: number;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AttText = React.memo(
+const AttText = memo(
 	({ text, getCustomEmoji }: IMessageAttText) => {
-		const { theme } = useTheme();
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 
 		if (!text) {
 			return null;
 		}
 
-		return (
-			<Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} style={[styles.fieldText]} />
-		);
+		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
-const Fields = React.memo(
+const Fields = memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user } = useContext(MessageContext);
 
@@ -121,13 +116,7 @@ const Fields = React.memo(
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
 							{field.title}
 						</Text>
-						<Markdown
-							msg={field?.value || ''}
-							username={user.username}
-							getCustomEmoji={getCustomEmoji}
-							theme={theme}
-							style={[styles.markdownFontSize]}
-						/>
+						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</>
@@ -136,8 +125,10 @@ const Fields = React.memo(
 	(prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields)
 );
 
-const CollapsibleQuote = React.memo(
-	({ attachment, index, getCustomEmoji }: IMessageReply) => {
+const CollapsibleQuote = memo(
+	({ attachment, getCustomEmoji }: IMessageReply) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 
@@ -170,7 +161,6 @@ const CollapsibleQuote = React.memo(
 					onPress={onPress}
 					style={[
 						styles.button,
-						index > 0 && styles.marginTop,
 						attachment.description && styles.marginBottom,
 						{
 							backgroundColor,
@@ -181,7 +171,6 @@ const CollapsibleQuote = React.memo(
 							borderLeftWidth: 2
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					hitSlop={BUTTON_HIT_SLOP}>
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>

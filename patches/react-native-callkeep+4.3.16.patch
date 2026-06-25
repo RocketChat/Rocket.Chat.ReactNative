@@ -1,0 +1,138 @@
+diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+index 025480a..6a66858 100644
+--- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
++++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBase
+         ComponentName cName = new ComponentName(context, VoiceConnectionService.class);
+         String appName = this.getApplicationName(context);
+ 
+-        handle = new PhoneAccountHandle(cName, appName);
++        handle = new PhoneAccountHandle(cName, context.getPackageName());
+         telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+     }
+ 
+@@ -432,11 +432,6 @@ public class RNCallKeepModule extends ReactContextBase
+         Log.d(TAG, "[RNCallKeepModule] unregisterEvents");
+ 
+         this.hasListeners = false;
+-    }
+-
+-    @ReactMethod
+-    public void displayIncomingCall(String uuid, String number, String callerName) {
+-        this.displayIncomingCall(uuid, number, callerName, false, null);
+     }
+ 
+     @ReactMethod
+@@ -484,11 +479,6 @@ public class RNCallKeepModule extends ReactContextBase
+     }
+ 
+     @ReactMethod
+-    public void startCall(String uuid, String number, String callerName) {
+-        this.startCall(uuid, number, callerName, false, null);
+-    }
+-
+-    @ReactMethod
+     public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
+         this.startCall(uuid, number, callerName, hasVideo, null);
+     }
+@@ -1125,6 +1115,18 @@ public class RNCallKeepModule extends ReactContextBase
+             Log.w(TAG, "[RNCallKeepModule][registerPhoneAccount] no react context found.");
+             return;
+         }
++
++        // Devices without android.software.telecom (e.g. Zebra TC21 and other
++        // rugged enterprise SKUs) ship without the Telecom subsystem. Calling
++        // telecomManager.registerPhoneAccount on them throws
++        // UnsupportedOperationException on the RN bridge thread and crashes
++        // the process. Skip registration on those devices — VoIP is not usable
++        // there anyway.
++        if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) {
++            Log.w(TAG, "[RNCallKeepModule] registerPhoneAccount skipped: device lacks FEATURE_TELECOM");
++            return;
++        }
++
+         String appName = this.getApplicationName(context);
+ 
+         PhoneAccount.Builder builder = new PhoneAccount.Builder(handle, appName);
+@@ -1145,7 +1147,13 @@ public class RNCallKeepModule extends ReactContextBase
+ 
+         telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+ 
+-        telecomManager.registerPhoneAccount(account);
++        try {
++            telecomManager.registerPhoneAccount(account);
++        } catch (UnsupportedOperationException e) {
++            Log.w(TAG, "[RNCallKeepModule] registerPhoneAccount: Telecom subsystem unavailable", e);
++        } catch (SecurityException e) {
++            Log.w(TAG, "[RNCallKeepModule] registerPhoneAccount: SecurityException registering PhoneAccount", e);
++        }
+     }
+ 
+     public void sendEventToJS(String eventName, @Nullable WritableMap params) {
+@@ -1196,9 +1204,14 @@ public class RNCallKeepModule extends ReactContextBase
+             return true;
+         }
+ 
+-        return isConnectionServiceAvailable() && telecomManager != null &&
+-            hasPermissions() && telecomManager.getPhoneAccount(handle) != null &&
+-            telecomManager.getPhoneAccount(handle).isEnabled();
++        try {
++            return isConnectionServiceAvailable() && telecomManager != null &&
++                hasPermissions() && telecomManager.getPhoneAccount(handle) != null &&
++                telecomManager.getPhoneAccount(handle).isEnabled();
++        } catch (SecurityException e) {
++            Log.w(TAG, "[RNCallKeepModule] hasPhoneAccount: SecurityException querying phone account", e);
++            return false;
++        }
+     }
+ 
+     protected void registerReceiver() {
+diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
+index 5d58692..f4e4b1b 100644
+--- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
++++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
+@@ -317,7 +317,7 @@ public class VoiceConnectionService extends ConnectionService {
+         notificationBuilder.setOngoing(true)
+             .setContentTitle(foregroundSettings.getString("notificationTitle"))
+             .setPriority(NotificationManager.IMPORTANCE_MIN)
+             .setCategory(Notification.CATEGORY_SERVICE);
+ 
+-        Activity currentActivity = RNCallKeepModule.instance.getCurrentReactActivity();
++        Activity currentActivity = RNCallKeepModule.instance != null ? RNCallKeepModule.instance.getCurrentReactActivity() : null;
+         if (currentActivity != null) {
+@@ -459,18 +459,10 @@ public class VoiceConnectionService extends ConnectionService {
+         connection.setConnectionCapabilities(Connection.CAPABILITY_MUTE | Connection.CAPABILITY_SUPPORT_HOLD);
+ 
+         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+-            Context context = getApplicationContext();
+-            TelecomManager telecomManager = (TelecomManager) context.getSystemService(context.TELECOM_SERVICE);
+-            PhoneAccount phoneAccount = telecomManager.getPhoneAccount(request.getAccountHandle());
+-
+-            //If the phone account is self managed, then this connection must also be self managed.
+-            if((phoneAccount.getCapabilities() & PhoneAccount.CAPABILITY_SELF_MANAGED) == PhoneAccount.CAPABILITY_SELF_MANAGED) {
+-                Log.d(TAG, "[VoiceConnectionService] PhoneAccount is SELF_MANAGED, so connection will be too");
+-                connection.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+-            }
+-            else {
+-                Log.d(TAG, "[VoiceConnectionService] PhoneAccount is not SELF_MANAGED, so connection won't be either");
+-            }
++            // This app always registers its PhoneAccount with CAPABILITY_SELF_MANAGED.
++            // Skip telecomManager.getPhoneAccount(...) which requires READ_PHONE_NUMBERS on
++            // Android 11+ and isn't grantable from an FCM background context.
++            connection.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+         }
+ 
+         connection.setInitializing();
+diff --git a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
+index 786045f..a989d58 100644
+--- a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
++++ b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
+@@ -171,6 +171,8 @@ RCT_EXPORT_MODULE()
+             body, @"data",
+             nil
+         ];
++        // https://github.com/react-native-webrtc/react-native-callkeep/issues/822#issuecomment-2866354202
++        if (_delayedEvents == nil) _delayedEvents = [NSMutableArray array];
+         [_delayedEvents addObject:dictionary];
+     }
+ }

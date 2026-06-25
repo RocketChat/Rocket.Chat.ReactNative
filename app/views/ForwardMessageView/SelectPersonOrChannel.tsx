@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -6,9 +6,9 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
-import { IForwardMessageViewSelectRoom } from './interfaces';
-import { ISearchLocal } from '../../definitions';
-import { localSearchSubscription } from '../../lib/methods';
+import { type IForwardMessageViewSelectRoom } from './interfaces';
+import { type ISearchLocal } from '../../definitions';
+import { localSearchSubscription } from '../../lib/methods/search';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -19,7 +19,7 @@ const SelectPersonOrChannel = ({
 	onRoomSelect,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: IForwardMessageViewSelectRoom): React.ReactElement => {
+}: IForwardMessageViewSelectRoom): ReactElement => {
 	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 
@@ -68,6 +68,7 @@ const SelectPersonOrChannel = ({
 				placeholder={{ text: `${I18n.t('Select')}` }}
 				context={BlockContext.FORM}
 				multiselect
+				testID='select-person-or-channel'
 			/>
 		</View>
 	);

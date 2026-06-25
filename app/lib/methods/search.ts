@@ -1,10 +1,10 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
+import { getSubscriptionSearchClause, sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { type ISearch, type ISearchLocal, type IUserMessage, SubscriptionType, type TSubscriptionModel } from '../../definitions';
 import { isGroupChat, isReadOnly } from './helpers';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 
@@ -20,23 +20,9 @@ export const localSearchSubscription = async ({
 }): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
-	const likeString = sanitizeLikeString(searchText);
-	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
-		.query(
-			Q.or(
-				// `sanitized_fname` is an optional column, so it's going to start null and it's going to get filled over time
-				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
-				// TODO: Remove the conditionals below at some point. It is merged at 4.39
-				// the param 'name' is slugified by the server when the slugify setting is enable, just for channels and teams
-				Q.where('name', Q.like(`%${slugifiedString}%`)),
-				// Still need the below conditionals because at the first moment the the sanitized_fname won't be filled
-				Q.where('name', Q.like(`%${likeString}%`)),
-				Q.where('fname', Q.like(`%${likeString}%`))
-			),
-			Q.sortBy('room_updated_at', Q.desc)
-		)
+		.query(getSubscriptionSearchClause(searchText), Q.sortBy('room_updated_at', Q.desc))
 		.fetch();
 
 	if (filterUsers && !filterRooms) {
@@ -137,8 +123,8 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	try {
 		if (searchText && localSearchData.length < 7) {
 			const { users, rooms } = (await Promise.race([
-				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }, rid),
-				new Promise((resolve, reject) => (debounce = reject))
+				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms, mentions: true }, rid),
+				new Promise((_resolve, reject) => (debounce = reject))
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {

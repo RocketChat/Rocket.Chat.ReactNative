@@ -1,0 +1,504 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Basic should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: BlackThemeLoading should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_black",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <ActivityIndicator
+    color="#9EA2A8"
+    style={
+      {
+        "backgroundColor": "transparent",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: BlackThemeText should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_black",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        {
+          "color": "#9EA2A8",
+        },
+      ]
+    }
+  >
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: DarkThemeLoading should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_dark",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <ActivityIndicator
+    color="#9EA2A8"
+    style={
+      {
+        "backgroundColor": "transparent",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: DarkThemeText should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_dark",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        {
+          "color": "#9EA2A8",
+        },
+      ]
+    }
+  >
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: Loading should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <ActivityIndicator
+    color="#6C727A"
+    style={
+      {
+        "backgroundColor": "transparent",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: LongText should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        {
+          "color": "#6C727A",
+        },
+      ]
+    }
+  >
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: Text should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        {
+          "color": "#6C727A",
+        },
+      ]
+    }
+  >
+    Text here
+  </Text>
+</View>
+`;

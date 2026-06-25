@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { SwitchItem } from './SwitchItem';
 
 export const SwitchItemReadOnly = ({
@@ -13,15 +11,12 @@ export const SwitchItemReadOnly = ({
 	onValueChangeReadOnly: (value: boolean) => void;
 	broadcast: boolean;
 }) => {
-	let hint = '';
-	if (readOnly) {
+	let hint = 'Read_only_hint';
+	if (isTeam && readOnly) {
 		hint = 'Read_only_hint';
 	}
 	if (isTeam && !readOnly) {
 		hint = 'Team_hint_not_read_only';
-	}
-	if (!isTeam && !readOnly) {
-		hint = 'Channel_hint_not_read_only';
 	}
 
 	return (

@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+name: Send and Verify Message
+tags:
+  - 'flow'
+env:
+  MESSAGE: m0
+---
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input'
+    timeout: 60000
+- runFlow:
+    file: '../../../helpers/send-message.yaml'
+    env:
+      message: ${MESSAGE}

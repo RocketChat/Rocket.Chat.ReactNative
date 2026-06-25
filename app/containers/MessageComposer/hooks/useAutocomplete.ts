@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
-import { IAutocompleteEmoji, IAutocompleteUserRoom, TAutocompleteItem, TAutocompleteType } from '../interfaces';
-import { search } from '../../../lib/methods';
+import {
+	type IAutocompleteEmoji,
+	type IAutocompleteUserRoom,
+	type TAutocompleteItem,
+	type TAutocompleteType
+} from '../interfaces';
+import { search } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
-import { emojis } from '../../../lib/constants';
-import { ICustomEmoji } from '../../../definitions';
-import { Services } from '../../../lib/services';
+import { emojis } from '../../../lib/constants/emojis';
+import { type ICustomEmoji } from '../../../definitions';
+import { getCommandPreview, getListCannedResponse } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import I18n from '../../../i18n';
 import { NO_CANNED_RESPONSES } from '../constants';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
@@ -35,18 +41,26 @@ export const useAutocomplete = ({
 	text,
 	type,
 	rid,
-	commandParams
+	commandParams,
+	updateAutocompleteVisible = () => null,
+	accessibilityFocusOnInput = () => null
 }: {
 	rid?: string;
 	type: TAutocompleteType;
 	text: string;
 	commandParams?: string;
+	accessibilityFocusOnInput: () => void;
+	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
+	const [mentionAll, mentionHere] = usePermissions(['mention-all', 'mention-here']);
+
 	useEffect(() => {
 		const getAutocomplete = async () => {
 			try {
 				if (!rid || !type) {
+					updateAutocompleteVisible(false);
+
 					setItems([]);
 					return;
 				}
@@ -76,7 +90,7 @@ export const useAutocomplete = ({
 							type
 						})) as IAutocompleteUserRoom[];
 					if (type === '@') {
-						if ('all'.includes(text.toLocaleLowerCase())) {
+						if (mentionAll && 'all'.includes(text.toLocaleLowerCase())) {
 							parsedRes.push({
 								id: 'all',
 								title: 'all',
@@ -85,7 +99,7 @@ export const useAutocomplete = ({
 								t: 'd'
 							});
 						}
-						if ('here'.includes(text.toLocaleLowerCase())) {
+						if (mentionHere && 'here'.includes(text.toLocaleLowerCase())) {
 							parsedRes.push({
 								id: 'here',
 								title: 'here',
@@ -96,6 +110,10 @@ export const useAutocomplete = ({
 						}
 					}
 					setItems(parsedRes);
+					if (parsedRes.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
+					}
 				}
 				if (type === ':') {
 					const customEmojis = await getCustomEmojis(text);
@@ -113,6 +131,10 @@ export const useAutocomplete = ({
 						}))
 					);
 					setItems(mergedEmojis);
+					if (mergedEmojis.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
+					}
 				}
 				if (type === '/') {
 					const db = database.active;
@@ -127,13 +149,19 @@ export const useAutocomplete = ({
 						type
 					}));
 					setItems(commands);
+
+					if (commands.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
+					}
 				}
 				if (type === '/preview') {
 					if (!commandParams) {
 						setItems([]);
+						updateAutocompleteVisible(false);
 						return;
 					}
-					const response = await Services.getCommandPreview(text, rid, commandParams);
+					const response = await getCommandPreview(text, rid, commandParams);
 					if (response.success) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
@@ -143,10 +171,14 @@ export const useAutocomplete = ({
 							params: commandParams
 						}));
 						setItems(previewItems);
+						if (previewItems.length > 0) {
+							updateAutocompleteVisible(true);
+							accessibilityFocusOnInput();
+						}
 					}
 				}
 				if (type === '!') {
-					const res = await Services.getListCannedResponse({ text });
+					const res = await getListCannedResponse({ text });
 					if (res.success) {
 						if (res.cannedResponses.length === 0) {
 							setItems([
@@ -156,6 +188,7 @@ export const useAutocomplete = ({
 									type
 								}
 							]);
+							updateAutocompleteVisible(false);
 							return;
 						}
 
@@ -166,11 +199,16 @@ export const useAutocomplete = ({
 							type
 						}));
 						setItems(cannedResponses);
+						if (cannedResponses.length > 0) {
+							updateAutocompleteVisible(true);
+							accessibilityFocusOnInput();
+						}
 					}
 				}
 			} catch (e) {
 				log(e);
 				setItems([]);
+				updateAutocompleteVisible(false);
 			}
 		};
 		getAutocomplete();

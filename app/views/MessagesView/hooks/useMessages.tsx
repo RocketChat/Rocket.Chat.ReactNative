@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { IMessage, SubscriptionType } from '../../../definitions';
+import { type IMessage, type SubscriptionType } from '../../../definitions';
 import fetchMessages from '../methods/fetchMessages';
 
 interface IUseMessage {

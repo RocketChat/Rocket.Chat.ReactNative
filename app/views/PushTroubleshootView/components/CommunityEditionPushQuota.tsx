@@ -1,16 +1,16 @@
-import React from 'react';
 import { Alert, StyleSheet, Text } from 'react-native';
+import { type ReactElement } from 'react';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 
 const WARNING_MINIMUM_VALUE = 70;
 const WARNING_MAXIMUM_VALUE = 90;
 
-export default function CommunityEditionPushQuota(): React.ReactElement | null {
+export default function CommunityEditionPushQuota(): ReactElement | null {
 	const { colors } = useTheme();
 	const { consumptionPercentage, isCommunityEdition } = useAppSelector(state => ({
 		isCommunityEdition: state.troubleshootingNotification.isCommunityEdition,
@@ -41,7 +41,7 @@ export default function CommunityEditionPushQuota(): React.ReactElement | null {
 				testID='push-troubleshoot-view-workspace-consumption'
 				onPress={alertWorkspaceConsumption}
 				right={() => <Text style={[styles.pickerText, { color: percentageColor }]}>{percentage}</Text>}
-				additionalAcessibilityLabel={percentage}
+				additionalAccessibilityLabel={percentage}
 			/>
 			<List.Separator />
 			<List.Info info='Workspace_consumption_description' />

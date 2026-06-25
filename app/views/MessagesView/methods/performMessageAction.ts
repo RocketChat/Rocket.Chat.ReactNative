@@ -1,12 +1,12 @@
-import { IMessage } from '../../../definitions';
-import { Services } from '../../../lib/services';
+import { type IMessage } from '../../../definitions';
+import { togglePinMessage, toggleStarMessage } from '../../../lib/services/restApi';
 
 const performMessageAction = (screenName: string, message: IMessage) => {
 	switch (screenName) {
 		case 'Pinned':
-			return Services.togglePinMessage(message._id, message.pinned);
+			return togglePinMessage(message._id, message.pinned);
 		case 'Starred':
-			return Services.toggleStarMessage(message._id, message.starred);
+			return toggleStarMessage(message._id, message.starred);
 	}
 };
 

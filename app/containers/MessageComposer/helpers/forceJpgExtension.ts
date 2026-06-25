@@ -1,4 +1,4 @@
-import { ImageOrVideo } from 'react-native-image-crop-picker';
+import { type ImageOrVideo } from 'react-native-image-crop-picker';
 
 import { isIOS } from '../../../lib/methods/helpers';
 

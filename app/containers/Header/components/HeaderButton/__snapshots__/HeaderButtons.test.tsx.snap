@@ -1,0 +1,5178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Badge should match snapshot 1`] = `
+<View
+  collapsable={false}
+  pointerEvents="box-none"
+  style={
+    {
+      "height": 44,
+      "maxHeight": undefined,
+      "minHeight": undefined,
+      "opacity": undefined,
+      "transform": undefined,
+    }
+  }
+>
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": undefined,
+          "borderBottomColor": "rgb(216, 216, 216)",
+          "flex": 1,
+          "shadowColor": "rgba(0, 0, 0, 1)",
+          "shadowOffset": {
+            "height": 0.5,
+            "width": 0,
+          },
+          "shadowOpacity": 0.3,
+          "shadowRadius": 0,
+        }
+      }
+    />
+  </View>
+  <View
+    pointerEvents="none"
+    style={
+      {
+        "height": 0,
+      }
+    }
+  />
+  <View
+    pointerEvents="box-none"
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flex": 1,
+          "flexDirection": "row",
+        },
+        {
+          "marginHorizontal": 5,
+        },
+      ]
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "justifyContent": "flex-start",
+          "marginStart": 0,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "marginLeft": -5,
+              "marginRight": 0,
+            },
+            {},
+          ]
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          style={
+            [
+              {
+                "opacity": 1,
+                "padding": 6,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                  {
+                    "backgroundColor": "#095AD2",
+                    "borderRadius": 10.5,
+                    "minWidth": 16,
+                  },
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 10,
+                    "justifyContent": "center",
+                    "padding": 2,
+                    "position": "absolute",
+                    "right": -4,
+                    "top": -4,
+                  },
+                ]
+              }
+              testID="unread-badge-1"
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600",
+                      "textAlign": "left",
+                    },
+                    {
+                      "fontSize": 10,
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
+          </View>
+        </RNGestureHandlerButton>
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          style={
+            [
+              {
+                "opacity": 1,
+                "padding": 6,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                  {
+                    "backgroundColor": "#F5455C",
+                    "borderRadius": 10.5,
+                    "minWidth": 16,
+                  },
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 10,
+                    "justifyContent": "center",
+                    "padding": 2,
+                    "position": "absolute",
+                    "right": -4,
+                    "top": -4,
+                  },
+                ]
+              }
+              testID="unread-badge-1"
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600",
+                      "textAlign": "left",
+                    },
+                    {
+                      "fontSize": 10,
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
+          </View>
+        </RNGestureHandlerButton>
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          style={
+            [
+              {
+                "opacity": 1,
+                "padding": 6,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                  {
+                    "backgroundColor": "#F38C39",
+                    "borderRadius": 10.5,
+                    "minWidth": 16,
+                  },
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 10,
+                    "justifyContent": "center",
+                    "padding": 2,
+                    "position": "absolute",
+                    "right": -4,
+                    "top": -4,
+                  },
+                ]
+              }
+              testID="unread-badge-1"
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600",
+                      "textAlign": "left",
+                    },
+                    {
+                      "fontSize": 10,
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
+          </View>
+        </RNGestureHandlerButton>
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <ExternalKeyboardView
+            autoFocus={true}
+            canBeFocused={true}
+            enableA11yFocus={false}
+            enableContextMenu={false}
+            group={false}
+            haloEffect={true}
+            hasKeyDownPress={false}
+            hasKeyUpPress={true}
+            hasOnFocusChanged={true}
+            lockFocus={0}
+            onContextMenuPress={[Function]}
+            onFocusChange={[Function]}
+            onKeyUpPress={[Function]}
+            orderIndex={-1}
+            screenAutoA11yFocusDelay={300}
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="Menu"
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        [
+                          undefined,
+                          undefined,
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "padding": 2,
+                        "position": "absolute",
+                        "right": -4,
+                        "top": -4,
+                      },
+                      {
+                        "backgroundColor": "red",
+                        "height": 10,
+                        "width": 10,
+                      },
+                    ]
+                  }
+                />
+              </View>
+            </RNGestureHandlerButton>
+          </ExternalKeyboardView>
+        </View>
+      </View>
+    </View>
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "justifyContent": "center",
+          "marginHorizontal": 16,
+          "maxWidth": 590,
+        }
+      }
+    >
+      <Text
+        aria-level="1"
+        collapsable={false}
+        numberOfLines={1}
+        onLayout={[Function]}
+        role="heading"
+        style={
+          {
+            "color": "rgb(28, 28, 30)",
+            "fontFamily": "System",
+            "fontSize": 17,
+            "fontWeight": "600",
+          }
+        }
+      />
+    </View>
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "justifyContent": "flex-end",
+          "marginEnd": 0,
+        }
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Common should match snapshot 1`] = `
+[
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <ExternalKeyboardView
+            autoFocus={true}
+            canBeFocused={true}
+            enableA11yFocus={false}
+            enableContextMenu={false}
+            group={false}
+            haloEffect={true}
+            hasKeyDownPress={false}
+            hasKeyUpPress={true}
+            hasOnFocusChanged={true}
+            lockFocus={0}
+            onContextMenuPress={[Function]}
+            onFocusChange={[Function]}
+            onKeyUpPress={[Function]}
+            orderIndex={-1}
+            screenAutoA11yFocusDelay={300}
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="Menu"
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        [
+                          undefined,
+                          undefined,
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+          </ExternalKeyboardView>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 590,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      />
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="Close"
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 590,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      />
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Cancel
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 590,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      />
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="More"
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Icons should match snapshot 1`] = `
+[
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Themes should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "flexDirection": "column",
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "height": 44,
+          "maxHeight": undefined,
+          "minHeight": undefined,
+          "opacity": undefined,
+          "transform": undefined,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomColor": "rgb(216, 216, 216)",
+              "flex": 1,
+              "shadowColor": "rgba(0, 0, 0, 1)",
+              "shadowOffset": {
+                "height": 0.5,
+                "width": 0,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 0,
+            }
+          }
+        />
+      </View>
+      <View
+        pointerEvents="none"
+        style={
+          {
+            "height": 0,
+          }
+        }
+      />
+      <View
+        pointerEvents="box-none"
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+            },
+            {
+              "marginHorizontal": 5,
+            },
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-start",
+              "marginStart": 0,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                },
+                {
+                  "marginLeft": -5,
+                  "marginRight": 0,
+                },
+                {},
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                  },
+                  {
+                    "marginLeft": -5,
+                    "marginRight": 0,
+                  },
+                  {},
+                ]
+              }
+            >
+              <ExternalKeyboardView
+                autoFocus={true}
+                canBeFocused={true}
+                enableA11yFocus={false}
+                enableContextMenu={false}
+                group={false}
+                haloEffect={true}
+                hasKeyDownPress={false}
+                hasKeyUpPress={true}
+                hasOnFocusChanged={true}
+                lockFocus={0}
+                onContextMenuPress={[Function]}
+                onFocusChange={[Function]}
+                onKeyUpPress={[Function]}
+                orderIndex={-1}
+                screenAutoA11yFocusDelay={300}
+                style={
+                  [
+                    undefined,
+                    undefined,
+                  ]
+                }
+              >
+                <RNGestureHandlerButton
+                  activeOpacity={0.3}
+                  borderless={true}
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 5,
+                      "left": 5,
+                      "right": 5,
+                      "top": 5,
+                    }
+                  }
+                  innerRef={null}
+                  onActiveStateChange={[Function]}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "opacity": 1,
+                        "padding": 6,
+                      },
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    accessibilityLabel="Menu"
+                    accessible={true}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#2F343D",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            [
+                              undefined,
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <View
+                      style={
+                        [
+                          {
+                            "alignItems": "center",
+                            "borderRadius": 10,
+                            "justifyContent": "center",
+                            "padding": 2,
+                            "position": "absolute",
+                            "right": -4,
+                            "top": -4,
+                          },
+                          {
+                            "backgroundColor": "#EC0D2A",
+                            "height": 10,
+                            "width": 10,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                </RNGestureHandlerButton>
+              </ExternalKeyboardView>
+            </View>
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+        </View>
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "justifyContent": "center",
+              "marginHorizontal": 16,
+              "maxWidth": 558,
+            }
+          }
+        >
+          <Text
+            aria-level="1"
+            collapsable={false}
+            numberOfLines={1}
+            onLayout={[Function]}
+            role="heading"
+            style={
+              {
+                "color": "rgb(28, 28, 30)",
+                "fontFamily": "System",
+                "fontSize": 17,
+                "fontWeight": "600",
+              }
+            }
+          />
+        </View>
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginEnd": 0,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                },
+                {
+                  "marginRight": -5,
+                },
+                {},
+              ]
+            }
+          >
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 17,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  Threads
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "justifyContent": "center",
+                      },
+                      {
+                        "backgroundColor": "#095AD2",
+                        "borderRadius": 10.5,
+                        "minWidth": 16,
+                      },
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "padding": 2,
+                        "position": "absolute",
+                        "right": -4,
+                        "top": -4,
+                      },
+                    ]
+                  }
+                  testID="unread-badge-1"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        {
+                          "fontSize": 10,
+                        },
+                        {
+                          "color": "#FFFFFF",
+                        },
+                      ]
+                    }
+                  >
+                    1
+                  </Text>
+                </View>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "flexDirection": "column",
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "height": 44,
+          "maxHeight": undefined,
+          "minHeight": undefined,
+          "opacity": undefined,
+          "transform": undefined,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomColor": "rgb(216, 216, 216)",
+              "flex": 1,
+              "shadowColor": "rgba(0, 0, 0, 1)",
+              "shadowOffset": {
+                "height": 0.5,
+                "width": 0,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 0,
+            }
+          }
+        />
+      </View>
+      <View
+        pointerEvents="none"
+        style={
+          {
+            "height": 0,
+          }
+        }
+      />
+      <View
+        pointerEvents="box-none"
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+            },
+            {
+              "marginHorizontal": 5,
+            },
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-start",
+              "marginStart": 0,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                },
+                {
+                  "marginLeft": -5,
+                  "marginRight": 0,
+                },
+                {},
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                  },
+                  {
+                    "marginLeft": -5,
+                    "marginRight": 0,
+                  },
+                  {},
+                ]
+              }
+            >
+              <ExternalKeyboardView
+                autoFocus={true}
+                canBeFocused={true}
+                enableA11yFocus={false}
+                enableContextMenu={false}
+                group={false}
+                haloEffect={true}
+                hasKeyDownPress={false}
+                hasKeyUpPress={true}
+                hasOnFocusChanged={true}
+                lockFocus={0}
+                onContextMenuPress={[Function]}
+                onFocusChange={[Function]}
+                onKeyUpPress={[Function]}
+                orderIndex={-1}
+                screenAutoA11yFocusDelay={300}
+                style={
+                  [
+                    undefined,
+                    undefined,
+                  ]
+                }
+              >
+                <RNGestureHandlerButton
+                  activeOpacity={0.3}
+                  borderless={true}
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 5,
+                      "left": 5,
+                      "right": 5,
+                      "top": 5,
+                    }
+                  }
+                  innerRef={null}
+                  onActiveStateChange={[Function]}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "opacity": 1,
+                        "padding": 6,
+                      },
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    accessibilityLabel="Menu"
+                    accessible={true}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#C1C7D0",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            [
+                              undefined,
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <View
+                      style={
+                        [
+                          {
+                            "alignItems": "center",
+                            "borderRadius": 10,
+                            "justifyContent": "center",
+                            "padding": 2,
+                            "position": "absolute",
+                            "right": -4,
+                            "top": -4,
+                          },
+                          {
+                            "backgroundColor": "#BB3E4E",
+                            "height": 10,
+                            "width": 10,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                </RNGestureHandlerButton>
+              </ExternalKeyboardView>
+            </View>
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#C1C7D0",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+        </View>
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "justifyContent": "center",
+              "marginHorizontal": 16,
+              "maxWidth": 558,
+            }
+          }
+        >
+          <Text
+            aria-level="1"
+            collapsable={false}
+            numberOfLines={1}
+            onLayout={[Function]}
+            role="heading"
+            style={
+              {
+                "color": "rgb(28, 28, 30)",
+                "fontFamily": "System",
+                "fontSize": 17,
+                "fontWeight": "600",
+              }
+            }
+          />
+        </View>
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginEnd": 0,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                },
+                {
+                  "marginRight": -5,
+                },
+                {},
+              ]
+            }
+          >
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 17,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#C1C7D0",
+                      },
+                    ]
+                  }
+                >
+                  Threads
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#C1C7D0",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "justifyContent": "center",
+                      },
+                      {
+                        "backgroundColor": "#245399",
+                        "borderRadius": 10.5,
+                        "minWidth": 16,
+                      },
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "padding": 2,
+                        "position": "absolute",
+                        "right": -4,
+                        "top": -4,
+                      },
+                    ]
+                  }
+                  testID="unread-badge-1"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        {
+                          "fontSize": 10,
+                        },
+                        {
+                          "color": "#FFFFFF",
+                        },
+                      ]
+                    }
+                  >
+                    1
+                  </Text>
+                </View>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "flexDirection": "column",
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "height": 44,
+          "maxHeight": undefined,
+          "minHeight": undefined,
+          "opacity": undefined,
+          "transform": undefined,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomColor": "rgb(216, 216, 216)",
+              "flex": 1,
+              "shadowColor": "rgba(0, 0, 0, 1)",
+              "shadowOffset": {
+                "height": 0.5,
+                "width": 0,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 0,
+            }
+          }
+        />
+      </View>
+      <View
+        pointerEvents="none"
+        style={
+          {
+            "height": 0,
+          }
+        }
+      />
+      <View
+        pointerEvents="box-none"
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+            },
+            {
+              "marginHorizontal": 5,
+            },
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-start",
+              "marginStart": 0,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                },
+                {
+                  "marginLeft": -5,
+                  "marginRight": 0,
+                },
+                {},
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                  },
+                  {
+                    "marginLeft": -5,
+                    "marginRight": 0,
+                  },
+                  {},
+                ]
+              }
+            >
+              <ExternalKeyboardView
+                autoFocus={true}
+                canBeFocused={true}
+                enableA11yFocus={false}
+                enableContextMenu={false}
+                group={false}
+                haloEffect={true}
+                hasKeyDownPress={false}
+                hasKeyUpPress={true}
+                hasOnFocusChanged={true}
+                lockFocus={0}
+                onContextMenuPress={[Function]}
+                onFocusChange={[Function]}
+                onKeyUpPress={[Function]}
+                orderIndex={-1}
+                screenAutoA11yFocusDelay={300}
+                style={
+                  [
+                    undefined,
+                    undefined,
+                  ]
+                }
+              >
+                <RNGestureHandlerButton
+                  activeOpacity={0.3}
+                  borderless={true}
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 5,
+                      "left": 5,
+                      "right": 5,
+                      "top": 5,
+                    }
+                  }
+                  innerRef={null}
+                  onActiveStateChange={[Function]}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "opacity": 1,
+                        "padding": 6,
+                      },
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    accessibilityLabel="Menu"
+                    accessible={true}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#E4E7EA",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            [
+                              undefined,
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <View
+                      style={
+                        [
+                          {
+                            "alignItems": "center",
+                            "borderRadius": 10,
+                            "justifyContent": "center",
+                            "padding": 2,
+                            "position": "absolute",
+                            "right": -4,
+                            "top": -4,
+                          },
+                          {
+                            "backgroundColor": "#BB3E4E",
+                            "height": 10,
+                            "width": 10,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                </RNGestureHandlerButton>
+              </ExternalKeyboardView>
+            </View>
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#E4E7EA",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+        </View>
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "justifyContent": "center",
+              "marginHorizontal": 16,
+              "maxWidth": 558,
+            }
+          }
+        >
+          <Text
+            aria-level="1"
+            collapsable={false}
+            numberOfLines={1}
+            onLayout={[Function]}
+            role="heading"
+            style={
+              {
+                "color": "rgb(28, 28, 30)",
+                "fontFamily": "System",
+                "fontSize": 17,
+                "fontWeight": "600",
+              }
+            }
+          />
+        </View>
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginEnd": 0,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                },
+                {
+                  "marginRight": -5,
+                },
+                {},
+              ]
+            }
+          >
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 17,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Threads
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
+                {
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
+                }
+              }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#E4E7EA",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "justifyContent": "center",
+                      },
+                      {
+                        "backgroundColor": "#245399",
+                        "borderRadius": 10.5,
+                        "minWidth": 16,
+                      },
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "padding": 2,
+                        "position": "absolute",
+                        "right": -4,
+                        "top": -4,
+                      },
+                    ]
+                  }
+                  testID="unread-badge-1"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        {
+                          "fontSize": 10,
+                        },
+                        {
+                          "color": "#FFFFFF",
+                        },
+                      ]
+                    }
+                  >
+                    1
+                  </Text>
+                </View>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Title should match snapshot 1`] = `
+[
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                threads
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                threads
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      pointerEvents="box-none"
+      style={
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
+            },
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      pointerEvents="none"
+      style={
+        {
+          "height": 0,
+        }
+      }
+    />
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "marginHorizontal": 5,
+          },
+        ]
+      }
+    >
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginLeft": -5,
+                "marginRight": 0,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                threads
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                search
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
+        }
+      >
+        <Text
+          aria-level="1"
+          collapsable={false}
+          numberOfLines={1}
+          onLayout={[Function]}
+          role="heading"
+          style={
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        />
+      </View>
+      <View
+        collapsable={false}
+        pointerEvents="box-none"
+        style={
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+              {
+                "marginRight": -5,
+              },
+              {},
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                threads
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+          <RNGestureHandlerButton
+            activeOpacity={0.3}
+            borderless={true}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            hitSlop={
+              {
+                "bottom": 5,
+                "left": 5,
+                "right": 5,
+                "top": 5,
+              }
+            }
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            style={
+              [
+                {
+                  "opacity": 1,
+                  "padding": 6,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                search
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;

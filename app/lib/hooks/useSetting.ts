@@ -1,4 +1,4 @@
-import { TSettingsValues, TSupportedSettings } from '../../reducers/settings';
+import { type TSettingsValues, type TSupportedSettings } from '../../reducers/settings';
 import { useAppSelector } from './useAppSelector';
 
 export function useSetting(key: TSupportedSettings): TSettingsValues {

@@ -1,10 +1,7 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import Touch from '../../containers/Touch';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import Check from '../../containers/Check';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import styles from './styles';
@@ -43,18 +40,19 @@ const DirectoryOptions = ({
 		}
 
 		return (
-			<Touch onPress={() => changeType(itemType)} style={styles.filterItemButton} accessibilityLabel={I18n.t(text)} accessible>
-				<View style={styles.filterItemContainer}>
-					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />
-					<Text style={[styles.filterItemText, { color: colors.fontDefault }]}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check /> : null}
-				</View>
-			</Touch>
+			<List.Radio
+				title={text}
+				value={itemType}
+				isSelected={propType === itemType}
+				onPress={() => changeType(itemType)}
+				left={() => <CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />}
+				testID={`directory-switch-${itemType}`}
+			/>
 		);
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<List.Container contentContainerStyle={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />
@@ -72,11 +70,11 @@ const DirectoryOptions = ({
 								{I18n.t('Search_global_users_description')}
 							</Text>
 						</View>
-						<Switch value={globalUsers} onValueChange={toggleWorkspace} />
+						<Switch value={globalUsers} onValueChange={toggleWorkspace} testID='directory-switch-global-users' />
 					</View>
 				</>
 			) : null}
-		</View>
+		</List.Container>
 	);
 };
 

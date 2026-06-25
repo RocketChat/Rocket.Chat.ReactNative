@@ -1,10 +1,10 @@
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { ChatsStackParamList } from '../../stacks/types';
-import { TNavigation } from '../../stacks/stackType';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { TMessageModel, ISubscription, SubscriptionType } from '../../definitions';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type TNavigation } from '../../stacks/stackType';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type TMessageModel, type ISubscription, type SubscriptionType } from '../../definitions';
 
 export interface IMessagesViewProps {
 	navigation: CompositeNavigationProp<

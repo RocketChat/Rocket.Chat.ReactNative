@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { SERVER } from './actionsTypes';
 
@@ -14,7 +14,9 @@ interface ISelectServerSuccess extends Action {
 	version: string;
 	name: string;
 }
-
+interface IServerFailure extends Action {
+	failureMessage?: string;
+}
 export interface IServerRequestAction extends Action {
 	server: string;
 	username: string | null;
@@ -25,7 +27,7 @@ interface IServerInit extends Action {
 	previousServer: string;
 }
 
-export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit;
+export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit & IServerFailure;
 
 export function selectServerRequest(
 	server: string,
@@ -65,6 +67,18 @@ export function selectServerFailure(): Action {
 	};
 }
 
+export function selectServerCancel(): Action {
+	return {
+		type: SERVER.SELECT_CANCEL
+	};
+}
+
+export function selectServerClear(): Action {
+	return {
+		type: SERVER.CLEAR
+	};
+}
+
 export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServerRequestAction {
 	return {
 		type: SERVER.REQUEST,
@@ -80,9 +94,10 @@ export function serverSuccess(): Action {
 	};
 }
 
-export function serverFailure(): Action {
+export function serverFailure(failureMessage?: string): IServerFailure {
 	return {
-		type: SERVER.FAILURE
+		type: SERVER.FAILURE,
+		failureMessage
 	};
 }
 

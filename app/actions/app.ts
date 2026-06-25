@@ -1,16 +1,12 @@
-import { Action } from 'redux';
-import { NetInfoStateType } from '@react-native-community/netinfo';
+import { type Action } from 'redux';
+import { type NetInfoStateType } from '@react-native-community/netinfo';
 
-import { RootEnum } from '../definitions';
+import { type RootEnum } from '../definitions';
 import { APP } from './actionsTypes';
 
 interface IAppStart extends Action {
 	root: RootEnum;
 	text?: string;
-}
-
-interface ISetMasterDetail extends Action {
-	isMasterDetail: boolean;
 }
 
 interface ISetNotificationPresenceCap extends Action {
@@ -21,7 +17,7 @@ interface ISetNetInfoState extends Action {
 	netInfoState: NetInfoStateType;
 }
 
-export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetNetInfoState;
+export type TActionApp = IAppStart & ISetNotificationPresenceCap & ISetNetInfoState;
 
 interface Params {
 	root: RootEnum;
@@ -51,13 +47,6 @@ export function appInit(): Action {
 export function appInitLocalSettings(): Action {
 	return {
 		type: APP.INIT_LOCAL_SETTINGS
-	};
-}
-
-export function setMasterDetail(isMasterDetail: boolean): ISetMasterDetail {
-	return {
-		type: APP.SET_MASTER_DETAIL,
-		isMasterDetail
 	};
 }
 

@@ -1,0 +1,57 @@
+diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
+index 2296c39..0a872ba 100644
+--- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
++++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
+@@ -89,6 +89,52 @@
+ }
+ 
+ #if !TARGET_OS_OSX
++- (BOOL)canBecomeFocused
++{
++  return self.userEnabled && self.enabled && self.userInteractionEnabled;
++}
++
++- (BOOL)_isActivationKeyPress:(NSSet<UIPress *> *)presses
++{
++  if (@available(iOS 13.4, *)) {
++    for (UIPress *press in presses) {
++      if (press.key != nil &&
++          (press.key.keyCode == UIKeyboardHIDUsageKeyboardSpacebar ||
++           press.key.keyCode == UIKeyboardHIDUsageKeyboardReturnOrEnter)) {
++        return YES;
++      }
++    }
++  }
++  return NO;
++}
++
++- (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
++{
++  if ([self _isActivationKeyPress:presses]) {
++    [self sendActionsForControlEvents:UIControlEventTouchDown];
++  } else {
++    [super pressesBegan:presses withEvent:event];
++  }
++}
++
++- (void)pressesEnded:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
++{
++  if ([self _isActivationKeyPress:presses]) {
++    [self sendActionsForControlEvents:UIControlEventTouchUpInside];
++  } else {
++    [super pressesEnded:presses withEvent:event];
++  }
++}
++
++- (void)pressesCancelled:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
++{
++  if ([self _isActivationKeyPress:presses]) {
++    [self sendActionsForControlEvents:UIControlEventTouchCancel];
++  } else {
++    [super pressesCancelled:presses withEvent:event];
++  }
++}
++
+ - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+ {
+   if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)) {

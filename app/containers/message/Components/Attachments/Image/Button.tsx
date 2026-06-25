@@ -1,23 +1,33 @@
-import React from 'react';
+import { type ReactElement } from 'react';
+import { type PressableProps } from 'react-native';
 
-import { useTheme } from '../../../../../theme';
 import Touchable from '../../../Touchable';
 import styles from '../../../styles';
 
 interface IMessageButton {
-	children: React.ReactElement;
+	children: ReactElement;
 	disabled?: boolean;
 	onPress: () => void;
+	accessibilityLabel?: string;
+	accessibilityRole?: PressableProps['accessibilityRole'];
 }
 
-export const Button = ({ children, onPress, disabled }: IMessageButton) => {
-	const { colors } = useTheme();
+export const Button = ({
+	children,
+	onPress,
+	disabled,
+	accessibilityLabel,
+	accessibilityRole = 'imagebutton'
+}: IMessageButton) => {
+	'use memo';
+
 	return (
 		<Touchable
+			accessibilityLabel={accessibilityLabel}
+			accessibilityRole={accessibilityRole}
 			disabled={disabled}
 			onPress={onPress}
-			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}>
+			style={styles.imageContainer}>
 			{children}
 		</Touchable>
 	);

@@ -1,11 +1,11 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type NavigatorScreenParams } from '@react-navigation/core';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-import { TSubscriptionModel } from './ISubscription';
-import { TServerModel } from './IServer';
-import { IAttachment } from './IAttachment';
-import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
-import { OutsideParamList, InsideStackParamList } from '../stacks/types';
+import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { type OutsideParamList, type InsideStackParamList } from '../stacks/types';
+import { type ShareInsideStackParamList } from '../stacks/ShareExtensionStack';
+
+export type { ShareInsideStackParamList };
 
 interface INavigationProps {
 	route?: any;
@@ -30,18 +30,4 @@ export type StackParamList = {
 	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
 	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
 	ShareExtensionStack: NavigatorScreenParams<ShareInsideStackParamList>;
-};
-
-export type ShareInsideStackParamList = {
-	ShareListView: undefined;
-	ShareView: {
-		attachments: IAttachment[];
-		isShareView?: boolean;
-		isShareExtension: boolean;
-		serverInfo: TServerModel;
-		text: string;
-		room: TSubscriptionModel;
-		thread?: any; // TODO: Change
-	};
-	SelectServerView: undefined;
 };

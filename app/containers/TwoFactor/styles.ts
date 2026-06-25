@@ -6,7 +6,8 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		padding: 16
 	},
 	content: {
 		padding: 16,
@@ -15,13 +16,14 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		paddingBottom: 8,
+		lineHeight: 24,
+		marginBottom: 12,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter
 	},
 	subtitle: {
 		fontSize: 14,
-		paddingBottom: 8,
+		marginBottom: 12,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	},
@@ -37,9 +39,18 @@ export default StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		marginTop: 36
 	},
 	tablet: {
 		height: undefined
+	},
+	overlay: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	containerInput: {
+		marginBottom: 0
 	}
 });

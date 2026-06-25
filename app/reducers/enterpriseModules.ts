@@ -1,4 +1,4 @@
-import { TActionEnterpriseModules } from '../actions/enterpriseModules';
+import { type TActionEnterpriseModules } from '../actions/enterpriseModules';
 import { ENTERPRISE_MODULES } from '../actions/actionsTypes';
 
 export type IEnterpriseModules = string;

@@ -5,7 +5,7 @@ import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
 import { createDiscussionFailure, createDiscussionSuccess } from '../actions/createDiscussion';
 import database from '../lib/database';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { Services } from '../lib/services';
+import { createDiscussion } from '../lib/services/restApi';
 
 const handleRequest = function* handleRequest({ data }) {
 	logEvent(events.CD_CREATE);
@@ -14,7 +14,7 @@ const handleRequest = function* handleRequest({ data }) {
 		if (!auth) {
 			yield take(LOGIN.SUCCESS);
 		}
-		const result = yield Services.createDiscussion(data);
+		const result = yield createDiscussion(data);
 
 		if (result.success) {
 			const { discussion: sub } = result;

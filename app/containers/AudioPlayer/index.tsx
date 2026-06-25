@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { AVPlaybackStatus } from 'expo-av';
+import { type AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -12,10 +12,10 @@ import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
 import AudioManager from '../../lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
-import { TDownloadState } from '../../lib/methods/handleMediaDownload';
-import { emitter } from '../../lib/methods/helpers';
-import { TAudioState } from './types';
-import { useUserPreferences } from '../../lib/methods';
+import { type TDownloadState } from '../../lib/methods/handleMediaDownload';
+import { emitter } from '../../lib/methods/helpers/emitter';
+import { type TAudioState } from './types';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -116,14 +116,19 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		if (fileUri) {
-			InteractionManager.runAfterInteractions(async () => {
-				audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
-				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+		if (fileUri && isDownloaded) {
+			const task = InteractionManager.runAfterInteractions(async () => {
+				try {
+					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+					AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+				} catch {
+					// do nothing
+				}
 			});
+			return () => task.cancel();
 		}
-	}, [fileUri]);
+	}, [fileUri, isDownloaded]);
 
 	useEffect(() => {
 		if (paused) {

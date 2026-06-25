@@ -1,15 +1,17 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { useActionSheet } from '../../containers/ActionSheet';
-import { IRoomInfoParam } from '../SearchMessagesView';
-import { SubscriptionType, IAttachment, IMessage, TGetCustomEmoji } from '../../definitions';
-import { IMessagesViewProps, IParams } from './definitions';
-import { useAppSelector } from '../../lib/hooks';
-import { TIconsName } from '../../containers/CustomIcon';
+import { type IRoomInfoParam } from '../SearchMessagesView';
+import { SubscriptionType, type IAttachment, type IMessage, type TGetCustomEmoji } from '../../definitions';
+import { type IMessagesViewProps, type IParams } from './definitions';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { type TIconsName } from '../../containers/CustomIcon';
+import Navigation from '../../lib/navigation/appNavigation';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -33,12 +35,12 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const testID = getContentTestId({ screenName });
 	const { theme } = useTheme();
 	const { showActionSheet } = useActionSheet();
-	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
+	const isMasterDetail = useMasterDetail();
+	const { baseUrl, customEmojis, useRealName, user } = useAppSelector(state => ({
 		baseUrl: state.server.server,
 		user: getUserSelector(state),
 		customEmojis: state.customEmojis,
-		useRealName: state.settings.UI_Use_Real_Name as boolean,
-		isMasterDetail: state.app.isMasterDetail
+		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
 	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({ rid, t, screenName, userId: user.id });
 
@@ -85,20 +87,17 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		};
 
 		if (item.tmid) {
-			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
-			} else {
-				navigation.pop(2);
-			}
+			Navigation.popToRoom(isMasterDetail);
 			params = {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(rid, item.tmid, item._id),
 				t: SubscriptionType.THREAD
 			};
-			navigation.push('RoomView', params);
+			Navigation.push('RoomView', params);
 		} else {
-			navigation.navigate('RoomView', params);
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams(params);
 		}
 	};
 

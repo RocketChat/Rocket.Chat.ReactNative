@@ -11,24 +11,25 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
+import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
+import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings } from '../constants';
-import {
-	getSettings,
-	IActiveUsers,
-	unsubscribeRooms,
-	_activeUsers,
-	_setUser,
-	_setUserTimer,
-	onRolesChanged,
-	setPresenceCap
-} from '../methods';
-import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
+import { defaultSettings } from '../constants/defaultSettings';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
+import { getSettings } from '../methods/getSettings';
+import { onRolesChanged } from '../methods/getRoles';
+import { setPresenceCap } from '../methods/getUsersPresence';
+import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { isIOS } from '../methods/helpers/deviceInfo';
+import { isSsl } from '../methods/helpers/isSsl';
+import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
+import fetch from '../methods/helpers/fetch';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -42,6 +43,7 @@ interface IServices {
 let connectingListener: any;
 let connectedListener: any;
 let closeListener: any;
+let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
@@ -50,10 +52,6 @@ let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
-		if (sdk.current?.client?.host === server) {
-			return resolve();
-		}
-
 		// Check for running requests and abort them before connecting to the server
 		abort();
 
@@ -72,6 +70,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		if (closeListener) {
 			closeListener.then(stopListener);
+		}
+
+		if (pendingHangupsConnectedListener) {
+			pendingHangupsConnectedListener.then(stopListener);
 		}
 
 		if (usersListener) {
@@ -126,8 +128,27 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
+		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
+		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
+		let pendingHangupsDrainArmed = false;
+
 		closeListener = sdk.current.onStreamData('close', () => {
+			// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
+			// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
+			// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
+			// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
+			unsubscribeRooms();
+			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
+		});
+
+		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', () => {
+			if (!pendingHangupsDrainArmed) return;
+			pendingHangupsDrainArmed = false;
+			if (pendingHangups.size === 0) return;
+			awaitDdpLoggedIn(5000)
+				.then(() => mediaSessionInstance.drainPendingHangups())
+				.catch(error => log(error));
 		});
 
 		usersListener = sdk.current.onStreamData(
@@ -182,8 +203,9 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
-			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
+			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
+			const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+			const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 			// @ts-ignore
 			store.dispatch(setActiveUsers({ [uid]: newStatus }));
 
@@ -215,15 +237,25 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id, , status, statusText] = userStatus;
-					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
+					const [id, , status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
+					const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 
 					const { user: loggedUser } = store.getState().login;
 					if (loggedUser && loggedUser.id === id) {
-						store.dispatch(setUser({ status: STATUSES[status], statusText }));
+						store.dispatch(setUser({ status: STATUSES[status], statusText, statusSource, statusExpiresAt }));
 					}
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
+
+					// If it's the logged user, push the new etag through setUser so the
+					// servers-DB logged-user record (observed by useAvatarETag) updates,
+					// refreshing the avatar in ProfileView, SidebarView, etc.
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser?.username === username) {
+						store.dispatch(setUser({ avatarETag: etag }));
+					}
+
 					const db = database.active;
 					const userCollection = db.get('users');
 					try {
@@ -285,7 +317,7 @@ function stopListener(listener: any): boolean {
 	return listener && listener.stop();
 }
 
-async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
+async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
 	await sdk.current.login(credentials);
 	const serverVersion = store.getState().server.version;
@@ -312,7 +344,6 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			emails: result.me.emails,
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
-			isFromWebView,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
 			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
@@ -324,18 +355,22 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWebView = false): Promise<ILoggedUser> {
+function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const result = await login(params, isFromWebView);
+			const result = await login(params);
 			if (result) {
 				return resolve(result);
 			}
 		} catch (e: any) {
 			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-				const { details } = e.data;
+				const { details, error } = e.data;
 				try {
-					const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
+					const code = await twoFactor({
+						params,
+						method: details?.method || 'totp',
+						invalid: (details.error || error) === 'totp-invalid'
+					});
 
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
@@ -394,9 +429,9 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
-	const result = await loginTOTP(params, false, isFromWebView);
-	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
+async function loginOAuthOrSso(params: ICredentials) {
+	const result = await loginTOTP(params, false);
+	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
 function abort() {
@@ -409,8 +444,40 @@ function checkAndReopen() {
 	return sdk.current.checkAndReopen();
 }
 
+/**
+ * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
+ * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
+ * close and can read true for a stale session. Redux resets to
+ * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
+ * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
+ */
+async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
+	const isReady = () => {
+		const s = store.getState();
+		return s.login.isAuthenticated && s.meteor.connected;
+	};
+	if (isReady()) {
+		return;
+	}
+	await new Promise<void>(resolve => {
+		const unsub = store.subscribe(() => {
+			if (isReady()) {
+				clearTimeout(timer);
+				unsub();
+				resolve();
+			}
+		});
+		const timer = setTimeout(() => {
+			unsub();
+			resolve();
+		}, timeoutMs);
+	});
+}
+
 function disconnect() {
-	return sdk.disconnect();
+	const result = sdk.disconnect();
+	mediaSessionInstance.reset();
+	return result;
 }
 
 async function getWebsocketInfo({
@@ -468,11 +535,11 @@ async function getLoginServices(server: string) {
 }
 
 function determineAuthType(services: IServices) {
-	const { name, custom, showButton = true, service } = services;
+	const { name, custom, showButton, service } = services;
 
 	const authName = name || service;
 
-	if (custom && showButton) {
+	if (custom && showButton !== false) {
 		return 'oauth_custom';
 	}
 
@@ -499,6 +566,7 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
+	awaitDdpLoggedIn,
 	abort,
 	connect,
 	disconnect,

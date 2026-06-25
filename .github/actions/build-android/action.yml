@@ -1,0 +1,162 @@
+name: 'Build Android'
+description: 'Builds Android app AAB and uploads manifest and AAB'
+inputs:
+  BUILD_VERSION:
+    description: 'Build version for build'
+    required: true
+  GOOGLE_SERVICES_ANDROID:
+    description: 'Google services JSON'
+    required: true
+  BUGSNAG_KEY_OFFICIAL:
+    description: 'Bugsnag API key'
+    required: true
+  KEYSTORE_OFFICIAL_BASE64:
+    description: 'Base64 encoded keystore'
+    required: true
+  KEYSTORE_OFFICIAL:
+    description: 'Keystore file name'
+    required: true
+  KEYSTORE_OFFICIAL_PASSWORD:
+    description: 'Keystore password'
+    required: true
+  KEYSTORE_OFFICIAL_ALIAS:
+    description: 'Keystore alias'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+        working-directory: android
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+
+    - name: Decode Keystore
+      working-directory: android/app
+      run: |
+        echo "${{ inputs.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > "${{ inputs.KEYSTORE_OFFICIAL }}"
+      shell: bash
+
+    - name: Set gradle.properties
+      working-directory: android
+      run: |
+        echo "" > ./gradle.properties
+        echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
+        echo -e "android.useAndroidX=true" >> ./gradle.properties
+        echo -e "android.enableJetifier=true" >> ./gradle.properties
+        echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+        echo -e "newArchEnabled=true" >> ./gradle.properties
+        echo -e "hermesEnabled=true" >> ./gradle.properties
+        echo -e "VERSIONCODE=${{ inputs.BUILD_VERSION }}" >> ./gradle.properties
+        echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
+        echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> ./gradle.properties
+        echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> ./gradle.properties
+        echo -e 'KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
+        echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" >> ./gradle.properties
+        echo -e 'KEY_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
+      shell: bash
+
+    - name: Set Google Services JSON
+      working-directory: android/app
+      run: |
+        if [[ "${{ inputs.GOOGLE_SERVICES_ANDROID }}" ]]; then
+          echo "${{ inputs.GOOGLE_SERVICES_ANDROID }}" | base64 --decode > google-services.json
+        fi
+      shell: bash
+
+    - name: Build Android Release AAB
+      working-directory: android
+      run: |
+        build_start=$(date +%s)
+        ./gradlew bundleRelease --build-cache --parallel --max-workers=4
+        build_end=$(date +%s)
+        echo "BUILD_DURATION_SECONDS=$((build_end - build_start))" >> "$GITHUB_ENV"
+      shell: bash
+
+    # Fail loudly if a cache/packaging bug dropped an ABI, instead of shipping an incomplete bundle.
+    - name: Verify AAB contains all target ABIs
+      working-directory: android
+      run: |
+        AAB=app/build/outputs/bundle/release/app-release.aab
+        libs=$(unzip -l "$AAB")
+        missing=0
+        for abi in armeabi-v7a arm64-v8a x86 x86_64; do
+          if grep -q "base/lib/$abi/" <<< "$libs"; then
+            echo "  found: $abi"
+          else
+            echo "  MISSING: $abi"
+            missing=1
+          fi
+        done
+        if [ "$missing" -ne 0 ]; then
+          echo "::error::AAB is missing one or more target ABIs."
+          exit 1
+        fi
+      shell: bash
+
+    # Fail unless the AAB is signed by the official upload cert. Reads the keystore password
+    # via `-storepass:env` (not a shell-quoted arg) since the secret has shell-special chars;
+    # captures use `|| true` so an empty read can't trip `set -e -o pipefail`.
+    - name: Verify AAB signing certificate
+      working-directory: android
+      env:
+        KS_FILE: ${{ inputs.KEYSTORE_OFFICIAL }}
+        KS_ALIAS: ${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}
+        KS_PASS: ${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}
+      run: |
+        AAB=app/build/outputs/bundle/release/app-release.aab
+
+        aab_out=$(keytool -printcert -jarfile "$AAB" 2>&1 || true)
+        ks_out=$(keytool -list -v -keystore "app/$KS_FILE" -alias "$KS_ALIAS" -storepass:env KS_PASS 2>&1 || true)
+
+        aab_fp=$(printf '%s\n' "$aab_out" | grep -m1 'SHA256:' | tr -d '[:space:]' || true)
+        ks_fp=$(printf '%s\n' "$ks_out" | grep -m1 'SHA256:' | tr -d '[:space:]' || true)
+
+        echo "AAB signer SHA-256:    ${aab_fp:-<none>}"
+        echo "Keystore cert SHA-256: ${ks_fp:-<none>}"
+
+        if [ -z "$aab_fp" ]; then
+          printf '%s\n' "$aab_out"
+          echo "::error::AAB is not signed (no SHA-256 readable) — refusing to ship an unsigned release bundle."
+          exit 1
+        fi
+        if [ -z "$ks_fp" ]; then
+          printf '%s\n' "$ks_out"
+          echo "::error::Could not read the official keystore certificate (keytool output above)."
+          exit 1
+        fi
+        if [ "$aab_fp" != "$ks_fp" ]; then
+          echo "::error::AAB signing certificate ($aab_fp) does not match the official keystore ($ks_fp)."
+          exit 1
+        fi
+        echo "Signing certificate verified against the official keystore ($aab_fp)."
+      shell: bash
+
+    - name: Report build time
+      if: ${{ always() && env.BUILD_DURATION_SECONDS != '' }}
+      run: |
+        mins=$((BUILD_DURATION_SECONDS / 60))
+        secs=$((BUILD_DURATION_SECONDS % 60))
+        {
+          echo "### Android store build (bundleRelease)"
+          echo ""
+          echo "- Wall time: **${mins}m ${secs}s**"
+        } >> "$GITHUB_STEP_SUMMARY"
+      shell: bash
+
+    - name: Upload sourcemaps/NDK symbols to Bugsnag
+      run: |
+        pnpm bugsnag:upload-android --variant release --app-manifest android/app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
+        pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab
+      shell: bash
+
+    - name: Upload AAB
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: android-aab
+        path: android/app/build/outputs/bundle/release/app-release.aab

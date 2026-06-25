@@ -1,20 +1,20 @@
-import { RouteProp } from '@react-navigation/core';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useState } from 'react';
-import { WebView, WebViewNavigation } from 'react-native-webview';
-import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { WebView, type WebViewNavigation } from 'react-native-webview';
+import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { ICredentials } from '../definitions';
-import { userAgent } from '../lib/constants';
-import { useAppSelector } from '../lib/hooks';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { type ICredentials } from '../definitions';
+import { userAgent } from '../lib/constants/userAgent';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
-import { Services } from '../lib/services';
-import { OutsideModalParamList } from '../stacks/types';
+import { loginOAuthOrSso } from '../lib/services/connect';
+import { type OutsideModalParamList } from '../stacks/types';
+import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
+import { parseSamlOrCasRedirect } from '../lib/methods/helpers/parseSamlOrCasRedirect';
 
 // iframe uses a postMessage to send the token to the client
 // We'll handle this sending the token to the hash of the window.location
@@ -40,14 +40,25 @@ window.addEventListener('popstate', function() {
 });
 `;
 
-const AuthenticationWebView = () => {
-	const [logging, setLogging] = useState(false);
+const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
+
+type AuthenticationWebViewProps = StaticScreenProps<{ authType: string; url: string; ssoToken?: string }>;
+
+const AuthenticationWebView = ({ route }: AuthenticationWebViewProps) => {
 	const [loading, setLoading] = useState(false);
+	const [headerTitle, setHeaderTitle] = useState<string | null>(null);
+	const loggingRef = useRef(false);
+	const redirectHandledRef = useRef(false);
 
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
 		params: { authType, url, ssoToken }
-	} = useRoute<RouteProp<OutsideModalParamList, 'AuthenticationWebView'>>();
+	} = route;
+
+	// Reset redirect guard when auth params change (e.g., user logs out and retries)
+	useEffect(() => {
+		redirectHandledRef.current = false;
+	}, [url, authType, ssoToken]);
 
 	const { Accounts_Iframe_api_method, Accounts_Iframe_api_url, server } = useAppSelector(state => ({
 		server: state.server.server,
@@ -61,23 +72,26 @@ const AuthenticationWebView = () => {
 	// Force 3s delay so the server has time to evaluate the token
 	const debouncedLogin = useDebounce((params: ICredentials) => login(params), 3000);
 
-	const login = (params: ICredentials) => {
-		if (logging) {
+	const login = async (params: ICredentials) => {
+		if (loggingRef.current) {
 			return;
 		}
-		setLogging(true);
+		loggingRef.current = true;
 		try {
-			Services.loginOAuthOrSso(params);
+			await loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
+		} finally {
+			loggingRef.current = false;
+			navigation.pop();
 		}
-		setLogging(false);
-		navigation.pop();
 	};
 
 	const tryLogin = useDebounce(
 		async () => {
-			const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method }).then(response => response.json());
+			const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method as TMethods }).then(response =>
+				response.json()
+			);
 			const resume = data?.login || data?.loginToken;
 			if (resume) {
 				login({ resume });
@@ -87,22 +101,33 @@ const AuthenticationWebView = () => {
 		{ leading: true }
 	);
 
+	const handleSamlOrCasRedirect = (url: string): boolean => {
+		const result = parseSamlOrCasRedirect(url, authType, ssoToken);
+		if (!result) return false;
+		if (redirectHandledRef.current) return true;
+		redirectHandledRef.current = true;
+		if (result.kind === 'saml') {
+			login(result.payload);
+		} else {
+			debouncedLogin(result.payload);
+		}
+		return true;
+	};
+
 	const onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const url = decodeURIComponent(webViewState.url);
-		if (authType === 'saml' || authType === 'cas') {
-			const parsedUrl = parse(url, true);
-			// ticket -> cas / validate & saml_idp_credentialToken -> saml
-			if (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken) {
-				let payload: ICredentials;
-				if (authType === 'saml') {
-					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
-					const credentialToken = { credentialToken: token };
-					payload = { ...credentialToken, saml: true };
-				} else {
-					payload = { cas: { credentialToken: ssoToken } };
-				}
-				debouncedLogin(payload);
+
+		if (SSO_AUTH_TYPES.includes(authType)) {
+			try {
+				const parsed = parse(url, true);
+				setHeaderTitle(parsed.host || url);
+			} catch {
+				setHeaderTitle(url);
 			}
+		}
+		if (authType === 'saml' || authType === 'cas') {
+			handleSamlOrCasRedirect(url);
+			return;
 		}
 
 		if (authType === 'oauth') {
@@ -134,24 +159,34 @@ const AuthenticationWebView = () => {
 	const isIframe = authType === 'iframe';
 
 	useLayoutEffect(() => {
+		const urlTitle = headerTitle || parse(url, true).host;
+		const isSSOType = SSO_AUTH_TYPES.includes(authType);
+		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
+
 		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal />,
-			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
+			title: urlTitle || staticFallback
 		});
-	}, [authType, navigation]);
+	}, [authType, navigation, headerTitle, url]);
 
 	return (
 		<>
-			<StatusBar />
 			<WebView
 				source={{ uri: url }}
 				userAgent={userAgent}
 				// https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
 				onMessage={({ nativeEvent }) => onNavigationStateChange(nativeEvent)}
 				onNavigationStateChange={onNavigationStateChange}
+				onShouldStartLoadWithRequest={req => {
+					if (authType === 'saml') {
+						return !handleSamlOrCasRedirect(req.url);
+					}
+					return true;
+				}}
 				injectedJavaScript={isIframe ? injectedJavaScript : undefined}
 				onLoadStart={() => setLoading(true)}
 				onLoadEnd={() => setLoading(false)}
+				incognito
 			/>
 			{loading ? <ActivityIndicator size='large' absolute /> : null}
 		</>

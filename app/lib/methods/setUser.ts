@@ -2,12 +2,21 @@ import { InteractionManager } from 'react-native';
 
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
-import { IUser } from '../../definitions';
+import { type IUser, type TStatusSource, type TUserStatus } from '../../definitions';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
 
 export interface IActiveUsers {
-	[key: string]: { status: string; statusText?: string } | string | boolean;
+	[key: string]:
+		| {
+				status: TUserStatus;
+				statusDefault?: TUserStatus;
+				statusText?: string;
+				statusExpiresAt?: string;
+				statusSource?: TStatusSource;
+		  }
+		| string
+		| boolean;
 	msg: string;
 	collection: string;
 	id: string;
@@ -18,7 +27,10 @@ export interface IActiveUsers {
 			verified: boolean;
 		}[];
 		username: string;
-		status: string;
+		status: TUserStatus;
+		statusText?: string;
+		statusSource?: TStatusSource;
+		statusExpiresAt?: string;
 	};
 }
 
@@ -54,7 +66,15 @@ export function _setUser(ddpMessage: IActiveUsers): void {
 
 	if (!ddpMessage.fields) {
 		_activeUsers.activeUsers[ddpMessage.id] = { status: 'offline' };
-	} else if (ddpMessage.fields.status) {
-		_activeUsers.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
+	} else {
+		const { status, statusText, statusSource, statusExpiresAt } = ddpMessage.fields;
+		if (status) {
+			_activeUsers.activeUsers[ddpMessage.id] = {
+				status,
+				...(statusText !== undefined && { statusText }),
+				...(statusSource !== undefined && { statusSource }),
+				...(statusExpiresAt !== undefined && { statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt) })
+			};
+		}
 	}
 }

@@ -1,15 +1,16 @@
-import { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
-import { IEmoji, IPreviewItem, TUserStatus } from '../../definitions';
+import { type IEmoji, type IPreviewItem, type TUserStatus } from '../../definitions';
 
 export interface IMessageComposerRef {
 	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;
 	getText: () => string;
 	setInput: TSetInput;
+	focus: () => void;
 }
 
 export interface IMessageComposerContainerProps {
-	children?: ReactElement;
+	children?: ReactElement | null;
 }
 
 export interface IInputSelection {
@@ -27,6 +28,7 @@ export interface IComposerInput {
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
 	onAutocompleteItemSelected: (item: TAutocompleteItem) => void;
+	focus: () => void;
 }
 
 export interface IComposerInputProps {
@@ -34,11 +36,6 @@ export interface IComposerInputProps {
 }
 
 export type TMarkdownStyle = 'bold' | 'italic' | 'strike' | 'code' | 'code-block';
-
-export interface ITrackingView {
-	resetTracking: () => void;
-	getNativeProps: () => any;
-}
 
 export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
 

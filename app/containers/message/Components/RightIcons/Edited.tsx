@@ -1,10 +1,12 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 
 const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
+	'use memo';
+
 	if (!isEdited) {
 		return null;
 	}

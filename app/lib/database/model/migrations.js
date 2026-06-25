@@ -1,4 +1,4 @@
-import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -309,6 +309,49 @@ export default schemaMigrations({
 					table: 'thread_messages',
 					columns: [{ name: 'content', type: 'string', isOptional: true }]
 				})
+			]
+		},
+		{
+			toVersion: 26,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'users_waiting_for_e2e_keys', type: 'string', isOptional: true },
+						{ name: 'old_room_keys', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 27,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'federated', type: 'boolean', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 28,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'abac_attributes', type: 'string', isOptional: true },
+						{ name: 'federation', type: 'string', isOptional: true },
+						{ name: 'status', type: 'string', isOptional: true },
+						{ name: 'inviter', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 29,
+			steps: [
+				// Drop legacy rows whose id contains a non-printable-ASCII char: emoji content/names
+				// were used as ids and corrupt across the native bridge. ASCII ids (e.g. heart_eyes) are kept.
+				unsafeExecuteSql("DELETE FROM frequently_used_emojis WHERE id GLOB '*[^ -~]*';")
 			]
 		}
 	]

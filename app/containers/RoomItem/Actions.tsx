@@ -1,48 +1,58 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	interpolate,
 	withSpring,
-	runOnJS,
 	useAnimatedReaction,
 	useSharedValue
 } from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { CustomIcon } from '../CustomIcon';
-import { DisplayMode } from '../../lib/constants';
-import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
-import { ILeftActionsProps, IRightActionsProps } from './interfaces';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
+import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
+import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
-export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
+export const LeftActions = memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
+
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
 	}));
 
 	const isCondensed = displayMode === DisplayMode.Condensed;
-	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 
 	return (
-		<View style={[styles.actionsContainer, styles.actionsLeftContainer]} pointerEvents='box-none'>
+		<View
+			style={[styles.actionsContainer, styles.actionsLeftContainer]}
+			pointerEvents='box-none'
+			accessibilityElementsHidden
+			importantForAccessibility='no'>
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
 					{ width: width * 2, backgroundColor: colors.badgeBackgroundLevel2, right: '100%' },
 					viewHeight,
 					animatedStyles
-				]}
-			>
+				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
-					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
+					<RectButton
+						accessible={false}
+						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
+						style={styles.actionButton}
+						onPress={onToggleReadPress}>
 						<CustomIcon
 							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 							name={isRead ? 'flag' : 'check'}
@@ -55,8 +65,10 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 	);
 });
 
-export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
+export const RightActions = memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
 	const { colors } = useTheme();
+
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
@@ -73,14 +85,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 			// Triggers the animation and hapticFeedback if swipe reaches/unreaches the threshold.
 			if (I18n.isRTL) {
 				if (previousTransX && currentTransX > LONG_SWIPE && previousTransX <= LONG_SWIPE) {
-					runOnJS(triggerHideAnimation)(ACTION_WIDTH);
+					scheduleOnRN(triggerHideAnimation, ACTION_WIDTH);
 				} else if (previousTransX && currentTransX <= LONG_SWIPE && previousTransX > LONG_SWIPE) {
-					runOnJS(triggerHideAnimation)(0);
+					scheduleOnRN(triggerHideAnimation, 0);
 				}
 			} else if (previousTransX && currentTransX < -LONG_SWIPE && previousTransX >= -LONG_SWIPE) {
-				runOnJS(triggerHideAnimation)(-ACTION_WIDTH);
+				scheduleOnRN(triggerHideAnimation, -ACTION_WIDTH);
 			} else if (previousTransX && currentTransX >= -LONG_SWIPE && previousTransX < -LONG_SWIPE) {
-				runOnJS(triggerHideAnimation)(0);
+				scheduleOnRN(triggerHideAnimation, 0);
 			}
 		}
 	);
@@ -109,10 +121,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 	});
 
 	const isCondensed = displayMode === DisplayMode.Condensed;
-	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 
 	return (
-		<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
+		<View
+			style={[styles.actionsLeftContainer, viewHeight]}
+			pointerEvents='box-none'
+			accessibilityElementsHidden
+			importantForAccessibility='no'>
 			<Animated.View
 				style={[
 					styles.actionRightButtonContainer,
@@ -123,9 +139,12 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					},
 					viewHeight,
 					animatedFavStyles
-				]}
-			>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]} onPress={toggleFav}>
+				]}>
+				<RectButton
+					accessible={false}
+					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+					style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]}
+					onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name={favorite ? 'star-filled' : 'star'}
@@ -141,14 +160,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
-					isCondensed && { height: ROW_HEIGHT_CONDENSED },
+					viewHeight,
 					animatedHideStyles
-				]}
-			>
+				]}>
 				<RectButton
+					accessible={false}
+					accessibilityLabel={I18n.t('Hide')}
 					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
-					onPress={onHidePress}
-				>
+					onPress={onHidePress}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name='unread-on-top-disabled'

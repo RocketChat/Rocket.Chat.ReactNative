@@ -1,4 +1,4 @@
-import { TUserStatus } from '../definitions';
+import { type TUserStatus } from '../definitions';
 import {
 	clearUser,
 	loginFailure,
@@ -46,7 +46,6 @@ describe('test selectedUsers reducer', () => {
 				}
 			],
 			roles: ['user'],
-			isFromWebView: false,
 			showMessageInMainThread: false,
 			enableMessageParserEarlyAdoption: false,
 			status: 'online' as TUserStatus,
@@ -73,7 +72,6 @@ describe('test selectedUsers reducer', () => {
 				}
 			],
 			roles: ['user'],
-			isFromWebView: false,
 			showMessageInMainThread: false,
 			enableMessageParserEarlyAdoption: false
 		};

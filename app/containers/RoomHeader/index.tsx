@@ -1,10 +1,11 @@
-import React from 'react';
+import { memo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
-import { useDimensions } from '../../dimensions';
+import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
+import { STATUS_I18N_KEYS } from '../../definitions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
 	title?: string;
@@ -14,17 +15,17 @@ interface IRoomHeaderContainerProps {
 	tmid?: string;
 	teamMain?: boolean;
 	roomUserId?: string | null;
-	onPress: Function;
+	onPress: () => void;
 	parentTitle?: string;
 	isGroupChat?: boolean;
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	visitor?: IVisitor;
 	disabled?: boolean;
-	rightButtonsWidth?: number;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const RoomHeaderContainer = React.memo(
+const RoomHeaderContainer = memo(
 	({
 		isGroupChat,
 		onPress,
@@ -40,12 +41,13 @@ const RoomHeaderContainer = React.memo(
 		sourceType,
 		visitor,
 		disabled,
-		rightButtonsWidth
+		abacAttributes
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
-		const { width, height } = useDimensions();
+		let statusExpiresAt: string | undefined;
+		const { width, height } = useResponsiveLayout();
 
 		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
 		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
@@ -65,8 +67,15 @@ const RoomHeaderContainer = React.memo(
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { statusText: statusTextActiveUser } = activeUser;
-				statusText = statusTextActiveUser;
+				const {
+					statusText: statusTextActiveUser,
+					statusExpiresAt: statusExpiresAtActiveUser,
+					status: statusActiveUser
+				} = activeUser;
+				const presenceKey = statusActiveUser ? STATUS_I18N_KEYS[statusActiveUser] : undefined;
+				const presenceLabel = presenceKey ? I18n.t(presenceKey) : undefined;
+				statusText = statusTextActiveUser || presenceLabel;
+				statusExpiresAt = statusExpiresAtActiveUser;
 			} else if (type === 'l' && visitor?.status) {
 				({ status: statusVisitor } = visitor);
 			}
@@ -79,6 +88,7 @@ const RoomHeaderContainer = React.memo(
 				tmid={tmid}
 				title={title}
 				subtitle={type === 'd' ? statusText : subtitle}
+				statusExpiresAt={type === 'd' ? statusExpiresAt : undefined}
 				type={type}
 				teamMain={teamMain}
 				status={statusVisitor}
@@ -91,7 +101,7 @@ const RoomHeaderContainer = React.memo(
 				onPress={onPress}
 				sourceType={sourceType}
 				disabled={disabled}
-				rightButtonsWidth={rightButtonsWidth}
+				abacAttributes={abacAttributes}
 			/>
 		);
 	}

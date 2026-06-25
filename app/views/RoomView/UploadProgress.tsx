@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
-import { Observable, Subscription } from 'rxjs';
+import { type Observable, type Subscription } from 'rxjs';
+import { A11y } from 'react-native-a11y-order';
 
 import database from '../../lib/database';
 import log from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../Styles';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
-import { sendFileMessage } from '../../lib/methods';
+import { type TSupportedThemes, withTheme } from '../../theme';
+import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../definitions';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
 const styles = StyleSheet.create({
@@ -106,29 +107,31 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				this.state.uploads = uploads;
 			}
 			if (!this.ranInitialUploadCheck) {
-				this.uploadCheck();
+				this.uploadCheck().catch(log);
 			}
 		});
 	};
 
-	uploadCheck = () => {
+	uploadCheck = async () => {
 		this.ranInitialUploadCheck = true;
 		const { rid } = this.props;
 		const { uploads } = this.state;
-		uploads.forEach(async u => {
-			if (!isUploadActive(u.path, rid)) {
-				try {
-					const db = database.active;
-					await db.write(async () => {
-						await u.update(() => {
-							u.error = true;
+		await Promise.all(
+			uploads
+				.filter(u => !isUploadActive(u.path, rid))
+				.map(async u => {
+					try {
+						const db = database.active;
+						await db.write(async () => {
+							await u.update(() => {
+								u.error = true;
+							});
 						});
-					});
-				} catch (e) {
-					log(e);
-				}
-			}
-		});
+					} catch (e) {
+						log(e);
+					}
+				})
+		);
 	};
 
 	deleteUpload = async (item: TUploadModel) => {
@@ -172,20 +175,28 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 		if (!item.error) {
 			return [
-				<View key='row' style={styles.row}>
-					<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
-					<Text
-						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
-						numberOfLines={1}>
-						{I18n.t('Uploading')} {item.name}
-					</Text>
-					<CustomIcon
-						name='close'
-						size={20}
-						color={themes[theme!].fontSecondaryInfo}
-						onPress={() => this.handleCancelUpload(item)}
-					/>
-				</View>,
+				<A11y.Order>
+					<A11y.Index index={1}>
+						<View accessible accessibilityLabel={`${I18n.t('Uploading')} ${item.name}`} key='row' style={styles.row}>
+							<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
+							<Text
+								style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
+								numberOfLines={1}>
+								{I18n.t('Uploading')} {item.name}
+							</Text>
+							<A11y.Index index={2}>
+								<CustomIcon
+									accessible
+									accessibilityLabel={I18n.t('Cancel_upload')}
+									name='close'
+									size={20}
+									color={themes[theme!].fontSecondaryInfo}
+									onPress={() => this.handleCancelUpload(item)}
+								/>
+							</A11y.Index>
+						</View>
+					</A11y.Index>
+				</A11y.Order>,
 				<View
 					key='progress'
 					style={[
@@ -196,20 +207,35 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 			];
 		}
 		return (
-			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
-				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
-						{I18n.t('Error_uploading')} {item.name}
-					</Text>
-					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
-							{I18n.t('Try_again')}
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
-			</View>
+			<A11y.Order>
+				<A11y.Index index={1}>
+					<View accessible accessibilityLabel={`${I18n.t('Error_uploading')} ${item.name}`} style={styles.row}>
+						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
+						<View style={styles.descriptionContainer}>
+							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+								{I18n.t('Error_uploading')} {item.name}
+							</Text>
+							<A11y.Index index={2}>
+								<TouchableOpacity onPress={() => this.tryAgain(item)}>
+									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+										{I18n.t('Try_again')}
+									</Text>
+								</TouchableOpacity>
+							</A11y.Index>
+						</View>
+						<A11y.Index index={3}>
+							<CustomIcon
+								accessible
+								accessibilityLabel={I18n.t('Cancel_upload')}
+								name='close'
+								size={20}
+								color={themes[theme!].fontSecondaryInfo}
+								onPress={() => this.deleteUpload(item)}
+							/>
+						</A11y.Index>
+					</View>
+				</A11y.Index>
+			</A11y.Order>
 		);
 	};
 

@@ -11,4 +11,6 @@ import Foundation
 struct EncryptedContent: Codable {
     let algorithm: String
     let ciphertext: String
+    let kid: String?
+    let iv: String?
 }

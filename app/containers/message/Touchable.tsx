@@ -1,20 +1,23 @@
-import React, { useContext } from 'react';
-import Touchable from 'react-native-platform-touchable';
+import { useContext, memo, type ReactNode, type FC } from 'react';
+import { Pressable, type PressableProps } from 'react-native';
 
 import MessageContext from './Context';
 
-const RCTouchable: any = React.memo(({ children, ...props }: any) => {
+interface IProps extends PressableProps {
+	children: ReactNode;
+	onLongPress?: () => void;
+}
+
+const RCTouchable: FC<IProps> = memo(({ children, ...props }) => {
+	'use memo';
+
 	const { onLongPress } = useContext(MessageContext);
 
 	return (
-		<Touchable onLongPress={onLongPress} {...props}>
+		<Pressable onLongPress={onLongPress} {...props}>
 			{children}
-		</Touchable>
+		</Pressable>
 	);
 });
-
-// @ts-ignore
-RCTouchable.Ripple = (...args: any[]) => Touchable.Ripple(...args);
-RCTouchable.SelectableBackgroundBorderless = () => Touchable.SelectableBackgroundBorderless();
 
 export default RCTouchable;

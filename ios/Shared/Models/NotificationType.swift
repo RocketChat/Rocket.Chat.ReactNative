@@ -11,4 +11,5 @@ import Foundation
 enum NotificationType: String, Codable {
   case message = "message"
   case messageIdOnly = "message-id-only"
+  case videoconf = "videoconf"
 }

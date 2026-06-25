@@ -1,5 +1,5 @@
-import { IUser } from './IUser';
-import { E2EType, IAttachmentTranslations, IMessageE2EEContent } from './IMessage';
+import { type IUser } from './IUser';
+import { type E2EType, type IAttachmentTranslations, type EncryptedContent } from './IMessage';
 
 export type TAttachmentEncryption = {
 	iv: string;
@@ -11,7 +11,10 @@ export interface IAttachment {
 	title?: string;
 	type?: string;
 	size?: number;
+	// For server >= 8.4 this field is also used as the image alt text
 	description?: string;
+	/** Alt text when provided separately from `description` (e.g. some API payloads). */
+	altText?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
@@ -72,21 +75,29 @@ export interface IServerAttachment {
 	uploading: boolean;
 	url: string;
 	user: Pick<IUser, '_id' | 'username' | 'name'>;
-	content?: IMessageE2EEContent;
+	content?: EncryptedContent;
+}
+
+export interface IMessageEditAttachment {
+	description: string;
+	fileId?: string;
+	filename?: string;
 }
 
 export interface IShareAttachment {
 	filename: string;
 	description?: string;
+	altText?: string;
 	size: number;
 	mime?: string;
 	path: string;
-	canUpload: boolean;
+	canUpload?: boolean;
 	error?: any;
-	uri: string;
 	width?: number;
 	height?: number;
 	exif?: {
 		Orientation: string;
 	};
+	base64?: string | null;
+	fileId?: string;
 }

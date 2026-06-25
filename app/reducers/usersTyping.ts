@@ -1,5 +1,5 @@
 import { USERS_TYPING } from '../actions/actionsTypes';
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 
 export type IUsersTyping = string[];
 

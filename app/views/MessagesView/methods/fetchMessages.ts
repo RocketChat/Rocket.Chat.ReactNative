@@ -1,6 +1,6 @@
-import { Services } from '../../../lib/services';
 import { Encryption } from '../../../lib/encryption';
-import { SubscriptionType } from '../../../definitions';
+import { type SubscriptionType } from '../../../definitions';
+import { getFiles, getMessages } from '../../../lib/services/restApi';
 
 interface IFetchFiles {
 	t: SubscriptionType;
@@ -17,7 +17,7 @@ interface IFetchMessages {
 }
 
 const fetchFiles = async ({ t, rid, offset }: IFetchFiles) => {
-	const result: any = await Services.getFiles(rid, t, offset);
+	const result: any = await getFiles(rid, t, offset);
 	if (result.success) {
 		result.messages = await Encryption.decryptFiles(result.files);
 		return result;
@@ -29,11 +29,11 @@ const fetchMessages = ({ t, rid, screenName, userId, offset }: IFetchMessages) =
 		case 'Files':
 			return fetchFiles({ rid, t, offset });
 		case 'Mentions':
-			return Services.getMessages({ roomId: rid, type: t, offset, mentionIds: [userId] });
+			return getMessages({ roomId: rid, type: t, offset, mentionIds: [userId] });
 		case 'Starred':
-			return Services.getMessages({ roomId: rid, type: t, offset, starredIds: [userId] });
+			return getMessages({ roomId: rid, type: t, offset, starredIds: [userId] });
 		case 'Pinned':
-			return Services.getMessages({ roomId: rid, type: t, offset, pinned: true });
+			return getMessages({ roomId: rid, type: t, offset, pinned: true });
 	}
 };
 

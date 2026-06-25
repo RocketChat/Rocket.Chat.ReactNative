@@ -1,0 +1,21 @@
+name: Run ESLint and Test
+
+on:
+  workflow_call:
+
+jobs:
+  run-eslint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run Tests
+        run: pnpm test --runInBand

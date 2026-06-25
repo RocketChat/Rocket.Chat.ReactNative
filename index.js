@@ -1,37 +1,57 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, LogBox, PermissionsAndroid, Platform } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
+import DeviceInfo from 'react-native-device-info';
 
-import { name as appName, share as shareName } from './app.json';
-import { isFDroidBuild } from './app/lib/constants';
-import { isAndroid } from './app/lib/methods/helpers';
+import { name as appName } from './app.json';
 
-if (__DEV__) {
-	require('./app/ReactotronConfig');
+if (process.env.USE_STORYBOOK) {
+	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
-	console.log = () => {};
-	console.time = () => {};
-	console.timeLog = () => {};
-	console.timeEnd = () => {};
-	console.warn = () => {};
-	console.count = () => {};
-	console.countReset = () => {};
-	console.error = () => {};
-	console.info = () => {};
+	if (!__DEV__) {
+		console.log = () => {};
+		console.time = () => {};
+		console.timeLog = () => {};
+		console.timeEnd = () => {};
+		console.warn = () => {};
+		console.count = () => {};
+		console.countReset = () => {};
+		console.error = () => {};
+		console.info = () => {};
+	}
+
+	LogBox.ignoreAllLogs();
+
+	if (Platform.OS === 'android' && DeviceInfo.hasSystemFeatureSync('android.software.telecom')) {
+		const options = {
+			android: {
+				// TODO: i18n
+				alertTitle: 'Permissions required',
+				alertDescription: 'This application needs to access your phone accounts',
+				cancelButton: 'Cancel',
+				okButton: 'Ok',
+				imageName: 'phone_account_icon',
+				additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE, PermissionsAndroid.PERMISSIONS.RECORD_AUDIO],
+				// Required to get audio in background when using Android 11
+				foregroundService: {
+					channelId: 'chat.rocket.reactnative',
+					channelName: 'Rocket.Chat',
+					notificationTitle: 'Voice call is running on background'
+				},
+				selfManaged: true
+			}
+		};
+
+		RNCallKeep.setup(options)
+			.then(() => {
+				console.log('RNCallKeep setup successful');
+				RNCallKeep.canMakeMultipleCalls(false);
+			})
+			.catch(error => {
+				console.error('Error setting up RNCallKeep:', error);
+			});
+	}
+
+	AppRegistry.registerComponent(appName, () => require('./app/index').default);
 }
-
-if (!isFDroidBuild && isAndroid) {
-	require('./app/lib/notifications/videoConf/backgroundNotificationHandler');
-}
-
-AppRegistry.registerComponent(appName, () => require('./app/index').default);
-
-// For storybook, comment everything above and uncomment below
-// import 'react-native-gesture-handler';
-// import 'react-native-console-time-polyfill';
-// import { AppRegistry } from 'react-native';
-// import { name as appName } from './app.json';
-
-// require('./app/ReactotronConfig');
-
-// AppRegistry.registerComponent(appName, () => require('./.storybook/index').default);

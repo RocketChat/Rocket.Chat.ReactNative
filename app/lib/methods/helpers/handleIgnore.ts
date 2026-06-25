@@ -2,11 +2,11 @@ import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
 import EventEmitter from './events';
 import log from './log';
-import { Services } from '../../services';
+import { ignoreUser } from '../../services/restApi';
 
 export const handleIgnore = async (userId: string, ignore: boolean, rid: string) => {
 	try {
-		await Services.ignoreUser({
+		await ignoreUser({
 			rid,
 			userId,
 			ignore

@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+name: Valid Workspace
+onFlowStart:
+  - runFlow: '../../../helpers/setup.yaml'
+tags:
+  - test-2
+
+---
+- runFlow: ../../../helpers/launch-app.yaml
+- tapOn:
+    text: 'Workspace URL. Required.'
+- inputText:
+    text: ${output.data.server}
+- tapOn: 'Connect'
+- extendedWaitUntil:
+    visible: 'Login'
+    timeout: 60000
+- extendedWaitUntil:
+    visible: 'Create an account'
+    timeout: 60000

@@ -1,10 +1,10 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Observable, Subscription } from 'rxjs';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type Observable, type Subscription } from 'rxjs';
+import { Component } from 'react';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -12,29 +12,38 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
+import { themes, colors } from '../../lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
 import styles from './styles';
-import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type IMessage,
+	SubscriptionType,
+	type TSubscriptionModel,
+	type TThreadModel
+} from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
 import UserPreferences from '../../lib/methods/userPreferences';
+import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -59,7 +68,7 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	isMasterDetail: boolean;
 }
 
-class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
+class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
 	private mounted: boolean;
 
 	private rid: string;
@@ -106,8 +115,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	}
 
 	getHeader = (): NativeStackNavigationOptions => {
-		const { isSearching } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { isSearching, currentFilter } = this.state;
+		const { navigation, isMasterDetail, theme } = this.props;
 
 		if (isSearching) {
 			return {
@@ -124,12 +133,24 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: I18n.t('Threads'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={this.showFilters} />
-					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
+					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Filter')}
+						iconName='filter'
+						onPress={this.showFilters}
+						badge={() =>
+							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
+						}
+					/>
+					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Search')}
+						iconName='search'
+						onPress={this.onSearchPress}
+						testID='thread-messages-view-search-icon'
+					/>
 				</HeaderButton.Container>
 			)
 		};
@@ -204,7 +225,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		new Promise<void>(resolve => {
 			const savedFilter = UserPreferences.getString(THREADS_FILTER);
 			if (savedFilter) {
-				this.setState({ currentFilter: savedFilter as Filter }, () => resolve());
+				this.setState({ currentFilter: savedFilter as Filter }, () => {
+					this.setHeader();
+					resolve();
+				});
 			}
 			resolve();
 		});
@@ -312,7 +336,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getThreadsList({
+			const result = await getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset,
@@ -337,7 +361,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getSyncThreadsList({
+			const result = await getSyncThreadsList({
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
@@ -369,16 +393,14 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onSearchChangeText = debounce((searchText: string) => {
 		const { subscription } = this.state;
 		this.setState({ searchText }, () => this.subscribeMessages(subscription, searchText));
-	}, 300);
+	}, textInputDebounceTime);
 
 	onThreadPress = debounce(
 		(item: any) => {
 			const { subscription } = this.state;
-			const { navigation, isMasterDetail } = this.props;
-			if (isMasterDetail) {
-				navigation.pop();
-			}
-			navigation.push('RoomView', {
+			const { isMasterDetail } = this.props;
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.push('RoomView', {
 				rid: item.subscription.id,
 				tmid: item.id,
 				name: makeThreadName(item),
@@ -434,13 +456,15 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onFilterSelected = (filter: Filter) => {
 		const { messages, subscription } = this.state;
 		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
-		this.setState({ currentFilter: filter, displayingThreads });
+		this.setState({ currentFilter: filter, displayingThreads }, () => {
+			this.setHeader();
+		});
 		UserPreferences.setString(THREADS_FILTER, filter);
 	};
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
-			await Services.toggleFollowMessage(tmid, !isFollowingThread);
+			await toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -502,20 +526,14 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		return (
-			<SafeAreaView testID='thread-messages-view'>
-				<StatusBar />
-				{this.renderContent()}
-			</SafeAreaView>
-		);
+		return <SafeAreaView testID='thread-messages-view'>{this.renderContent()}</SafeAreaView>;
 	}
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name as boolean,
-	isMasterDetail: state.app.isMasterDetail
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(ThreadMessagesView)));

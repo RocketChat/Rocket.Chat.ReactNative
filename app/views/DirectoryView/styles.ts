@@ -9,14 +9,11 @@ export default StyleSheet.create({
 	listContainer: {
 		paddingBottom: 30
 	},
-	filterItemButton: {
-		height: 46,
-		justifyContent: 'center'
-	},
 	filterItemContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingRight: 15
 	},
 	filterItemText: {
 		fontSize: 18,
@@ -30,8 +27,6 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	filterItemIcon: {
-		width: 22,
-		height: 22,
 		marginHorizontal: 15
 	},
 	globalUsersContainer: {

@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
+import Touch from './Touch';
 import { CustomIcon } from './CustomIcon';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
-import { TThreadModel } from '../definitions/IThread';
+import { type TThreadModel } from '../definitions/IThread';
+import i18n from '../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -50,7 +50,7 @@ interface IThreadDetails {
 	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
 	const { theme } = useTheme();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {
@@ -72,8 +72,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 					<Text
 						testID={`thread-count-${count}`}
 						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
-						numberOfLines={1}
-					>
+						numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
@@ -87,9 +86,11 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			</View>
 			<View style={styles.badgeContainer}>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
-				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
+				<Touch
+					accessibilityLabel={i18n.t(isFollowing ? 'Unfollow_thread' : 'Follow_thread')}
+					onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />
-				</Touchable>
+				</Touch>
 			</View>
 		</View>
 	);

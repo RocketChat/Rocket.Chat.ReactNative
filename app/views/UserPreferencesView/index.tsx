@@ -1,5 +1,5 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -7,23 +7,27 @@ import I18n from '../../i18n';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import { compareServerVersion } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { getUserSelector } from '../../selectors/login';
-import { ProfileStackParamList } from '../../stacks/types';
-import { Services } from '../../lib/services';
-import { useAppSelector } from '../../lib/hooks';
+import { type ProfileStackParamList } from '../../stacks/types';
+import { saveUserPreferences } from '../../lib/services/restApi';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
+import { type IUser } from '../../definitions';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
-const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel } = useAppSelector(state => getUserSelector(state));
+const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
+	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel, settings } = useAppSelector(state =>
+		getUserSelector(state)
+	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
+	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
+	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -40,7 +44,33 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const toggleMessageParser = async (value: boolean) => {
 		try {
 			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
-			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+			await saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const toggleConvertAsciiToEmoji = async (value: boolean) => {
+		try {
+			dispatch(
+				setUser({
+					settings: { ...settings, preferences: { ...settings?.preferences, convertAsciiEmoji: value } }
+				} as Partial<IUser>)
+			);
+			await saveUserPreferences({ convertAsciiEmoji: value });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const toggleEnableMobileRinging = async (value: boolean) => {
+		try {
+			dispatch(
+				setUser({
+					settings: { ...settings, preferences: { ...settings?.preferences, enableMobileRinging: value } }
+				} as Partial<IUser>)
+			);
+			await saveUserPreferences({ enableMobileRinging: value });
 		} catch (e) {
 			log(e);
 		}
@@ -48,7 +78,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const setAlsoSendThreadToChannel = async (param: { [key: string]: string }, onError: () => void) => {
 		try {
-			await Services.saveUserPreferences(param);
+			await saveUserPreferences(param);
 			dispatch(setUser(param));
 		} catch (e) {
 			log(e);
@@ -58,7 +88,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	return (
 		<SafeAreaView testID='preferences-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />
@@ -75,8 +104,13 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<List.Separator />
 						<List.Item
 							title='Enable_Message_Parser'
-							testID='preferences-view-enable-message-parser'
-							right={() => <Switch value={enableMessageParserEarlyAdoption} onValueChange={toggleMessageParser} />}
+							right={() => (
+								<Switch
+									value={enableMessageParserEarlyAdoption}
+									onValueChange={toggleMessageParser}
+									testID='preferences-view-enable-message-parser'
+								/>
+							)}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -95,6 +129,37 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<List.Info info='Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description' />
 					</List.Section>
 				) : null}
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Convert_ASCII_to_emoji'
+						right={() => (
+							<Switch
+								value={convertAsciiEmoji}
+								onValueChange={toggleConvertAsciiToEmoji}
+								testID='preferences-view-convert-ascii-to-emoji'
+							/>
+						)}
+						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
+					/>
+					<List.Separator />
+					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.10.0') ? (
+						<>
+							<List.Item
+								title='Enable_Mobile_Ringing'
+								right={() => (
+									<Switch
+										value={enableMobileRinging}
+										onValueChange={toggleEnableMobileRinging}
+										testID='preferences-view-enable-mobile-ringing'
+									/>
+								)}
+								onPress={() => toggleEnableMobileRinging(!enableMobileRinging)}
+							/>
+							<List.Separator />
+						</>
+					) : null}
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);
