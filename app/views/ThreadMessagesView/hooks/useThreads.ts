@@ -1,12 +1,11 @@
-import { useLayoutEffect, useRef, useState, type MutableRefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { type Subscription, type Observable } from 'rxjs';
+import { type Subscription } from 'rxjs';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { getSyncThreadsList, getThreadsList } from '../../../lib/services/restApi';
-import { type TThreadModel } from '../../../definitions';
+import { type TSubscriptionModel, type TThreadModel } from '../../../definitions';
 import { sanitizeLikeString } from '../../../lib/database/utils';
-import { type Filter } from '../filters';
 import { type ISearchThreadMessages } from '../definitions';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
@@ -14,23 +13,23 @@ import updateThreads from '../methods/updateThreads';
 
 interface IUseThreadsProps {
 	search: ISearchThreadMessages;
-	currentFilter: Filter;
-	subscription: any;
-	threadsSubscription: MutableRefObject<Subscription | null>;
+	subscription: TSubscriptionModel;
+	subscriptionLoaded: boolean;
 	rid: string;
 }
 
 const API_FETCH_COUNT = 50;
 
-const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThreadsProps) => {
-	const threadsObservable = useRef<Observable<TThreadModel[]> | null>(null);
+const useThreads = ({ search, subscription, subscriptionLoaded, rid }: IUseThreadsProps) => {
+	const threadsSubscription = useRef<Subscription | null>(null);
+	const didInit = useRef(false);
 	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);
 	const [threads, setThreads] = useState<TThreadModel[]>([]);
 	const [offset, setOffset] = useState(0);
 
 	const init = () => {
-		if (!subscription) {
+		if (!subscription._id) {
 			return load();
 		}
 		try {
@@ -59,7 +58,10 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThre
 			});
 
 			if (result.success) {
-				updateThreads({ subscription, update: result.threads, lastThreadSync: lastThreadSync ?? new Date() });
+				const built = await updateThreads({ subscription, update: result.threads, lastThreadSync: lastThreadSync ?? new Date() });
+				if (!subscription._id && built) {
+					setThreads(prev => [...prev, ...(built as TThreadModel[])]);
+				}
 				setLoading(false);
 				setEnd(result.count < API_FETCH_COUNT);
 				setOffset(offset + API_FETCH_COUNT);
@@ -92,23 +94,24 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThre
 	};
 
 	const handleThreadsSubscription = ({ searchText }: { searchText?: string }) => {
+		if (!subscription._id) {
+			return;
+		}
 		try {
 			const db = database.active;
-			if (threadsSubscription && threadsSubscription?.current?.unsubscribe) {
-				threadsSubscription?.current?.unsubscribe();
-			}
+			threadsSubscription.current?.unsubscribe();
 
 			const whereClause = [Q.where('rid', rid), Q.sortBy('tlm', Q.desc)];
 			if (searchText?.trim()) {
 				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));
 			}
 
-			threadsObservable.current = db
+			const threadsObservable = db
 				.get('threads')
 				.query(...whereClause)
 				.observeWithColumns(['_updated_at']);
 
-			threadsSubscription.current = threadsObservable.current.subscribe((threads: TThreadModel[]) => {
+			threadsSubscription.current = threadsObservable.subscribe((threads: TThreadModel[]) => {
 				setThreads(threads);
 			});
 		} catch (e) {
@@ -116,10 +119,16 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThre
 		}
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
+		if (!subscriptionLoaded || didInit.current) {
+			return;
+		}
+		didInit.current = true;
 		init();
 		handleThreadsSubscription({});
-	}, []);
+	}, [subscriptionLoaded]);
+
+	useEffect(() => () => threadsSubscription.current?.unsubscribe(), []);
 
 	return {
 		loading,

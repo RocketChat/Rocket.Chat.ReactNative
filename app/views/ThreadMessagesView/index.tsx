@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { type Subscription } from 'rxjs';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { type IThreadMessagesViewProps, type ISearchThreadMessages } from './definitions';
@@ -39,25 +38,23 @@ const THREADS_FILTER = 'threadsFilter';
 
 const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => {
 	const rid = route.params?.rid;
-	const threadsSubscription = useRef<Subscription | null>(null);
 	const [currentFilter, setCurrentFilter] = useState(Filter.All);
 	const [search, setSearch] = useState<ISearchThreadMessages>({
 		searchText: '',
 		isSearching: false
-	} as ISearchThreadMessages);
+	});
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { user, useRealName } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
-	const { subscription } = useSubscription({ rid, user, threadsSubscription });
+	const { subscription, subscriptionLoaded } = useSubscription({ rid });
 	const { threads, loading, loadMore, handleThreadsSubscription } = useThreads({
-		currentFilter,
-		threadsSubscription,
 		rid,
 		search,
-		subscription
+		subscription,
+		subscriptionLoaded
 	});
 
 	const getHeader = (triggerSearch?: boolean): NativeStackNavigationOptions => {
@@ -162,22 +159,26 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		handleThreadsSubscription({});
 	};
 
-	const onThreadPress = useDebounce((item: any) => {
-		Navigation.popToRoom(isMasterDetail);
-		Navigation.push('RoomView', {
-			rid: item.subscription.id,
-			tmid: item.id,
-			name: makeThreadName(item),
-			t: SubscriptionType.THREAD,
-			roomUserId: getUidDirectMessage(subscription)
-		});
-	}, 1000);
+	const onThreadPress = useDebounce(
+		(item: TThreadModel) => {
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.push('RoomView', {
+				rid: item.subscription?.id,
+				tmid: item.id,
+				name: makeThreadName(item),
+				t: SubscriptionType.THREAD,
+				roomUserId: getUidDirectMessage(subscription)
+			});
+		},
+		1000,
+		{ leading: true, trailing: false }
+	);
 
 	const toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
 			await toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-			handleThreadsSubscription({});
+			handleThreadsSubscription({ searchText: search.searchText });
 		} catch (e) {
 			log(e);
 		}

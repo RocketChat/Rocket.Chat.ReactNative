@@ -1,55 +1,51 @@
-import { useEffect, useRef, useState, type MutableRefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { type Subscription } from 'rxjs';
 
-import { type IUser, type TSubscriptionModel } from '../../../definitions';
+import { type TSubscriptionModel } from '../../../definitions';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
 
 interface IUseSubscriptionProps {
-	user: IUser;
 	rid: string;
-	threadsSubscription: MutableRefObject<Subscription | null>;
 }
 
-const useSubscription = ({ rid, threadsSubscription }: IUseSubscriptionProps) => {
-	const subSubscription = useRef<any | null>(null);
+const useSubscription = ({ rid }: IUseSubscriptionProps) => {
+	const subSubscription = useRef<Subscription | null>(null);
 
 	const [subscription, setSubscription] = useState<TSubscriptionModel>({} as TSubscriptionModel);
+	const [subscriptionLoaded, setSubscriptionLoaded] = useState(false);
 
 	const initSubscription = async () => {
 		try {
 			const db = database.active;
 
-			// subscription query
 			const subscription = await db.get('subscriptions').find(rid);
 			const observable = subscription.observe();
 			subSubscription.current = observable.subscribe(data => {
 				setSubscription(data);
 			});
+			setSubscriptionLoaded(true);
 		} catch (e) {
+			setSubscriptionLoaded(true);
 			log(e);
 		}
 	};
 
-	const unsubscribeMessages = () => {
-		if (subSubscription) {
-			subSubscription.current?.unsubscribe();
-		}
-		if (threadsSubscription) {
-			threadsSubscription.current?.unsubscribe();
-		}
+	const unsubscribe = () => {
+		subSubscription.current?.unsubscribe();
 	};
 
 	useEffect(() => {
 		initSubscription();
 
 		return () => {
-			unsubscribeMessages();
+			unsubscribe();
 		};
 	}, []);
 
 	return {
-		subscription
+		subscription,
+		subscriptionLoaded
 	};
 };
 
