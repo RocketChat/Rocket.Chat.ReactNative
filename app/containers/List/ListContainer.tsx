@@ -1,8 +1,14 @@
 import { type ReactElement } from 'react';
-import { ScrollView, type ScrollViewProps } from 'react-native';
+import { ScrollView, type ScrollViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+
+const styles = StyleSheet.create({
+	container: {
+		paddingVertical: 16
+	}
+});
 
 interface IListContainer extends ScrollViewProps {
 	children: (ReactElement | null)[] | ReactElement | null;
@@ -10,11 +16,12 @@ interface IListContainer extends ScrollViewProps {
 }
 const ListContainer = ({ children, contentContainerStyle, ...props }: IListContainer) => {
 	'use memo';
+
 	const { bottom } = useSafeAreaInsets();
 
 	return (
 		<ScrollView
-			contentContainerStyle={[{ paddingBottom: Math.max(16, bottom) }, contentContainerStyle]}
+			contentContainerStyle={[contentContainerStyle || styles.container, { paddingBottom: Math.max(16, bottom) }]}
 			scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			{...scrollPersistTaps}
 			{...props}>
