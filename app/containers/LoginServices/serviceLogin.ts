@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Base64 } from 'js-base64';
 
 import Navigation from '../../lib/navigation/appNavigation';
-import { type IItemService, type IOpenOAuth, type IServiceLogin } from './interfaces';
+import { type IItemService, type IOpenSSOWebView, type IServiceLogin } from './interfaces';
 import { random } from '../../lib/methods/helpers';
 import { loginOAuthOrSso } from '../../lib/services/connect';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -118,14 +118,14 @@ export const onPressSaml = ({ loginService, server }: { loginService: IItemServi
 	const { provider } = clientConfig;
 	const ssoToken = random(17);
 	const url = `${server}/_saml/authorize/${provider}/${ssoToken}`;
-	openOAuth({ url, ssoToken, authType: 'saml' });
+	openSSOWebView({ url, ssoToken, authType: 'saml' });
 };
 
 export const onPressCas = ({ casLoginUrl, server }: { casLoginUrl: string; server: string }) => {
 	logEvent(events.ENTER_WITH_CAS);
 	const ssoToken = random(17);
 	const url = `${casLoginUrl}?service=${server}/_cas/${ssoToken}`;
-	openOAuth({ url, ssoToken, authType: 'cas' });
+	openSSOWebView({ url, ssoToken, authType: 'cas' });
 };
 
 export const onPressAppleLogin = async () => {
@@ -176,6 +176,6 @@ const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 	return Base64.encodeURI(JSON.stringify(obj));
 };
 
-const openOAuth = ({ url, ssoToken, authType = 'oauth' }: IOpenOAuth) => {
+const openSSOWebView = ({ url, ssoToken, authType }: IOpenSSOWebView) => {
 	Navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
 };
