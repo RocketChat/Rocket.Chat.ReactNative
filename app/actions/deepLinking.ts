@@ -2,7 +2,7 @@ import { type Action } from 'redux';
 
 import { DEEP_LINKING } from './actionsTypes';
 
-interface IParams {
+export interface IParams {
 	path: string;
 	rid: string;
 	messageId: string;
