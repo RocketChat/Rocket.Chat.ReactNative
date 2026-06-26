@@ -5,17 +5,32 @@ import dayjs from '../dayjs';
 import { type ISupportedVersionsData, type TSVDictionary, type TSVMessage, type TSVStatus } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
+const messageMatchesUserRoles = (message: TSVMessage, userRoles?: string[]): boolean => {
+	// No targeting on the message → show to everyone (default behavior).
+	if (!message.roles?.length) {
+		return true;
+	}
+	// Targeting set but user roles unknown → don't show, honoring the restriction.
+	if (!userRoles?.length) {
+		return false;
+	}
+	return message.roles.some(role => userRoles.includes(role));
+};
+
 export const getMessage = ({
 	messages,
-	expiration
+	expiration,
+	userRoles
 }: {
 	messages?: TSVMessage[];
 	expiration?: string;
+	userRoles?: string[];
 }): TSVMessage | undefined => {
 	if (!messages?.length || !expiration || dayjs(expiration).diff(new Date(), 'days') < 0) {
 		return;
 	}
-	const sortedMessages = messages.sort((a, b) => a.remainingDays - b.remainingDays);
+	const eligibleMessages = messages.filter(message => messageMatchesUserRoles(message, userRoles));
+	const sortedMessages = eligibleMessages.sort((a, b) => a.remainingDays - b.remainingDays);
 	return sortedMessages.find(({ remainingDays }) => dayjs(expiration).diff(new Date(), 'hours') <= remainingDays * 24);
 };
 
@@ -31,10 +46,12 @@ const getStatus = ({ expiration, message }: { expiration?: string; message?: TSV
 
 export const checkSupportedVersions = function ({
 	supportedVersions,
-	serverVersion
+	serverVersion,
+	userRoles
 }: {
 	supportedVersions?: ISupportedVersionsData;
 	serverVersion: string;
+	userRoles?: string[];
 }): {
 	status: TSVStatus;
 	message?: TSVMessage;
@@ -56,14 +73,15 @@ export const checkSupportedVersions = function ({
 	const messages =
 		exception?.messages || (exception ? sv.exceptions?.messages : undefined) || versionInfo?.messages || sv.messages;
 	const expiration = exception?.expiration || versionInfo?.expiration;
-	const message = getMessage({ messages, expiration });
+	const message = getMessage({ messages, expiration, userRoles });
 	const status = getStatus({ message, expiration });
 
 	// TODO: enforcement start date is temp only. Remove after a few releases.
 	if (status === 'expired' && sv?.enforcementStartDate && new Date(sv.enforcementStartDate) > new Date()) {
 		const enforcementMessage = getMessage({
 			messages,
-			expiration: sv.enforcementStartDate
+			expiration: sv.enforcementStartDate,
+			userRoles
 		});
 		return {
 			status: 'warn',
