@@ -1,5 +1,5 @@
 import { memo, type ReactElement } from 'react';
-import { Text, View, type ViewStyle } from 'react-native';
+import { PixelRatio, Text, View, type ViewStyle } from 'react-native';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';
@@ -49,7 +49,7 @@ const DirectoryItem = ({
 }: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
-	const height = ROW_HEIGHT * fontScale;
+	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 
 	return (
 		<View testID={testID} accessible accessibilityLabel={`${title || ''} ${rightLabel || ''}`} importantForAccessibility='yes'>
