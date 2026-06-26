@@ -2,6 +2,7 @@ import * as Keychain from 'react-native-keychain';
 
 import { type IBiometricTrustStore, type TrustResult } from '../../definitions';
 import UserPreferences from '../methods/userPreferences';
+import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
 import {
 	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
 	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
@@ -65,6 +66,9 @@ export const biometricTrustStore: IBiometricTrustStore = {
 			// hit the migration's grandfather path and be silently re-bound to the new biometrics on the
 			// next launch instead of forcing the user to re-enable. See runBiometricTrustMigration.
 			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+			// Bind the Android native probe key to the current enrollment in lockstep with the sentinel.
+			// No-op on iOS (the sentinel alone detects changes there). Best effort — see nativeEnrollmentProbe.
+			await enrollProbe();
 			return { kind: 'success' };
 		} catch (e) {
 			return classifyError(e);
@@ -77,6 +81,8 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		} catch {
 			// best-effort delete; sentinel may already be absent
 		}
+		// Tear down the Android native probe key alongside the sentinel. No-op on iOS.
+		await disenrollProbe();
 	},
 
 	async verify({ promptCopy }) {
@@ -99,6 +105,12 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	async hasEnrollment() {
 		const result = await Keychain.hasGenericPassword({ service: SENTINEL_SERVICE });
 		return !!result;
+	},
+
+	isEnrollmentValid() {
+		// iOS: nativeEnrollmentProbe resolves true (the sentinel already covers enrollment changes).
+		// Android: silent keystore cipher.init() probe — false only when the enrollment changed.
+		return isEnrollmentValid();
 	},
 
 	isEnabled() {

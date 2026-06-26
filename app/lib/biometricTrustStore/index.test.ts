@@ -1,6 +1,7 @@
 import * as Keychain from 'react-native-keychain';
 
 import { biometricTrustStore, classifyError } from './index';
+import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
 import UserPreferences from '../methods/userPreferences';
 import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
 
@@ -9,8 +10,17 @@ jest.mock('../methods/userPreferences', () => ({
 	default: { getBool: jest.fn(), setBool: jest.fn(), getString: jest.fn(), setString: jest.fn() }
 }));
 
+jest.mock('./nativeEnrollmentProbe', () => ({
+	enrollProbe: jest.fn(() => Promise.resolve()),
+	disenrollProbe: jest.fn(() => Promise.resolve()),
+	isEnrollmentValid: jest.fn(() => Promise.resolve(true))
+}));
+
 const mockedKeychain = Keychain as jest.Mocked<typeof Keychain>;
 const mockedSetBool = UserPreferences.setBool as jest.Mock;
+const mockedEnrollProbe = enrollProbe as jest.Mock;
+const mockedDisenrollProbe = disenrollProbe as jest.Mock;
+const mockedIsEnrollmentValid = isEnrollmentValid as jest.Mock;
 
 const promptCopy = { title: 'Authenticate', cancel: 'Cancel' };
 
@@ -76,6 +86,22 @@ describe('biometricTrustStore', () => {
 			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 
+		it('binds the Android native probe in lockstep with the sentinel', async () => {
+			mockedKeychain.setGenericPassword.mockResolvedValueOnce(true as any);
+
+			await biometricTrustStore.enroll();
+
+			expect(mockedEnrollProbe).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not bind the native probe when the sentinel write fails', async () => {
+			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
+
+			await biometricTrustStore.enroll();
+
+			expect(mockedEnrollProbe).not.toHaveBeenCalled();
+		});
+
 		it('classifies setGenericPassword failures and leaves the marker untouched', async () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
 			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'canceled' });
@@ -95,6 +121,34 @@ describe('biometricTrustStore', () => {
 		it('swallows errors so a missing sentinel is not fatal', async () => {
 			mockedKeychain.resetGenericPassword.mockRejectedValueOnce(new Error('not found'));
 			await expect(biometricTrustStore.disenroll()).resolves.toBeUndefined();
+		});
+
+		it('tears down the Android native probe alongside the sentinel', async () => {
+			mockedKeychain.resetGenericPassword.mockResolvedValueOnce(true as any);
+
+			await biometricTrustStore.disenroll();
+
+			expect(mockedDisenrollProbe).toHaveBeenCalledTimes(1);
+		});
+
+		it('still tears down the native probe even when the sentinel delete throws', async () => {
+			mockedKeychain.resetGenericPassword.mockRejectedValueOnce(new Error('not found'));
+
+			await biometricTrustStore.disenroll();
+
+			expect(mockedDisenrollProbe).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe('isEnrollmentValid', () => {
+		it('delegates to the native probe (true → valid)', async () => {
+			mockedIsEnrollmentValid.mockResolvedValueOnce(true);
+			expect(await biometricTrustStore.isEnrollmentValid()).toBe(true);
+		});
+
+		it('delegates to the native probe (false → Android enrollment changed)', async () => {
+			mockedIsEnrollmentValid.mockResolvedValueOnce(false);
+			expect(await biometricTrustStore.isEnrollmentValid()).toBe(false);
 		});
 	});
 

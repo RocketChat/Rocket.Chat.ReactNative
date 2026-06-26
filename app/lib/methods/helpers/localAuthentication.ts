@@ -142,20 +142,28 @@ const hasSupportedBiometry = async (): Promise<boolean> => {
 	}
 };
 
-// Non-prompting detection of a biometric enrollment change. BIOMETRY_CURRENT_SET binds the sentinel
-// to the current enrollment, so the OS drops it when the enrollment set changes; an enabled flag with
-// a missing sentinel therefore means the user re-enrolled (or otherwise invalidated) their biometrics.
-// iOS surfaces this without an OS prompt — see PLATFORMS.md for the Android caveat (its keystore key
-// only throws on read, so the change is caught later, from behind the modal in PasscodeEnter).
+// Non-prompting detection of a biometric enrollment change. This is the security primitive that lets
+// an enrollment change FORCE the passcode even inside the auto-lock window: without it, re-enrolling a
+// face/fingerprint and returning before the window elapses would keep the session unlocked — the very
+// bypass screen lock exists to prevent.
 //
-// This check is the security primitive that lets an enrollment change FORCE the passcode even inside
-// the auto-lock window: without it, re-enrolling a face/fingerprint and returning before the window
-// elapses would keep the session unlocked — the very bypass screen lock exists to prevent.
+// Two platform signals, neither of which shows an OS prompt:
+//   - iOS: BIOMETRY_CURRENT_SET binds the sentinel to the current enrollment, so the OS drops it when
+//     the enrollment set changes → a missing sentinel means re-enrollment.
+//   - Android: the sentinel survives an enrollment change (the keystore key is only invalidated, not
+//     deleted), so the sentinel check can't see it. A native keystore probe does a silent cipher.init()
+//     that throws only when the enrollment changed; isEnrollmentValid() returns false in that case.
 const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 	if (!biometricTrustStore.isEnabled()) {
 		return false;
 	}
-	return !(await biometricTrustStore.hasEnrollment());
+	// iOS path: sentinel gone → changed.
+	if (!(await biometricTrustStore.hasEnrollment())) {
+		return true;
+	}
+	// Android path: sentinel present but the native probe key was invalidated → changed. Always valid
+	// on iOS, so this never produces a false positive there.
+	return !(await biometricTrustStore.isEnrollmentValid());
 };
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {

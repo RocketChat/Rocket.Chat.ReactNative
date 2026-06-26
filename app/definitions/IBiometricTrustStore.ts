@@ -16,6 +16,11 @@ export interface IBiometricTrustStore {
 	// Silent check for whether the trust sentinel exists, without triggering a biometric prompt.
 	// Rejects on probe/storage failures so callers can distinguish errors from true absence.
 	hasEnrollment(): Promise<boolean>;
+	// Silent check for whether the current biometric enrollment still matches what trust was bound to.
+	// iOS surfaces enrollment changes through the sentinel (hasEnrollment), so this returns true there;
+	// Android's sentinel survives a change, so this consults a native keystore probe instead. Never
+	// prompts. Returns false only when an Android enrollment change is detected.
+	isEnrollmentValid(): Promise<boolean>;
 	// Whether the user has biometric unlock enabled. Owns the persisted flag so callers don't
 	// have to touch UserPreferences / BIOMETRY_ENABLED_KEY directly.
 	isEnabled(): boolean;

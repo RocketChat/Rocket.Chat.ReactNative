@@ -34,6 +34,7 @@ jest.mock('../../biometricTrustStore', () => ({
 		enroll: jest.fn(),
 		disenroll: jest.fn(),
 		hasEnrollment: jest.fn(),
+		isEnrollmentValid: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
 		setBiometryEnabled: jest.fn(),
@@ -54,6 +55,7 @@ const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
 const mockedHasEnrollment = biometricTrustStore.hasEnrollment as jest.Mock;
+const mockedIsEnrollmentValid = biometricTrustStore.isEnrollmentValid as jest.Mock;
 const mockedIsRelockPending = biometricTrustStore.isRelockPending as jest.Mock;
 const mockedSetRelockPending = biometricTrustStore.setRelockPending as jest.Mock;
 const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
@@ -74,6 +76,8 @@ describe('handleLocalAuthentication', () => {
 		// Sentinel present by default → no enrollment change. Tests that exercise the invalidation path
 		// override this per-case.
 		mockedHasEnrollment.mockResolvedValue(true);
+		// Enrollment intact by default (Android native probe reports valid). Overridden per-case.
+		mockedIsEnrollmentValid.mockResolvedValue(true);
 		mockedIsRelockPending.mockReturnValue(false);
 		mockedDisenroll.mockResolvedValue(undefined);
 		mockedEmit.mockImplementation((event, payload) => {
@@ -113,6 +117,19 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 		expect(mockedSetRelockPending).toHaveBeenCalledWith(false);
+		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+
+	it('Android path: sentinel survives but native probe reports invalidated → forces passcode with reason', async () => {
+		mockedIsEnabled.mockReturnValue(true);
+		mockedHasEnrollment.mockResolvedValue(true); // Android keeps the sentinel after an enrollment change
+		mockedIsEnrollmentValid.mockResolvedValueOnce(false); // ...but the keystore probe key is invalidated
+
+		await handleLocalAuthentication();
+
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
