@@ -51,6 +51,7 @@ const mockedEnroll = biometricTrustStore.enroll as jest.Mock;
 const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
+const mockedHasEnrollment = biometricTrustStore.hasEnrollment as jest.Mock;
 const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
 
 const lastEmitPayload = () => {
@@ -66,6 +67,10 @@ describe('handleLocalAuthentication', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedIsEnrolled.mockResolvedValue(true);
+		// Sentinel present by default → no enrollment change. Tests that exercise the invalidation path
+		// override this per-case.
+		mockedHasEnrollment.mockResolvedValue(true);
+		mockedDisenroll.mockResolvedValue(undefined);
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.submit) {
 				setImmediate(() => payload.submit());
@@ -89,6 +94,28 @@ describe('handleLocalAuthentication', () => {
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
 		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+
+	it('biometry enabled but sentinel gone (enrollment changed) → forces passcode, disables biometry, sets reason', async () => {
+		mockedIsEnabled.mockReturnValue(true);
+		mockedHasEnrollment.mockResolvedValueOnce(false);
+
+		await handleLocalAuthentication();
+
+		// Modal opens with biometry hidden and the enrollment-changed notice...
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		// ...trust state torn down (disenroll before clearing the flag) and no biometric prompt fired.
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+
+	it('biometry disabled → does not probe the sentinel', async () => {
+		mockedIsEnabled.mockReturnValue(false);
+
+		await handleLocalAuthentication();
+
+		expect(mockedHasEnrollment).not.toHaveBeenCalled();
 	});
 
 	it('biometry enabled with an enrolled unlabeled biometric type → still opens modal with hasBiometry: true', async () => {
