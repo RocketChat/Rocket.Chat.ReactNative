@@ -727,9 +727,9 @@ export default class EncryptionRoom {
 				const messageFromDB = await getMessageById(messageId);
 				if (messageFromDB && messageFromDB.e2e === 'done') {
 					const decryptedQuoteMessage = mapMessageFromDB(messageFromDB);
-					message.attachments = message.attachments || [];
 					const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
-					return message.attachments.push(quoteAttachment);
+					message.attachments = [...(message.attachments || []), quoteAttachment];
+					return;
 				}
 
 				// From API
@@ -738,9 +738,8 @@ export default class EncryptionRoom {
 					return;
 				}
 				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
-				message.attachments = message.attachments || [];
 				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage as IMessage, url);
-				return message.attachments.push(quoteAttachment);
+				message.attachments = [...(message.attachments || []), quoteAttachment];
 			})
 		);
 		return message;
