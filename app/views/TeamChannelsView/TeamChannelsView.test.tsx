@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 
-import TeamChannelsView, { type IItem } from './TeamChannelsView';
+import TeamChannelsView, { type IItem } from '.';
 
 const mockShowActionSheet = jest.fn();
 const mockPop = jest.fn();
@@ -21,20 +21,20 @@ const defaultRouteParams = {
 	joined: true
 };
 
-jest.mock('../lib/hooks/navigation', () => ({
+jest.mock('../../lib/hooks/navigation', () => ({
 	useAppNavigation: () => mockNavigation,
 	useAppRoute: () => ({
 		params: defaultRouteParams
 	})
 }));
 
-jest.mock('../containers/ActionSheet', () => ({
+jest.mock('../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({
 		showActionSheet: mockShowActionSheet
 	})
 }));
 
-jest.mock('../theme', () => ({
+jest.mock('../../theme', () => ({
 	useTheme: () => ({
 		colors: {
 			surfaceRoom: 'white',
@@ -69,12 +69,18 @@ const mockReduxState = {
 	}
 };
 
-jest.mock('../lib/hooks/useAppSelector', () => ({
+jest.mock('../../lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: any) => unknown) => selector(mockReduxState)
 }));
 
-jest.mock('../lib/hooks/useMasterDetail', () => ({
+jest.mock('../../lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => false
+}));
+
+const mockUseCanCreateTeamChannel = jest.fn();
+
+jest.mock('../../lib/hooks/useTeamChannelPermissions', () => ({
+	useCanCreateTeamChannel: (...args: any[]) => mockUseCanCreateTeamChannel(...args)
 }));
 
 const mockTeamSubscription = {
@@ -105,7 +111,7 @@ const mockFind = jest.fn();
 const mockQuery = jest.fn(() => ({ fetch: mockFetch }));
 const mockGet = jest.fn(() => ({ query: mockQuery, find: mockFind }));
 
-jest.mock('../lib/database', () => ({
+jest.mock('../../lib/database', () => ({
 	__esModule: true,
 	default: {
 		get active() {
@@ -120,31 +126,31 @@ const mockUpdateTeamRoom = jest.fn();
 const mockRemoveTeamRoom = jest.fn();
 const mockHasPermission = jest.fn();
 
-jest.mock('../lib/services/restApi', () => ({
+jest.mock('../../lib/services/restApi', () => ({
 	getTeamListRoom: (...args: any[]) => mockGetTeamListRoom(...args),
 	getRoomInfo: (...args: any[]) => mockGetRoomInfo(...args),
 	updateTeamRoom: (...args: any[]) => mockUpdateTeamRoom(...args),
 	removeTeamRoom: (...args: any[]) => mockRemoveTeamRoom(...args)
 }));
 
-jest.mock('../lib/methods/helpers', () => ({
-	...jest.requireActual('../lib/methods/helpers'),
+jest.mock('../../lib/methods/helpers', () => ({
+	...jest.requireActual('../../lib/methods/helpers'),
 	hasPermission: (...args: any[]) => mockHasPermission(...args),
 	getRoomTitle: (room: any) => room.fname || room.name,
 	getRoomAvatar: () => '',
 	isIOS: false,
-	compareServerVersion: jest.requireActual('../lib/methods/helpers').compareServerVersion
+	compareServerVersion: jest.requireActual('../../lib/methods/helpers').compareServerVersion
 }));
 
-jest.mock('../lib/methods/helpers/goRoom', () => ({
+jest.mock('../../lib/methods/helpers/goRoom', () => ({
 	goRoom: jest.fn()
 }));
 
-jest.mock('../lib/methods/helpers/info', () => ({
+jest.mock('../../lib/methods/helpers/info', () => ({
 	showErrorAlert: jest.fn()
 }));
 
-jest.mock('../lib/methods/helpers/log', () => ({
+jest.mock('../../lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
@@ -161,7 +167,7 @@ jest.mock('../lib/methods/helpers/log', () => ({
 	}
 }));
 
-jest.mock('../actions/room', () => ({
+jest.mock('../../actions/room', () => ({
 	deleteRoom: jest.fn(() => ({ type: 'DELETE_ROOM' }))
 }));
 
@@ -170,7 +176,7 @@ jest.mock('react-redux', () => ({
 	useDispatch: () => jest.fn()
 }));
 
-jest.mock('../containers/RoomItem', () => {
+jest.mock('../../containers/RoomItem', () => {
 	const { TouchableOpacity, Text } = require('react-native');
 	return ({ item, onPress, onLongPress }: any) => (
 		<TouchableOpacity testID={`room-item-${item._id}`} onPress={() => onPress(item)} onLongPress={() => onLongPress(item)}>
@@ -179,9 +185,9 @@ jest.mock('../containers/RoomItem', () => {
 	);
 });
 
-jest.mock('../containers/RoomHeader', () => () => null);
+jest.mock('../../containers/RoomHeader', () => () => null);
 
-jest.mock('../containers/BackgroundContainer', () => {
+jest.mock('../../containers/BackgroundContainer', () => {
 	const { View, Text } = require('react-native');
 	return ({ loading, text }: any) => (
 		<View testID='background-container'>
@@ -191,14 +197,14 @@ jest.mock('../containers/BackgroundContainer', () => {
 	);
 });
 
-jest.mock('../containers/ActivityIndicator', () => () => null);
+jest.mock('../../containers/ActivityIndicator', () => () => null);
 
-jest.mock('../containers/SafeAreaView', () => {
+jest.mock('../../containers/SafeAreaView', () => {
 	const { View } = require('react-native');
 	return ({ children, testID }: any) => <View testID={testID}>{children}</View>;
 });
 
-jest.mock('../containers/SearchHeader', () => {
+jest.mock('../../containers/SearchHeader', () => {
 	const { TextInput } = require('react-native');
 	return ({ onSearchChangeText, testID }: any) => <TextInput testID={testID} onChangeText={onSearchChangeText} />;
 });
@@ -227,6 +233,7 @@ const makeRoom = (overrides: Partial<IItem> = {}): IItem => ({
 const setupSuccessfulLoad = (rooms: IItem[] = [makeRoom()]) => {
 	mockFetch.mockResolvedValue([mockTeamSubscription, mockChildSubscription]);
 	mockHasPermission.mockResolvedValue([true, true, true]);
+	mockUseCanCreateTeamChannel.mockReturnValue(true);
 	mockGetTeamListRoom.mockResolvedValue({ success: true, rooms });
 };
 
@@ -264,7 +271,7 @@ describe('TeamChannelsView', () => {
 
 	describe('2. loadTeam — team from DB; not-found → pop + alert', () => {
 		it('pops and shows error when team subscription is not found', async () => {
-			const { showErrorAlert } = require('../lib/methods/helpers/info');
+			const { showErrorAlert } = require('../../lib/methods/helpers/info');
 			mockFetch.mockResolvedValue([mockChildSubscription]);
 			mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [] });
 
@@ -275,7 +282,7 @@ describe('TeamChannelsView', () => {
 		});
 
 		it('pops and shows error when DB query throws', async () => {
-			const { showErrorAlert } = require('../lib/methods/helpers/info');
+			const { showErrorAlert } = require('../../lib/methods/helpers/info');
 			mockFetch.mockRejectedValue(new Error('DB error'));
 			mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [] });
 
@@ -499,22 +506,36 @@ describe('TeamChannelsView', () => {
 	});
 
 	describe('8. Create button shown only when showCreate', () => {
-		it('calls setOptions when hasCreatePermission is true', async () => {
+		it('passes the resolved team rid/type to the reactive create-permission hook', async () => {
 			setupSuccessfulLoad([]);
-			mockHasPermission.mockResolvedValue([true, true, true]);
 
 			render(<TeamChannelsView />);
 
-			await waitFor(() => expect(mockSetOptions).toHaveBeenCalled());
+			await waitFor(() => expect(mockUseCanCreateTeamChannel).toHaveBeenCalledWith('room-main', 'c'));
 		});
 
-		it('calls setOptions when hasCreatePermission is false', async () => {
+		it('renders the create button in the header when create is permitted', async () => {
 			setupSuccessfulLoad([]);
-			mockHasPermission.mockResolvedValue([false, false, false]);
+			mockUseCanCreateTeamChannel.mockReturnValue(true);
 
 			render(<TeamChannelsView />);
 
-			await waitFor(() => expect(mockSetOptions).toHaveBeenCalled());
+			await waitFor(() =>
+				expect(renderHeaderSlot(lastSetOptions().headerRight).getByTestId('team-channels-view-create')).toBeTruthy()
+			);
+		});
+
+		it('hides the create button in the header when create is not permitted', async () => {
+			setupSuccessfulLoad([]);
+			mockUseCanCreateTeamChannel.mockReturnValue(false);
+
+			render(<TeamChannelsView />);
+
+			// The header is still applied (search button present) but the create button is absent.
+			await waitFor(() =>
+				expect(renderHeaderSlot(lastSetOptions().headerRight).getByTestId('team-channels-view-search')).toBeTruthy()
+			);
+			expect(renderHeaderSlot(lastSetOptions().headerRight).queryByTestId('team-channels-view-create')).toBeNull();
 		});
 	});
 });

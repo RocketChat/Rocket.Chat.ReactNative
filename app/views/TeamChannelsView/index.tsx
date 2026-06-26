@@ -1,37 +1,39 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, FlatList, Keyboard, PixelRatio, useWindowDimensions } from 'react-native';
+import { Alert, FlatList, PixelRatio, useWindowDimensions } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 
-import { deleteRoom } from '../actions/room';
-import { type DisplayMode } from '../lib/constants/constantDisplayMode';
-import { textInputDebounceTime } from '../lib/constants/debounceConfig';
-import { type TActionSheetOptionsItem, useActionSheet } from '../containers/ActionSheet';
-import ActivityIndicator from '../containers/ActivityIndicator';
-import BackgroundContainer from '../containers/BackgroundContainer';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import RoomHeader from '../containers/RoomHeader';
-import SafeAreaView from '../containers/SafeAreaView';
-import SearchHeader from '../containers/SearchHeader';
-import { type TSubscriptionModel } from '../definitions';
-import { ERoomType } from '../definitions/ERoomType';
-import { useMasterDetail } from '../lib/hooks/useMasterDetail';
-import { useAppSelector } from '../lib/hooks/useAppSelector';
-import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import I18n from '../i18n';
-import database from '../lib/database';
-import { CustomIcon } from '../containers/CustomIcon';
-import RoomItem from '../containers/RoomItem';
-import { type ChatsStackParamList } from '../stacks/types';
-import { useTheme } from '../theme';
-import { goRoom } from '../lib/methods/helpers/goRoom';
-import { showErrorAlert } from '../lib/methods/helpers/info';
-import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission, useDebounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
-import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
+import { deleteRoom } from '../../actions/room';
+import { type DisplayMode } from '../../lib/constants/constantDisplayMode';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import BackgroundContainer from '../../containers/BackgroundContainer';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
+import RoomHeader from '../../containers/RoomHeader';
+import SafeAreaView from '../../containers/SafeAreaView';
+import SearchHeader from '../../containers/SearchHeader';
+import { type TSubscriptionModel } from '../../definitions';
+import { ERoomType } from '../../definitions/ERoomType';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useAppNavigation, useAppRoute } from '../../lib/hooks/navigation';
+import I18n from '../../i18n';
+import database from '../../lib/database';
+import { CustomIcon } from '../../containers/CustomIcon';
+import RoomItem from '../../containers/RoomItem';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { useTheme } from '../../theme';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { getRoomAvatar, getRoomTitle, useDebounce, isIOS } from '../../lib/methods/helpers';
+import { getRoomInfo, updateTeamRoom, removeTeamRoom } from '../../lib/services/restApi';
+import { useCanCreateTeamChannel } from '../../lib/hooks/useTeamChannelPermissions';
+import { useTeamChannels, type IItem } from './useTeamChannels';
+import { getChannelActionPermissions } from './channelActionPermissions';
 
-const API_FETCH_COUNT = 25;
+export { type IItem } from './useTeamChannels';
 
 const EMPTY_PERMISSION: string[] = [];
 
@@ -45,76 +47,16 @@ const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number)
 };
 const keyExtractor = (item: IItem) => item._id;
 
-export interface IItem {
-	_id: ERoomType;
-	fname: string;
-	customFields: object;
-	broadcast: boolean;
-	encrypted: boolean;
-	name: string;
-	t: string;
-	msgs: number;
-	usersCount: number;
-	u: { _id: string; name: string };
-	ts: string;
-	ro: boolean;
-	teamId: string;
-	default: boolean;
-	sysMes: boolean;
-	_updatedAt: string;
-	teamDefault: boolean;
-}
-
-interface ITeamChannelsViewState {
-	loading: boolean;
-	loadingMore: boolean;
-	data: IItem[];
-	isSearching: boolean;
-	searchText: string | null;
-	search: IItem[];
-	end: boolean;
-	showCreate: boolean;
-	team: TSubscriptionModel | null;
-}
-
 interface ITeamChannelsViewSelector {
-	serverVersion: string;
 	useRealName: boolean;
 	StoreLastMessage: boolean;
-	addTeamChannelPermission: string[];
-	moveRoomToTeamPermission: string[];
 	editTeamChannelPermission: string[];
 	removeTeamChannelPermission: string[];
-	createCPermission: string[];
-	createTeamChannelPermission: string[];
-	createPPermission: string[];
-	createTeamGroupPermission: string[];
 	deleteCPermission: string[];
 	deletePPermission: string[];
 	showAvatar: boolean;
 	displayMode: DisplayMode;
 }
-
-const initialState: ITeamChannelsViewState = {
-	loading: true,
-	loadingMore: false,
-	data: [],
-	isSearching: false,
-	searchText: '',
-	search: [],
-	end: false,
-	showCreate: false,
-	team: null
-};
-
-type TeamChannelsStateUpdate =
-	| Partial<ITeamChannelsViewState>
-	| ((state: ITeamChannelsViewState) => Partial<ITeamChannelsViewState>);
-
-const stateReducer = (state: ITeamChannelsViewState, update: TeamChannelsStateUpdate): ITeamChannelsViewState => ({
-	...state,
-	...(typeof update === 'function' ? update(state) : update)
-});
 
 const TeamChannelsView = () => {
 	'use memo';
@@ -131,34 +73,20 @@ const TeamChannelsView = () => {
 	const { width } = useWindowDimensions();
 
 	const {
-		serverVersion,
 		useRealName,
 		StoreLastMessage,
-		addTeamChannelPermission,
-		moveRoomToTeamPermission,
 		editTeamChannelPermission,
 		removeTeamChannelPermission,
-		createCPermission,
-		createTeamChannelPermission,
-		createPPermission,
-		createTeamGroupPermission,
 		deleteCPermission,
 		deletePPermission,
 		showAvatar,
 		displayMode
 	} = useAppSelector(
 		(state): ITeamChannelsViewSelector => ({
-			serverVersion: state.server.version as string,
 			useRealName: state.settings.UI_Use_Real_Name as boolean,
 			StoreLastMessage: state.settings.Store_Last_Message as boolean,
-			addTeamChannelPermission: state.permissions['add-team-channel'] ?? EMPTY_PERMISSION,
-			moveRoomToTeamPermission: state.permissions['move-room-to-team'] ?? EMPTY_PERMISSION,
 			editTeamChannelPermission: state.permissions['edit-team-channel'] ?? EMPTY_PERMISSION,
 			removeTeamChannelPermission: state.permissions['remove-team-channel'] ?? EMPTY_PERMISSION,
-			createCPermission: state.permissions['create-c'] ?? EMPTY_PERMISSION,
-			createTeamChannelPermission: state.permissions['create-team-channel'] ?? EMPTY_PERMISSION,
-			createPPermission: state.permissions['create-p'] ?? EMPTY_PERMISSION,
-			createTeamGroupPermission: state.permissions['create-team-group'] ?? EMPTY_PERMISSION,
 			deleteCPermission: state.permissions['delete-c'] ?? EMPTY_PERMISSION,
 			deletePPermission: state.permissions['delete-p'] ?? EMPTY_PERMISSION,
 			showAvatar: state.sortPreferences.showAvatar,
@@ -167,87 +95,26 @@ const TeamChannelsView = () => {
 		shallowEqual
 	);
 
-	const [state, updateState] = useReducer(stateReducer, initialState);
-	const { loading, loadingMore, data, isSearching, searchText, search, showCreate, team } = state;
-
-	const load = useDebounce(async () => {
-		// Safe: useDebounce forwards the latest committed closure via an internal ref, so `state` here is current.
-		const { loadingMore, data, search, isSearching, searchText, end } = state;
-		const length = isSearching ? search.length : data.length;
-		if (loadingMore || end) {
-			return;
-		}
-
-		updateState({ loadingMore: true });
-		try {
-			const result = await getTeamListRoom({
-				teamId,
-				offset: length,
-				count: API_FETCH_COUNT,
-				type: 'all',
-				filter: searchText
-			});
-
-			if (result.success) {
-				const newState: Partial<ITeamChannelsViewState> = {
-					loading: false,
-					loadingMore: false,
-					end: result.rooms.length < API_FETCH_COUNT
-				};
-
-				if (isSearching) {
-					newState.search = [...search, ...result.rooms] as IItem[];
-				} else {
-					newState.data = [...data, ...result.rooms] as IItem[];
-				}
-
-				updateState(newState);
-			} else {
-				updateState({ loading: false, loadingMore: false });
-			}
-		} catch (e) {
-			log(e);
-			updateState({ loading: false, loadingMore: false });
-		}
-	}, 300);
-
-	const onSearchChangeText = useDebounce((text: string) => {
-		updateState({
-			searchText: text,
-			search: [],
-			loading: !!text,
-			loadingMore: false,
-			end: false
-		});
-		if (text) {
-			load();
-		}
-	}, textInputDebounceTime);
+	const [team, setTeam] = useState<TSubscriptionModel | null>(null);
+	const showCreate = useCanCreateTeamChannel(team?.rid ?? '', (team?.t ?? 'c') as 'c' | 'p');
+	const {
+		list,
+		loading,
+		loadingMore,
+		isSearching,
+		searchText,
+		loadMore,
+		startSearch,
+		cancelSearch,
+		onSearchChangeText,
+		updateItem,
+		removeItem
+	} = useTeamChannels(teamId);
 
 	useEffect(() => {
 		if (!team) {
 			return;
 		}
-
-		const onSearchPress = () => {
-			logEvent(events.TC_SEARCH);
-			updateState({ isSearching: true });
-		};
-
-		const onCancelSearchPress = () => {
-			logEvent(events.TC_CANCEL_SEARCH);
-			if (!isSearching) {
-				return;
-			}
-			Keyboard.dismiss();
-			updateState({
-				searchText: null,
-				isSearching: false,
-				search: [],
-				loadingMore: false,
-				end: false
-			});
-		};
 
 		const goRoomActionsView = (screen?: string) => {
 			logEvent(events.TC_GO_ACTIONS);
@@ -275,7 +142,7 @@ const TeamChannelsView = () => {
 			const options: NativeStackNavigationOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
+						<HeaderButton.Item iconName='close' onPress={cancelSearch} />
 					</HeaderButton.Container>
 				),
 				headerTitle: () => <SearchHeader onSearchChangeText={onSearchChangeText} testID='team-channels-view-search-header' />,
@@ -299,13 +166,13 @@ const TeamChannelsView = () => {
 							onPress={() => navigation.navigate('AddChannelTeamView', { teamId, rid: team.rid, t: team.t as any })}
 						/>
 					) : null}
-					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={onSearchPress} />
+					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={startSearch} />
 				</HeaderButton.Container>
 			)
 		};
 
 		navigation.setOptions(options);
-	}, [team, isSearching, showCreate, navigation, teamId, onSearchChangeText, isMasterDetail, joined]);
+	}, [team, isSearching, showCreate, navigation, teamId, onSearchChangeText, startSearch, cancelSearch, isMasterDetail, joined]);
 
 	useEffect(() => {
 		const loadTeam = async () => {
@@ -313,19 +180,6 @@ const TeamChannelsView = () => {
 			const failNotFound = () => {
 				navigation.pop();
 				showErrorAlert(I18n.t('Team_not_found'));
-			};
-			const canCreateChannel = async (resolvedTeam: TSubscriptionModel) => {
-				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-					const createPermissions =
-						resolvedTeam.t === 'c'
-							? [createCPermission, createTeamChannelPermission]
-							: [createPPermission, createTeamGroupPermission];
-					const result = await hasPermission([moveRoomToTeamPermission, ...createPermissions], resolvedTeam.rid);
-					return result.some(Boolean);
-				}
-				const createPermissions = resolvedTeam.t === 'c' ? [createCPermission] : [createPPermission];
-				const result = await hasPermission([addTeamChannelPermission, ...createPermissions], resolvedTeam.rid);
-				return result.some(Boolean);
 			};
 
 			try {
@@ -336,27 +190,14 @@ const TeamChannelsView = () => {
 					failNotFound();
 					return;
 				}
-				const canCreate = await canCreateChannel(resolvedTeam);
-				updateState({ team: resolvedTeam, showCreate: canCreate });
+				setTeam(resolvedTeam);
 			} catch {
 				failNotFound();
 			}
 		};
 
 		loadTeam();
-		load();
-	}, [
-		load,
-		teamId,
-		navigation,
-		serverVersion,
-		moveRoomToTeamPermission,
-		createCPermission,
-		createTeamChannelPermission,
-		createPPermission,
-		createTeamGroupPermission,
-		addTeamChannelPermission
-	]);
+	}, [teamId, navigation]);
 
 	const onPressItem = useDebounce(
 		async (item: IItem) => {
@@ -391,9 +232,7 @@ const TeamChannelsView = () => {
 		try {
 			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
-				updateState(prev => ({
-					data: prev.data.map(i => (i._id === item._id ? { ...i, teamDefault: !i.teamDefault } : i))
-				}));
+				updateItem(item._id, { teamDefault: !item.teamDefault });
 			}
 		} catch (e) {
 			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
@@ -409,7 +248,7 @@ const TeamChannelsView = () => {
 		try {
 			const result = await removeTeamRoom({ roomId: item._id, teamId: team.teamId as string });
 			if (result.success) {
-				updateState(prev => ({ data: prev.data.filter(room => result.room._id !== room._id) }));
+				removeItem(result.room._id);
 			}
 		} catch (e) {
 			logEvent(events.TC_DELETE_ROOM_F);
@@ -462,14 +301,20 @@ const TeamChannelsView = () => {
 		if (!team) {
 			return;
 		}
+		const { canAutoJoin, canRemove, canDelete } = await getChannelActionPermissions(item, team, {
+			edit: editTeamChannelPermission,
+			remove: removeTeamChannelPermission,
+			deleteC: deleteCPermission,
+			deleteP: deletePPermission
+		});
+
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
 		const autoJoinIconColor = isAutoJoinChecked ? colors.fontHint : colors.fontDefault;
 
 		const options: TActionSheetOptionsItem[] = [];
 
-		const permissionsTeam = await hasPermission([editTeamChannelPermission], team.rid);
-		if (permissionsTeam[0]) {
+		if (canAutoJoin) {
 			options.push({
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
@@ -486,8 +331,7 @@ const TeamChannelsView = () => {
 			});
 		}
 
-		const permissionsRemoveTeam = await hasPermission([removeTeamChannelPermission], team.rid);
-		if (permissionsRemoveTeam[0]) {
+		if (canRemove) {
 			options.push({
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
@@ -497,8 +341,7 @@ const TeamChannelsView = () => {
 			});
 		}
 
-		const permissionsChannel = await hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
-		if (permissionsChannel[0]) {
+		if (canDelete) {
 			options.push({
 				title: I18n.t('Delete'),
 				icon: 'delete',
@@ -542,23 +385,23 @@ const TeamChannelsView = () => {
 		if (loading) {
 			return <BackgroundContainer loading />;
 		}
-		if (isSearching && !search.length) {
+		if (isSearching && !list.length) {
 			return <BackgroundContainer text={searchText ? I18n.t('No_channels_in_team') : ''} />;
 		}
-		if (!isSearching && !data.length) {
+		if (!isSearching && !list.length) {
 			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
 
 		return (
 			<FlatList
-				data={isSearching ? search : data}
-				extraData={isSearching ? search : data}
+				data={list}
+				extraData={list}
 				keyExtractor={keyExtractor}
 				renderItem={renderItem}
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				onEndReached={load}
+				onEndReached={loadMore}
 				onEndReachedThreshold={0.5}
 				ListFooterComponent={renderFooter}
 			/>
