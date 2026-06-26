@@ -45,31 +45,32 @@ jest.mock('../theme', () => ({
 	})
 }));
 
+const mockReduxState = {
+	server: { version: '7.0.0' },
+	settings: {
+		UI_Use_Real_Name: false,
+		Store_Last_Message: false
+	},
+	permissions: {
+		'add-team-channel': ['add-team-channel-role'],
+		'move-room-to-team': ['move-room-to-team-role'],
+		'edit-team-channel': ['edit-team-channel-role'],
+		'remove-team-channel': ['remove-team-channel-role'],
+		'delete-c': ['delete-c-role'],
+		'create-c': ['create-c-role'],
+		'create-team-channel': ['create-team-channel-role'],
+		'create-p': ['create-p-role'],
+		'create-team-group': ['create-team-group-role'],
+		'delete-p': ['delete-p-role']
+	},
+	sortPreferences: {
+		showAvatar: false,
+		displayMode: 'expanded'
+	}
+};
+
 jest.mock('../lib/hooks/useAppSelector', () => ({
-	useAppSelector: (selector: (state: any) => unknown) =>
-		selector({
-			server: { version: '7.0.0' },
-			settings: {
-				UI_Use_Real_Name: false,
-				Store_Last_Message: false
-			},
-			permissions: {
-				'add-team-channel': ['add-team-channel-role'],
-				'move-room-to-team': ['move-room-to-team-role'],
-				'edit-team-channel': ['edit-team-channel-role'],
-				'remove-team-channel': ['remove-team-channel-role'],
-				'delete-c': ['delete-c-role'],
-				'create-c': ['create-c-role'],
-				'create-team-channel': ['create-team-channel-role'],
-				'create-p': ['create-p-role'],
-				'create-team-group': ['create-team-group-role'],
-				'delete-p': ['delete-p-role']
-			},
-			sortPreferences: {
-				showAvatar: false,
-				displayMode: 'expanded'
-			}
-		})
+	useAppSelector: (selector: (state: any) => unknown) => selector(mockReduxState)
 }));
 
 jest.mock('../lib/hooks/useMasterDetail', () => ({

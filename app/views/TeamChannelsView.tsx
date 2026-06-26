@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Alert, FlatList, Keyboard, PixelRatio, useWindowDimensions } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
-import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import { deleteRoom } from '../actions/room';
 import { type DisplayMode } from '../lib/constants/constantDisplayMode';
@@ -32,6 +32,8 @@ import { getRoomAvatar, getRoomTitle, hasPermission, useDebounce, isIOS, compare
 import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
 
 const API_FETCH_COUNT = 25;
+
+const EMPTY_PERMISSION: string[] = [];
 
 const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => {
 	const rowHeight = 75 * PixelRatio.getFontScale();
@@ -105,12 +107,18 @@ const initialState: ITeamChannelsViewState = {
 	team: null
 };
 
-const stateReducer = (state: ITeamChannelsViewState, partial: Partial<ITeamChannelsViewState>): ITeamChannelsViewState => ({
+type TeamChannelsStateUpdate =
+	| Partial<ITeamChannelsViewState>
+	| ((state: ITeamChannelsViewState) => Partial<ITeamChannelsViewState>);
+
+const stateReducer = (state: ITeamChannelsViewState, update: TeamChannelsStateUpdate): ITeamChannelsViewState => ({
 	...state,
-	...partial
+	...(typeof update === 'function' ? update(state) : update)
 });
 
 const TeamChannelsView = () => {
+	'use memo';
+
 	const navigation = useAppNavigation<ChatsStackParamList, 'TeamChannelsView'>();
 	const {
 		params: { teamId, joined }
@@ -143,16 +151,16 @@ const TeamChannelsView = () => {
 			serverVersion: state.server.version as string,
 			useRealName: state.settings.UI_Use_Real_Name as boolean,
 			StoreLastMessage: state.settings.Store_Last_Message as boolean,
-			addTeamChannelPermission: state.permissions['add-team-channel'] ?? [],
-			moveRoomToTeamPermission: state.permissions['move-room-to-team'] ?? [],
-			editTeamChannelPermission: state.permissions['edit-team-channel'] ?? [],
-			removeTeamChannelPermission: state.permissions['remove-team-channel'] ?? [],
-			createCPermission: state.permissions['create-c'] ?? [],
-			createTeamChannelPermission: state.permissions['create-team-channel'] ?? [],
-			createPPermission: state.permissions['create-p'] ?? [],
-			createTeamGroupPermission: state.permissions['create-team-group'] ?? [],
-			deleteCPermission: state.permissions['delete-c'] ?? [],
-			deletePPermission: state.permissions['delete-p'] ?? [],
+			addTeamChannelPermission: state.permissions['add-team-channel'] ?? EMPTY_PERMISSION,
+			moveRoomToTeamPermission: state.permissions['move-room-to-team'] ?? EMPTY_PERMISSION,
+			editTeamChannelPermission: state.permissions['edit-team-channel'] ?? EMPTY_PERMISSION,
+			removeTeamChannelPermission: state.permissions['remove-team-channel'] ?? EMPTY_PERMISSION,
+			createCPermission: state.permissions['create-c'] ?? EMPTY_PERMISSION,
+			createTeamChannelPermission: state.permissions['create-team-channel'] ?? EMPTY_PERMISSION,
+			createPPermission: state.permissions['create-p'] ?? EMPTY_PERMISSION,
+			createTeamGroupPermission: state.permissions['create-team-group'] ?? EMPTY_PERMISSION,
+			deleteCPermission: state.permissions['delete-c'] ?? EMPTY_PERMISSION,
+			deletePPermission: state.permissions['delete-p'] ?? EMPTY_PERMISSION,
 			showAvatar: state.sortPreferences.showAvatar,
 			displayMode: state.sortPreferences.displayMode
 		}),
@@ -162,11 +170,8 @@ const TeamChannelsView = () => {
 	const [state, updateState] = useReducer(stateReducer, initialState);
 	const { loading, loadingMore, data, isSearching, searchText, search, showCreate, team } = state;
 
-	const stateRef = useRef(state);
-	stateRef.current = state;
-
 	const load = useDebounce(async () => {
-		const { loadingMore, data, search, isSearching, searchText, end } = stateRef.current;
+		const { loadingMore, data, search, isSearching, searchText, end } = state;
 		const length = isSearching ? search.length : data.length;
 		if (loadingMore || end) {
 			return;
@@ -205,26 +210,6 @@ const TeamChannelsView = () => {
 		}
 	}, 300);
 
-	const onSearchPress = useCallback(() => {
-		logEvent(events.TC_SEARCH);
-		updateState({ isSearching: true });
-	}, []);
-
-	const onCancelSearchPress = useCallback(() => {
-		logEvent(events.TC_CANCEL_SEARCH);
-		if (!stateRef.current.isSearching) {
-			return;
-		}
-		Keyboard.dismiss();
-		updateState({
-			searchText: null,
-			isSearching: false,
-			search: [],
-			loadingMore: false,
-			end: false
-		});
-	}, []);
-
 	const onSearchChangeText = useDebounce((text: string) => {
 		updateState({
 			searchText: text,
@@ -238,13 +223,33 @@ const TeamChannelsView = () => {
 		}
 	}, textInputDebounceTime);
 
-	const goRoomActionsView = useCallback(
-		(screen?: string) => {
-			logEvent(events.TC_GO_ACTIONS);
-			const { team } = stateRef.current;
-			if (!team) {
+	useEffect(() => {
+		if (!team) {
+			return;
+		}
+
+		const onSearchPress = () => {
+			logEvent(events.TC_SEARCH);
+			updateState({ isSearching: true });
+		};
+
+		const onCancelSearchPress = () => {
+			logEvent(events.TC_CANCEL_SEARCH);
+			if (!isSearching) {
 				return;
 			}
+			Keyboard.dismiss();
+			updateState({
+				searchText: null,
+				isSearching: false,
+				search: [],
+				loadingMore: false,
+				end: false
+			});
+		};
+
+		const goRoomActionsView = (screen?: string) => {
+			logEvent(events.TC_GO_ACTIONS);
 			if (isMasterDetail && screen) {
 				navigation.navigate('ModalStackNavigator', {
 					screen: 'RoomActionsView',
@@ -263,14 +268,7 @@ const TeamChannelsView = () => {
 					joined
 				});
 			}
-		},
-		[isMasterDetail, joined, navigation]
-	);
-
-	useEffect(() => {
-		if (!team) {
-			return;
-		}
+		};
 
 		if (isSearching) {
 			const options: NativeStackNavigationOptions = {
@@ -306,67 +304,58 @@ const TeamChannelsView = () => {
 		};
 
 		navigation.setOptions(options);
-	}, [
-		team,
-		isSearching,
-		showCreate,
-		navigation,
-		teamId,
-		goRoomActionsView,
-		onSearchPress,
-		onCancelSearchPress,
-		onSearchChangeText
-	]);
-
-	const checkCreatePermission = useCallback(
-		async (resolvedTeam: TSubscriptionModel): Promise<boolean> => {
-			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-				const createPermissions =
-					resolvedTeam.t === 'c'
-						? [createCPermission, createTeamChannelPermission]
-						: [createPPermission, createTeamGroupPermission];
-				const result = await hasPermission([moveRoomToTeamPermission, ...createPermissions], resolvedTeam.rid);
-				return result.some(Boolean);
-			}
-			const createPermissions = resolvedTeam.t === 'c' ? [createCPermission] : [createPPermission];
-			const result = await hasPermission([addTeamChannelPermission, ...createPermissions], resolvedTeam.rid);
-			return result.some(Boolean);
-		},
-		[
-			serverVersion,
-			addTeamChannelPermission,
-			moveRoomToTeamPermission,
-			createCPermission,
-			createTeamChannelPermission,
-			createPPermission,
-			createTeamGroupPermission
-		]
-	);
+	}, [team, isSearching, showCreate, navigation, teamId, onSearchChangeText, isMasterDetail, joined]);
 
 	useEffect(() => {
 		const loadTeam = async () => {
 			const db = database.active;
-			try {
-				const subCollection = db.get('subscriptions');
-				const teamChannels = await subCollection.query(Q.where('team_id', Q.eq(teamId))).fetch();
-				const resolvedTeam = (teamChannels as TSubscriptionModel[])?.find(channel => channel.teamMain) as TSubscriptionModel;
-
-				if (!resolvedTeam) {
-					throw new Error();
-				}
-
-				const canCreate = await checkCreatePermission(resolvedTeam);
-				updateState({ team: resolvedTeam, showCreate: canCreate });
-			} catch {
+			const failNotFound = () => {
 				navigation.pop();
 				showErrorAlert(I18n.t('Team_not_found'));
+			};
+			const canCreateChannel = async (resolvedTeam: TSubscriptionModel) => {
+				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+					const createPermissions =
+						resolvedTeam.t === 'c'
+							? [createCPermission, createTeamChannelPermission]
+							: [createPPermission, createTeamGroupPermission];
+					const result = await hasPermission([moveRoomToTeamPermission, ...createPermissions], resolvedTeam.rid);
+					return result.some(Boolean);
+				}
+				const createPermissions = resolvedTeam.t === 'c' ? [createCPermission] : [createPPermission];
+				const result = await hasPermission([addTeamChannelPermission, ...createPermissions], resolvedTeam.rid);
+				return result.some(Boolean);
+			};
+
+			try {
+				const subCollection = db.get('subscriptions');
+				const teamChannels = (await subCollection.query(Q.where('team_id', Q.eq(teamId))).fetch()) as TSubscriptionModel[];
+				const resolvedTeam = teamChannels.find(channel => channel.teamMain);
+				if (!resolvedTeam) {
+					failNotFound();
+					return;
+				}
+				const showCreate = await canCreateChannel(resolvedTeam);
+				updateState({ team: resolvedTeam, showCreate });
+			} catch {
+				failNotFound();
 			}
 		};
 
 		loadTeam();
 		load();
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only: load and checkCreatePermission read latest state via stateRef/args
-	}, []);
+	}, [
+		load,
+		teamId,
+		navigation,
+		serverVersion,
+		moveRoomToTeamPermission,
+		createCPermission,
+		createTeamChannelPermission,
+		createPPermission,
+		createTeamGroupPermission,
+		addTeamChannelPermission
+	]);
 
 	const onPressItem = useDebounce(
 		async (item: IItem) => {
@@ -396,184 +385,162 @@ const TeamChannelsView = () => {
 		{ leading: true, trailing: false }
 	);
 
-	const toggleAutoJoin = useCallback(async (item: IItem) => {
+	const toggleAutoJoin = async (item: IItem) => {
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
-			const { data } = stateRef.current;
 			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
-				const newData = data.map(i => {
-					if (i._id === item._id) {
-						i.teamDefault = !i.teamDefault;
-					}
-					return i;
-				});
-				updateState({ data: newData });
+				updateState(prev => ({
+					data: prev.data.map(i => {
+						if (i._id === item._id) {
+							i.teamDefault = !i.teamDefault;
+						}
+						return i;
+					})
+				}));
 			}
 		} catch (e) {
 			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
 			log(e);
 		}
-	}, []);
+	};
 
-	const removeRoom = useCallback(async (item: IItem) => {
+	const removeRoom = async (item: IItem) => {
 		logEvent(events.TC_DELETE_ROOM);
+		if (!team) {
+			return;
+		}
 		try {
-			const { data, team } = stateRef.current;
-			const result = await removeTeamRoom({ roomId: item._id, teamId: team?.teamId as string });
+			const result = await removeTeamRoom({ roomId: item._id, teamId: team.teamId as string });
 			if (result.success) {
-				const newData = data.filter(room => result.room._id !== room._id);
-				updateState({ data: newData });
+				updateState(prev => ({ data: prev.data.filter(room => result.room._id !== room._id) }));
 			}
 		} catch (e) {
 			logEvent(events.TC_DELETE_ROOM_F);
 			log(e);
 		}
-	}, []);
+	};
 
-	const remove = useCallback(
-		(item: IItem) => {
-			Alert.alert(
-				I18n.t('Confirmation'),
-				I18n.t('Remove_Team_Room_Warning'),
-				[
-					{
-						text: I18n.t('Cancel'),
-						style: 'cancel'
-					},
-					{
-						text: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-						style: 'destructive',
-						onPress: () => removeRoom(item)
-					}
-				],
-				{ cancelable: false }
-			);
-		},
-		[removeRoom]
+	const remove = (item: IItem) => {
+		Alert.alert(
+			I18n.t('Confirmation'),
+			I18n.t('Remove_Team_Room_Warning'),
+			[
+				{
+					text: I18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
+					style: 'destructive',
+					onPress: () => removeRoom(item)
+				}
+			],
+			{ cancelable: false }
+		);
+	};
+
+	const deleteChannel = (item: IItem) => {
+		logEvent(events.TC_DELETE_ROOM);
+
+		Alert.alert(
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('Delete_Room_Warning'),
+			[
+				{
+					text: I18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+					style: 'destructive',
+					onPress: () => dispatch(deleteRoom(ERoomType.c, item))
+				}
+			],
+			{ cancelable: false }
+		);
+	};
+
+	const showChannelActions = async (item: IItem) => {
+		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
+		if (!team) {
+			return;
+		}
+		const isAutoJoinChecked = item.teamDefault;
+		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
+		const autoJoinIconColor = isAutoJoinChecked ? colors.fontHint : colors.fontDefault;
+
+		const options: TActionSheetOptionsItem[] = [];
+
+		const permissionsTeam = await hasPermission([editTeamChannelPermission], team.rid);
+		if (permissionsTeam[0]) {
+			options.push({
+				title: I18n.t('Auto-join'),
+				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
+				onPress: () => toggleAutoJoin(item),
+				right: () => (
+					<CustomIcon
+						testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'}
+						name={autoJoinIcon}
+						size={20}
+						color={autoJoinIconColor}
+					/>
+				),
+				testID: 'action-sheet-auto-join'
+			});
+		}
+
+		const permissionsRemoveTeam = await hasPermission([removeTeamChannelPermission], team.rid);
+		if (permissionsRemoveTeam[0]) {
+			options.push({
+				title: I18n.t('Remove_from_Team'),
+				icon: 'close',
+				danger: true,
+				onPress: () => remove(item),
+				testID: 'action-sheet-remove-from-team'
+			});
+		}
+
+		const permissionsChannel = await hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
+		if (permissionsChannel[0]) {
+			options.push({
+				title: I18n.t('Delete'),
+				icon: 'delete',
+				danger: true,
+				onPress: () => deleteChannel(item),
+				testID: 'action-sheet-delete'
+			});
+		}
+
+		if (options.length === 0) {
+			return;
+		}
+		showActionSheet({ options });
+	};
+
+	const renderItem = ({ item }: { item: IItem }) => (
+		<RoomItem
+			item={item}
+			showLastMessage={StoreLastMessage}
+			onPress={onPressItem}
+			width={width}
+			onLongPress={showChannelActions}
+			useRealName={useRealName}
+			getRoomTitle={getRoomTitle}
+			getRoomAvatar={getRoomAvatar}
+			swipeEnabled={false}
+			autoJoin={item.teamDefault}
+			showAvatar={showAvatar}
+			displayMode={displayMode}
+		/>
 	);
 
-	const deleteChannel = useCallback(
-		(item: IItem) => {
-			logEvent(events.TC_DELETE_ROOM);
-
-			Alert.alert(
-				I18n.t('Are_you_sure_question_mark'),
-				I18n.t('Delete_Room_Warning'),
-				[
-					{
-						text: I18n.t('Cancel'),
-						style: 'cancel'
-					},
-					{
-						text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-						style: 'destructive',
-						onPress: () => dispatch(deleteRoom(ERoomType.c, item))
-					}
-				],
-				{ cancelable: false }
-			);
-		},
-		[dispatch]
-	);
-
-	const showChannelActions = useCallback(
-		async (item: IItem) => {
-			logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-			const { team } = stateRef.current;
-			if (!team) {
-				return;
-			}
-			const isAutoJoinChecked = item.teamDefault;
-			const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
-			const autoJoinIconColor = isAutoJoinChecked ? colors.fontHint : colors.fontDefault;
-
-			const options: TActionSheetOptionsItem[] = [];
-
-			const permissionsTeam = await hasPermission([editTeamChannelPermission], team.rid);
-			if (permissionsTeam[0]) {
-				options.push({
-					title: I18n.t('Auto-join'),
-					icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-					onPress: () => toggleAutoJoin(item),
-					right: () => (
-						<CustomIcon
-							testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'}
-							name={autoJoinIcon}
-							size={20}
-							color={autoJoinIconColor}
-						/>
-					),
-					testID: 'action-sheet-auto-join'
-				});
-			}
-
-			const permissionsRemoveTeam = await hasPermission([removeTeamChannelPermission], team.rid);
-			if (permissionsRemoveTeam[0]) {
-				options.push({
-					title: I18n.t('Remove_from_Team'),
-					icon: 'close',
-					danger: true,
-					onPress: () => remove(item),
-					testID: 'action-sheet-remove-from-team'
-				});
-			}
-
-			const permissionsChannel = await hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
-			if (permissionsChannel[0]) {
-				options.push({
-					title: I18n.t('Delete'),
-					icon: 'delete',
-					danger: true,
-					onPress: () => deleteChannel(item),
-					testID: 'action-sheet-delete'
-				});
-			}
-
-			if (options.length === 0) {
-				return;
-			}
-			showActionSheet({ options });
-		},
-		[
-			colors,
-			editTeamChannelPermission,
-			removeTeamChannelPermission,
-			deleteCPermission,
-			deletePPermission,
-			showActionSheet,
-			toggleAutoJoin,
-			remove,
-			deleteChannel
-		]
-	);
-
-	const renderItem = useCallback(
-		({ item }: { item: IItem }) => (
-			<RoomItem
-				item={item}
-				showLastMessage={StoreLastMessage}
-				onPress={onPressItem}
-				width={width}
-				onLongPress={showChannelActions}
-				useRealName={useRealName}
-				getRoomTitle={getRoomTitle}
-				getRoomAvatar={getRoomAvatar}
-				swipeEnabled={false}
-				autoJoin={item.teamDefault}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-			/>
-		),
-		[StoreLastMessage, onPressItem, width, showChannelActions, useRealName, showAvatar, displayMode]
-	);
-
-	const renderFooter = useCallback(() => {
+	const renderFooter = () => {
 		if (loadingMore) {
 			return <ActivityIndicator />;
 		}
 		return null;
-	}, [loadingMore]);
+	};
 
 	const renderScroll = () => {
 		if (loading) {
