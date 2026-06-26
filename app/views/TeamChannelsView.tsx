@@ -171,6 +171,7 @@ const TeamChannelsView = () => {
 	const { loading, loadingMore, data, isSearching, searchText, search, showCreate, team } = state;
 
 	const load = useDebounce(async () => {
+		// Safe: useDebounce forwards the latest committed closure via an internal ref, so `state` here is current.
 		const { loadingMore, data, search, isSearching, searchText, end } = state;
 		const length = isSearching ? search.length : data.length;
 		if (loadingMore || end) {
@@ -335,8 +336,8 @@ const TeamChannelsView = () => {
 					failNotFound();
 					return;
 				}
-				const showCreate = await canCreateChannel(resolvedTeam);
-				updateState({ team: resolvedTeam, showCreate });
+				const canCreate = await canCreateChannel(resolvedTeam);
+				updateState({ team: resolvedTeam, showCreate: canCreate });
 			} catch {
 				failNotFound();
 			}
@@ -391,12 +392,7 @@ const TeamChannelsView = () => {
 			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
 				updateState(prev => ({
-					data: prev.data.map(i => {
-						if (i._id === item._id) {
-							i.teamDefault = !i.teamDefault;
-						}
-						return i;
-					})
+					data: prev.data.map(i => (i._id === item._id ? { ...i, teamDefault: !i.teamDefault } : i))
 				}));
 			}
 		} catch (e) {
