@@ -451,7 +451,7 @@
   "Local_authentication_auto_lock_3600": "1 ঘণ্টা পরে",
   "Local_authentication_auto_lock_60": "1 মিনিট পরে",
   "Local_authentication_auto_lock_900": "15 মিনিট পরে",
-  "Local_authentication_biometric_enrollment_changed": "বায়োমেট্রিক নিবন্ধন পরিবর্তিত হয়েছে, অনুগ্রহ করে আপনার পাসকোড ব্যবহার করুন",
+  "Local_authentication_biometric_enrollment_changed": "বায়োমেট্রিক নিবন্ধন পরিবর্তিত হয়েছে,\nঅনুগ্রহ করে আপনার পাসকোড ব্যবহার করুন",
   "Local_authentication_biometry_fallback": "পাসকোড ব্যবহার করুন",
   "Local_authentication_biometry_title": "প্রমাণীকরণ",
   "Local_authentication_change_passcode": "পাসকোড পরিবর্তন করুন",

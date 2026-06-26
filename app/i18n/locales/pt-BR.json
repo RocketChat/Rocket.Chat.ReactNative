@@ -493,7 +493,7 @@
   "Local_authentication_auto_lock_3600": "Após 1 hora",
   "Local_authentication_auto_lock_60": "Após 1 minuto",
   "Local_authentication_auto_lock_900": "Após 15 minutos",
-  "Local_authentication_biometric_enrollment_changed": "O cadastro biométrico foi alterado, use sua senha",
+  "Local_authentication_biometric_enrollment_changed": "O cadastro biométrico foi alterado,\nuse sua senha",
   "Local_authentication_biometry_fallback": "Usar senha",
   "Local_authentication_biometry_title": "Autenticar",
   "Local_authentication_change_passcode": "Alterar senha",

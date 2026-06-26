@@ -452,7 +452,7 @@
   "Local_authentication_auto_lock_3600": "1 óra elteltével",
   "Local_authentication_auto_lock_60": "1 perc elteltével",
   "Local_authentication_auto_lock_900": "15 perc elteltével",
-  "Local_authentication_biometric_enrollment_changed": "A biometrikus adatok megváltoztak, használja a jelkódját",
+  "Local_authentication_biometric_enrollment_changed": "A biometrikus adatok megváltoztak,\nhasználja a jelkódját",
   "Local_authentication_biometry_fallback": "Jelkód használata",
   "Local_authentication_biometry_title": "Hitelesítés",
   "Local_authentication_change_passcode": "Jelkód módosítása",

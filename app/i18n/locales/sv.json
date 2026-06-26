@@ -425,7 +425,7 @@
   "Local_authentication_auto_lock_3600": "Efter 1 timme",
   "Local_authentication_auto_lock_60": "Efter 1 minut",
   "Local_authentication_auto_lock_900": "Efter 15 minuter",
-  "Local_authentication_biometric_enrollment_changed": "Biometriska uppgifter har ändrats, använd din lösenkod",
+  "Local_authentication_biometric_enrollment_changed": "Biometriska uppgifter har ändrats,\nanvänd din lösenkod",
   "Local_authentication_biometry_fallback": "Använd lösenkod",
   "Local_authentication_biometry_title": "Autentisering",
   "Local_authentication_change_passcode": "Ändra lösenkod",

@@ -10,8 +10,7 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	subtitleView: {
-		justifyContent: 'center',
-		height: 32
+		justifyContent: 'center'
 	},
 	row: {
 		flex: 0,

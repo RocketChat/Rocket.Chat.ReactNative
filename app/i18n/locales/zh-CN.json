@@ -323,7 +323,7 @@
   "Local_authentication_auto_lock_3600": "一小时后",
   "Local_authentication_auto_lock_60": "1分钟后",
   "Local_authentication_auto_lock_900": "15分钟后",
-  "Local_authentication_biometric_enrollment_changed": "生物识别设置已更改，请使用您的通关密码",
+  "Local_authentication_biometric_enrollment_changed": "生物识别设置已更改，\n请使用您的通关密码",
   "Local_authentication_biometry_fallback": "使用通关密码",
   "Local_authentication_biometry_title": "验证",
   "Local_authentication_change_passcode": "变更通关密码",

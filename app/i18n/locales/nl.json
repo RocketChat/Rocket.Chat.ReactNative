@@ -391,7 +391,7 @@
   "Local_authentication_auto_lock_3600": "Na 1 uur",
   "Local_authentication_auto_lock_60": "Na 1 minuut",
   "Local_authentication_auto_lock_900": "Na 15 minuten",
-  "Local_authentication_biometric_enrollment_changed": "Biometrische gegevens zijn gewijzigd, gebruik je toegangscode",
+  "Local_authentication_biometric_enrollment_changed": "Biometrische gegevens zijn gewijzigd,\ngebruik je toegangscode",
   "Local_authentication_biometry_fallback": "Gebruik toegangscode",
   "Local_authentication_biometry_title": "Authenticeren",
   "Local_authentication_change_passcode": "Wijzig toegangscode",

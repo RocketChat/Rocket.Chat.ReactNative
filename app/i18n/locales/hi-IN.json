@@ -451,7 +451,7 @@
   "Local_authentication_auto_lock_3600": "1 घंटा के बाद",
   "Local_authentication_auto_lock_60": "1 मिनट के बाद",
   "Local_authentication_auto_lock_900": "15 मिनट के बाद",
-  "Local_authentication_biometric_enrollment_changed": "बायोमेट्रिक पंजीकरण बदल गया है, कृपया अपना पासकोड उपयोग करें",
+  "Local_authentication_biometric_enrollment_changed": "बायोमेट्रिक पंजीकरण बदल गया है,\nकृपया अपना पासकोड उपयोग करें",
   "Local_authentication_biometry_fallback": "पासकोड का उपयोग करें",
   "Local_authentication_biometry_title": "प्रमाणीकरण करें",
   "Local_authentication_change_passcode": "पासकोड बदलें",

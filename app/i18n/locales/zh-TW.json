@@ -339,7 +339,7 @@
   "Local_authentication_auto_lock_3600": "一小時後",
   "Local_authentication_auto_lock_60": "1分鐘後",
   "Local_authentication_auto_lock_900": "15分鐘後",
-  "Local_authentication_biometric_enrollment_changed": "生物辨識設定已變更，請使用您的通關密碼",
+  "Local_authentication_biometric_enrollment_changed": "生物辨識設定已變更，\n請使用您的通關密碼",
   "Local_authentication_biometry_fallback": "使用通關密碼",
   "Local_authentication_biometry_title": "驗證",
   "Local_authentication_change_passcode": "變更通關密碼",
