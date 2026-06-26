@@ -24,7 +24,9 @@ jest.mock('./index', () => ({
 		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
-		setBiometryEnabled: jest.fn()
+		setBiometryEnabled: jest.fn(),
+		isRelockPending: jest.fn(),
+		setRelockPending: jest.fn()
 	}
 }));
 
@@ -34,6 +36,7 @@ const mockedEnroll = biometricTrustStore.enroll as jest.Mock;
 const mockedHasEnrollment = biometricTrustStore.hasEnrollment as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
+const mockedSetRelockPending = biometricTrustStore.setRelockPending as jest.Mock;
 const mockedLog = log as unknown as jest.Mock;
 
 // Drives the biometry-enabled flag and migration marker the migration needs to see for the
@@ -61,9 +64,11 @@ describe('runBiometricTrustMigration', () => {
 		expect(mockedEnroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
+		// Grandfather re-bind is not an enrollment change — no relock should be forced.
+		expect(mockedSetRelockPending).not.toHaveBeenCalled();
 	});
 
-	it('reconciliation path: migrated && flag && !sentinel → clear flag, no enroll()', async () => {
+	it('reconciliation path: migrated && flag && !sentinel → clear flag, mark relock pending, no enroll()', async () => {
 		setPrefs({ biometryEnabled: true, migrated: true });
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 
@@ -71,6 +76,8 @@ describe('runBiometricTrustMigration', () => {
 
 		expect(mockedEnroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		// The enrollment-change signal would be consumed here, so it must be persisted for the next unlock.
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(true);
 		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
 	});
 

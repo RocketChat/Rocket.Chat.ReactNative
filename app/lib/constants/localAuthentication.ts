@@ -3,6 +3,10 @@ export const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
 export const ATTEMPTS_KEY = 'kAttempts';
 export const BIOMETRY_ENABLED_KEY = 'kBiometryEnabled';
 export const BIOMETRIC_TRUST_MIGRATION_V1_DONE = 'kBiometricTrustMigrationV1Done';
+// Set when a biometric enrollment change is reconciled away by the init migration (which runs before
+// localAuthenticate and would otherwise consume the signal). Forces the next unlock to demand the
+// passcode regardless of the auto-lock window; cleared once that forced passcode modal is shown.
+export const BIOMETRIC_PENDING_RELOCK_KEY = 'kBiometricPendingRelock';
 
 // Keychain sentinel used by the biometric trust store to detect enrollment changes.
 export const BIOMETRIC_TRUST_SENTINEL_SERVICE = 'rc-biometric-trust';

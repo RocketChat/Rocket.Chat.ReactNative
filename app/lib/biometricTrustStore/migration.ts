@@ -41,7 +41,13 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 			return;
 		}
 
+		// migrated && flag && !sentinel: the OS dropped the sentinel because the enrollment set changed
+		// (or a deliberate disable crashed mid-way). Clear the flag — and because this migration runs
+		// *before* localAuthenticate on cold launch, it would otherwise swallow the enrollment-change
+		// signal entirely. Persist a relock marker so the next unlock is forced to demand the passcode
+		// regardless of the auto-lock window. See handleLocalAuthentication.
 		biometricTrustStore.setEnabled(false);
+		biometricTrustStore.setRelockPending(true);
 	} catch (e) {
 		log(e);
 	}

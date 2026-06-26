@@ -36,7 +36,9 @@ jest.mock('../../biometricTrustStore', () => ({
 		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
-		setBiometryEnabled: jest.fn()
+		setBiometryEnabled: jest.fn(),
+		isRelockPending: jest.fn(),
+		setRelockPending: jest.fn()
 	}
 }));
 
@@ -52,6 +54,8 @@ const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
 const mockedHasEnrollment = biometricTrustStore.hasEnrollment as jest.Mock;
+const mockedIsRelockPending = biometricTrustStore.isRelockPending as jest.Mock;
+const mockedSetRelockPending = biometricTrustStore.setRelockPending as jest.Mock;
 const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
 
 const lastEmitPayload = () => {
@@ -70,6 +74,7 @@ describe('handleLocalAuthentication', () => {
 		// Sentinel present by default → no enrollment change. Tests that exercise the invalidation path
 		// override this per-case.
 		mockedHasEnrollment.mockResolvedValue(true);
+		mockedIsRelockPending.mockReturnValue(false);
 		mockedDisenroll.mockResolvedValue(undefined);
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.submit) {
@@ -96,7 +101,7 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it('biometry enabled but sentinel gone (enrollment changed) → forces passcode, disables biometry, sets reason', async () => {
+	it('warm path: biometry enabled but sentinel gone (enrollment changed) → forces passcode, disables biometry, sets reason', async () => {
 		mockedIsEnabled.mockReturnValue(true);
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 
@@ -104,9 +109,24 @@ describe('handleLocalAuthentication', () => {
 
 		// Modal opens with biometry hidden and the enrollment-changed notice...
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		// ...trust state torn down (disenroll before clearing the flag) and no biometric prompt fired.
+		// ...trust state torn down (disenroll before clearing the flag), relock marker cleared, no prompt.
 		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(false);
+		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+
+	it('cold-launch path: migration already disabled biometry but left relock pending → still forces passcode with reason', async () => {
+		// Init migration ran first, reconciled the flag off and persisted the relock marker.
+		mockedIsEnabled.mockReturnValue(false);
+		mockedIsRelockPending.mockReturnValue(true);
+
+		await handleLocalAuthentication();
+
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		// Flag already cleared by the migration, so no disenroll here; the marker is consumed.
+		expect(mockedDisenroll).not.toHaveBeenCalled();
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(false);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 

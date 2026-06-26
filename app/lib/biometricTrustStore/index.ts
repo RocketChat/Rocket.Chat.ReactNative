@@ -7,6 +7,7 @@ import {
 	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
 	BIOMETRIC_TRUST_SENTINEL_USERNAME as SENTINEL_USERNAME,
 	BIOMETRIC_TRUST_SENTINEL_VALUE as SENTINEL_VALUE,
+	BIOMETRIC_PENDING_RELOCK_KEY,
 	BIOMETRY_ENABLED_KEY
 } from '../constants/localAuthentication';
 
@@ -106,6 +107,14 @@ export const biometricTrustStore: IBiometricTrustStore = {
 
 	setEnabled(enabled: boolean) {
 		UserPreferences.setBool(BIOMETRY_ENABLED_KEY, enabled);
+	},
+
+	isRelockPending() {
+		return UserPreferences.getBool(BIOMETRIC_PENDING_RELOCK_KEY) ?? false;
+	},
+
+	setRelockPending(pending: boolean) {
+		UserPreferences.setBool(BIOMETRIC_PENDING_RELOCK_KEY, pending);
 	},
 
 	async setBiometryEnabled(enabled: boolean) {
