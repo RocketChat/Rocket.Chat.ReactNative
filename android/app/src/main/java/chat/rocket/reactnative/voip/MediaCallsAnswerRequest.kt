@@ -43,7 +43,7 @@ class MediaCallsAnswerRequest(
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
         private val httpClient: OkHttpClient by lazy {
-            val base = SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient()
+            val base = SSLPinningTurboModule.getSharedOkHttpClient() ?: SSLPinningTurboModule.getOkHttpClientBuilder().build()
             base.newBuilder()
                 .callTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)

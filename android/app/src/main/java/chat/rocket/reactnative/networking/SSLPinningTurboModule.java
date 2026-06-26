@@ -46,17 +46,24 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static ReactApplicationContext reactContext;
     private static OkHttpClient sharedClient;
 
-    private static Interceptor userAgentInterceptor() {
-        return chain -> {
-            Request original = chain.request();
-            if (original.header("User-Agent") != null) {
-                return chain.proceed(original);
-            }
-            Request request = original.newBuilder()
-                    .header("User-Agent", NotificationHelper.getUserAgent())
-                    .build();
-            return chain.proceed(request);
-        };
+    private static final Interceptor USER_AGENT_INTERCEPTOR = chain -> {
+        Request original = chain.request();
+        if (original.header("User-Agent") != null) {
+            return chain.proceed(original);
+        }
+        Request request = original.newBuilder()
+                .header("User-Agent", NotificationHelper.getUserAgent())
+                .build();
+        return chain.proceed(request);
+    };
+
+    public static OkHttpClient.Builder getOkHttpClientBuilder() {
+        return new OkHttpClient.Builder()
+                .addInterceptor(USER_AGENT_INTERCEPTOR)
+                .connectTimeout(0, TimeUnit.MILLISECONDS)
+                .readTimeout(0, TimeUnit.MILLISECONDS)
+                .writeTimeout(0, TimeUnit.MILLISECONDS)
+                .cookieJar(new ReactCookieJarContainer());
     }
 
     public static OkHttpClient getSharedOkHttpClient() {
@@ -64,12 +71,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             return sharedClient;
         }
         if (alias != null) {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .addInterceptor(userAgentInterceptor())
-                    .connectTimeout(0, TimeUnit.MILLISECONDS)
-                    .readTimeout(0, TimeUnit.MILLISECONDS)
-                    .writeTimeout(0, TimeUnit.MILLISECONDS)
-                    .cookieJar(new ReactCookieJarContainer());
+            OkHttpClient.Builder builder = getOkHttpClientBuilder();
 
             SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
             X509TrustManager trustManager = getTrustManagerFactory();
@@ -106,12 +108,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         if (shared != null) {
             return shared;
         }
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addInterceptor(userAgentInterceptor())
-                .connectTimeout(0, TimeUnit.MILLISECONDS)
-                .readTimeout(0, TimeUnit.MILLISECONDS)
-                .writeTimeout(0, TimeUnit.MILLISECONDS)
-                .cookieJar(new ReactCookieJarContainer());
+        OkHttpClient.Builder builder = getOkHttpClientBuilder();
 
         if (alias != null) {
             SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
