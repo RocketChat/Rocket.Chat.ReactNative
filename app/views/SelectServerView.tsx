@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { FlatList, PixelRatio } from 'react-native';
+import { FlatList, PixelRatio, StyleSheet } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
@@ -29,7 +29,7 @@ const SelectServerView = () => {
 	const getItemLayout = useCallback(
 		(_data: any, index: number) => {
 			const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
-			return { length: height, offset: height * index, index };
+			return { length: height, offset: (height + StyleSheet.hairlineWidth) * index, index };
 		},
 		[fontScale]
 	);

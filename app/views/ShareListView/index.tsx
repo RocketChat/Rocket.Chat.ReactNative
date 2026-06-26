@@ -1,6 +1,6 @@
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -65,7 +65,7 @@ interface IShareListViewProps extends INavigationOption {
 
 const getItemLayout = (_data: any, index: number) => {
 	const rowHeight = PixelRatio.roundToNearestPixel(ROW_HEIGHT * PixelRatio.getFontScale());
-	return { length: rowHeight, offset: rowHeight * index, index };
+	return { length: rowHeight, offset: (rowHeight + StyleSheet.hairlineWidth) * index, index };
 };
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
