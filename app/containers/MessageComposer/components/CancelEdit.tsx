@@ -1,11 +1,13 @@
 import { BaseButton } from './Buttons';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { useMessageAction } from '../../../views/RoomView/InteractionStore';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
 	'use memo';
 
-	const { action, editCancel } = useRoomContext();
+	const { editCancel } = useRoomContext();
+	const action = useMessageAction();
 
 	if (action !== 'edit') {
 		return null;

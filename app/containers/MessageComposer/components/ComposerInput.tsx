@@ -33,6 +33,7 @@ import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/InteractionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
@@ -50,7 +51,9 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText, room } = useRoomContext();
+		const { rid, tmid, sharing, setQuotesAndText, room } = useRoomContext();
+		const action = useMessageAction();
+		const selectedMessages = useSelectedMessages();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;

@@ -39,6 +39,7 @@ import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachmen
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
+import { createInteractionStore, InteractionStoreContext, type InteractionStore } from '../RoomView/InteractionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -80,6 +81,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private serverInfo: TShareServerInfo;
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
+	private interactionStore: InteractionStore;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -89,6 +91,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 		this.finishShareView = props.route.params?.finishShareView;
 		this.sentMessage = false;
+		this.interactionStore = createInteractionStore({ action: props.route.params?.action, selectedMessages: [] });
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -237,6 +240,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			await new Promise(resolve => setTimeout(resolve, 100));
 			this.messageComposerRef.current?.setInput(text);
 			this.setState({ selectedMessages });
+			this.interactionStore.getState().actions.setQuotes(selectedMessages);
 		}
 	};
 
@@ -382,39 +386,40 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
 		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
+		this.interactionStore.getState().actions.setQuotes(newSelectedMessages);
 	};
 
 	renderContent = () => {
-		const { attachments, selected, text, room, thread, selectedMessages } = this.state;
-		const { theme, route } = this.props;
+		const { attachments, selected, text, room, thread } = this.state;
+		const { theme } = this.props;
 
 		if (attachments.length) {
 			return (
-				<RoomContext.Provider
-					value={{
-						rid: room.rid,
-						t: room.t,
-						room,
-						tmid: this.getThreadId(thread),
-						sharing: true,
-						action: route.params?.action,
-						selectedMessages,
-						onSendMessage: this.send,
-						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}>
-					<View style={styles.container}>
-						<Preview
-							// using key just to reset zoom/move after change selected
-							key={selected?.path}
-							item={selected}
-							length={attachments.length}
-							theme={theme}
-						/>
-						<MessageComposerContainer ref={this.messageComposerRef}>
-							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
-						</MessageComposerContainer>
-					</View>
-				</RoomContext.Provider>
+				<InteractionStoreContext.Provider value={this.interactionStore}>
+					<RoomContext.Provider
+						value={{
+							rid: room.rid,
+							t: room.t,
+							room,
+							tmid: this.getThreadId(thread),
+							sharing: true,
+							onSendMessage: this.send,
+							onRemoveQuoteMessage: this.onRemoveQuoteMessage
+						}}>
+						<View style={styles.container}>
+							<Preview
+								// using key just to reset zoom/move after change selected
+								key={selected?.path}
+								item={selected}
+								length={attachments.length}
+								theme={theme}
+							/>
+							<MessageComposerContainer ref={this.messageComposerRef}>
+								<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
+							</MessageComposerContainer>
+						</View>
+					</RoomContext.Provider>
+				</InteractionStoreContext.Provider>
 			);
 		}
 

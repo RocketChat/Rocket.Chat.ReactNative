@@ -32901,6 +32901,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                 "opacity": 1,
               }
             }
+            testID="message-editing-undefined"
           >
             <View
               style={{}}
@@ -33371,6 +33372,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                 "opacity": 1,
               }
             }
+            testID="message-editing-undefined"
           >
             <View
               style={{}}

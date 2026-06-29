@@ -6,8 +6,7 @@ import {
 	type ILastMessage,
 	type ILoggedUser,
 	type TSubscriptionModel,
-	type ICustomEmojis,
-	type TMessageAction
+	type ICustomEmojis
 } from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
 
@@ -68,8 +67,6 @@ export interface IRoomViewState {
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
-	action: TMessageAction;
-	selectedMessages: string[];
 	isAutocompleteVisible: boolean;
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;

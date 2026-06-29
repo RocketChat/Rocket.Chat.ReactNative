@@ -13,6 +13,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
 import { useMessage } from './hooks/useMessage';
+import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -60,7 +61,6 @@ interface IMessageContainerProps {
 	onPress?: () => void;
 	theme?: TSupportedThemes;
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
-	isBeingEdited?: boolean;
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;
 	showUnreadSeparator?: boolean;
@@ -74,7 +74,6 @@ function areEqual(prev: IMessageContainerProps, next: IMessageContainerProps): b
 		prev.threadBadgeColor === next.threadBadgeColor &&
 		prev.isIgnored === next.isIgnored &&
 		prev.previousItem?._id === next.previousItem?._id &&
-		prev.isBeingEdited === next.isBeingEdited &&
 		prev.autoTranslateRoom === next.autoTranslateRoom &&
 		prev.autoTranslateLanguage === next.autoTranslateLanguage
 	);
@@ -118,7 +117,6 @@ const MessageContainer = ({
 	jumpToMessage,
 	onPress: onPressProp,
 	closeEmojiAndAction,
-	isBeingEdited,
 	isPreview,
 	dateSeparator,
 	showUnreadSeparator
@@ -126,6 +124,7 @@ const MessageContainer = ({
 	'use memo';
 
 	const message = useMessage(item);
+	const isBeingEdited = useIsBeingEdited(item.id);
 	const { theme } = useTheme();
 	const [isManualUnignored, setIsManualUnignored] = useState(false);
 

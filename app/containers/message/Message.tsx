@@ -210,6 +210,7 @@ const MessageTouchable = memo((props: IMessageTouchable & IMessage) => {
 					onPress={onPress}
 					disabled={isDisabled}
 					style={{ backgroundColor }}
+					testID={props.isBeingEdited ? `message-editing-${props.id}` : undefined}
 					accessible
 					accessibilityRole='button'
 					accessibilityLabel={accessibilityLabelValue}

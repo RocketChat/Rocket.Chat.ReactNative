@@ -2,12 +2,13 @@ import { useEffect, useRef, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useMessageAction, useSelectedMessages } from '../../../../views/RoomView/InteractionStore';
 
 export const Quotes = (): ReactElement | null => {
 	'use memo';
 
-	const { selectedMessages, action } = useRoomContext();
+	const selectedMessages = useSelectedMessages();
+	const action = useMessageAction();
 	const nQuotesRef = useRef(0);
 	const listRef = useRef<FlatList>(null);
 

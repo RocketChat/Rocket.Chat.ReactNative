@@ -3,13 +3,16 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { saveDraftMessage } from '../../../lib/methods/draftMessage';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/InteractionStore';
 import { useFocused } from '../context';
 
 export const useAutoSaveDraft = (text = '') => {
 	'use memo';
 
 	const route = useRoute();
-	const { rid, tmid, action, selectedMessages } = useRoomContext();
+	const { rid, tmid } = useRoomContext();
+	const action = useMessageAction();
+	const selectedMessages = useSelectedMessages();
 	const focused = useFocused();
 	const oldText = useRef('');
 	const intervalRef = useRef<number | null>(null);

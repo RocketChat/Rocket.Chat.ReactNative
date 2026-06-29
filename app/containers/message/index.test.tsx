@@ -1,9 +1,11 @@
+import { act } from 'react';
 import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react-native';
 
 import MessageContainer from './index';
 import { mockedStore } from '../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../definitions';
+import { createInteractionStore, InteractionStoreContext } from '../../views/RoomView/InteractionStore';
 
 jest.mock('./Touch', () => {
 	const { forwardRef } = require('react');
@@ -90,4 +92,35 @@ it('fires the onLongPress callback when long-pressed', () => {
 	const { getByTestId } = renderContainer({}, { onLongPress });
 	fireEvent(getByTestId('message-msg-1'), 'longPress');
 	expect(onLongPress).toHaveBeenCalledTimes(1);
+});
+
+describe('edit highlight reacts to InteractionStore', () => {
+	it('shows editing testID when the store marks this message as being edited', () => {
+		const store = createInteractionStore({ action: 'edit', selectedMessages: ['msg-1'] });
+		const item = createMockMessage({ id: 'msg-1' });
+		const { getByTestId } = render(
+			<Provider store={mockedStore}>
+				<InteractionStoreContext.Provider value={store}>
+					<MessageContainer item={item} {...baseProps} />
+				</InteractionStoreContext.Provider>
+			</Provider>
+		);
+		expect(getByTestId('message-editing-msg-1')).toBeTruthy();
+	});
+
+	it('removes editing testID when the store resets', async () => {
+		const store = createInteractionStore({ action: 'edit', selectedMessages: ['msg-1'] });
+		const item = createMockMessage({ id: 'msg-1' });
+		const { queryByTestId } = render(
+			<Provider store={mockedStore}>
+				<InteractionStoreContext.Provider value={store}>
+					<MessageContainer item={item} {...baseProps} />
+				</InteractionStoreContext.Provider>
+			</Provider>
+		);
+		await act(() => {
+			store.getState().actions.reset();
+		});
+		expect(queryByTestId('message-editing-msg-1')).toBeNull();
+	});
 });
