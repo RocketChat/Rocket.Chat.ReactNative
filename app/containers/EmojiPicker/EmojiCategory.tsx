@@ -61,7 +61,7 @@ const EmojiCategory = ({
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
-	const contentPaddingBottom = bottomSheet ? Math.max(0, MIN_BOTTOM_SHEET_BREATHING_ROOM) : undefined;
+	const contentPaddingBottom = bottomSheet ? MIN_BOTTOM_SHEET_BREATHING_ROOM : undefined;
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
