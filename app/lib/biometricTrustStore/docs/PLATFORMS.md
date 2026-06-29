@@ -36,6 +36,18 @@ On Android the keystore key backing the item is **invalidated but not deleted**.
 
 This is the key asymmetry to keep in mind when reading or testing the flow: **the same user action (adding a fingerprint) can produce `unavailable` on iOS and `enrollmentChanged` on Android.** The security response is identical; only the subtitle differs. Tests must not assume one kind across both platforms.
 
+### The silent enrollment probe key
+
+Because the Android sentinel **survives** an enrollment change (the key is invalidated, not deleted), the JS layer's silent `hasEnrollment()` existence check can't see the change — and the only `react-native-keychain` read that would surface the `KeyPermanentlyInvalidatedException` also shows the OS biometric prompt, so it can't be used as a silent at-rest probe (it would defeat the prompt-behind-modal contract below). Android therefore carries a **dedicated probe key**, implemented natively in `android/app/src/main/java/chat/rocket/reactnative/biometric/BiometricEnrollmentModule.kt` and bridged by `nativeEnrollmentProbe.ts`:
+
+- It is a standalone AES/GCM keystore key (`setUserAuthenticationRequired = true`, `setInvalidatedByBiometricEnrollment = true`) under alias `rc_biometric_enrollment_probe` — separate from the sentinel, used only for detection, never for crypto.
+- **`enrollProbe()` / `disenrollProbe()`** create and delete the key in lockstep with the sentinel, called from the store's `enroll()` / `disenroll()`.
+- **`isEnrollmentValid()`** runs `Cipher.init(ENCRYPT_MODE, key)` on it. `init()` does **not** prompt and does **not** run crypto (auth is only enforced at `doFinal`, which is never called); it simply throws `KeyPermanentlyInvalidatedException` once the enrollment has changed. So it is a fully silent at-rest check — the missing counterpart to iOS's free `hasEnrollment()` signal. `handleLocalAuthentication`/`localAuthenticate` call it (via `biometricTrustStore.isEnrollmentValid()`) to force the passcode even inside the auto-lock window.
+- **Lazy baseline.** If no probe key exists when `isEnrollmentValid()` is called (fresh install/upgrade, or just disenrolled), it creates one bound to the current enrollment and reports `valid` — there is no prior enrollment to differ from. This is why a pre-feature user's first upgrade cannot be retroactively validated by the probe, and why the migration's grandfather branch forces a confirming passcode instead (see `ARCHITECTURE.md`, "Why the grandfather path forces a passcode").
+- **Failure mode.** A bridge/keystore error (other than invalidation) resolves `true` — fail open — so a transient native error never forces the passcode on its own; the modal `verify()` path remains the backstop. Creating a baseline when biometrics were removed entirely fails, which is treated as a change (`false`) so the passcode is required.
+
+On **iOS** there is no native counterpart: `enrollProbe`/`disenrollProbe` are no-ops and `isEnrollmentValid()` resolves `true`, because the sentinel deletion already covers enrollment changes for free.
+
 ### Cancel signal
 
 A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style error, mapped to `canceled` — the biometry button is kept for manual retry, matching iOS's `errSecUserCancel` / `-128`.
@@ -48,6 +60,7 @@ A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style er
 | Usual `verify()` kind after a change            | `unavailable` (silent existence check)        | `enrollmentChanged` (read raises exception) |
 | Native signal classified to `enrollmentChanged` | `errSecItemNotFound` / `-25300` (post-prompt) | `KeyPermanentlyInvalidatedException`        |
 | Cancel signal                                   | `errSecUserCancel` / `-128`                   | `AuthenticationCanceled` / `UserCancel`     |
+| Silent at-rest enrollment check                 | `hasEnrollment()` (item deleted on change)    | native probe key `isEnrollmentValid()` (`cipher.init`) |
 | Sentinel survives device migration?             | no (`THIS_DEVICE_ONLY`)                       | no (`THIS_DEVICE_ONLY`)                     |
 
 In all cases the user-facing result is the same fail-closed behaviour: biometric unlock is dropped and the passcode is required.

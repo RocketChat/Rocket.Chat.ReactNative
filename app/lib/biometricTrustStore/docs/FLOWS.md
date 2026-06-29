@@ -162,9 +162,11 @@ flowchart TD
     C -- no --> D{marker set?}
     D -- "no (pre-feature user)" --> E[enroll]
     E --> F{enroll ok?}
-    F -- yes --> G[set marker = true]
-    F -- no --> H[leave marker & flag<br/>next boot retries; unlock asks passcode]
-    D -- "yes (post-feature desync)" --> I[setEnabled false<br/>clear the flag]
+    F -- yes --> G[set marker = true<br/>setRelockPending true]
+    F -- no --> H[leave marker, flag & relock<br/>next boot retries; unlock asks passcode]
+    D -- "yes (post-feature desync)" --> I[setEnabled false<br/>clear the flag<br/>setRelockPending true]
 ```
 
 The grandfather branch (`marker = no`) is reachable only by users who enabled biometry before the sentinel feature existed. Every app-driven `enroll()` sets the marker, so post-feature users with a missing sentinel always reach the reconciliation branch instead — closing the silent re-bind.
+
+Both the grandfather and reconciliation branches set the **relock marker**. The freshly-bound grandfather baseline is untrusted — there was no prior enrollment to compare against, so an attacker who altered the enrollment before this first upgrade would otherwise be silently trusted (on Android the native probe can't catch this either: with no key yet, `isEnrollmentValid()` just creates a fresh baseline and reports valid). The migration runs **before** `localAuthenticate`, so it persists the relock marker; the next unlock (§3) reads it (OR-ed with the live enrollment-change check), forces the passcode regardless of the auto-lock window, and clears it once the modal is shown.

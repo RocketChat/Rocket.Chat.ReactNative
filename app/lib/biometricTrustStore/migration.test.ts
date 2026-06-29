@@ -54,7 +54,7 @@ describe('runBiometricTrustMigration', () => {
 		jest.clearAllMocks();
 	});
 
-	it('upgrade path: !migrated && flag && !sentinel → enroll() once and mark migrated', async () => {
+	it('upgrade path: !migrated && flag && !sentinel → enroll() once, mark migrated, force relock', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
@@ -64,7 +64,19 @@ describe('runBiometricTrustMigration', () => {
 		expect(mockedEnroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
-		// Grandfather re-bind is not an enrollment change — no relock should be forced.
+		// The grandfathered enrollment is untrusted (no prior baseline to compare against), so the
+		// freshly-bound baseline must be confirmed by a passcode on the next unlock before it is trusted.
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(true);
+	});
+
+	it('grandfather enroll() failure → no relock forced (baseline was not established)', async () => {
+		setPrefs({ biometryEnabled: true, migrated: false });
+		mockedHasEnrollment.mockResolvedValueOnce(false);
+		mockedEnroll.mockResolvedValueOnce({ kind: 'error', cause: new Error('keychain unavailable') });
+
+		await runBiometricTrustMigration();
+
+		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
 		expect(mockedSetRelockPending).not.toHaveBeenCalled();
 	});
 
