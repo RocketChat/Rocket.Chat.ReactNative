@@ -52,6 +52,15 @@
 | **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
 | **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
 
+## Message Interaction & Position State
+
+Two distinct kinds of transient per-Room state drive how the Room view renders Messages. They have different owners and are migrated independently, so keep them apart.
+
+| Term                  | Definition                                                                              | Owner                          | Scope                                                                |
+| --------------------- | --------------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| **Interaction state** | Which Message is selected and the current Message action — reply, quote, edit, or react | A per-Room interaction store   | Migrated to the per-Room store as part of the Message row work       |
+| **Positional state**  | Which Message is highlighted and the jump or scroll position                            | The Room view scroll machinery | Stays with the Room view scroll machinery and is migrated separately |
+
 ## Users & Roles
 
 | Term            | Definition                                                                         | Aliases to avoid        |
