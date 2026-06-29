@@ -3,7 +3,6 @@ import { type TRoomUpdate, type TStateAttrsUpdate } from './definitions';
 export const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
-	'reactionsModalVisible',
 	'canAutoTranslate',
 	'loading',
 	'editing',

@@ -179,10 +179,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			roomUpdate: {},
 			member: {},
 			lastOpen: null,
-			reactionsModalVisible: false,
 			canAutoTranslate: false,
 			loading: true,
-			replyWithMention: false,
 			readOnly: false,
 			unreadsCount: null,
 			roomUserId,
@@ -190,7 +188,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
-			isOnHold: false,
 			isAutocompleteVisible: false,
 			showMissingE2EEKey: false,
 			showE2EEDisabledRoom: false
@@ -268,7 +265,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
-		const { roomUpdate, member, isOnHold, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = state;
+		const { roomUpdate, member, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = state;
 		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -280,9 +277,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
-			return true;
-		}
-		if (isOnHold !== nextState.isOnHold) {
 			return true;
 		}
 		if (isAutocompleteVisible !== nextState.isAutocompleteVisible) {
@@ -763,7 +757,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				return ret;
 			}, {});
 			if (this.mounted) {
-				this.internalSetState({ room: changes, roomUpdate, isOnHold: !!changes?.onHold });
+				this.internalSetState({ room: changes, roomUpdate });
 			} else {
 				// @ts-ignore
 				this.state.room = changes;

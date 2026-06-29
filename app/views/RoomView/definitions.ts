@@ -60,10 +60,8 @@ export interface IRoomViewState {
 	};
 	member: any;
 	lastOpen: Date | null;
-	reactionsModalVisible: boolean;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	replyWithMention: boolean;
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
