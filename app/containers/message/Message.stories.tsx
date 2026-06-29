@@ -114,16 +114,7 @@ export default {
 export const Message = (props: any) => (
 	<MessageContext.Provider value={storyContextValue}>
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
-			<MessageComponent
-				baseUrl={baseUrl}
-				user={user}
-				author={author}
-				ts={date}
-				timeFormat='LT'
-				isHeader
-				theme={_theme}
-				{...props}
-			/>
+			<MessageComponent baseUrl={baseUrl} user={user} author={author} ts={date} timeFormat='LT' isHeader {...props} />
 		</ResponsiveLayoutContext.Provider>
 	</MessageContext.Provider>
 );
@@ -132,16 +123,7 @@ export const Message = (props: any) => (
 const MessageLargeFont = (props: any) => (
 	<MessageContext.Provider value={storyContextValue}>
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(FONT_SCALE_LIMIT)}>
-			<MessageComponent
-				baseUrl={baseUrl}
-				user={user}
-				author={author}
-				ts={date}
-				timeFormat='LT'
-				isHeader
-				theme={_theme}
-				{...props}
-			/>
+			<MessageComponent baseUrl={baseUrl} user={user} author={author} ts={date} timeFormat='LT' isHeader {...props} />
 		</ResponsiveLayoutContext.Provider>
 	</MessageContext.Provider>
 );
@@ -310,19 +292,12 @@ export const Encrypted = () => (
 					usernames: [user.username]
 				}
 			]}
-			onReactionPress={() => {}}
 			type='e2e'
 		/>
 		<Message msg='Thread reply encrypted' tmid='1' tmsg='Thread with emoji :) :joy:' isThreadReply type='e2e' />
 		<Message msg='Temp message encrypted' status={messagesStatus.TEMP} isTemp type='e2e' />
 		<Message msg='Message Edited encrypted' edited type='e2e' />
-		<Message
-			hasError
-			msg='This message has error and is encrypted'
-			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
-			type='e2e'
-		/>
+		<Message hasError msg='This message has error and is encrypted' status={messagesStatus.ERROR} type='e2e' />
 		<Message msg='Read Receipt encrypted with Header' isReadReceiptEnabled read type='e2e' />
 		<Message msg='Read Receipt encrypted without Header' isReadReceiptEnabled read isHeader={false} type='e2e' />
 	</>
@@ -348,19 +323,12 @@ export const EncryptedLargeFont = () => (
 					usernames: [user.username]
 				}
 			]}
-			onReactionPress={() => {}}
 			type='e2e'
 		/>
 		<MessageLargeFont msg='Thread reply encrypted' tmid='1' tmsg='Thread with emoji :) :joy:' isThreadReply type='e2e' />
 		<MessageLargeFont msg='Temp message encrypted' status={messagesStatus.TEMP} isTemp type='e2e' />
 		<MessageLargeFont msg='Message Edited encrypted' edited type='e2e' />
-		<MessageLargeFont
-			hasError
-			msg='This message has error and is encrypted'
-			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
-			type='e2e'
-		/>
+		<MessageLargeFont hasError msg='This message has error and is encrypted' status={messagesStatus.ERROR} type='e2e' />
 		<MessageLargeFont msg='Read Receipt encrypted with Header' isReadReceiptEnabled read type='e2e' />
 		<MessageLargeFont msg='Read Receipt encrypted without Header' isReadReceiptEnabled read isHeader={false} type='e2e' />
 	</>
@@ -618,7 +586,6 @@ export const Reactions = () => (
 					usernames: new Array(9999)
 				}
 			]}
-			onReactionPress={() => {}}
 		/>
 		<Message
 			msg='Multiple Reactions'
@@ -656,7 +623,6 @@ export const Reactions = () => (
 					usernames: [user.username]
 				}
 			]}
-			onReactionPress={() => {}}
 		/>
 	</>
 );
@@ -683,7 +649,6 @@ export const ReactionsLargeFont = () => (
 					usernames: new Array(9999)
 				}
 			]}
-			onReactionPress={() => {}}
 		/>
 		<MessageLargeFont
 			msg='Multiple Reactions'
@@ -721,7 +686,6 @@ export const ReactionsLargeFont = () => (
 					usernames: [user.username]
 				}
 			]}
-			onReactionPress={() => {}}
 		/>
 	</>
 );
@@ -2280,11 +2244,9 @@ export const ColoredAttachmentsLargeFont = () => (
 	/>
 );
 
-export const Broadcast = () => <Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />;
+export const Broadcast = () => <Message msg='Broadcasted message' broadcast />;
 
-export const BroadcastLargeFont = () => (
-	<MessageLargeFont msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
-);
+export const BroadcastLargeFont = () => <MessageLargeFont msg='Broadcasted message' broadcast />;
 
 export const Archived = () => <Message msg='This message is inside an archived room' archived />;
 
@@ -2292,32 +2254,15 @@ export const ArchivedLargeFont = () => <MessageLargeFont msg='This message is in
 
 export const Error = () => (
 	<>
-		<Message hasError msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
-		<Message
-			hasError
-			msg='This message has error too'
-			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
-			isHeader={false}
-		/>
+		<Message hasError msg='This message has error' status={messagesStatus.ERROR} />
+		<Message hasError msg='This message has error too' status={messagesStatus.ERROR} isHeader={false} />
 	</>
 );
 
 export const ErrorLargeFont = () => (
 	<>
-		<MessageLargeFont
-			hasError
-			msg='This message has error'
-			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
-		/>
-		<MessageLargeFont
-			hasError
-			msg='This message has error too'
-			status={messagesStatus.ERROR}
-			onErrorPress={() => alert('Error pressed')}
-			isHeader={false}
-		/>
+		<MessageLargeFont hasError msg='This message has error' status={messagesStatus.ERROR} />
+		<MessageLargeFont hasError msg='This message has error too' status={messagesStatus.ERROR} isHeader={false} />
 	</>
 );
 

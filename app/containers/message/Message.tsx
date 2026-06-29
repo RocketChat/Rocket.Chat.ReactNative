@@ -61,6 +61,8 @@ interface IMessageA11y {
 }
 
 const MessageInner = memo((props: TMessageProps) => {
+	'use memo';
+
 	const { isLargeFontScale } = useResponsiveLayout();
 	const showTimeLarge = isLargeFontScale && props.isHeader;
 
@@ -278,6 +280,8 @@ const MessageInner = memo((props: TMessageProps) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = memo((props: TMessageProps & IMessageA11y) => {
+	'use memo';
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? (
 			<RepliedThread
@@ -419,6 +423,8 @@ const Message = memo((props: TMessageProps & IMessageA11y) => {
 Message.displayName = 'Message';
 
 const MessageTouchable = memo((props: TMessageProps) => {
+	'use memo';
+
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
