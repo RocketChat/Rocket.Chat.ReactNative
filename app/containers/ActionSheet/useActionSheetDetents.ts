@@ -74,6 +74,7 @@ export function useActionSheetDetents({
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
 			}
 		} else if (contentHeight > 0) {
+			// we are adding handle height in ios only because last item on iPhone SE is not fully visible.
 			const rawContentDetent = (contentHeight + (isIOS ? HANDLE_HEIGHT : 0)) / windowHeight;
 			const contentDetent = Math.min(
 				ACTION_SHEET_MAX_HEIGHT_FRACTION,
