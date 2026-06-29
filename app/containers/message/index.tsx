@@ -1,17 +1,18 @@
-import { Component } from 'react';
+import { memo, useRef, useState } from 'react';
 import { Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
 import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
-import { type TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, useTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
 import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
+import { useMessage } from './hooks/useMessage';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -65,208 +66,87 @@ interface IMessageContainerProps {
 	showUnreadSeparator?: boolean;
 }
 
-interface IMessageContainerState {
-	isManualUnignored: boolean;
+function areEqual(prev: IMessageContainerProps, next: IMessageContainerProps): boolean {
+	return (
+		prev.showUnreadSeparator === next.showUnreadSeparator &&
+		prev.dateSeparator === next.dateSeparator &&
+		prev.highlighted === next.highlighted &&
+		prev.threadBadgeColor === next.threadBadgeColor &&
+		prev.isIgnored === next.isIgnored &&
+		prev.previousItem?._id === next.previousItem?._id &&
+		prev.isBeingEdited === next.isBeingEdited &&
+		prev.autoTranslateRoom === next.autoTranslateRoom &&
+		prev.autoTranslateLanguage === next.autoTranslateLanguage
+	);
 }
 
-class MessageContainer extends Component<IMessageContainerProps, IMessageContainerState> {
-	static defaultProps = {
-		getCustomEmoji: () => null,
-		onLongPress: () => {},
-		blockAction: () => {},
-		archived: false,
-		broadcast: false,
-		isIgnored: false,
-		theme: 'light' as TSupportedThemes
-	};
+const MessageContainer = ({
+	item,
+	user,
+	rid,
+	timeFormat,
+	archived = false,
+	broadcast = false,
+	previousItem,
+	baseUrl,
+	Message_GroupingPeriod,
+	isReadReceiptEnabled,
+	isThreadRoom,
+	useRealName,
+	autoTranslateRoom,
+	autoTranslateLanguage,
+	isIgnored: isIgnoredProp = false,
+	highlighted,
+	getCustomEmoji = () => null,
+	onLongPress: onLongPressProp = () => {},
+	onReactionPress: onReactionPressProp,
+	onEncryptedPress: onEncryptedPressProp,
+	onDiscussionPress: onDiscussionPressProp,
+	onThreadPress: onThreadPressProp,
+	errorActionsShow,
+	replyBroadcast: replyBroadcastProp,
+	reactionInit: reactionInitProp,
+	fetchThreadName,
+	showAttachment,
+	onReactionLongPress: onReactionLongPressProp,
+	navToRoomInfo = () => {},
+	handleEnterCall,
+	blockAction = () => {},
+	onAnswerButtonPress: onAnswerButtonPressProp,
+	threadBadgeColor,
+	toggleFollowThread,
+	jumpToMessage,
+	onPress: onPressProp,
+	closeEmojiAndAction,
+	isBeingEdited,
+	isPreview,
+	dateSeparator,
+	showUnreadSeparator
+}: IMessageContainerProps) => {
+	'use memo';
 
-	state = { isManualUnignored: false };
+	const message = useMessage(item);
+	const { theme } = useTheme();
+	const [isManualUnignored, setIsManualUnignored] = useState(false);
 
-	private subscription?: Function;
+	// Derived values (formerly getters)
+	const hasError = message.status === messagesStatus.ERROR;
 
-	componentDidMount() {
-		const { item } = this.props;
-		// @ts-ignore
-		if (item && item.experimentalSubscribe) {
-			// TODO: Update watermelonDB to recognize experimentalSubscribe at types
-			// experimentalSubscribe(subscriber: (isDeleted: boolean) => void, debugInfo?: any): Unsubscribe
-			// @ts-ignore
-			this.subscription = item.experimentalSubscribe(() => {
-				this.forceUpdate();
-			});
-		}
-	}
-
-	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
-		const { isManualUnignored } = this.state;
-		const {
-			threadBadgeColor,
-			isIgnored,
-			highlighted,
-			previousItem,
-			autoTranslateRoom,
-			autoTranslateLanguage,
-			isBeingEdited,
-			showUnreadSeparator,
-			dateSeparator
-		} = this.props;
-
-		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
-			return true;
-		}
-		if (nextProps.dateSeparator !== dateSeparator) {
-			return true;
-		}
-		if (nextProps.highlighted !== highlighted) {
-			return true;
-		}
-		if (nextProps.threadBadgeColor !== threadBadgeColor) {
-			return true;
-		}
-		if (nextProps.isIgnored !== isIgnored) {
-			return true;
-		}
-		if (nextState.isManualUnignored !== isManualUnignored) {
-			return true;
-		}
-		if (nextProps.previousItem?._id !== previousItem?._id) {
-			return true;
-		}
-		if (isBeingEdited !== nextProps.isBeingEdited) {
-			return true;
-		}
-		if (nextProps.autoTranslateRoom !== autoTranslateRoom) {
-			return true;
-		}
-		if (nextProps.autoTranslateRoom !== autoTranslateRoom || nextProps.autoTranslateLanguage !== autoTranslateLanguage) {
-			return true;
-		}
-		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.subscription) {
-			this.subscription();
-		}
-	}
-
-	onPressAction = () => {
-		const { closeEmojiAndAction } = this.props;
-
-		if (closeEmojiAndAction) {
-			return closeEmojiAndAction(this.onPress);
-		}
-
-		return this.onPress();
-	};
-
-	onPress = debounce(
-		() => {
-			const { onPress } = this.props;
-			if (this.isIgnored) {
-				return this.onIgnoredMessagePress();
-			}
-
-			if (onPress) {
-				return onPress();
-			}
-
-			const { item, isThreadRoom } = this.props;
-			Keyboard.dismiss();
-
-			if ((item.tlm || item.tmid) && !isThreadRoom) {
-				this.onThreadPress();
-			}
-
-			const { onDiscussionPress } = this.props;
-
-			if (item.dlm && onDiscussionPress) {
-				onDiscussionPress(item);
-			}
-		},
-		300,
-		true
-	);
-
-	onLongPress = () => {
-		const { archived, onLongPress, item } = this.props;
-		if (this.isInfo || this.hasError || this.isEncrypted || archived) {
-			return;
-		}
-		if (onLongPress) {
-			onLongPress(item);
-		}
-	};
-
-	onErrorPress = () => {
-		const { errorActionsShow, item } = this.props;
-		if (errorActionsShow) {
-			errorActionsShow(item);
-		}
-	};
-
-	onReactionPress = (emoji: string) => {
-		const { onReactionPress, item } = this.props;
-		if (onReactionPress) {
-			onReactionPress(emoji, item.id);
-		}
-	};
-
-	onReactionLongPress = () => {
-		const { onReactionLongPress, item } = this.props;
-		if (onReactionLongPress) {
-			onReactionLongPress(item);
-		}
-	};
-
-	onEncryptedPress = () => {
-		const { onEncryptedPress } = this.props;
-		if (onEncryptedPress) {
-			onEncryptedPress();
-		}
-	};
-
-	onDiscussionPress = () => {
-		const { onDiscussionPress, item } = this.props;
-		if (onDiscussionPress) {
-			onDiscussionPress(item);
-		}
-	};
-
-	onThreadPress = () => {
-		const { onThreadPress, item } = this.props;
-		if (onThreadPress) {
-			onThreadPress(item);
-		}
-	};
-
-	onAnswerButtonPress = (msg: string) => {
-		const { onAnswerButtonPress } = this.props;
-		if (onAnswerButtonPress) {
-			onAnswerButtonPress(msg, false);
-		}
-	};
-
-	onIgnoredMessagePress = () => {
-		this.setState({ isManualUnignored: true });
-	};
-
-	get isHeader(): boolean {
-		const { item, previousItem, broadcast, Message_GroupingPeriod } = this.props;
-		if (this.hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
+	const isHeader = (() => {
+		if (hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
 			return true;
 		}
 		try {
 			if (
 				previousItem &&
 				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-				previousItem.ts.toDateString() === item.ts.toDateString() &&
-				previousItem.u.username === item.u.username &&
-				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
+				previousItem.ts.toDateString() === message.ts.toDateString() &&
+				previousItem.u?.username === message.u?.username &&
+				!(previousItem.groupable === false || message.groupable === false || broadcast === true) &&
 				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
-				previousItem.tmid === item.tmid &&
-				item.t !== 'rm' &&
+				message.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
+				previousItem.tmid === message.tmid &&
+				message.t !== 'rm' &&
 				previousItem.t !== 'rm'
 			) {
 				return false;
@@ -275,243 +155,273 @@ class MessageContainer extends Component<IMessageContainerProps, IMessageContain
 		} catch (error) {
 			return true;
 		}
-	}
+	})();
 
-	get isThreadReply(): boolean {
-		const { item, previousItem, isThreadRoom } = this.props;
+	const isThreadReply = (() => {
 		if (isThreadRoom) {
 			return false;
 		}
-		if (previousItem && item.tmid && previousItem.tmid !== item.tmid && previousItem.id !== item.tmid) {
+		if (previousItem && message.tmid && previousItem.tmid !== message.tmid && previousItem.id !== message.tmid) {
 			return true;
 		}
 		return false;
-	}
+	})();
 
-	get isThreadSequential(): boolean {
-		const { item, isThreadRoom } = this.props;
+	const isThreadSequential = (() => {
 		if (isThreadRoom) {
 			return false;
 		}
-		return !!item.tmid;
-	}
+		return !!message.tmid;
+	})();
 
-	get isEncrypted(): boolean {
-		const { item } = this.props;
-		const { t, e2e } = item;
-		return t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE;
-	}
+	const isEncrypted = message.t === E2E_MESSAGE_TYPE && message.e2e !== E2E_STATUS.DONE;
 
-	get isInfo(): string | boolean {
-		const { item } = this.props;
-		if (['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(item.t)) {
+	const isInfo: string | boolean = (() => {
+		if (['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(message.t)) {
 			return false;
 		}
-		return item.t;
-	}
+		return message.t;
+	})();
 
-	get isTemp(): boolean {
-		const { item } = this.props;
-		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
-	}
+	const isTemp = message.status === messagesStatus.TEMP || message.status === messagesStatus.ERROR;
 
-	get isIgnored(): boolean {
-		const { isManualUnignored } = this.state;
-		const { isIgnored } = this.props;
-		if (isManualUnignored) {
-			return false;
-		}
-		return isIgnored ?? false;
-	}
+	const isIgnored = isManualUnignored ? false : isIgnoredProp ?? false;
 
-	get hasError(): boolean {
-		const { item } = this.props;
-		return item.status === messagesStatus.ERROR;
-	}
+	// Event handlers
+	const onIgnoredMessagePress = () => {
+		setIsManualUnignored(true);
+	};
 
-	reactionInit = () => {
-		const { reactionInit, item } = this.props;
-		if (reactionInit) {
-			reactionInit(item.id);
+	const onErrorPress = () => {
+		if (errorActionsShow) {
+			errorActionsShow(item);
 		}
 	};
 
-	replyBroadcast = () => {
-		const { replyBroadcast, item } = this.props;
-		if (replyBroadcast) {
-			replyBroadcast(item);
+	const onReactionPress = (emoji: string) => {
+		if (onReactionPressProp) {
+			onReactionPressProp(emoji, message.id);
 		}
 	};
 
-	onLinkPress = (link: string): void => {
-		const { item, jumpToMessage, theme } = this.props;
-		const isMessageLink = item?.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
+	const onReactionLongPress = () => {
+		if (onReactionLongPressProp) {
+			onReactionLongPressProp(item);
+		}
+	};
+
+	const onEncryptedPress = () => {
+		if (onEncryptedPressProp) {
+			onEncryptedPressProp();
+		}
+	};
+
+	const onDiscussionPress = () => {
+		if (onDiscussionPressProp) {
+			onDiscussionPressProp(item);
+		}
+	};
+
+	const onThreadPress = () => {
+		if (onThreadPressProp) {
+			onThreadPressProp(item);
+		}
+	};
+
+	const onAnswerButtonPress = (msg: string) => {
+		if (onAnswerButtonPressProp) {
+			onAnswerButtonPressProp(msg, false);
+		}
+	};
+
+	const reactionInit = () => {
+		if (reactionInitProp) {
+			reactionInitProp(message.id);
+		}
+	};
+
+	const replyBroadcast = () => {
+		if (replyBroadcastProp) {
+			replyBroadcastProp(item);
+		}
+	};
+
+	const onLinkPress = (link: string): void => {
+		const isMessageLink = message.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);
 		}
 		openLink(link, theme);
 	};
 
-	render() {
-		const {
-			item,
-			user,
-			archived,
-			baseUrl,
-			useRealName,
-			broadcast,
-			fetchThreadName,
-			showAttachment,
-			timeFormat,
-			isReadReceiptEnabled,
-			autoTranslateRoom,
-			autoTranslateLanguage,
-			navToRoomInfo = () => {},
-			getCustomEmoji,
-			isThreadRoom,
-			handleEnterCall,
-			blockAction,
-			rid,
-			threadBadgeColor,
-			toggleFollowThread,
-			jumpToMessage,
-			highlighted,
-			isBeingEdited,
-			isPreview,
-			showUnreadSeparator,
-			dateSeparator
-		} = this.props;
-		const {
-			id,
-			msg,
-			ts,
-			attachments,
-			urls,
-			reactions,
-			t,
-			avatar,
-			emoji,
-			u,
-			alias,
-			editedBy,
-			role,
-			drid,
-			dcount,
-			dlm,
-			tmid,
-			tcount,
-			tlm,
-			tmsg,
-			mentions,
-			channels,
-			unread,
-			blocks,
-			autoTranslate: autoTranslateMessage,
-			replies,
-			md,
-			comment,
-			pinned
-		} = item;
+	const onLongPress = () => {
+		if (isInfo || hasError || isEncrypted || archived) {
+			return;
+		}
+		if (onLongPressProp) {
+			onLongPressProp(item);
+		}
+	};
 
-		let message = msg;
-		let isTranslated = false;
-		const otherUserMessage = u?.username !== user?.username;
-		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
-		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
-		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage && otherUserMessage) {
-			const messageTranslated = getMessageTranslation(item, autoTranslateLanguage);
-			isTranslated = !!messageTranslated;
-			message = messageTranslated || message;
+	// Stable debounced onPress — one instance for the component lifetime,
+	// always invoking the latest closure via the ref.
+	const pressHandlerRef = useRef<() => void>(() => {});
+	pressHandlerRef.current = () => {
+		if (isIgnored) {
+			return onIgnoredMessagePress();
 		}
 
-		const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
+		if (onPressProp) {
+			return onPressProp();
+		}
 
-		return (
-			<MessageContext.Provider
-				value={{
-					id,
-					rid,
-					user,
-					baseUrl,
-					onPress: this.onPressAction,
-					onLongPress: this.onLongPress,
-					reactionInit: this.reactionInit,
-					onErrorPress: this.onErrorPress,
-					replyBroadcast: this.replyBroadcast,
-					onReactionPress: this.onReactionPress,
-					onEncryptedPress: this.onEncryptedPress,
-					onDiscussionPress: this.onDiscussionPress,
-					onThreadPress: this.onThreadPress,
-					onReactionLongPress: this.onReactionLongPress,
-					onLinkPress: this.onLinkPress,
-					onAnswerButtonPress: this.onAnswerButtonPress,
-					jumpToMessage,
-					threadBadgeColor,
-					toggleFollowThread,
-					replies,
-					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
-					isEncrypted: this.isEncrypted
-				}}>
-				{/* @ts-ignore*/}
-				<Message
-					id={id}
-					msg={message}
-					md={md}
-					rid={rid}
-					author={u}
-					ts={ts}
-					type={t}
-					attachments={attachments}
-					blocks={blocks}
-					urls={urls}
-					reactions={reactions}
-					alias={alias}
-					avatar={avatar}
-					emoji={emoji}
-					timeFormat={timeFormat}
-					archived={archived}
-					broadcast={broadcast}
-					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled}
-					unread={unread}
-					role={role}
-					drid={drid}
-					dcount={dcount}
-					dlm={dlm}
-					tmid={tmid}
-					tcount={tcount}
-					tlm={tlm}
-					tmsg={tmsg}
-					fetchThreadName={fetchThreadName}
-					mentions={mentions}
-					channels={channels}
-					isIgnored={this.isIgnored}
-					isEdited={(editedBy && !!editedBy.username) ?? false}
-					isHeader={this.isHeader}
-					isThreadReply={this.isThreadReply}
-					isThreadSequential={this.isThreadSequential}
-					isThreadRoom={!!isThreadRoom}
-					isInfo={this.isInfo}
-					isTemp={this.isTemp}
-					isEncrypted={this.isEncrypted}
-					hasError={this.hasError}
-					showAttachment={showAttachment}
-					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo}
-					handleEnterCall={handleEnterCall}
-					blockAction={blockAction}
-					highlighted={highlighted}
-					comment={comment}
-					isTranslated={isTranslated}
-					isBeingEdited={isBeingEdited}
-					isPreview={isPreview}
-					pinned={pinned}
-					autoTranslateLanguage={autoTranslateLanguage}
-				/>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
-			</MessageContext.Provider>
-		);
+		Keyboard.dismiss();
+
+		if ((message.tlm || message.tmid) && !isThreadRoom) {
+			onThreadPress();
+		}
+
+		if (message.dlm && onDiscussionPressProp) {
+			onDiscussionPressProp(item);
+		}
+	};
+	const onPress = useRef(debounce(() => pressHandlerRef.current(), 300, true)).current;
+
+	const onPressAction = () => {
+		if (closeEmojiAndAction) {
+			return closeEmojiAndAction(onPress);
+		}
+		return onPress();
+	};
+
+	const {
+		id,
+		msg,
+		ts,
+		attachments,
+		urls,
+		reactions,
+		t,
+		avatar,
+		emoji,
+		u,
+		alias,
+		editedBy,
+		role,
+		drid,
+		dcount,
+		dlm,
+		tmid,
+		tcount,
+		tlm,
+		tmsg,
+		mentions,
+		channels,
+		unread,
+		blocks,
+		autoTranslate: autoTranslateMessage,
+		replies,
+		md,
+		comment,
+		pinned
+	} = message;
+
+	let messageText = msg;
+	let isTranslated = false;
+	const otherUserMessage = u?.username !== user?.username;
+	if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage && otherUserMessage) {
+		const messageTranslated = getMessageTranslation(item, autoTranslateLanguage);
+		isTranslated = !!messageTranslated;
+		messageText = messageTranslated || messageText;
 	}
-}
 
-export default withTheme(MessageContainer);
+	const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
+
+	return (
+		<MessageContext.Provider
+			value={{
+				id,
+				rid,
+				user,
+				baseUrl,
+				onPress: onPressAction,
+				onLongPress,
+				reactionInit,
+				onErrorPress,
+				replyBroadcast,
+				onReactionPress,
+				onEncryptedPress,
+				onDiscussionPress,
+				onThreadPress,
+				onReactionLongPress,
+				onLinkPress,
+				onAnswerButtonPress,
+				jumpToMessage,
+				threadBadgeColor,
+				toggleFollowThread,
+				replies,
+				translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
+				isEncrypted
+			}}>
+			{/* @ts-ignore*/}
+			<Message
+				id={id}
+				msg={messageText}
+				md={md}
+				rid={rid}
+				author={u}
+				ts={ts}
+				type={t}
+				attachments={attachments}
+				blocks={blocks}
+				urls={urls}
+				reactions={reactions}
+				alias={alias}
+				avatar={avatar}
+				emoji={emoji}
+				timeFormat={timeFormat}
+				archived={archived}
+				broadcast={broadcast}
+				useRealName={useRealName}
+				isReadReceiptEnabled={isReadReceiptEnabled}
+				unread={unread}
+				role={role}
+				drid={drid}
+				dcount={dcount}
+				dlm={dlm}
+				tmid={tmid}
+				tcount={tcount}
+				tlm={tlm}
+				tmsg={tmsg}
+				fetchThreadName={fetchThreadName}
+				mentions={mentions}
+				channels={channels}
+				isIgnored={isIgnored}
+				isEdited={(editedBy && !!editedBy.username) ?? false}
+				isHeader={isHeader}
+				isThreadReply={isThreadReply}
+				isThreadSequential={isThreadSequential}
+				isThreadRoom={!!isThreadRoom}
+				isInfo={isInfo}
+				isTemp={isTemp}
+				isEncrypted={isEncrypted}
+				hasError={hasError}
+				showAttachment={showAttachment}
+				getCustomEmoji={getCustomEmoji}
+				navToRoomInfo={navToRoomInfo}
+				handleEnterCall={handleEnterCall}
+				blockAction={blockAction}
+				highlighted={highlighted}
+				comment={comment}
+				isTranslated={isTranslated}
+				isBeingEdited={isBeingEdited}
+				isPreview={isPreview}
+				pinned={pinned}
+				autoTranslateLanguage={autoTranslateLanguage}
+			/>
+			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
+		</MessageContext.Provider>
+	);
+};
+
+export default memo(MessageContainer, areEqual);
