@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo, type ReactElement } from 'react';
 import { Text, View, type ViewStyle } from 'react-native';
 
 import Touch from '../Touch';
@@ -28,7 +28,7 @@ interface IDirectoryItem {
 	teamMain?: boolean;
 }
 
-const DirectoryItemLabel = React.memo(({ text, color }: IDirectoryItemLabel) => {
+const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}
@@ -46,13 +46,13 @@ const DirectoryItem = ({
 	type,
 	rid,
 	teamMain
-}: IDirectoryItem): React.ReactElement => {
+}: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
 	const height = ROW_HEIGHT * fontScale;
 
 	return (
-		<View accessible accessibilityLabel={`${title || ''} ${rightLabel || ''}`} importantForAccessibility='yes'>
+		<View testID={testID} accessible accessibilityLabel={`${title || ''} ${rightLabel || ''}`} importantForAccessibility='yes'>
 			<Touch onPress={onPress} style={{ backgroundColor: colors.surfaceRoom }} testID={testID}>
 				<View style={[styles.directoryItemContainer, { height }, style]}>
 					<Avatar accessible={false} text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />

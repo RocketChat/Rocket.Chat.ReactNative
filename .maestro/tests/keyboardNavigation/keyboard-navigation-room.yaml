@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Keyboard Navigation Room
 jsEngine: graaljs
 onFlowStart:
@@ -38,6 +38,9 @@ tags:
     visible:
       id: message-composer-input
     timeout: 60000
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
 - inputText: ${output.keyboardMessage}
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right

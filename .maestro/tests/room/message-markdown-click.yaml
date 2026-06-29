@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Message Markdown
 jsEngine: graaljs
 onFlowStart:
@@ -6,7 +6,7 @@ onFlowStart:
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-12
+  - test-9
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}

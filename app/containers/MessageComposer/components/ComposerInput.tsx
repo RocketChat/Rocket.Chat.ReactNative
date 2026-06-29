@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -37,7 +37,8 @@ import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
@@ -53,11 +54,12 @@ export const ComposerInput = memo(
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
-		const textRef = React.useRef('');
-		const firstRender = React.useRef(true);
-		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
+		const textRef = useRef('');
+		const firstRender = useRef(true);
+		const selectionRef = useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const isMasterDetail = useMasterDetail();
+		const altTextSupported = useAltTextSupported();
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
@@ -103,7 +105,7 @@ export const ComposerInput = memo(
 			const fetchMessageAndSetInput = async () => {
 				const message = await getMessageById(selectedMessages[0]);
 				if (message) {
-					setInput(message?.msg || message?.attachments?.[0]?.description || '');
+					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
 				}
 			};
 

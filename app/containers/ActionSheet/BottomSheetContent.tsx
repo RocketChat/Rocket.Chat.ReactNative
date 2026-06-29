@@ -1,5 +1,5 @@
 import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
-import React from 'react';
+import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
@@ -15,14 +15,15 @@ interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
 	hide: () => void;
-	children?: React.ReactElement | null;
+	children?: ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
+	hugContent?: boolean;
 	contentMinHeight?: number;
 	scrollEnabled?: boolean;
 }
 
-const BottomSheetContent = React.memo(
+const BottomSheetContent = memo(
 	({
 		options,
 		hasCancel,
@@ -30,6 +31,7 @@ const BottomSheetContent = React.memo(
 		children,
 		onLayout,
 		fullContainer,
+		hugContent,
 		contentMinHeight,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
@@ -77,7 +79,10 @@ const BottomSheetContent = React.memo(
 			);
 		}
 		return (
-			<View testID='action-sheet' style={fullContainer ? [styles.fullContainer, minHeightStyle] : undefined} onLayout={onLayout}>
+			<View
+				testID='action-sheet'
+				style={fullContainer && !(hugContent && isAndroid) ? [styles.fullContainer, minHeightStyle] : undefined}
+				onLayout={onLayout}>
 				{children}
 			</View>
 		);

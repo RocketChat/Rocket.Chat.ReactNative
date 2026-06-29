@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Create Team and Delete
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
@@ -41,7 +41,8 @@ tags:
     id: 'room-view-messages'
 - assertVisible:
     id: 'room-view-title-${output.teamname}'
-- tapOn: 'private team ${output.teamname} .'
+- tapOn:
+    id: 'room-header'
 - assertVisible:
     id: 'room-actions-info'
 - tapOn:

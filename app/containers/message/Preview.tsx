@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Message from './index';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';

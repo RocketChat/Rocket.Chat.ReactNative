@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text } from 'react-native';
 
 import i18n from '../../i18n';
@@ -20,6 +19,7 @@ const PlaybackSpeed = () => {
 
 	return (
 		<NativeButton
+			testID='playback-speed'
 			accessible
 			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
 			onPress={onPress}

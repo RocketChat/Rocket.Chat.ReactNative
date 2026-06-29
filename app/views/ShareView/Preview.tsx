@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { memo, useState } from 'react';
 import { Video, ResizeMode } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
@@ -9,7 +9,7 @@ import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
-import { THUMBS_HEIGHT } from './constants';
+import { THUMBS_HEIGHT } from '../../containers/Thumbs';
 import { type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type IShareAttachment } from '../../definitions';
@@ -43,7 +43,7 @@ interface IIconPreview {
 	danger?: boolean;
 }
 
-const IconPreview = React.memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
+const IconPreview = memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
 	<ScrollView
 		style={{ backgroundColor: themes[theme].surfaceNeutral }}
 		contentContainerStyle={[styles.fileContainer, { width, height }]}>
@@ -63,7 +63,7 @@ interface IPreview {
 	length: number;
 }
 
-const Preview = React.memo(({ item, theme, length }: IPreview) => {
+const Preview = memo(({ item, theme, length }: IPreview) => {
 	const type = item?.mime;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
@@ -99,7 +99,16 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 
 		if (type?.match(/image/)) {
 			const imageViewerWidth = width - insets.left - insets.right;
-			return <ImageViewer uri={item.path} width={imageViewerWidth} height={calculatedHeight} />;
+			const isAnimated = item.mime === 'image/gif' || /\.gif(\?|$)/i.test(item.path);
+			return (
+				<ImageViewer
+					uri={item.path}
+					width={imageViewerWidth}
+					height={calculatedHeight}
+					altText={item.altText}
+					isAnimated={isAnimated}
+				/>
+			);
 		}
 
 		return (

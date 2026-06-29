@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const OrSeparator = React.memo(() => {
+const OrSeparator = memo(() => {
 	const { colors } = useTheme();
 	const line = { backgroundColor: colors.strokeLight };
 	const text = { color: colors.fontSecondaryInfo };

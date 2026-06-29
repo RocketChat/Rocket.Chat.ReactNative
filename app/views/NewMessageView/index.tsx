@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -17,8 +17,10 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
 import { search as searchMethod } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import UserItem from '../../containers/UserItem';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
+import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
 
 const QUERY_SIZE = 50;
 
@@ -32,14 +34,14 @@ const NewMessageView = () => {
 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 
-	const { isMasterDetail, maxUsers, useRealName } = useAppSelector(
+	const { maxUsers, useRealName } = useAppSelector(
 		state => ({
-			isMasterDetail: state.app.isMasterDetail,
 			maxUsers: (state.settings.DirectMesssage_maxUsers as number) || 1,
 			useRealName: state.settings.UI_Use_Real_Name as boolean
 		}),
 		shallowEqual
 	);
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -88,9 +90,11 @@ const NewMessageView = () => {
 				renderItem={({ item }) => {
 					const itemSearch = item as ISearch;
 					const itemModel = item as TSubscriptionModel;
+					const userId = itemSearch.search ? itemSearch._id : getUidDirectMessage(itemModel);
 
 					return (
-						<UserItem
+						<Item
+							userId={userId}
 							name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
 							username={itemSearch.search ? itemSearch.username : itemModel.name}
 							onPress={() => goRoom(itemModel)}
@@ -100,7 +104,7 @@ const NewMessageView = () => {
 				}}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
+				style={{ backgroundColor: colors.surfaceTint }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>
