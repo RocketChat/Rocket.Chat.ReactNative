@@ -4,6 +4,7 @@ import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -23,6 +24,7 @@ const JitsiMeetView = (): ReactElement => {
 	const { goBack } = useNavigation();
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverUrl = useAppSelector(state => state.server.server);
+	const { bottom } = useSafeAreaInsets();
 
 	const [authModal, setAuthModal] = useState(false);
 	const [cookiesSet, setCookiesSet] = useState(false);
@@ -117,7 +119,7 @@ const JitsiMeetView = (): ReactElement => {
 					}}
 					onNavigationStateChange={onNavigationStateChange}
 					onShouldStartLoadWithRequest={onNavigationStateChange}
-					style={styles.webviewContainer}
+					style={[styles.webviewContainer, { marginBottom: bottom }]}
 					userAgent={userAgent}
 					javaScriptEnabled
 					domStorageEnabled
