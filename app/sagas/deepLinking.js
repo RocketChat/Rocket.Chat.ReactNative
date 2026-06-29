@@ -128,10 +128,16 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+let consumedOAuthToken;
+
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
+	if (!credentialToken || !credentialSecret || credentialToken === consumedOAuthToken) {
+		return;
+	}
+	consumedOAuthToken = credentialToken;
 	try {
-		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
 	} catch (e) {
 		log(e);
 	}
