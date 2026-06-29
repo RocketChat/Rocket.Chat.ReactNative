@@ -54,13 +54,13 @@ A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style er
 
 ## Quick comparison
 
-|                                                 | iOS                                           | Android                                     |
-| ----------------------------------------------- | --------------------------------------------- | ------------------------------------------- |
-| Enrollment change on the item                   | item **deleted**                              | key **invalidated**, not deleted            |
-| Usual `verify()` kind after a change            | `unavailable` (silent existence check)        | `enrollmentChanged` (read raises exception) |
-| Native signal classified to `enrollmentChanged` | `errSecItemNotFound` / `-25300` (post-prompt) | `KeyPermanentlyInvalidatedException`        |
-| Cancel signal                                   | `errSecUserCancel` / `-128`                   | `AuthenticationCanceled` / `UserCancel`     |
+|                                                 | iOS                                           | Android                                                |
+| ----------------------------------------------- | --------------------------------------------- | ------------------------------------------------------ |
+| Enrollment change on the item                   | item **deleted**                              | key **invalidated**, not deleted                       |
+| Usual `verify()` kind after a change            | `unavailable` (silent existence check)        | `enrollmentChanged` (read raises exception)            |
+| Native signal classified to `enrollmentChanged` | `errSecItemNotFound` / `-25300` (post-prompt) | `KeyPermanentlyInvalidatedException`                   |
+| Cancel signal                                   | `errSecUserCancel` / `-128`                   | `AuthenticationCanceled` / `UserCancel`                |
 | Silent at-rest enrollment check                 | `hasEnrollment()` (item deleted on change)    | native probe key `isEnrollmentValid()` (`cipher.init`) |
-| Sentinel survives device migration?             | no (`THIS_DEVICE_ONLY`)                       | no (`THIS_DEVICE_ONLY`)                     |
+| Sentinel survives device migration?             | no (`THIS_DEVICE_ONLY`)                       | no (`THIS_DEVICE_ONLY`)                                |
 
 In all cases the user-facing result is the same fail-closed behaviour: biometric unlock is dropped and the passcode is required.

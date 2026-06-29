@@ -63,16 +63,16 @@ The `unavailable` kind is **not** produced by `classifyError`. It is returned by
 
 The `biometricTrustStore` singleton (`index.ts`) implements:
 
-| Method                              | Prompts?        | Purpose                                                                                                                                                                           |
-| ----------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `enroll()`                          | no              | Write the sentinel (and, on Android, bind the native probe key — see below). On success also sets the migration marker (see below). Returns `TrustResult`.                       |
-| `disenroll()`                       | no              | Delete the sentinel (and the Android probe key). Best-effort; swallows errors (item may already be gone).                                                                        |
-| `verify({ promptCopy })`            | **yes**         | Probe the sentinel; if present, read it back behind the OS biometric sheet. Returns `TrustResult`.                                                                               |
-| `hasEnrollment()`                   | no              | Silent existence check for the sentinel.                                                                                                                                          |
-| `isEnrollmentValid()`               | no              | Silent check that the _current_ enrollment still matches what trust was bound to. iOS always returns `true` (the sentinel already covers changes); Android consults the native probe key. Returns `false` only on a detected Android enrollment change. See `PLATFORMS.md`. |
-| `isEnabled()` / `setEnabled(b)`     | no              | Own the persisted `BIOMETRY_ENABLED_KEY` flag so callers never touch `UserPreferences` directly.                                                                                  |
-| `isRelockPending()` / `setRelockPending(b)` | no      | Own the persisted relock marker (see "persisted state" below). Set when an enrollment change is detected at a point that cannot show the passcode itself (the init migration), so the next unlock is forced to demand it regardless of the auto-lock window. |
-| `setBiometryEnabled(b)`             | yes if enabling | One-shot toggle: enroll+enable or disenroll+disable, keeping keychain state and the flag in sync. Returns the enroll `TrustResult` so the caller can roll back its UI on failure. |
+| Method                                      | Prompts?        | Purpose                                                                                                                                                                                                                                                                     |
+| ------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enroll()`                                  | no              | Write the sentinel (and, on Android, bind the native probe key — see below). On success also sets the migration marker (see below). Returns `TrustResult`.                                                                                                                  |
+| `disenroll()`                               | no              | Delete the sentinel (and the Android probe key). Best-effort; swallows errors (item may already be gone).                                                                                                                                                                   |
+| `verify({ promptCopy })`                    | **yes**         | Probe the sentinel; if present, read it back behind the OS biometric sheet. Returns `TrustResult`.                                                                                                                                                                          |
+| `hasEnrollment()`                           | no              | Silent existence check for the sentinel.                                                                                                                                                                                                                                    |
+| `isEnrollmentValid()`                       | no              | Silent check that the _current_ enrollment still matches what trust was bound to. iOS always returns `true` (the sentinel already covers changes); Android consults the native probe key. Returns `false` only on a detected Android enrollment change. See `PLATFORMS.md`. |
+| `isEnabled()` / `setEnabled(b)`             | no              | Own the persisted `BIOMETRY_ENABLED_KEY` flag so callers never touch `UserPreferences` directly.                                                                                                                                                                            |
+| `isRelockPending()` / `setRelockPending(b)` | no              | Own the persisted relock marker (see "persisted state" below). Set when an enrollment change is detected at a point that cannot show the passcode itself (the init migration), so the next unlock is forced to demand it regardless of the auto-lock window.                |
+| `setBiometryEnabled(b)`                     | yes if enabling | One-shot toggle: enroll+enable or disenroll+disable, keeping keychain state and the flag in sync. Returns the enroll `TrustResult` so the caller can roll back its UI on failure.                                                                                           |
 
 ### Pieces of persisted state
 
@@ -108,12 +108,12 @@ On iOS these helpers are no-ops that resolve `true` (the sentinel already covers
 
 It is a pure function of three inputs: **flag** (`isEnabled()`), **sentinel** (`hasEnrollment()`), **marker** (the migration bool).
 
-| flag  | sentinel |  marker   | Action                                            | Why                                                                  |
-| :---: | :------: | :-------: | ------------------------------------------------- | -------------------------------------------------------------------- |
-| false |    —     |     —     | no-op                                             | biometry not enabled; nothing to reconcile                           |
-| true  | present  |     —     | no-op                                             | healthy: flag and sentinel agree                                     |
-| true  |  absent  | **false** | `enroll()`, set marker, `setRelockPending(true)`  | **grandfather**: pre-feature user, bind a sentinel once and force a confirming passcode |
-| true  |  absent  | **true**  | `setEnabled(false)`, `setRelockPending(true)`, no enroll | **reconciliation**: flag/sentinel desync, clear the flag and force the passcode |
+| flag  | sentinel |  marker   | Action                                                   | Why                                                                                     |
+| :---: | :------: | :-------: | -------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| false |    —     |     —     | no-op                                                    | biometry not enabled; nothing to reconcile                                              |
+| true  | present  |     —     | no-op                                                    | healthy: flag and sentinel agree                                                        |
+| true  |  absent  | **false** | `enroll()`, set marker, `setRelockPending(true)`         | **grandfather**: pre-feature user, bind a sentinel once and force a confirming passcode |
+| true  |  absent  | **true**  | `setEnabled(false)`, `setRelockPending(true)`, no enroll | **reconciliation**: flag/sentinel desync, clear the flag and force the passcode         |
 
 If `enroll()` fails during the grandfather path, the marker and the relock marker are intentionally left unset so the next boot retries, and the flag is left as-is so the next unlock falls into `verify()`'s `unavailable` branch and asks for the passcode.
 
