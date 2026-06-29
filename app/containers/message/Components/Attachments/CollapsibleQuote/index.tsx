@@ -93,7 +93,7 @@ const AttText = memo(
 			return null;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
+		return <Markdown msg={text} username={user?.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
@@ -116,7 +116,7 @@ const Fields = memo(
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
 							{field.title}
 						</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
+						<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</>

@@ -23,8 +23,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, msg }: IMessageAudioProps)
 
 	return (
 		<View style={{ gap: 4 }}>
-			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
-			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid} />
+			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
+			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid ?? ''} />
 		</View>
 	);
 };

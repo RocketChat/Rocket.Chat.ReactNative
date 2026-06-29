@@ -2,6 +2,8 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
+import MessageContext from './Context';
+import { type ICustomEmoji } from '../../definitions/IEmoji';
 import { E2E_MESSAGE_TYPE } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import { themes } from '../../lib/constants/colors';
@@ -62,13 +64,38 @@ const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
 	height: 800
 });
 
-const getCustomEmoji = (content: string) => {
+const getCustomEmoji = (content: string): ICustomEmoji | null => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
 		nyan_rocket: { name: content, extension: 'png' }
 	}[content];
-	return customEmoji;
+	return customEmoji ?? null;
+};
+
+const storyContextValue = {
+	user,
+	baseUrl,
+	onPress: () => {},
+	onLongPress: () => {},
+	reactionInit: () => {},
+	onErrorPress: () => {},
+	replyBroadcast: () => {},
+	onReactionPress: () => {},
+	onEncryptedPress: () => {},
+	onDiscussionPress: () => {},
+	onThreadPress: () => {},
+	onReactionLongPress: () => {},
+	onLinkPress: () => {},
+	onAnswerButtonPress: () => {},
+	jumpToMessage: () => {},
+	threadBadgeColor: themes[_theme].badgeBackgroundLevel1,
+	getCustomEmoji,
+	navToRoomInfo: () => {},
+	showAttachment: undefined,
+	blockAction: undefined,
+	handleEnterCall: undefined,
+	fetchThreadName: undefined
 };
 
 export default {
@@ -85,36 +112,38 @@ export default {
 };
 
 export const Message = (props: any) => (
-	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
-		<MessageComponent
-			baseUrl={baseUrl}
-			user={user}
-			author={author}
-			ts={date}
-			timeFormat='LT'
-			isHeader
-			getCustomEmoji={getCustomEmoji}
-			theme={_theme}
-			{...props}
-		/>
-	</ResponsiveLayoutContext.Provider>
+	<MessageContext.Provider value={storyContextValue}>
+		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
+			<MessageComponent
+				baseUrl={baseUrl}
+				user={user}
+				author={author}
+				ts={date}
+				timeFormat='LT'
+				isHeader
+				theme={_theme}
+				{...props}
+			/>
+		</ResponsiveLayoutContext.Provider>
+	</MessageContext.Provider>
 );
 
 // The large font components are not perfect because the text's font scale increases only with the device's font size setting.
 const MessageLargeFont = (props: any) => (
-	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(FONT_SCALE_LIMIT)}>
-		<MessageComponent
-			baseUrl={baseUrl}
-			user={user}
-			author={author}
-			ts={date}
-			timeFormat='LT'
-			isHeader
-			getCustomEmoji={getCustomEmoji}
-			theme={_theme}
-			{...props}
-		/>
-	</ResponsiveLayoutContext.Provider>
+	<MessageContext.Provider value={storyContextValue}>
+		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(FONT_SCALE_LIMIT)}>
+			<MessageComponent
+				baseUrl={baseUrl}
+				user={user}
+				author={author}
+				ts={date}
+				timeFormat='LT'
+				isHeader
+				theme={_theme}
+				{...props}
+			/>
+		</ResponsiveLayoutContext.Provider>
+	</MessageContext.Provider>
 );
 
 export const Basic = () => (

@@ -18,7 +18,7 @@ const Content = memo(
 		'use memo';
 
 		const { theme } = useTheme();
-		const { user, onLinkPress } = useContext(MessageContext);
+		const { user, onLinkPress, getCustomEmoji = () => null, navToRoomInfo } = useContext(MessageContext);
 
 		if (props.isInfo) {
 			// @ts-ignore
@@ -32,7 +32,18 @@ const Content = memo(
 			if (messageHaveAuthorName(props.type as MessageTypesValues)) {
 				return (
 					<Text>
-						<User {...props} /> {renderMessageContent}
+						<User
+							hasError={props.hasError}
+							type={props.type}
+							isEdited={props.isEdited}
+							isTranslated={props.isTranslated}
+							isHeader={props.isHeader}
+							useRealName={props.useRealName}
+							author={props.author}
+							alias={props.alias}
+							pinned={props.pinned}
+						/>{' '}
+						{renderMessageContent}
 					</Text>
 				);
 			}
@@ -64,11 +75,11 @@ const Content = memo(
 				<Markdown
 					msg={props.msg}
 					md={props.type !== 'e2e' ? props.md : undefined}
-					getCustomEmoji={props.getCustomEmoji}
-					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					username={user?.username ?? ''}
 					channels={props.channels}
 					mentions={props.mentions}
-					navToRoomInfo={props.navToRoomInfo}
+					navToRoomInfo={navToRoomInfo}
 					useRealName={props.useRealName}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}

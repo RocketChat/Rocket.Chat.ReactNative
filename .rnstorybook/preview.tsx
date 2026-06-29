@@ -35,7 +35,13 @@ const preview: Preview = {
 						onReactionPress: () => {},
 						onDiscussionPress: () => {},
 						onReactionLongPress: () => {},
-						threadBadgeColor: themes.light.badgeBackgroundLevel1
+						threadBadgeColor: themes.light.badgeBackgroundLevel1,
+						getCustomEmoji: () => null,
+						navToRoomInfo: () => {},
+						showAttachment: undefined,
+						blockAction: undefined,
+						handleEnterCall: undefined,
+						fetchThreadName: undefined
 					}}>
 					<Story />
 				</MessageContext.Provider>

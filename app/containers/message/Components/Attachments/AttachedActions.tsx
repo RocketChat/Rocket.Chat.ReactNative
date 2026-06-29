@@ -25,7 +25,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 	const attachedButtons = attachment.actions.map((element: TElement) => {
 		const onPress = () => {
 			if (element.msg) {
-				onAnswerButtonPress(element.msg);
+				onAnswerButtonPress?.(element.msg);
 			}
 
 			if (element.url) {

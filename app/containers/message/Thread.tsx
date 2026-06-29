@@ -39,9 +39,9 @@ const Thread = memo(
 						replies,
 						id
 					}}
-					user={user}
+					user={{ id: user?.id ?? '' }}
 					badgeColor={threadBadgeColor}
-					toggleFollowThread={toggleFollowThread}
+					toggleFollowThread={toggleFollowThread as Function}
 					style={styles.threadDetails}
 				/>
 			</View>

@@ -16,10 +16,10 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 	return <View style={{ width, alignItems: 'flex-end' }}>{children}</View>;
 };
 
-const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
+const MessageAvatar = memo(({ isHeader, avatar, author, small, emoji }: IMessageAvatar) => {
 	'use memo';
 
-	const { user } = useContext(MessageContext);
+	const { user, navToRoomInfo, getCustomEmoji } = useContext(MessageContext);
 	const { fontScaleLimited } = useResponsiveLayout();
 	const smallSize = 20 * fontScaleLimited;
 	const normalSize = AVATAR_BASE_SIZE * fontScaleLimited;
@@ -27,10 +27,10 @@ const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, em
 
 	if (isHeader && author) {
 		const onPress = () =>
-			navToRoomInfo({
+			navToRoomInfo?.({
 				t: SubscriptionType.DIRECT,
 				rid: author._id,
-				itsMe: author._id === user.id
+				itsMe: author._id === user?.id
 			});
 
 		return (
@@ -41,7 +41,7 @@ const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, em
 					size={size}
 					borderRadius={4}
 					onPress={onPress}
-					getCustomEmoji={getCustomEmoji}
+					getCustomEmoji={getCustomEmoji ?? (() => null)}
 					avatar={avatar}
 					emoji={emoji}
 				/>

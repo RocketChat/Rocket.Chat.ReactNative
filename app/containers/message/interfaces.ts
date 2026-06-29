@@ -10,16 +10,12 @@ import {
 	type IUrl,
 	type IUserMention,
 	type IUserMessage,
-	type MessageType,
-	type TAnyMessageModel
+	type MessageType
 } from '../../definitions';
-import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 
 export interface IMessageAttachments {
 	attachments?: IAttachment[];
 	timeFormat?: string;
-	showAttachment?: (file: IAttachment) => void;
-	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 }
 
@@ -29,15 +25,12 @@ export interface IMessageAvatar {
 	emoji?: string;
 	author?: IUserMessage;
 	small?: boolean;
-	navToRoomInfo: (navParam: IRoomInfoParam) => void;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessageBlocks {
-	blocks: { appId?: string }[];
+	blocks?: { appId?: string }[];
 	id: string;
 	rid: string;
-	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 }
 
 export interface IMessageBroadcast {
@@ -45,12 +38,8 @@ export interface IMessageBroadcast {
 	broadcast?: boolean;
 }
 
-export interface IMessageCallButton {
-	handleEnterCall?: () => void;
-}
-
 export interface IMessageContent {
-	_id: string;
+	_id?: string;
 	isTemp: boolean;
 	isInfo: string | boolean;
 	tmid?: string;
@@ -59,10 +48,8 @@ export interface IMessageContent {
 	md?: Root;
 	isEdited: boolean;
 	isEncrypted: boolean;
-	getCustomEmoji: TGetCustomEmoji;
 	channels?: IUserChannel[];
 	mentions?: IUserMention[];
-	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	useRealName?: boolean;
 	isIgnored: boolean;
 	type: MessageType;
@@ -73,6 +60,9 @@ export interface IMessageContent {
 	pinned?: boolean;
 	attachments?: IAttachment[];
 	autoTranslateLanguage?: string;
+	author?: IUserMessage;
+	alias?: string;
+	role?: string;
 }
 
 export interface IMessageEmoji {
@@ -104,35 +94,5 @@ export interface IMessageTouchable {
 
 export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {
 	isHeader: boolean;
-	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	isEncrypted: boolean;
-}
-
-export interface IMessageInner
-	extends IMessageContent,
-		IMessageCallButton,
-		IMessageBlocks,
-		IMessageThread,
-		IMessageAttachments,
-		IMessageBroadcast {
-	type: MessageType;
-	blocks: [];
-	urls?: IUrl[];
-	isPreview?: boolean;
-}
-
-export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {
-	isThreadReply: boolean;
-	isThreadSequential: boolean;
-	isInfo: string | boolean;
-	isTemp: boolean;
-	isHeader: boolean;
-	hasError: boolean;
-	onLongPress?: (item: TAnyMessageModel) => void;
-	isReadReceiptEnabled?: boolean;
-	unread?: boolean;
-	isIgnored: boolean;
-	dcount: number | undefined;
-	dlm: string | Date | undefined;
-	autoTranslateLanguage?: string;
 }

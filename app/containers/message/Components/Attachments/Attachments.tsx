@@ -14,10 +14,10 @@ import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
 
 const Attachments: FC<IMessageAttachments> = memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, author }: IMessageAttachments) => {
 		'use memo';
 
-		const { translateLanguage } = useContext(MessageContext);
+		const { translateLanguage, showAttachment, getCustomEmoji = () => null } = useContext(MessageContext);
 
 		const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 
@@ -87,7 +87,6 @@ const Attachments: FC<IMessageAttachments> = memo(
 						attachment={file}
 						timeFormat={timeFormat}
 						getCustomEmoji={getCustomEmoji}
-						showAttachment={showAttachment}
 						msg={msg}
 					/>
 				);

@@ -1,13 +1,14 @@
 import { renderHook } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
-import { type IMessage, type IMessageTouchable } from '../interfaces';
+import { type IMessageContent, type IMessageTouchable } from '../interfaces';
 
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
 
-type TProps = IMessage & IMessageTouchable;
+type TProps = IMessageContent &
+	IMessageTouchable & { isThreadSequential?: boolean; isReadReceiptEnabled?: boolean; unread?: boolean | null };
 
 const FIXED_TS = new Date('2024-01-15T12:34:56Z');
 const HOUR = FIXED_TS.toLocaleTimeString();

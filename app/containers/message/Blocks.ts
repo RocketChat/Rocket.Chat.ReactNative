@@ -1,10 +1,13 @@
-import { createElement } from 'react';
+import { createElement, useContext } from 'react';
 
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 import { type IMessageBlocks } from './interfaces';
+import MessageContext from './Context';
 
-const Blocks = ({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
+const Blocks = ({ blocks, id: mid, rid }: IMessageBlocks) => {
 	'use memo';
+
+	const { blockAction } = useContext(MessageContext);
 
 	if (blocks && blocks.length > 0) {
 		const appId = blocks[0]?.appId || '';

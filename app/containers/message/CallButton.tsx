@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -7,13 +7,13 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants/colors';
-import { type IMessageCallButton } from './interfaces';
 import { useTheme } from '../../theme';
+import MessageContext from './Context';
 
-// TODO: Create a reusable button component for message
-const CallButton = memo(({ handleEnterCall }: IMessageCallButton) => {
+const CallButton = memo(() => {
 	'use memo';
 
+	const { handleEnterCall } = useContext(MessageContext);
 	const { theme } = useTheme();
 	return (
 		<View style={styles.buttonContainer}>

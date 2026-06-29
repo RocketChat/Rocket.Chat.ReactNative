@@ -11,7 +11,9 @@ const mockMessageContext = {
 	baseUrl: 'https://open.rocket.chat',
 	user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
 	onLongPress: () => {},
-	translateLanguage: undefined
+	translateLanguage: undefined,
+	getCustomEmoji: () => null,
+	showAttachment: undefined
 };
 
 const MOCK_IMAGE_1 = {
@@ -54,7 +56,7 @@ export const SingleImageOldServer = () => (
 	<Provider store={oldServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>
@@ -65,7 +67,7 @@ export const SingleImageNewServer = () => (
 	<Provider store={newServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>
@@ -76,7 +78,7 @@ export const SingleImageNoAlt = () => (
 	<Provider store={newServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={[MOCK_IMAGE_1]} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={[MOCK_IMAGE_1]} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>
@@ -87,7 +89,7 @@ export const MultipleImagesNewServer = () => (
 	<Provider store={newServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={MOCK_MULTIPLE_IMAGES} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={MOCK_MULTIPLE_IMAGES} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>
@@ -98,7 +100,7 @@ export const MultipleImagesOldServer = () => (
 	<Provider store={oldServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>

@@ -10,7 +10,6 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IReaction {
 	_id: string;
@@ -20,13 +19,11 @@ interface IReaction {
 
 interface IMessageReaction {
 	reaction: IReaction;
-	getCustomEmoji: TGetCustomEmoji;
 	theme: TSupportedThemes;
 }
 
 interface IMessageReactions {
 	reactions?: IReaction[];
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 const AddReaction = memo(({ theme }: { theme: TSupportedThemes }) => {
@@ -52,16 +49,16 @@ const AddReaction = memo(({ theme }: { theme: TSupportedThemes }) => {
 	);
 });
 
-const Reaction = memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
+const Reaction = memo(({ reaction, theme }: IMessageReaction) => {
 	'use memo';
 
-	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
+	const { onReactionPress, onReactionLongPress, user, getCustomEmoji } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
-	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
+	const reacted = reaction.usernames.findIndex((item: string) => item === user?.username) !== -1;
 	return (
 		<Touchable
-			onPress={() => onReactionPress(reaction.emoji)}
+			onPress={() => onReactionPress?.(reaction.emoji)}
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
@@ -80,7 +77,7 @@ const Reaction = memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) =>
 					content={reaction.emoji}
 					standardEmojiStyle={styles.reactionEmoji}
 					customEmojiStyle={styles.reactionCustomEmoji}
-					getCustomEmoji={getCustomEmoji}
+					getCustomEmoji={getCustomEmoji ?? (() => null)}
 				/>
 				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
@@ -88,7 +85,7 @@ const Reaction = memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) =>
 	);
 });
 
-const Reactions = memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
+const Reactions = memo(({ reactions }: IMessageReactions) => {
 	'use memo';
 
 	const { theme } = useTheme();
@@ -99,7 +96,7 @@ const Reactions = memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
 	return (
 		<View style={styles.reactionsContainer}>
 			{reactions.map(reaction => (
-				<Reaction key={reaction.emoji} reaction={reaction} getCustomEmoji={getCustomEmoji} theme={theme} />
+				<Reaction key={reaction.emoji} reaction={reaction} theme={theme} />
 			))}
 			<AddReaction theme={theme} />
 		</View>

@@ -22,6 +22,8 @@ const initialMockedStoreState = () => {
 
 initialMockedStoreState();
 
+const getCustomEmoji = jest.fn();
+
 const TestWrapper = ({ initialReactions }: { initialReactions: IReaction[] }) => {
 	const [reactions, setReactions] = useState<IReaction[]>(initialReactions);
 	const handleReactionPress = (emoji: string) => {
@@ -35,15 +37,14 @@ const TestWrapper = ({ initialReactions }: { initialReactions: IReaction[] }) =>
 					user: { username: 'john' },
 					reactionInit: jest.fn(),
 					onReactionPress: handleReactionPress,
-					onReactionLongPress: jest.fn()
+					onReactionLongPress: jest.fn(),
+					getCustomEmoji
 				}}>
-				<Reactions reactions={reactions} getCustomEmoji={getCustomEmoji} />
+				<Reactions reactions={reactions} />
 			</MessageContext.Provider>
 		</Provider>
 	);
 };
-
-const getCustomEmoji = jest.fn();
 
 it('renders all reactions and AddReaction button', () => {
 	const reactions: IReaction[] = [

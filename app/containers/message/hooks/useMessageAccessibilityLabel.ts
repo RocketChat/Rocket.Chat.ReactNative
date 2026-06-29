@@ -1,17 +1,24 @@
 import i18n from '../../../i18n';
 import translationLanguages from '../../../lib/constants/translationLanguages';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
-import { type IMessage, type IMessageTouchable } from '../interfaces';
+import { type IMessageContent, type IMessageTouchable } from '../interfaces';
 import { getInfoMessage } from '../utils';
 
-const stripMentions = (label: string, mentions: IMessage['mentions'] = [], channels: IMessage['channels'] = []) => {
+type TMessageLabelProps = IMessageContent &
+	IMessageTouchable & {
+		isThreadSequential?: boolean;
+		isReadReceiptEnabled?: boolean;
+		unread?: boolean | null;
+	};
+
+const stripMentions = (label: string, mentions: IMessageContent['mentions'] = [], channels: IMessageContent['channels'] = []) => {
 	let result = label;
-	mentions.forEach(item => {
+	mentions?.forEach(item => {
 		if (item?.username) {
 			result = result.replaceAll(`@${item.username}`, item.username);
 		}
 	});
-	channels.forEach(item => {
+	channels?.forEach(item => {
 		if (item?.name) {
 			result = result.replaceAll(`#${item.name}`, item.name);
 		}
@@ -19,7 +26,7 @@ const stripMentions = (label: string, mentions: IMessage['mentions'] = [], chann
 	return result;
 };
 
-export const useMessageAccessibilityLabel = (props: IMessage & IMessageTouchable): string => {
+export const useMessageAccessibilityLabel = (props: TMessageLabelProps): string => {
 	const imageDescriptionLabel = useImageDescriptionLabel(props.attachments, props.msg);
 	const msg = props?.msg || '';
 	const threadMessageLabel = i18n.t('Thread_message', { msg });
@@ -39,7 +46,7 @@ export const useMessageAccessibilityLabel = (props: IMessage & IMessageTouchable
 	}
 	label = stripMentions(label, props.mentions, props.channels);
 
-	const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
+	const hour = props.ts ? new Date(props.ts as Date).toLocaleTimeString() : '';
 	const user = props.useRealName ? props.author?.name : props.author?.username || '';
 	const readOrUnreadLabel = !props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';

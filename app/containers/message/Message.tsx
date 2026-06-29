@@ -16,7 +16,16 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { type IMessage, type IMessageInner, type IMessageTouchable } from './interfaces';
+import {
+	type IMessageAttachments,
+	type IMessageAvatar,
+	type IMessageBlocks,
+	type IMessageBroadcast,
+	type IMessageContent,
+	type IMessageRepliedThread,
+	type IMessageThread,
+	type IMessageTouchable
+} from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 import { WidthAwareView } from './Components/WidthAwareView';
@@ -29,7 +38,29 @@ import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLab
 import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
 
-const MessageInner = memo((props: IMessageInner) => {
+type TMessageProps = IMessageContent &
+	IMessageAttachments &
+	IMessageThread &
+	IMessageBlocks &
+	IMessageBroadcast &
+	IMessageAvatar &
+	IMessageRepliedThread &
+	IMessageTouchable & {
+		isReadReceiptEnabled?: boolean;
+		unread?: boolean;
+		dcount?: number;
+		dlm?: Date | string;
+		isThreadSequential: boolean;
+		isPreview?: boolean;
+	};
+
+interface IMessageA11y {
+	accessibilityActions?: AccessibilityActionInfo[];
+	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
+	handleLongPress?: () => void;
+}
+
+const MessageInner = memo((props: TMessageProps) => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const showTimeLarge = isLargeFontScale && props.isHeader;
 
@@ -37,14 +68,52 @@ const MessageInner = memo((props: IMessageInner) => {
 	if (props.isPreview) {
 		content = (
 			<>
-				<User {...props} />
-				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<User
+					isHeader={props.isHeader}
+					hasError={props.hasError}
+					useRealName={props.useRealName}
+					author={props.author}
+					alias={props.alias}
+					ts={props.ts as Date | undefined}
+					timeFormat={props.timeFormat}
+					isEdited={props.isEdited}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					pinned={props.pinned}
+					isTranslated={props.isTranslated}
+					type={props.type}
+				/>
+				{showTimeLarge ? <MessageTime ts={props.ts as Date | undefined} timeFormat={props.timeFormat} /> : null}
 				<>
-					<Quote {...props} />
-					<Content {...props} />
-					<Attachments {...props} />
+					<Quote attachments={props.attachments} timeFormat={props.timeFormat} author={props.author} />
+					<Content
+						isTemp={props.isTemp}
+						isInfo={props.isInfo}
+						tmid={props.tmid}
+						isThreadRoom={props.isThreadRoom}
+						msg={props.msg}
+						md={props.md}
+						isEdited={props.isEdited}
+						isEncrypted={props.isEncrypted}
+						channels={props.channels}
+						mentions={props.mentions}
+						useRealName={props.useRealName}
+						isIgnored={props.isIgnored}
+						type={props.type}
+						comment={props.comment}
+						hasError={props.hasError}
+						isHeader={props.isHeader}
+						isTranslated={props.isTranslated}
+						pinned={props.pinned}
+						attachments={props.attachments}
+						autoTranslateLanguage={props.autoTranslateLanguage}
+						author={props.author}
+						alias={props.alias}
+						role={props.role}
+					/>
+					<Attachments attachments={props.attachments} timeFormat={props.timeFormat} author={props.author} />
 				</>
-				<Urls {...props} />
+				<Urls urls={props.urls} />
 			</>
 		);
 	}
@@ -52,9 +121,23 @@ const MessageInner = memo((props: IMessageInner) => {
 	if (props.type === 'discussion-created') {
 		content = (
 			<>
-				<User {...props} />
-				{showTimeLarge ? <MessageTime {...props} /> : null}
-				<Discussion {...props} />
+				<User
+					isHeader={props.isHeader}
+					hasError={props.hasError}
+					useRealName={props.useRealName}
+					author={props.author}
+					alias={props.alias}
+					ts={props.ts as Date | undefined}
+					timeFormat={props.timeFormat}
+					isEdited={props.isEdited}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					pinned={props.pinned}
+					isTranslated={props.isTranslated}
+					type={props.type}
+				/>
+				{showTimeLarge ? <MessageTime ts={props.ts as Date | undefined} timeFormat={props.timeFormat} /> : null}
+				<Discussion msg={props.msg} dcount={props.dcount} dlm={props.dlm} />
 			</>
 		);
 	}
@@ -62,10 +145,48 @@ const MessageInner = memo((props: IMessageInner) => {
 	if (props.type === 'jitsi_call_started') {
 		content = (
 			<>
-				<User {...props} />
-				<Content {...props} isInfo />
-				<CallButton {...props} />
-				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<User
+					isHeader={props.isHeader}
+					hasError={props.hasError}
+					useRealName={props.useRealName}
+					author={props.author}
+					alias={props.alias}
+					ts={props.ts as Date | undefined}
+					timeFormat={props.timeFormat}
+					isEdited={props.isEdited}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					pinned={props.pinned}
+					isTranslated={props.isTranslated}
+					type={props.type}
+				/>
+				<Content
+					isTemp={props.isTemp}
+					isInfo
+					tmid={props.tmid}
+					isThreadRoom={props.isThreadRoom}
+					msg={props.msg}
+					md={props.md}
+					isEdited={props.isEdited}
+					isEncrypted={props.isEncrypted}
+					channels={props.channels}
+					mentions={props.mentions}
+					useRealName={props.useRealName}
+					isIgnored={props.isIgnored}
+					type={props.type}
+					comment={props.comment}
+					hasError={props.hasError}
+					isHeader={props.isHeader}
+					isTranslated={props.isTranslated}
+					pinned={props.pinned}
+					attachments={props.attachments}
+					autoTranslateLanguage={props.autoTranslateLanguage}
+					author={props.author}
+					alias={props.alias}
+					role={props.role}
+				/>
+				<CallButton />
+				{showTimeLarge ? <MessageTime ts={props.ts as Date | undefined} timeFormat={props.timeFormat} /> : null}
 			</>
 		);
 	}
@@ -73,11 +194,25 @@ const MessageInner = memo((props: IMessageInner) => {
 	if (props.blocks && props.blocks.length) {
 		content = (
 			<>
-				<User {...props} />
-				<Blocks {...props} />
-				<Thread {...props} />
-				<Reactions {...props} />
-				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<User
+					isHeader={props.isHeader}
+					hasError={props.hasError}
+					useRealName={props.useRealName}
+					author={props.author}
+					alias={props.alias}
+					ts={props.ts as Date | undefined}
+					timeFormat={props.timeFormat}
+					isEdited={props.isEdited}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					pinned={props.pinned}
+					isTranslated={props.isTranslated}
+					type={props.type}
+				/>
+				<Blocks blocks={props.blocks} id={props.id} rid={props.rid} />
+				<Thread msg={props.msg} tcount={props.tcount} tlm={props.tlm} id={props.id} isThreadRoom={props.isThreadRoom} />
+				<Reactions reactions={props.reactions} />
+				{showTimeLarge ? <MessageTime ts={props.ts as Date | undefined} timeFormat={props.timeFormat} /> : null}
 			</>
 		);
 	}
@@ -85,16 +220,54 @@ const MessageInner = memo((props: IMessageInner) => {
 	if (!content) {
 		content = (
 			<>
-				<User {...props} />
-				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<User
+					isHeader={props.isHeader}
+					hasError={props.hasError}
+					useRealName={props.useRealName}
+					author={props.author}
+					alias={props.alias}
+					ts={props.ts as Date | undefined}
+					timeFormat={props.timeFormat}
+					isEdited={props.isEdited}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					pinned={props.pinned}
+					isTranslated={props.isTranslated}
+					type={props.type}
+				/>
+				{showTimeLarge ? <MessageTime ts={props.ts as Date | undefined} timeFormat={props.timeFormat} /> : null}
 				<View style={{ gap: 4 }}>
-					<Quote {...props} />
-					<Content {...props} />
-					<Attachments {...props} />
-					<Urls {...props} />
-					<Thread {...props} />
-					<Reactions {...props} />
-					<Broadcast {...props} />
+					<Quote attachments={props.attachments} timeFormat={props.timeFormat} author={props.author} />
+					<Content
+						isTemp={props.isTemp}
+						isInfo={props.isInfo}
+						tmid={props.tmid}
+						isThreadRoom={props.isThreadRoom}
+						msg={props.msg}
+						md={props.md}
+						isEdited={props.isEdited}
+						isEncrypted={props.isEncrypted}
+						channels={props.channels}
+						mentions={props.mentions}
+						useRealName={props.useRealName}
+						isIgnored={props.isIgnored}
+						type={props.type}
+						comment={props.comment}
+						hasError={props.hasError}
+						isHeader={props.isHeader}
+						isTranslated={props.isTranslated}
+						pinned={props.pinned}
+						attachments={props.attachments}
+						autoTranslateLanguage={props.autoTranslateLanguage}
+						author={props.author}
+						alias={props.alias}
+						role={props.role}
+					/>
+					<Attachments attachments={props.attachments} timeFormat={props.timeFormat} author={props.author} />
+					<Urls urls={props.urls} />
+					<Thread msg={props.msg} tcount={props.tcount} tlm={props.tlm} id={props.id} isThreadRoom={props.isThreadRoom} />
+					<Reactions reactions={props.reactions} />
+					<Broadcast author={props.author} broadcast={props.broadcast} />
 				</View>
 			</>
 		);
@@ -104,21 +277,23 @@ const MessageInner = memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-interface IMessageA11y {
-	accessibilityActions?: AccessibilityActionInfo[];
-	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
-	handleLongPress?: () => void;
-}
-const Message = memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
+const Message = memo((props: TMessageProps & IMessageA11y) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
-		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
-		// Prevent misalignment of info when the font size is increased.
+		const thread = props.isThreadReply ? (
+			<RepliedThread
+				tmid={props.tmid}
+				tmsg={props.tmsg}
+				id={props.id}
+				isHeader={props.isHeader}
+				isEncrypted={props.isEncrypted}
+			/>
+		) : null;
 		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
 				<View style={[styles.flex, infoStyle]}>
-					<MessageAvatar small {...props} />
+					<MessageAvatar isHeader={props.isHeader} avatar={props.avatar} emoji={props.emoji} author={props.author} small />
 					<A11y.Index
 						accessible={props.isTranslated}
 						accessibilityLabel={props?.msg || ''}
@@ -126,10 +301,34 @@ const Message = memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 						index={2}
 						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
-							<Content {...props} />
+							<Content
+								isTemp={props.isTemp}
+								isInfo={props.isInfo}
+								tmid={props.tmid}
+								isThreadRoom={props.isThreadRoom}
+								msg={props.msg}
+								md={props.md}
+								isEdited={props.isEdited}
+								isEncrypted={props.isEncrypted}
+								channels={props.channels}
+								mentions={props.mentions}
+								useRealName={props.useRealName}
+								isIgnored={props.isIgnored}
+								type={props.type}
+								comment={props.comment}
+								hasError={props.hasError}
+								isHeader={props.isHeader}
+								isTranslated={props.isTranslated}
+								pinned={props.pinned}
+								attachments={props.attachments}
+								autoTranslateLanguage={props.autoTranslateLanguage}
+								author={props.author}
+								alias={props.alias}
+								role={props.role}
+							/>
 							{props.isInfo && props.type === 'message_pinned' ? (
 								<View pointerEvents='none'>
-									<Attachments {...props} />
+									<Attachments attachments={props.attachments} timeFormat={props.timeFormat} author={props.author} />
 								</View>
 							) : null}
 						</View>
@@ -147,9 +346,58 @@ const Message = memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 				accessibilityLanguage={props.autoTranslateLanguage}
 				index={2}>
 				<View style={styles.flex}>
-					<MessageAvatar {...props} />
+					<MessageAvatar isHeader={props.isHeader} avatar={props.avatar} emoji={props.emoji} author={props.author} />
 					<View style={styles.messageContent}>
-						<MessageInner {...props} />
+						<MessageInner
+							id={props.id}
+							rid={props.rid}
+							msg={props.msg}
+							md={props.md}
+							type={props.type}
+							attachments={props.attachments}
+							blocks={props.blocks}
+							urls={props.urls}
+							reactions={props.reactions}
+							alias={props.alias}
+							avatar={props.avatar}
+							emoji={props.emoji}
+							timeFormat={props.timeFormat}
+							archived={props.archived}
+							broadcast={props.broadcast}
+							useRealName={props.useRealName}
+							isReadReceiptEnabled={props.isReadReceiptEnabled}
+							unread={props.unread}
+							role={props.role}
+							drid={props.drid}
+							dcount={props.dcount}
+							dlm={props.dlm}
+							tmid={props.tmid}
+							tcount={props.tcount}
+							tlm={props.tlm}
+							tmsg={props.tmsg}
+							mentions={props.mentions}
+							channels={props.channels}
+							isIgnored={props.isIgnored}
+							isEdited={props.isEdited}
+							isHeader={props.isHeader}
+							isThreadReply={props.isThreadReply}
+							isThreadSequential={props.isThreadSequential}
+							isThreadRoom={props.isThreadRoom}
+							isInfo={props.isInfo}
+							isTemp={props.isTemp}
+							isEncrypted={props.isEncrypted}
+							hasError={props.hasError}
+							highlighted={props.highlighted}
+							comment={props.comment}
+							isTranslated={props.isTranslated}
+							isBeingEdited={props.isBeingEdited}
+							isPreview={props.isPreview}
+							pinned={props.pinned}
+							autoTranslateLanguage={props.autoTranslateLanguage}
+							author={props.author}
+							ts={props.ts}
+							small={props.small}
+						/>
 					</View>
 					{!props.isHeader ? (
 						<RightIcons
@@ -170,7 +418,7 @@ const Message = memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = memo((props: IMessageTouchable & IMessage) => {
+const MessageTouchable = memo((props: TMessageProps) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
@@ -191,14 +439,63 @@ const MessageTouchable = memo((props: IMessageTouchable & IMessage) => {
 	if (props.hasError || props.isInfo) {
 		return (
 			<A11y.Order>
-				<Message {...props} />
+				<Message
+					id={props.id}
+					rid={props.rid}
+					msg={props.msg}
+					md={props.md}
+					type={props.type}
+					attachments={props.attachments}
+					blocks={props.blocks}
+					urls={props.urls}
+					reactions={props.reactions}
+					alias={props.alias}
+					avatar={props.avatar}
+					emoji={props.emoji}
+					timeFormat={props.timeFormat}
+					archived={props.archived}
+					broadcast={props.broadcast}
+					useRealName={props.useRealName}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					role={props.role}
+					drid={props.drid}
+					dcount={props.dcount}
+					dlm={props.dlm}
+					tmid={props.tmid}
+					tcount={props.tcount}
+					tlm={props.tlm}
+					tmsg={props.tmsg}
+					mentions={props.mentions}
+					channels={props.channels}
+					isIgnored={props.isIgnored}
+					isEdited={props.isEdited}
+					isHeader={props.isHeader}
+					isThreadReply={props.isThreadReply}
+					isThreadSequential={props.isThreadSequential}
+					isThreadRoom={props.isThreadRoom}
+					isInfo={props.isInfo}
+					isTemp={props.isTemp}
+					isEncrypted={props.isEncrypted}
+					hasError={props.hasError}
+					highlighted={props.highlighted}
+					comment={props.comment}
+					isTranslated={props.isTranslated}
+					isBeingEdited={props.isBeingEdited}
+					isPreview={props.isPreview}
+					pinned={props.pinned}
+					autoTranslateLanguage={props.autoTranslateLanguage}
+					author={props.author}
+					ts={props.ts}
+					small={props.small}
+				/>
 			</A11y.Order>
 		);
 	}
 
 	const handleLongPress = () => {
 		markAsLastFocused();
-		onLongPress();
+		onLongPress?.();
 	};
 
 	return (
@@ -219,7 +516,57 @@ const MessageTouchable = memo((props: IMessageTouchable & IMessage) => {
 					onAccessibilityAction={e => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
-					<Message {...props} handleLongPress={!isDisabled ? handleLongPress : undefined} />
+					<Message
+						id={props.id}
+						rid={props.rid}
+						msg={props.msg}
+						md={props.md}
+						type={props.type}
+						attachments={props.attachments}
+						blocks={props.blocks}
+						urls={props.urls}
+						reactions={props.reactions}
+						alias={props.alias}
+						avatar={props.avatar}
+						emoji={props.emoji}
+						timeFormat={props.timeFormat}
+						archived={props.archived}
+						broadcast={props.broadcast}
+						useRealName={props.useRealName}
+						isReadReceiptEnabled={props.isReadReceiptEnabled}
+						unread={props.unread}
+						role={props.role}
+						drid={props.drid}
+						dcount={props.dcount}
+						dlm={props.dlm}
+						tmid={props.tmid}
+						tcount={props.tcount}
+						tlm={props.tlm}
+						tmsg={props.tmsg}
+						mentions={props.mentions}
+						channels={props.channels}
+						isIgnored={props.isIgnored}
+						isEdited={props.isEdited}
+						isHeader={props.isHeader}
+						isThreadReply={props.isThreadReply}
+						isThreadSequential={props.isThreadSequential}
+						isThreadRoom={props.isThreadRoom}
+						isInfo={props.isInfo}
+						isTemp={props.isTemp}
+						isEncrypted={props.isEncrypted}
+						hasError={props.hasError}
+						highlighted={props.highlighted}
+						comment={props.comment}
+						isTranslated={props.isTranslated}
+						isBeingEdited={props.isBeingEdited}
+						isPreview={props.isPreview}
+						pinned={props.pinned}
+						autoTranslateLanguage={props.autoTranslateLanguage}
+						author={props.author}
+						ts={props.ts}
+						small={props.small}
+						handleLongPress={!isDisabled ? handleLongPress : undefined}
+					/>
 				</Touch>
 			</A11y.Index>
 		</A11y.Order>

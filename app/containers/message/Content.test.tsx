@@ -27,9 +27,7 @@ const baseProps: Partial<IMessageContent> = {
 	isIgnored: false,
 	isTranslated: false,
 	isHeader: false,
-	hasError: false,
-	getCustomEmoji: jest.fn(),
-	navToRoomInfo: jest.fn()
+	hasError: false
 };
 
 const renderContent = (overrides: Partial<IMessageContent> & { attachments?: any[]; autoTranslateLanguage?: string }) =>
@@ -38,7 +36,9 @@ const renderContent = (overrides: Partial<IMessageContent> & { attachments?: any
 			<MessageContext.Provider
 				value={{
 					user: { username: 'john' },
-					onLinkPress: jest.fn()
+					onLinkPress: jest.fn(),
+					getCustomEmoji: jest.fn(),
+					navToRoomInfo: jest.fn()
 				}}>
 				<Content {...(baseProps as IMessageContent)} {...(overrides as IMessageContent)} />
 			</MessageContext.Provider>
@@ -50,7 +50,9 @@ const tree = (overrides: Partial<IMessageContent> & { attachments?: any[]; autoT
 		<MessageContext.Provider
 			value={{
 				user: { username: 'john' },
-				onLinkPress: jest.fn()
+				onLinkPress: jest.fn(),
+				getCustomEmoji: jest.fn(),
+				navToRoomInfo: jest.fn()
 			}}>
 			<Content {...(baseProps as IMessageContent)} {...(overrides as IMessageContent)} />
 		</MessageContext.Provider>

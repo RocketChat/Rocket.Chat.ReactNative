@@ -101,7 +101,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVi
 
 	return (
 		<View style={{ gap: 4 }}>
-			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
+			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
 			<Touchable onPress={_onPress} style={messageStyles.image}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>

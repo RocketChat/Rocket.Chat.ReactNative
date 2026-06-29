@@ -10,10 +10,10 @@ import { getMessageFromAttachment } from '../../utils';
 import { isQuoteAttachment } from './utils';
 
 const Quote: FC<IMessageAttachments> = memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
+	({ attachments, timeFormat }: IMessageAttachments) => {
 		'use memo';
 
-		const { translateLanguage } = useContext(MessageContext);
+		const { translateLanguage, getCustomEmoji = () => null } = useContext(MessageContext);
 
 		const quotes = attachments?.filter(isQuoteAttachment);
 
@@ -24,16 +24,7 @@ const Quote: FC<IMessageAttachments> = memo(
 		const quotesElements = quotes.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 
-			return (
-				<Reply
-					key={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					msg={msg}
-					showAttachment={showAttachment}
-				/>
-			);
+			return <Reply key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} msg={msg} />;
 		});
 
 		return <View style={{ gap: 4 }}>{quotesElements}</View>;

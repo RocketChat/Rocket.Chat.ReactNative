@@ -97,7 +97,6 @@ interface IMessageReply {
 	timeFormat?: string;
 	getCustomEmoji: TGetCustomEmoji;
 	msg?: string;
-	showAttachment?: (file: IAttachment) => void;
 }
 
 const Title = memo(
@@ -140,7 +139,7 @@ const Description = memo(
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
+		return <Markdown msg={text} username={user?.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
@@ -166,7 +165,7 @@ const UrlImage = memo(
 			return null;
 		}
 
-		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
 		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
@@ -195,7 +194,7 @@ const Fields = memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
+						<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</View>
@@ -206,7 +205,7 @@ const Fields = memo(
 );
 
 const Reply = memo(
-	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
+	({ attachment, timeFormat, getCustomEmoji, msg }: IMessageReply) => {
 		'use memo';
 
 		const [loading, setLoading] = useState(false);
@@ -224,8 +223,8 @@ const Reply = memo(
 			}
 			if (attachment.type === 'file' && attachment.title_link) {
 				setLoading(true);
-				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
-				await fileDownloadAndPreview(url, attachment, id);
+				url = formatAttachmentUrl(attachment.title_link, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
+				await fileDownloadAndPreview(url, attachment, id ?? '');
 				setLoading(false);
 				return;
 			}
@@ -253,18 +252,8 @@ const Reply = memo(
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
-							<Quote
-								attachments={attachment.attachments}
-								getCustomEmoji={getCustomEmoji}
-								timeFormat={timeFormat}
-								showAttachment={showAttachment}
-							/>
-							<Attachments
-								attachments={attachment.attachments}
-								getCustomEmoji={getCustomEmoji}
-								timeFormat={timeFormat}
-								showAttachment={showAttachment}
-							/>
+							<Quote attachments={attachment.attachments} timeFormat={timeFormat} />
+							<Attachments attachments={attachment.attachments} timeFormat={timeFormat} />
 							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 							{loading ? (
 								<View style={styles.backdrop}>
@@ -280,7 +269,7 @@ const Reply = memo(
 						<UrlImage image={attachment.thumb_url} />
 					</View>
 				</Touchable>
-				{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
+				{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
 			</View>
 		);
 	},

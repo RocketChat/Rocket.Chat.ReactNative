@@ -360,9 +360,14 @@ const MessageContainer = ({
 				toggleFollowThread,
 				replies,
 				translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
-				isEncrypted
+				isEncrypted,
+				getCustomEmoji,
+				navToRoomInfo,
+				showAttachment,
+				blockAction,
+				handleEnterCall,
+				fetchThreadName
 			}}>
-			{/* @ts-ignore*/}
 			<Message
 				id={id}
 				msg={messageText}
@@ -392,7 +397,6 @@ const MessageContainer = ({
 				tcount={tcount}
 				tlm={tlm}
 				tmsg={tmsg}
-				fetchThreadName={fetchThreadName}
 				mentions={mentions}
 				channels={channels}
 				isIgnored={isIgnored}
@@ -405,11 +409,6 @@ const MessageContainer = ({
 				isTemp={isTemp}
 				isEncrypted={isEncrypted}
 				hasError={hasError}
-				showAttachment={showAttachment}
-				getCustomEmoji={getCustomEmoji}
-				navToRoomInfo={navToRoomInfo}
-				handleEnterCall={handleEnterCall}
-				blockAction={blockAction}
 				highlighted={highlighted}
 				comment={comment}
 				isTranslated={isTranslated}

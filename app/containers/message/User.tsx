@@ -3,7 +3,6 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
-import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
@@ -54,9 +53,8 @@ interface IMessageUser {
 		username?: string;
 	};
 	alias?: string;
-	ts?: Date;
+	ts?: Date | string;
 	timeFormat?: string;
-	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	type: MessageType;
 	isEdited: boolean;
 	isReadReceiptEnabled?: boolean;
@@ -74,22 +72,23 @@ const User = memo(
 		ts,
 		timeFormat,
 		hasError,
-		navToRoomInfo,
 		type,
 		isEdited,
 		isTranslated,
-		...props
+		isReadReceiptEnabled,
+		unread,
+		pinned
 	}: IMessageUser) => {
 		'use memo';
 
-		const { user } = useContext(MessageContext);
+		const { user, navToRoomInfo } = useContext(MessageContext);
 		const { colors } = useTheme();
 		const { isLargeFontScale } = useResponsiveLayout();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
-			const itsMe = author?._id === user.id;
+			const itsMe = author?._id === user?.id;
 
 			const onUserPress = () => {
 				navToRoomInfo?.({
@@ -120,15 +119,15 @@ const User = memo(
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
+						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts as Date | undefined} />}
 					</Pressable>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}
 						hasError={hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled}
-						unread={props.unread}
-						pinned={props.pinned}
+						isReadReceiptEnabled={isReadReceiptEnabled}
+						unread={unread}
+						pinned={pinned}
 						isTranslated={isTranslated}
 					/>
 				</View>

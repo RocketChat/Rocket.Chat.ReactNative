@@ -130,8 +130,8 @@ const Url = ({ url }: { url: IUrl }) => {
 
 		if (!_imageUrl) return null;
 		if (_imageUrl.startsWith('http')) return _imageUrl;
-		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
-	}, [url.image, url.url, baseUrl, user.id, user.token]);
+		return `${baseUrl}/${_imageUrl}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
+	}, [url.image, url.url, baseUrl, user?.id, user?.token]);
 
 	useEffect(() => {
 		const verifyUrlIsImage = async () => {
