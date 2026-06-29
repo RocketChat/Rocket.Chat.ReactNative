@@ -78,7 +78,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          point: 66%,66%
+          point: 66%,63%
 
 # Verify alert is shown with the link
 - extendedWaitUntil:
