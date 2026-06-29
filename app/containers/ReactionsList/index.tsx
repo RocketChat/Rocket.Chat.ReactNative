@@ -30,7 +30,7 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 		};
 	}
 
-	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
+	const sortedReactions = [...reactions].sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
 	const routes: IRoute[] = sortedReactions.map(reaction => ({
 		key: reaction.emoji,
 		title: reaction.emoji,
