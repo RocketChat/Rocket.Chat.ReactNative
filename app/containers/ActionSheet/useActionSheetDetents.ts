@@ -2,6 +2,8 @@ import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
 import { useWindowDimensions } from 'react-native';
 
+import { isIOS } from '../../lib/methods/helpers';
+
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const SCROLL_ENABLED_THRESHOLD = 0.6;
@@ -66,13 +68,13 @@ export function useActionSheetDetents({
 				detents = [0.5, ACTION_SHEET_MAX_HEIGHT_FRACTION];
 				scrollEnabled = true;
 			} else {
-				const measuredHeight = optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + (hasCancel ? CANCEL_HEIGHT : 0);
+				const measuredHeight = optionsLength * itemHeight + headerHeight + (hasCancel ? CANCEL_HEIGHT : 0);
 
 				scrollEnabled = false;
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
 			}
 		} else if (contentHeight > 0) {
-			const rawContentDetent = contentHeight / windowHeight;
+			const rawContentDetent = (contentHeight + (isIOS ? HANDLE_HEIGHT : 0)) / windowHeight;
 			const contentDetent = Math.min(
 				ACTION_SHEET_MAX_HEIGHT_FRACTION,
 				Math.max(ACTION_SHEET_MIN_HEIGHT_FRACTION, rawContentDetent)
