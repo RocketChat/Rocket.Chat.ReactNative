@@ -1096,7 +1096,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 
 		return (
 			<SafeAreaView testID='room-actions-view'>
-				<List.Container testID='room-actions-scrollview' contentContainerStyle={styles.scrollContentContainer}>
+				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					<CallSection room={room} disabled={hasE2EEWarning} itsMe={itsMe} />
 					{this.renderE2EEncryption()}
