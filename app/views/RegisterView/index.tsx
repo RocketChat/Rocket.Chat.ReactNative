@@ -5,6 +5,8 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
@@ -12,7 +14,6 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { type IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
 import { type OutsideParamList } from '../../stacks/types';
@@ -29,9 +30,10 @@ import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
-interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
+type RegisterViewProps = StaticScreenProps<{ title: string; username?: string }>;
 
-const RegisterView = ({ navigation, route }: IProps) => {
+const RegisterView = ({ route }: RegisterViewProps) => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'RegisterView'>>();
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup

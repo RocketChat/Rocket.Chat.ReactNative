@@ -1,16 +1,27 @@
-import { type TMessageModel, type TThreadMessageModel } from '../../../definitions';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { getThreadMessageById } from '../../../lib/database/services/ThreadMessage';
 import getSingleMessage from '../../../lib/methods/getSingleMessage';
 
-const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThreadMessageModel | any | null> => {
+export type TGetMessageInfoResult = {
+	id: string;
+	rid: string | undefined;
+	tmid?: string;
+	msg: string | undefined;
+	ts: string | Date | number;
+	replies?: string[];
+	fromServer?: boolean;
+};
+
+const getMessageInfo = async (messageId: string): Promise<TGetMessageInfoResult | null> => {
 	const message = await getMessageById(messageId);
 	if (message) {
 		return {
 			id: message.id,
 			rid: message?.subscription?.id,
 			tmid: message.tmid,
-			msg: message.msg
+			msg: message.msg,
+			// ts lets a locally-cached but out-of-window target derive its own Anchored Window bound.
+			ts: message.ts
 		};
 	}
 
@@ -20,7 +31,8 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 			id: threadMessage.id,
 			rid: threadMessage?.subscription?.id,
 			tmid: threadMessage.rid,
-			msg: threadMessage.msg
+			msg: threadMessage.msg,
+			ts: threadMessage.ts
 		};
 	}
 
@@ -31,6 +43,7 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 			rid: singleMessage.rid,
 			tmid: singleMessage.tmid,
 			msg: singleMessage.msg,
+			ts: singleMessage.ts,
 			fromServer: true
 		};
 	}

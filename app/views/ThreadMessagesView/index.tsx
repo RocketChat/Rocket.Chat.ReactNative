@@ -43,6 +43,7 @@ import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers'
 import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
 import UserPreferences from '../../lib/methods/userPreferences';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -532,8 +533,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name as boolean,
-	isMasterDetail: state.app.isMasterDetail
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(ThreadMessagesView)));
