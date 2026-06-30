@@ -1,6 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 
-import { type IBiometricTrustStore, type TrustResult } from '../../definitions';
+import { type BiometricPromptCopy, type IBiometricTrustStore, type TrustResult } from '../../definitions';
 import UserPreferences from '../methods/userPreferences';
 import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
 import {
@@ -22,7 +22,7 @@ const writeOptions = (): Keychain.SetOptions => ({
 	accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY
 });
 
-const readOptions = (promptCopy: { title: string; cancel: string }): Keychain.GetOptions => ({
+const readOptions = (promptCopy: BiometricPromptCopy): Keychain.GetOptions => ({
 	service: SENTINEL_SERVICE,
 	authenticationPrompt: {
 		title: promptCopy.title,

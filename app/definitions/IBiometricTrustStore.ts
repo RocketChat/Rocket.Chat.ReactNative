@@ -9,10 +9,14 @@ export type TrustResult =
 // LOCAL_AUTHENTICATE_EMITTER payload into PasscodeEnter's subtitle.
 export type BiometricInvalidationReason = 'enrollmentChanged';
 
+// Localized copy for the OS biometric prompt shown by verify(). Built in localAuthentication and
+// passed down to the keychain read options.
+export type BiometricPromptCopy = { title: string; cancel: string };
+
 export interface IBiometricTrustStore {
 	enroll(): Promise<TrustResult>;
 	disenroll(): Promise<void>;
-	verify(opts: { promptCopy: { title: string; cancel: string } }): Promise<TrustResult>;
+	verify(opts: { promptCopy: BiometricPromptCopy }): Promise<TrustResult>;
 	// Silent check for whether the trust sentinel exists, without triggering a biometric prompt.
 	// Rejects on probe/storage failures so callers can distinguish errors from true absence.
 	hasEnrollment(): Promise<boolean>;

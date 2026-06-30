@@ -19,7 +19,12 @@ import {
 } from '../../constants/localAuthentication';
 import I18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
-import { type BiometricInvalidationReason, type TServerModel, type TrustResult } from '../../../definitions';
+import {
+	type BiometricInvalidationReason,
+	type BiometricPromptCopy,
+	type TServerModel,
+	type TrustResult
+} from '../../../definitions';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
@@ -85,7 +90,7 @@ export const changePasscode = async ({ force = false }: { force: boolean }): Pro
 	UserPreferences.setString(PASSCODE_KEY, sha256(passcode));
 };
 
-const buildPromptCopy = (force?: boolean) => ({
+const buildPromptCopy = (force?: boolean): BiometricPromptCopy => ({
 	title: I18n.t('Local_authentication_biometry_title'),
 	cancel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback')
 });
@@ -166,6 +171,14 @@ const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 	return !(await biometricTrustStore.isEnrollmentValid());
 };
 
+// A biometric enrollment change reaches us two ways:
+//  - warm foreground: the flag is still enabled but the sentinel was dropped → the live check catches it.
+//  - cold launch: the init migration already reconciled the flag off (it runs before us) and left a
+//    relock marker, since it would otherwise have consumed the signal silently.
+// Either signal must force the lock screen, so both lock checks share this predicate.
+const isEnrollmentRelockRequired = async (): Promise<boolean> =>
+	(await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
+
 export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// Check the cheap persisted flag first; passcode-only users shouldn't pay the native capability
 	// check on every lock event.
@@ -179,7 +192,7 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// resolveBiometricTrust's invalidation path), clear the marker, and show the passcode with the
 	// "enrollment changed" notice and biometry hidden — rather than letting PasscodeEnter rediscover it
 	// as a generic `unavailable` outcome that carries no reason subtitle.
-	const enrollmentChanged = (await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
+	const enrollmentChanged = await isEnrollmentRelockRequired();
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
 			await biometricTrustStore.disenroll();
@@ -239,7 +252,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			// bypass authentication entirely. We detect it both live (warm foreground, flag still set) and
 			// via the relock marker the init migration leaves on cold launch. handleLocalAuthentication
 			// re-detects and shows the passcode with biometry disabled and the enrollment-changed notice.
-			const enrollmentChanged = (await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
+			const enrollmentChanged = await isEnrollmentRelockRequired();
 
 			// if it was not possible to get `timesync` from server, the biometric enrollment changed, or the last authenticated session is older than the configured auto lock time, authentication is required
 			if (!timesync || enrollmentChanged || (autoLockTime && diffToLastSession >= autoLockTime)) {
