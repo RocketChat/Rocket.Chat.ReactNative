@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Keyboard } from 'react-native';
 
 import Message from './Message';
@@ -12,7 +12,7 @@ import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
-import { useMessage } from './hooks/useMessage';
+import { type IMessageSnapshot, useMessage } from './hooks/useMessage';
 import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
 
 interface IMessageContainerProps {
@@ -66,6 +66,42 @@ interface IMessageContainerProps {
 	showUnreadSeparator?: boolean;
 }
 
+// Extracted at module scope so the try/catch does not prevent React Compiler from
+// memoising MessageContainer (the compiler cannot optimise try/catch in render).
+function computeIsHeader(
+	previousItem: TAnyMessageModel | undefined,
+	message: IMessageSnapshot,
+	broadcast: boolean,
+	Message_GroupingPeriod: number | undefined,
+	hasError: boolean
+): boolean {
+	if (hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
+		return true;
+	}
+	try {
+		if (
+			previousItem &&
+			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+			previousItem.ts.toDateString() === message.ts.toDateString() &&
+			previousItem.u?.username === message.u?.username &&
+			!(previousItem.groupable === false || message.groupable === false || broadcast === true) &&
+			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+			message.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
+			previousItem.tmid === message.tmid &&
+			message.t !== 'rm' &&
+			previousItem.t !== 'rm'
+		) {
+			return false;
+		}
+		return true;
+	} catch {
+		return true;
+	}
+}
+
+// `item` is intentionally omitted: the FlatList keys each row by item.id, so a
+// different message remounts rather than re-rendering with a new item prop, and
+// useMessage recomputes its snapshot on item-identity change.
 function areEqual(prev: IMessageContainerProps, next: IMessageContainerProps): boolean {
 	return (
 		prev.showUnreadSeparator === next.showUnreadSeparator &&
@@ -73,7 +109,7 @@ function areEqual(prev: IMessageContainerProps, next: IMessageContainerProps): b
 		prev.highlighted === next.highlighted &&
 		prev.threadBadgeColor === next.threadBadgeColor &&
 		prev.isIgnored === next.isIgnored &&
-		prev.previousItem?._id === next.previousItem?._id &&
+		prev.previousItem?.id === next.previousItem?.id &&
 		prev.autoTranslateRoom === next.autoTranslateRoom &&
 		prev.autoTranslateLanguage === next.autoTranslateLanguage
 	);
@@ -128,33 +164,10 @@ const MessageContainer = ({
 	const { theme } = useTheme();
 	const [isManualUnignored, setIsManualUnignored] = useState(false);
 
-	// Derived values (formerly getters)
+	// Derived values
 	const hasError = message.status === messagesStatus.ERROR;
 
-	const isHeader = (() => {
-		if (hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
-			return true;
-		}
-		try {
-			if (
-				previousItem &&
-				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-				previousItem.ts.toDateString() === message.ts.toDateString() &&
-				previousItem.u?.username === message.u?.username &&
-				!(previousItem.groupable === false || message.groupable === false || broadcast === true) &&
-				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-				message.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
-				previousItem.tmid === message.tmid &&
-				message.t !== 'rm' &&
-				previousItem.t !== 'rm'
-			) {
-				return false;
-			}
-			return true;
-		} catch (error) {
-			return true;
-		}
-	})();
+	const isHeader = computeIsHeader(previousItem, message, broadcast, Message_GroupingPeriod, hasError);
 
 	const isThreadReply = (() => {
 		if (isThreadRoom) {
@@ -186,7 +199,6 @@ const MessageContainer = ({
 
 	const isIgnored = isManualUnignored ? false : isIgnoredProp ?? false;
 
-	// Event handlers
 	const onIgnoredMessagePress = () => {
 		setIsManualUnignored(true);
 	};
@@ -246,7 +258,7 @@ const MessageContainer = ({
 	};
 
 	const onLinkPress = (link: string): void => {
-		const isMessageLink = message.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
+		const isMessageLink = !!message.attachments?.some((att: IAttachment) => att?.message_link === link);
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);
 		}
@@ -262,35 +274,43 @@ const MessageContainer = ({
 		}
 	};
 
-	// Stable debounced onPress — one instance for the component lifetime,
-	// always invoking the latest closure via the ref.
+	// pressHandlerRef holds the latest press logic; updated after every render via
+	// useEffect so the render body stays free of ref writes.
 	const pressHandlerRef = useRef<() => void>(() => {});
-	pressHandlerRef.current = () => {
-		if (isIgnored) {
-			return onIgnoredMessagePress();
-		}
+	useEffect(() => {
+		pressHandlerRef.current = () => {
+			if (isIgnored) {
+				return onIgnoredMessagePress();
+			}
 
-		if (onPressProp) {
-			return onPressProp();
-		}
+			if (onPressProp) {
+				return onPressProp();
+			}
 
-		Keyboard.dismiss();
+			Keyboard.dismiss();
 
-		if ((message.tlm || message.tmid) && !isThreadRoom) {
-			onThreadPress();
-		}
+			if ((message.tlm || message.tmid) && !isThreadRoom) {
+				onThreadPress();
+			}
 
-		if (message.dlm && onDiscussionPressProp) {
-			onDiscussionPressProp(item);
-		}
-	};
-	const onPress = useRef(debounce(() => pressHandlerRef.current(), 300, true)).current;
+			if (message.dlm && onDiscussionPressProp) {
+				onDiscussionPressProp(item);
+			}
+		};
+	});
+	// onPressRef holds the single debounced instance for the component lifetime.
+	// Initialised to a noop; replaced with the real debounced fn in the first effect
+	// so that pressHandlerRef.current is never read during render.
+	const onPressRef = useRef(debounce(() => {}, 300, true));
+	useEffect(() => {
+		onPressRef.current = debounce(() => pressHandlerRef.current?.(), 300, true);
+	}, []);
 
 	const onPressAction = () => {
 		if (closeEmojiAndAction) {
-			return closeEmojiAndAction(onPress);
+			return closeEmojiAndAction(onPressRef.current);
 		}
-		return onPress();
+		return onPressRef.current();
 	};
 
 	const {
@@ -329,7 +349,7 @@ const MessageContainer = ({
 	let isTranslated = false;
 	const otherUserMessage = u?.username !== user?.username;
 	if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage && otherUserMessage) {
-		const messageTranslated = getMessageTranslation(item, autoTranslateLanguage);
+		const messageTranslated = getMessageTranslation(message, autoTranslateLanguage);
 		isTranslated = !!messageTranslated;
 		messageText = messageTranslated || messageText;
 	}

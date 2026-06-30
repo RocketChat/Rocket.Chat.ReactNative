@@ -189,7 +189,10 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	}
 };
 
-export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string): string | null => {
+export const getMessageTranslation = (
+	message: TMessageModel | { translations?: TMessageModel['translations'] },
+	autoTranslateLanguage: string
+): string | null => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}

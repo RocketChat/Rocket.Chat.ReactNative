@@ -1,4 +1,4 @@
-import { useRef, useSyncExternalStore } from 'react';
+import { useCallback, useRef, useSyncExternalStore } from 'react';
 import { type Root } from '@rocket.chat/message-parser';
 
 import {
@@ -88,34 +88,42 @@ const readSnapshot = (item: TAnyMessageModel): IMessageSnapshot => ({
 	comment: item.comment
 });
 
+type SnapshotCache = { item: TAnyMessageModel; snapshot: IMessageSnapshot };
+
 export const useMessage = (item: TAnyMessageModel): IMessageSnapshot => {
 	'use memo';
 
-	// prevItemRef lets us detect item identity changes so getSnapshot always
-	// reflects the CURRENT item synchronously — even before the new subscription
-	// fires its first callback.
-	const prevItemRef = useRef<TAnyMessageModel | null>(null);
+	// Cache the latest snapshot so getSnapshot returns the same object reference
+	// when nothing has changed — useSyncExternalStore requires this to avoid loops.
+	const cacheRef = useRef<SnapshotCache | null>(null);
 
-	// Cache the latest snapshot so getSnapshot is referentially stable between
-	// emissions; useSyncExternalStore requires it to return the same object when
-	// nothing has changed, otherwise React will infinite-loop.
-	const snapshotRef = useRef<IMessageSnapshot | null>(null);
+	// getSnapshot and subscribe both close over item directly and are recreated
+	// when item identity changes (useCallback with [item] dep). This lets
+	// useSyncExternalStore resubscribe on item change without any render-body
+	// ref writes.
 
-	if (prevItemRef.current !== item) {
-		prevItemRef.current = item;
-		snapshotRef.current = readSnapshot(item);
-	}
+	const getSnapshot = useCallback((): IMessageSnapshot => {
+		if (!cacheRef.current || cacheRef.current.item !== item) {
+			cacheRef.current = { item, snapshot: readSnapshot(item) };
+		}
+		return cacheRef.current.snapshot;
+	}, [item]);
 
-	const subscribe = (onStoreChange: () => void): (() => void) => {
-		// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
-		const unsubscribe = item.experimentalSubscribe(() => {
-			snapshotRef.current = readSnapshot(item);
-			onStoreChange();
-		});
-		return unsubscribe;
-	};
-
-	const getSnapshot = (): IMessageSnapshot => snapshotRef.current as IMessageSnapshot;
+	const subscribe = useCallback(
+		(onStoreChange: () => void): (() => void) => {
+			// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
+			if (typeof item.experimentalSubscribe !== 'function') {
+				return () => {};
+			}
+			// @ts-ignore
+			const unsubscribe = item.experimentalSubscribe(() => {
+				cacheRef.current = { item, snapshot: readSnapshot(item) };
+				onStoreChange();
+			});
+			return unsubscribe;
+		},
+		[item]
+	);
 
 	return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 };

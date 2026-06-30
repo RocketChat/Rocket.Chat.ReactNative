@@ -124,4 +124,56 @@ describe('useMessage', () => {
 		expect(result.current.id).toBe('msg-b');
 		expect(result.current.msg).toBe('Model B');
 	});
+
+	it('does not throw and returns a correct snapshot for a plain REST object without experimentalSubscribe', () => {
+		const plainItem = {
+			id: 'rest-msg-1',
+			msg: 'Plain REST message',
+			t: undefined,
+			ts: new Date('2024-06-01T00:00:00Z'),
+			u: { _id: 'u2', username: 'bob' },
+			alias: undefined,
+			groupable: true,
+			avatar: undefined,
+			emoji: undefined,
+			attachments: undefined,
+			urls: [],
+			status: 0,
+			pinned: false,
+			editedBy: undefined,
+			reactions: undefined,
+			role: undefined,
+			drid: undefined,
+			dcount: undefined,
+			dlm: undefined,
+			tmid: undefined,
+			tcount: undefined,
+			tlm: undefined,
+			replies: undefined,
+			mentions: [],
+			channels: [],
+			unread: false,
+			autoTranslate: false,
+			translations: undefined,
+			tmsg: undefined,
+			blocks: undefined,
+			e2e: undefined,
+			md: undefined,
+			comment: undefined
+		} as unknown as TAnyMessageModel;
+
+		let caughtError: unknown;
+		let hookResult: ReturnType<typeof useMessage> | undefined;
+
+		try {
+			const { result } = renderHook(() => useMessage(plainItem));
+			hookResult = result.current;
+		} catch (e) {
+			caughtError = e;
+		}
+
+		expect(caughtError).toBeUndefined();
+		expect(hookResult?.id).toBe('rest-msg-1');
+		expect(hookResult?.msg).toBe('Plain REST message');
+	});
 });
