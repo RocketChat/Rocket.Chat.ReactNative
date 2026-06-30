@@ -3,6 +3,9 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	container: {
+		paddingTop: 0
+	},
 	list: {
 		flex: 1
 	},

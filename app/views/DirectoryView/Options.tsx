@@ -50,7 +50,7 @@ const DirectoryOptions = ({
 	};
 
 	return (
-		<List.Container contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}>
+		<List.Container contentContainerStyle={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />
