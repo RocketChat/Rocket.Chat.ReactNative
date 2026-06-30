@@ -7,8 +7,8 @@ import android.util.Log
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
+
+import chat.rocket.reactnative.networking.NativeBiometricEnrollmentSpec
 
 import java.security.KeyStore
 
@@ -34,7 +34,7 @@ import javax.crypto.SecretKey
  * existing biometry users get a baseline without being forced through a passcode on upgrade.
  */
 class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+    NativeBiometricEnrollmentSpec(reactContext) {
 
     companion object {
         private const val TAG = "BiometricEnrollment"
@@ -42,8 +42,6 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
         private const val KEY_ALIAS = "rc_biometric_enrollment_probe"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
     }
-
-    override fun getName(): String = "BiometricEnrollment"
 
     private fun loadKeyStore(): KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
 
@@ -66,8 +64,7 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
     }
 
     /** Create the probe key bound to the current enrollment (idempotent). */
-    @ReactMethod
-    fun enrollProbe(promise: Promise) {
+    override fun enrollProbe(promise: Promise) {
         try {
             val keyStore = loadKeyStore()
             if (!keyStore.containsAlias(KEY_ALIAS)) {
@@ -83,8 +80,7 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
     }
 
     /** Delete the probe key, kept in lockstep with the JS trust sentinel teardown. */
-    @ReactMethod
-    fun disenrollProbe(promise: Promise) {
+    override fun disenrollProbe(promise: Promise) {
         try {
             val keyStore = loadKeyStore()
             if (keyStore.containsAlias(KEY_ALIAS)) {
@@ -102,8 +98,7 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
      * probe was just created as a fresh baseline), false only when the key was invalidated by an
      * enrollment change. Never shows a biometric prompt.
      */
-    @ReactMethod
-    fun isEnrollmentValid(promise: Promise) {
+    override fun isEnrollmentValid(promise: Promise) {
         try {
             val keyStore = loadKeyStore()
 
