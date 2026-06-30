@@ -715,33 +715,34 @@ export default class EncryptionRoom {
 
 	async decryptQuoteAttachment(message: IMessage) {
 		const urls = message?.msg?.match(getMessageUrlRegex()) || [];
-		await Promise.all(
-			urls.map(async (url: string) => {
+		const quoteAttachments = await Promise.all(
+			urls.map(async (url: string): Promise<IAttachment | null> => {
 				const parsedUrl = parse(url, true);
 				const messageId = parsedUrl.query?.msg;
 				if (!messageId) {
-					return;
+					return null;
 				}
 
 				// From local db
 				const messageFromDB = await getMessageById(messageId);
 				if (messageFromDB && messageFromDB.e2e === 'done') {
 					const decryptedQuoteMessage = mapMessageFromDB(messageFromDB);
-					const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
-					message.attachments = [...(message.attachments || []), quoteAttachment];
-					return;
+					return createQuoteAttachment(decryptedQuoteMessage, url);
 				}
 
 				// From API
 				const quotedMessageObject = await getSingleMessage(messageId);
 				if (!quotedMessageObject) {
-					return;
+					return null;
 				}
 				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
-				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage as IMessage, url);
-				message.attachments = [...(message.attachments || []), quoteAttachment];
+				return createQuoteAttachment(decryptedQuoteMessage as IMessage, url);
 			})
 		);
+		message.attachments = [
+			...(message.attachments || []),
+			...quoteAttachments.filter((attachment): attachment is IAttachment => attachment !== null)
+		];
 		return message;
 	}
 
