@@ -1,4 +1,4 @@
-import { memo, useContext } from 'react';
+import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -10,7 +10,7 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import MessageContext from './Context';
 
-const CallButton = memo(() => {
+const CallButton = () => {
 	'use memo';
 
 	const { handleEnterCall } = useContext(MessageContext);
@@ -28,7 +28,7 @@ const CallButton = memo(() => {
 			</Touchable>
 		</View>
 	);
-});
+};
 
 CallButton.displayName = 'CallButton';
 

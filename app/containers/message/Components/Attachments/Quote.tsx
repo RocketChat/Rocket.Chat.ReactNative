@@ -1,5 +1,4 @@
-import { useContext, memo, type FC } from 'react';
-import { dequal } from 'dequal';
+import { useContext, type FC } from 'react';
 import { View } from 'react-native';
 
 import { Reply } from './components';
@@ -9,28 +8,25 @@ import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 import { isQuoteAttachment } from './utils';
 
-const Quote: FC<IMessageAttachments> = memo(
-	({ attachments, timeFormat }: IMessageAttachments) => {
-		'use memo';
+const Quote: FC<IMessageAttachments> = ({ attachments, timeFormat }: IMessageAttachments) => {
+	'use memo';
 
-		const { translateLanguage, getCustomEmoji = () => null } = useContext(MessageContext);
+	const { translateLanguage, getCustomEmoji = () => null } = useContext(MessageContext);
 
-		const quotes = attachments?.filter(isQuoteAttachment);
+	const quotes = attachments?.filter(isQuoteAttachment);
 
-		if (!quotes || !quotes?.length) {
-			return null;
-		}
+	if (!quotes || !quotes?.length) {
+		return null;
+	}
 
-		const quotesElements = quotes.map((file: IAttachment, index: number) => {
-			const msg = getMessageFromAttachment(file, translateLanguage);
+	const quotesElements = quotes.map((file: IAttachment, index: number) => {
+		const msg = getMessageFromAttachment(file, translateLanguage);
 
-			return <Reply key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} msg={msg} />;
-		});
+		return <Reply key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} msg={msg} />;
+	});
 
-		return <View style={{ gap: 4 }}>{quotesElements}</View>;
-	},
-	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
-);
+	return <View style={{ gap: 4 }}>{quotesElements}</View>;
+};
 
 Quote.displayName = 'MessageQuote';
 

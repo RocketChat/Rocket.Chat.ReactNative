@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext } from 'react';
 
 import Touchable from '../../Touchable';
 import { CustomIcon } from '../../../CustomIcon';
@@ -8,25 +8,22 @@ import { themes } from '../../../../lib/constants/colors';
 import MessageContext from '../../Context';
 import { useTheme } from '../../../../theme';
 
-const MessageError = memo(
-	({ hasError }: { hasError: boolean }) => {
-		'use memo';
+const MessageError = ({ hasError }: { hasError: boolean }) => {
+	'use memo';
 
-		const { theme } = useTheme();
-		const { onErrorPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+	const { onErrorPress } = useContext(MessageContext);
 
-		if (!hasError) {
-			return null;
-		}
+	if (!hasError) {
+		return null;
+	}
 
-		return (
-			<Touchable onPress={onErrorPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
-				<CustomIcon name='warning' color={themes[theme].buttonBackgroundDangerDefault} size={16} />
-			</Touchable>
-		);
-	},
-	(prevProps, nextProps) => prevProps.hasError === nextProps.hasError
-);
+	return (
+		<Touchable onPress={onErrorPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
+			<CustomIcon name='warning' color={themes[theme].buttonBackgroundDangerDefault} size={16} />
+		</Touchable>
+	);
+};
 
 MessageError.displayName = 'MessageError';
 

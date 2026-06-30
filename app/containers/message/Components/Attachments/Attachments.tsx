@@ -1,5 +1,4 @@
-import { useContext, memo, type FC } from 'react';
-import { dequal } from 'dequal';
+import { useContext, type FC } from 'react';
 import { View } from 'react-native';
 
 import Image from './Image';
@@ -13,92 +12,89 @@ import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
 
-const Attachments: FC<IMessageAttachments> = memo(
-	({ attachments, timeFormat, author }: IMessageAttachments) => {
-		'use memo';
+const Attachments: FC<IMessageAttachments> = ({ attachments, timeFormat, author }: IMessageAttachments) => {
+	'use memo';
 
-		const { translateLanguage, showAttachment, getCustomEmoji = () => null } = useContext(MessageContext);
+	const { translateLanguage, showAttachment, getCustomEmoji = () => null } = useContext(MessageContext);
 
-		const nonQuoteAttachments = attachments?.filter(isContentAttachment);
+	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 
-		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
-			return null;
+	if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
+		return null;
+	}
+
+	const attachmentsElements = nonQuoteAttachments.map((file, index) => {
+		const msg = getMessageFromAttachment(file, translateLanguage);
+
+		if (file.image_url) {
+			return (
+				<Image
+					key={file.image_url}
+					file={file}
+					showAttachment={showAttachment}
+					getCustomEmoji={getCustomEmoji}
+					author={author}
+					msg={msg}
+					imagePreview={file.image_preview}
+					imageType={file.image_type}
+				/>
+			);
 		}
 
-		const attachmentsElements = nonQuoteAttachments.map((file, index) => {
-			const msg = getMessageFromAttachment(file, translateLanguage);
+		if (file.audio_url) {
+			return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
+		}
 
-			if (file.image_url) {
-				return (
-					<Image
-						key={file.image_url}
-						file={file}
-						showAttachment={showAttachment}
-						getCustomEmoji={getCustomEmoji}
-						author={author}
-						msg={msg}
-						imagePreview={file.image_preview}
-						imageType={file.image_type}
-					/>
-				);
-			}
+		if (file.video_url) {
+			return (
+				<Video
+					key={file.video_url}
+					file={file}
+					showAttachment={showAttachment}
+					getCustomEmoji={getCustomEmoji}
+					author={author}
+					msg={msg}
+				/>
+			);
+		}
 
-			if (file.audio_url) {
-				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
-			}
+		if (file.actions && file.actions.length > 0) {
+			return (
+				<AttachedActions
+					key={file.title_link || file.message_link || `actions-${index}`}
+					attachment={file}
+					getCustomEmoji={getCustomEmoji}
+				/>
+			);
+		}
+		if (typeof file.collapsed === 'boolean') {
+			return (
+				<CollapsibleQuote
+					key={file.title_link || file.message_link || `collapsible-${index}`}
+					attachment={file}
+					timeFormat={timeFormat}
+					getCustomEmoji={getCustomEmoji}
+				/>
+			);
+		}
 
-			if (file.video_url) {
-				return (
-					<Video
-						key={file.video_url}
-						file={file}
-						showAttachment={showAttachment}
-						getCustomEmoji={getCustomEmoji}
-						author={author}
-						msg={msg}
-					/>
-				);
-			}
+		if (file.attachments?.length) {
+			return (
+				<Reply
+					key={file.title_link || file.message_link || `reply-${index}`}
+					attachment={file}
+					timeFormat={timeFormat}
+					getCustomEmoji={getCustomEmoji}
+					msg={msg}
+				/>
+			);
+		}
 
-			if (file.actions && file.actions.length > 0) {
-				return (
-					<AttachedActions
-						key={file.title_link || file.message_link || `actions-${index}`}
-						attachment={file}
-						getCustomEmoji={getCustomEmoji}
-					/>
-				);
-			}
-			if (typeof file.collapsed === 'boolean') {
-				return (
-					<CollapsibleQuote
-						key={file.title_link || file.message_link || `collapsible-${index}`}
-						attachment={file}
-						timeFormat={timeFormat}
-						getCustomEmoji={getCustomEmoji}
-					/>
-				);
-			}
+		return null;
+	});
 
-			if (file.attachments?.length) {
-				return (
-					<Reply
-						key={file.title_link || file.message_link || `reply-${index}`}
-						attachment={file}
-						timeFormat={timeFormat}
-						getCustomEmoji={getCustomEmoji}
-						msg={msg}
-					/>
-				);
-			}
-
-			return null;
-		});
-
-		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
-	},
-	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
-);
+	return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
+};
 
 Attachments.displayName = 'MessageAttachments';
 

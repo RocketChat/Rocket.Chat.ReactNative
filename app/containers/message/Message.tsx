@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext } from 'react';
 import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -60,7 +60,7 @@ interface IMessageA11y {
 	handleLongPress?: () => void;
 }
 
-const MessageInner = memo((props: TMessageProps) => {
+const MessageInner = (props: TMessageProps) => {
 	'use memo';
 
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -276,10 +276,10 @@ const MessageInner = memo((props: TMessageProps) => {
 	}
 
 	return <WidthAwareView>{content}</WidthAwareView>;
-});
+};
 MessageInner.displayName = 'MessageInner';
 
-const Message = memo((props: TMessageProps & IMessageA11y) => {
+const Message = (props: TMessageProps & IMessageA11y) => {
 	'use memo';
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
@@ -419,10 +419,10 @@ const Message = memo((props: TMessageProps & IMessageA11y) => {
 			</A11y.Index>
 		</View>
 	);
-});
+};
 Message.displayName = 'Message';
 
-const MessageTouchable = memo((props: TMessageProps) => {
+const MessageTouchable = (props: TMessageProps) => {
 	'use memo';
 
 	const { onPress, onLongPress } = useContext(MessageContext);
@@ -577,7 +577,7 @@ const MessageTouchable = memo((props: TMessageProps) => {
 			</A11y.Index>
 		</A11y.Order>
 	);
-});
+};
 
 MessageTouchable.displayName = 'MessageTouchable';
 

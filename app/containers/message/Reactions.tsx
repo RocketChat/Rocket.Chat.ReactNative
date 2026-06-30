@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -26,7 +26,7 @@ interface IMessageReactions {
 	reactions?: IReaction[];
 }
 
-const AddReaction = memo(({ theme }: { theme: TSupportedThemes }) => {
+const AddReaction = ({ theme }: { theme: TSupportedThemes }) => {
 	'use memo';
 
 	const { reactionInit } = useContext(MessageContext);
@@ -47,9 +47,9 @@ const AddReaction = memo(({ theme }: { theme: TSupportedThemes }) => {
 			</View>
 		</Touchable>
 	);
-});
+};
 
-const Reaction = memo(({ reaction, theme }: IMessageReaction) => {
+const Reaction = ({ reaction, theme }: IMessageReaction) => {
 	'use memo';
 
 	const { onReactionPress, onReactionLongPress, user, getCustomEmoji } = useContext(MessageContext);
@@ -83,9 +83,9 @@ const Reaction = memo(({ reaction, theme }: IMessageReaction) => {
 			</View>
 		</Touchable>
 	);
-});
+};
 
-const Reactions = memo(({ reactions }: IMessageReactions) => {
+const Reactions = ({ reactions }: IMessageReactions) => {
 	'use memo';
 
 	const { theme } = useTheme();
@@ -101,7 +101,7 @@ const Reactions = memo(({ reactions }: IMessageReactions) => {
 			<AddReaction theme={theme} />
 		</View>
 	);
-});
+};
 
 Reaction.displayName = 'MessageReaction';
 Reactions.displayName = 'MessageReactions';

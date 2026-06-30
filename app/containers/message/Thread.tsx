@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
@@ -9,51 +9,43 @@ import { type IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
 
-const Thread = memo(
-	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
-		'use memo';
+const Thread = ({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
+	'use memo';
 
-		const { theme, colors } = useTheme();
-		const { threadBadgeColor, toggleFollowThread, user, replies, onThreadPress } = useContext(MessageContext);
+	const { theme, colors } = useTheme();
+	const { threadBadgeColor, toggleFollowThread, user, replies, onThreadPress } = useContext(MessageContext);
 
-		const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
-		const textColor = threadBadgeColor || theme !== 'light' ? colors.fontWhite : colors.fontPureBlack;
+	const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
+	const textColor = threadBadgeColor || theme !== 'light' ? colors.fontWhite : colors.fontPureBlack;
 
-		if (!tlm || isThreadRoom || tcount === null) {
-			return null;
-		}
-
-		return (
-			<View style={styles.buttonContainer}>
-				<Touchable
-					onPress={onThreadPress}
-					accessibilityRole='button'
-					accessibilityLabel={I18n.t('View_Thread')}
-					style={[styles.button, { backgroundColor }]}
-					testID={`message-thread-button-${msg}`}>
-					<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
-				</Touchable>
-				<ThreadDetails
-					item={{
-						tcount,
-						replies,
-						id
-					}}
-					user={{ id: user?.id ?? '' }}
-					badgeColor={threadBadgeColor}
-					toggleFollowThread={toggleFollowThread as Function}
-					style={styles.threadDetails}
-				/>
-			</View>
-		);
-	},
-	(prevProps, nextProps) => {
-		if (prevProps.tcount !== nextProps.tcount) {
-			return false;
-		}
-		return true;
+	if (!tlm || isThreadRoom || tcount === null) {
+		return null;
 	}
-);
+
+	return (
+		<View style={styles.buttonContainer}>
+			<Touchable
+				onPress={onThreadPress}
+				accessibilityRole='button'
+				accessibilityLabel={I18n.t('View_Thread')}
+				style={[styles.button, { backgroundColor }]}
+				testID={`message-thread-button-${msg}`}>
+				<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
+			</Touchable>
+			<ThreadDetails
+				item={{
+					tcount,
+					replies,
+					id
+				}}
+				user={{ id: user?.id ?? '' }}
+				badgeColor={threadBadgeColor}
+				toggleFollowThread={toggleFollowThread as Function}
+				style={styles.threadDetails}
+			/>
+		</View>
+	);
+};
 
 Thread.displayName = 'MessageThread';
 

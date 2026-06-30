@@ -1,8 +1,7 @@
-import { useCallback, useContext, useEffect, useLayoutEffect, useState, memo, type ReactElement } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
-import { dequal } from 'dequal';
 import axios from 'axios';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -185,18 +184,15 @@ const Url = ({ url }: { url: IUrl }) => {
 		</Touchable>
 	);
 };
-const Urls = memo(
-	({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
-		'use memo';
+const Urls = ({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
+	'use memo';
 
-		if (!urls || urls.length === 0) {
-			return null;
-		}
+	if (!urls || urls.length === 0) {
+		return null;
+	}
 
-		return urls.map((url: IUrl) => <Url url={url} key={url.url} />);
-	},
-	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
-);
+	return urls.map((url: IUrl) => <Url url={url} key={url.url} />);
+};
 
 UrlContent.displayName = 'MessageUrlContent';
 UrlImage.displayName = 'MessageUrlImage';

@@ -1,5 +1,4 @@
-import { dequal } from 'dequal';
-import { useContext, useState, memo } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -67,16 +66,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
-	fieldValue: {
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
-	marginTop: {
-		marginTop: 4
-	},
-	marginBottom: {
-		marginBottom: 4
-	},
 	image: {
 		height: 80,
 		width: 80,
@@ -99,182 +88,156 @@ interface IMessageReply {
 	msg?: string;
 }
 
-const Title = memo(
-	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
-		'use memo';
+const Title = ({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
+	'use memo';
 
-		const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
-		return (
-			<View style={styles.authorContainer}>
-				{attachment.author_name ? (
-					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint }]}>
-						{attachment.author_name}
-					</Text>
-				) : null}
-				{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
-				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
-			</View>
-		);
+	const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
+	return (
+		<View style={styles.authorContainer}>
+			{attachment.author_name ? (
+				<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint }]}>
+					{attachment.author_name}
+				</Text>
+			) : null}
+			{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
+			{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
+		</View>
+	);
+};
+
+const Description = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+	'use memo';
+
+	const { user } = useContext(MessageContext);
+	const text = attachment.text || attachment.title;
+
+	if (!text) {
+		return null;
 	}
-);
 
-const Description = memo(
-	({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
-		'use memo';
+	// For file attachments without explicit text, the title is just a filename (e.g., "test.py").
+	// We use MarkdownPreview to avoid markdown parsing treating filenames as URLs or markdown syntax.
+	// For other attachments (message quotes, embeds), the text may contain actual markdown formatting,
+	// so we use the full Markdown component to preserve styling.
+	const isFileName = attachment.type === 'file' && !attachment.text;
 
-		const { user } = useContext(MessageContext);
-		const text = attachment.text || attachment.title;
-
-		if (!text) {
-			return null;
-		}
-
-		// For file attachments without explicit text, the title is just a filename (e.g., "test.py").
-		// We use MarkdownPreview to avoid markdown parsing treating filenames as URLs or markdown syntax.
-		// For other attachments (message quotes, embeds), the text may contain actual markdown formatting,
-		// so we use the full Markdown component to preserve styling.
-		const isFileName = attachment.type === 'file' && !attachment.text;
-
-		if (isFileName) {
-			return <MarkdownPreview msg={text} numberOfLines={0} />;
-		}
-
-		return <Markdown msg={text} username={user?.username} getCustomEmoji={getCustomEmoji} />;
-	},
-	(prevProps, nextProps) => {
-		if (prevProps.attachment.text !== nextProps.attachment.text) {
-			return false;
-		}
-		if (prevProps.attachment.title !== nextProps.attachment.title) {
-			return false;
-		}
-		if (prevProps.attachment.type !== nextProps.attachment.type) {
-			return false;
-		}
-		return true;
+	if (isFileName) {
+		return <MarkdownPreview msg={text} numberOfLines={0} />;
 	}
-);
 
-const UrlImage = memo(
-	({ image }: { image?: string }) => {
-		'use memo';
+	return <Markdown msg={text} username={user?.username} getCustomEmoji={getCustomEmoji} />;
+};
 
-		const { baseUrl, user } = useContext(MessageContext);
+const UrlImage = ({ image }: { image?: string }) => {
+	'use memo';
 
-		if (!image) {
-			return null;
+	const { baseUrl, user } = useContext(MessageContext);
+
+	if (!image) {
+		return null;
+	}
+
+	image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
+	return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
+};
+
+const Fields = ({
+	attachment,
+	theme,
+	getCustomEmoji
+}: {
+	attachment: IAttachment;
+	theme: TSupportedThemes;
+	getCustomEmoji: TGetCustomEmoji;
+}) => {
+	'use memo';
+
+	const { user } = useContext(MessageContext);
+
+	if (!attachment.fields) {
+		return null;
+	}
+
+	return (
+		<View style={styles.fieldsContainer}>
+			{attachment.fields.map(field => (
+				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
+					<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
+					<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
+				</View>
+			))}
+		</View>
+	);
+};
+
+const Reply = ({ attachment, timeFormat, getCustomEmoji, msg }: IMessageReply) => {
+	'use memo';
+
+	const [loading, setLoading] = useState(false);
+	const { theme } = useTheme();
+	const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
+
+	if (!attachment || (isEncrypted && !e2e)) {
+		return null;
+	}
+
+	const onPress = async () => {
+		let url = attachment.title_link || attachment.author_link;
+		if (!url) {
+			return;
 		}
-
-		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
-		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
-	},
-	(prevProps, nextProps) => prevProps.image === nextProps.image
-);
-
-const Fields = memo(
-	({
-		attachment,
-		theme,
-		getCustomEmoji
-	}: {
-		attachment: IAttachment;
-		theme: TSupportedThemes;
-		getCustomEmoji: TGetCustomEmoji;
-	}) => {
-		'use memo';
-
-		const { user } = useContext(MessageContext);
-
-		if (!attachment.fields) {
-			return null;
+		if (attachment.type === 'file' && attachment.title_link) {
+			setLoading(true);
+			url = formatAttachmentUrl(attachment.title_link, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
+			await fileDownloadAndPreview(url, attachment, id ?? '');
+			setLoading(false);
+			return;
 		}
+		openLink(url, theme);
+	};
 
-		return (
-			<View style={styles.fieldsContainer}>
-				{attachment.fields.map(field => (
-					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
+	let { strokeLight } = themes[theme];
+	if (attachment.color) {
+		strokeLight = attachment.color;
+	}
+
+	return (
+		<View style={{ gap: 4 }}>
+			<Touchable
+				testID={`reply-${attachment?.author_name}-${attachment?.text}`}
+				onPress={onPress}
+				style={[
+					styles.button,
+					{
+						borderColor: strokeLight
+					}
+				]}
+				disabled={!!(loading || attachment.message_link)}>
+				<View style={styles.attachmentContainer}>
+					<View style={styles.titleAndDescriptionContainer}>
+						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
+						<Quote attachments={attachment.attachments} timeFormat={timeFormat} />
+						<Attachments attachments={attachment.attachments} timeFormat={timeFormat} />
+						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						{loading ? (
+							<View style={styles.backdrop}>
+								<View
+									style={[
+										styles.backdrop,
+										{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
+									]}></View>
+								<RCActivityIndicator />
+							</View>
+						) : null}
 					</View>
-				))}
-			</View>
-		);
-	},
-	(prevProps, nextProps) =>
-		dequal(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme
-);
-
-const Reply = memo(
-	({ attachment, timeFormat, getCustomEmoji, msg }: IMessageReply) => {
-		'use memo';
-
-		const [loading, setLoading] = useState(false);
-		const { theme } = useTheme();
-		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
-
-		if (!attachment || (isEncrypted && !e2e)) {
-			return null;
-		}
-
-		const onPress = async () => {
-			let url = attachment.title_link || attachment.author_link;
-			if (!url) {
-				return;
-			}
-			if (attachment.type === 'file' && attachment.title_link) {
-				setLoading(true);
-				url = formatAttachmentUrl(attachment.title_link, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
-				await fileDownloadAndPreview(url, attachment, id ?? '');
-				setLoading(false);
-				return;
-			}
-			openLink(url, theme);
-		};
-
-		let { strokeLight } = themes[theme];
-		if (attachment.color) {
-			strokeLight = attachment.color;
-		}
-
-		return (
-			<View style={{ gap: 4 }}>
-				<Touchable
-					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
-					onPress={onPress}
-					style={[
-						styles.button,
-						{
-							borderColor: strokeLight
-						}
-					]}
-					disabled={!!(loading || attachment.message_link)}>
-					<View style={styles.attachmentContainer}>
-						<View style={styles.titleAndDescriptionContainer}>
-							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
-							<Quote attachments={attachment.attachments} timeFormat={timeFormat} />
-							<Attachments attachments={attachment.attachments} timeFormat={timeFormat} />
-							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-							{loading ? (
-								<View style={styles.backdrop}>
-									<View
-										style={[
-											styles.backdrop,
-											{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
-										]}></View>
-									<RCActivityIndicator />
-								</View>
-							) : null}
-						</View>
-						<UrlImage image={attachment.thumb_url} />
-					</View>
-				</Touchable>
-				{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
-			</View>
-		);
-	},
-	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
-);
+					<UrlImage image={attachment.thumb_url} />
+				</View>
+			</Touchable>
+			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
+		</View>
+	);
+};
 
 Reply.displayName = 'MessageReply';
 Title.displayName = 'MessageReplyTitle';

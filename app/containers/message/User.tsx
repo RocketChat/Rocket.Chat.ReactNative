@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
@@ -15,10 +15,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-	actionIcons: {
-		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	username: {
@@ -63,79 +59,77 @@ interface IMessageUser {
 	isTranslated: boolean;
 }
 
-const User = memo(
-	({
-		isHeader,
-		useRealName,
-		author,
-		alias,
-		ts,
-		timeFormat,
-		hasError,
-		type,
-		isEdited,
-		isTranslated,
-		isReadReceiptEnabled,
-		unread,
-		pinned
-	}: IMessageUser) => {
-		'use memo';
+const User = ({
+	isHeader,
+	useRealName,
+	author,
+	alias,
+	ts,
+	timeFormat,
+	hasError,
+	type,
+	isEdited,
+	isTranslated,
+	isReadReceiptEnabled,
+	unread,
+	pinned
+}: IMessageUser) => {
+	'use memo';
 
-		const { user, navToRoomInfo } = useContext(MessageContext);
-		const { colors } = useTheme();
-		const { isLargeFontScale } = useResponsiveLayout();
+	const { user, navToRoomInfo } = useContext(MessageContext);
+	const { colors } = useTheme();
+	const { isLargeFontScale } = useResponsiveLayout();
 
-		if (isHeader) {
-			const username = (useRealName && author?.name) || author?.username;
-			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
-			const itsMe = author?._id === user?.id;
+	if (isHeader) {
+		const username = (useRealName && author?.name) || author?.username;
+		const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
+		const itsMe = author?._id === user?.id;
 
-			const onUserPress = () => {
-				navToRoomInfo?.({
-					t: SubscriptionType.DIRECT,
-					rid: author?._id || '',
-					itsMe
-				});
-			};
+		const onUserPress = () => {
+			navToRoomInfo?.({
+				t: SubscriptionType.DIRECT,
+				rid: author?._id || '',
+				itsMe
+			});
+		};
 
-			const textContent = (
-				<>
-					{alias || username}
-					{aliasUsername}
-				</>
-			);
+		const textContent = (
+			<>
+				{alias || username}
+				{aliasUsername}
+			</>
+		);
 
-			if (messageHaveAuthorName(type as MessageTypesValues)) {
-				return (
-					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
-						{textContent}
-					</Text>
-				);
-			}
-
+		if (messageHaveAuthorName(type as MessageTypesValues)) {
 			return (
-				<View style={styles.container}>
-					<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
-						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-							{textContent}
-						</Text>
-						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts as Date | undefined} />}
-					</Pressable>
-					<RightIcons
-						type={type}
-						isEdited={isEdited}
-						hasError={hasError}
-						isReadReceiptEnabled={isReadReceiptEnabled}
-						unread={unread}
-						pinned={pinned}
-						isTranslated={isTranslated}
-					/>
-				</View>
+				<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
+					{textContent}
+				</Text>
 			);
 		}
-		return null;
+
+		return (
+			<View style={styles.container}>
+				<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+					<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						{textContent}
+					</Text>
+					{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts as Date | undefined} />}
+				</Pressable>
+				<RightIcons
+					type={type}
+					isEdited={isEdited}
+					hasError={hasError}
+					isReadReceiptEnabled={isReadReceiptEnabled}
+					unread={unread}
+					pinned={pinned}
+					isTranslated={isTranslated}
+				/>
+			</View>
+		);
 	}
-);
+	return null;
+};
 
 User.displayName = 'MessageUser';
 

@@ -1,6 +1,5 @@
-import { useContext, memo } from 'react';
+import { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -13,134 +12,93 @@ import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type MessageTypesValues } from '../../definitions';
 
-const Content = memo(
-	(props: IMessageContent) => {
-		'use memo';
+const Content = (props: IMessageContent) => {
+	'use memo';
 
-		const { theme } = useTheme();
-		const { user, onLinkPress, getCustomEmoji = () => null, navToRoomInfo } = useContext(MessageContext);
+	const { theme } = useTheme();
+	const { user, onLinkPress, getCustomEmoji = () => null, navToRoomInfo } = useContext(MessageContext);
 
-		if (props.isInfo) {
-			// @ts-ignore
-			const infoMessage = getInfoMessage({ ...props });
+	if (props.isInfo) {
+		// @ts-ignore
+		const infoMessage = getInfoMessage({ ...props });
 
-			const renderMessageContent = (
-				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} accessibilityLabel={infoMessage}>
-					{infoMessage}
-				</Text>
-			);
-			if (messageHaveAuthorName(props.type as MessageTypesValues)) {
-				return (
-					<Text>
-						<User
-							hasError={props.hasError}
-							type={props.type}
-							isEdited={props.isEdited}
-							isTranslated={props.isTranslated}
-							isHeader={props.isHeader}
-							useRealName={props.useRealName}
-							author={props.author}
-							alias={props.alias}
-							pinned={props.pinned}
-						/>{' '}
-						{renderMessageContent}
-					</Text>
-				);
-			}
-
-			return renderMessageContent;
-		}
-
-		const isPreview = props.tmid && !props.isThreadRoom;
-		let content = null;
-
-		if (props.isEncrypted) {
-			content = (
-				<Text
-					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
-					accessibilityLabel={I18n.t('Encrypted_message')}
-					testID='message-encrypted'>
-					{I18n.t('Encrypted_message')}
-				</Text>
-			);
-		} else if (isPreview) {
-			const previewMsg =
-				props.msg ||
-				(props.attachments?.length
-					? getPreviewMessageFromAttachment(props.attachments[0], props.autoTranslateLanguage)
-					: undefined);
-			content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
-		} else if (props.msg) {
-			content = (
-				<Markdown
-					msg={props.msg}
-					md={props.type !== 'e2e' ? props.md : undefined}
-					getCustomEmoji={getCustomEmoji}
-					username={user?.username ?? ''}
-					channels={props.channels}
-					mentions={props.mentions}
-					navToRoomInfo={navToRoomInfo}
-					useRealName={props.useRealName}
-					onLinkPress={onLinkPress}
-					isTranslated={props.isTranslated}
-				/>
-			);
-		}
-
-		if (props.isIgnored) {
-			content = (
-				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
-					{I18n.t('Message_Ignored')}
+		const renderMessageContent = (
+			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} accessibilityLabel={infoMessage}>
+				{infoMessage}
+			</Text>
+		);
+		if (messageHaveAuthorName(props.type as MessageTypesValues)) {
+			return (
+				<Text>
+					<User
+						hasError={props.hasError}
+						type={props.type}
+						isEdited={props.isEdited}
+						isTranslated={props.isTranslated}
+						isHeader={props.isHeader}
+						useRealName={props.useRealName}
+						author={props.author}
+						alias={props.alias}
+						pinned={props.pinned}
+					/>{' '}
+					{renderMessageContent}
 				</Text>
 			);
 		}
 
-		return content ? (
-			<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
-				{content}
-			</View>
-		) : null;
-	},
-	(prevProps, nextProps) => {
-		if (prevProps.isTemp !== nextProps.isTemp) {
-			return false;
-		}
-		if (prevProps.msg !== nextProps.msg) {
-			return false;
-		}
-		if (prevProps.type !== nextProps.type) {
-			return false;
-		}
-		if (prevProps.isEncrypted !== nextProps.isEncrypted) {
-			return false;
-		}
-		if (prevProps.isIgnored !== nextProps.isIgnored) {
-			return false;
-		}
-		if (prevProps.tmid !== nextProps.tmid) {
-			return false;
-		}
-		if (prevProps.isThreadRoom !== nextProps.isThreadRoom) {
-			return false;
-		}
-		if (prevProps.autoTranslateLanguage !== nextProps.autoTranslateLanguage) {
-			return false;
-		}
-		if (!dequal(prevProps.md, nextProps.md)) {
-			return false;
-		}
-		if (!dequal(prevProps.mentions, nextProps.mentions)) {
-			return false;
-		}
-		if (!dequal(prevProps.channels, nextProps.channels)) {
-			return false;
-		}
-		if (!dequal(prevProps.attachments, nextProps.attachments)) {
-			return false;
-		}
-		return true;
+		return renderMessageContent;
 	}
-);
+
+	const isPreview = props.tmid && !props.isThreadRoom;
+	let content = null;
+
+	if (props.isEncrypted) {
+		content = (
+			<Text
+				style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
+				accessibilityLabel={I18n.t('Encrypted_message')}
+				testID='message-encrypted'>
+				{I18n.t('Encrypted_message')}
+			</Text>
+		);
+	} else if (isPreview) {
+		const previewMsg =
+			props.msg ||
+			(props.attachments?.length
+				? getPreviewMessageFromAttachment(props.attachments[0], props.autoTranslateLanguage)
+				: undefined);
+		content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
+	} else if (props.msg) {
+		content = (
+			<Markdown
+				msg={props.msg}
+				md={props.type !== 'e2e' ? props.md : undefined}
+				getCustomEmoji={getCustomEmoji}
+				username={user?.username ?? ''}
+				channels={props.channels}
+				mentions={props.mentions}
+				navToRoomInfo={navToRoomInfo}
+				useRealName={props.useRealName}
+				onLinkPress={onLinkPress}
+				isTranslated={props.isTranslated}
+			/>
+		);
+	}
+
+	if (props.isIgnored) {
+		content = (
+			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
+				{I18n.t('Message_Ignored')}
+			</Text>
+		);
+	}
+
+	return content ? (
+		<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+			{content}
+		</View>
+	) : null;
+};
 
 Content.displayName = 'MessageContent';
 
