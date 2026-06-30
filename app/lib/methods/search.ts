@@ -191,9 +191,6 @@ export const searchRemote = async ({
 	}
 };
 
-// Orchestrates the two-phase search: resolves the local query first and hands it to `onLocal`
-// so callers can paint it immediately, then resolves with the spotlight-augmented results.
-// searchRemote still receives localData so spotlight can exclude users already present locally.
 export const search = async ({
 	text = '',
 	filterUsers = true,
