@@ -7,6 +7,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -575,6 +576,7 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -656,6 +658,7 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -980,6 +983,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -1328,6 +1332,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -2218,6 +2223,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
+        undefined,
         {
           "paddingBottom": 16,
         },
@@ -3080,6 +3086,7 @@ exports[`Story Snapshots: Separator should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -3118,6 +3125,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -3556,6 +3564,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
+        undefined,
         {
           "paddingBottom": 16,
         },
@@ -4833,6 +4842,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
+        undefined,
         {
           "paddingBottom": 16,
         },
@@ -6089,6 +6099,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -6382,6 +6393,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
+        undefined,
         {
           "paddingBottom": 16,
         },
@@ -8645,6 +8657,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
+      undefined,
       {
         "paddingBottom": 16,
       },
@@ -9282,6 +9295,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
+        undefined,
         {
           "paddingBottom": 16,
         },
