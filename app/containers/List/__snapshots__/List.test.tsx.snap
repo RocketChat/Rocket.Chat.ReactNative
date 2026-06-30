@@ -7,10 +7,10 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -576,10 +576,10 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -658,10 +658,10 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -983,10 +983,10 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -1332,10 +1332,10 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -2223,10 +2223,10 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
-        undefined,
         {
-          "paddingBottom": 16,
+          "paddingBottom": 0,
         },
+        undefined,
       ]
     }
     keyboardDismissMode="interactive"
@@ -3086,10 +3086,10 @@ exports[`Story Snapshots: Separator should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -3125,10 +3125,10 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -3564,10 +3564,10 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
-        undefined,
         {
-          "paddingBottom": 16,
+          "paddingBottom": 0,
         },
+        undefined,
       ]
     }
     keyboardDismissMode="interactive"
@@ -4842,10 +4842,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
-        undefined,
         {
-          "paddingBottom": 16,
+          "paddingBottom": 0,
         },
+        undefined,
       ]
     }
     keyboardDismissMode="interactive"
@@ -6099,10 +6099,10 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -6393,10 +6393,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
-        undefined,
         {
-          "paddingBottom": 16,
+          "paddingBottom": 0,
         },
+        undefined,
       ]
     }
     keyboardDismissMode="interactive"
@@ -8657,10 +8657,10 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       {
         "paddingVertical": 16,
       },
-      undefined,
       {
-        "paddingBottom": 16,
+        "paddingBottom": 0,
       },
+      undefined,
     ]
   }
   keyboardDismissMode="interactive"
@@ -9295,10 +9295,10 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         {
           "paddingVertical": 16,
         },
-        undefined,
         {
-          "paddingBottom": 16,
+          "paddingBottom": 0,
         },
+        undefined,
       ]
     }
     keyboardDismissMode="interactive"
