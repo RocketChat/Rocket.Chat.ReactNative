@@ -2,8 +2,6 @@ import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
 import { useWindowDimensions } from 'react-native';
 
-import { isIOS } from '../../lib/methods/helpers';
-
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const SCROLL_ENABLED_THRESHOLD = 0.6;
@@ -74,8 +72,7 @@ export function useActionSheetDetents({
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
 			}
 		} else if (contentHeight > 0) {
-			// we are adding handle height in ios only because last item on iPhone SE is not fully visible.
-			const rawContentDetent = (contentHeight + (isIOS ? HANDLE_HEIGHT : 0)) / windowHeight;
+			const rawContentDetent = (contentHeight + HANDLE_HEIGHT) / windowHeight;
 			const contentDetent = Math.min(
 				ACTION_SHEET_MAX_HEIGHT_FRACTION,
 				Math.max(ACTION_SHEET_MIN_HEIGHT_FRACTION, rawContentDetent)
