@@ -63,8 +63,6 @@ export const useIsBeingEdited = (messageId: string): boolean => {
 	return useStore(store, s => s.action === 'edit' && s.selectedMessages[0] === messageId);
 };
 
-export const useInteractionApi = (): TInteractionActions => useInteractionStore(s => s.actions);
-
 export const InteractionProvider = ({
 	initialState,
 	children
