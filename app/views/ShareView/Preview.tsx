@@ -16,7 +16,7 @@ import { type IShareAttachment } from '../../definitions';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
 
-const VideoPreview = React.memo(({ uri, width, height }: { uri: string; width?: number; height?: number }) => {
+const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number; height?: number }) => {
 	const player = useVideoPlayer(uri, player => {
 		player.play();
 	});
