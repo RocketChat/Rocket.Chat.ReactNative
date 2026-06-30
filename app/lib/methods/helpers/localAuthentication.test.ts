@@ -1,9 +1,18 @@
 import * as LocalAuthentication from 'expo-local-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import EventEmitter from './events';
-import { checkHasPasscode, handleLocalAuthentication } from './localAuthentication';
+import UserPreferences from '../userPreferences';
+import database from '../../database';
+import { getServerTimeSync } from '../../services/getServerTimeSync';
+import { store as reduxStore } from '../../store/auxStore';
+import { checkHasPasscode, handleLocalAuthentication, localAuthenticate } from './localAuthentication';
 import { biometricTrustStore } from '../../biometricTrustStore';
 import { CHANGE_PASSCODE_EMITTER, LOCAL_AUTHENTICATE_EMITTER } from '../../constants/localAuthentication';
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+	multiRemove: jest.fn(() => Promise.resolve())
+}));
 
 jest.mock('expo-local-authentication', () => ({
 	authenticateAsync: jest.fn(),
@@ -21,6 +30,16 @@ jest.mock('../userPreferences', () => ({
 		setBool: jest.fn(),
 		getString: jest.fn(),
 		setString: jest.fn()
+	}
+}));
+
+jest.mock('../../database', () => ({
+	__esModule: true,
+	default: {
+		servers: {
+			get: jest.fn(),
+			write: jest.fn(callback => callback())
+		}
 	}
 }));
 
@@ -49,6 +68,12 @@ jest.mock('./events', () => ({
 }));
 
 const mockedEmit = EventEmitter.emit as jest.Mock;
+const mockedGetString = UserPreferences.getString as jest.Mock;
+const mockedDispatch = reduxStore.dispatch as jest.Mock;
+const mockedGetServerTimeSync = getServerTimeSync as jest.Mock;
+const mockedServersGet = database.servers.get as unknown as jest.Mock;
+const mockedServersWrite = database.servers.write as unknown as jest.Mock;
+const mockedMultiRemove = AsyncStorage.multiRemove as jest.Mock;
 const mockedVerify = biometricTrustStore.verify as jest.Mock;
 const mockedEnroll = biometricTrustStore.enroll as jest.Mock;
 const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
@@ -175,6 +200,50 @@ describe('handleLocalAuthentication', () => {
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
 		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+});
+
+describe('localAuthenticate', () => {
+	const mockedFindServer = jest.fn();
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockedGetString.mockReturnValue('stored-passcode');
+		mockedIsEnabled.mockReturnValue(true);
+		mockedHasEnrollment.mockResolvedValue(false);
+		mockedIsEnrollmentValid.mockResolvedValue(true);
+		mockedIsRelockPending.mockReturnValue(false);
+		mockedIsEnrolled.mockResolvedValue(true);
+		mockedDisenroll.mockResolvedValue(undefined);
+		mockedGetServerTimeSync.mockResolvedValueOnce(1_000_000).mockResolvedValueOnce(1_000_001);
+		mockedServersGet.mockReturnValue({ find: mockedFindServer });
+		mockedServersWrite.mockImplementation(callback => callback());
+		mockedMultiRemove.mockResolvedValue(undefined);
+		mockedEmit.mockImplementation((event, payload) => {
+			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.submit) {
+				setImmediate(() => payload.submit());
+			}
+		});
+	});
+
+	it('enrollmentChanged forces the passcode modal inside the auto-lock window', async () => {
+		const serverRecord = {
+			autoLock: true,
+			autoLockTime: 60,
+			lastLocalAuthenticatedSession: new Date(990_000),
+			update: jest.fn(updater => {
+				updater(serverRecord);
+				return Promise.resolve();
+			})
+		};
+		mockedFindServer.mockResolvedValue(serverRecord);
+
+		await localAuthenticate('server-id');
+
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		expect(mockedGetServerTimeSync).toHaveBeenCalledTimes(2);
+		expect(mockedDispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ isLocalAuthenticated: false }));
+		expect(mockedDispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ isLocalAuthenticated: true }));
 	});
 });
 
