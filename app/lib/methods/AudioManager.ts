@@ -85,15 +85,17 @@ function createAudioManager() {
 		}
 	}
 
-	function setPositionAsync(audioKey: string, time: number) {
+	async function setPositionAsync(audioKey: string, time: number) {
 		audioPositions[audioKey] = time;
 		const player = audioQueue[audioKey];
 		if (!player) {
 			return;
 		}
-		player.seekTo(time).catch(() => {
+		try {
+			await player.seekTo(time);
+		} catch {
 			// Ignore seek errors
-		});
+		}
 	}
 
 	function setRateAsync(audioKey: string, value = 1.0) {
@@ -127,6 +129,10 @@ function createAudioManager() {
 		}
 
 		if (status.isLoaded && status.didJustFinish) {
+			// Guard against false didJustFinish during seek operations
+			if (status.currentTime < status.duration - 0.5) {
+				return;
+			}
 			try {
 				audioSubscriptions[audioKey]?.();
 				delete audioSubscriptions[audioKey];
