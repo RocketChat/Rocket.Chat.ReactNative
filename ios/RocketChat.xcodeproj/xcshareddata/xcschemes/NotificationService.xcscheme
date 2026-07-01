@@ -18,7 +18,7 @@
                BlueprintIdentifier = "1EFEB5942493B6640072EDC0"
                BuildableName = "NotificationService.appex"
                BlueprintName = "NotificationService"
-               ReferencedContainer = "container:RocketChatRN.xcodeproj">
+               ReferencedContainer = "container:RocketChat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -63,7 +63,7 @@
             BlueprintIdentifier = "1EFEB5942493B6640072EDC0"
             BuildableName = "NotificationService.appex"
             BlueprintName = "NotificationService"
-            ReferencedContainer = "container:RocketChatRN.xcodeproj">
+            ReferencedContainer = "container:RocketChat.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

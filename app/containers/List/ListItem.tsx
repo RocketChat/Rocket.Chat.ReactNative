@@ -1,6 +1,7 @@
 import { useMemo, memo, type ReactElement } from 'react';
 import {
 	I18nManager,
+	PixelRatio,
 	type StyleProp,
 	StyleSheet,
 	Text,
@@ -172,7 +173,11 @@ const Content = memo(
 
 		return (
 			<View
-				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
+				style={[
+					styles.container,
+					disabled && styles.disabled,
+					{ height: PixelRatio.roundToNearestPixel((heightContainer || BASE_HEIGHT) * fontScale) }
+				]}
 				testID={testID}
 				accessible={!shouldDisableAccessibility}
 				accessibilityLabel={handleAcessibilityLabel}
