@@ -16,9 +16,11 @@ export const getPermissionsSelector = createSelector(
 	(permissions, permissionsArray) => permissionsArray.map(p => permissions[p])
 );
 
+const EMPTY_ROLES: TSubscriptionModel['roles'] = [];
+
 const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
-	const [subscriptionRoles, setSubscriptionRoles] = useState<TSubscriptionModel['roles']>([]);
-	const subscriptionRoleRef = useRef<TSubscriptionModel['roles']>([]);
+	const [rolesByRid, setRolesByRid] = useState<{ rid?: string; roles: TSubscriptionModel['roles'] }>({ roles: EMPTY_ROLES });
+	const rolesByRidRef = useRef(rolesByRid);
 
 	useEffect(() => {
 		if (!rid) {
@@ -32,9 +34,9 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
 				const newRoles = orderBy(s.roles);
-				if (!dequal(subscriptionRoleRef.current, newRoles)) {
-					subscriptionRoleRef.current = newRoles;
-					setSubscriptionRoles(newRoles);
+				if (rolesByRidRef.current.rid !== rid || !dequal(rolesByRidRef.current.roles, newRoles)) {
+					rolesByRidRef.current = { rid, roles: newRoles };
+					setRolesByRid(rolesByRidRef.current);
 				}
 			});
 		});
@@ -44,9 +46,10 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 				subSubscription.unsubscribe();
 			}
 		};
-	}, []);
+	}, [rid]);
 
-	return subscriptionRoles;
+	// Ignore roles captured for a previous rid so stale roles never leak after rid changes.
+	return rolesByRid.rid === rid ? rolesByRid.roles : EMPTY_ROLES;
 };
 
 export function usePermissions(permissions: TSupportedPermissions[], rid?: string): boolean[] {
