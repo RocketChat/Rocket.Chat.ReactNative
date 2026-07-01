@@ -439,7 +439,7 @@ async function getWebsocketInfo({
 
 		return {
 			success: false,
-			message: I18n.t('Invalid_URL')
+			message: err?.message || I18n.t('Invalid_URL')
 		};
 	} finally {
 		probeSdk?.connection.close();

@@ -193,11 +193,20 @@ class Sdk {
 			if ([totpInvalid, totpRequired].includes(errorType)) {
 				const { details } = isMethodCall ? normalized : normalized?.data;
 				try {
-					await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-					return this.post(endpoint, params);
+					const totpResult = await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
+					this.setHeaders({
+						'x-2fa-code': totpResult.twoFactorCode,
+						'x-2fa-method': totpResult.twoFactorMethod
+					});
+					return await this.post(endpoint, params);
 				} catch {
 					// twoFactor was canceled
 					return {} as ResultFor<'POST', MatchPathPattern<TPath>>;
+				} finally {
+					const next = { ...this.headers };
+					delete next['x-2fa-code'];
+					delete next['x-2fa-method'];
+					this.headers = next;
 				}
 			} else {
 				throw normalized;
@@ -267,19 +276,25 @@ class Sdk {
 			}
 			const [method, ...params] = args;
 			const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(this.code ? [this.code] : []));
+			if (this.code) {
+				this.code = null;
+			}
 			return result;
 		} catch (e: any) {
 			if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
 				const { details } = e;
 				try {
 					this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-					return this.methodCall(...args);
+					const result = await this.methodCall(...args);
+					this.code = null;
+					return result;
 				} catch {
 					// twoFactor was canceled
+					this.code = null;
 					return {};
 				}
 			} else {
-				return Promise.reject(e);
+				throw e;
 			}
 		}
 	}
@@ -349,10 +364,6 @@ class Sdk {
 
 	stream(...args: Parameters<DDPSDK['stream']>) {
 		return this.current?.stream(...args);
-	}
-
-	subscribeRaw(...args: Parameters<ClientStream['subscribe']>) {
-		return this.current?.client.subscribe(...args);
 	}
 
 	/**

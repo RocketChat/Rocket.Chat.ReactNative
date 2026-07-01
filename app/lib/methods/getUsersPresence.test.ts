@@ -20,7 +20,6 @@ jest.mock('../services/sdk', () => ({
 	__esModule: true,
 	default: {
 		subscribe: jest.fn(),
-		subscribeRaw: jest.fn(),
 		get: jest.fn()
 	}
 }));
@@ -157,7 +156,7 @@ describe('subscribeUsersPresence', () => {
 describe('getUsersPresence', () => {
 	beforeEach(() => {
 		(sdk.get as jest.Mock).mockReset();
-		(sdk.subscribeRaw as jest.Mock).mockReset();
+		(sdk.subscribe as jest.Mock).mockReset();
 		(reduxStore.dispatch as jest.Mock).mockReset();
 	});
 
@@ -187,11 +186,11 @@ describe('getUsersPresence', () => {
 		expect(sdk.get).toHaveBeenCalledWith('/v1/users.presence', {});
 	});
 
-	it('subscribes stream-user-presence via subscribeRaw for server >= 4.1.0 on success', async () => {
+	it('subscribes stream-user-presence via subscribe for server >= 4.1.0 on success', async () => {
 		setVersion('4.1.0', { settings: {} });
 		(sdk.get as jest.Mock).mockResolvedValue({ success: true, users: [] });
 		await getUsersPresence(['uid1']);
-		expect(sdk.subscribeRaw).toHaveBeenCalledWith('stream-user-presence', ['', { added: ['uid1'] }]);
+		expect(sdk.subscribe).toHaveBeenCalledWith('stream-user-presence', ['', { added: ['uid1'] }]);
 	});
 
 	it('dispatches setActiveUsers with user presence data', async () => {
