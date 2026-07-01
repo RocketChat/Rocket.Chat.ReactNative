@@ -3,6 +3,8 @@ import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
@@ -21,11 +23,12 @@ import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
 import CertificatePicker from './components/CertificatePicker';
 import useConnectServer from './hooks/useConnectServer';
-import { type INewServerViewProps } from './definitions';
+import { type OutsideParamList } from '../../stacks/types';
 import completeUrl from './utils/completeUrl';
 import styles from './styles';
 
-const NewServerView = ({ navigation }: INewServerViewProps) => {
+const NewServerView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'NewServerView'>>();
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const { previousServer, connecting, failureMessage } = useAppSelector(state => ({

@@ -25,8 +25,12 @@ import { inquiryRequest } from '../../ee/omnichannel/actions/inquiry';
 import { onRolesChanged } from '../methods/getRoles';
 import { getSettings } from '../methods/getSettings';
 import { setPresenceCap } from '../methods/getUsersPresence';
-import { _setUser, _activeUsers, _setUserTimer, type IActiveUsers } from '../methods/setUser';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
+import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { isIOS } from '../methods/helpers/deviceInfo';
+import { isSsl } from '../methods/helpers/isSsl';
+import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
+import fetch from '../methods/helpers/fetch';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -145,9 +149,9 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				}
 				const userStatus = ddpMessage.fields.args[0];
 				const { uid } = ddpMessage.fields;
-				const [, status, statusText] = userStatus;
-				const newStatus = { status: STATUSES[status], statusText };
-				store.dispatch(setActiveUsers({ [uid]: newStatus }));
+				const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
+			  const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+			  const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 
 				const { user: loggedUser } = store.getState().login;
 				if (loggedUser && loggedUser.id === uid) {
@@ -177,15 +181,25 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id, , status, statusText] = userStatus;
-					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
+					const [id, , status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
+					const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 
 					const { user: loggedUser } = store.getState().login;
 					if (loggedUser && loggedUser.id === id) {
-						store.dispatch(setUser({ status: STATUSES[status], statusText }));
+						store.dispatch(setUser({ status: STATUSES[status], statusText, statusSource, statusExpiresAt }));
 					}
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
+
+					// If it's the logged user, push the new etag through setUser so the
+					// servers-DB logged-user record (observed by useAvatarETag) updates,
+					// refreshing the avatar in ProfileView, SidebarView, etc.
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser?.username === username) {
+						store.dispatch(setUser({ avatarETag: etag }));
+					}
+
 					const db = database.active;
 					const userCollection = db.get('users');
 					try {

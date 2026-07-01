@@ -7,7 +7,7 @@ import { A11y } from 'react-native-a11y-order';
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { type ISubscription, type SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';
@@ -39,7 +39,7 @@ const IncomingCallHeader = memo(
 		const [cam, setCam] = useState(false);
 		const [audio, setAudio] = useState(true);
 		const dispatch = useDispatch();
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const isMasterDetail = useMasterDetail();
 		const styles = useStyle();
 		const insets = useSafeAreaInsets();
 

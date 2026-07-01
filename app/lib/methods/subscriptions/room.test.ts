@@ -1,54 +1,36 @@
-/* eslint-disable import/first */
-jest.mock('@nozbe/watermelondb/RawRecord', () => ({
-	sanitizedRaw: jest.fn((raw: any) => raw)
-}));
+import RoomSubscription from './room';
+import { loadMissedMessages } from '../loadMissedMessages';
+import { clearUserTyping } from '../../../actions/usersTyping';
 
-jest.mock('@nozbe/watermelondb', () => ({
-	Q: {
-		where: jest.fn(),
-		gt: jest.fn(),
-		lt: jest.fn(),
-		gte: jest.fn(),
-		lte: jest.fn(),
-		or: jest.fn(),
-		like: jest.fn(),
-		oneOf: jest.fn()
-	}
-}));
-
+const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
+const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
+	Promise.resolve({ stop: jest.fn() })
+);
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		current: undefined,
-		subscribeRoom: jest.fn(),
-		onStreamData: jest.fn()
+		subscribeRoom: (rid: string) => mockSubscribeRoom(rid),
+		onStreamData: (event: string, cb: (...args: unknown[]) => void) => mockOnStreamData(event, cb)
 	}
 }));
 
-jest.mock('../../database', () => ({
-	__esModule: true,
-	default: {
-		active: {
-			get: jest.fn(() => ({
-				find: jest.fn().mockResolvedValue(null),
-				query: jest.fn(() => ({ fetch: jest.fn().mockResolvedValue([]) })),
-				prepareCreate: jest.fn()
-			})),
-			write: jest.fn((fn: any) => Promise.resolve(fn())),
-			batch: jest.fn()
-		}
-	}
+const mockStoreGetState = jest.fn<{ meteor: { connected: boolean } }, []>(() => ({
+	meteor: { connected: false }
 }));
-
+const mockStoreDispatch = jest.fn<unknown, [unknown]>();
 jest.mock('../../store/auxStore', () => ({
 	store: {
-		getState: jest.fn(() => ({
-			login: { user: { id: 'u1', username: 'testuser', name: 'Test User' } },
-			settings: { UI_Use_Real_Name: false },
-			room: { subscribedRoom: 'ROOM_001' }
-		})),
-		dispatch: jest.fn()
+		getState: () => mockStoreGetState(),
+		dispatch: (action: unknown) => mockStoreDispatch(action)
 	}
+}));
+
+jest.mock('../loadMissedMessages', () => ({
+	loadMissedMessages: jest.fn<Promise<void>, [unknown]>(() => Promise.resolve())
+}));
+
+jest.mock('../readMessages', () => ({
+	readMessages: jest.fn()
 }));
 
 jest.mock('../helpers/log', () => ({
@@ -56,308 +38,221 @@ jest.mock('../helpers/log', () => ({
 	default: jest.fn()
 }));
 
+jest.mock('../helpers', () => ({
+	debounce: (fn: (...args: unknown[]) => unknown) => fn,
+	compareServerVersion: jest.fn()
+}));
+
 jest.mock('../helpers/protectedFunction', () => ({
 	__esModule: true,
-	default: (fn: any) => fn
+	default: (fn: (...args: unknown[]) => unknown) => fn
 }));
 
 jest.mock('../helpers/buildMessage', () => ({
 	__esModule: true,
-	default: (msg: any) => msg
-}));
-
-jest.mock('../helpers', () => ({
-	debounce: (_fn: any, _ms: number) => _fn
-}));
-
-jest.mock('../../encryption', () => ({
-	Encryption: {
-		decryptMessage: jest.fn().mockImplementation((m: any) => Promise.resolve(m))
-	}
-}));
-
-jest.mock('../loadMissedMessages', () => ({
-	loadMissedMessages: jest.fn().mockResolvedValue(undefined)
-}));
-
-jest.mock('../readMessages', () => ({
-	readMessages: jest.fn().mockResolvedValue(undefined)
-}));
-
-jest.mock('../updateLastOpen', () => ({
-	updateLastOpen: jest.fn().mockResolvedValue(undefined)
+	default: (msg: unknown) => msg
 }));
 
 jest.mock('../helpers/markMessagesRead', () => ({
 	__esModule: true,
-	default: jest.fn().mockResolvedValue(undefined)
+	default: jest.fn()
 }));
 
-jest.mock('../../database/services/Message', () => ({
-	getMessageById: jest.fn().mockResolvedValue(null)
-}));
-
-jest.mock('../../database/services/Thread', () => ({
-	getThreadById: jest.fn().mockResolvedValue(null)
-}));
-
-jest.mock('../../database/services/ThreadMessage', () => ({
-	getThreadMessageById: jest.fn().mockResolvedValue(null)
+jest.mock('../updateLastOpen', () => ({
+	updateLastOpen: jest.fn()
 }));
 
 jest.mock('../../../actions/usersTyping', () => ({
-	addUserTyping: jest.fn((name: string) => ({ type: 'USERS_TYPING_ADD', username: name })),
-	removeUserTyping: jest.fn((name: string) => ({ type: 'USERS_TYPING_REMOVE', username: name })),
-	clearUserTyping: jest.fn(() => ({ type: 'USERS_TYPING_CLEAR' }))
+	addUserTyping: jest.fn(),
+	clearUserTyping: jest.fn().mockReturnValue({ type: 'CLEAR_USER_TYPING' }),
+	removeUserTyping: jest.fn()
 }));
 
 jest.mock('../../../actions/room', () => ({
-	subscribeRoom: jest.fn((rid: string) => ({ type: 'ROOM_SUBSCRIBE', rid })),
-	unsubscribeRoom: jest.fn((rid: string) => ({ type: 'ROOM_UNSUBSCRIBE', rid }))
+	subscribeRoom: jest.fn().mockReturnValue({ type: 'SUBSCRIBE_ROOM' }),
+	unsubscribeRoom: jest.fn().mockReturnValue({ type: 'UNSUBSCRIBE_ROOM' })
 }));
 
-jest.mock('react-native', () => ({
-	InteractionManager: {
-		runAfterInteractions: jest.fn((fn: () => void) => fn())
+jest.mock('../../encryption', () => ({
+	Encryption: {
+		decryptMessage: jest.fn((msg: unknown) => Promise.resolve(msg)),
+		decryptPendingSubscriptions: jest.fn(),
+		decryptPendingMessages: jest.fn(),
+		getRoomInstance: jest.fn(),
+		stopRoom: jest.fn()
 	}
 }));
 
-jest.mock('ejson', () => ({
-	fromJSONValue: jest.fn((v: any) => v)
+const mockDbBatch = jest.fn().mockResolvedValue(undefined);
+const mockDbGet = jest.fn();
+jest.mock('../../database', () => {
+	const mockModel = {
+		prepareCreate: jest.fn(() => ({})),
+		prepareUpdate: jest.fn(() => ({})),
+		prepareDestroyPermanently: jest.fn(() => ({})),
+		schema: {}
+	};
+	return {
+		__esModule: true,
+		default: {
+			active: {
+				get: (...args: unknown[]) => mockDbGet(...args) ?? mockModel,
+				write: jest.fn((callback: () => Promise<void>) => callback()),
+				batch: (...args: unknown[]) => mockDbBatch(...args)
+			}
+		}
+	};
+});
+
+jest.mock('../../database/services/Message', () => ({
+	getMessageById: jest.fn()
 }));
 
-import RoomSubscription from './room';
-import sdk from '../../services/sdk';
-import { store as reduxStore } from '../../store/auxStore';
-import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
-import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
-import database from '../../database';
+jest.mock('../../database/services/Thread', () => ({
+	getThreadById: jest.fn()
+}));
 
-const TEST_RID = 'ROOM_001';
+jest.mock('../../database/services/ThreadMessage', () => ({
+	getThreadMessageById: jest.fn()
+}));
 
 describe('RoomSubscription', () => {
-	let stopMock: jest.Mock;
+	const rid = 'test-room-id';
+	let sub: RoomSubscription;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		stopMock = jest.fn();
-		(sdk.subscribeRoom as jest.Mock).mockResolvedValue([{ unsubscribe: jest.fn() }]);
-		(sdk.onStreamData as jest.Mock).mockResolvedValue({ stop: stopMock });
-		(reduxStore.getState as jest.Mock).mockReturnValue({
-			login: { user: { id: 'u1', username: 'testuser', name: 'Test User' } },
-			settings: { UI_Use_Real_Name: false },
-			room: { subscribedRoom: TEST_RID }
+		mockSubscribeRoom.mockResolvedValue([]);
+		sub = new RoomSubscription(rid);
+	});
+
+	afterEach(() => {
+		mockSubscribeRoom.mockReset();
+	});
+
+	describe('subscribe', () => {
+		it('calls subscribeRoom exactly once on initial entry (no duplicate from connected listener)', async () => {
+			await sub.subscribe();
+
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
 	});
 
-	describe('subscribe()', () => {
-		it('calls sdk.subscribeRoom with the correct rid', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			expect(sdk.subscribeRoom).toHaveBeenCalledWith(TEST_RID);
+	describe('handleConnected', () => {
+		it('calls subscribeRoom, dispatches clearUserTyping, loads missed messages, and reads', async () => {
+			await sub.handleConnected();
+
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
+			expect(loadMissedMessages).toHaveBeenCalledWith({ rid });
 		});
 
-		it('registers stream-notify-room listener via sdk.onStreamData', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			expect(sdk.onStreamData).toHaveBeenCalledWith('stream-notify-room', expect.any(Function));
-		});
+		it('handles subscribeRoom rejection gracefully', async () => {
+			mockSubscribeRoom.mockRejectedValueOnce(new Error('boom'));
 
-		it('registers stream-room-messages listener via sdk.onStreamData', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			expect(sdk.onStreamData).toHaveBeenCalledWith('stream-room-messages', expect.any(Function));
-		});
-
-		it('dispatches subscribeRoom action with the correct rid', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			expect(subscribeRoom).toHaveBeenCalledWith(TEST_RID);
-			expect(reduxStore.dispatch).toHaveBeenCalledWith(expect.objectContaining({ rid: TEST_RID }));
-		});
-
-		it('isAlive flag prevents double-subscribe side-effects when already unsubscribed', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			// Mark as dead before subscribing
-			(sub as any).isAlive = false;
-			await sub.subscribe();
-			// unsubscribe should have been called automatically due to isAlive=false
-			expect(unsubscribeRoom).toHaveBeenCalledWith(TEST_RID);
+			await expect(sub.handleConnected()).resolves.toBeUndefined();
 		});
 	});
 
-	describe('unsubscribe()', () => {
-		it('calls stop() on all registered stream listeners', async () => {
-			const sub = new RoomSubscription(TEST_RID);
+	describe('handleClose', () => {
+		it('does not call subscribeRoom or loadMissedMessages, but dispatches clearUserTyping', async () => {
+			await sub.handleClose();
+
+			expect(mockSubscribeRoom).not.toHaveBeenCalled();
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
+		});
+	});
+
+	describe('DDP subscription recovery after forceReopen', () => {
+		it('handleConnected re-subscribes the room to restore lost DDP subscriptions', async () => {
+			await sub.subscribe();
+			mockSubscribeRoom.mockClear();
+
+			await sub.handleConnected();
+
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+
+		it('handleClose does NOT re-subscribe (only reconnects restore subscriptions, not disconnects)', async () => {
+			await sub.subscribe();
+			mockSubscribeRoom.mockClear();
+
+			await sub.handleClose();
+
+			expect(mockSubscribeRoom).not.toHaveBeenCalled();
+		});
+
+		it('tears down stale subscriptions on reconnect and tracks fresh ones for later cleanup', async () => {
+			const staleSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
+
+			await sub.subscribe();
+			await sub.handleConnected();
+			await sub.unsubscribe();
+
+			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not accumulate subscriptions across repeated handleConnected calls (simulates sequential reopen)', async () => {
+			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
+
+			await sub.subscribe();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+
+			// First reopen → tears down [first], creates [second]
+			await sub.handleConnected();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
+			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(second.unsubscribe).not.toHaveBeenCalled();
+
+			// Second reopen → tears down [second], creates []
+			await sub.handleConnected();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
+			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+
+			// Final cleanup → empty batch, no more unsubscribes
+			await sub.unsubscribe();
+			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not call onStreamData inside handleConnected (listeners persist across reopen)', async () => {
+			await sub.subscribe();
+			mockOnStreamData.mockClear();
+
+			await sub.handleConnected();
+
+			expect(mockOnStreamData).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('isAlive guard', () => {
+		it('handleConnected does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
 			await sub.subscribe();
 			await sub.unsubscribe();
-			// 4 listeners registered (connected, close, stream-notify-room, stream-room-messages)
-			expect(stopMock).toHaveBeenCalled();
+			jest.clearAllMocks();
+
+			await sub.handleConnected();
+
+			expect(mockSubscribeRoom).not.toHaveBeenCalled();
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+			expect(mockStoreDispatch).not.toHaveBeenCalled();
 		});
 
-		it('dispatches unsubscribeRoom and clearUserTyping actions', async () => {
-			const sub = new RoomSubscription(TEST_RID);
+		it('handleConnected re-subscribes while the subscription is still alive', async () => {
 			await sub.subscribe();
-			(reduxStore.dispatch as jest.Mock).mockClear();
-			await sub.unsubscribe();
-			expect(unsubscribeRoom).toHaveBeenCalledWith(TEST_RID);
-			expect(clearUserTyping).toHaveBeenCalled();
-		});
+			mockSubscribeRoom.mockClear();
 
-		it('sets isAlive to false', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			await sub.unsubscribe();
-			expect((sub as any).isAlive).toBe(false);
-		});
-	});
+			await sub.handleConnected();
 
-	describe('handleNotifyRoomReceived — typing event', () => {
-		let capturedRoomHandler: (msg: any) => Promise<void>;
-
-		beforeEach(() => {
-			(sdk.onStreamData as jest.Mock).mockImplementation((name: string, handler: any) => {
-				if (name === 'stream-notify-room') capturedRoomHandler = handler;
-				return Promise.resolve({ stop: stopMock });
-			});
-		});
-
-		it('dispatches addUserTyping when another user starts typing', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			await capturedRoomHandler({
-				fields: {
-					eventName: `${TEST_RID}/typing`,
-					args: ['otheruser', true]
-				}
-			});
-			expect(addUserTyping).toHaveBeenCalledWith('otheruser');
-			expect(reduxStore.dispatch).toHaveBeenCalledWith(expect.objectContaining({ username: 'otheruser' }));
-		});
-
-		it('dispatches removeUserTyping when another user stops typing', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			await capturedRoomHandler({
-				fields: {
-					eventName: `${TEST_RID}/typing`,
-					args: ['otheruser', false]
-				}
-			});
-			expect(removeUserTyping).toHaveBeenCalledWith('otheruser');
-		});
-
-		it('does not dispatch typing for the current user', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			(reduxStore.dispatch as jest.Mock).mockClear();
-			await capturedRoomHandler({
-				fields: {
-					eventName: `${TEST_RID}/typing`,
-					args: ['testuser', true]
-				}
-			});
-			expect(addUserTyping).not.toHaveBeenCalled();
-		});
-
-		it('ignores typing events for a different room', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			(reduxStore.dispatch as jest.Mock).mockClear();
-			await capturedRoomHandler({
-				fields: {
-					eventName: 'OTHER_ROOM/typing',
-					args: ['otheruser', true]
-				}
-			});
-			expect(addUserTyping).not.toHaveBeenCalled();
-		});
-	});
-
-	describe('handleNotifyRoomReceived — user-activity event', () => {
-		let capturedRoomHandler: (msg: any) => Promise<void>;
-
-		beforeEach(() => {
-			(sdk.onStreamData as jest.Mock).mockImplementation((name: string, handler: any) => {
-				if (name === 'stream-notify-room') capturedRoomHandler = handler;
-				return Promise.resolve({ stop: stopMock });
-			});
-		});
-
-		it('dispatches addUserTyping when user-activity includes user-typing', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			await capturedRoomHandler({
-				fields: {
-					eventName: `${TEST_RID}/user-activity`,
-					args: ['otheruser', ['user-typing']]
-				}
-			});
-			expect(addUserTyping).toHaveBeenCalledWith('otheruser');
-		});
-
-		it('dispatches removeUserTyping when user-activity has empty activities', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			await capturedRoomHandler({
-				fields: {
-					eventName: `${TEST_RID}/user-activity`,
-					args: ['otheruser', []]
-				}
-			});
-			expect(removeUserTyping).toHaveBeenCalledWith('otheruser');
-		});
-	});
-
-	describe('handleNotifyRoomReceived — deleteMessage event', () => {
-		let capturedRoomHandler: (msg: any) => Promise<void>;
-		let mockFind: jest.Mock;
-		let mockWrite: jest.Mock;
-		let mockBatch: jest.Mock;
-
-		beforeEach(() => {
-			mockFind = jest.fn().mockRejectedValue(new Error('not found'));
-			mockWrite = jest.fn((fn: any) => Promise.resolve(fn()));
-			mockBatch = jest.fn().mockResolvedValue(undefined);
-
-			(database.active.get as jest.Mock).mockReturnValue({
-				find: mockFind
-			});
-			(database.active.write as jest.Mock).mockImplementation(mockWrite);
-			(database.active.batch as jest.Mock).mockImplementation(mockBatch);
-
-			(sdk.onStreamData as jest.Mock).mockImplementation((name: string, handler: any) => {
-				if (name === 'stream-notify-room') capturedRoomHandler = handler;
-				return Promise.resolve({ stop: stopMock });
-			});
-		});
-
-		it('attempts to find and delete message, thread, and thread message from DB', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await sub.subscribe();
-			await capturedRoomHandler({
-				fields: {
-					eventName: `${TEST_RID}/deleteMessage`,
-					args: [{ _id: 'msg-to-delete' }]
-				}
-			});
-			// find is called for messages, threads, and thread_messages
-			expect(mockFind).toHaveBeenCalledWith('msg-to-delete');
-		});
-	});
-
-	describe('removeListener()', () => {
-		it('calls stop() on a resolved promise listener', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			const innerStop = jest.fn();
-			const promise = Promise.resolve({ stop: innerStop });
-			await (sub as any).removeListener(promise);
-			expect(innerStop).toHaveBeenCalled();
-		});
-
-		it('does nothing when promise is undefined', async () => {
-			const sub = new RoomSubscription(TEST_RID);
-			await expect((sub as any).removeListener(undefined)).resolves.toBeUndefined();
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
 	});
 });

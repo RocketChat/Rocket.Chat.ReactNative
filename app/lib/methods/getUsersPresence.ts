@@ -8,7 +8,7 @@ import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
 import sdk from '../services/sdk';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
 import log from './helpers/log';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
@@ -78,14 +78,15 @@ export async function getUsersPresence(usersParams: string[]) {
 				const { users } = result;
 
 				const activeUsers = usersParams.reduce((ret: IActiveUsers, id) => {
-					const user = users.find(u => u._id === id) ?? { _id: id, status: 'offline' as const, statusText: undefined };
-					const { _id, status, statusText } = user;
+					const user = users.find((u: IUser) => u._id === id) ?? { _id: id, status: 'offline' };
+					const { _id, status, statusText, statusExpiresAt, statusSource } = user;
+					const normalizedStatusExpiresAt = normalizeStatusExpiresAt(statusExpiresAt);
 
 					if (loggedUser && loggedUser.id === _id) {
-						reduxStore.dispatch(setUser({ status, statusText }));
+						reduxStore.dispatch(setUser({ status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource }));
 					}
 
-					ret[_id] = { status, statusText: statusText ?? '' };
+					ret[_id] = { status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource };
 					return ret;
 				}, {});
 				InteractionManager.runAfterInteractions(() => {
