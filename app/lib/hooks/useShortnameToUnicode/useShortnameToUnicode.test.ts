@@ -1,9 +1,10 @@
 import useShortnameToUnicode from './index';
 import { setUser } from '../../../actions/login';
+import { setCustomEmojis } from '../../../actions/customEmojis';
 import { mockedStore } from '../../../reducers/mockedStore';
 
 jest.mock('../useAppSelector', () => ({
-	useAppSelector: () => mockedStore.getState().login.user.settings?.preferences?.convertAsciiEmoji
+	useAppSelector: (selector: (state: ReturnType<typeof mockedStore.getState>) => unknown) => selector(mockedStore.getState())
 }));
 
 const initialMockedStoreState = () => {
@@ -30,6 +31,20 @@ test('render several emojis', () => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const unicodeEmoji = formatShortnameToUnicode(':dog::cat::hamburger::icecream::rocket:');
 	expect(unicodeEmoji).toBe('🐶🐱🍔🍦🚀');
+});
+
+test('render flag_no emoji as the Norway flag', () => {
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':flag_no:');
+	expect(unicodeEmoji).toBe('🇳🇴');
+});
+
+test('do NOT resolve a shortcode that collides with a custom emoji name', () => {
+	mockedStore.dispatch(setCustomEmojis({ no: { name: 'no', extension: 'png' } }));
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':no:');
+	expect(unicodeEmoji).toBe(':no:');
+	mockedStore.dispatch(setCustomEmojis({}));
 });
 
 test('render unknown emoji', () => {

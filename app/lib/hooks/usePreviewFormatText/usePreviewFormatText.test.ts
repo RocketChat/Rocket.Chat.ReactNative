@@ -1,9 +1,10 @@
 import { mockedStore } from '../../../reducers/mockedStore';
 import { setUser } from '../../../actions/login';
+import { setCustomEmojis } from '../../../actions/customEmojis';
 import usePreviewFormatText from './index';
 
 jest.mock('../useAppSelector', () => ({
-	useAppSelector: () => mockedStore.getState().login.user.settings?.preferences?.convertAsciiEmoji
+	useAppSelector: (selector: (state: ReturnType<typeof mockedStore.getState>) => unknown) => selector(mockedStore.getState())
 }));
 
 const initialMockedStoreState = () => {
@@ -124,5 +125,20 @@ describe('convertAsciiEmoji = false', () => {
 	test('Keep unicode :) with text', () => {
 		const formattedText = usePreviewFormatText('Hello World :)');
 		expect(formattedText).toBe('Hello World :)');
+	});
+});
+
+describe('shortcode collides with a custom emoji name', () => {
+	beforeAll(() => {
+		mockedStore.dispatch(setCustomEmojis({ no: { name: 'no', extension: 'png' } }));
+	});
+
+	afterAll(() => {
+		mockedStore.dispatch(setCustomEmojis({}));
+	});
+
+	test('does not resolve :no: to the Norway flag when a custom "no" emoji exists', () => {
+		const formattedText = usePreviewFormatText(':no:');
+		expect(formattedText).toBe(':no:');
 	});
 });
