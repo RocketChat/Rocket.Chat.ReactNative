@@ -3,10 +3,21 @@ import { Button, View } from 'react-native';
 
 import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
+import { MessageRoomProvider } from '../message/MessageRoomStore';
+import { MessageProvider } from '../message/MessageStore';
+import { type TAnyMessageModel } from '../../definitions';
 
 export default {
 	title: 'UIKit/UiKitModal',
-	decorators: [(Story: any) => <Story />]
+	decorators: [
+		(Story: any) => (
+			<MessageRoomProvider user={{ id: 'u1', username: 'user', token: 't' }} baseUrl='https://open.rocket.chat'>
+				<MessageProvider item={{} as TAnyMessageModel}>
+					<Story />
+				</MessageProvider>
+			</MessageRoomProvider>
+		)
+	]
 };
 
 export const ModalSectionSelects = () =>
@@ -273,48 +284,47 @@ export const ModalFormTextArea = () =>
 	]);
 ModalFormTextArea.storyName = 'Modal - Form TextArea';
 
-// FIXME: Commented out because it's breaking jest snapshots
-// export const ModalImages = () =>
-// 	UiKitModal([
-// 		{
-// 			type: 'image',
-// 			title: {
-// 				type: 'plain_text',
-// 				text: 'Example Image',
-// 				emoji: true
-// 			},
-// 			imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
-// 			alt_text: 'Example Image'
-// 		},
-// 		{
-// 			type: 'section',
-// 			text: {
-// 				type: 'mrkdwn',
-// 				text: 'How could be the life in Mars?'
-// 			}
-// 		},
-// 		{
-// 			type: 'context',
-// 			elements: [
-// 				{
-// 					type: 'image',
-// 					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png'
-// 				},
-// 				{
-// 					type: 'mrkdwn',
-// 					text: 'November 25, 2019'
-// 				}
-// 			]
-// 		},
-// 		{
-// 			type: 'section',
-// 			text: {
-// 				type: 'mrkdwn',
-// 				text: '*Next stop, Mars!*\nMussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
-// 			}
-// 		}
-// 	]);
-// ModalImages.storyName = 'Modal - Images';
+export const ModalImages = () =>
+	UiKitModal([
+		{
+			type: 'image',
+			title: {
+				type: 'plain_text',
+				text: 'Example Image',
+				emoji: true
+			},
+			imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
+			alt_text: 'Example Image'
+		},
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: 'How could be the life in Mars?'
+			}
+		},
+		{
+			type: 'context',
+			elements: [
+				{
+					type: 'image',
+					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png'
+				},
+				{
+					type: 'mrkdwn',
+					text: 'November 25, 2019'
+				}
+			]
+		},
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: '*Next stop, Mars!*\nMussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
+			}
+		}
+	]);
+ModalImages.storyName = 'Modal - Images';
 
 export const ModalActions = () =>
 	UiKitModal([
