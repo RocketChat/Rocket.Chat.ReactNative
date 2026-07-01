@@ -111,7 +111,7 @@ export function getCustomEmojis() {
 			if (compareServerVersion(serverVersion, 'lowerThan', '0.75.0')) {
 				// RC 0.61.0
 				// @ts-ignore
-				const result = await sdk.get('emoji-custom');
+				const result = await sdk.get('/v1/emoji-custom');
 				// @ts-ignore
 				let { emojis } = result;
 				emojis = emojis.filter((emoji: TCustomEmojiModel) => !updatedSince || emoji._updatedAt.toISOString() > updatedSince);

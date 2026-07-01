@@ -171,7 +171,7 @@ export function getPermissions(): Promise<void> {
 			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
 				// @ts-ignore
-				const result: any = await sdk.get('permissions.list');
+				const result: any = await sdk.get('/v1/permissions.list');
 				if (!result.success) {
 					return resolve();
 				}

@@ -26,10 +26,8 @@ import { onRolesChanged } from '../methods/getRoles';
 import { getSettings } from '../methods/getSettings';
 import { setPresenceCap } from '../methods/getUsersPresence';
 import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import { isIOS } from '../methods/helpers/deviceInfo';
-import { isSsl } from '../methods/helpers/isSsl';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
 import fetch from '../methods/helpers/fetch';
 
 interface IServices {
@@ -150,8 +148,8 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				const userStatus = ddpMessage.fields.args[0];
 				const { uid } = ddpMessage.fields;
 				const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
-			  const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
-			  const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
+				const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+				const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 
 				const { user: loggedUser } = store.getState().login;
 				if (loggedUser && loggedUser.id === uid) {

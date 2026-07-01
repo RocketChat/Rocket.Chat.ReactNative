@@ -324,7 +324,7 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 
 export const setUserStatus = (status: string, message: string, expiresAt?: string | null) =>
 	// RC 1.2.0
-	sdk.post('users.setStatus', { status, message, ...(expiresAt !== undefined && { expiresAt }) });
+	sdk.post('/v1/users.setStatus', { status, message, ...(expiresAt !== undefined && { expiresAt }) });
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
@@ -1043,16 +1043,16 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { server } = reduxStore.getState();
-	const { authToken, userId } = sdk.currentLogin;
+	const serverUrl = sdk.server;
+	if (!serverUrl) {
+		throw new Error('SDK not initialized');
+	}
 	// RC 8.4.0
-	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+	const response = await fetch(`${serverUrl}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 		method: 'POST',
 		headers: {
 			...sdk.getHeaders(),
-			'Content-Type': 'application/json',
-			'X-Auth-Token': authToken,
-			'X-User-Id': userId
+			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
 			description: body.description,
@@ -1162,9 +1162,14 @@ export const removePushToken = async (): Promise<boolean | void> => {
 	if (token) {
 		lastToken = '';
 		lastVoipToken = '';
-		// RC 0.60.0
-		const response = await sdk.delete('/v1/push.token', { token });
-		return response?.success === true;
+		try {
+			// RC 0.60.0
+			const response = await sdk.delete('/v1/push.token', { token });
+			return response?.success === true;
+		} catch (e) {
+			log(e);
+			return false;
+		}
 	}
 	return false;
 };

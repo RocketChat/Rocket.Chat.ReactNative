@@ -715,6 +715,9 @@ describe('deepLinking saga — handleShareExtension server-already-connected gua
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
+	});
+});
+
 // ─── handleOAuth — single-use credentialToken dedup guard ────────────────────
 
 describe('deepLinking saga — handleOAuth dedup guard', () => {
