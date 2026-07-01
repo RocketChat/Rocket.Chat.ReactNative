@@ -5,7 +5,6 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageContext, { type IMessageContext } from './Context';
 import {
-	type MessagePrev,
 	MessageProvider,
 	useAvatar,
 	useBlocks,
@@ -115,12 +114,12 @@ const MsgValueReporter = ({ spy }: { spy: jest.Mock }) => {
 	return null;
 };
 
-// Derived hooks read both the per-row store/item/prev and the config in MessageContext,
+// Derived hooks read both the per-row store/item/previousItem and the config in MessageContext,
 // so the probe needs both providers mounted.
 const renderDerived = (
 	item: TAnyMessageModel,
 	useHook: () => unknown,
-	{ prev, config }: { prev?: MessagePrev; config?: Partial<IMessageContext> } = {}
+	{ previousItem, config }: { previousItem?: TAnyMessageModel; config?: Partial<IMessageContext> } = {}
 ) => {
 	const spy = jest.fn();
 	const Probe = () => {
@@ -129,7 +128,7 @@ const renderDerived = (
 	};
 	render(
 		<MessageContext.Provider value={(config ?? {}) as IMessageContext}>
-			<MessageProvider item={item} prev={prev}>
+			<MessageProvider item={item} previousItem={previousItem}>
 				<Probe />
 			</MessageProvider>
 		</MessageContext.Provider>
@@ -375,13 +374,13 @@ describe('MessageStore', () => {
 
 		it('useThreadPosition returns isThreadReply true when the message replies to a different thread than prev', () => {
 			const model = buildFakeModel({ tmid: 't1' });
-			const { latest } = renderDerived(model, useThreadPosition, { prev: { tmid: 't0', id: 'p0' } });
+			const { latest } = renderDerived(model, useThreadPosition, { previousItem: buildFakeModel({ id: 'p0', tmid: 't0' }) });
 			expect(latest()).toEqual({ isThreadReply: true, isThreadSequential: true });
 		});
 
 		it('useThreadPosition returns isThreadReply false when prev is in the same thread', () => {
 			const model = buildFakeModel({ tmid: 't1' });
-			const { latest } = renderDerived(model, useThreadPosition, { prev: { tmid: 't1' } });
+			const { latest } = renderDerived(model, useThreadPosition, { previousItem: buildFakeModel({ id: 'p0', tmid: 't1' }) });
 			expect(latest()).toEqual({ isThreadReply: false, isThreadSequential: true });
 		});
 
@@ -393,7 +392,9 @@ describe('MessageStore', () => {
 
 		it('useMessageGrouping returns true (header) when prev has an ERROR status', () => {
 			const model = buildFakeModel();
-			const { latest } = renderDerived(model, useMessageGrouping, { prev: { status: messagesStatus.ERROR } });
+			const { latest } = renderDerived(model, useMessageGrouping, {
+				previousItem: buildFakeModel({ id: 'p0', status: messagesStatus.ERROR })
+			});
 			expect(latest()).toBe(true);
 		});
 
@@ -402,7 +403,7 @@ describe('MessageStore', () => {
 			const prevTs = new Date('2024-01-01T09:59:50Z');
 			const model = buildFakeModel({ ts, tmid: 't1' });
 			const { latest } = renderDerived(model, useMessageGrouping, {
-				prev: { ts: prevTs, username: 'alice', tmid: 't1' },
+				previousItem: buildFakeModel({ id: 'p0', ts: prevTs, tmid: 't1' }),
 				config: { broadcast: false, Message_GroupingPeriod: 300 }
 			});
 			expect(latest()).toBe(false);
@@ -413,7 +414,7 @@ describe('MessageStore', () => {
 			const prevTs = new Date('2024-01-01T09:59:50Z');
 			const model = buildFakeModel({ ts, tmid: 't1' });
 			const { latest } = renderDerived(model, useMessageGrouping, {
-				prev: { ts: prevTs, username: 'alice', tmid: 't1' },
+				previousItem: buildFakeModel({ id: 'p0', ts: prevTs, tmid: 't1' }),
 				config: { broadcast: true, Message_GroupingPeriod: 300 }
 			});
 			expect(latest()).toBe(true);
@@ -424,7 +425,7 @@ describe('MessageStore', () => {
 			const prevTs = new Date('2024-01-01T09:59:50Z');
 			const model = buildFakeModel({ ts, tmid: 't1', groupable: false });
 			const { latest } = renderDerived(model, useMessageGrouping, {
-				prev: { ts: prevTs, username: 'alice', tmid: 't1' },
+				previousItem: buildFakeModel({ id: 'p0', ts: prevTs, tmid: 't1' }),
 				config: { broadcast: false, Message_GroupingPeriod: 300 }
 			});
 			expect(latest()).toBe(true);
@@ -435,8 +436,78 @@ describe('MessageStore', () => {
 			const prevTs = new Date('2024-01-01T09:59:50Z');
 			const model = buildFakeModel({ ts, tmid: 't1', t: 'rm' });
 			const { latest } = renderDerived(model, useMessageGrouping, {
-				prev: { ts: prevTs, username: 'alice', tmid: 't1' },
+				previousItem: buildFakeModel({ id: 'p0', ts: prevTs, tmid: 't1' }),
 				config: { broadcast: false, Message_GroupingPeriod: 300 }
+			});
+			expect(latest()).toBe(true);
+		});
+
+		it('flips to header when the previous message transitions to ERROR in place, without re-passing props', () => {
+			const ts = new Date('2024-01-01T10:00:00Z');
+			const prevTs = new Date('2024-01-01T09:59:50Z');
+			const model = buildFakeModel({ ts, tmid: 't1' });
+			const previousItem = buildFakeModel({ id: 'p0', ts: prevTs, tmid: 't1' });
+			const { latest } = renderDerived(model, useMessageGrouping, {
+				previousItem,
+				config: { broadcast: false, Message_GroupingPeriod: 300 }
+			});
+
+			expect(latest()).toBe(false);
+
+			act(() => {
+				(previousItem as any).status = messagesStatus.ERROR;
+				previousItem._emit();
+			});
+
+			expect(latest()).toBe(true);
+		});
+
+		it('unsubscribes the old previous model and subscribes the new one on a temp→server swap', () => {
+			const ts = new Date('2024-01-01T10:00:00Z');
+			const prevTs = new Date('2024-01-01T09:59:50Z');
+			const item = buildFakeModel({ id: 'msg-1', ts, tmid: 't1' });
+			const previousTemp = buildFakeModel({ id: 'p-temp', ts: prevTs, tmid: 't1' });
+			const previousServer = buildFakeModel({ id: 'p-server', ts: prevTs, tmid: 't1' });
+
+			const unsubscribeSpy = jest.fn();
+			const realSubscribe = previousTemp.experimentalSubscribe.bind(previousTemp);
+			previousTemp.experimentalSubscribe = ((cb: Subscriber) => {
+				const realUnsub = realSubscribe(cb);
+				return () => {
+					unsubscribeSpy();
+					realUnsub();
+				};
+			}) as FakeModel['experimentalSubscribe'];
+
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageGrouping());
+				return null;
+			};
+			const latest = () => {
+				const { calls } = spy.mock;
+				return calls[calls.length - 1]?.[0];
+			};
+			const wrap = (previousItem: TAnyMessageModel) => (
+				<MessageContext.Provider value={{ broadcast: false, Message_GroupingPeriod: 300 } as IMessageContext}>
+					<MessageProvider item={item} previousItem={previousItem}>
+						<Probe />
+					</MessageProvider>
+				</MessageContext.Provider>
+			);
+
+			const { rerender } = render(wrap(previousTemp));
+			expect(latest()).toBe(false);
+			expect(unsubscribeSpy).not.toHaveBeenCalled();
+
+			act(() => rerender(wrap(previousServer)));
+			expect(unsubscribeSpy).toHaveBeenCalledTimes(1);
+			expect(latest()).toBe(false);
+
+			// An in-place change on the NEW previous model re-derives grouping, proving it is subscribed.
+			act(() => {
+				(previousServer as any).status = messagesStatus.ERROR;
+				previousServer._emit();
 			});
 			expect(latest()).toBe(true);
 		});

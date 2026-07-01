@@ -12,17 +12,7 @@ const createMessageStore = () => createStore(() => ({ tick: 0 }));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
-export type MessagePrev = {
-	id?: string;
-	status?: number;
-	ts?: TAnyMessageModel['ts'];
-	username?: string;
-	groupable?: boolean;
-	tmid?: string;
-	t?: TAnyMessageModel['t'];
-};
-
-type MessageCtxValue = { store: MessageStore; item: TAnyMessageModel; prev?: MessagePrev };
+type MessageCtxValue = { store: MessageStore; item: TAnyMessageModel; previousItem?: TAnyMessageModel };
 
 const MessageStoreContext = createContext<MessageCtxValue | null>(null);
 
@@ -44,30 +34,34 @@ export const useMessageField = <T,>(selector: (item: TAnyMessageModel) => T): T 
 	return useStore(store, () => selector(item));
 };
 
+// Plain REST objects (no experimentalSubscribe) never emit again after the initial render.
+const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
+	// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
+	if (typeof m.experimentalSubscribe !== 'function') return undefined;
+	// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
+	return m.experimentalSubscribe(() => store.setState(s => ({ tick: s.tick + 1 })));
+};
+
 export const MessageProvider = ({
 	item,
-	prev,
+	previousItem,
 	children
 }: {
 	item: TAnyMessageModel;
-	prev?: MessagePrev;
+	previousItem?: TAnyMessageModel;
 	children: ReactNode;
 }): ReactElement => {
 	'use memo';
 
 	const [store] = useState(createMessageStore);
 
-	useEffect(() => {
-		// Plain REST objects (no experimentalSubscribe) never emit again after the initial render.
-		// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
-		if (typeof item.experimentalSubscribe !== 'function') {
-			return undefined;
-		}
-		// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
-		return item.experimentalSubscribe(() => store.setState(s => ({ tick: s.tick + 1 })));
-	}, [item, store]);
+	// Header grouping and thread position depend on the previous record too, so each effect
+	// subscribes one record; both feed the same tick. Keeping them separate means changing
+	// previousItem does not tear down and recreate item's subscription.
+	useEffect(() => subscribeModel(item, store), [item, store]);
+	useEffect(() => (previousItem ? subscribeModel(previousItem, store) : undefined), [previousItem, store]);
 
-	return <MessageStoreContext.Provider value={{ store, item, prev }}>{children}</MessageStoreContext.Provider>;
+	return <MessageStoreContext.Provider value={{ store, item, previousItem }}>{children}</MessageStoreContext.Provider>;
 };
 
 export const useReactions = (): TAnyMessageModel['reactions'] => useMessageField(item => item.reactions);
@@ -146,7 +140,7 @@ export const useMessageMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinn
 };
 
 const computeIsHeader = (
-	prev: MessagePrev | undefined,
+	prev: TAnyMessageModel | undefined,
 	item: TAnyMessageModel,
 	broadcast: boolean,
 	Message_GroupingPeriod: number | undefined,
@@ -160,7 +154,7 @@ const computeIsHeader = (
 			prev &&
 			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 			prev.ts.toDateString() === item.ts.toDateString() &&
-			prev.username === item.u?.username &&
+			prev.u?.username === item.u?.username &&
 			!(prev.groupable === false || item.groupable === false || broadcast === true) &&
 			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 			item.ts - prev.ts < Message_GroupingPeriod * 1000 &&
@@ -177,15 +171,15 @@ const computeIsHeader = (
 };
 
 export const useMessageGrouping = (): boolean => {
-	const { store, item, prev } = useMessageCtx();
+	const { store, item, previousItem } = useMessageCtx();
 	const { broadcast, Message_GroupingPeriod } = useContext(MessageContext);
 	return useStore(store, () =>
-		computeIsHeader(prev, item, !!broadcast, Message_GroupingPeriod, item.status === messagesStatus.ERROR)
+		computeIsHeader(previousItem, item, !!broadcast, Message_GroupingPeriod, item.status === messagesStatus.ERROR)
 	);
 };
 
 export const useThreadPosition = (): { isThreadReply: boolean; isThreadSequential: boolean } => {
-	const { store, item, prev } = useMessageCtx();
+	const { store, item, previousItem } = useMessageCtx();
 	const { isThreadRoom } = useContext(MessageContext);
 	return useStore(
 		store,
@@ -193,7 +187,7 @@ export const useThreadPosition = (): { isThreadReply: boolean; isThreadSequentia
 			if (isThreadRoom) {
 				return { isThreadReply: false, isThreadSequential: false };
 			}
-			const isThreadReply = !!(prev && item.tmid && prev.tmid !== item.tmid && prev.id !== item.tmid);
+			const isThreadReply = !!(previousItem && item.tmid && previousItem.tmid !== item.tmid && previousItem.id !== item.tmid);
 			return { isThreadReply, isThreadSequential: !!item.tmid };
 		})
 	);

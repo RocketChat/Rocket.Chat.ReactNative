@@ -26,6 +26,15 @@
 | **Draft Message**  | A user's unsent composition stored on a Subscription or Thread (`draftMessage` field)                                          | Unsent message      |
 | **Snippet**        | A saved excerpt from a Message                                                                                                 | —                   |
 
+## Message Grouping
+
+| Term                 | Definition                                                                                                                                                   | Aliases to avoid        |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| **Message Header**   | The author block (avatar, name, timestamp) shown on the first Message of a grouped run; a Message either shows a Header or is grouped under the one above it | Title, byline           |
+| **Grouped Message**  | A Message rendered without its own Header because it continues a run from the same author within the Grouping Period, visually attached to the Message above | Sequential, collapsed   |
+| **Grouping Period**  | The maximum time gap between consecutive same-author Messages for them to share one Header (server setting `Message_GroupingPeriod`)                         | —                       |
+| **Previous Message** | Relative to a given Message, the adjacent older Message; whether that Message shows a Header is derived from it (author, time, status, thread)               | Prior message, neighbor |
+
 ## Message Status
 
 | Term        | Definition                                                           | Aliases to avoid |

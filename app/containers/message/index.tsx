@@ -10,7 +10,7 @@ import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '.
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import MessageSeparator from '../MessageSeparator';
 import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
-import { MessageProvider, type MessagePrev, useIsEncrypted, useIsInfo, useMessageStatus } from './MessageStore';
+import { MessageProvider, useIsEncrypted, useIsInfo, useMessageStatus } from './MessageStore';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -61,31 +61,6 @@ interface IMessageContainerProps {
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;
 	showUnreadSeparator?: boolean;
-}
-
-// `item` is intentionally omitted: the FlatList keys each row by item.id, so a
-// different message remounts rather than re-rendering with a new item prop; in-place
-// field updates on the same item are handled by the per-message Zustand store (see
-// MessageProvider/MessageStore), not by this comparison.
-function areEqual(prev: IMessageContainerProps, next: IMessageContainerProps): boolean {
-	const p = prev.previousItem;
-	const n = next.previousItem;
-	return (
-		prev.showUnreadSeparator === next.showUnreadSeparator &&
-		prev.dateSeparator === next.dateSeparator &&
-		prev.highlighted === next.highlighted &&
-		prev.threadBadgeColor === next.threadBadgeColor &&
-		prev.isIgnored === next.isIgnored &&
-		p?.id === n?.id &&
-		p?.status === n?.status &&
-		p?.ts === n?.ts &&
-		p?.u?.username === n?.u?.username &&
-		p?.groupable === n?.groupable &&
-		p?.tmid === n?.tmid &&
-		p?.t === n?.t &&
-		prev.autoTranslateRoom === next.autoTranslateRoom &&
-		prev.autoTranslateLanguage === next.autoTranslateLanguage
-	);
 }
 
 const MessageContainerInner = ({
@@ -320,22 +295,11 @@ const MessageContainer = (props: IMessageContainerProps) => {
 	'use memo';
 
 	const { item, previousItem } = props;
-	const prev: MessagePrev | undefined = previousItem
-		? {
-				id: previousItem.id,
-				status: previousItem.status,
-				ts: previousItem.ts,
-				username: previousItem.u?.username,
-				groupable: previousItem.groupable,
-				tmid: previousItem.tmid,
-				t: previousItem.t
-		  }
-		: undefined;
 	return (
-		<MessageProvider item={item} prev={prev}>
+		<MessageProvider item={item} previousItem={previousItem}>
 			<MessageContainerInner {...props} />
 		</MessageProvider>
 	);
 };
 
-export default memo(MessageContainer, areEqual);
+export default memo(MessageContainer);

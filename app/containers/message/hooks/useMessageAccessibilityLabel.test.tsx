@@ -2,7 +2,7 @@ import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
 import MessageContext, { type IMessageContext } from '../Context';
-import { MessageProvider, type MessagePrev } from '../MessageStore';
+import { MessageProvider } from '../MessageStore';
 import { type TAnyMessageModel } from '../../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../../lib/constants/keys';
 
@@ -25,7 +25,12 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 		...overrides
 	} as TAnyMessageModel);
 
-const renderLabel = (item: TAnyMessageModel, args: TArgs = {}, config: Partial<IMessageContext> = {}, prev?: MessagePrev) => {
+const renderLabel = (
+	item: TAnyMessageModel,
+	args: TArgs = {},
+	config: Partial<IMessageContext> = {},
+	previousItem?: TAnyMessageModel
+) => {
 	const spy = jest.fn();
 	const Probe = () => {
 		spy(useMessageAccessibilityLabel(args));
@@ -33,7 +38,7 @@ const renderLabel = (item: TAnyMessageModel, args: TArgs = {}, config: Partial<I
 	};
 	render(
 		<MessageContext.Provider value={config as IMessageContext}>
-			<MessageProvider item={item} prev={prev}>
+			<MessageProvider item={item} previousItem={previousItem}>
 				<Probe />
 			</MessageProvider>
 		</MessageContext.Provider>
