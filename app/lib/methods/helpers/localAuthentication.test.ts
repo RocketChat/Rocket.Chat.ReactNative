@@ -253,7 +253,10 @@ describe('checkHasPasscode → biometry consent on first passcode', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedDisenroll.mockResolvedValue(undefined);
-		// No stored passcode → checkHasPasscode runs changePasscode then checkBiometry.
+		// No stored passcode → checkHasPasscode runs changePasscode then checkBiometry. clearAllMocks()
+		// does not reset implementations, so explicitly clear the 'stored-passcode' return leaked from the
+		// localAuthenticate block above (otherwise checkHasPasscode early-returns and never enrolls).
+		mockedGetString.mockReturnValue(undefined);
 		(LocalAuthentication.isEnrolledAsync as jest.Mock).mockResolvedValue(true);
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === CHANGE_PASSCODE_EMITTER && payload?.submit) {
