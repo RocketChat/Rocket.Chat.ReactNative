@@ -62529,8 +62529,32 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text>
-                                    xˆ2 + yˆ2 - zˆ2
+                                  <Text
+                                    style={
+                                      [
+                                        {
+                                          "backgroundColor": "transparent",
+                                          "borderRadius": 4,
+                                          "borderWidth": 1,
+                                          "fontFamily": "Courier New",
+                                          "fontSize": 16,
+                                          "fontWeight": "400",
+                                          "lineHeight": 22,
+                                          "paddingLeft": 2,
+                                          "paddingTop": 2,
+                                          "textAlign": "left",
+                                        },
+                                        {
+                                          "backgroundColor": "#E4E7EA",
+                                          "borderColor": "#CBCED1",
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    <Text>
+                                      $xˆ2 + yˆ2 - zˆ2$
+                                    </Text>
                                   </Text>
                                 </Text>
                               </Text>
@@ -62985,8 +63009,32 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text>
-                                    xˆ2 + yˆ2 - zˆ2
+                                  <Text
+                                    style={
+                                      [
+                                        {
+                                          "backgroundColor": "transparent",
+                                          "borderRadius": 4,
+                                          "borderWidth": 1,
+                                          "fontFamily": "Courier New",
+                                          "fontSize": 16,
+                                          "fontWeight": "400",
+                                          "lineHeight": 22,
+                                          "paddingLeft": 2,
+                                          "paddingTop": 2,
+                                          "textAlign": "left",
+                                        },
+                                        {
+                                          "backgroundColor": "#E4E7EA",
+                                          "borderColor": "#CBCED1",
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    <Text>
+                                      $xˆ2 + yˆ2 - zˆ2$
+                                    </Text>
                                   </Text>
                                 </Text>
                               </Text>
@@ -63413,7 +63461,41 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <View />
+                              <View
+                                style={
+                                  [
+                                    {
+                                      "borderRadius": 4,
+                                      "borderWidth": 1,
+                                      "padding": 4,
+                                    },
+                                    {
+                                      "backgroundColor": "#E4E7EA",
+                                      "borderColor": "#CBCED1",
+                                    },
+                                  ]
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Courier New",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  $$ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }$$
+                                </Text>
+                              </View>
                             </View>
                           </View>
                         </View>
@@ -63837,7 +63919,41 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <View />
+                              <View
+                                style={
+                                  [
+                                    {
+                                      "borderRadius": 4,
+                                      "borderWidth": 1,
+                                      "padding": 4,
+                                    },
+                                    {
+                                      "backgroundColor": "#E4E7EA",
+                                      "borderColor": "#CBCED1",
+                                    },
+                                  ]
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Courier New",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  $$ \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} $$
+                                </Text>
+                              </View>
                             </View>
                           </View>
                         </View>
@@ -64261,7 +64377,41 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <View />
+                              <View
+                                style={
+                                  [
+                                    {
+                                      "borderRadius": 4,
+                                      "borderWidth": 1,
+                                      "padding": 4,
+                                    },
+                                    {
+                                      "backgroundColor": "#E4E7EA",
+                                      "borderColor": "#CBCED1",
+                                    },
+                                  ]
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Courier New",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  $$ \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} $$
+                                </Text>
+                              </View>
                             </View>
                           </View>
                         </View>
@@ -64685,7 +64835,41 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <View />
+                              <View
+                                style={
+                                  [
+                                    {
+                                      "borderRadius": 4,
+                                      "borderWidth": 1,
+                                      "padding": 4,
+                                    },
+                                    {
+                                      "backgroundColor": "#E4E7EA",
+                                      "borderColor": "#CBCED1",
+                                    },
+                                  ]
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Courier New",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  $$ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }$$
+                                </Text>
+                              </View>
                             </View>
                           </View>
                         </View>
