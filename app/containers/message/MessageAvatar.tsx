@@ -22,7 +22,7 @@ const MessageAvatar = ({ small }: IMessageAvatar) => {
 
 	const user = useMessageUser();
 	const navToRoomInfo = useNavToRoomInfo();
-	const getCustomEmoji = useGetCustomEmoji();
+	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 	const { fontScaleLimited } = useResponsiveLayout();
 	const { avatar, emoji } = useAvatar();
 	const { u: author } = useMessageAuthor();

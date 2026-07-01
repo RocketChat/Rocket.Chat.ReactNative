@@ -64,7 +64,7 @@ const Reaction = ({ reaction, theme }: IMessageReaction) => {
 	const onReactionPress = useOnReactionPress();
 	const onReactionLongPress = useOnReactionLongPress();
 	const user = useMessageUser();
-	const getCustomEmoji = useGetCustomEmoji();
+	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user?.username) !== -1;
