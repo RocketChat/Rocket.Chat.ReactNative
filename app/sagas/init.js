@@ -28,35 +28,53 @@ const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
  * `${TOKEN_KEY}-${userId}` to the server-scoped slot `${TOKEN_KEY}-${server}-${userId}`.
  * See `getUserTokenKey` for why the legacy scheme was ambiguous (token confusion).
  *
- * Done in two passes so a userId shared by multiple servers is copied to every server's
- * slot before any legacy slot is removed.
+ * Only userIds referenced by a single server are migrated: the legacy slot can hold just one
+ * token, so when several servers share a userId we can't tell which server it belongs to.
+ * Migrating an ambiguous token would plant one server's token into another server's slot —
+ * exactly the confusion this change exists to prevent — so those slots are dropped instead,
+ * forcing a safe re-authentication.
  */
-const migrateTokenKeysToServerScoped = function* migrateTokenKeysToServerScoped() {
+export const migrateTokenKeysToServerScoped = function* migrateTokenKeysToServerScoped() {
 	try {
 		if (UserPreferences.getBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED)) {
 			return;
 		}
 		const serversDB = database.servers;
 		const servers = yield serversDB.get('servers').query().fetch();
-		const legacyKeys = [];
-		// Pass 1: copy each server's token into the new server-scoped slot.
+
+		// Map each server to its userId and count how many servers reference each userId.
+		const serverUserIds = [];
+		const serverCountByUserId = {};
 		for (let i = 0; i < servers.length; i += 1) {
 			const server = servers[i].id;
 			const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 			if (!userId) {
 				continue;
 			}
+			serverUserIds.push({ server, userId });
+			serverCountByUserId[userId] = (serverCountByUserId[userId] || 0) + 1;
+		}
+
+		// Collected in a Set so an ambiguous userId shared by N servers is removed once.
+		const legacyKeys = new Set();
+		for (let i = 0; i < serverUserIds.length; i += 1) {
+			const { server, userId } = serverUserIds[i];
+			const legacyKey = `${TOKEN_KEY}-${userId}`;
+			// Ambiguous: don't migrate, just drop the legacy slot so the session re-authenticates.
+			if (serverCountByUserId[userId] > 1) {
+				legacyKeys.add(legacyKey);
+				continue;
+			}
 			const newKey = getUserTokenKey(server, userId);
 			if (!UserPreferences.getString(newKey)) {
-				const legacyKey = `${TOKEN_KEY}-${userId}`;
 				const token = UserPreferences.getString(legacyKey);
 				if (token) {
 					UserPreferences.setString(newKey, token);
-					legacyKeys.push(legacyKey);
+					legacyKeys.add(legacyKey);
 				}
 			}
 		}
-		// Pass 2: drop the legacy slots now that every server has been migrated.
+		// Drop the legacy slots (migrated and ambiguous alike) now that the migration is done.
 		legacyKeys.forEach(key => UserPreferences.removeItem(key));
 		UserPreferences.setBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED, true);
 	} catch (e) {
