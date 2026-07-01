@@ -34,6 +34,11 @@ export interface IMessageContext {
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	handleEnterCall?: () => void;
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
+	broadcast?: boolean;
+	Message_GroupingPeriod?: number;
+	isThreadRoom?: boolean;
+	autoTranslateRoom?: boolean;
+	autoTranslateLanguage?: string;
 }
 
 const MessageContext = createContext<IMessageContext>({});

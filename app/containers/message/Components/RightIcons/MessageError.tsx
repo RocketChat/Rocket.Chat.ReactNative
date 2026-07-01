@@ -7,12 +7,14 @@ import { BUTTON_HIT_SLOP } from '../../utils';
 import { themes } from '../../../../lib/constants/colors';
 import MessageContext from '../../Context';
 import { useTheme } from '../../../../theme';
+import { useMessageStatus } from '../../MessageStore';
 
-const MessageError = ({ hasError }: { hasError: boolean }) => {
+const MessageError = (_props: { hasError: boolean }) => {
 	'use memo';
 
 	const { theme } = useTheme();
 	const { onErrorPress } = useContext(MessageContext);
+	const { hasError } = useMessageStatus();
 
 	if (!hasError) {
 		return null;

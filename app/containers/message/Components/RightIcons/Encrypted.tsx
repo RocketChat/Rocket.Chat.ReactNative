@@ -6,11 +6,13 @@ import { BUTTON_HIT_SLOP } from '../../utils';
 import MessageContext from '../../Context';
 import styles from '../../styles';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
+import { useMessageField } from '../../MessageStore';
 
-const Encrypted = ({ type }: { type: string }) => {
+const Encrypted = (_props: { type: string }) => {
 	'use memo';
 
 	const { onEncryptedPress } = useContext(MessageContext);
+	const type = useMessageField(item => item.t);
 
 	if (type !== E2E_MESSAGE_TYPE) {
 		return null;

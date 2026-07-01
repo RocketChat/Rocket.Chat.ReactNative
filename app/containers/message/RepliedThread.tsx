@@ -9,12 +9,15 @@ import { type IMessageRepliedThread } from './interfaces';
 import { useTheme } from '../../theme';
 import { AvatarContainer } from './MessageAvatar';
 import MessageContext from './Context';
+import { useIsEncrypted, useRepliedThreadData } from './MessageStore';
 
-const RepliedThread = ({ tmid, tmsg, isHeader, id, isEncrypted }: IMessageRepliedThread) => {
+const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	'use memo';
 
 	const { colors } = useTheme();
 	const { fetchThreadName } = useContext(MessageContext);
+	const { tmid, tmsg, id } = useRepliedThreadData();
+	const isEncrypted = useIsEncrypted();
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
 
 	useEffect(() => {

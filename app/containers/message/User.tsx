@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
+import { type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
@@ -9,6 +9,14 @@ import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import {
+	useIsEdited,
+	useMessageAuthor,
+	useMessageGrouping,
+	useMessageMeta,
+	useMessageStatus,
+	useMessageText
+} from './MessageStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,45 +48,23 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageUser {
-	isHeader?: boolean;
-	hasError: boolean;
 	useRealName?: boolean;
-	author?: {
-		_id: string;
-		name?: string;
-		username?: string;
-	};
-	alias?: string;
-	ts?: Date | string;
 	timeFormat?: string;
-	type: MessageType;
-	isEdited: boolean;
 	isReadReceiptEnabled?: boolean;
-	unread?: boolean;
-	pinned?: boolean;
-	isTranslated: boolean;
 }
 
-const User = ({
-	isHeader,
-	useRealName,
-	author,
-	alias,
-	ts,
-	timeFormat,
-	hasError,
-	type,
-	isEdited,
-	isTranslated,
-	isReadReceiptEnabled,
-	unread,
-	pinned
-}: IMessageUser) => {
+const User = ({ useRealName, timeFormat, isReadReceiptEnabled }: IMessageUser) => {
 	'use memo';
 
 	const { user, navToRoomInfo } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
+	const isHeader = useMessageGrouping();
+	const { u: author, alias } = useMessageAuthor();
+	const { hasError } = useMessageStatus();
+	const isEdited = useIsEdited();
+	const { ts, unread, pinned, t: type } = useMessageMeta();
+	const { isTranslated } = useMessageText();
 
 	if (isHeader) {
 		const username = (useRealName && author?.name) || author?.username;

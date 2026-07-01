@@ -3,8 +3,11 @@ import { render } from '@testing-library/react-native';
 
 import Content from './Content';
 import MessageContext from './Context';
+import { MessageProvider } from './MessageStore';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
+import { type IAttachment, type TAnyMessageModel } from '../../definitions';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { type IMessageContent } from './interfaces';
 
 mockedStore.dispatch(
@@ -17,7 +20,20 @@ mockedStore.dispatch(
 	})
 );
 
-const baseProps: Partial<IMessageContent> = {
+type TOverrides = Partial<IMessageContent> & {
+	attachments?: IAttachment[];
+	isEncrypted?: boolean;
+	msg?: string;
+	_id?: string;
+	isTemp?: boolean;
+	isInfo?: boolean;
+	isEdited?: boolean;
+	isTranslated?: boolean;
+	isHeader?: boolean;
+	hasError?: boolean;
+};
+
+const baseProps: TOverrides = {
 	_id: 'msg-1',
 	isTemp: false,
 	isInfo: false,
@@ -30,8 +46,18 @@ const baseProps: Partial<IMessageContent> = {
 	hasError: false
 };
 
-const renderContent = (overrides: Partial<IMessageContent> & { attachments?: any[]; autoTranslateLanguage?: string }) =>
-	render(
+const buildItem = (msg: string | undefined, attachments: IAttachment[] | undefined, isEncrypted: boolean | undefined) =>
+	({
+		id: 'msg-1',
+		msg,
+		attachments,
+		t: isEncrypted ? E2E_MESSAGE_TYPE : undefined,
+		e2e: isEncrypted ? E2E_STATUS.PENDING : undefined
+	} as unknown as TAnyMessageModel);
+
+const tree = (overrides: TOverrides) => {
+	const { msg, attachments, isEncrypted, ...contentProps } = overrides;
+	return (
 		<Provider store={mockedStore}>
 			<MessageContext.Provider
 				value={{
@@ -40,24 +66,15 @@ const renderContent = (overrides: Partial<IMessageContent> & { attachments?: any
 					getCustomEmoji: jest.fn(),
 					navToRoomInfo: jest.fn()
 				}}>
-				<Content {...(baseProps as IMessageContent)} {...(overrides as IMessageContent)} />
+				<MessageProvider item={buildItem(msg, attachments, isEncrypted)}>
+					<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
+				</MessageProvider>
 			</MessageContext.Provider>
 		</Provider>
 	);
+};
 
-const tree = (overrides: Partial<IMessageContent> & { attachments?: any[]; autoTranslateLanguage?: string }) => (
-	<Provider store={mockedStore}>
-		<MessageContext.Provider
-			value={{
-				user: { username: 'john' },
-				onLinkPress: jest.fn(),
-				getCustomEmoji: jest.fn(),
-				navToRoomInfo: jest.fn()
-			}}>
-			<Content {...(baseProps as IMessageContent)} {...(overrides as IMessageContent)} />
-		</MessageContext.Provider>
-	</Provider>
-);
+const renderContent = (overrides: TOverrides) => render(tree(overrides));
 
 describe('Content preview branch — Thread Message Attachment fallback', () => {
 	test('renders the Attachment title as a preview line when msg is empty and an image-type Attachment has only a title', () => {

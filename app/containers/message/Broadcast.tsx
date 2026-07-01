@@ -10,13 +10,15 @@ import { themes } from '../../lib/constants/colors';
 import MessageContext from './Context';
 import { type IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';
+import { useMessageAuthor } from './MessageStore';
 
 // TODO: Create a reusable button component for message
-const Broadcast = ({ author, broadcast }: IMessageBroadcast) => {
+const Broadcast = ({ broadcast }: IMessageBroadcast) => {
 	'use memo';
 
 	const { user, replyBroadcast } = useContext(MessageContext);
 	const { theme } = useTheme();
+	const { u: author } = useMessageAuthor();
 	const isOwn = author?._id === user?.id;
 
 	if (broadcast && !isOwn) {

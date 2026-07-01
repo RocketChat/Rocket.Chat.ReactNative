@@ -1,11 +1,15 @@
-import i18n from '../../../i18n';
-import { type IMessageThread } from '../interfaces';
+import { useContext } from 'react';
 
-export const useMessageAccessibilityHint = (
-	props: Pick<IMessageThread, 'tlm' | 'tcount' | 'isThreadRoom'>
-): string | undefined => {
+import i18n from '../../../i18n';
+import MessageContext from '../Context';
+import { useThreadData } from '../MessageStore';
+
+export const useMessageAccessibilityHint = (): string | undefined => {
 	'use memo';
 
-	const hasThread = !!props.tlm && !props.isThreadRoom && props.tcount !== null;
+	const { tlm, tcount } = useThreadData();
+	const { isThreadRoom } = useContext(MessageContext);
+
+	const hasThread = !!tlm && !isThreadRoom && tcount !== null;
 	return hasThread ? i18n.t('A11y_press_to_view_thread') : undefined;
 };

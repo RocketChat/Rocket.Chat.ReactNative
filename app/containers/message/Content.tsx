@@ -11,6 +11,7 @@ import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type MessageTypesValues } from '../../definitions';
+import { useContentData, useIsEncrypted, useIsInfo, useMessageAuthor, useMessageStatus, useMessageText } from './MessageStore';
 
 const Content = (props: IMessageContent) => {
 	'use memo';
@@ -18,30 +19,26 @@ const Content = (props: IMessageContent) => {
 	const { theme } = useTheme();
 	const { user, onLinkPress, getCustomEmoji = () => null, navToRoomInfo } = useContext(MessageContext);
 
-	if (props.isInfo) {
+	const isInfo = useIsInfo();
+	const isEncrypted = useIsEncrypted();
+	const { md, mentions, channels, comment, attachments, t: type } = useContentData();
+	const { isTemp } = useMessageStatus();
+	const { messageText, isTranslated } = useMessageText();
+	const { u: author, role } = useMessageAuthor();
+
+	if (isInfo) {
 		// @ts-ignore
-		const infoMessage = getInfoMessage({ ...props });
+		const infoMessage = getInfoMessage({ type, role, msg: messageText, author, comment });
 
 		const renderMessageContent = (
 			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} accessibilityLabel={infoMessage}>
 				{infoMessage}
 			</Text>
 		);
-		if (messageHaveAuthorName(props.type as MessageTypesValues)) {
+		if (messageHaveAuthorName(type as MessageTypesValues)) {
 			return (
 				<Text>
-					<User
-						hasError={props.hasError}
-						type={props.type}
-						isEdited={props.isEdited}
-						isTranslated={props.isTranslated}
-						isHeader={props.isHeader}
-						useRealName={props.useRealName}
-						author={props.author}
-						alias={props.alias}
-						pinned={props.pinned}
-					/>{' '}
-					{renderMessageContent}
+					<User useRealName={props.useRealName} /> {renderMessageContent}
 				</Text>
 			);
 		}
@@ -52,7 +49,7 @@ const Content = (props: IMessageContent) => {
 	const isPreview = props.tmid && !props.isThreadRoom;
 	let content = null;
 
-	if (props.isEncrypted) {
+	if (isEncrypted) {
 		content = (
 			<Text
 				style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
@@ -63,38 +60,36 @@ const Content = (props: IMessageContent) => {
 		);
 	} else if (isPreview) {
 		const previewMsg =
-			props.msg ||
-			(props.attachments?.length
-				? getPreviewMessageFromAttachment(props.attachments[0], props.autoTranslateLanguage)
-				: undefined);
+			messageText ||
+			(attachments?.length ? getPreviewMessageFromAttachment(attachments[0], props.autoTranslateLanguage) : undefined);
 		content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
-	} else if (props.msg) {
+	} else if (messageText) {
 		content = (
 			<Markdown
-				msg={props.msg}
-				md={props.type !== 'e2e' ? props.md : undefined}
+				msg={messageText}
+				md={type !== 'e2e' ? md : undefined}
 				getCustomEmoji={getCustomEmoji}
 				username={user?.username ?? ''}
-				channels={props.channels}
-				mentions={props.mentions}
+				channels={channels}
+				mentions={mentions}
 				navToRoomInfo={navToRoomInfo}
 				useRealName={props.useRealName}
 				onLinkPress={onLinkPress}
-				isTranslated={props.isTranslated}
+				isTranslated={isTranslated}
 			/>
 		);
 	}
 
 	if (props.isIgnored) {
 		content = (
-			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
+			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${messageText}`}>
 				{I18n.t('Message_Ignored')}
 			</Text>
 		);
 	}
 
 	return content ? (
-		<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+		<View style={isTemp && styles.temp} testID={`message-content-${messageText || ''}`}>
 			{content}
 		</View>
 	) : null;

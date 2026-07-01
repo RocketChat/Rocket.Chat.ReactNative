@@ -10,6 +10,7 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
+import { useReactions } from './MessageStore';
 
 interface IReaction {
 	_id: string;
@@ -85,10 +86,11 @@ const Reaction = ({ reaction, theme }: IMessageReaction) => {
 	);
 };
 
-const Reactions = ({ reactions }: IMessageReactions) => {
+const Reactions = (_props: IMessageReactions) => {
 	'use memo';
 
 	const { theme } = useTheme();
+	const reactions = useReactions();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;

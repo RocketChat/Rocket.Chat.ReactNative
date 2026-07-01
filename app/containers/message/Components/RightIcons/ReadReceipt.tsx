@@ -1,11 +1,13 @@
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
+import { useMessageField } from '../../MessageStore';
 
-const ReadReceipt = ({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
+const ReadReceipt = ({ isReadReceiptEnabled }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const unread = useMessageField(item => item.unread);
 	const isUnread = unread || unread === null;
 	const iconName = isUnread ? 'check-single' : 'check-double';
 	const iconColor = isUnread ? colors.fontAnnotation : colors.fontInfo;

@@ -1,9 +1,9 @@
 import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import MessageComponent from './Message';
-import MessageContext from './Context';
+import MessageContainer from './index';
 import { type ICustomEmoji } from '../../definitions/IEmoji';
+import { type TAnyMessageModel } from '../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import { themes } from '../../lib/constants/colors';
@@ -16,6 +16,7 @@ import {
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';
+import { createInteractionStore, InteractionStoreContext } from '../../views/RoomView/InteractionStore';
 
 const _theme = 'light';
 
@@ -111,22 +112,145 @@ export default {
 	]
 };
 
-export const Message = (props: any) => (
-	<MessageContext.Provider value={storyContextValue}>
-		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
-			<MessageComponent baseUrl={baseUrl} user={user} author={author} ts={date} timeFormat='LT' isHeader {...props} />
+const rid = 'GENERAL';
+
+const otherUser = { _id: 'other-user', username: 'other.user', name: 'Other User' };
+
+const editedByFixture = { _id: 'edited-by', username: 'diego.mello' };
+
+let storyMessageIdCounter = 0;
+
+const buildMessage = (overrides: Record<string, any> = {}): TAnyMessageModel => {
+	const definedOverrides = Object.fromEntries(Object.entries(overrides).filter(([, value]) => value !== undefined));
+	return {
+		id: `story-message-${++storyMessageIdCounter}`,
+		msg: undefined,
+		t: undefined,
+		ts: date,
+		u: author,
+		alias: undefined,
+		groupable: true,
+		avatar: undefined,
+		emoji: undefined,
+		attachments: undefined,
+		urls: undefined,
+		status: undefined,
+		pinned: undefined,
+		editedBy: undefined,
+		reactions: undefined,
+		role: undefined,
+		drid: undefined,
+		dcount: undefined,
+		dlm: undefined,
+		tmid: undefined,
+		tcount: undefined,
+		tlm: undefined,
+		replies: undefined,
+		mentions: undefined,
+		channels: undefined,
+		unread: undefined,
+		autoTranslate: undefined,
+		translations: undefined,
+		tmsg: undefined,
+		blocks: undefined,
+		e2e: undefined,
+		md: undefined,
+		comment: undefined,
+		...definedOverrides
+	} as unknown as TAnyMessageModel;
+};
+
+// Builds the message model for a single <Message>/<MessageLargeFont> call, pulling the
+// scalar display flags (author/type/hasError/status/isEdited/isTranslated) out of the
+// props that used to be passed straight to the leaf component.
+const buildItem = (props: any): TAnyMessageModel => {
+	const { author: authorOverride, type, hasError, status, isEdited, isTranslated, ...itemProps } = props;
+	const resolvedAuthor = authorOverride ?? (isTranslated ? otherUser : author);
+	return buildMessage({
+		...itemProps,
+		u: resolvedAuthor,
+		t: type,
+		status: status ?? (hasError ? messagesStatus.ERROR : undefined),
+		editedBy: isEdited ? editedByFixture : undefined,
+		msg: isTranslated ? 'Untranslated message' : itemProps.msg,
+		autoTranslate: isTranslated ? true : undefined,
+		translations: isTranslated ? [{ _id: 'translation-1', language: 'en', value: itemProps.msg ?? 'Message' }] : undefined
+	});
+};
+
+// Synthesizes a sibling message so MessageContainer's real grouping logic (computeIsHeader)
+// derives isHeader=false the same way the old isHeader={false} prop used to force it.
+const buildGroupedPreviousItem = (item: TAnyMessageModel): TAnyMessageModel =>
+	buildMessage({
+		id: `${item.id}-prev`,
+		u: item.u,
+		ts: item.ts,
+		tmid: item.tmid,
+		t: item.t,
+		groupable: item.groupable,
+		status: item.status
+	});
+
+// Synthesizes a non-matching sibling thread message so isThreadReply derives true,
+// the same way the old isThreadReply prop used to force it.
+const buildThreadReplyPreviousItem = (item: TAnyMessageModel): TAnyMessageModel =>
+	buildMessage({ id: `${item.id}-prev`, u: otherUser, ts: item.ts });
+
+const resolvePreviousItem = (item: TAnyMessageModel, isHeader: boolean | undefined, isThreadReply: boolean | undefined) => {
+	if (isHeader === false) {
+		return buildGroupedPreviousItem(item);
+	}
+	if (isThreadReply) {
+		return buildThreadReplyPreviousItem(item);
+	}
+	return undefined;
+};
+
+const renderMessageStory = (fontScale: number, props: any) => {
+	const {
+		isHeader,
+		isThreadReply,
+		previousItem: previousItemOverride,
+		broadcast,
+		archived,
+		timeFormat = 'LT',
+		useRealName,
+		isReadReceiptEnabled,
+		isIgnored,
+		isTranslated,
+		autoTranslateRoom,
+		autoTranslateLanguage,
+		...itemProps
+	} = props;
+
+	const item = buildItem({ ...itemProps, isTranslated });
+	const previousItem = previousItemOverride ?? resolvePreviousItem(item, isHeader, isThreadReply);
+
+	return (
+		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(fontScale)}>
+			<MessageContainer
+				item={item}
+				previousItem={previousItem}
+				rid={rid}
+				Message_GroupingPeriod={300}
+				timeFormat={timeFormat}
+				broadcast={broadcast}
+				archived={archived}
+				isIgnored={isIgnored}
+				useRealName={useRealName}
+				isReadReceiptEnabled={isReadReceiptEnabled}
+				autoTranslateRoom={autoTranslateRoom ?? (isTranslated ? true : undefined)}
+				autoTranslateLanguage={autoTranslateLanguage ?? (isTranslated ? 'en' : undefined)}
+				{...storyContextValue}
+			/>
 		</ResponsiveLayoutContext.Provider>
-	</MessageContext.Provider>
-);
+	);
+};
+
+export const Message = (props: any) => renderMessageStory(1, props);
 
 // The large font components are not perfect because the text's font scale increases only with the device's font size setting.
-const MessageLargeFont = (props: any) => (
-	<MessageContext.Provider value={storyContextValue}>
-		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(FONT_SCALE_LIMIT)}>
-			<MessageComponent baseUrl={baseUrl} user={user} author={author} ts={date} timeFormat='LT' isHeader {...props} />
-		</ResponsiveLayoutContext.Provider>
-	</MessageContext.Provider>
-);
+const MessageLargeFont = (props: any) => renderMessageStory(FONT_SCALE_LIMIT, props);
 
 export const Basic = () => (
 	<>
@@ -2270,9 +2394,19 @@ export const Temp = () => <Message msg='Temp message' status={messagesStatus.TEM
 
 export const TempLargeFont = () => <MessageLargeFont msg='Temp message' status={messagesStatus.TEMP} isTemp />;
 
-export const Editing = () => <Message msg='Message being edited' isBeingEdited />;
+const editingStore = createInteractionStore({ action: 'edit', selectedMessages: ['editing-message'] });
 
-export const EditingLargeFont = () => <MessageLargeFont msg='Message being edited' isBeingEdited />;
+export const Editing = () => (
+	<InteractionStoreContext.Provider value={editingStore}>
+		<Message id='editing-message' msg='Message being edited' />
+	</InteractionStoreContext.Provider>
+);
+
+export const EditingLargeFont = () => (
+	<InteractionStoreContext.Provider value={editingStore}>
+		<MessageLargeFont id='editing-message' msg='Message being edited' />
+	</InteractionStoreContext.Provider>
+);
 
 export const SystemMessages = () => (
 	<>

@@ -2,6 +2,8 @@ import { render } from '@testing-library/react-native';
 
 import Thread from './Thread';
 import MessageContext from './Context';
+import { MessageProvider } from './MessageStore';
+import { type TAnyMessageModel } from '../../definitions';
 
 const baseContextValue = {
 	threadBadgeColor: undefined,
@@ -11,28 +13,33 @@ const baseContextValue = {
 	onThreadPress: jest.fn()
 };
 
-const renderThread = (props: Parameters<typeof Thread>[0]) =>
+const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
+	({ id: 'msg1', msg: 'hello', tcount: 3, tlm: undefined, tmid: undefined, ...overrides } as unknown as TAnyMessageModel);
+
+const renderThread = (item: TAnyMessageModel, props: Parameters<typeof Thread>[0]) =>
 	render(
 		<MessageContext.Provider value={baseContextValue}>
-			<Thread {...props} />
+			<MessageProvider item={item}>
+				<Thread {...props} />
+			</MessageProvider>
 		</MessageContext.Provider>
 	);
 
 describe('Thread — tlm-only update regression', () => {
 	test('renders null when tlm is undefined, then shows button after tlm arrives (same tcount)', () => {
-		const { queryByTestId, rerender, getByTestId } = renderThread({
-			msg: 'hello',
-			tcount: 3,
-			tlm: undefined,
-			isThreadRoom: false,
-			id: 'msg1'
+		const item = buildItem();
+		const { queryByTestId, rerender, getByTestId } = renderThread(item, {
+			isThreadRoom: false
 		});
 
 		expect(queryByTestId('message-thread-button-hello')).toBeNull();
 
+		const updatedItem = buildItem({ tlm: new Date('2024-01-01T00:00:00Z') });
 		rerender(
 			<MessageContext.Provider value={baseContextValue}>
-				<Thread msg='hello' tcount={3} tlm={new Date('2024-01-01T00:00:00Z')} isThreadRoom={false} id='msg1' />
+				<MessageProvider item={updatedItem}>
+					<Thread isThreadRoom={false} />
+				</MessageProvider>
 			</MessageContext.Provider>
 		);
 

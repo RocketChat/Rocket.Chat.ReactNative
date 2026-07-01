@@ -2,9 +2,12 @@ import { View } from 'react-native';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
+import { useIsEdited } from '../../MessageStore';
 
-const Edited = ({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
+const Edited = ({ testID }: { isEdited: boolean; testID?: string }) => {
 	'use memo';
+
+	const isEdited = useIsEdited();
 
 	if (!isEdited) {
 		return null;

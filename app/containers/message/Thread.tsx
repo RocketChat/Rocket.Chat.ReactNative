@@ -8,12 +8,15 @@ import I18n from '../../i18n';
 import { type IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
+import { useMessageText, useThreadData } from './MessageStore';
 
-const Thread = ({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
+const Thread = ({ isThreadRoom }: IMessageThread) => {
 	'use memo';
 
 	const { theme, colors } = useTheme();
 	const { threadBadgeColor, toggleFollowThread, user, replies, onThreadPress } = useContext(MessageContext);
+	const { tcount, tlm, id } = useThreadData();
+	const { messageText } = useMessageText();
 
 	const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
 	const textColor = threadBadgeColor || theme !== 'light' ? colors.fontWhite : colors.fontPureBlack;
@@ -29,7 +32,7 @@ const Thread = ({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
 				accessibilityRole='button'
 				accessibilityLabel={I18n.t('View_Thread')}
 				style={[styles.button, { backgroundColor }]}
-				testID={`message-thread-button-${msg}`}>
+				testID={`message-thread-button-${messageText}`}>
 				<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
 			</Touchable>
 			<ThreadDetails

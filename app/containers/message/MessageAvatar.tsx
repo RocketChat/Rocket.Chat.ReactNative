@@ -7,6 +7,7 @@ import MessageContext from './Context';
 import { type IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useAvatar, useMessageAuthor, useMessageGrouping } from './MessageStore';
 
 const AVATAR_BASE_SIZE = 36;
 
@@ -16,11 +17,14 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 	return <View style={{ width, alignItems: 'flex-end' }}>{children}</View>;
 };
 
-const MessageAvatar = ({ isHeader, avatar, author, small, emoji }: IMessageAvatar) => {
+const MessageAvatar = ({ small }: IMessageAvatar) => {
 	'use memo';
 
 	const { user, navToRoomInfo, getCustomEmoji } = useContext(MessageContext);
 	const { fontScaleLimited } = useResponsiveLayout();
+	const { avatar, emoji } = useAvatar();
+	const { u: author } = useMessageAuthor();
+	const isHeader = useMessageGrouping();
 	const smallSize = 20 * fontScaleLimited;
 	const normalSize = AVATAR_BASE_SIZE * fontScaleLimited;
 	const size = small ? smallSize : normalSize;

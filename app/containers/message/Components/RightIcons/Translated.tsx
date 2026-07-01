@@ -2,9 +2,12 @@ import { View } from 'react-native';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
+import { useMessageText } from '../../MessageStore';
 
-const Translated = ({ isTranslated }: { isTranslated: boolean }) => {
+const Translated = (_props: { isTranslated: boolean }) => {
 	'use memo';
+
+	const { isTranslated } = useMessageText();
 
 	if (!isTranslated) {
 		return null;

@@ -9,14 +9,16 @@ import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
-import { type IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
+import { useDiscussion, useMessageText } from './MessageStore';
 
 // TODO: Create a reusable button component for message
-const Discussion = ({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
+const Discussion = () => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const { dcount, dlm } = useDiscussion();
+	const { messageText } = useMessageText();
 	let time;
 	if (dlm) {
 		time = formatDateThreads(dlm);
@@ -26,7 +28,7 @@ const Discussion = ({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm
 	return (
 		<View style={{ gap: 4 }}>
 			<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
-			<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{msg}</Text>
+			<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{messageText}</Text>
 			<View style={[styles.buttonContainer, { gap: 8 }]}>
 				<Touchable
 					onPress={onDiscussionPress}

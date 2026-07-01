@@ -15,6 +15,7 @@ import I18n from '../../i18n';
 import MessageContext from './Context';
 import { type IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
+import { useUrls } from './MessageStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -184,8 +185,10 @@ const Url = ({ url }: { url: IUrl }) => {
 		</Touchable>
 	);
 };
-const Urls = ({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
+const Urls = (_props: { urls?: IUrl[] }): ReactElement[] | null => {
 	'use memo';
+
+	const urls = useUrls();
 
 	if (!urls || urls.length === 0) {
 		return null;

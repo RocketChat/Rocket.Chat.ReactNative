@@ -4,16 +4,13 @@ import { Keyboard } from 'react-native';
 import Message from './Message';
 import MessageContext from './Context';
 import { debounce } from '../../lib/methods/helpers';
-import { getMessageTranslation } from './utils';
 import { type TSupportedThemes, useTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
 import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
-import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
-import { type IMessageSnapshot, useMessage } from './hooks/useMessage';
 import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
+import { MessageProvider, type MessagePrev, useIsEncrypted, useIsInfo, useMessageStatus } from './MessageStore';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -66,63 +63,38 @@ interface IMessageContainerProps {
 	showUnreadSeparator?: boolean;
 }
 
-// Extracted at module scope so the try/catch does not prevent React Compiler from
-// memoising MessageContainer (the compiler cannot optimise try/catch in render).
-function computeIsHeader(
-	previousItem: TAnyMessageModel | undefined,
-	message: IMessageSnapshot,
-	broadcast: boolean,
-	Message_GroupingPeriod: number | undefined,
-	hasError: boolean
-): boolean {
-	if (hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
-		return true;
-	}
-	try {
-		if (
-			previousItem &&
-			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-			previousItem.ts.toDateString() === message.ts.toDateString() &&
-			previousItem.u?.username === message.u?.username &&
-			!(previousItem.groupable === false || message.groupable === false || broadcast === true) &&
-			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-			message.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
-			previousItem.tmid === message.tmid &&
-			message.t !== 'rm' &&
-			previousItem.t !== 'rm'
-		) {
-			return false;
-		}
-		return true;
-	} catch {
-		return true;
-	}
-}
-
 // `item` is intentionally omitted: the FlatList keys each row by item.id, so a
-// different message remounts rather than re-rendering with a new item prop, and
-// useMessage recomputes its snapshot on item-identity change.
+// different message remounts rather than re-rendering with a new item prop; in-place
+// field updates on the same item are handled by the per-message Zustand store (see
+// MessageProvider/MessageStore), not by this comparison.
 function areEqual(prev: IMessageContainerProps, next: IMessageContainerProps): boolean {
+	const p = prev.previousItem;
+	const n = next.previousItem;
 	return (
 		prev.showUnreadSeparator === next.showUnreadSeparator &&
 		prev.dateSeparator === next.dateSeparator &&
 		prev.highlighted === next.highlighted &&
 		prev.threadBadgeColor === next.threadBadgeColor &&
 		prev.isIgnored === next.isIgnored &&
-		prev.previousItem?.id === next.previousItem?.id &&
+		p?.id === n?.id &&
+		p?.status === n?.status &&
+		p?.ts === n?.ts &&
+		p?.u?.username === n?.u?.username &&
+		p?.groupable === n?.groupable &&
+		p?.tmid === n?.tmid &&
+		p?.t === n?.t &&
 		prev.autoTranslateRoom === next.autoTranslateRoom &&
 		prev.autoTranslateLanguage === next.autoTranslateLanguage
 	);
 }
 
-const MessageContainer = ({
+const MessageContainerInner = ({
 	item,
 	user,
 	rid,
 	timeFormat,
 	archived = false,
 	broadcast = false,
-	previousItem,
 	baseUrl,
 	Message_GroupingPeriod,
 	isReadReceiptEnabled,
@@ -159,43 +131,15 @@ const MessageContainer = ({
 }: IMessageContainerProps) => {
 	'use memo';
 
-	const message = useMessage(item);
 	const isBeingEdited = useIsBeingEdited(item.id);
 	const { theme } = useTheme();
 	const [isManualUnignored, setIsManualUnignored] = useState(false);
 
-	// Derived values
-	const hasError = message.status === messagesStatus.ERROR;
-
-	const isHeader = computeIsHeader(previousItem, message, broadcast, Message_GroupingPeriod, hasError);
-
-	const isThreadReply = (() => {
-		if (isThreadRoom) {
-			return false;
-		}
-		if (previousItem && message.tmid && previousItem.tmid !== message.tmid && previousItem.id !== message.tmid) {
-			return true;
-		}
-		return false;
-	})();
-
-	const isThreadSequential = (() => {
-		if (isThreadRoom) {
-			return false;
-		}
-		return !!message.tmid;
-	})();
-
-	const isEncrypted = message.t === E2E_MESSAGE_TYPE && message.e2e !== E2E_STATUS.DONE;
-
-	const isInfo: string | boolean = (() => {
-		if (['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(message.t)) {
-			return false;
-		}
-		return message.t;
-	})();
-
-	const isTemp = message.status === messagesStatus.TEMP || message.status === messagesStatus.ERROR;
+	// Sourced via the per-message store (rather than read directly off `item`) so this
+	// component re-renders and refreshes the Context value/closures below when they change.
+	const { hasError } = useMessageStatus();
+	const isEncrypted = useIsEncrypted();
+	const isInfo = useIsInfo();
 
 	const isIgnored = isManualUnignored ? false : isIgnoredProp ?? false;
 
@@ -211,7 +155,7 @@ const MessageContainer = ({
 
 	const onReactionPress = (emoji: string) => {
 		if (onReactionPressProp) {
-			onReactionPressProp(emoji, message.id);
+			onReactionPressProp(emoji, item.id);
 		}
 	};
 
@@ -247,7 +191,7 @@ const MessageContainer = ({
 
 	const reactionInit = () => {
 		if (reactionInitProp) {
-			reactionInitProp(message.id);
+			reactionInitProp(item.id);
 		}
 	};
 
@@ -258,7 +202,7 @@ const MessageContainer = ({
 	};
 
 	const onLinkPress = (link: string): void => {
-		const isMessageLink = !!message.attachments?.some((att: IAttachment) => att?.message_link === link);
+		const isMessageLink = !!item.attachments?.some((att: IAttachment) => att?.message_link === link);
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);
 		}
@@ -289,11 +233,11 @@ const MessageContainer = ({
 
 			Keyboard.dismiss();
 
-			if ((message.tlm || message.tmid) && !isThreadRoom) {
+			if ((item.tlm || item.tmid) && !isThreadRoom) {
 				onThreadPress();
 			}
 
-			if (message.dlm && onDiscussionPressProp) {
+			if (item.dlm && onDiscussionPressProp) {
 				onDiscussionPressProp(item);
 			}
 		};
@@ -313,53 +257,13 @@ const MessageContainer = ({
 		return onPressRef.current();
 	};
 
-	const {
-		id,
-		msg,
-		ts,
-		attachments,
-		urls,
-		reactions,
-		t,
-		avatar,
-		emoji,
-		u,
-		alias,
-		editedBy,
-		role,
-		drid,
-		dcount,
-		dlm,
-		tmid,
-		tcount,
-		tlm,
-		tmsg,
-		mentions,
-		channels,
-		unread,
-		blocks,
-		autoTranslate: autoTranslateMessage,
-		replies,
-		md,
-		comment,
-		pinned
-	} = message;
-
-	let messageText = msg;
-	let isTranslated = false;
-	const otherUserMessage = u?.username !== user?.username;
-	if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage && otherUserMessage) {
-		const messageTranslated = getMessageTranslation(message, autoTranslateLanguage);
-		isTranslated = !!messageTranslated;
-		messageText = messageTranslated || messageText;
-	}
-
-	const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
+	const otherUserMessage = item.u?.username !== user?.username;
+	const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && item.autoTranslate !== false && otherUserMessage;
 
 	return (
 		<MessageContext.Provider
 			value={{
-				id,
+				id: item.id,
 				rid,
 				user,
 				baseUrl,
@@ -378,7 +282,7 @@ const MessageContainer = ({
 				jumpToMessage,
 				threadBadgeColor,
 				toggleFollowThread,
-				replies,
+				replies: item.replies,
 				translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 				isEncrypted,
 				getCustomEmoji,
@@ -386,59 +290,51 @@ const MessageContainer = ({
 				showAttachment,
 				blockAction,
 				handleEnterCall,
-				fetchThreadName
+				fetchThreadName,
+				broadcast,
+				Message_GroupingPeriod,
+				isThreadRoom: !!isThreadRoom,
+				autoTranslateRoom,
+				autoTranslateLanguage
 			}}>
 			<Message
-				id={id}
-				msg={messageText}
-				md={md}
 				rid={rid}
-				author={u}
-				ts={ts}
-				type={t}
-				attachments={attachments}
-				blocks={blocks}
-				urls={urls}
-				reactions={reactions}
-				alias={alias}
-				avatar={avatar}
-				emoji={emoji}
 				timeFormat={timeFormat}
 				archived={archived}
 				broadcast={broadcast}
 				useRealName={useRealName}
 				isReadReceiptEnabled={isReadReceiptEnabled}
-				unread={unread}
-				role={role}
-				drid={drid}
-				dcount={dcount}
-				dlm={dlm}
-				tmid={tmid}
-				tcount={tcount}
-				tlm={tlm}
-				tmsg={tmsg}
-				mentions={mentions}
-				channels={channels}
-				isIgnored={isIgnored}
-				isEdited={(editedBy && !!editedBy.username) ?? false}
-				isHeader={isHeader}
-				isThreadReply={isThreadReply}
-				isThreadSequential={isThreadSequential}
 				isThreadRoom={!!isThreadRoom}
-				isInfo={isInfo}
-				isTemp={isTemp}
-				isEncrypted={isEncrypted}
-				hasError={hasError}
-				highlighted={highlighted}
-				comment={comment}
-				isTranslated={isTranslated}
-				isBeingEdited={isBeingEdited}
 				isPreview={isPreview}
-				pinned={pinned}
+				highlighted={highlighted}
+				isIgnored={isIgnored}
+				isBeingEdited={isBeingEdited}
 				autoTranslateLanguage={autoTranslateLanguage}
 			/>
 			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 		</MessageContext.Provider>
+	);
+};
+
+const MessageContainer = (props: IMessageContainerProps) => {
+	'use memo';
+
+	const { item, previousItem } = props;
+	const prev: MessagePrev | undefined = previousItem
+		? {
+				id: previousItem.id,
+				status: previousItem.status,
+				ts: previousItem.ts,
+				username: previousItem.u?.username,
+				groupable: previousItem.groupable,
+				tmid: previousItem.tmid,
+				t: previousItem.t
+		  }
+		: undefined;
+	return (
+		<MessageProvider item={item} prev={prev}>
+			<MessageContainerInner {...props} />
+		</MessageProvider>
 	);
 };
 
