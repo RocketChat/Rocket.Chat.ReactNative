@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import chat.rocket.reactnative.networking.NativeBiometricEnrollmentSpec
 
 import java.security.KeyStore
+import java.security.UnrecoverableKeyException
 
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -99,8 +100,9 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
      * enrollment change. Never shows a biometric prompt.
      */
     override fun isEnrollmentValid(promise: Promise) {
+        val keyStore: KeyStore
         try {
-            val keyStore = loadKeyStore()
+            keyStore = loadKeyStore()
 
             if (!keyStore.containsAlias(KEY_ALIAS)) {
                 // No baseline yet (fresh install/upgrade, or just disenrolled). Establish one bound to
@@ -116,7 +118,23 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
                 }
                 return
             }
+        } catch (e: Exception) {
+            // Keystore provider itself is unavailable (getInstance/load/containsAlias) — an environmental
+            // failure that says nothing about the probe key's validity. Fail open so a transient provider
+            // error never forces the passcode on its own; the modal verify() path remains the backstop.
+            Log.w(TAG, "isEnrollmentValid: keystore unavailable", e)
+            promise.resolve(true)
+            return
+        }
 
+        // Probe the key. Reporting "valid" requires a clean getKey() + init(); ANY failure in this region
+        // is treated as a change (fail closed). A changed/invalidated enrollment does not always surface
+        // as KeyPermanentlyInvalidatedException at init(): across OEMs / API levels / StrongBox it may be
+        // an UnrecoverableKeyException or a generic KeyStoreException at getKey(), or another
+        // InvalidKeyException at init(). Because this probe is the sole gate on a warm auto-lock unlock
+        // (verify() never runs there), once the keystore is readable and the alias exists we never fail
+        // open — the only path to "valid" is a fully successful probe.
+        try {
             val key = keyStore.getKey(KEY_ALIAS, null) as? SecretKey
             if (key == null) {
                 promise.resolve(false)
@@ -129,11 +147,16 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
             promise.resolve(true)
         } catch (e: KeyPermanentlyInvalidatedException) {
             promise.resolve(false)
+        } catch (e: UnrecoverableKeyException) {
+            // Some OEMs / API levels report an enrollment-invalidated key here rather than at init().
+            Log.w(TAG, "probe key unrecoverable — treating as enrollment change", e)
+            promise.resolve(false)
         } catch (e: Exception) {
-            // Unknown keystore failure: fail open to avoid nagging the user on transient errors. The
-            // modal-based verify() remains the backstop for a real enrollment change.
-            Log.w(TAG, "isEnrollmentValid failed", e)
-            promise.resolve(true)
+            // getKey()/init() failed for some other reason (KeyStoreException, InvalidKeyException, a
+            // provider glitch, …). A clean probe is the only proof the enrollment is unchanged, so treat
+            // any failure here as a change rather than fail open.
+            Log.w(TAG, "probe failed — treating as enrollment change", e)
+            promise.resolve(false)
         }
     }
 }

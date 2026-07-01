@@ -27,13 +27,16 @@ export const disenrollProbe = async (): Promise<void> => {
 };
 
 // Returns true when the current biometric enrollment still matches what the probe key was bound to
-// (or when not applicable, e.g. iOS). Returns false only on Android when the keystore key was
-// invalidated by an enrollment change. A bridge failure resolves to true so a transient native error
-// never forces the passcode on its own — the modal verify() path stays as the backstop.
+// (or when not applicable, e.g. iOS, where the spec fallback resolves true). Returns false when an
+// Android enrollment change is detected. The native module already fails open on purely environmental
+// keystore errors and fails closed on any key-integrity failure, and it never rejects — so reaching
+// this catch means the bridge itself failed on a device where the module should exist. That is an
+// anomaly on the one gate that guards enrollment change, so fail closed (force the passcode) rather
+// than let a broken bridge silently report "valid".
 export const isEnrollmentValid = async (): Promise<boolean> => {
 	try {
 		return await NativeBiometricEnrollment.isEnrollmentValid();
 	} catch {
-		return true;
+		return false;
 	}
 };
