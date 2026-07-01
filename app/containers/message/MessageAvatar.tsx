@@ -1,13 +1,13 @@
-import { useContext, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
-import MessageContext from './Context';
 import { type IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useAvatar, useMessageAuthor, useMessageGrouping } from './MessageStore';
+import { useGetCustomEmoji, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
 const AVATAR_BASE_SIZE = 36;
 
@@ -20,7 +20,9 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 const MessageAvatar = ({ small }: IMessageAvatar) => {
 	'use memo';
 
-	const { user, navToRoomInfo, getCustomEmoji } = useContext(MessageContext);
+	const user = useMessageUser();
+	const navToRoomInfo = useNavToRoomInfo();
+	const getCustomEmoji = useGetCustomEmoji();
 	const { fontScaleLimited } = useResponsiveLayout();
 	const { avatar, emoji } = useAvatar();
 	const { u: author } = useMessageAuthor();

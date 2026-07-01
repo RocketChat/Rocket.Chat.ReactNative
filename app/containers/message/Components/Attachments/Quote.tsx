@@ -1,17 +1,19 @@
-import { useContext, type FC } from 'react';
+import { type FC } from 'react';
 import { View } from 'react-native';
 
 import { Reply } from './components';
-import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 import { isQuoteAttachment } from './utils';
+import { useGetCustomEmoji } from '../../MessageRoomStore';
+import { useTranslateLanguage } from '../../MessageStore';
 
 const Quote: FC<IMessageAttachments> = ({ attachments, timeFormat }: IMessageAttachments) => {
 	'use memo';
 
-	const { translateLanguage, getCustomEmoji = () => null } = useContext(MessageContext);
+	const translateLanguage = useTranslateLanguage();
+	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 
 	const quotes = attachments?.filter(isQuoteAttachment);
 

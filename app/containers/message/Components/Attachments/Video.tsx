@@ -1,4 +1,4 @@
-import { useContext, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { type IUserMessage } from '../../../../definitions';
@@ -12,9 +12,9 @@ import sharedStyles from '../../../../views/Styles';
 import { type TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
-import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
+import { useMessageUser } from '../../MessageRoomStore';
 import BlurComponent from '../OverlayComponent';
 import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
@@ -73,7 +73,7 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVideo): ReactElement | null => {
 	'use memo';
 
-	const { user } = useContext(MessageContext);
+	const user = useMessageUser();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const _onPress = async () => {

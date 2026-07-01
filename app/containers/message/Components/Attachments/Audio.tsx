@@ -1,12 +1,12 @@
-import { useContext } from 'react';
 import { View } from 'react-native';
 
 import { type IAttachment, type IUserMessage } from '../../../../definitions';
 import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import AudioPlayer from '../../../AudioPlayer';
 import Markdown from '../../../markdown';
-import MessageContext from '../../Context';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
+import { useMessageUser, useRid } from '../../MessageRoomStore';
+import { useMessageId } from '../../MessageStore';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -18,7 +18,9 @@ interface IMessageAudioProps {
 const MessageAudio = ({ file, getCustomEmoji, author, msg }: IMessageAudioProps) => {
 	'use memo';
 
-	const { user, id, rid } = useContext(MessageContext);
+	const user = useMessageUser();
+	const id = useMessageId();
+	const rid = useRid();
 	const { status, onPress, url } = useMediaAutoDownload({ file, author });
 
 	return (

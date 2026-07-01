@@ -1,11 +1,9 @@
-import { useContext } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
-import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -17,6 +15,7 @@ import {
 	useMessageStatus,
 	useMessageText
 } from './MessageStore';
+import { useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -56,7 +55,8 @@ interface IMessageUser {
 const User = ({ useRealName, timeFormat, isReadReceiptEnabled }: IMessageUser) => {
 	'use memo';
 
-	const { user, navToRoomInfo } = useContext(MessageContext);
+	const user = useMessageUser();
+	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();

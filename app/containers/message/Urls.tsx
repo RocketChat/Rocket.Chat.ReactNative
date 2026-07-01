@@ -12,10 +12,10 @@ import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import MessageContext from './Context';
 import { type IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
 import { useUrls } from './MessageStore';
+import { useBaseUrl, useMessageUser } from './MessageRoomStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -121,7 +121,8 @@ const Url = ({ url }: { url: IUrl }) => {
 	'use memo';
 
 	const { colors, theme } = useTheme();
-	const { baseUrl, user } = useContext(MessageContext);
+	const baseUrl = useBaseUrl();
+	const user = useMessageUser();
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
 

@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -8,12 +7,12 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
-import MessageContext from './Context';
+import { useHandleEnterCall } from './MessageRoomStore';
 
 const CallButton = () => {
 	'use memo';
 
-	const { handleEnterCall } = useContext(MessageContext);
+	const handleEnterCall = useHandleEnterCall();
 	const { theme } = useTheme();
 	return (
 		<View style={styles.buttonContainer}>
