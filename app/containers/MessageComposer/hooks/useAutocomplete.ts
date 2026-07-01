@@ -7,7 +7,7 @@ import {
 	type TAutocompleteItem,
 	type TAutocompleteType
 } from '../interfaces';
-import { search } from '../../../lib/methods/search';
+import { searchLocal, searchRemote, type TSearch } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
 import { emojis } from '../../../lib/constants/emojis';
@@ -56,6 +56,46 @@ export const useAutocomplete = ({
 	const [mentionAll, mentionHere] = usePermissions(['mention-all', 'mention-here']);
 
 	useEffect(() => {
+		// Guards against an older (slower) search overwriting the results of a newer one.
+		// The cleanup runs on every re-run (any type change), so a stale request can never call setItems.
+		let ignore = false;
+
+		const parseUserRoom = (res: TSearch[]): IAutocompleteUserRoom[] => {
+			const parsedRes: IAutocompleteUserRoom[] = res
+				// TODO: need to refactor search to have a more predictable return type
+				.map((item: any) => ({
+					id: type === '@' ? item._id : item.rid,
+					title: item.fname || item.name || item.username,
+					subtitle: item.username || item.name,
+					outside: item.outside,
+					t: item.t ?? 'd',
+					status: item.status,
+					teamMain: item.teamMain,
+					type
+				})) as IAutocompleteUserRoom[];
+			if (type === '@') {
+				if (mentionAll && 'all'.includes(text.toLocaleLowerCase())) {
+					parsedRes.push({
+						id: 'all',
+						title: 'all',
+						subtitle: I18n.t('Notify_all_in_this_room'),
+						type,
+						t: 'd'
+					});
+				}
+				if (mentionHere && 'here'.includes(text.toLocaleLowerCase())) {
+					parsedRes.push({
+						id: 'here',
+						title: 'here',
+						subtitle: I18n.t('Notify_active_in_this_room'),
+						type,
+						t: 'd'
+					});
+				}
+			}
+			return parsedRes;
+		};
+
 		const getAutocomplete = async () => {
 			try {
 				if (!rid || !type) {
@@ -76,39 +116,23 @@ export const useAutocomplete = ({
 				setItems(items);
 
 				if (type === '@' || type === '#') {
-					const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
-					const parsedRes: IAutocompleteUserRoom[] = res
-						// TODO: need to refactor search to have a more predictable return type
-						.map((item: any) => ({
-							id: type === '@' ? item._id : item.rid,
-							title: item.fname || item.name || item.username,
-							subtitle: item.username || item.name,
-							outside: item.outside,
-							t: item.t ?? 'd',
-							status: item.status,
-							teamMain: item.teamMain,
-							type
-						})) as IAutocompleteUserRoom[];
-					if (type === '@') {
-						if (mentionAll && 'all'.includes(text.toLocaleLowerCase())) {
-							parsedRes.push({
-								id: 'all',
-								title: 'all',
-								subtitle: I18n.t('Notify_all_in_this_room'),
-								type,
-								t: 'd'
-							});
-						}
-						if (mentionHere && 'here'.includes(text.toLocaleLowerCase())) {
-							parsedRes.push({
-								id: 'here',
-								title: 'here',
-								subtitle: I18n.t('Notify_active_in_this_room'),
-								type,
-								t: 'd'
-							});
-						}
+					const searchParams = { text, filterRooms: type === '#', filterUsers: type === '@', rid };
+
+					// Paint local results immediately, keeping a loading row at the bottom while the
+					// backend request is still in flight
+					const localData = await searchLocal(searchParams);
+					if (ignore) return;
+					const parsedLocal = parseUserRoom(localData);
+					const loadingItem: TAutocompleteItem = { id: 'loading', type: 'loading' };
+					setItems([...parsedLocal, loadingItem]);
+					if (parsedLocal.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
 					}
+
+					const res = await searchRemote({ ...searchParams, localData });
+					if (ignore) return;
+					const parsedRes = parseUserRoom(res);
 					setItems(parsedRes);
 					if (parsedRes.length > 0) {
 						updateAutocompleteVisible(true);
@@ -117,6 +141,7 @@ export const useAutocomplete = ({
 				}
 				if (type === ':') {
 					const customEmojis = await getCustomEmojis(text);
+					if (ignore) return;
 					const filteredStandardEmojis = emojis.filter(emoji => emoji.indexOf(text) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 					let mergedEmojis: IAutocompleteEmoji[] = customEmojis.map(emoji => ({
 						id: emoji.name,
@@ -148,6 +173,7 @@ export const useAutocomplete = ({
 						subtitle: command.description,
 						type
 					}));
+					if (ignore) return;
 					setItems(commands);
 
 					if (commands.length > 0) {
@@ -162,6 +188,7 @@ export const useAutocomplete = ({
 						return;
 					}
 					const response = await getCommandPreview(text, rid, commandParams);
+					if (ignore) return;
 					if (response.success) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
@@ -179,6 +206,7 @@ export const useAutocomplete = ({
 				}
 				if (type === '!') {
 					const res = await getListCannedResponse({ text });
+					if (ignore) return;
 					if (res.success) {
 						if (res.cannedResponses.length === 0) {
 							setItems([
@@ -212,6 +240,9 @@ export const useAutocomplete = ({
 			}
 		};
 		getAutocomplete();
+		return () => {
+			ignore = true;
+		};
 	}, [text, type, rid, commandParams]);
 	return items;
 };

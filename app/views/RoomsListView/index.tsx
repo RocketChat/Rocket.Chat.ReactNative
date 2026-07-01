@@ -108,13 +108,11 @@ const RoomsListView = memo(function RoomsListView() {
 		);
 	};
 
-	if (searchEnabled) {
+	if (searchEnabled && searchResults.length === 0) {
 		if (searching) {
 			return <ActivityIndicator />;
 		}
-		if (searchResults.length === 0) {
-			return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-		}
+		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
 	}
 
 	if (loading || changingServer) {
@@ -138,6 +136,7 @@ const RoomsListView = memo(function RoomsListView() {
 			contentContainerStyle={{ paddingBottom: bottom }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
+			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
 			removeClippedSubviews={isIOS}
 			keyboardShouldPersistTaps='always'
