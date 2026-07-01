@@ -79,7 +79,7 @@ type MockStoreState = {
 	meteor: { connected: boolean };
 	login: { user: unknown; isAuthenticated: boolean };
 	settings: Record<string, unknown>;
-	server: { version: string };
+	server?: { version: string };
 };
 const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	meteor: { connected: false },
@@ -150,6 +150,10 @@ const getCapturedConnectionListener = (): ((status: string) => void) => {
 	if (!call) throw new Error('connection listener was never registered');
 	return call[1];
 };
+
+/** Returns the collection handlers registered via sdk.onCollection(event, cb) for a given event. */
+const getHandlersByEvent = (event: string): Array<(ddpMessage: any) => void> =>
+	mockSdkOnCollection.mock.calls.filter(([collection]) => collection === event).map(([, cb]) => cb);
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -668,7 +672,6 @@ describe('connect — stream-notify-logged updateAvatar', () => {
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
-		mockOnStreamDataStops.length = 0;
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },

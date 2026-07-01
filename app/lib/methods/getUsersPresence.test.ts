@@ -52,7 +52,8 @@ jest.mock('./helpers/log', () => ({
 }));
 
 jest.mock('./helpers', () => ({
-	compareServerVersion: jest.requireActual('./helpers/compareServerVersion').compareServerVersion
+	compareServerVersion: jest.requireActual('./helpers/compareServerVersion').compareServerVersion,
+	normalizeStatusExpiresAt: jest.fn((value: unknown) => value)
 }));
 
 jest.mock('./userPreferences', () => ({

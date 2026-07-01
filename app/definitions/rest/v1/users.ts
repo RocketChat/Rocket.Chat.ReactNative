@@ -2,6 +2,7 @@ import { type IAvatarSuggestion, type IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
 import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
 import type { TUserStatus } from '../../TUserStatus';
+import type { TStatusSource } from '../../TStatusSource';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -80,6 +81,8 @@ export type UsersEndpoints = {
 				utcOffset: number;
 				statusText?: string;
 				avatarETag?: string;
+				statusExpiresAt?: string;
+				statusSource?: TStatusSource;
 			}[];
 			full: boolean;
 			success: boolean;
