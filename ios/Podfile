@@ -4,6 +4,10 @@ require File.join(File.dirname(`node --print "require.resolve('react-native/pack
 platform :ios, '15.1'
 install! 'cocoapods', :deterministic_uuids => false
 
+# Pin the generated workspace name so `react-native run-ios` selects it and
+# infers the matching RocketChat scheme without a --scheme flag.
+workspace 'RocketChat'
+
 prepare_react_native_project!
 
 def all_pods
