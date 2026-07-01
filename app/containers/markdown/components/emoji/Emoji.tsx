@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Text, View, useWindowDimensions } from 'react-native';
 import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 

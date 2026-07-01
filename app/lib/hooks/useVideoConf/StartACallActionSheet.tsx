@@ -1,5 +1,5 @@
 import { CameraView } from 'expo-camera';
-import React, { useState } from 'react';
+import { useState, useEffect, type ReactElement } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -16,13 +16,7 @@ import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import useUserData from '../useUserData';
 
-export default function StartACallActionSheet({
-	rid,
-	roomType
-}: {
-	rid: string;
-	roomType?: SubscriptionType;
-}): React.ReactElement {
+export default function StartACallActionSheet({ rid, roomType }: { rid: string; roomType?: SubscriptionType }): ReactElement {
 	const { colors } = useTheme();
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
@@ -37,7 +31,7 @@ export default function StartACallActionSheet({
 	const user = useUserData(rid);
 	const isPortrait = height > width;
 	const actionSheetContainerHeight = isPortrait ? '90%' : '75%';
-	React.useEffect(
+	useEffect(
 		() => () => {
 			if (calling) {
 				dispatch(cancelCall({}));

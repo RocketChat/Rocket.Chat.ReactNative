@@ -37,4 +37,8 @@ dayjs.extend(calendar);
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
+// WatermelonDB hands a message `ts` back as Date, ms number, or ISO string depending on the read path;
+// dayjs parses all three where Number(ts) / new Date(ts) each NaN on one. Normalize to ms since epoch.
+export const tsToMs = (ts: Date | number | string): number => dayjs(ts).valueOf();
+
 export default dayjs;

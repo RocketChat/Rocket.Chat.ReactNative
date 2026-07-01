@@ -1,6 +1,6 @@
-import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import I18n from '../../i18n';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
@@ -10,7 +10,7 @@ import { FilterHeader } from './FilterHeader';
 import * as stories from './FilterHeader.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('FilterHeader', () => {
 	beforeEach(() => {

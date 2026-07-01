@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -36,6 +36,7 @@ import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 interface IMessagesViewProps {
 	user: {
@@ -78,7 +79,7 @@ interface IParams {
 	roomUserId?: string;
 }
 
-class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewState> {
+class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;
@@ -382,8 +383,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(MessagesView))));

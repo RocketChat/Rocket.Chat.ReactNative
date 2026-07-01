@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Header } from '.';
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 interface IListSection {
-	children: (React.ReactElement | null)[] | React.ReactElement | null;
+	children: (ReactElement | null)[] | ReactElement | null;
 	title?: string;
 	translateTitle?: boolean;
 }

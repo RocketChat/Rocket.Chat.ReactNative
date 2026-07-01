@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import Title from './Title';
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 export const Content = () => {
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const roomId = useCallStore(state => state.roomId);
 	const contentDisabled = roomId == null;
 	const pressableStyle = contentDisabled ? [styles.button, { opacity: 0.5 }] : styles.button;
