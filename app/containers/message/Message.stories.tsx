@@ -17,6 +17,7 @@ import {
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';
 import { createInteractionStore, InteractionStoreContext } from '../../views/RoomView/InteractionStore';
+import { MessageRoomProvider, pickMessageRoomState } from './MessageRoomStore';
 
 const _theme = 'light';
 
@@ -226,23 +227,27 @@ const renderMessageStory = (fontScale: number, props: any) => {
 	const item = buildItem({ ...itemProps, isTranslated });
 	const previousItem = previousItemOverride ?? resolvePreviousItem(item, isHeader, isThreadReply);
 
+	const containerProps = {
+		item,
+		previousItem,
+		rid,
+		Message_GroupingPeriod: 300,
+		timeFormat,
+		broadcast,
+		archived,
+		isIgnored,
+		useRealName,
+		isReadReceiptEnabled,
+		autoTranslateRoom: autoTranslateRoom ?? (isTranslated ? true : undefined),
+		autoTranslateLanguage: autoTranslateLanguage ?? (isTranslated ? 'en' : undefined),
+		...storyContextValue
+	};
+
 	return (
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(fontScale)}>
-			<MessageContainer
-				item={item}
-				previousItem={previousItem}
-				rid={rid}
-				Message_GroupingPeriod={300}
-				timeFormat={timeFormat}
-				broadcast={broadcast}
-				archived={archived}
-				isIgnored={isIgnored}
-				useRealName={useRealName}
-				isReadReceiptEnabled={isReadReceiptEnabled}
-				autoTranslateRoom={autoTranslateRoom ?? (isTranslated ? true : undefined)}
-				autoTranslateLanguage={autoTranslateLanguage ?? (isTranslated ? 'en' : undefined)}
-				{...storyContextValue}
-			/>
+			<MessageRoomProvider {...pickMessageRoomState(containerProps)}>
+				<MessageContainer {...containerProps} />
+			</MessageRoomProvider>
 		</ResponsiveLayoutContext.Provider>
 	);
 };

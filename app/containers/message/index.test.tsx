@@ -1,11 +1,11 @@
 import { act } from 'react';
-import { Provider } from 'react-redux';
-import { render, fireEvent } from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
 
 import MessageContainer from './index';
-import { mockedStore } from '../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../definitions';
 import { createInteractionStore, InteractionStoreContext } from '../../views/RoomView/InteractionStore';
+import { renderWithMessageProviders } from './testHelpers';
+import { pickMessageRoomState } from './MessageRoomStore';
 
 jest.mock('./Touch', () => {
 	const { forwardRef } = require('react');
@@ -63,12 +63,12 @@ const baseProps = {
 	getCustomEmoji: jest.fn(() => null)
 };
 
-const renderContainer = (itemOverrides: Record<string, any> = {}, propOverrides: Record<string, any> = {}) =>
-	render(
-		<Provider store={mockedStore}>
-			<MessageContainer item={createMockMessage(itemOverrides)} {...baseProps} {...propOverrides} />
-		</Provider>
-	);
+const renderContainer = (itemOverrides: Record<string, any> = {}, propOverrides: Record<string, any> = {}) => {
+	const props = { ...baseProps, ...propOverrides };
+	return renderWithMessageProviders(<MessageContainer item={createMockMessage(itemOverrides)} {...props} />, {
+		room: pickMessageRoomState(props)
+	});
+};
 
 it('renders a normal message without crashing', () => {
 	const { getByTestId } = renderContainer();
@@ -98,12 +98,11 @@ describe('edit highlight reacts to InteractionStore', () => {
 	it('shows editing testID when the store marks this message as being edited', () => {
 		const store = createInteractionStore({ action: 'edit', selectedMessages: ['msg-1'] });
 		const item = createMockMessage({ id: 'msg-1' });
-		const { getByTestId } = render(
-			<Provider store={mockedStore}>
-				<InteractionStoreContext.Provider value={store}>
-					<MessageContainer item={item} {...baseProps} />
-				</InteractionStoreContext.Provider>
-			</Provider>
+		const { getByTestId } = renderWithMessageProviders(
+			<InteractionStoreContext.Provider value={store}>
+				<MessageContainer item={item} {...baseProps} />
+			</InteractionStoreContext.Provider>,
+			{ room: pickMessageRoomState(baseProps) }
 		);
 		expect(getByTestId('message-editing-msg-1')).toBeTruthy();
 	});
@@ -111,12 +110,11 @@ describe('edit highlight reacts to InteractionStore', () => {
 	it('removes editing testID when the store resets', async () => {
 		const store = createInteractionStore({ action: 'edit', selectedMessages: ['msg-1'] });
 		const item = createMockMessage({ id: 'msg-1' });
-		const { queryByTestId } = render(
-			<Provider store={mockedStore}>
-				<InteractionStoreContext.Provider value={store}>
-					<MessageContainer item={item} {...baseProps} />
-				</InteractionStoreContext.Provider>
-			</Provider>
+		const { queryByTestId } = renderWithMessageProviders(
+			<InteractionStoreContext.Provider value={store}>
+				<MessageContainer item={item} {...baseProps} />
+			</InteractionStoreContext.Provider>,
+			{ room: pickMessageRoomState(baseProps) }
 		);
 		await act(() => {
 			store.getState().actions.reset();

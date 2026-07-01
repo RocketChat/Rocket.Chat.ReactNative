@@ -7,7 +7,7 @@ import { type IAttachment } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { type TSupportedThemes } from '../../theme';
 
-type MessageRoomState = {
+export type MessageRoomState = {
 	// stable handlers
 	getCustomEmoji?: TGetCustomEmoji;
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
@@ -28,6 +28,39 @@ type MessageRoomState = {
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
 	theme?: TSupportedThemes;
+};
+
+// The room-scoped fields this store owns. Tests and stories use pickMessageRoomState to
+// mirror the same values into MessageRoomProvider and the legacy MessageContext during the
+// dual-run migration. Add a field to MessageRoomState → add its key here.
+const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
+	'getCustomEmoji',
+	'navToRoomInfo',
+	'showAttachment',
+	'blockAction',
+	'handleEnterCall',
+	'fetchThreadName',
+	'toggleFollowThread',
+	'jumpToMessage',
+	'rid',
+	'user',
+	'baseUrl',
+	'broadcast',
+	'isThreadRoom',
+	'Message_GroupingPeriod',
+	'autoTranslateRoom',
+	'autoTranslateLanguage',
+	'theme'
+];
+
+export const pickMessageRoomState = (source: Record<string, any> = {}): Partial<MessageRoomState> => {
+	const state: Partial<MessageRoomState> = {};
+	ROOM_STATE_KEYS.forEach(key => {
+		if (source[key] !== undefined) {
+			(state as Record<string, unknown>)[key] = source[key];
+		}
+	});
+	return state;
 };
 
 export const createMessageRoomStore = (initial: MessageRoomState) => createStore<MessageRoomState>(() => ({ ...initial }));
