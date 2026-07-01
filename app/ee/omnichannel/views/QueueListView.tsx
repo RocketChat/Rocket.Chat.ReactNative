@@ -1,7 +1,7 @@
 import { useEffect, useRef, memo } from 'react';
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, type ListRenderItem, useWindowDimensions } from 'react-native';
+import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
@@ -20,6 +20,7 @@ import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDet
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { DisplayMode } from '../../../lib/constants/constantDisplayMode';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'QueueListView'>,
@@ -34,8 +35,7 @@ const QueueListView = memo(() => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { colors } = useTheme();
-	const { width } = useResponsiveLayout();
-	const { fontScale } = useWindowDimensions();
+	const { width, rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const { username } = useSelector(
 		(state: IApplicationState) => ({
@@ -69,10 +69,10 @@ const QueueListView = memo(() => {
 	}, [isMasterDetail, navigation]);
 
 	const getItemLayout = (_data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
-		const rowHeight = 75 * fontScale;
+		const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
 		return {
-			length: rowHeight,
-			offset: rowHeight * index,
+			length: height,
+			offset: height * index,
 			index
 		};
 	};

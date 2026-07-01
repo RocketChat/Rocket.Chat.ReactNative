@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Text, View } from 'react-native';
+import { PixelRatio, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import styles, { ROW_HEIGHT } from './styles';
@@ -21,7 +21,8 @@ const defaultLogo = require('../../../../static/images/logo.png');
 
 const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHistoryItem) => {
 	const { colors } = useTheme();
-	const { width } = useResponsiveLayout();
+	const { width, fontScale } = useResponsiveLayout();
+	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 
 	const accessibilityLabel = item.username ? `${item.url}, ${item.username}` : item.url;
 	const accessibilityHint = I18n.t('Activate_to_select_server_Available_actions_delete');
@@ -34,7 +35,7 @@ const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHisto
 			width={width}
 			accessibilityLabel={accessibilityLabel}
 			accessibilityHint={accessibilityHint}>
-			<View style={styles.container}>
+			<View style={[styles.container, { height }]}>
 				<Image source={item.iconURL ? { uri: item.iconURL } : defaultLogo} style={styles.serverIcon} contentFit='contain' />
 
 				<View style={styles.textContainer}>
