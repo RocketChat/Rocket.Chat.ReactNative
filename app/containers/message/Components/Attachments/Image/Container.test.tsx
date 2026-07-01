@@ -3,6 +3,7 @@ import { type ComponentProps } from 'react';
 import { A11y } from 'react-native-a11y-order';
 
 import MessageContext from '../../../Context';
+import { MessageRoomProvider, pickMessageRoomState } from '../../../MessageRoomStore';
 import ImageContainer from './Container';
 
 jest.mock('../../../../markdown', () => {
@@ -30,21 +31,24 @@ jest.mock('../../../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => mockUseAltTextSupported()
 }));
 
-const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) =>
-	render(
+const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) => {
+	const contextValue = {
+		id: 'message-id',
+		baseUrl: 'https://open.rocket.chat',
+		user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
+		onLongPress: jest.fn(),
+		translateLanguage: undefined
+	};
+	return render(
 		<A11y.Order>
-			<MessageContext.Provider
-				value={{
-					id: 'message-id',
-					baseUrl: 'https://open.rocket.chat',
-					user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
-					onLongPress: jest.fn(),
-					translateLanguage: undefined
-				}}>
-				<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
-			</MessageContext.Provider>
+			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+				<MessageContext.Provider value={contextValue}>
+					<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
+				</MessageContext.Provider>
+			</MessageRoomProvider>
 		</A11y.Order>
 	);
+};
 
 describe('ImageContainer', () => {
 	beforeEach(() => {

@@ -1,9 +1,13 @@
+import { type ReactNode } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { selectServerSuccess } from '../../../../actions/server';
+import { type TAnyMessageModel } from '../../../../definitions';
 import MessageContext from '../../Context';
+import { MessageRoomProvider, pickMessageRoomState } from '../../MessageRoomStore';
+import { MessageProvider } from '../../MessageStore';
 import Attachments from './Attachments';
 
 const mockMessageContext = {
@@ -15,6 +19,18 @@ const mockMessageContext = {
 	getCustomEmoji: () => null,
 	showAttachment: undefined
 };
+
+const mockItem = { id: 'msg-id', msg: '', u: { username: 'rocket.cat' }, autoTranslate: false } as unknown as TAnyMessageModel;
+
+const StoryWrapper = ({ store, children }: { store: any; children: ReactNode }) => (
+	<Provider store={store}>
+		<MessageRoomProvider {...pickMessageRoomState(mockMessageContext)}>
+			<MessageProvider item={mockItem}>
+				<MessageContext.Provider value={mockMessageContext}>{children}</MessageContext.Provider>
+			</MessageProvider>
+		</MessageRoomProvider>
+	</Provider>
+);
 
 const MOCK_IMAGE_1 = {
 	image_url: 'https://picsum.photos/seed/1/400/300',
@@ -53,55 +69,45 @@ export default {
 
 // Single image on server < 8.4: renders with Markdown caption if description is set
 export const SingleImageOldServer = () => (
-	<Provider store={oldServerStore}>
-		<MessageContext.Provider value={mockMessageContext}>
-			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
-			</View>
-		</MessageContext.Provider>
-	</Provider>
+	<StoryWrapper store={oldServerStore}>
+		<View style={{ padding: 10, width: 350 }}>
+			<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
+		</View>
+	</StoryWrapper>
 );
 
 // Single image on server >= 8.4: renders with AltTextLabel pill below image
 export const SingleImageNewServer = () => (
-	<Provider store={newServerStore}>
-		<MessageContext.Provider value={mockMessageContext}>
-			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
-			</View>
-		</MessageContext.Provider>
-	</Provider>
+	<StoryWrapper store={newServerStore}>
+		<View style={{ padding: 10, width: 350 }}>
+			<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
+		</View>
+	</StoryWrapper>
 );
 
 // Single image without alt text on new server: no label
 export const SingleImageNoAlt = () => (
-	<Provider store={newServerStore}>
-		<MessageContext.Provider value={mockMessageContext}>
-			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={[MOCK_IMAGE_1]} timeFormat='LT' />
-			</View>
-		</MessageContext.Provider>
-	</Provider>
+	<StoryWrapper store={newServerStore}>
+		<View style={{ padding: 10, width: 350 }}>
+			<Attachments attachments={[MOCK_IMAGE_1]} timeFormat='LT' />
+		</View>
+	</StoryWrapper>
 );
 
 // Multiple images on server >= 8.4: each attachment renders as its own image row
 export const MultipleImagesNewServer = () => (
-	<Provider store={newServerStore}>
-		<MessageContext.Provider value={mockMessageContext}>
-			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={MOCK_MULTIPLE_IMAGES} timeFormat='LT' />
-			</View>
-		</MessageContext.Provider>
-	</Provider>
+	<StoryWrapper store={newServerStore}>
+		<View style={{ padding: 10, width: 350 }}>
+			<Attachments attachments={MOCK_MULTIPLE_IMAGES} timeFormat='LT' />
+		</View>
+	</StoryWrapper>
 );
 
 // 4 images on server < 8.4: renders stacked (existing behavior)
 export const MultipleImagesOldServer = () => (
-	<Provider store={oldServerStore}>
-		<MessageContext.Provider value={mockMessageContext}>
-			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} timeFormat='LT' />
-			</View>
-		</MessageContext.Provider>
-	</Provider>
+	<StoryWrapper store={oldServerStore}>
+		<View style={{ padding: 10, width: 350 }}>
+			<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} timeFormat='LT' />
+		</View>
+	</StoryWrapper>
 );

@@ -1,5 +1,5 @@
 import { transparentize } from 'color2k';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
@@ -9,7 +9,7 @@ import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
 import Markdown from '../../../../markdown';
-import MessageContext from '../../../Context';
+import { useMessageUser } from '../../../MessageRoomStore';
 import Touchable from '../../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../../utils';
 
@@ -77,7 +77,7 @@ interface IMessageReply {
 const AttText = ({ text, getCustomEmoji }: IMessageAttText) => {
 	'use memo';
 
-	const { user } = useContext(MessageContext);
+	const user = useMessageUser();
 
 	if (!text) {
 		return null;
@@ -90,7 +90,7 @@ const Fields = ({ attachment, getCustomEmoji }: IMessageFields) => {
 	'use memo';
 
 	const { theme } = useTheme();
-	const { user } = useContext(MessageContext);
+	const user = useMessageUser();
 
 	if (!attachment.fields) {
 		return null;

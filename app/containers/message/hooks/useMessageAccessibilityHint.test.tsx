@@ -2,6 +2,7 @@ import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityHint } from './useMessageAccessibilityHint';
 import MessageContext, { type IMessageContext } from '../Context';
+import { MessageRoomProvider, pickMessageRoomState } from '../MessageRoomStore';
 import { MessageProvider } from '../MessageStore';
 import { type TAnyMessageModel } from '../../../definitions';
 
@@ -15,11 +16,13 @@ const renderHint = (item: TAnyMessageModel, config: Partial<IMessageContext> = {
 		return null;
 	};
 	render(
-		<MessageContext.Provider value={config as IMessageContext}>
-			<MessageProvider item={item}>
-				<Probe />
-			</MessageProvider>
-		</MessageContext.Provider>
+		<MessageRoomProvider {...pickMessageRoomState(config)}>
+			<MessageContext.Provider value={config as IMessageContext}>
+				<MessageProvider item={item}>
+					<Probe />
+				</MessageProvider>
+			</MessageContext.Provider>
+		</MessageRoomProvider>
 	);
 	const { calls } = spy.mock;
 	return calls[calls.length - 1][0];

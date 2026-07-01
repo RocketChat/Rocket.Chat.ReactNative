@@ -1,4 +1,4 @@
-import { useContext, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import Markdown from '../../../../markdown';
@@ -7,7 +7,7 @@ import { Button } from './Button';
 import { MessageImage } from './Image';
 import AltTextLabel from '../../../../AltTextLabel';
 import { type IImageContainer } from './definitions';
-import MessageContext from '../../../Context';
+import { useMessageUser } from '../../../MessageRoomStore';
 import { WidthAwareView } from '../../WidthAwareView';
 import { useAltTextSupported } from '../../../../../lib/hooks/useAltTextSupported';
 import I18n from '../../../../../i18n';
@@ -23,7 +23,7 @@ const ImageContainer = ({
 }: IImageContainer): ReactElement | null => {
 	'use memo';
 
-	const { user } = useContext(MessageContext);
+	const user = useMessageUser();
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 	const isAltTextSupported = useAltTextSupported();
 	const altText = file.altText || (isAltTextSupported ? msg : undefined);

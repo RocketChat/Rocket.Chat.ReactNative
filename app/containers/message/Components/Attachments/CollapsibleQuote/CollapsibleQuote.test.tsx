@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { setUser } from '../../../../../actions/login';
 import { mockedStore } from '../../../../../reducers/mockedStore';
 import MessageContext from '../../../Context';
+import { MessageRoomProvider, pickMessageRoomState } from '../../../MessageRoomStore';
 import CollapsibleQuote from '.';
 
 const testAttachment = {
@@ -37,15 +38,18 @@ const initialMockedStoreState = () => {
 
 initialMockedStoreState();
 
+const contextValue = {
+	onLongPress: () => {},
+	user: { username: 'Marcos' }
+};
+
 const Render = () => (
 	<Provider store={mockedStore}>
-		<MessageContext.Provider
-			value={{
-				onLongPress: () => {},
-				user: { username: 'Marcos' }
-			}}>
-			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
-		</MessageContext.Provider>
+		<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+			<MessageContext.Provider value={contextValue}>
+				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+			</MessageContext.Provider>
+		</MessageRoomProvider>
 	</Provider>
 );
 

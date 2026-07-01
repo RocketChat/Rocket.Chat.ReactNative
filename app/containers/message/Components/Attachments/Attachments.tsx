@@ -1,4 +1,4 @@
-import { useContext, type FC } from 'react';
+import { type FC } from 'react';
 import { View } from 'react-native';
 
 import Image from './Image';
@@ -7,7 +7,8 @@ import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
-import MessageContext from '../../Context';
+import { useShowAttachment, useGetCustomEmoji } from '../../MessageRoomStore';
+import { useTranslateLanguage } from '../../MessageStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
@@ -15,7 +16,9 @@ import { isContentAttachment } from './utils';
 const Attachments: FC<IMessageAttachments> = ({ attachments, timeFormat, author }: IMessageAttachments) => {
 	'use memo';
 
-	const { translateLanguage, showAttachment, getCustomEmoji = () => null } = useContext(MessageContext);
+	const translateLanguage = useTranslateLanguage();
+	const showAttachment = useShowAttachment();
+	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 
 	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 

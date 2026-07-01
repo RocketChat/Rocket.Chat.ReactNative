@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { type IAttachment, type IUserMessage } from '../../../definitions';
 import { isImageBase64 } from '../../../lib/methods/isImageBase64';
@@ -13,7 +13,8 @@ import {
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
-import MessageContext from '../Context';
+import { useBaseUrl, useMessageUser } from '../MessageRoomStore';
+import { useMessageId } from '../MessageStore';
 import { useFile } from './useFile';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
@@ -60,7 +61,9 @@ export const useMediaAutoDownload = ({
 	'use memo';
 
 	const fileType = getFileType(file) ?? 'image';
-	const { id, baseUrl, user } = useContext(MessageContext);
+	const id = useMessageId();
+	const baseUrl = useBaseUrl();
+	const user = useMessageUser();
 	const [status, setStatus] = useState<TDownloadState>('to-download');
 	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
 	const originalUrl = getOriginalURL(file);
