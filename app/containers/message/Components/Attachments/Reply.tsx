@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -13,7 +13,8 @@ import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
 import { Attachments } from './components';
 import Quote from './Quote';
-import MessageContext from '../../Context';
+import { useBaseUrl, useMessageUser } from '../../MessageRoomStore';
+import { useIsEncrypted, useMessageId } from '../../MessageStore';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
@@ -108,7 +109,7 @@ const Title = ({ attachment, timeFormat, theme }: { attachment: IAttachment; tim
 const Description = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 	'use memo';
 
-	const { user } = useContext(MessageContext);
+	const user = useMessageUser();
 	const text = attachment.text || attachment.title;
 
 	if (!text) {
@@ -131,7 +132,8 @@ const Description = ({ attachment, getCustomEmoji }: { attachment: IAttachment; 
 const UrlImage = ({ image }: { image?: string }) => {
 	'use memo';
 
-	const { baseUrl, user } = useContext(MessageContext);
+	const baseUrl = useBaseUrl();
+	const user = useMessageUser();
 
 	if (!image) {
 		return null;
@@ -152,7 +154,7 @@ const Fields = ({
 }) => {
 	'use memo';
 
-	const { user } = useContext(MessageContext);
+	const user = useMessageUser();
 
 	if (!attachment.fields) {
 		return null;
@@ -175,9 +177,12 @@ const Reply = ({ attachment, timeFormat, getCustomEmoji, msg }: IMessageReply) =
 
 	const [loading, setLoading] = useState(false);
 	const { theme } = useTheme();
-	const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
+	const baseUrl = useBaseUrl();
+	const user = useMessageUser();
+	const id = useMessageId();
+	const isEncrypted = useIsEncrypted();
 
-	if (!attachment || (isEncrypted && !e2e)) {
+	if (!attachment || isEncrypted) {
 		return null;
 	}
 

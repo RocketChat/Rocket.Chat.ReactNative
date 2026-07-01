@@ -1,14 +1,14 @@
-import { createElement, useContext } from 'react';
+import { createElement } from 'react';
 
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 import { type IMessageBlocks } from './interfaces';
-import MessageContext from './Context';
+import { useBlockAction } from './MessageRoomStore';
 import { useBlocks } from './MessageStore';
 
 const Blocks = ({ rid }: IMessageBlocks) => {
 	'use memo';
 
-	const { blockAction } = useContext(MessageContext);
+	const blockAction = useBlockAction();
 	const { blocks, id: mid } = useBlocks();
 
 	if (blocks && blocks.length > 0) {
