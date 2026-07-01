@@ -608,4 +608,49 @@ describe('checkSupportedVersions role targeting', () => {
 		expect(result.status).toBe('supported');
 		expect(result.message).toBeUndefined();
 	});
+
+	describe('enforcement window', () => {
+		const buildEnforcementSupportedVersions = (roles?: string[]): ISupportedVersionsData => ({
+			timestamp: TODAY,
+			enforcementStartDate: '2023-04-15T00:00:00.000Z',
+			messages: [
+				{
+					remainingDays: 15,
+					title: 'targeted',
+					subtitle: 'subtitle_token',
+					description: 'description_token',
+					type: 'info',
+					...(roles ? { roles } : {}),
+					link: 'Docs page'
+				}
+			],
+			i18n: MOCK_I18N,
+			versions: [
+				{
+					version: '1.4.0',
+					expiration: '2023-03-10T00:00:00.000Z'
+				}
+			]
+		});
+
+		test('does not warn a non-targeted user during the enforcement grace window', () => {
+			const result = checkSupportedVersions({
+				supportedVersions: buildEnforcementSupportedVersions(['admin']),
+				serverVersion: '1.4.0',
+				userRoles: ['user']
+			});
+			expect(result.status).toBe('supported');
+			expect(result.message).toBeUndefined();
+		});
+
+		test('warns a targeted user during the enforcement grace window', () => {
+			expect(
+				checkSupportedVersions({
+					supportedVersions: buildEnforcementSupportedVersions(['admin']),
+					serverVersion: '1.4.0',
+					userRoles: ['admin']
+				})
+			).toMatchObject({ status: 'warn', message: { title: 'targeted' } });
+		});
+	});
 });

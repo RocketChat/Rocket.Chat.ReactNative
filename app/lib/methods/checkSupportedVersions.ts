@@ -83,12 +83,15 @@ export const checkSupportedVersions = function ({
 			expiration: sv.enforcementStartDate,
 			userRoles
 		});
-		return {
-			status: 'warn',
-			message: enforcementMessage,
-			i18n: enforcementMessage ? sv?.i18n : undefined,
-			expiration: sv.enforcementStartDate
-		};
+		if (enforcementMessage) {
+			return {
+				status: 'warn',
+				message: enforcementMessage,
+				i18n: sv?.i18n,
+				expiration: sv.enforcementStartDate
+			};
+		}
+		return { status: 'supported', expiration: sv.enforcementStartDate };
 	}
 
 	return {
