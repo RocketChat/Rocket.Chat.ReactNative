@@ -7,6 +7,7 @@ import MessageContext from './Context';
 import { getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
+import { useAutoTranslate, useMessageUser } from './MessageRoomStore';
 
 const createMessageStore = () => createStore(() => ({ tick: 0 }));
 
@@ -215,6 +216,21 @@ export const useIsInfo = (): string | boolean =>
 	});
 
 export const useIsEdited = (): boolean => useMessageField(item => (item.editedBy && !!item.editedBy.username) ?? false);
+
+export const useMessageId = (): TAnyMessageModel['id'] => useMessageField(item => item.id);
+
+export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(item => item.replies);
+
+export const useTranslateLanguage = (): string | undefined => {
+	const { store, item } = useMessageCtx();
+	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const user = useMessageUser();
+	return useStore(store, () => {
+		const otherUserMessage = item.u?.username !== user?.username;
+		const canTranslate = autoTranslateRoom && autoTranslateLanguage && item.autoTranslate !== false && otherUserMessage;
+		return canTranslate ? autoTranslateLanguage : undefined;
+	});
+};
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
 	const { store, item } = useMessageCtx();
