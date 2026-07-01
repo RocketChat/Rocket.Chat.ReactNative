@@ -1709,6 +1709,16 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							fetchThreadName={this.fetchThreadName}
 							toggleFollowThread={this.toggleFollowThread}
 							jumpToMessage={this.jumpToMessageByUrl}
+							onReactionPress={this.onReactionPress}
+							onReactionLongPress={this.onReactionLongPress}
+							reactionInit={this.onReactionInit}
+							onDiscussionPress={this.onDiscussionPress}
+							onThreadPress={this.onThreadPress}
+							replyBroadcast={this.replyBroadcast}
+							errorActionsShow={this.errorActionsShow}
+							onAnswerButtonPress={this.handleSendMessage}
+							onEncryptedPress={this.onEncryptedPress}
+							archived={'id' in room && room.archived}
 							rid={rid}
 							user={user as any}
 							baseUrl={baseUrl}

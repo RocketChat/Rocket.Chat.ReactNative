@@ -3,7 +3,7 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
-import { type IAttachment } from '../../definitions';
+import { type IAttachment, type TAnyMessageModel } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { type TSupportedThemes } from '../../theme';
 
@@ -17,6 +17,17 @@ export type MessageRoomState = {
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
+	// row action handlers
+	onReactionPress?: (emoji: string, id: string) => void;
+	onReactionLongPress?: (item: TAnyMessageModel) => void;
+	reactionInit?: (messageId: string) => void;
+	onDiscussionPress?: (item: TAnyMessageModel) => void;
+	onThreadPress?: (item: TAnyMessageModel) => void;
+	replyBroadcast?: (item: TAnyMessageModel) => void;
+	errorActionsShow?: (item: TAnyMessageModel) => void;
+	onAnswerButtonPress?: Function;
+	onEncryptedPress?: () => void;
+	archived?: boolean;
 	// room constants
 	rid?: string;
 	user?: { id?: string; username?: string; token?: string };
@@ -42,6 +53,16 @@ const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
 	'fetchThreadName',
 	'toggleFollowThread',
 	'jumpToMessage',
+	'onReactionPress',
+	'onReactionLongPress',
+	'reactionInit',
+	'onDiscussionPress',
+	'onThreadPress',
+	'replyBroadcast',
+	'errorActionsShow',
+	'onAnswerButtonPress',
+	'onEncryptedPress',
+	'archived',
 	'rid',
 	'user',
 	'baseUrl',
@@ -99,6 +120,17 @@ export const useHandleEnterCall = (): (() => void) | undefined => useMessageRoom
 export const useFetchThreadName = (): MessageRoomState['fetchThreadName'] => useMessageRoomStore(s => s.fetchThreadName);
 export const useToggleFollowThread = (): MessageRoomState['toggleFollowThread'] => useMessageRoomStore(s => s.toggleFollowThread);
 export const useJumpToMessage = (): ((link: string) => void) | undefined => useMessageRoomStore(s => s.jumpToMessage);
+
+export const useOnReactionPress = (): MessageRoomState['onReactionPress'] => useMessageRoomStore(s => s.onReactionPress);
+export const useOnReactionLongPress = (): MessageRoomState['onReactionLongPress'] => useMessageRoomStore(s => s.onReactionLongPress);
+export const useReactionInit = (): MessageRoomState['reactionInit'] => useMessageRoomStore(s => s.reactionInit);
+export const useOnDiscussionPress = (): MessageRoomState['onDiscussionPress'] => useMessageRoomStore(s => s.onDiscussionPress);
+export const useOnThreadPress = (): MessageRoomState['onThreadPress'] => useMessageRoomStore(s => s.onThreadPress);
+export const useReplyBroadcast = (): MessageRoomState['replyBroadcast'] => useMessageRoomStore(s => s.replyBroadcast);
+export const useErrorActionsShow = (): MessageRoomState['errorActionsShow'] => useMessageRoomStore(s => s.errorActionsShow);
+export const useOnAnswerButtonPress = (): MessageRoomState['onAnswerButtonPress'] => useMessageRoomStore(s => s.onAnswerButtonPress);
+export const useOnEncryptedPress = (): MessageRoomState['onEncryptedPress'] => useMessageRoomStore(s => s.onEncryptedPress);
+export const useArchived = (): boolean | undefined => useMessageRoomStore(s => s.archived);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
 export const useMessageUser = (): MessageRoomState['user'] => useMessageRoomStore(s => s.user);
