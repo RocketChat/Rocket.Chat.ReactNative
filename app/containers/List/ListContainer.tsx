@@ -14,14 +14,14 @@ interface IListContainer extends ScrollViewProps {
 	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
 }
-const ListContainer = ({ children, contentContainerStyle, ...props }: IListContainer) => {
+const ListContainer = ({ children, ...props }: IListContainer) => {
 	'use memo';
 
 	const { bottom } = useSafeAreaInsets();
 
 	return (
 		<ScrollView
-			contentContainerStyle={[styles.container, { paddingBottom: bottom }, contentContainerStyle]}
+			contentContainerStyle={[styles.container, { paddingBottom: bottom }]}
 			scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			{...scrollPersistTaps}
 			{...props}>
