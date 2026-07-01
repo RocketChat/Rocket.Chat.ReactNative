@@ -1,6 +1,5 @@
 import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import { memo, type ReactElement } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -20,6 +19,7 @@ interface IBottomSheetContentProps {
 	fullContainer?: boolean;
 	hugContent?: boolean;
 	contentMinHeight?: number;
+	contentPaddingBottom?: number;
 	scrollEnabled?: boolean;
 }
 
@@ -33,15 +33,15 @@ const BottomSheetContent = memo(
 		fullContainer,
 		hugContent,
 		contentMinHeight,
+		contentPaddingBottom,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
 		'use memo';
 
 		const { colors } = useTheme();
-		const { bottom } = useSafeAreaInsets();
 		const { fontScale } = useWindowDimensions();
 		const height = 48 * fontScale;
-		const paddingBottom = isAndroid ? bottom + height : bottom;
+		const paddingBottom = contentPaddingBottom ?? 0;
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
 
 		const renderFooter = () =>

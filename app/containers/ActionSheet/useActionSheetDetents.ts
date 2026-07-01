@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useWindowDimensions } from 'react-native';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
-const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
+export const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const SCROLL_ENABLED_THRESHOLD = 0.6;
 export const HANDLE_HEIGHT = 28;
 
