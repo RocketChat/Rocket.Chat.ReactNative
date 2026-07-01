@@ -46,6 +46,13 @@ const roomTypes = {
  */
 const confirmDeepLinkLogin = host =>
 	new Promise(resolve => {
+		// E2E tests bootstrap the session via a deep link and can't dismiss a native Alert, so
+		// auto-confirm under RUNNING_E2E_TESTS. This preserves the pre-fix silent behavior for
+		// tests only; real users still get the security prompt.
+		if (process.env.RUNNING_E2E_TESTS === 'true') {
+			resolve(true);
+			return;
+		}
 		showConfirmationAlert({
 			title: I18n.t('Deep_link_login_title'),
 			message: I18n.t('Deep_link_login_description', { server: host }),
