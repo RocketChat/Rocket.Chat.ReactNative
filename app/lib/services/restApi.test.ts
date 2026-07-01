@@ -106,10 +106,7 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.success).toBe(false);
-		if (!result.success && 'signals' in result) {
-			expect(result.signals).toEqual([]);
-		}
+		expect(result).toEqual({ signals: [], success: false });
 	});
 
 	it('returns empty signals and success false when sdk.get returns an error response', async () => {
@@ -117,10 +114,7 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.success).toBe(false);
-		if (!result.success && 'signals' in result) {
-			expect(result.signals).toEqual([]);
-		}
+		expect(result).toEqual({ signals: [], success: false });
 	});
 });
 
