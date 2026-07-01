@@ -1409,16 +1409,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen, canAutoTranslate } = this.state;
-		const {
-			user,
-			Message_GroupingPeriod,
-			Message_TimeFormat,
-			useRealName,
-			baseUrl,
-			Message_Read_Receipt_Enabled,
-			inAppFeedback
-		} = this.props;
+		const { room, lastOpen } = this.state;
+		const { Message_TimeFormat, useRealName, Message_Read_Receipt_Enabled, inAppFeedback } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const federated = 'id' in room && isRoomFederated(room);
@@ -1464,43 +1456,19 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			content = (
 				<Message
 					item={item}
-					user={user as any}
 					rid={room.rid}
 					archived={'id' in room && room.archived}
 					broadcast={'id' in room && room.broadcast}
-					status={item.status}
 					isThreadRoom={!!this.tmid}
 					isIgnored={this.isIgnored(item)}
 					previousItem={previousItem}
-					fetchThreadName={this.fetchThreadName}
-					onReactionPress={this.onReactionPress}
-					onReactionLongPress={this.onReactionLongPress}
 					onLongPress={this.onMessageLongPress}
-					onEncryptedPress={this.onEncryptedPress}
-					onDiscussionPress={this.onDiscussionPress}
-					onThreadPress={this.onThreadPress}
-					onAnswerButtonPress={this.handleSendMessage}
-					showAttachment={this.showAttachment}
-					reactionInit={this.onReactionInit}
-					replyBroadcast={this.replyBroadcast}
-					errorActionsShow={this.errorActionsShow}
-					isSystemMessage={room.sysMes as boolean}
-					baseUrl={baseUrl}
-					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
 					useRealName={useRealName}
 					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
-					navToRoomInfo={this.navToRoomInfo}
-					getCustomEmoji={this.getCustomEmoji}
-					handleEnterCall={this.handleEnterCall}
-					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
-					toggleFollowThread={this.toggleFollowThread}
-					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
-					closeEmojiAndAction={this.handleCloseEmoji}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
 				/>

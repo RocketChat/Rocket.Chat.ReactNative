@@ -57,10 +57,7 @@ const createMockMessage = (overrides: Record<string, any> = {}): TAnyMessageMode
 	} as unknown as TAnyMessageModel);
 
 const baseProps = {
-	user: { id: 'user-1', username: 'testuser', token: 'token' },
-	rid: 'room-1',
-	baseUrl: 'https://open.rocket.chat',
-	getCustomEmoji: jest.fn(() => null)
+	rid: 'room-1'
 };
 
 const renderContainer = (itemOverrides: Record<string, any> = {}, propOverrides: Record<string, any> = {}) => {
