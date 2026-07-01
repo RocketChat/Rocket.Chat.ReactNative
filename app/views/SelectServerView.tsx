@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { FlatList, PixelRatio, StyleSheet } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
@@ -14,8 +14,8 @@ import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { type TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-const getItemLayout = (_data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
@@ -24,6 +24,15 @@ const SelectServerView = () => {
 
 	const server = useAppSelector(state => state.server.server);
 	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
+	const { fontScale } = useResponsiveLayout();
+
+	const getItemLayout = useCallback(
+		(_data: any, index: number) => {
+			const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
+			return { length: height, offset: (height + StyleSheet.hairlineWidth) * index, index };
+		},
+		[fontScale]
+	);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -56,7 +65,7 @@ const SelectServerView = () => {
 					<ServerItem onPress={() => select(item.id, item.version)} item={item} hasCheck={item.id === server} />
 				)}
 				keyExtractor={keyExtractor}
-				getItemLayout={getItemLayout} // Refactor row_height
+				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				ListHeaderComponent={List.Separator}
