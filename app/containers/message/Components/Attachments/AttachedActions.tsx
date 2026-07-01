@@ -1,7 +1,5 @@
-import { useContext } from 'react';
-
 import Button from '../../../Button';
-import MessageContext from '../../Context';
+import { useOnAnswerButtonPress } from '../../MessageRoomStore';
 import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import Markdown from '../../../markdown';
@@ -16,7 +14,7 @@ export type TElement = {
 const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 	'use memo';
 
-	const { onAnswerButtonPress } = useContext(MessageContext);
+	const onAnswerButtonPress = useOnAnswerButtonPress();
 
 	if (!attachment.actions) {
 		return null;
@@ -25,7 +23,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 	const attachedButtons = attachment.actions.map((element: TElement) => {
 		const onPress = () => {
 			if (element.msg) {
-				onAnswerButtonPress?.(element.msg);
+				onAnswerButtonPress?.(element.msg, false);
 			}
 
 			if (element.url) {

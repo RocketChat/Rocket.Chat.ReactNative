@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -9,8 +8,14 @@ import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, useTheme } from '../../theme';
-import MessageContext from './Context';
-import { useReactions } from './MessageStore';
+import { useMessageCtx, useMessageId, useReactions } from './MessageStore';
+import {
+	useGetCustomEmoji,
+	useMessageUser,
+	useOnReactionLongPress,
+	useOnReactionPress,
+	useReactionInit
+} from './MessageRoomStore';
 
 interface IReaction {
 	_id: string;
@@ -30,12 +35,13 @@ interface IMessageReactions {
 const AddReaction = ({ theme }: { theme: TSupportedThemes }) => {
 	'use memo';
 
-	const { reactionInit } = useContext(MessageContext);
+	const reactionInit = useReactionInit();
+	const id = useMessageId();
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	return (
 		<Touchable
-			onPress={reactionInit}
+			onPress={() => reactionInit?.(id)}
 			key='message-add-reaction'
 			testID='message-add-reaction'
 			accessibilityRole='button'
@@ -53,14 +59,19 @@ const AddReaction = ({ theme }: { theme: TSupportedThemes }) => {
 const Reaction = ({ reaction, theme }: IMessageReaction) => {
 	'use memo';
 
-	const { onReactionPress, onReactionLongPress, user, getCustomEmoji } = useContext(MessageContext);
+	const { item } = useMessageCtx();
+	const id = useMessageId();
+	const onReactionPress = useOnReactionPress();
+	const onReactionLongPress = useOnReactionLongPress();
+	const user = useMessageUser();
+	const getCustomEmoji = useGetCustomEmoji();
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user?.username) !== -1;
 	return (
 		<Touchable
-			onPress={() => onReactionPress?.(reaction.emoji)}
-			onLongPress={onReactionLongPress}
+			onPress={() => onReactionPress?.(reaction.emoji, id)}
+			onLongPress={() => onReactionLongPress?.(item)}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
 			accessibilityRole='button'

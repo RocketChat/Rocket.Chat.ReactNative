@@ -1,17 +1,15 @@
-import { useContext } from 'react';
-
 import Touchable from '../../Touchable';
 import { CustomIcon } from '../../../CustomIcon';
 import { BUTTON_HIT_SLOP } from '../../utils';
-import MessageContext from '../../Context';
 import styles from '../../styles';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
 import { useMessageField } from '../../MessageStore';
+import { useOnEncryptedPress } from '../../MessageRoomStore';
 
 const Encrypted = (_props: { type: string }) => {
 	'use memo';
 
-	const { onEncryptedPress } = useContext(MessageContext);
+	const onEncryptedPress = useOnEncryptedPress();
 	const type = useMessageField(item => item.t);
 
 	if (type !== E2E_MESSAGE_TYPE) {

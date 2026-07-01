@@ -1,19 +1,18 @@
-import { useContext } from 'react';
-
 import Touchable from '../../Touchable';
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { BUTTON_HIT_SLOP } from '../../utils';
 import { themes } from '../../../../lib/constants/colors';
-import MessageContext from '../../Context';
 import { useTheme } from '../../../../theme';
-import { useMessageStatus } from '../../MessageStore';
+import { useMessageCtx, useMessageStatus } from '../../MessageStore';
+import { useErrorActionsShow } from '../../MessageRoomStore';
 
 const MessageError = (_props: { hasError: boolean }) => {
 	'use memo';
 
 	const { theme } = useTheme();
-	const { onErrorPress } = useContext(MessageContext);
+	const { item } = useMessageCtx();
+	const errorActionsShow = useErrorActionsShow();
 	const { hasError } = useMessageStatus();
 
 	if (!hasError) {
@@ -21,7 +20,7 @@ const MessageError = (_props: { hasError: boolean }) => {
 	}
 
 	return (
-		<Touchable onPress={onErrorPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
+		<Touchable onPress={() => errorActionsShow?.(item)} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='warning' color={themes[theme].buttonBackgroundDangerDefault} size={16} />
 		</Touchable>
 	);

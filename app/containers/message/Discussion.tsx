@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -7,16 +6,17 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
-import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
 import { useTheme } from '../../theme';
-import { useDiscussion, useMessageText } from './MessageStore';
+import { useDiscussion, useMessageCtx, useMessageText } from './MessageStore';
+import { useOnDiscussionPress } from './MessageRoomStore';
 
 // TODO: Create a reusable button component for message
 const Discussion = () => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const { item } = useMessageCtx();
 	const { dcount, dlm } = useDiscussion();
 	const { messageText } = useMessageText();
 	let time;
@@ -24,14 +24,14 @@ const Discussion = () => {
 		time = formatDateThreads(dlm);
 	}
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
-	const { onDiscussionPress } = useContext(MessageContext);
+	const onDiscussionPress = useOnDiscussionPress();
 	return (
 		<View style={{ gap: 4 }}>
 			<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
 			<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{messageText}</Text>
 			<View style={[styles.buttonContainer, { gap: 8 }]}>
 				<Touchable
-					onPress={onDiscussionPress}
+					onPress={() => onDiscussionPress?.(item)}
 					style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}>
 					<View style={styles.buttonInnerContainer}>

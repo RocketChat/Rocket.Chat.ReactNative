@@ -1,9 +1,7 @@
-import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react-native';
 
 import Reactions from './Reactions';
-import MessageContext from './Context';
-import { MessageProvider } from './MessageStore';
+import { MessageProviders } from './testHelpers';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { type IReaction, type TAnyMessageModel } from '../../definitions';
@@ -54,20 +52,17 @@ const buildOnReactionPress = (item: FakeItem) => (emoji: string) => {
 };
 
 const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPress: (emoji: string) => void }) => (
-	<Provider store={mockedStore}>
-		<MessageContext.Provider
-			value={{
-				user: { username: 'john' },
-				reactionInit: jest.fn(),
-				onReactionPress,
-				onReactionLongPress: jest.fn(),
-				getCustomEmoji
-			}}>
-			<MessageProvider item={item}>
-				<Reactions reactions={item.reactions} />
-			</MessageProvider>
-		</MessageContext.Provider>
-	</Provider>
+	<MessageProviders
+		item={item}
+		context={{
+			user: { username: 'john' },
+			reactionInit: jest.fn(),
+			onReactionPress,
+			onReactionLongPress: jest.fn(),
+			getCustomEmoji
+		}}>
+		<Reactions reactions={item.reactions} />
+	</MessageProviders>
 );
 
 it('renders all reactions and AddReaction button', () => {

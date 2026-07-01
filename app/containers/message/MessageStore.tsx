@@ -30,7 +30,8 @@ type MessageStoreState = {
 	threadBadgeColor?: string;
 };
 
-const createMessageStore = () => createStore<MessageStoreState>(() => ({ tick: 0 }));
+const createMessageStore = (initial: Partial<MessageStoreState>) =>
+	createStore<MessageStoreState>(() => ({ tick: 0, ...initial }));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
@@ -81,7 +82,7 @@ export const MessageProvider = ({
 }): ReactElement => {
 	'use memo';
 
-	const [store] = useState(createMessageStore);
+	const [store] = useState(() => createMessageStore({ onPress, onLongPress, threadBadgeColor }));
 
 	// Header grouping and thread position depend on the previous record too, so each effect
 	// subscribes one record; both feed the same tick. Keeping them separate means changing

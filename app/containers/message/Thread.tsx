@@ -1,20 +1,24 @@
-import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
-import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 import { type IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
-import { useMessageText, useThreadData } from './MessageStore';
+import { useMessageCtx, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from './MessageStore';
+import { useMessageUser, useOnThreadPress, useToggleFollowThread } from './MessageRoomStore';
 
 const Thread = ({ isThreadRoom }: IMessageThread) => {
 	'use memo';
 
 	const { theme, colors } = useTheme();
-	const { threadBadgeColor, toggleFollowThread, user, replies, onThreadPress } = useContext(MessageContext);
+	const { item } = useMessageCtx();
+	const threadBadgeColor = useThreadBadgeColor();
+	const toggleFollowThread = useToggleFollowThread();
+	const user = useMessageUser();
+	const replies = useReplies();
+	const onThreadPress = useOnThreadPress();
 	const { tcount, tlm, id } = useThreadData();
 	const { messageText } = useMessageText();
 
@@ -28,7 +32,7 @@ const Thread = ({ isThreadRoom }: IMessageThread) => {
 	return (
 		<View style={styles.buttonContainer}>
 			<Touchable
-				onPress={onThreadPress}
+				onPress={() => onThreadPress?.(item)}
 				accessibilityRole='button'
 				accessibilityLabel={I18n.t('View_Thread')}
 				style={[styles.button, { backgroundColor }]}

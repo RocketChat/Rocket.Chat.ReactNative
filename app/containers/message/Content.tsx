@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -6,18 +5,29 @@ import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage, getPreviewMessageFromAttachment } from './utils';
-import MessageContext from './Context';
 import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type MessageTypesValues } from '../../definitions';
-import { useContentData, useIsEncrypted, useIsInfo, useMessageAuthor, useMessageStatus, useMessageText } from './MessageStore';
+import {
+	useContentData,
+	useIsEncrypted,
+	useIsInfo,
+	useMessageAuthor,
+	useMessageStatus,
+	useMessageText,
+	useOnLinkPress
+} from './MessageStore';
+import { useGetCustomEmoji, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
 const Content = (props: IMessageContent) => {
 	'use memo';
 
 	const { theme } = useTheme();
-	const { user, onLinkPress, getCustomEmoji = () => null, navToRoomInfo } = useContext(MessageContext);
+	const user = useMessageUser();
+	const onLinkPress = useOnLinkPress();
+	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
+	const navToRoomInfo = useNavToRoomInfo();
 
 	const isInfo = useIsInfo();
 	const isEncrypted = useIsEncrypted();

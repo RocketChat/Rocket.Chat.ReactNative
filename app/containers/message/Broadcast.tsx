@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -7,16 +6,18 @@ import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants/colors';
-import MessageContext from './Context';
 import { type IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';
-import { useMessageAuthor } from './MessageStore';
+import { useMessageAuthor, useMessageCtx } from './MessageStore';
+import { useMessageUser, useReplyBroadcast } from './MessageRoomStore';
 
 // TODO: Create a reusable button component for message
 const Broadcast = ({ broadcast }: IMessageBroadcast) => {
 	'use memo';
 
-	const { user, replyBroadcast } = useContext(MessageContext);
+	const { item } = useMessageCtx();
+	const user = useMessageUser();
+	const replyBroadcast = useReplyBroadcast();
 	const { theme } = useTheme();
 	const { u: author } = useMessageAuthor();
 	const isOwn = author?._id === user?.id;
@@ -25,7 +26,7 @@ const Broadcast = ({ broadcast }: IMessageBroadcast) => {
 		return (
 			<View style={styles.buttonContainer}>
 				<Touchable
-					onPress={replyBroadcast}
+					onPress={() => replyBroadcast?.(item)}
 					style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='message-broadcast-reply'>
