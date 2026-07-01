@@ -4,8 +4,7 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
-		paddingTop: 0,
-		paddingBottom: 0
+		paddingVertical: 0
 	},
 	list: {
 		flex: 1
