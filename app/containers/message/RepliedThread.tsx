@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
@@ -8,14 +8,14 @@ import { MarkdownPreview } from '../markdown';
 import { type IMessageRepliedThread } from './interfaces';
 import { useTheme } from '../../theme';
 import { AvatarContainer } from './MessageAvatar';
-import MessageContext from './Context';
+import { useFetchThreadName } from './MessageRoomStore';
 import { useIsEncrypted, useRepliedThreadData } from './MessageStore';
 
 const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const { fetchThreadName } = useContext(MessageContext);
+	const fetchThreadName = useFetchThreadName();
 	const { tmid, tmsg, id } = useRepliedThreadData();
 	const isEncrypted = useIsEncrypted();
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
