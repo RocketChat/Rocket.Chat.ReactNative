@@ -1,7 +1,6 @@
 import { memo } from 'react';
 
 import Message from './Message';
-import MessageContext, { type IMessageContext } from './Context';
 import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import MessageSeparator from '../MessageSeparator';
@@ -57,8 +56,6 @@ interface IMessageContainerProps {
 	showUnreadSeparator?: boolean;
 }
 
-const EMPTY: IMessageContext = {};
-
 const MessageContainer = (props: IMessageContainerProps) => {
 	'use memo';
 
@@ -70,22 +67,20 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			onPress={props.onPress}
 			onLongPress={props.onLongPress}
 			threadBadgeColor={props.threadBadgeColor}>
-			<MessageContext.Provider value={EMPTY}>
-				<Message
-					rid={props.rid}
-					timeFormat={props.timeFormat}
-					archived={props.archived ?? false}
-					broadcast={props.broadcast ?? false}
-					useRealName={props.useRealName}
-					isReadReceiptEnabled={props.isReadReceiptEnabled}
-					isThreadRoom={!!props.isThreadRoom}
-					isPreview={props.isPreview}
-					highlighted={props.highlighted}
-					isIgnored={props.isIgnored ?? false}
-					autoTranslateLanguage={props.autoTranslateLanguage}
-				/>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
-			</MessageContext.Provider>
+			<Message
+				rid={props.rid}
+				timeFormat={props.timeFormat}
+				archived={props.archived ?? false}
+				broadcast={props.broadcast ?? false}
+				useRealName={props.useRealName}
+				isReadReceiptEnabled={props.isReadReceiptEnabled}
+				isThreadRoom={!!props.isThreadRoom}
+				isPreview={props.isPreview}
+				highlighted={props.highlighted}
+				isIgnored={props.isIgnored ?? false}
+				autoTranslateLanguage={props.autoTranslateLanguage}
+			/>
+			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 		</MessageProvider>
 	);
 };

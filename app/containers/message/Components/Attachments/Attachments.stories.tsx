@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { selectServerSuccess } from '../../../../actions/server';
 import { type TAnyMessageModel } from '../../../../definitions';
-import MessageContext from '../../Context';
 import { MessageRoomProvider, pickMessageRoomState } from '../../MessageRoomStore';
 import { MessageProvider } from '../../MessageStore';
 import Attachments from './Attachments';
@@ -25,9 +24,7 @@ const mockItem = { id: 'msg-id', msg: '', u: { username: 'rocket.cat' }, autoTra
 const StoryWrapper = ({ store, children }: { store: any; children: ReactNode }) => (
 	<Provider store={store}>
 		<MessageRoomProvider {...pickMessageRoomState(mockMessageContext)}>
-			<MessageProvider item={mockItem}>
-				<MessageContext.Provider value={mockMessageContext}>{children}</MessageContext.Provider>
-			</MessageProvider>
+			<MessageProvider item={mockItem}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>
 );

@@ -43,8 +43,8 @@ export type MessageRoomState = {
 };
 
 // The room-scoped fields this store owns. Tests and stories use pickMessageRoomState to
-// mirror the same values into MessageRoomProvider and the legacy MessageContext during the
-// dual-run migration. Add a field to MessageRoomState → add its key here.
+// derive MessageRoomProvider props from a single fixture object. Add a field to
+// MessageRoomState → add its key here.
 const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
 	'getCustomEmoji',
 	'navToRoomInfo',

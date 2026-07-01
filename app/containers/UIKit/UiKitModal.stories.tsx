@@ -3,39 +3,10 @@ import { Button, View } from 'react-native';
 
 import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
-import MessageContext from '../message/Context';
-import { themes } from '../../lib/constants/colors';
-
-const user = {
-	id: 'y8bd77ptZswPj3EW8',
-	username: 'diego.mello',
-	token: 'abc'
-};
-
-const baseUrl = 'https://open.rocket.chat';
 
 export default {
 	title: 'UIKit/UiKitModal',
-	decorators: [
-		(Story: any) => (
-			<MessageContext.Provider
-				value={{
-					user,
-					baseUrl,
-					onPress: () => {},
-					onLongPress: () => {},
-					reactionInit: () => {},
-					onErrorPress: () => {},
-					replyBroadcast: () => {},
-					onReactionPress: () => {},
-					onDiscussionPress: () => {},
-					onReactionLongPress: () => {},
-					threadBadgeColor: themes.light.fontInfo
-				}}>
-				<Story />
-			</MessageContext.Provider>
-		)
-	]
+	decorators: [(Story: any) => <Story />]
 };
 
 export const ModalSectionSelects = () =>

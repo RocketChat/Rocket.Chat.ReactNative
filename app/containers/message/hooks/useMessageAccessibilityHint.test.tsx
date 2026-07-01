@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityHint } from './useMessageAccessibilityHint';
-import MessageContext, { type IMessageContext } from '../Context';
 import { MessageRoomProvider, pickMessageRoomState } from '../MessageRoomStore';
 import { MessageProvider } from '../MessageStore';
 import { type TAnyMessageModel } from '../../../definitions';
@@ -9,7 +8,7 @@ import { type TAnyMessageModel } from '../../../definitions';
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
 	({ id: 'msg-1', ...overrides } as TAnyMessageModel);
 
-const renderHint = (item: TAnyMessageModel, config: Partial<IMessageContext> = {}) => {
+const renderHint = (item: TAnyMessageModel, config: Record<string, any> = {}) => {
 	const spy = jest.fn();
 	const Probe = () => {
 		spy(useMessageAccessibilityHint());
@@ -17,11 +16,9 @@ const renderHint = (item: TAnyMessageModel, config: Partial<IMessageContext> = {
 	};
 	render(
 		<MessageRoomProvider {...pickMessageRoomState(config)}>
-			<MessageContext.Provider value={config as IMessageContext}>
-				<MessageProvider item={item}>
-					<Probe />
-				</MessageProvider>
-			</MessageContext.Provider>
+			<MessageProvider item={item}>
+				<Probe />
+			</MessageProvider>
 		</MessageRoomProvider>
 	);
 	const { calls } = spy.mock;

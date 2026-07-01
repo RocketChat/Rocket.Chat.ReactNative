@@ -2,7 +2,6 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import Content from './Content';
-import MessageContext from './Context';
 import { MessageProvider } from './MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from './MessageRoomStore';
 import { setUser } from '../../actions/login';
@@ -67,11 +66,9 @@ const tree = (overrides: TOverrides) => {
 	return (
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
-				<MessageContext.Provider value={contextValue}>
-					<MessageProvider item={buildItem(msg, attachments, isEncrypted)}>
-						<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
-					</MessageProvider>
-				</MessageContext.Provider>
+				<MessageProvider item={buildItem(msg, attachments, isEncrypted)}>
+					<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
+				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
 	);

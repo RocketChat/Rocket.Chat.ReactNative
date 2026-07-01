@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
-import MessageContext, { type IMessageContext } from '../Context';
 import { MessageProvider } from '../MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from '../MessageRoomStore';
 import { type TAnyMessageModel } from '../../../definitions';
@@ -29,7 +28,7 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 const renderLabel = (
 	item: TAnyMessageModel,
 	args: TArgs = {},
-	config: Partial<IMessageContext> = {},
+	config: Record<string, any> = {},
 	previousItem?: TAnyMessageModel
 ) => {
 	const spy = jest.fn();
@@ -39,11 +38,9 @@ const renderLabel = (
 	};
 	render(
 		<MessageRoomProvider {...pickMessageRoomState(config)}>
-			<MessageContext.Provider value={config as IMessageContext}>
-				<MessageProvider item={item} previousItem={previousItem}>
-					<Probe />
-				</MessageProvider>
-			</MessageContext.Provider>
+			<MessageProvider item={item} previousItem={previousItem}>
+				<Probe />
+			</MessageProvider>
 		</MessageRoomProvider>
 	);
 	const { calls } = spy.mock;

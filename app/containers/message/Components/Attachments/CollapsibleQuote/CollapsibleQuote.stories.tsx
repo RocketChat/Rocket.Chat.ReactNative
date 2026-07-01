@@ -1,6 +1,5 @@
 import { View } from 'react-native';
 
-import MessageContext from '../../../Context';
 import { MessageRoomProvider, pickMessageRoomState } from '../../../MessageRoomStore';
 import CollapsibleQuote from '.';
 
@@ -25,13 +24,7 @@ export default {
 export const Item = () => (
 	<View style={{ padding: 10 }}>
 		<MessageRoomProvider {...pickMessageRoomState({ onLongPress: () => {}, user: { username: 'Marcos' } })}>
-			<MessageContext.Provider
-				value={{
-					onLongPress: () => {},
-					user: { username: 'Marcos' }
-				}}>
-				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} timeFormat='LT' />
-			</MessageContext.Provider>
+			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} timeFormat='LT' />
 		</MessageRoomProvider>
 	</View>
 );

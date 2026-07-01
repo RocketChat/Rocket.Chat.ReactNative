@@ -2,8 +2,6 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import { Provider } from 'react-redux';
 
-import { themes } from '../app/lib/constants/colors';
-import MessageContext from '../app/containers/message/Context';
 import { selectServerRequest } from '../app/actions/server';
 import { mockedStore as store } from '../app/reducers/mockedStore';
 import { setUser } from '../app/actions/login';
@@ -19,32 +17,7 @@ const preview: Preview = {
 	decorators: [
 		Story => (
 			<Provider store={store}>
-				<MessageContext.Provider
-					value={{
-						user: {
-							id: 'y8bd77ptZswPj3EW8',
-							username: 'diego.mello',
-							token: 'abc'
-						},
-						baseUrl,
-						onPress: () => {},
-						onLongPress: () => {},
-						reactionInit: () => {},
-						onErrorPress: () => {},
-						replyBroadcast: () => {},
-						onReactionPress: () => {},
-						onDiscussionPress: () => {},
-						onReactionLongPress: () => {},
-						threadBadgeColor: themes.light.badgeBackgroundLevel1,
-						getCustomEmoji: () => null,
-						navToRoomInfo: () => {},
-						showAttachment: undefined,
-						blockAction: undefined,
-						handleEnterCall: undefined,
-						fetchThreadName: undefined
-					}}>
-					<Story />
-				</MessageContext.Provider>
+				<Story />
 			</Provider>
 		)
 	]
