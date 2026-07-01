@@ -286,7 +286,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderItem = ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const message = item as TMessageModel;
-		const { user, baseUrl, theme, useRealName } = this.props;
+		const { user, baseUrl, useRealName } = this.props;
 		return (
 			<Message
 				item={message}
@@ -298,7 +298,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
-				theme={theme}
 				onPress={() => this.jumpToMessage({ item })}
 				jumpToMessage={() => this.jumpToMessage({ item })}
 				rid={message.rid}

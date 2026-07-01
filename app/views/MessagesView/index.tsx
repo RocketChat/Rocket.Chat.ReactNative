@@ -162,7 +162,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	};
 
 	defineMessagesViewContent = (name: string) => {
-		const { user, baseUrl, theme, useRealName } = this.props;
+		const { user, baseUrl, useRealName } = this.props;
 		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
 			baseUrl,
@@ -197,7 +197,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				renderItem: (item: any) => (
 					<Message
 						{...renderItemCommonProps(item)}
-						theme={theme}
 						item={{
 							...item,
 							u: item.user,
@@ -223,7 +222,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
-				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
+				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} />
 			},
 			// Starred Messages Screen
 			Starred: {
@@ -235,7 +234,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
 				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
+					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} />
 				),
 				action: (message: IMessage) => ({
 					title: I18n.t('Unstar'),
@@ -254,7 +253,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
 				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
+					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
 				handleActionPress: (message: IMessage) => togglePinMessage(message._id, message.pinned)

@@ -2,7 +2,6 @@ import { memo } from 'react';
 
 import Message from './Message';
 import MessageContext, { type IMessageContext } from './Context';
-import { type TSupportedThemes } from '../../theme';
 import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import MessageSeparator from '../MessageSeparator';
@@ -52,7 +51,6 @@ interface IMessageContainerProps {
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
-	theme?: TSupportedThemes;
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;

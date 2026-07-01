@@ -1417,7 +1417,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			useRealName,
 			baseUrl,
 			Message_Read_Receipt_Enabled,
-			theme,
 			inAppFeedback
 		} = this.props;
 		let dateSeparator = null;
@@ -1501,7 +1500,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					toggleFollowThread={this.toggleFollowThread}
 					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
-					theme={theme}
 					closeEmojiAndAction={this.handleCloseEmoji}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
