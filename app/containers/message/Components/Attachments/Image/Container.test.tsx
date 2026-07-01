@@ -2,7 +2,9 @@ import { render } from '@testing-library/react-native';
 import { type ComponentProps } from 'react';
 import { A11y } from 'react-native-a11y-order';
 
+import { type TAnyMessageModel } from '../../../../../definitions';
 import MessageContext from '../../../Context';
+import { MessageProvider } from '../../../MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from '../../../MessageRoomStore';
 import ImageContainer from './Container';
 
@@ -39,11 +41,14 @@ const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContain
 		onLongPress: jest.fn(),
 		translateLanguage: undefined
 	};
+	const item = { id: contextValue.id } as unknown as TAnyMessageModel;
 	return render(
 		<A11y.Order>
 			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
 				<MessageContext.Provider value={contextValue}>
-					<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
+					<MessageProvider item={item}>
+						<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
+					</MessageProvider>
 				</MessageContext.Provider>
 			</MessageRoomProvider>
 		</A11y.Order>

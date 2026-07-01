@@ -3,7 +3,9 @@ import { Provider } from 'react-redux';
 
 import { setUser } from '../../../../../actions/login';
 import { mockedStore } from '../../../../../reducers/mockedStore';
+import { type TAnyMessageModel } from '../../../../../definitions';
 import MessageContext from '../../../Context';
+import { MessageProvider } from '../../../MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from '../../../MessageRoomStore';
 import CollapsibleQuote from '.';
 
@@ -43,11 +45,15 @@ const contextValue = {
 	user: { username: 'Marcos' }
 };
 
+const item = { id: 'collapsible-quote-msg' } as unknown as TAnyMessageModel;
+
 const Render = () => (
 	<Provider store={mockedStore}>
 		<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
 			<MessageContext.Provider value={contextValue}>
-				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+				<MessageProvider item={item}>
+					<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+				</MessageProvider>
 			</MessageContext.Provider>
 		</MessageRoomProvider>
 	</Provider>

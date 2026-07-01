@@ -1,8 +1,7 @@
-import { useContext } from 'react';
+import { useState } from 'react';
 import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
-import MessageContext from './Context';
 import User from './User';
 import styles from './styles';
 import RepliedThread from './RepliedThread';
@@ -27,6 +26,7 @@ import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRe
 import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
+import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
 import {
 	useBlocks,
 	useContentData,
@@ -35,7 +35,9 @@ import {
 	useMessageAuthor,
 	useMessageField,
 	useMessageGrouping,
+	useMessageLongPress,
 	useMessageMeta,
+	useMessagePress,
 	useMessageStatus,
 	useMessageText,
 	useThreadData,
@@ -261,7 +263,6 @@ Message.displayName = 'Message';
 const MessageTouchable = (props: TMessageProps) => {
 	'use memo';
 
-	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const { isThreadReply } = useThreadPosition();
@@ -269,6 +270,12 @@ const MessageTouchable = (props: TMessageProps) => {
 	const { hasError, isTemp } = useMessageStatus();
 	const type = useMessageField(item => item.t);
 	const id = useMessageField(item => item.id);
+	const isBeingEdited = useIsBeingEdited(id);
+	const [isManualUnignored, setIsManualUnignored] = useState(false);
+	const isIgnored = isManualUnignored ? false : props.isIgnored ?? false;
+	const revealIgnored = () => setIsManualUnignored(true);
+	const onPressAction = useMessagePress({ isIgnored, revealIgnored });
+	const onLongPress = useMessageLongPress();
 	const accessibilityLabelValue = useMessageAccessibilityLabel({
 		useRealName: props.useRealName,
 		isReadReceiptEnabled: props.isReadReceiptEnabled,
@@ -279,7 +286,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const accessibilityHint = useMessageAccessibilityHint();
 
 	let backgroundColor = undefined;
-	if (props.isBeingEdited) {
+	if (isBeingEdited) {
 		backgroundColor = colors.statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
@@ -299,8 +306,8 @@ const MessageTouchable = (props: TMessageProps) => {
 					isThreadRoom={props.isThreadRoom}
 					isPreview={props.isPreview}
 					highlighted={props.highlighted}
-					isIgnored={props.isIgnored}
-					isBeingEdited={props.isBeingEdited}
+					isIgnored={isIgnored}
+					isBeingEdited={isBeingEdited}
 					autoTranslateLanguage={props.autoTranslateLanguage}
 					small={props.small}
 				/>
@@ -310,7 +317,7 @@ const MessageTouchable = (props: TMessageProps) => {
 
 	const handleLongPress = () => {
 		markAsLastFocused();
-		onLongPress?.();
+		onLongPress();
 	};
 
 	return (
@@ -319,10 +326,10 @@ const MessageTouchable = (props: TMessageProps) => {
 				<Touch
 					componentRef={touchRef}
 					onLongPress={handleLongPress}
-					onPress={onPress}
+					onPress={onPressAction}
 					disabled={isDisabled}
 					style={{ backgroundColor }}
-					testID={props.isBeingEdited ? `message-editing-${id}` : undefined}
+					testID={isBeingEdited ? `message-editing-${id}` : undefined}
 					accessible
 					accessibilityRole='button'
 					accessibilityLabel={accessibilityLabelValue}
@@ -341,8 +348,8 @@ const MessageTouchable = (props: TMessageProps) => {
 						isThreadRoom={props.isThreadRoom}
 						isPreview={props.isPreview}
 						highlighted={props.highlighted}
-						isIgnored={props.isIgnored}
-						isBeingEdited={props.isBeingEdited}
+						isIgnored={isIgnored}
+						isBeingEdited={isBeingEdited}
 						autoTranslateLanguage={props.autoTranslateLanguage}
 						small={props.small}
 						handleLongPress={!isDisabled ? handleLongPress : undefined}

@@ -1,7 +1,7 @@
-import { useContext, type ReactNode, type FC } from 'react';
+import { type ReactNode, type FC } from 'react';
 import { Pressable, type PressableProps } from 'react-native';
 
-import MessageContext from './Context';
+import { useMessageLongPress } from './MessageStore';
 
 interface IProps extends PressableProps {
 	children: ReactNode;
@@ -11,7 +11,7 @@ interface IProps extends PressableProps {
 const RCTouchable: FC<IProps> = ({ children, ...props }) => {
 	'use memo';
 
-	const { onLongPress } = useContext(MessageContext);
+	const onLongPress = useMessageLongPress();
 
 	return (
 		<Pressable onLongPress={onLongPress} {...props}>
