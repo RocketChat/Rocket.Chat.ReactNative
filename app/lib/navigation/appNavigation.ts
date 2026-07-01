@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { createRef, type MutableRefObject } from 'react';
 import { CommonActions, type NavigationContainerRef, StackActions } from '@react-navigation/native';
 
 import { emitter } from '../methods/helpers';
 
 // TODO: we need change this any to the correctly types from our stacks
-const navigationRef = React.createRef<NavigationContainerRef<any>>();
-const routeNameRef: React.MutableRefObject<NavigationContainerRef<any> | null> = React.createRef();
+const navigationRef = createRef<NavigationContainerRef<any>>();
+const routeNameRef: MutableRefObject<NavigationContainerRef<any> | null> = createRef();
 
 function navigate(name: string, params?: any) {
 	navigationRef.current?.navigate(name, params);
