@@ -10,6 +10,7 @@ import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
+import { MessageRoomProvider } from '../../containers/message/MessageRoomStore';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import log from '../../lib/methods/helpers/log';
@@ -307,24 +308,33 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme } = this.props;
+		const { theme, user, baseUrl } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
 		}
 
 		return (
-			<FlatList
-				data={messages}
-				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				keyExtractor={item => item._id}
-				onEndReached={this.onEndReached}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				onEndReachedThreshold={0.5}
-				removeClippedSubviews={isIOS}
-				{...scrollPersistTaps}
-			/>
+			<MessageRoomProvider
+				getCustomEmoji={this.getCustomEmoji}
+				navToRoomInfo={this.navToRoomInfo}
+				showAttachment={this.showAttachment}
+				user={user}
+				baseUrl={baseUrl}
+				isThreadRoom
+				theme={theme}>
+				<FlatList
+					data={messages}
+					renderItem={this.renderItem}
+					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+					keyExtractor={item => item._id}
+					onEndReached={this.onEndReached}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
+					onEndReachedThreshold={0.5}
+					removeClippedSubviews={isIOS}
+					{...scrollPersistTaps}
+				/>
+			</MessageRoomProvider>
 		);
 	};
 

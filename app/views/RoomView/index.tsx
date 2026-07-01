@@ -99,6 +99,7 @@ import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import { createInteractionStore, InteractionStoreContext, type InteractionStore } from './InteractionStore';
+import { MessageRoomProvider } from '../../containers/message/MessageRoomStore';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { resolveJumpAnchor } from './services/resolveJumpAnchor';
@@ -1641,8 +1642,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, navigation } = this.props;
+		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom, canAutoTranslate } = this.state;
+		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1699,17 +1700,36 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 								closeBanner={this.closeBanner}
 							/>
 						) : null}
-						<List
-							ref={this.list}
-							listRef={this.flatList}
+						<MessageRoomProvider
+							getCustomEmoji={this.getCustomEmoji}
+							navToRoomInfo={this.navToRoomInfo}
+							showAttachment={this.showAttachment}
+							blockAction={this.blockAction}
+							handleEnterCall={this.handleEnterCall}
+							fetchThreadName={this.fetchThreadName}
+							toggleFollowThread={this.toggleFollowThread}
+							jumpToMessage={this.jumpToMessageByUrl}
 							rid={rid}
-							t={t as RoomType}
-							tmid={this.tmid}
-							renderRow={this.renderItem}
-							hideSystemMessages={this.hideSystemMessages}
-							showMessageInMainThread={user.showMessageInMainThread ?? false}
-							serverVersion={serverVersion}
-						/>
+							user={user as any}
+							baseUrl={baseUrl}
+							broadcast={'id' in room && room.broadcast}
+							isThreadRoom={!!this.tmid}
+							Message_GroupingPeriod={Message_GroupingPeriod}
+							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
+							theme={theme}>
+							<List
+								ref={this.list}
+								listRef={this.flatList}
+								rid={rid}
+								t={t as RoomType}
+								tmid={this.tmid}
+								renderRow={this.renderItem}
+								hideSystemMessages={this.hideSystemMessages}
+								showMessageInMainThread={user.showMessageInMainThread ?? false}
+								serverVersion={serverVersion}
+							/>
+						</MessageRoomProvider>
 						{this.renderFooter()}
 						{this.renderActions()}
 						<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
