@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 
 import { deleteRoom } from '../actions/room';
-import { type DisplayMode } from '../lib/constants/constantDisplayMode';
+import { DisplayMode } from '../lib/constants/constantDisplayMode';
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import { themes } from '../lib/constants/colors';
 import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
@@ -19,6 +19,7 @@ import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } fro
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
+import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
@@ -33,14 +34,6 @@ import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '..
 
 const API_FETCH_COUNT = 25;
 
-const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => {
-	const rowHeight = 75 * PixelRatio.getFontScale();
-	return {
-		length: data?.length || 0,
-		offset: rowHeight * index,
-		index
-	};
-};
 const keyExtractor = (item: IItem) => item._id;
 
 export interface IItem {
@@ -515,6 +508,17 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		showActionSheet({ options });
 	};
 
+	getItemLayout = (_data: ArrayLike<IItem> | null | undefined, index: number) => {
+		const { displayMode } = this.props;
+		const base = displayMode === DisplayMode.Condensed ? BASE_ROW_HEIGHT_CONDENSED : BASE_ROW_HEIGHT;
+		const rowHeight = PixelRatio.roundToNearestPixel(base * PixelRatio.getFontScale());
+		return {
+			length: rowHeight,
+			offset: rowHeight * index,
+			index
+		};
+	};
+
 	renderItem = ({ item }: { item: IItem }) => {
 		const { StoreLastMessage, useRealName, width, showAvatar, displayMode } = this.props;
 		return (
@@ -561,7 +565,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				extraData={isSearching ? search : data}
 				keyExtractor={keyExtractor}
 				renderItem={this.renderItem}
-				getItemLayout={getItemLayout}
+				getItemLayout={this.getItemLayout}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				onEndReached={() => this.load()}

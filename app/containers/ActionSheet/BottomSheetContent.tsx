@@ -1,4 +1,4 @@
-import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
+import { FlatList, Text, View, type ViewProps } from 'react-native';
 import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,6 +10,7 @@ import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
+import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
@@ -39,8 +40,7 @@ const BottomSheetContent = memo(
 
 		const { colors } = useTheme();
 		const { bottom } = useSafeAreaInsets();
-		const { fontScale } = useWindowDimensions();
-		const height = 48 * fontScale;
+		const height = useActionSheetItemHeight();
 		const paddingBottom = isAndroid ? bottom + height : bottom;
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
 

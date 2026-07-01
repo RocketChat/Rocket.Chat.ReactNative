@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Text, View } from 'react-native';
+import { PixelRatio, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import * as List from '../List';
@@ -29,7 +29,8 @@ const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
-	const { width } = useResponsiveLayout();
+	const { width, fontScale } = useResponsiveLayout();
+	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 
 	const iconName = hasCheck ? 'radio-checked' : 'radio-unchecked';
 	const iconColor = hasCheck ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
@@ -48,7 +49,7 @@ const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem
 			onDeletePress={onDeletePress}
 			testID={`server-item-${item.id}`}
 			width={width}>
-			<View style={styles.serverItemContainer}>
+			<View style={[styles.serverItemContainer, { height }]}>
 				{item.iconURL ? (
 					<Image
 						source={{
