@@ -3,7 +3,7 @@ import { act, render } from '@testing-library/react-native';
 import { type TAnyMessageModel } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
-import MessageContext, { type IMessageContext } from './Context';
+import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from './MessageRoomStore';
 import {
 	MessageProvider,
 	useAvatar,
@@ -114,12 +114,12 @@ const MsgValueReporter = ({ spy }: { spy: jest.Mock }) => {
 	return null;
 };
 
-// Derived hooks read both the per-row store/item/previousItem and the config in MessageContext,
-// so the probe needs both providers mounted.
+// Derived hooks read both the per-row store/item/previousItem and the room state in
+// MessageRoomProvider, so the probe needs both providers mounted.
 const renderDerived = (
 	item: TAnyMessageModel,
 	useHook: () => unknown,
-	{ previousItem, config }: { previousItem?: TAnyMessageModel; config?: Partial<IMessageContext> } = {}
+	{ previousItem, config }: { previousItem?: TAnyMessageModel; config?: Partial<MessageRoomState> } = {}
 ) => {
 	const spy = jest.fn();
 	const Probe = () => {
@@ -127,11 +127,11 @@ const renderDerived = (
 		return null;
 	};
 	render(
-		<MessageContext.Provider value={(config ?? {}) as IMessageContext}>
+		<MessageRoomProvider {...pickMessageRoomState(config ?? {})}>
 			<MessageProvider item={item} previousItem={previousItem}>
 				<Probe />
 			</MessageProvider>
-		</MessageContext.Provider>
+		</MessageRoomProvider>
 	);
 	const latest = () => {
 		const { calls } = spy.mock;
@@ -489,11 +489,11 @@ describe('MessageStore', () => {
 				return calls[calls.length - 1]?.[0];
 			};
 			const wrap = (previousItem: TAnyMessageModel) => (
-				<MessageContext.Provider value={{ broadcast: false, Message_GroupingPeriod: 300 } as IMessageContext}>
+				<MessageRoomProvider {...pickMessageRoomState({ broadcast: false, Message_GroupingPeriod: 300 })}>
 					<MessageProvider item={item} previousItem={previousItem}>
 						<Probe />
 					</MessageProvider>
-				</MessageContext.Provider>
+				</MessageRoomProvider>
 			);
 
 			const { rerender } = render(wrap(previousTemp));

@@ -3,11 +3,10 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import { type TAnyMessageModel } from '../../definitions';
-import MessageContext from './Context';
 import { getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
-import { useAutoTranslate, useMessageUser } from './MessageRoomStore';
+import { useAutoTranslate, useBroadcast, useIsThreadRoom, useMessageGroupingPeriod, useMessageUser } from './MessageRoomStore';
 
 const createMessageStore = () => createStore(() => ({ tick: 0 }));
 
@@ -173,7 +172,8 @@ const computeIsHeader = (
 
 export const useMessageGrouping = (): boolean => {
 	const { store, item, previousItem } = useMessageCtx();
-	const { broadcast, Message_GroupingPeriod } = useContext(MessageContext);
+	const broadcast = useBroadcast();
+	const Message_GroupingPeriod = useMessageGroupingPeriod();
 	return useStore(store, () =>
 		computeIsHeader(previousItem, item, !!broadcast, Message_GroupingPeriod, item.status === messagesStatus.ERROR)
 	);
@@ -181,7 +181,7 @@ export const useMessageGrouping = (): boolean => {
 
 export const useThreadPosition = (): { isThreadReply: boolean; isThreadSequential: boolean } => {
 	const { store, item, previousItem } = useMessageCtx();
-	const { isThreadRoom } = useContext(MessageContext);
+	const isThreadRoom = useIsThreadRoom();
 	return useStore(
 		store,
 		useShallow(() => {
@@ -234,7 +234,8 @@ export const useTranslateLanguage = (): string | undefined => {
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
 	const { store, item } = useMessageCtx();
-	const { user, autoTranslateRoom, autoTranslateLanguage } = useContext(MessageContext);
+	const user = useMessageUser();
+	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
 	return useStore(
 		store,
 		useShallow(() => {

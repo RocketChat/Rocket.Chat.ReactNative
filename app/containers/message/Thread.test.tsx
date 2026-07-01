@@ -3,6 +3,7 @@ import { render } from '@testing-library/react-native';
 import Thread from './Thread';
 import MessageContext from './Context';
 import { MessageProvider } from './MessageStore';
+import { MessageRoomProvider, pickMessageRoomState } from './MessageRoomStore';
 import { type TAnyMessageModel } from '../../definitions';
 
 const baseContextValue = {
@@ -18,11 +19,13 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 
 const renderThread = (item: TAnyMessageModel, props: Parameters<typeof Thread>[0]) =>
 	render(
-		<MessageContext.Provider value={baseContextValue}>
-			<MessageProvider item={item}>
-				<Thread {...props} />
-			</MessageProvider>
-		</MessageContext.Provider>
+		<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
+			<MessageContext.Provider value={baseContextValue}>
+				<MessageProvider item={item}>
+					<Thread {...props} />
+				</MessageProvider>
+			</MessageContext.Provider>
+		</MessageRoomProvider>
 	);
 
 describe('Thread — tlm-only update regression', () => {
@@ -36,11 +39,13 @@ describe('Thread — tlm-only update regression', () => {
 
 		const updatedItem = buildItem({ tlm: new Date('2024-01-01T00:00:00Z') });
 		rerender(
-			<MessageContext.Provider value={baseContextValue}>
-				<MessageProvider item={updatedItem}>
-					<Thread isThreadRoom={false} />
-				</MessageProvider>
-			</MessageContext.Provider>
+			<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
+				<MessageContext.Provider value={baseContextValue}>
+					<MessageProvider item={updatedItem}>
+						<Thread isThreadRoom={false} />
+					</MessageProvider>
+				</MessageContext.Provider>
+			</MessageRoomProvider>
 		);
 
 		expect(getByTestId('message-thread-button-hello')).toBeTruthy();

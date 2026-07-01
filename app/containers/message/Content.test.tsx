@@ -4,6 +4,7 @@ import { render } from '@testing-library/react-native';
 import Content from './Content';
 import MessageContext from './Context';
 import { MessageProvider } from './MessageStore';
+import { MessageRoomProvider, pickMessageRoomState } from './MessageRoomStore';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../definitions';
@@ -57,19 +58,21 @@ const buildItem = (msg: string | undefined, attachments: IAttachment[] | undefin
 
 const tree = (overrides: TOverrides) => {
 	const { msg, attachments, isEncrypted, ...contentProps } = overrides;
+	const contextValue = {
+		user: { username: 'john' },
+		onLinkPress: jest.fn(),
+		getCustomEmoji: jest.fn(),
+		navToRoomInfo: jest.fn()
+	};
 	return (
 		<Provider store={mockedStore}>
-			<MessageContext.Provider
-				value={{
-					user: { username: 'john' },
-					onLinkPress: jest.fn(),
-					getCustomEmoji: jest.fn(),
-					navToRoomInfo: jest.fn()
-				}}>
-				<MessageProvider item={buildItem(msg, attachments, isEncrypted)}>
-					<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
-				</MessageProvider>
-			</MessageContext.Provider>
+			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+				<MessageContext.Provider value={contextValue}>
+					<MessageProvider item={buildItem(msg, attachments, isEncrypted)}>
+						<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
+					</MessageProvider>
+				</MessageContext.Provider>
+			</MessageRoomProvider>
 		</Provider>
 	);
 };

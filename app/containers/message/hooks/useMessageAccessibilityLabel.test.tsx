@@ -3,6 +3,7 @@ import { render } from '@testing-library/react-native';
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
 import MessageContext, { type IMessageContext } from '../Context';
 import { MessageProvider } from '../MessageStore';
+import { MessageRoomProvider, pickMessageRoomState } from '../MessageRoomStore';
 import { type TAnyMessageModel } from '../../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../../lib/constants/keys';
 
@@ -37,11 +38,13 @@ const renderLabel = (
 		return null;
 	};
 	render(
-		<MessageContext.Provider value={config as IMessageContext}>
-			<MessageProvider item={item} previousItem={previousItem}>
-				<Probe />
-			</MessageProvider>
-		</MessageContext.Provider>
+		<MessageRoomProvider {...pickMessageRoomState(config)}>
+			<MessageContext.Provider value={config as IMessageContext}>
+				<MessageProvider item={item} previousItem={previousItem}>
+					<Probe />
+				</MessageProvider>
+			</MessageContext.Provider>
+		</MessageRoomProvider>
 	);
 	const { calls } = spy.mock;
 	return calls[calls.length - 1][0];
