@@ -1,14 +1,36 @@
-import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
+import { Keyboard } from 'react-native';
 
-import { type TAnyMessageModel } from '../../definitions';
+import { type IAttachment, type TAnyMessageModel } from '../../definitions';
 import { getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
-import { useAutoTranslate, useBroadcast, useIsThreadRoom, useMessageGroupingPeriod, useMessageUser } from './MessageRoomStore';
+import { debounce } from '../../lib/methods/helpers';
+import openLink from '../../lib/methods/helpers/openLink';
+import { useTheme } from '../../theme';
+import {
+	useArchived,
+	useAutoTranslate,
+	useBroadcast,
+	useCloseEmojiAndAction,
+	useIsThreadRoom,
+	useJumpToMessage,
+	useMessageGroupingPeriod,
+	useMessageUser,
+	useOnDiscussionPress,
+	useOnThreadPress
+} from './MessageRoomStore';
 
-const createMessageStore = () => createStore(() => ({ tick: 0 }));
+type MessageStoreState = {
+	tick: number;
+	onPress?: () => void;
+	onLongPress?: (item: TAnyMessageModel) => void;
+	threadBadgeColor?: string;
+};
+
+const createMessageStore = () => createStore<MessageStoreState>(() => ({ tick: 0 }));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
@@ -45,10 +67,16 @@ const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
 export const MessageProvider = ({
 	item,
 	previousItem,
+	onPress,
+	onLongPress,
+	threadBadgeColor,
 	children
 }: {
 	item: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
+	onPress?: () => void;
+	onLongPress?: (item: TAnyMessageModel) => void;
+	threadBadgeColor?: string;
 	children: ReactNode;
 }): ReactElement => {
 	'use memo';
@@ -60,6 +88,11 @@ export const MessageProvider = ({
 	// previousItem does not tear down and recreate item's subscription.
 	useEffect(() => subscribeModel(item, store), [item, store]);
 	useEffect(() => (previousItem ? subscribeModel(previousItem, store) : undefined), [previousItem, store]);
+
+	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
+	useEffect(() => {
+		store.setState({ onPress, onLongPress, threadBadgeColor });
+	});
 
 	return <MessageStoreContext.Provider value={{ store, item, previousItem }}>{children}</MessageStoreContext.Provider>;
 };
@@ -250,4 +283,95 @@ export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTran
 			return { messageText, isTranslated };
 		})
 	);
+};
+
+export const useOnPressRaw = (): MessageStoreState['onPress'] => {
+	const { store } = useMessageCtx();
+	return useStore(store, s => s.onPress);
+};
+export const useOnLongPressRaw = (): MessageStoreState['onLongPress'] => {
+	const { store } = useMessageCtx();
+	return useStore(store, s => s.onLongPress);
+};
+export const useThreadBadgeColor = (): string | undefined => {
+	const { store } = useMessageCtx();
+	return useStore(store, s => s.threadBadgeColor);
+};
+
+export const useMessageLongPress = (): (() => void) => {
+	const { item } = useMessageCtx();
+	const isInfo = useIsInfo();
+	const { hasError } = useMessageStatus();
+	const isEncrypted = useIsEncrypted();
+	const archived = useArchived();
+	const onLongPress = useOnLongPressRaw();
+	return () => {
+		if (isInfo || hasError || isEncrypted || archived) {
+			return;
+		}
+		onLongPress?.(item);
+	};
+};
+
+export const useOnLinkPress = (): ((link: string) => void) => {
+	const { item } = useMessageCtx();
+	const jumpToMessage = useJumpToMessage();
+	const { theme } = useTheme();
+	return (link: string) => {
+		const isMessageLink = !!item.attachments?.some((att: IAttachment) => att?.message_link === link);
+		if (isMessageLink && jumpToMessage) {
+			return jumpToMessage(link);
+		}
+		openLink(link, theme);
+	};
+};
+
+export const useMessagePress = ({
+	isIgnored,
+	revealIgnored
+}: {
+	isIgnored: boolean;
+	revealIgnored: () => void;
+}): (() => void) => {
+	const { item } = useMessageCtx();
+	const isThreadRoom = useIsThreadRoom();
+	const onPress = useOnPressRaw();
+	const onThreadPress = useOnThreadPress();
+	const onDiscussionPress = useOnDiscussionPress();
+	const closeEmojiAndAction = useCloseEmojiAndAction();
+
+	// pressHandlerRef holds the latest press logic; updated after every render via
+	// useEffect so the render body stays free of ref writes.
+	const pressHandlerRef = useRef<() => void>(() => {});
+	useEffect(() => {
+		pressHandlerRef.current = () => {
+			if (isIgnored) {
+				return revealIgnored();
+			}
+			if (onPress) {
+				return onPress();
+			}
+			Keyboard.dismiss();
+			if ((item.tlm || item.tmid) && !isThreadRoom) {
+				onThreadPress?.(item);
+			}
+			if (item.dlm && onDiscussionPress) {
+				onDiscussionPress(item);
+			}
+		};
+	});
+	// onPressRef holds the single debounced instance for the component lifetime.
+	// Initialised to a noop; replaced with the real debounced fn in the first effect
+	// so that pressHandlerRef.current is never read during render.
+	const onPressRef = useRef(debounce(() => {}, 300, true));
+	useEffect(() => {
+		onPressRef.current = debounce(() => pressHandlerRef.current?.(), 300, true);
+	}, []);
+
+	return () => {
+		if (closeEmojiAndAction) {
+			return closeEmojiAndAction(onPressRef.current);
+		}
+		return onPressRef.current();
+	};
 };

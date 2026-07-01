@@ -1709,6 +1709,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							fetchThreadName={this.fetchThreadName}
 							toggleFollowThread={this.toggleFollowThread}
 							jumpToMessage={this.jumpToMessageByUrl}
+							closeEmojiAndAction={this.handleCloseEmoji}
 							onReactionPress={this.onReactionPress}
 							onReactionLongPress={this.onReactionLongPress}
 							reactionInit={this.onReactionInit}

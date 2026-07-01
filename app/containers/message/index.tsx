@@ -296,7 +296,12 @@ const MessageContainer = (props: IMessageContainerProps) => {
 
 	const { item, previousItem } = props;
 	return (
-		<MessageProvider item={item} previousItem={previousItem}>
+		<MessageProvider
+			item={item}
+			previousItem={previousItem}
+			onPress={props.onPress}
+			onLongPress={props.onLongPress}
+			threadBadgeColor={props.threadBadgeColor}>
 			<MessageContainerInner {...props} />
 		</MessageProvider>
 	);
