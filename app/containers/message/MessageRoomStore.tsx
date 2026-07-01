@@ -5,7 +5,6 @@ import { useShallow } from 'zustand/react/shallow';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import { type IAttachment, type TAnyMessageModel } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
-import { type TSupportedThemes } from '../../theme';
 
 export type MessageRoomState = {
 	// stable handlers
@@ -39,7 +38,6 @@ export type MessageRoomState = {
 	// reactive tail (provider keeps current)
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
-	theme?: TSupportedThemes;
 };
 
 // The room-scoped fields this store owns. Tests and stories use pickMessageRoomState to
@@ -72,8 +70,7 @@ const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
 	'isThreadRoom',
 	'Message_GroupingPeriod',
 	'autoTranslateRoom',
-	'autoTranslateLanguage',
-	'theme'
+	'autoTranslateLanguage'
 ];
 
 export const pickMessageRoomState = (source: Record<string, any> = {}): Partial<MessageRoomState> => {
@@ -144,8 +141,6 @@ export const useBaseUrl = (): string | undefined => useMessageRoomStore(s => s.b
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
 export const useIsThreadRoom = (): boolean | undefined => useMessageRoomStore(s => s.isThreadRoom);
 export const useMessageGroupingPeriod = (): number | undefined => useMessageRoomStore(s => s.Message_GroupingPeriod);
-
-export const useMessageTheme = (): TSupportedThemes | undefined => useMessageRoomStore(s => s.theme);
 
 export const useAutoTranslate = (): { autoTranslateRoom?: boolean; autoTranslateLanguage?: string } =>
 	useMessageRoomStore(

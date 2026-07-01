@@ -1693,8 +1693,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							isThreadRoom={!!this.tmid}
 							Message_GroupingPeriod={Message_GroupingPeriod}
 							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
-							theme={theme}>
+							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
 							<List
 								ref={this.list}
 								listRef={this.flatList}
