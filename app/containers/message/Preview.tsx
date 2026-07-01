@@ -1,4 +1,5 @@
 import Message from './index';
+import { MessageRoomProvider } from './MessageRoomStore';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
@@ -19,16 +20,18 @@ const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 		return emoji ?? null;
 	};
 	return (
-		<Message
-			item={message}
-			user={user}
-			rid={message.rid}
-			baseUrl={baseUrl}
-			getCustomEmoji={getCustomEmoji}
-			timeFormat={Message_TimeFormat}
-			useRealName={useRealName}
-			isPreview
-		/>
+		<MessageRoomProvider user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} rid={message.rid}>
+			<Message
+				item={message}
+				user={user}
+				rid={message.rid}
+				baseUrl={baseUrl}
+				getCustomEmoji={getCustomEmoji}
+				timeFormat={Message_TimeFormat}
+				useRealName={useRealName}
+				isPreview
+			/>
+		</MessageRoomProvider>
 	);
 };
 
