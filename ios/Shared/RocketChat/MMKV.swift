@@ -19,11 +19,8 @@ extension MMKVBridge {
 	}
 	
 	// Server-scoped key: reactnativemeteor_usertoken-{server}-{userId}. Keep in sync with
-	// getUserTokenKey() (JS) and Ejson.token() (Android). The token used to be stored under
-	// reactnativemeteor_usertoken-{userId} (no server component), which let a lookup resolve a
-	// token belonging to a different server when two servers shared a userId (token confusion).
-	// Read the server-scoped slot first, falling back to the legacy slot only for the window
-	// between an app update and the JS migration running on next launch.
+	// getUserTokenKey() (JS) and Ejson.token() (Android); falls back to the legacy
+	// userId-only slot until the JS migration runs.
 	func userToken(for userId: String, server: String) -> String? {
 		if let userToken = string(forKey: "reactnativemeteor_usertoken-\(server)-\(userId)") {
 			return userToken

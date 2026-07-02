@@ -38,12 +38,6 @@ const roomTypes = {
 	channels: 'l'
 };
 
-/**
- * A `rocketchat://auth?host=…&token=…` deep link can silently authenticate the user to an
- * arbitrary server. Any app (or web page) can fire it, so before consuming a resume token for a
- * server the user is not already signed in to, ask for explicit confirmation. Resolves true if
- * the user confirms, false otherwise.
- */
 const confirmDeepLinkLogin = host =>
 	new Promise(resolve => {
 		// E2E tests bootstrap the session via a deep link and can't dismiss a native Alert, so
@@ -267,8 +261,6 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 
 		if (params.token) {
-			// A resume token in a deep link silently authenticates the user to `host`. Since any
-			// app or web page can fire this link, require explicit confirmation before consuming it.
 			const confirmed = yield call(confirmDeepLinkLogin, host);
 			if (!confirmed) {
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));

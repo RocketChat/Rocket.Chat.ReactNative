@@ -82,8 +82,6 @@ jest.mock('i18n-js', () => ({
 	default: { t: (k: string) => k }
 }));
 
-// Deep-link resume login asks for confirmation before authenticating. Default to confirming
-// (invoke onPress) so the existing login-path tests run; the decline path is covered explicitly.
 jest.mock('../../lib/methods/helpers/info', () => ({
 	showConfirmationAlert: jest.fn(({ onPress }: { onPress: () => void }) => onPress())
 }));
@@ -313,8 +311,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(loginRequested()).toBe(true);
 	});
 
-	// Security: a deep-link resume token must not silently authenticate. If the user declines
-	// the confirmation, no login is attempted and the app lands outside (manual login screen).
 	it('does not dispatch loginRequest when the deep-link login confirmation is declined', async () => {
 		jest.mocked(showConfirmationAlert).mockClear();
 		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());

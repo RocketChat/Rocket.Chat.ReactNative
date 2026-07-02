@@ -102,11 +102,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- exported="false": these receivers are only ever fired by the app's own
-             notification action PendingIntents (explicit, component-targeted intents from
-             the same UID). Exporting them let any installed app broadcast a crafted intent
-             and have the app reply/send as the authenticated user (message impersonation /
-             token exfiltration). -->
         <receiver
             android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
             android:enabled="true"

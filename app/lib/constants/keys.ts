@@ -24,14 +24,10 @@ export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
 /**
- * MMKV key for the auth token, scoped to BOTH server and userId.
- *
- * The token used to be stored under `${TOKEN_KEY}-${userId}` (no server component). Because two
- * servers can legitimately share the same userId (and a malicious server can force a collision),
- * that slot was ambiguous: the last writer won and lookups by a different server could resolve a
- * token that belongs to another server, enabling token confusion / exfiltration. Scoping the key
- * to (server, userId) makes the slot unambiguous. Keep this format in sync with
- * `Ejson.token()` on the Android side and the migration in the init saga.
+ * MMKV key for the auth token, scoped to (server, userId). Scoping by userId alone was ambiguous:
+ * two servers can share a userId (a malicious one can force it), so lookups could resolve another
+ * server's token (token confusion / exfiltration). Keep in sync with `Ejson.token()` on Android
+ * and the migration in the init saga.
  */
 export const getUserTokenKey = (server: string, userId: string): string => `${TOKEN_KEY}-${server}-${userId}`;
 export const CURRENT_SERVER = 'currentServer';

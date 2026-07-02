@@ -150,11 +150,8 @@ public class Ejson {
         }
 
         // Server-scoped key: reactnativemeteor_usertoken-{server}-{userId}.
-        // Keep this format in sync with getUserTokenKey() on the JS side. The token used to be
-        // stored under reactnativemeteor_usertoken-{userId} (no server component), which let a
-        // lookup resolve a token belonging to a different server when two servers shared a userId
-        // (token confusion). Read the server-scoped slot first and only fall back to the legacy
-        // slot for the window between an app update and the JS migration running on next launch.
+        // Keep in sync with getUserTokenKey() on the JS side; falls back to the legacy
+        // userId-only slot until the JS migration runs.
         String token = null;
         if (serverURL != null && !serverURL.isEmpty()) {
             String key = TOKEN_KEY.concat(serverURL).concat("-").concat(userId);

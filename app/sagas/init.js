@@ -24,15 +24,9 @@ export const initLocalSettings = function* initLocalSettings() {
 const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 
 /**
- * One-time migration: move auth tokens from the legacy non-server-scoped slot
- * `${TOKEN_KEY}-${userId}` to the server-scoped slot `${TOKEN_KEY}-${server}-${userId}`.
- * See `getUserTokenKey` for why the legacy scheme was ambiguous (token confusion).
- *
- * Only userIds referenced by a single server are migrated: the legacy slot can hold just one
- * token, so when several servers share a userId we can't tell which server it belongs to.
- * Migrating an ambiguous token would plant one server's token into another server's slot —
- * exactly the confusion this change exists to prevent — so those slots are dropped instead,
- * forcing a safe re-authentication.
+ * One-time migration of auth tokens from the legacy `${TOKEN_KEY}-${userId}` slot to the
+ * server-scoped `${TOKEN_KEY}-${server}-${userId}` slot (see `getUserTokenKey`). Only userIds
+ * owned by a single server are migrated; ambiguous ones are dropped, forcing re-authentication.
  */
 export const migrateTokenKeysToServerScoped = function* migrateTokenKeysToServerScoped() {
 	try {
