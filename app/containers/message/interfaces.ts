@@ -14,10 +14,6 @@ export interface IMessageAvatar {
 	small?: boolean;
 }
 
-export interface IMessageBroadcast {
-	broadcast?: boolean;
-}
-
 export interface IMessageContent {
 	tmid?: string;
 	isThreadRoom: boolean;

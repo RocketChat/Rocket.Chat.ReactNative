@@ -9,7 +9,6 @@ interface IMessageContainerProps {
 	item: TAnyMessageModel;
 	timeFormat?: string;
 	archived?: boolean;
-	broadcast?: boolean;
 	previousItem?: TAnyMessageModel;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom?: boolean;
@@ -39,7 +38,6 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			<Message
 				timeFormat={props.timeFormat}
 				archived={props.archived ?? false}
-				broadcast={props.broadcast ?? false}
 				useRealName={props.useRealName}
 				isReadReceiptEnabled={props.isReadReceiptEnabled}
 				isThreadRoom={!!props.isThreadRoom}

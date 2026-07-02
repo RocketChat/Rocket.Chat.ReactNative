@@ -6,18 +6,18 @@ import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants/colors';
-import { type IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';
 import { useMessageAuthor, useMessageCtx } from './MessageStore';
-import { useMessageUser, useReplyBroadcast } from './MessageRoomStore';
+import { useBroadcast, useMessageUser, useReplyBroadcast } from './MessageRoomStore';
 
 // TODO: Create a reusable button component for message
-const Broadcast = ({ broadcast }: IMessageBroadcast) => {
+const Broadcast = () => {
 	'use memo';
 
 	const { item } = useMessageCtx();
 	const user = useMessageUser();
 	const replyBroadcast = useReplyBroadcast();
+	const broadcast = useBroadcast();
 	const { theme } = useTheme();
 	const { u: author } = useMessageAuthor();
 	const isOwn = author?._id === user?.id;

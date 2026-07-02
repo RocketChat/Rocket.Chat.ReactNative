@@ -47,7 +47,6 @@ import {
 type TMessageProps = {
 	timeFormat?: string;
 	archived?: boolean;
-	broadcast?: boolean;
 	useRealName?: boolean;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
@@ -155,7 +154,7 @@ const MessageInner = (props: TMessageProps) => {
 					<Urls />
 					<Thread isThreadRoom={props.isThreadRoom} />
 					<Reactions />
-					<Broadcast broadcast={props.broadcast} />
+					<Broadcast />
 				</View>
 			</>
 		);
@@ -227,7 +226,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 						<MessageInner
 							timeFormat={props.timeFormat}
 							archived={props.archived}
-							broadcast={props.broadcast}
 							useRealName={props.useRealName}
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							isThreadRoom={props.isThreadRoom}
@@ -297,7 +295,6 @@ const MessageTouchable = (props: TMessageProps) => {
 				<Message
 					timeFormat={props.timeFormat}
 					archived={props.archived}
-					broadcast={props.broadcast}
 					useRealName={props.useRealName}
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					isThreadRoom={props.isThreadRoom}
@@ -338,7 +335,6 @@ const MessageTouchable = (props: TMessageProps) => {
 					<Message
 						timeFormat={props.timeFormat}
 						archived={props.archived}
-						broadcast={props.broadcast}
 						useRealName={props.useRealName}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						isThreadRoom={props.isThreadRoom}
