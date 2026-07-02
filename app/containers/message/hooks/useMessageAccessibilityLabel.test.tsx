@@ -13,7 +13,7 @@ jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
 
-type TArgs = { isReadReceiptEnabled?: boolean; autoTranslateLanguage?: string };
+type TArgs = { isReadReceiptEnabled?: boolean };
 
 const FIXED_TS = new Date('2024-01-15T12:34:56Z');
 const HOUR = FIXED_TS.toLocaleTimeString();
@@ -130,7 +130,7 @@ describe('useMessageAccessibilityLabel', () => {
 		expect(
 			renderLabel(
 				buildItem({ autoTranslate: true, translations: [{ _id: 't1', language: 'en', value: 'translated text' }] }),
-				{ autoTranslateLanguage: 'en' },
+				{},
 				{ autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
 			)
 		).toBe(`alice ${HOUR} Message translated into English.`);
@@ -146,19 +146,9 @@ describe('useMessageAccessibilityLabel', () => {
 					unread: true,
 					attachments: [{ image_url: 'https://example.com/img.png', altText: 'A wavy pattern' }]
 				}),
-				{ autoTranslateLanguage: 'en', isReadReceiptEnabled: true },
+				{ isReadReceiptEnabled: true },
 				{ autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
 			)
 		).toBe(`alice ${HOUR} Message translated into English. Image description: A wavy pattern Message was not read`);
-	});
-
-	it('falls back to English when autoTranslateLanguage is missing', () => {
-		expect(
-			renderLabel(
-				buildItem({ autoTranslate: true, translations: [{ _id: 't1', language: 'en', value: 'translated text' }] }),
-				{},
-				{ autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
-			)
-		).toBe(`alice ${HOUR} Message translated into English.`);
 	});
 });
