@@ -11,7 +11,6 @@ interface IMessageContainerProps {
 	previousItem?: TAnyMessageModel;
 	isReadReceiptEnabled?: boolean;
 	useRealName?: boolean;
-	autoTranslateLanguage?: string;
 	isIgnored?: boolean;
 	highlighted?: boolean;
 	onLongPress?: (item: TAnyMessageModel) => void;
@@ -40,7 +39,6 @@ const MessageContainer = (props: IMessageContainerProps) => {
 				isPreview={props.isPreview}
 				highlighted={props.highlighted}
 				isIgnored={props.isIgnored ?? false}
-				autoTranslateLanguage={props.autoTranslateLanguage}
 			/>
 			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 		</MessageProvider>

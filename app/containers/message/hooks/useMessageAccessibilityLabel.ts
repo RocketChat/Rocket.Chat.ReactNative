@@ -13,6 +13,7 @@ import {
 	useThreadData,
 	useThreadPosition
 } from '../MessageStore';
+import { useAutoTranslate } from '../MessageRoomStore';
 
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {
 	let result = label;
@@ -31,13 +32,12 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 
 export const useMessageAccessibilityLabel = ({
 	useRealName,
-	isReadReceiptEnabled,
-	autoTranslateLanguage
+	isReadReceiptEnabled
 }: {
 	useRealName?: boolean;
 	isReadReceiptEnabled?: boolean;
-	autoTranslateLanguage?: string;
 }): string => {
+	const { autoTranslateLanguage } = useAutoTranslate();
 	const { attachments, mentions, channels, comment, t: type } = useContentData();
 	const { u: author, role } = useMessageAuthor();
 	const { messageText, isTranslated } = useMessageText();

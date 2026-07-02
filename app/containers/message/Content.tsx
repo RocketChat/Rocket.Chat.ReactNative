@@ -18,7 +18,7 @@ import {
 	useMessageText,
 	useOnLinkPress
 } from './MessageStore';
-import { useGetCustomEmoji, useIsThreadRoom, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
+import { useAutoTranslate, useGetCustomEmoji, useIsThreadRoom, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
 const Content = (props: IMessageContent) => {
 	'use memo';
@@ -29,6 +29,7 @@ const Content = (props: IMessageContent) => {
 	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 	const navToRoomInfo = useNavToRoomInfo();
 	const isThreadRoom = useIsThreadRoom();
+	const { autoTranslateLanguage } = useAutoTranslate();
 
 	const isInfo = useIsInfo();
 	const isEncrypted = useIsEncrypted();
@@ -72,7 +73,7 @@ const Content = (props: IMessageContent) => {
 	} else if (isPreview) {
 		const previewMsg =
 			messageText ||
-			(attachments?.length ? getPreviewMessageFromAttachment(attachments[0], props.autoTranslateLanguage) : undefined);
+			(attachments?.length ? getPreviewMessageFromAttachment(attachments[0], autoTranslateLanguage) : undefined);
 		content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
 	} else if (messageText) {
 		content = (

@@ -31,6 +31,7 @@ type TOverrides = Partial<IMessageContent> & {
 	isTranslated?: boolean;
 	isHeader?: boolean;
 	hasError?: boolean;
+	autoTranslateLanguage?: string;
 };
 
 const baseProps: TOverrides = {
@@ -55,12 +56,13 @@ const buildItem = (msg: string | undefined, attachments: IAttachment[] | undefin
 	} as unknown as TAnyMessageModel);
 
 const tree = (overrides: TOverrides) => {
-	const { msg, attachments, isEncrypted, ...contentProps } = overrides;
+	const { msg, attachments, isEncrypted, autoTranslateLanguage, ...contentProps } = overrides;
 	const contextValue = {
 		user: { username: 'john' },
 		onLinkPress: jest.fn(),
 		getCustomEmoji: jest.fn(),
-		navToRoomInfo: jest.fn()
+		navToRoomInfo: jest.fn(),
+		autoTranslateLanguage
 	};
 	return (
 		<Provider store={mockedStore}>

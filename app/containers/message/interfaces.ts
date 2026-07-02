@@ -18,7 +18,6 @@ export interface IMessageContent {
 	tmid?: string;
 	useRealName?: boolean;
 	isIgnored: boolean;
-	autoTranslateLanguage?: string;
 }
 
 export interface IMessageEmoji {

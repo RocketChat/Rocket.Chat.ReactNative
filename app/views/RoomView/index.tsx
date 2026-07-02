@@ -1462,7 +1462,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					timeFormat={Message_TimeFormat}
 					useRealName={useRealName}
 					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					highlighted={highlightedMessage === item.id}
 					dateSeparator={dateSeparator}

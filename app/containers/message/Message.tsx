@@ -27,7 +27,7 @@ import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLab
 import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
 import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
-import { useArchived } from './MessageRoomStore';
+import { useArchived, useAutoTranslate } from './MessageRoomStore';
 import {
 	useBlocks,
 	useContentData,
@@ -53,7 +53,6 @@ type TMessageProps = {
 	highlighted?: boolean;
 	isIgnored: boolean;
 	isBeingEdited?: boolean;
-	autoTranslateLanguage?: string;
 	small?: boolean;
 };
 
@@ -82,12 +81,7 @@ const MessageInner = (props: TMessageProps) => {
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 				<>
 					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
-					<Content
-						tmid={tmid}
-						useRealName={props.useRealName}
-						isIgnored={props.isIgnored}
-						autoTranslateLanguage={props.autoTranslateLanguage}
-					/>
+					<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
 					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
 				</>
 				<Urls />
@@ -109,12 +103,7 @@ const MessageInner = (props: TMessageProps) => {
 		content = (
 			<>
 				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				<Content
-					tmid={tmid}
-					useRealName={props.useRealName}
-					isIgnored={props.isIgnored}
-					autoTranslateLanguage={props.autoTranslateLanguage}
-				/>
+				<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
 				<CallButton />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 			</>
@@ -140,12 +129,7 @@ const MessageInner = (props: TMessageProps) => {
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 				<View style={{ gap: 4 }}>
 					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
-					<Content
-						tmid={tmid}
-						useRealName={props.useRealName}
-						isIgnored={props.isIgnored}
-						autoTranslateLanguage={props.autoTranslateLanguage}
-					/>
+					<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
 					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
 					<Urls />
 					<Thread />
@@ -174,6 +158,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 	const isEdited = useIsEdited();
 	const { hasError } = useMessageStatus();
 	const { unread, pinned } = useMessageMeta();
+	const { autoTranslateLanguage } = useAutoTranslate();
 
 	if (isThreadReply || isThreadSequential || isInfo || props.isIgnored) {
 		const thread = isThreadReply ? <RepliedThread isHeader={isHeader} /> : null;
@@ -186,16 +171,11 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<A11y.Index
 						accessible={isTranslated}
 						accessibilityLabel={messageText || ''}
-						accessibilityLanguage={props.autoTranslateLanguage}
+						accessibilityLanguage={autoTranslateLanguage}
 						index={2}
 						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
-							<Content
-								tmid={tmid}
-								useRealName={props.useRealName}
-								isIgnored={props.isIgnored}
-								autoTranslateLanguage={props.autoTranslateLanguage}
-							/>
+							<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
 									<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
@@ -213,7 +193,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 			<A11y.Index
 				accessible={isTranslated}
 				accessibilityLabel={messageText || ''}
-				accessibilityLanguage={props.autoTranslateLanguage}
+				accessibilityLanguage={autoTranslateLanguage}
 				index={2}>
 				<View style={styles.flex}>
 					<MessageAvatar />
@@ -226,7 +206,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 							highlighted={props.highlighted}
 							isIgnored={props.isIgnored}
 							isBeingEdited={props.isBeingEdited}
-							autoTranslateLanguage={props.autoTranslateLanguage}
 							small={props.small}
 						/>
 					</View>
@@ -268,8 +247,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const onLongPress = useMessageLongPress();
 	const accessibilityLabelValue = useMessageAccessibilityLabel({
 		useRealName: props.useRealName,
-		isReadReceiptEnabled: props.isReadReceiptEnabled,
-		autoTranslateLanguage: props.autoTranslateLanguage
+		isReadReceiptEnabled: props.isReadReceiptEnabled
 	});
 	const isDisabled = (isInfo && !isThreadReply) || archived || isTemp || type === 'jitsi_call_started';
 	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
@@ -294,7 +272,6 @@ const MessageTouchable = (props: TMessageProps) => {
 					highlighted={props.highlighted}
 					isIgnored={isIgnored}
 					isBeingEdited={isBeingEdited}
-					autoTranslateLanguage={props.autoTranslateLanguage}
 					small={props.small}
 				/>
 			</A11y.Order>
@@ -332,7 +309,6 @@ const MessageTouchable = (props: TMessageProps) => {
 						highlighted={props.highlighted}
 						isIgnored={isIgnored}
 						isBeingEdited={isBeingEdited}
-						autoTranslateLanguage={props.autoTranslateLanguage}
 						small={props.small}
 						handleLongPress={!isDisabled ? handleLongPress : undefined}
 					/>
