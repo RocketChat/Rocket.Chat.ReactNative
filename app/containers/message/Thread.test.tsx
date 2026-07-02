@@ -16,11 +16,11 @@ const baseContextValue = {
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
 	({ id: 'msg1', msg: 'hello', tcount: 3, tlm: undefined, tmid: undefined, ...overrides } as unknown as TAnyMessageModel);
 
-const renderThread = (item: TAnyMessageModel, props: Parameters<typeof Thread>[0]) =>
+const renderThread = (item: TAnyMessageModel) =>
 	render(
 		<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
 			<MessageProvider item={item}>
-				<Thread {...props} />
+				<Thread />
 			</MessageProvider>
 		</MessageRoomProvider>
 	);
@@ -28,9 +28,7 @@ const renderThread = (item: TAnyMessageModel, props: Parameters<typeof Thread>[0
 describe('Thread — tlm-only update regression', () => {
 	test('renders null when tlm is undefined, then shows button after tlm arrives (same tcount)', () => {
 		const item = buildItem();
-		const { queryByTestId, rerender, getByTestId } = renderThread(item, {
-			isThreadRoom: false
-		});
+		const { queryByTestId, rerender, getByTestId } = renderThread(item);
 
 		expect(queryByTestId('message-thread-button-hello')).toBeNull();
 
@@ -38,7 +36,7 @@ describe('Thread — tlm-only update regression', () => {
 		rerender(
 			<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
 				<MessageProvider item={updatedItem}>
-					<Thread isThreadRoom={false} />
+					<Thread />
 				</MessageProvider>
 			</MessageRoomProvider>
 		);

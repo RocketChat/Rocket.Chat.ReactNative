@@ -10,7 +10,6 @@ interface IMessageContainerProps {
 	timeFormat?: string;
 	previousItem?: TAnyMessageModel;
 	isReadReceiptEnabled?: boolean;
-	isThreadRoom?: boolean;
 	useRealName?: boolean;
 	autoTranslateLanguage?: string;
 	isIgnored?: boolean;
@@ -38,7 +37,6 @@ const MessageContainer = (props: IMessageContainerProps) => {
 				timeFormat={props.timeFormat}
 				useRealName={props.useRealName}
 				isReadReceiptEnabled={props.isReadReceiptEnabled}
-				isThreadRoom={!!props.isThreadRoom}
 				isPreview={props.isPreview}
 				highlighted={props.highlighted}
 				isIgnored={props.isIgnored ?? false}

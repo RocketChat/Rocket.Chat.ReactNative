@@ -166,7 +166,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
 			timeFormat: 'MMM Do YYYY, h:mm:ss a',
-			isThreadRoom: true,
 			useRealName,
 			onPress: () => this.jumpToMessage({ item })
 		});

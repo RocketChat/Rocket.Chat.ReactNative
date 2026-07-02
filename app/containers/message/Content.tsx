@@ -18,7 +18,7 @@ import {
 	useMessageText,
 	useOnLinkPress
 } from './MessageStore';
-import { useGetCustomEmoji, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
+import { useGetCustomEmoji, useIsThreadRoom, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
 const Content = (props: IMessageContent) => {
 	'use memo';
@@ -28,6 +28,7 @@ const Content = (props: IMessageContent) => {
 	const onLinkPress = useOnLinkPress();
 	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 	const navToRoomInfo = useNavToRoomInfo();
+	const isThreadRoom = useIsThreadRoom();
 
 	const isInfo = useIsInfo();
 	const isEncrypted = useIsEncrypted();
@@ -56,7 +57,7 @@ const Content = (props: IMessageContent) => {
 		return renderMessageContent;
 	}
 
-	const isPreview = props.tmid && !props.isThreadRoom;
+	const isPreview = props.tmid && !isThreadRoom;
 	let content = null;
 
 	if (isEncrypted) {

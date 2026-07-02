@@ -16,7 +16,6 @@ export interface IMessageAvatar {
 
 export interface IMessageContent {
 	tmid?: string;
-	isThreadRoom: boolean;
 	useRealName?: boolean;
 	isIgnored: boolean;
 	autoTranslateLanguage?: string;
@@ -27,10 +26,6 @@ export interface IMessageEmoji {
 	standardEmojiStyle: { fontSize: number };
 	customEmojiStyle: StyleProp<ImageStyle>;
 	getCustomEmoji: TGetCustomEmoji;
-}
-
-export interface IMessageThread {
-	isThreadRoom: boolean;
 }
 
 export interface IMessageRepliedThread {

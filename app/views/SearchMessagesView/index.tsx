@@ -291,7 +291,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			<Message
 				item={message}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
-				isThreadRoom
 				useRealName={useRealName}
 				onPress={() => this.jumpToMessage({ item })}
 			/>

@@ -49,7 +49,6 @@ type TMessageProps = {
 	timeFormat?: string;
 	useRealName?: boolean;
 	isReadReceiptEnabled?: boolean;
-	isThreadRoom: boolean;
 	isPreview?: boolean;
 	highlighted?: boolean;
 	isIgnored: boolean;
@@ -85,7 +84,6 @@ const MessageInner = (props: TMessageProps) => {
 					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
 					<Content
 						tmid={tmid}
-						isThreadRoom={props.isThreadRoom}
 						useRealName={props.useRealName}
 						isIgnored={props.isIgnored}
 						autoTranslateLanguage={props.autoTranslateLanguage}
@@ -113,7 +111,6 @@ const MessageInner = (props: TMessageProps) => {
 				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				<Content
 					tmid={tmid}
-					isThreadRoom={props.isThreadRoom}
 					useRealName={props.useRealName}
 					isIgnored={props.isIgnored}
 					autoTranslateLanguage={props.autoTranslateLanguage}
@@ -129,7 +126,7 @@ const MessageInner = (props: TMessageProps) => {
 			<>
 				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				<Blocks />
-				<Thread isThreadRoom={props.isThreadRoom} />
+				<Thread />
 				<Reactions />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 			</>
@@ -145,14 +142,13 @@ const MessageInner = (props: TMessageProps) => {
 					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
 					<Content
 						tmid={tmid}
-						isThreadRoom={props.isThreadRoom}
 						useRealName={props.useRealName}
 						isIgnored={props.isIgnored}
 						autoTranslateLanguage={props.autoTranslateLanguage}
 					/>
 					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
 					<Urls />
-					<Thread isThreadRoom={props.isThreadRoom} />
+					<Thread />
 					<Reactions />
 					<Broadcast />
 				</View>
@@ -196,7 +192,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 						<View style={styles.messageContent}>
 							<Content
 								tmid={tmid}
-								isThreadRoom={props.isThreadRoom}
 								useRealName={props.useRealName}
 								isIgnored={props.isIgnored}
 								autoTranslateLanguage={props.autoTranslateLanguage}
@@ -227,7 +222,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 							timeFormat={props.timeFormat}
 							useRealName={props.useRealName}
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
-							isThreadRoom={props.isThreadRoom}
 							isPreview={props.isPreview}
 							highlighted={props.highlighted}
 							isIgnored={props.isIgnored}
@@ -296,7 +290,6 @@ const MessageTouchable = (props: TMessageProps) => {
 					timeFormat={props.timeFormat}
 					useRealName={props.useRealName}
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
-					isThreadRoom={props.isThreadRoom}
 					isPreview={props.isPreview}
 					highlighted={props.highlighted}
 					isIgnored={isIgnored}
@@ -335,7 +328,6 @@ const MessageTouchable = (props: TMessageProps) => {
 						timeFormat={props.timeFormat}
 						useRealName={props.useRealName}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
-						isThreadRoom={props.isThreadRoom}
 						isPreview={props.isPreview}
 						highlighted={props.highlighted}
 						isIgnored={isIgnored}

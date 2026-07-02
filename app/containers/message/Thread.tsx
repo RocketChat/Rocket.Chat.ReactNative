@@ -3,17 +3,17 @@ import { Text, View } from 'react-native';
 import styles from './styles';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
-import { type IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
 import { useMessageCtx, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from './MessageStore';
-import { useMessageUser, useOnThreadPress, useToggleFollowThread } from './MessageRoomStore';
+import { useIsThreadRoom, useMessageUser, useOnThreadPress, useToggleFollowThread } from './MessageRoomStore';
 
-const Thread = ({ isThreadRoom }: IMessageThread) => {
+const Thread = () => {
 	'use memo';
 
 	const { theme, colors } = useTheme();
 	const { item } = useMessageCtx();
+	const isThreadRoom = useIsThreadRoom();
 	const threadBadgeColor = useThreadBadgeColor();
 	const toggleFollowThread = useToggleFollowThread();
 	const user = useMessageUser();

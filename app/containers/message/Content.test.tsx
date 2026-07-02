@@ -37,7 +37,6 @@ const baseProps: TOverrides = {
 	_id: 'msg-1',
 	isTemp: false,
 	isInfo: false,
-	isThreadRoom: false,
 	isEdited: false,
 	isEncrypted: false,
 	isIgnored: false,
