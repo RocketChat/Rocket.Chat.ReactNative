@@ -186,7 +186,7 @@ const Url = ({ url }: { url: IUrl }) => {
 		</Touchable>
 	);
 };
-const Urls = (_props: { urls?: IUrl[] }): ReactElement[] | null => {
+const Urls = (): ReactElement[] | null => {
 	'use memo';
 
 	const urls = useUrls();

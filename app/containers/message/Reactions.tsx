@@ -28,10 +28,6 @@ interface IMessageReaction {
 	theme: TSupportedThemes;
 }
 
-interface IMessageReactions {
-	reactions?: IReaction[];
-}
-
 const AddReaction = ({ theme }: { theme: TSupportedThemes }) => {
 	'use memo';
 
@@ -97,7 +93,7 @@ const Reaction = ({ reaction, theme }: IMessageReaction) => {
 	);
 };
 
-const Reactions = (_props: IMessageReactions) => {
+const Reactions = () => {
 	'use memo';
 
 	const { theme } = useTheme();

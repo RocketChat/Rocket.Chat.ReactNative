@@ -61,7 +61,7 @@ const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPres
 			onReactionLongPress: jest.fn(),
 			getCustomEmoji
 		}}>
-		<Reactions reactions={item.reactions} />
+		<Reactions />
 	</MessageProviders>
 );
 
