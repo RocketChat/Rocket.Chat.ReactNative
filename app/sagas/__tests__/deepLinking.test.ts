@@ -329,6 +329,49 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(actions.some(a => a.type === APP.START && (a as any).root === RootEnum.ROOT_OUTSIDE)).toBe(true);
 	});
 
+	// Under RUNNING_E2E_TESTS the prompt is auto-confirmed so most flows don't have to dismiss a
+	// native Alert — except when the deep link carries `e2eConfirmPrompt=true`, which opts a
+	// dedicated e2e flow back into the real prompt (see the deeplink.yaml Maestro test).
+	describe('RUNNING_E2E_TESTS auto-confirm gate', () => {
+		const original = process.env.RUNNING_E2E_TESTS;
+		beforeEach(() => {
+			process.env.RUNNING_E2E_TESTS = 'true';
+			jest.mocked(showConfirmationAlert).mockClear();
+		});
+		afterEach(() => {
+			process.env.RUNNING_E2E_TESTS = original;
+		});
+
+		it('auto-confirms without showing the prompt when no e2eConfirmPrompt marker is present', async () => {
+			const { store, actions } = setupRecordingStore();
+			const loginRequested = () => actions.some(a => a.type === LOGIN.REQUEST);
+
+			store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+			await flushSagaMicrotasks();
+			await jest.advanceTimersByTimeAsync(1000);
+			await flushSagaMicrotasks();
+			store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+			await flushSagaMicrotasks();
+			store.dispatch(connectSuccess());
+			await flushSagaMicrotasks();
+
+			// No prompt shown, yet login still proceeds — pre-fix silent behavior preserved.
+			expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+			expect(loginRequested()).toBe(true);
+		});
+
+		it('shows the real prompt when the deep link carries e2eConfirmPrompt=true', async () => {
+			const store = setupStore();
+
+			store.dispatch(deepLinkingOpen(makeParamsWithToken({ e2eConfirmPrompt: 'true' })));
+			await flushSagaMicrotasks();
+			await jest.advanceTimersByTimeAsync(1000);
+			await flushSagaMicrotasks();
+
+			expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		});
+	});
+
 	/**
 	 * Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
 	 * Flush microtasks. Assert goRoom NOT yet called.

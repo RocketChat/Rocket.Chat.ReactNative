@@ -38,12 +38,11 @@ const roomTypes = {
 	channels: 'l'
 };
 
-const confirmDeepLinkLogin = host =>
+const confirmDeepLinkLogin = (host, params = {}) =>
 	new Promise(resolve => {
-		// E2E tests bootstrap the session via a deep link and can't dismiss a native Alert, so
-		// auto-confirm under RUNNING_E2E_TESTS. This preserves the pre-fix silent behavior for
-		// tests only; real users still get the security prompt.
-		if (process.env.RUNNING_E2E_TESTS === 'true') {
+		// Under E2E tests, auto-confirm so flows don't have to dismiss the native Alert.
+		// `e2eConfirmPrompt=true` opts back into the real prompt to test it. Test-only; real users always get the prompt.
+		if (process.env.RUNNING_E2E_TESTS === 'true' && params.e2eConfirmPrompt !== 'true') {
 			resolve(true);
 			return;
 		}
@@ -261,7 +260,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 
 		if (params.token) {
-			const confirmed = yield call(confirmDeepLinkLogin, host);
+			const confirmed = yield call(confirmDeepLinkLogin, host, params);
 			if (!confirmed) {
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				return;

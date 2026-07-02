@@ -310,3 +310,78 @@ tags:
     visible:
       id: 'new-server-view'
     timeout: 60000
+
+# should show a security confirmation prompt on deep link login and abort when cancelled.
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- stopApp: ${APP_ID}
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&e2eConfirmPrompt=true')}
+- extendedWaitUntil:
+    visible:
+      text: '.*Sign in to this server.*'
+    timeout: 60000
+- assertVisible:
+    text: '.*A link is asking to sign you in.*'
+# decline the prompt — the app must NOT sign in or navigate to the room
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          id: 'android:id/button2'
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - tapOn:
+          text: 'Cancel'
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+- assertNotVisible:
+    id: 'room-view-title-${output.room.name}'
+
+# should show a security confirmation prompt on deep link login and sign in when confirmed
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- stopApp: ${APP_ID}
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&e2eConfirmPrompt=true')}
+- extendedWaitUntil:
+    visible:
+      text: '.*Sign in to this server.*'
+    timeout: 60000
+# confirm the prompt — the app must sign in and navigate to the room.
+# android:id/button1 is the positive (confirm) button, disambiguating it from the "Login" button
+# rendered on the workspace screen behind the alert.
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'android:id/button1'
+          timeout: 60000
+      - tapOn:
+          id: 'android:id/button1'
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - tapOn:
+          text: 'Login'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
