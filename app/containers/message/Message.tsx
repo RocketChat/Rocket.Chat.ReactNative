@@ -65,7 +65,7 @@ const MessageInner = (props: TMessageProps) => {
 
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
-	const { attachments, t: type } = useContentData();
+	const { t: type } = useContentData();
 	const { blocks } = useBlocks();
 	const { tmid } = useThreadData();
 	const { u: author } = useMessageAuthor();
@@ -78,9 +78,9 @@ const MessageInner = (props: TMessageProps) => {
 				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				{showTimeLarge ? <MessageTime /> : null}
 				<>
-					<Quote attachments={attachments} author={author} />
+					<Quote />
 					<Content tmid={tmid} isIgnored={props.isIgnored} />
-					<Attachments attachments={attachments} author={author} />
+					<Attachments author={author} />
 				</>
 				<Urls />
 			</>
@@ -126,9 +126,9 @@ const MessageInner = (props: TMessageProps) => {
 				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				{showTimeLarge ? <MessageTime /> : null}
 				<View style={{ gap: 4 }}>
-					<Quote attachments={attachments} author={author} />
+					<Quote />
 					<Content tmid={tmid} isIgnored={props.isIgnored} />
-					<Attachments attachments={attachments} author={author} />
+					<Attachments author={author} />
 					<Urls />
 					<Thread />
 					<Reactions />
@@ -149,7 +149,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
 	const isInfo = useIsInfo();
 	const { messageText, isTranslated } = useMessageText();
-	const { attachments, t: type } = useContentData();
+	const { t: type } = useContentData();
 	const { tmid } = useThreadData();
 	const { u: author } = useMessageAuthor();
 	const id = useMessageField(item => item.id);
@@ -176,7 +176,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 							<Content tmid={tmid} isIgnored={props.isIgnored} />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
-									<Attachments attachments={attachments} author={author} />
+									<Attachments author={author} />
 								</View>
 							) : null}
 						</View>

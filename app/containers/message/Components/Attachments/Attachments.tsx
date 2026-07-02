@@ -8,7 +8,7 @@ import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
 import { useShowAttachment, useGetCustomEmoji } from '../../MessageRoomStore';
-import { useTranslateLanguage } from '../../MessageStore';
+import { useContentData, useTranslateLanguage } from '../../MessageStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
@@ -19,8 +19,10 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageA
 	const translateLanguage = useTranslateLanguage();
 	const showAttachment = useShowAttachment();
 	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
+	const { attachments: storeAttachments } = useContentData();
+	const resolved = attachments ?? storeAttachments;
 
-	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
+	const nonQuoteAttachments = resolved?.filter(isContentAttachment);
 
 	if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 		return null;

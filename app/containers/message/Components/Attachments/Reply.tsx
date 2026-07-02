@@ -222,8 +222,8 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 					<View style={styles.titleAndDescriptionContainer}>
 						<Title attachment={attachment} theme={theme} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
-						<Quote attachments={attachment.attachments} />
-						<Attachments attachments={attachment.attachments} />
+						<Quote attachments={attachment.attachments ?? []} />
+						<Attachments attachments={attachment.attachments ?? []} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
 							<View style={styles.backdrop}>
