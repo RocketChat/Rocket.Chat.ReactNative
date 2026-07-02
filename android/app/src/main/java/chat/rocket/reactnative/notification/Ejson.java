@@ -162,9 +162,7 @@ public class Ejson {
         }
 
         if (token == null || token.isEmpty()) {
-            // Legacy fallback (pre-migration). Safe because the exported-receiver vector that
-            // abused this ambiguity is closed (ReplyBroadcast/DismissNotification are not exported).
-            token = mmkv.decodeString(TOKEN_KEY.concat(userId));
+            token = decodeLegacyUserIdScopedToken(mmkv, userId);
         }
 
         if (token == null || token.isEmpty()) {
@@ -174,6 +172,17 @@ public class Ejson {
         }
 
         return token != null ? token : "";
+    }
+
+    /**
+     * Reads the token from the legacy userId-only slot, used until {@code migrateTokenKeysToServerScoped}
+     * (JS init saga) moves it to the server-scoped slot and deletes it.
+     *
+     * @deprecated remove once the migration is universal.
+     */
+    @Deprecated
+    private String decodeLegacyUserIdScopedToken(MMKV mmkv, String userId) {
+        return mmkv.decodeString(TOKEN_KEY.concat(userId));
     }
 
     public String userId() {
