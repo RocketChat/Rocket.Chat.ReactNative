@@ -304,7 +304,8 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				user={user}
 				baseUrl={baseUrl}
 				rid={this.rid}
-				isThreadRoom>
+				isThreadRoom
+				timeFormat={'MMM Do YYYY, h:mm:ss a'}>
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

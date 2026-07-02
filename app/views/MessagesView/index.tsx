@@ -360,7 +360,8 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 					user={user}
 					baseUrl={baseUrl}
 					rid={this.rid}
-					isThreadRoom>
+					isThreadRoom
+					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
 					<FlatList
 						data={messages}
 						renderItem={this.renderItem}

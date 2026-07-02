@@ -1603,7 +1603,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom, canAutoTranslate } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod } = this.props;
+		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod, Message_TimeFormat } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1686,6 +1686,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							broadcast={'id' in room && room.broadcast}
 							isThreadRoom={!!this.tmid}
 							Message_GroupingPeriod={Message_GroupingPeriod}
+							timeFormat={Message_TimeFormat}
 							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
 							<List
