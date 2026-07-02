@@ -70,7 +70,6 @@ interface IMessageFields {
 
 interface IMessageReply {
 	attachment: IAttachment;
-	timeFormat?: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 

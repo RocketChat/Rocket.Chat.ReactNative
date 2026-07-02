@@ -24,7 +24,7 @@ export default {
 export const Item = () => (
 	<View style={{ padding: 10 }}>
 		<MessageRoomProvider {...pickMessageRoomState({ onLongPress: () => {}, user: { username: 'Marcos' } })}>
-			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} timeFormat='LT' />
+			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} />
 		</MessageRoomProvider>
 	</View>
 );

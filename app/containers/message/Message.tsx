@@ -46,7 +46,6 @@ import {
 } from './MessageStore';
 
 type TMessageProps = {
-	timeFormat?: string;
 	isReadReceiptEnabled?: boolean;
 	isPreview?: boolean;
 	highlighted?: boolean;
@@ -76,12 +75,12 @@ const MessageInner = (props: TMessageProps) => {
 	if (props.isPreview) {
 		content = (
 			<>
-				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
+				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				{showTimeLarge ? <MessageTime /> : null}
 				<>
-					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
+					<Quote attachments={attachments} author={author} />
 					<Content tmid={tmid} isIgnored={props.isIgnored} />
-					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
+					<Attachments attachments={attachments} author={author} />
 				</>
 				<Urls />
 			</>
@@ -91,8 +90,8 @@ const MessageInner = (props: TMessageProps) => {
 	if (type === 'discussion-created') {
 		content = (
 			<>
-				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
+				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				{showTimeLarge ? <MessageTime /> : null}
 				<Discussion />
 			</>
 		);
@@ -101,10 +100,10 @@ const MessageInner = (props: TMessageProps) => {
 	if (type === 'jitsi_call_started') {
 		content = (
 			<>
-				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				<Content tmid={tmid} isIgnored={props.isIgnored} />
 				<CallButton />
-				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
+				{showTimeLarge ? <MessageTime /> : null}
 			</>
 		);
 	}
@@ -112,11 +111,11 @@ const MessageInner = (props: TMessageProps) => {
 	if (blocks && blocks.length) {
 		content = (
 			<>
-				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				<Blocks />
 				<Thread />
 				<Reactions />
-				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
+				{showTimeLarge ? <MessageTime /> : null}
 			</>
 		);
 	}
@@ -124,12 +123,12 @@ const MessageInner = (props: TMessageProps) => {
 	if (!content) {
 		content = (
 			<>
-				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
+				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				{showTimeLarge ? <MessageTime /> : null}
 				<View style={{ gap: 4 }}>
-					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
+					<Quote attachments={attachments} author={author} />
 					<Content tmid={tmid} isIgnored={props.isIgnored} />
-					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
+					<Attachments attachments={attachments} author={author} />
 					<Urls />
 					<Thread />
 					<Reactions />
@@ -177,7 +176,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 							<Content tmid={tmid} isIgnored={props.isIgnored} />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
-									<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
+									<Attachments attachments={attachments} author={author} />
 								</View>
 							) : null}
 						</View>
@@ -198,7 +197,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<MessageAvatar />
 					<View style={styles.messageContent}>
 						<MessageInner
-							timeFormat={props.timeFormat}
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							isPreview={props.isPreview}
 							highlighted={props.highlighted}
@@ -262,7 +260,6 @@ const MessageTouchable = (props: TMessageProps) => {
 		return (
 			<A11y.Order>
 				<Message
-					timeFormat={props.timeFormat}
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					isPreview={props.isPreview}
 					highlighted={props.highlighted}
@@ -298,7 +295,6 @@ const MessageTouchable = (props: TMessageProps) => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
 					<Message
-						timeFormat={props.timeFormat}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						isPreview={props.isPreview}
 						highlighted={props.highlighted}

@@ -1410,7 +1410,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen } = this.state;
-		const { Message_TimeFormat, Message_Read_Receipt_Enabled, inAppFeedback } = this.props;
+		const { Message_Read_Receipt_Enabled, inAppFeedback } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const federated = 'id' in room && isRoomFederated(room);
@@ -1459,7 +1459,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					isIgnored={this.isIgnored(item)}
 					previousItem={previousItem}
 					onLongPress={this.onMessageLongPress}
-					timeFormat={Message_TimeFormat}
 					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					highlighted={highlightedMessage === item.id}

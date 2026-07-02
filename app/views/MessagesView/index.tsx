@@ -164,7 +164,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		const { user } = this.props;
 		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
-			timeFormat: 'MMM Do YYYY, h:mm:ss a',
 			onPress: () => this.jumpToMessage({ item })
 		});
 

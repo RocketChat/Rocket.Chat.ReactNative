@@ -6,7 +6,6 @@ import { type IAttachment, type IUserMessage } from '../../definitions';
 
 export interface IMessageAttachments {
 	attachments?: IAttachment[];
-	timeFormat?: string;
 	author?: IUserMessage;
 }
 

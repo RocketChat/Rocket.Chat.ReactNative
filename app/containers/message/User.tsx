@@ -48,11 +48,10 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageUser {
-	timeFormat?: string;
 	isReadReceiptEnabled?: boolean;
 }
 
-const User = ({ timeFormat, isReadReceiptEnabled }: IMessageUser) => {
+const User = ({ isReadReceiptEnabled }: IMessageUser) => {
 	'use memo';
 
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
@@ -101,7 +100,7 @@ const User = ({ timeFormat, isReadReceiptEnabled }: IMessageUser) => {
 					<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{textContent}
 					</Text>
-					{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts as Date | undefined} />}
+					{isLargeFontScale ? null : <MessageTime ts={ts as Date | undefined} />}
 				</Pressable>
 				<RightIcons
 					type={type}

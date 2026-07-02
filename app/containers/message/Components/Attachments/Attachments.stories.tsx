@@ -68,7 +68,7 @@ export default {
 export const SingleImageOldServer = () => (
 	<StoryWrapper store={oldServerStore}>
 		<View style={{ padding: 10, width: 350 }}>
-			<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
+			<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} />
 		</View>
 	</StoryWrapper>
 );
@@ -77,7 +77,7 @@ export const SingleImageOldServer = () => (
 export const SingleImageNewServer = () => (
 	<StoryWrapper store={newServerStore}>
 		<View style={{ padding: 10, width: 350 }}>
-			<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} timeFormat='LT' />
+			<Attachments attachments={[MOCK_IMAGE_WITH_ALT]} />
 		</View>
 	</StoryWrapper>
 );
@@ -86,7 +86,7 @@ export const SingleImageNewServer = () => (
 export const SingleImageNoAlt = () => (
 	<StoryWrapper store={newServerStore}>
 		<View style={{ padding: 10, width: 350 }}>
-			<Attachments attachments={[MOCK_IMAGE_1]} timeFormat='LT' />
+			<Attachments attachments={[MOCK_IMAGE_1]} />
 		</View>
 	</StoryWrapper>
 );
@@ -95,7 +95,7 @@ export const SingleImageNoAlt = () => (
 export const MultipleImagesNewServer = () => (
 	<StoryWrapper store={newServerStore}>
 		<View style={{ padding: 10, width: 350 }}>
-			<Attachments attachments={MOCK_MULTIPLE_IMAGES} timeFormat='LT' />
+			<Attachments attachments={MOCK_MULTIPLE_IMAGES} />
 		</View>
 	</StoryWrapper>
 );
@@ -104,7 +104,7 @@ export const MultipleImagesNewServer = () => (
 export const MultipleImagesOldServer = () => (
 	<StoryWrapper store={oldServerStore}>
 		<View style={{ padding: 10, width: 350 }}>
-			<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} timeFormat='LT' />
+			<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} />
 		</View>
 	</StoryWrapper>
 );

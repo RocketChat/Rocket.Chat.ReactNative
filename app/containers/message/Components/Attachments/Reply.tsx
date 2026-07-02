@@ -13,7 +13,7 @@ import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
 import { Attachments } from './components';
 import Quote from './Quote';
-import { useBaseUrl, useMessageUser } from '../../MessageRoomStore';
+import { useBaseUrl, useMessageUser, useTimeFormat } from '../../MessageRoomStore';
 import { useIsEncrypted, useMessageId } from '../../MessageStore';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
@@ -84,14 +84,14 @@ const styles = StyleSheet.create({
 
 interface IMessageReply {
 	attachment: IAttachment;
-	timeFormat?: string;
 	getCustomEmoji: TGetCustomEmoji;
 	msg?: string;
 }
 
-const Title = ({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
+const Title = ({ attachment, theme }: { attachment: IAttachment; theme: TSupportedThemes }) => {
 	'use memo';
 
+	const timeFormat = useTimeFormat();
 	const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
@@ -172,7 +172,7 @@ const Fields = ({
 	);
 };
 
-const Reply = ({ attachment, timeFormat, getCustomEmoji, msg }: IMessageReply) => {
+const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 	'use memo';
 
 	const [loading, setLoading] = useState(false);
@@ -220,10 +220,10 @@ const Reply = ({ attachment, timeFormat, getCustomEmoji, msg }: IMessageReply) =
 				disabled={!!(loading || attachment.message_link)}>
 				<View style={styles.attachmentContainer}>
 					<View style={styles.titleAndDescriptionContainer}>
-						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						<Title attachment={attachment} theme={theme} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
-						<Quote attachments={attachment.attachments} timeFormat={timeFormat} />
-						<Attachments attachments={attachment.attachments} timeFormat={timeFormat} />
+						<Quote attachments={attachment.attachments} />
+						<Attachments attachments={attachment.attachments} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
 							<View style={styles.backdrop}>

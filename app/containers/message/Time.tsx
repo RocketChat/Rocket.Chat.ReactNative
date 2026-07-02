@@ -4,18 +4,19 @@ import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
 import messageStyles from './styles';
 import { useMessageField } from './MessageStore';
+import { useTimeFormat } from './MessageRoomStore';
 
 interface IMessageTime {
 	ts?: Date;
-	timeFormat?: string;
 	style?: TextStyle;
 }
 
-const MessageTime = ({ timeFormat, style }: IMessageTime) => {
+const MessageTime = ({ style }: IMessageTime) => {
 	'use memo';
 
 	const { colors } = useTheme();
 	const ts = useMessageField(item => item.ts);
+	const timeFormat = useTimeFormat();
 
 	const time = dayjs(ts).format(timeFormat);
 

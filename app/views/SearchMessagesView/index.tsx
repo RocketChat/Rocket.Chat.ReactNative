@@ -285,7 +285,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderItem = ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const message = item as TMessageModel;
-		return <Message item={message} timeFormat='MMM Do YYYY, h:mm:ss a' onPress={() => this.jumpToMessage({ item })} />;
+		return <Message item={message} onPress={() => this.jumpToMessage({ item })} />;
 	};
 
 	renderList = () => {

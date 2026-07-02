@@ -13,7 +13,7 @@ import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
 
-const Attachments: FC<IMessageAttachments> = ({ attachments, timeFormat, author }: IMessageAttachments) => {
+const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
@@ -75,7 +75,6 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, timeFormat, author 
 				<CollapsibleQuote
 					key={file.title_link || file.message_link || `collapsible-${index}`}
 					attachment={file}
-					timeFormat={timeFormat}
 					getCustomEmoji={getCustomEmoji}
 				/>
 			);
@@ -86,7 +85,6 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, timeFormat, author 
 				<Reply
 					key={file.title_link || file.message_link || `reply-${index}`}
 					attachment={file}
-					timeFormat={timeFormat}
 					getCustomEmoji={getCustomEmoji}
 					msg={msg}
 				/>

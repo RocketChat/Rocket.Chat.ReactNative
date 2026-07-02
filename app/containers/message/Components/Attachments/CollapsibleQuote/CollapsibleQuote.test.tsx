@@ -50,7 +50,7 @@ const Render = () => (
 	<Provider store={mockedStore}>
 		<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
 			<MessageProvider item={item}>
-				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} />
 			</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

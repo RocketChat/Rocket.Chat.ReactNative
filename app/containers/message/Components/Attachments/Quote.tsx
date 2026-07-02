@@ -9,7 +9,7 @@ import { isQuoteAttachment } from './utils';
 import { useGetCustomEmoji } from '../../MessageRoomStore';
 import { useTranslateLanguage } from '../../MessageStore';
 
-const Quote: FC<IMessageAttachments> = ({ attachments, timeFormat }: IMessageAttachments) => {
+const Quote: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
@@ -24,7 +24,7 @@ const Quote: FC<IMessageAttachments> = ({ attachments, timeFormat }: IMessageAtt
 	const quotesElements = quotes.map((file: IAttachment, index: number) => {
 		const msg = getMessageFromAttachment(file, translateLanguage);
 
-		return <Reply key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} msg={msg} />;
+		return <Reply key={index} attachment={file} getCustomEmoji={getCustomEmoji} msg={msg} />;
 	});
 
 	return <View style={{ gap: 4 }}>{quotesElements}</View>;
