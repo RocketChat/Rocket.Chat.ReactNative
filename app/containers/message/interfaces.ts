@@ -14,7 +14,6 @@ export interface IMessageAvatar {
 }
 
 export interface IMessageContent {
-	tmid?: string;
 	isIgnored: boolean;
 }
 

@@ -41,7 +41,6 @@ import {
 	useMessagePress,
 	useMessageStatus,
 	useMessageText,
-	useThreadData,
 	useThreadPosition
 } from './MessageStore';
 
@@ -67,7 +66,6 @@ const MessageInner = (props: TMessageProps) => {
 	const isHeader = useMessageGrouping();
 	const { t: type } = useContentData();
 	const { blocks } = useBlocks();
-	const { tmid } = useThreadData();
 	const { u: author } = useMessageAuthor();
 	const showTimeLarge = isLargeFontScale && isHeader;
 
@@ -79,7 +77,7 @@ const MessageInner = (props: TMessageProps) => {
 				{showTimeLarge ? <MessageTime /> : null}
 				<>
 					<Quote />
-					<Content tmid={tmid} isIgnored={props.isIgnored} />
+					<Content isIgnored={props.isIgnored} />
 					<Attachments author={author} />
 				</>
 				<Urls />
@@ -101,7 +99,7 @@ const MessageInner = (props: TMessageProps) => {
 		content = (
 			<>
 				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				<Content tmid={tmid} isIgnored={props.isIgnored} />
+				<Content isIgnored={props.isIgnored} />
 				<CallButton />
 				{showTimeLarge ? <MessageTime /> : null}
 			</>
@@ -127,7 +125,7 @@ const MessageInner = (props: TMessageProps) => {
 				{showTimeLarge ? <MessageTime /> : null}
 				<View style={{ gap: 4 }}>
 					<Quote />
-					<Content tmid={tmid} isIgnored={props.isIgnored} />
+					<Content isIgnored={props.isIgnored} />
 					<Attachments author={author} />
 					<Urls />
 					<Thread />
@@ -150,7 +148,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 	const isInfo = useIsInfo();
 	const { messageText, isTranslated } = useMessageText();
 	const { t: type } = useContentData();
-	const { tmid } = useThreadData();
 	const { u: author } = useMessageAuthor();
 	const id = useMessageField(item => item.id);
 	const isEdited = useIsEdited();
@@ -173,7 +170,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 						index={2}
 						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
-							<Content tmid={tmid} isIgnored={props.isIgnored} />
+							<Content isIgnored={props.isIgnored} />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
 									<Attachments author={author} />

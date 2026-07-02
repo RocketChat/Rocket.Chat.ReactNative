@@ -32,6 +32,7 @@ type TOverrides = Partial<IMessageContent> & {
 	isHeader?: boolean;
 	hasError?: boolean;
 	autoTranslateLanguage?: string;
+	tmid?: string;
 };
 
 const baseProps: TOverrides = {
@@ -46,17 +47,23 @@ const baseProps: TOverrides = {
 	hasError: false
 };
 
-const buildItem = (msg: string | undefined, attachments: IAttachment[] | undefined, isEncrypted: boolean | undefined) =>
+const buildItem = (
+	msg: string | undefined,
+	attachments: IAttachment[] | undefined,
+	isEncrypted: boolean | undefined,
+	tmid: string | undefined
+) =>
 	({
 		id: 'msg-1',
 		msg,
 		attachments,
 		t: isEncrypted ? E2E_MESSAGE_TYPE : undefined,
-		e2e: isEncrypted ? E2E_STATUS.PENDING : undefined
+		e2e: isEncrypted ? E2E_STATUS.PENDING : undefined,
+		tmid
 	} as unknown as TAnyMessageModel);
 
 const tree = (overrides: TOverrides) => {
-	const { msg, attachments, isEncrypted, autoTranslateLanguage, ...contentProps } = overrides;
+	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, ...contentProps } = overrides;
 	const contextValue = {
 		user: { username: 'john' },
 		onLinkPress: jest.fn(),
@@ -67,7 +74,7 @@ const tree = (overrides: TOverrides) => {
 	return (
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
-				<MessageProvider item={buildItem(msg, attachments, isEncrypted)}>
+				<MessageProvider item={buildItem(msg, attachments, isEncrypted, tmid)}>
 					<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
 				</MessageProvider>
 			</MessageRoomProvider>

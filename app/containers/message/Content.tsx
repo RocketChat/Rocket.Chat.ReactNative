@@ -17,7 +17,8 @@ import {
 	useMessageAuthor,
 	useMessageStatus,
 	useMessageText,
-	useOnLinkPress
+	useOnLinkPress,
+	useThreadData
 } from './MessageStore';
 import { useAutoTranslate, useGetCustomEmoji, useIsThreadRoom, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
@@ -31,6 +32,7 @@ const Content = (props: IMessageContent) => {
 	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
 	const navToRoomInfo = useNavToRoomInfo();
 	const isThreadRoom = useIsThreadRoom();
+	const { tmid } = useThreadData();
 	const { autoTranslateLanguage } = useAutoTranslate();
 
 	const isInfo = useIsInfo();
@@ -60,7 +62,7 @@ const Content = (props: IMessageContent) => {
 		return renderMessageContent;
 	}
 
-	const isPreview = props.tmid && !isThreadRoom;
+	const isPreview = tmid && !isThreadRoom;
 	let content = null;
 
 	if (isEncrypted) {
