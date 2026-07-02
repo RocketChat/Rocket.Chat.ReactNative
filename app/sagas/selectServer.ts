@@ -30,7 +30,7 @@ import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../lib/constants/keys';
-import { migrateTokenKeysToServerScoped } from './init';
+import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
