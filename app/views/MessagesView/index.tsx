@@ -363,6 +363,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 					showAttachment={this.showAttachment}
 					user={user}
 					baseUrl={baseUrl}
+					rid={this.rid}
 					isThreadRoom>
 					<FlatList
 						data={messages}

@@ -314,6 +314,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				showAttachment={this.showAttachment}
 				user={user}
 				baseUrl={baseUrl}
+				rid={this.rid}
 				isThreadRoom>
 				<FlatList
 					data={messages}
