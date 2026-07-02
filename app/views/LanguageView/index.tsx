@@ -22,6 +22,8 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { saveUserPreferences } from '../../lib/services/restApi';
 
 const LanguageView = () => {
+	'use memo';
+
 	const { languageDefault, id } = useAppSelector(state => ({
 		languageDefault: getUserSelector(state).language,
 		id: getUserSelector(state).id

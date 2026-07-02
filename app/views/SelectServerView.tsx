@@ -20,6 +20,8 @@ import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useRespons
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
+	'use memo';
+
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
 	const { bottom } = useSafeAreaInsets();
