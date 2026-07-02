@@ -14,10 +14,6 @@ export interface IMessageAvatar {
 	small?: boolean;
 }
 
-export interface IMessageBlocks {
-	rid: string;
-}
-
 export interface IMessageBroadcast {
 	broadcast?: boolean;
 }

@@ -21,7 +21,7 @@ const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 	};
 	return (
 		<MessageRoomProvider user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} rid={message.rid}>
-			<Message item={message} rid={message.rid} timeFormat={Message_TimeFormat} useRealName={useRealName} isPreview />
+			<Message item={message} timeFormat={Message_TimeFormat} useRealName={useRealName} isPreview />
 		</MessageRoomProvider>
 	);
 };

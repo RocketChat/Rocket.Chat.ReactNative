@@ -294,7 +294,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				isThreadRoom
 				useRealName={useRealName}
 				onPress={() => this.jumpToMessage({ item })}
-				rid={message.rid}
 			/>
 		);
 	};

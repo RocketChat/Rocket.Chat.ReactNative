@@ -1,13 +1,13 @@
 import { createElement } from 'react';
 
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
-import { type IMessageBlocks } from './interfaces';
-import { useBlockAction } from './MessageRoomStore';
+import { useBlockAction, useRid } from './MessageRoomStore';
 import { useBlocks } from './MessageStore';
 
-const Blocks = ({ rid }: IMessageBlocks) => {
+const Blocks = () => {
 	'use memo';
 
+	const rid = useRid();
 	const blockAction = useBlockAction();
 	const { blocks, id: mid } = useBlocks();
 
@@ -22,7 +22,7 @@ const Blocks = ({ rid }: IMessageBlocks) => {
 							appId,
 							value,
 							blockId,
-							rid,
+							rid: rid ?? '',
 							mid
 						});
 					}

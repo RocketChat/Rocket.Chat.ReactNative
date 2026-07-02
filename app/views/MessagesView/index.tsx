@@ -168,8 +168,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			timeFormat: 'MMM Do YYYY, h:mm:ss a',
 			isThreadRoom: true,
 			useRealName,
-			onPress: () => this.jumpToMessage({ item }),
-			rid: this.rid
+			onPress: () => this.jumpToMessage({ item })
 		});
 
 		return {

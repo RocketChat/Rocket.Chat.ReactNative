@@ -7,7 +7,6 @@ import { MessageProvider } from './MessageStore';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
-	rid: string;
 	timeFormat?: string;
 	archived?: boolean;
 	broadcast?: boolean;
@@ -38,7 +37,6 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			onLongPress={props.onLongPress}
 			threadBadgeColor={props.threadBadgeColor}>
 			<Message
-				rid={props.rid}
 				timeFormat={props.timeFormat}
 				archived={props.archived ?? false}
 				broadcast={props.broadcast ?? false}

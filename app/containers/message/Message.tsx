@@ -45,7 +45,6 @@ import {
 } from './MessageStore';
 
 type TMessageProps = {
-	rid: string;
 	timeFormat?: string;
 	archived?: boolean;
 	broadcast?: boolean;
@@ -130,7 +129,7 @@ const MessageInner = (props: TMessageProps) => {
 		content = (
 			<>
 				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				<Blocks rid={props.rid} />
+				<Blocks />
 				<Thread isThreadRoom={props.isThreadRoom} />
 				<Reactions />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
@@ -226,7 +225,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<MessageAvatar />
 					<View style={styles.messageContent}>
 						<MessageInner
-							rid={props.rid}
 							timeFormat={props.timeFormat}
 							archived={props.archived}
 							broadcast={props.broadcast}
@@ -297,7 +295,6 @@ const MessageTouchable = (props: TMessageProps) => {
 		return (
 			<A11y.Order>
 				<Message
-					rid={props.rid}
 					timeFormat={props.timeFormat}
 					archived={props.archived}
 					broadcast={props.broadcast}
@@ -339,7 +336,6 @@ const MessageTouchable = (props: TMessageProps) => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
 					<Message
-						rid={props.rid}
 						timeFormat={props.timeFormat}
 						archived={props.archived}
 						broadcast={props.broadcast}
