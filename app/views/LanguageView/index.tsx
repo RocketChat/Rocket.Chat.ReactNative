@@ -32,6 +32,8 @@ const LanguageView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
 	const { bottom } = useSafeAreaInsets();
 
+	const paddingBottom = Math.max(16, bottom);
+
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Change_Language')
@@ -97,7 +99,7 @@ const LanguageView = () => {
 				keyExtractor={item => item.value}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: Math.max(16, bottom) }]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
 				renderItem={({ item }) => (
 					<ListRadio
 						testID={`language-view-${item.value}`}

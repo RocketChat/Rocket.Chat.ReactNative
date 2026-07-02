@@ -28,6 +28,8 @@ const SelectServerView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
 	const { fontScale } = useResponsiveLayout();
 
+	const paddingBottom = Math.max(16, bottom);
+
 	const getItemLayout = useCallback(
 		(_data: any, index: number) => {
 			const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
@@ -69,7 +71,7 @@ const SelectServerView = () => {
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: Math.max(16, bottom) }]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				removeClippedSubviews
