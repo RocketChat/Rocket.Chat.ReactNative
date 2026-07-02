@@ -1456,7 +1456,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			content = (
 				<Message
 					item={item}
-					archived={'id' in room && room.archived}
 					isThreadRoom={!!this.tmid}
 					isIgnored={this.isIgnored(item)}
 					previousItem={previousItem}

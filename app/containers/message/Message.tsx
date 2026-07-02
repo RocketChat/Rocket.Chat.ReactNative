@@ -27,6 +27,7 @@ import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLab
 import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
 import { useIsBeingEdited } from '../../views/RoomView/InteractionStore';
+import { useArchived } from './MessageRoomStore';
 import {
 	useBlocks,
 	useContentData,
@@ -46,7 +47,6 @@ import {
 
 type TMessageProps = {
 	timeFormat?: string;
-	archived?: boolean;
 	useRealName?: boolean;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
@@ -225,7 +225,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<View style={styles.messageContent}>
 						<MessageInner
 							timeFormat={props.timeFormat}
-							archived={props.archived}
 							useRealName={props.useRealName}
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							isThreadRoom={props.isThreadRoom}
@@ -263,6 +262,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const { isThreadReply } = useThreadPosition();
 	const isInfo = useIsInfo();
+	const archived = useArchived();
 	const { hasError, isTemp } = useMessageStatus();
 	const type = useMessageField(item => item.t);
 	const id = useMessageField(item => item.id);
@@ -277,7 +277,7 @@ const MessageTouchable = (props: TMessageProps) => {
 		isReadReceiptEnabled: props.isReadReceiptEnabled,
 		autoTranslateLanguage: props.autoTranslateLanguage
 	});
-	const isDisabled = (isInfo && !isThreadReply) || props.archived || isTemp || type === 'jitsi_call_started';
+	const isDisabled = (isInfo && !isThreadReply) || archived || isTemp || type === 'jitsi_call_started';
 	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
 	const accessibilityHint = useMessageAccessibilityHint();
 
@@ -294,7 +294,6 @@ const MessageTouchable = (props: TMessageProps) => {
 			<A11y.Order>
 				<Message
 					timeFormat={props.timeFormat}
-					archived={props.archived}
 					useRealName={props.useRealName}
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					isThreadRoom={props.isThreadRoom}
@@ -334,7 +333,6 @@ const MessageTouchable = (props: TMessageProps) => {
 					}}>
 					<Message
 						timeFormat={props.timeFormat}
-						archived={props.archived}
 						useRealName={props.useRealName}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						isThreadRoom={props.isThreadRoom}

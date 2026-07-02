@@ -8,7 +8,6 @@ import { MessageProvider } from './MessageStore';
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
 	timeFormat?: string;
-	archived?: boolean;
 	previousItem?: TAnyMessageModel;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom?: boolean;
@@ -37,7 +36,6 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			threadBadgeColor={props.threadBadgeColor}>
 			<Message
 				timeFormat={props.timeFormat}
-				archived={props.archived ?? false}
 				useRealName={props.useRealName}
 				isReadReceiptEnabled={props.isReadReceiptEnabled}
 				isThreadRoom={!!props.isThreadRoom}
