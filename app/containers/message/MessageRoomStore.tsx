@@ -35,6 +35,7 @@ export type MessageRoomState = {
 	broadcast?: boolean;
 	isThreadRoom?: boolean;
 	Message_GroupingPeriod?: number;
+	timeFormat?: string;
 	// reactive tail (provider keeps current)
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
@@ -69,6 +70,7 @@ const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
 	'broadcast',
 	'isThreadRoom',
 	'Message_GroupingPeriod',
+	'timeFormat',
 	'autoTranslateRoom',
 	'autoTranslateLanguage'
 ];
@@ -139,6 +141,7 @@ export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
 export const useMessageUser = (): MessageRoomState['user'] => useMessageRoomStore(s => s.user);
 export const useBaseUrl = (): string | undefined => useMessageRoomStore(s => s.baseUrl);
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
+export const useTimeFormat = (): string | undefined => useMessageRoomStore(s => s.timeFormat);
 export const useIsThreadRoom = (): boolean | undefined => useMessageRoomStore(s => s.isThreadRoom);
 export const useMessageGroupingPeriod = (): number | undefined => useMessageRoomStore(s => s.Message_GroupingPeriod);
 
