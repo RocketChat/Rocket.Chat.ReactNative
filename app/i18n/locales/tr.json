@@ -147,6 +147,8 @@
   "Custom": "Özel",
   "Dark": "Karanlık",
   "Dark_level": "Karanlık Seviyesi",
+  "Deep_link_login_description": "Bir bağlantı sizi {{server}} sunucusunda oturum açtırmak istiyor. Yalnızca bu bağlantıyı kendiniz açtıysanız ve güveniyorsanız devam edin.",
+  "Deep_link_login_title": "Bu sunucuda oturum açılsın mı?",
   "Default": "Varsayılan",
   "Default_browser": "Varsayılan tarayıcı",
   "DELETE": "SİL",

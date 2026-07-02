@@ -173,6 +173,8 @@
   "Custom": "Personnalisé",
   "Dark": "Sombre",
   "Dark_level": "Niveau d'obscurité",
+  "Deep_link_login_description": "Un lien tente de vous connecter à {{server}}. Continuez uniquement si vous avez ouvert ce lien vous-même et que vous lui faites confiance.",
+  "Deep_link_login_title": "Se connecter à ce serveur ?",
   "Default": "Défaut",
   "Default_browser": "Navigateur par défaut",
   "DELETE": "SUPPRIMER",

@@ -196,6 +196,8 @@
   "Custom": "Anpassad",
   "Dark": "Mörk",
   "Dark_level": "Mörk nivå",
+  "Deep_link_login_description": "En länk försöker logga in dig på {{server}}. Fortsätt bara om du själv öppnade den här länken och litar på den.",
+  "Deep_link_login_title": "Logga in på den här servern?",
   "Default": "Standard",
   "Default_browser": "Standardwebbläsare",
   "Defined_user_as_role": "angav {{user}} som {{role}}",

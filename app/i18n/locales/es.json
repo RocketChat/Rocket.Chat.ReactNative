@@ -132,6 +132,8 @@
   "Custom": "Personalizado",
   "Dark": "Oscuro",
   "Dark_level": "Nivel de oscuridad",
+  "Deep_link_login_description": "Un enlace está intentando iniciar sesión en {{server}}. Continúa solo si abriste este enlace tú mismo y confías en él.",
+  "Deep_link_login_title": "¿Iniciar sesión en este servidor?",
   "Default": "Por defecto",
   "DELETE": "ELIMINAR",
   "Delete": "Eliminar",

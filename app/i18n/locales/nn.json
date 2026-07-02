@@ -117,6 +117,8 @@
   "Current_Status": "Nåværende status",
   "Custom": "Tilpasset",
   "decline": "Avslå",
+  "Deep_link_login_description": "Ei lenkje prøver å logge deg inn på {{server}}. Hald berre fram dersom du opna denne lenkja sjølv og stolar på henne.",
+  "Deep_link_login_title": "Logge inn på denne serveren?",
   "Default": "Misligholde",
   "Delete": "Slett",
   "Delete_Account": "Slett konto",

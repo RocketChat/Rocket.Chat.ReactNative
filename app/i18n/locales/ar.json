@@ -148,6 +148,8 @@
   "Custom": "مخصص",
   "Dark": "داكن",
   "Dark_level": "مستوى السمة الداكنة",
+  "Deep_link_login_description": "يوجد رابط يطلب تسجيل دخولك إلى {{server}}. تابع فقط إذا كنت قد فتحت هذا الرابط بنفسك وتثق به.",
+  "Deep_link_login_title": "تسجيل الدخول إلى هذا الخادم؟",
   "Default": "افتراضي",
   "Default_browser": "المتصفح الأساسي",
   "DELETE": "حذف",
