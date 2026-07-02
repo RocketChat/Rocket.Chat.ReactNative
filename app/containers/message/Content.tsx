@@ -8,6 +8,7 @@ import { messageHaveAuthorName, getInfoMessage, getPreviewMessageFromAttachment 
 import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
+import { useSetting } from '../../lib/hooks/useSetting';
 import { type MessageTypesValues } from '../../definitions';
 import {
 	useContentData,
@@ -24,6 +25,7 @@ const Content = (props: IMessageContent) => {
 	'use memo';
 
 	const { theme } = useTheme();
+	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const user = useMessageUser();
 	const onLinkPress = useOnLinkPress();
 	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
@@ -50,7 +52,7 @@ const Content = (props: IMessageContent) => {
 		if (messageHaveAuthorName(type as MessageTypesValues)) {
 			return (
 				<Text>
-					<User useRealName={props.useRealName} /> {renderMessageContent}
+					<User /> {renderMessageContent}
 				</Text>
 			);
 		}
@@ -72,8 +74,7 @@ const Content = (props: IMessageContent) => {
 		);
 	} else if (isPreview) {
 		const previewMsg =
-			messageText ||
-			(attachments?.length ? getPreviewMessageFromAttachment(attachments[0], autoTranslateLanguage) : undefined);
+			messageText || (attachments?.length ? getPreviewMessageFromAttachment(attachments[0], autoTranslateLanguage) : undefined);
 		content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
 	} else if (messageText) {
 		content = (
@@ -85,7 +86,7 @@ const Content = (props: IMessageContent) => {
 				channels={channels}
 				mentions={mentions}
 				navToRoomInfo={navToRoomInfo}
-				useRealName={props.useRealName}
+				useRealName={useRealName}
 				onLinkPress={onLinkPress}
 				isTranslated={isTranslated}
 			/>

@@ -14,6 +14,7 @@ import {
 	useThreadPosition
 } from '../MessageStore';
 import { useAutoTranslate } from '../MessageRoomStore';
+import { useSetting } from '../../../lib/hooks/useSetting';
 
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {
 	let result = label;
@@ -30,13 +31,8 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 	return result;
 };
 
-export const useMessageAccessibilityLabel = ({
-	useRealName,
-	isReadReceiptEnabled
-}: {
-	useRealName?: boolean;
-	isReadReceiptEnabled?: boolean;
-}): string => {
+export const useMessageAccessibilityLabel = ({ isReadReceiptEnabled }: { isReadReceiptEnabled?: boolean }): string => {
+	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const { autoTranslateLanguage } = useAutoTranslate();
 	const { attachments, mentions, channels, comment, t: type } = useContentData();
 	const { u: author, role } = useMessageAuthor();

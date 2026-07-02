@@ -12,7 +12,6 @@ import { type IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
-	useRealName?: boolean;
 	isAuthenticated: boolean;
 	Message_GroupingPeriod?: number;
 	Message_TimeFormat?: string;

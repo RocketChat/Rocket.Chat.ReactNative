@@ -10,7 +10,6 @@ interface IMessageContainerProps {
 	timeFormat?: string;
 	previousItem?: TAnyMessageModel;
 	isReadReceiptEnabled?: boolean;
-	useRealName?: boolean;
 	isIgnored?: boolean;
 	highlighted?: boolean;
 	onLongPress?: (item: TAnyMessageModel) => void;
@@ -34,7 +33,6 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			threadBadgeColor={props.threadBadgeColor}>
 			<Message
 				timeFormat={props.timeFormat}
-				useRealName={props.useRealName}
 				isReadReceiptEnabled={props.isReadReceiptEnabled}
 				isPreview={props.isPreview}
 				highlighted={props.highlighted}

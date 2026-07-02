@@ -47,7 +47,6 @@ import {
 
 type TMessageProps = {
 	timeFormat?: string;
-	useRealName?: boolean;
 	isReadReceiptEnabled?: boolean;
 	isPreview?: boolean;
 	highlighted?: boolean;
@@ -77,11 +76,11 @@ const MessageInner = (props: TMessageProps) => {
 	if (props.isPreview) {
 		content = (
 			<>
-				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 				<>
 					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
-					<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
+					<Content tmid={tmid} isIgnored={props.isIgnored} />
 					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
 				</>
 				<Urls />
@@ -92,7 +91,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (type === 'discussion-created') {
 		content = (
 			<>
-				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 				<Discussion />
 			</>
@@ -102,8 +101,8 @@ const MessageInner = (props: TMessageProps) => {
 	if (type === 'jitsi_call_started') {
 		content = (
 			<>
-				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
-				<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
+				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<Content tmid={tmid} isIgnored={props.isIgnored} />
 				<CallButton />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 			</>
@@ -113,7 +112,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (blocks && blocks.length) {
 		content = (
 			<>
-				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				<Blocks />
 				<Thread />
 				<Reactions />
@@ -125,11 +124,11 @@ const MessageInner = (props: TMessageProps) => {
 	if (!content) {
 		content = (
 			<>
-				<User useRealName={props.useRealName} timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User timeFormat={props.timeFormat} isReadReceiptEnabled={props.isReadReceiptEnabled} />
 				{showTimeLarge ? <MessageTime timeFormat={props.timeFormat} /> : null}
 				<View style={{ gap: 4 }}>
 					<Quote attachments={attachments} timeFormat={props.timeFormat} author={author} />
-					<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
+					<Content tmid={tmid} isIgnored={props.isIgnored} />
 					<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
 					<Urls />
 					<Thread />
@@ -175,7 +174,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 						index={2}
 						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
-							<Content tmid={tmid} useRealName={props.useRealName} isIgnored={props.isIgnored} />
+							<Content tmid={tmid} isIgnored={props.isIgnored} />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
 									<Attachments attachments={attachments} timeFormat={props.timeFormat} author={author} />
@@ -200,7 +199,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<View style={styles.messageContent}>
 						<MessageInner
 							timeFormat={props.timeFormat}
-							useRealName={props.useRealName}
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							isPreview={props.isPreview}
 							highlighted={props.highlighted}
@@ -246,7 +244,6 @@ const MessageTouchable = (props: TMessageProps) => {
 	const onPressAction = useMessagePress({ isIgnored, revealIgnored });
 	const onLongPress = useMessageLongPress();
 	const accessibilityLabelValue = useMessageAccessibilityLabel({
-		useRealName: props.useRealName,
 		isReadReceiptEnabled: props.isReadReceiptEnabled
 	});
 	const isDisabled = (isInfo && !isThreadReply) || archived || isTemp || type === 'jitsi_call_started';
@@ -266,7 +263,6 @@ const MessageTouchable = (props: TMessageProps) => {
 			<A11y.Order>
 				<Message
 					timeFormat={props.timeFormat}
-					useRealName={props.useRealName}
 					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					isPreview={props.isPreview}
 					highlighted={props.highlighted}
@@ -303,7 +299,6 @@ const MessageTouchable = (props: TMessageProps) => {
 					}}>
 					<Message
 						timeFormat={props.timeFormat}
-						useRealName={props.useRealName}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						isPreview={props.isPreview}
 						highlighted={props.highlighted}

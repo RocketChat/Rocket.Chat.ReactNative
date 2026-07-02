@@ -16,7 +16,6 @@ export interface IMessageAvatar {
 
 export interface IMessageContent {
 	tmid?: string;
-	useRealName?: boolean;
 	isIgnored: boolean;
 }
 

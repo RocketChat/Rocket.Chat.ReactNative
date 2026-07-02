@@ -77,7 +77,6 @@ interface ISearchMessagesViewProps extends INavigationOption {
 		[key: string]: ICustomEmoji;
 	};
 	theme: TSupportedThemes;
-	useRealName: boolean;
 	isMasterDetail: boolean;
 }
 class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
@@ -286,15 +285,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderItem = ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const message = item as TMessageModel;
-		const { useRealName } = this.props;
-		return (
-			<Message
-				item={message}
-				timeFormat='MMM Do YYYY, h:mm:ss a'
-				useRealName={useRealName}
-				onPress={() => this.jumpToMessage({ item })}
-			/>
-		);
+		return <Message item={message} timeFormat='MMM Do YYYY, h:mm:ss a' onPress={() => this.jumpToMessage({ item })} />;
 	};
 
 	renderList = () => {
@@ -354,7 +345,6 @@ const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });
 

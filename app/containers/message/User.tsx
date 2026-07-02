@@ -7,6 +7,7 @@ import RightIcons from './Components/RightIcons';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useSetting } from '../../lib/hooks/useSetting';
 import {
 	useIsEdited,
 	useMessageAuthor,
@@ -47,14 +48,14 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageUser {
-	useRealName?: boolean;
 	timeFormat?: string;
 	isReadReceiptEnabled?: boolean;
 }
 
-const User = ({ useRealName, timeFormat, isReadReceiptEnabled }: IMessageUser) => {
+const User = ({ timeFormat, isReadReceiptEnabled }: IMessageUser) => {
 	'use memo';
 
+	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const user = useMessageUser();
 	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();

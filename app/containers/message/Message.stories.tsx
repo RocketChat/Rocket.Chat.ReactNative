@@ -226,6 +226,7 @@ const renderMessageStory = (fontScale: number, props: any) => {
 
 	const item = buildItem({ ...itemProps, isTranslated });
 	const previousItem = previousItemOverride ?? resolvePreviousItem(item, isHeader, isThreadReply);
+	store.dispatch(updateSettings('UI_Use_Real_Name', !!useRealName));
 
 	const containerProps = {
 		item,
@@ -236,7 +237,6 @@ const renderMessageStory = (fontScale: number, props: any) => {
 		broadcast,
 		archived,
 		isIgnored,
-		useRealName,
 		isReadReceiptEnabled,
 		autoTranslateRoom: autoTranslateRoom ?? (isTranslated ? true : undefined),
 		autoTranslateLanguage: autoTranslateLanguage ?? (isTranslated ? 'en' : undefined),

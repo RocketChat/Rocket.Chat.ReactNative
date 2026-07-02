@@ -54,7 +54,6 @@ interface IMessagesViewProps {
 	customEmojis: { [key: string]: ICustomEmoji };
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
-	useRealName: boolean;
 	isMasterDetail: boolean;
 }
 
@@ -162,11 +161,10 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	};
 
 	defineMessagesViewContent = (name: string) => {
-		const { user, useRealName } = this.props;
+		const { user } = this.props;
 		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
 			timeFormat: 'MMM Do YYYY, h:mm:ss a',
-			useRealName,
 			onPress: () => this.jumpToMessage({ item })
 		});
 
@@ -380,8 +378,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name
+	customEmojis: state.customEmojis
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(MessagesView))));

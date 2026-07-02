@@ -1,8 +1,11 @@
+import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
 import { MessageProvider } from '../MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from '../MessageRoomStore';
+import { updateSettings } from '../../../actions/settings';
+import { mockedStore } from '../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../../lib/constants/keys';
 
@@ -10,7 +13,7 @@ jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
 
-type TArgs = { useRealName?: boolean; isReadReceiptEnabled?: boolean; autoTranslateLanguage?: string };
+type TArgs = { isReadReceiptEnabled?: boolean; autoTranslateLanguage?: string };
 
 const FIXED_TS = new Date('2024-01-15T12:34:56Z');
 const HOUR = FIXED_TS.toLocaleTimeString();
@@ -37,11 +40,13 @@ const renderLabel = (
 		return null;
 	};
 	render(
-		<MessageRoomProvider {...pickMessageRoomState(config)}>
-			<MessageProvider item={item} previousItem={previousItem}>
-				<Probe />
-			</MessageProvider>
-		</MessageRoomProvider>
+		<Provider store={mockedStore}>
+			<MessageRoomProvider {...pickMessageRoomState(config)}>
+				<MessageProvider item={item} previousItem={previousItem}>
+					<Probe />
+				</MessageProvider>
+			</MessageRoomProvider>
+		</Provider>
 	);
 	const { calls } = spy.mock;
 	return calls[calls.length - 1][0];
@@ -63,7 +68,12 @@ describe('useMessageAccessibilityLabel', () => {
 	});
 
 	it('uses the author real name when useRealName is true', () => {
-		expect(renderLabel(buildItem(), { useRealName: true })).toBe(`Alice ${HOUR} hello world.`);
+		mockedStore.dispatch(updateSettings('UI_Use_Real_Name', true));
+		try {
+			expect(renderLabel(buildItem())).toBe(`Alice ${HOUR} hello world.`);
+		} finally {
+			mockedStore.dispatch(updateSettings('UI_Use_Real_Name', false));
+		}
 	});
 
 	it('omits the hour when ts is missing', () => {
