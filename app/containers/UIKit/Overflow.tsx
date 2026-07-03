@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, type View } from 'react-native';
 import Popover from 'react-native-popover-view';
 
 import { CustomIcon } from '../CustomIcon';
