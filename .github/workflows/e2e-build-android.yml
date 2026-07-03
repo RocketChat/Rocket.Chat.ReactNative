@@ -102,7 +102,7 @@ jobs:
           echo -e "android.useAndroidX=true" >> ./gradle.properties
           echo -e "android.enableJetifier=true" >> ./gradle.properties
           echo -e "android.jetifier.ignorelist=bcprov-jdk18on" >> ./gradle.properties
-          echo -e "reactNativeArchitectures=x86_64" >> ./gradle.properties
+          echo -e "reactNativeArchitectures=arm64-v8a,x86_64" >> ./gradle.properties
           echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
           echo -e "newArchEnabled=true" >> ./gradle.properties
           echo -e "hermesEnabled=true" >> ./gradle.properties

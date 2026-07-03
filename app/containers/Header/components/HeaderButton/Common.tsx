@@ -1,7 +1,7 @@
-import { memo } from 'react';
+import { forwardRef, memo } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { type StyleProp, type ViewStyle } from 'react-native';
-import { withKeyboardFocus } from 'react-native-external-keyboard';
+import { type KeyboardFocus, withKeyboardFocus } from 'react-native-external-keyboard';
 
 import I18n from '../../../../i18n';
 import { isIOS } from '../../../../lib/methods/helpers/deviceInfo';
@@ -17,33 +17,32 @@ interface IHeaderButtonCommon extends IHeaderButtonItem {
 }
 
 // Left
-export const Drawer = ({
-	navigation,
-	testID,
-	style = {},
-	onPress = () => navigation?.toggleDrawer(),
-	...props
-}: IHeaderButtonCommon) => {
-	const { colors } = useTheme();
+export const Drawer = forwardRef<KeyboardFocus, IHeaderButtonCommon>(
+	({ navigation, testID, style = {}, onPress = () => navigation?.toggleDrawer(), ...props }, ref) => {
+		const { colors } = useTheme();
 
-	const item = (
-		<ItemChildren
-			autoFocus
-			accessibilityLabel={I18n.t('Menu')}
-			iconName='hamburguer'
-			onPress={onPress}
-			testID={testID}
-			color={colors.fontDefault}
-			{...props}
-		/>
-	);
+		const item = (
+			<ItemChildren
+				ref={ref}
+				autoFocus
+				accessibilityLabel={I18n.t('Menu')}
+				iconName='hamburguer'
+				onPress={onPress}
+				testID={testID}
+				color={colors.fontDefault}
+				{...props}
+			/>
+		);
 
-	return (
-		<Container style={style} left>
-			{item}
-		</Container>
-	);
-};
+		return (
+			<Container style={style} left>
+				{item}
+			</Container>
+		);
+	}
+);
+
+Drawer.displayName = 'HeaderButton.Drawer';
 
 export const CloseModal = memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
 	const { dispatch } = useNavigation();
