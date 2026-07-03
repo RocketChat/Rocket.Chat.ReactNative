@@ -1,22 +1,19 @@
 import Message from '../index';
 import { MessageRoomProvider } from '../stores/MessageRoomStore';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useCustomEmoji } from '../../../lib/hooks/useCustomEmoji';
 import { getUserSelector } from '../../../selectors/login';
-import { type TAnyMessageModel, type TGetCustomEmoji } from '../../../definitions';
+import { type TAnyMessageModel } from '../../../definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 	'use memo';
 
-	const { user, baseUrl, customEmojis } = useAppSelector(state => ({
+	const { user, baseUrl } = useAppSelector(state => ({
 		user: getUserSelector(state),
-		baseUrl: state.server.server,
-		customEmojis: state.customEmojis
+		baseUrl: state.server.server
 	}));
+	const getCustomEmoji = useCustomEmoji();
 
-	const getCustomEmoji: TGetCustomEmoji = name => {
-		const emoji = customEmojis[name];
-		return emoji ?? null;
-	};
 	return (
 		<MessageRoomProvider user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} rid={message.rid}>
 			<Message item={message} isPreview />
