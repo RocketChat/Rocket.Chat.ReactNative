@@ -33,7 +33,7 @@ type MessageStoreState = {
 };
 
 const createMessageStore = (initial: Partial<MessageStoreState>) =>
-	createStore<MessageStoreState>(() => ({ tick: 0, manualUnignored: false, ...initial }));
+	createStore<MessageStoreState>(() => ({ tick: 0, manualUnignored: false, ignoredSeed: false, ...initial }));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
