@@ -1602,7 +1602,17 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom, canAutoTranslate } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod, Message_TimeFormat } = this.props;
+		const {
+			user,
+			baseUrl,
+			theme,
+			width,
+			serverVersion,
+			navigation,
+			Message_GroupingPeriod,
+			Message_TimeFormat,
+			Message_Read_Receipt_Enabled
+		} = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1631,6 +1641,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
 			}
 		}
+
+		const federated = 'id' in room && isRoomFederated(room);
 
 		return (
 			<InteractionStoreContext.Provider value={this.interactionStore}>
@@ -1679,6 +1691,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							onAnswerButtonPress={this.handleSendMessage}
 							onEncryptedPress={this.onEncryptedPress}
 							archived={'id' in room && room.archived}
+							isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 							rid={rid}
 							user={user as any}
 							baseUrl={baseUrl}

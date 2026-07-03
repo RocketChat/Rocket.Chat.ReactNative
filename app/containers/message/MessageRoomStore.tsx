@@ -28,6 +28,7 @@ export type MessageRoomState = {
 	onAnswerButtonPress?: Function;
 	onEncryptedPress?: () => void;
 	archived?: boolean;
+	isReadReceiptEnabled?: boolean;
 	// room constants
 	rid?: string;
 	user?: { id?: string; username?: string; token?: string };
@@ -64,6 +65,7 @@ const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
 	'onAnswerButtonPress',
 	'onEncryptedPress',
 	'archived',
+	'isReadReceiptEnabled',
 	'rid',
 	'user',
 	'baseUrl',
@@ -136,6 +138,7 @@ export const useOnAnswerButtonPress = (): MessageRoomState['onAnswerButtonPress'
 	useMessageRoomStore(s => s.onAnswerButtonPress);
 export const useOnEncryptedPress = (): MessageRoomState['onEncryptedPress'] => useMessageRoomStore(s => s.onEncryptedPress);
 export const useArchived = (): boolean | undefined => useMessageRoomStore(s => s.archived);
+export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
 export const useMessageUser = (): MessageRoomState['user'] => useMessageRoomStore(s => s.user);
