@@ -22,7 +22,6 @@ const item = {
 
 const room: Partial<MessageRoomState> = {
 	user: { id: 'reader-id', username: 'rocket.cat' },
-	getCustomEmoji: () => null,
 	onReactionPress: () => {},
 	onReactionLongPress: () => {},
 	reactionInit: () => {}

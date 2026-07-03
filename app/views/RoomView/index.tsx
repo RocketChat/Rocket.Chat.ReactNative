@@ -1661,7 +1661,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							/>
 						) : null}
 						<MessageRoomProvider
-							getCustomEmoji={this.getCustomEmoji}
 							navToRoomInfo={this.navToRoomInfo}
 							showAttachment={this.showAttachment}
 							blockAction={this.blockAction}

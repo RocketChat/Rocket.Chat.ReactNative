@@ -20,8 +20,6 @@ const initialMockedStoreState = () => {
 
 initialMockedStoreState();
 
-const getCustomEmoji = jest.fn();
-
 type FakeItem = TAnyMessageModel & { reactions: IReaction[]; _emit: () => void };
 
 // Mirrors the MessageStore.test.tsx fake-model pattern: a stable item mutated in place,
@@ -58,8 +56,7 @@ const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPres
 			user: { username: 'john' },
 			reactionInit: jest.fn(),
 			onReactionPress,
-			onReactionLongPress: jest.fn(),
-			getCustomEmoji
+			onReactionLongPress: jest.fn()
 		}}>
 		<Reactions />
 	</MessageProviders>

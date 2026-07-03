@@ -19,8 +19,7 @@ const item = {
 } as unknown as TAnyMessageModel;
 
 const room: Partial<MessageRoomState> = {
-	user: { id: 'reader-id', username: 'reader' },
-	getCustomEmoji: () => null
+	user: { id: 'reader-id', username: 'reader' }
 };
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (

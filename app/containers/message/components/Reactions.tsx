@@ -7,14 +7,9 @@ import styles from '../styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
 import { useTheme } from '../../../theme';
+import { useCustomEmoji } from '../../../lib/hooks/useCustomEmoji';
 import { useMessageCtx, useMessageId, useReactions } from '../stores/MessageStore';
-import {
-	useGetCustomEmoji,
-	useMessageUser,
-	useOnReactionLongPress,
-	useOnReactionPress,
-	useReactionInit
-} from '../stores/MessageRoomStore';
+import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
 
 interface IReaction {
 	_id: string;
@@ -60,7 +55,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 	const onReactionPress = useOnReactionPress();
 	const onReactionLongPress = useOnReactionLongPress();
 	const user = useMessageUser();
-	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
+	const getCustomEmoji = useCustomEmoji();
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user?.username) !== -1;

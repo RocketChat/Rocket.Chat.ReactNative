@@ -2,14 +2,12 @@ import { createContext, useContext, useEffect, useState, type ReactElement, type
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type TGetCustomEmoji } from '../../../definitions/IEmoji';
 import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
 import { type IRoomInfoParam } from '../../../views/SearchMessagesView';
 import { useSetting } from '../../../lib/hooks/useSetting';
 
 export type MessageRoomState = {
 	// stable handlers
-	getCustomEmoji?: TGetCustomEmoji;
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	showAttachment?: (file: IAttachment) => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
@@ -74,7 +72,6 @@ export const MessageRoomProvider = ({ children, ...state }: { children: ReactNod
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;
 };
 
-export const useGetCustomEmoji = (): TGetCustomEmoji | undefined => useMessageRoomStore(s => s.getCustomEmoji);
 export const useNavToRoomInfo = (): ((navParam: IRoomInfoParam) => void) | undefined => useMessageRoomStore(s => s.navToRoomInfo);
 export const useShowAttachment = (): ((file: IAttachment) => void) | undefined => useMessageRoomStore(s => s.showAttachment);
 export const useBlockAction = (): MessageRoomState['blockAction'] => useMessageRoomStore(s => s.blockAction);

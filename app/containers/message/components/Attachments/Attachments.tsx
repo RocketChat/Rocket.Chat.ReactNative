@@ -7,18 +7,19 @@ import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
-import { useShowAttachment, useGetCustomEmoji } from '../../stores/MessageRoomStore';
+import { useShowAttachment } from '../../stores/MessageRoomStore';
 import { useTranslateLanguage } from '../../stores/MessageStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
+import { useCustomEmoji } from '../../../../lib/hooks/useCustomEmoji';
 
 const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
 	const showAttachment = useShowAttachment();
-	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
+	const getCustomEmoji = useCustomEmoji();
 
 	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 

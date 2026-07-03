@@ -6,14 +6,14 @@ import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 import { isQuoteAttachment } from './utils';
-import { useGetCustomEmoji } from '../../stores/MessageRoomStore';
 import { useTranslateLanguage } from '../../stores/MessageStore';
+import { useCustomEmoji } from '../../../../lib/hooks/useCustomEmoji';
 
 const Quote: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
-	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
+	const getCustomEmoji = useCustomEmoji();
 
 	const quotes = attachments?.filter(isQuoteAttachment);
 

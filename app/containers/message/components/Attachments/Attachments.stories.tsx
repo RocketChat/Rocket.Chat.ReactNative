@@ -12,7 +12,6 @@ import Attachments from './Attachments';
 const mockMessageContext: Partial<MessageRoomState> = {
 	baseUrl: 'https://open.rocket.chat',
 	user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
-	getCustomEmoji: () => null,
 	showAttachment: undefined
 };
 

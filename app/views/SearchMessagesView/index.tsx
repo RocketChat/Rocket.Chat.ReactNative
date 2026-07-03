@@ -318,7 +318,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 		return (
 			<MessageRoomProvider
-				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				showAttachment={this.showAttachment}
 				jumpToMessage={this.jumpToMessageByUrl}

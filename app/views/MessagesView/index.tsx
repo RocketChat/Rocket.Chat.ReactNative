@@ -353,7 +353,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
 				<MessageRoomProvider
-					getCustomEmoji={this.getCustomEmoji}
 					navToRoomInfo={this.navToRoomInfo}
 					showAttachment={this.showAttachment}
 					user={user}

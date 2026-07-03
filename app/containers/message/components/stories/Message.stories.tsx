@@ -2,7 +2,6 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageContainer from '../../index';
-import { type ICustomEmoji } from '../../../../definitions/IEmoji';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
 import { messagesStatus } from '../../../../lib/constants/messagesStatus';
@@ -16,6 +15,7 @@ import {
 } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { mockedStore as store } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
+import { setCustomEmojis } from '../../../../actions/customEmojis';
 import { createInteractionStore, InteractionStoreContext } from '../../../../views/RoomView/InteractionStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 
@@ -55,6 +55,13 @@ const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
 store.dispatch(updateSettings('API_Embed', true));
+store.dispatch(
+	setCustomEmojis({
+		marioparty: { name: 'marioparty', extension: 'gif' },
+		react_rocket: { name: 'react_rocket', extension: 'png' },
+		nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
+	})
+);
 
 const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
 	fontScale,
@@ -65,15 +72,6 @@ const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
 	width: 350,
 	height: 800
 });
-
-const getCustomEmoji = (content: string): ICustomEmoji | null => {
-	const customEmoji = {
-		marioparty: { name: content, extension: 'gif' },
-		react_rocket: { name: content, extension: 'png' },
-		nyan_rocket: { name: content, extension: 'png' }
-	}[content];
-	return customEmoji ?? null;
-};
 
 const containerHandlers = {
 	onPress: () => {},
@@ -93,7 +91,6 @@ const roomHandlers: Partial<MessageRoomState> = {
 	onReactionLongPress: () => {},
 	onAnswerButtonPress: () => {},
 	jumpToMessage: () => {},
-	getCustomEmoji,
 	navToRoomInfo: () => {},
 	showAttachment: undefined,
 	blockAction: undefined,

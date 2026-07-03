@@ -54,7 +54,6 @@ const tree = (overrides: TOverrides) => {
 	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, isIgnored } = overrides;
 	const contextValue: Partial<MessageRoomState> = {
 		user: { username: 'john' },
-		getCustomEmoji: jest.fn(),
 		navToRoomInfo: jest.fn(),
 		autoTranslateLanguage
 	};
