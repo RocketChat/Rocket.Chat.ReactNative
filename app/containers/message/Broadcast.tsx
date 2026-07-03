@@ -10,7 +10,6 @@ import { useTheme } from '../../theme';
 import { useMessageAuthor, useMessageCtx } from './MessageStore';
 import { useBroadcast, useMessageUser, useReplyBroadcast } from './MessageRoomStore';
 
-// TODO: Create a reusable button component for message
 const Broadcast = () => {
 	'use memo';
 

@@ -11,7 +11,6 @@ import { useTheme } from '../../theme';
 import { useDiscussion, useMessageCtx, useMessageText } from './MessageStore';
 import { useOnDiscussionPress } from './MessageRoomStore';
 
-// TODO: Create a reusable button component for message
 const Discussion = () => {
 	'use memo';
 
