@@ -111,4 +111,3 @@ export const getInitialNotification = async (): Promise<boolean> => {
 
 	return false;
 };
-

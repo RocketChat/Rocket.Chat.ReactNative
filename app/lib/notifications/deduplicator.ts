@@ -12,10 +12,15 @@ export const isNotificationProcessed = (id?: string | null): boolean => {
 		if (!storedJson) {
 			return false;
 		}
-		const processedIds: string[] = JSON.parse(storedJson);
-		return processedIds.includes(id);
+		const processedIds = JSON.parse(storedJson);
+		if (Array.isArray(processedIds)) {
+			return processedIds.includes(id);
+		}
+		UserPreferences.removeItem(NOTIFICATION_DEDUPLICATOR_KEY);
+		return false;
 	} catch (e) {
 		console.warn('[NotificationDeduplicator] Error reading processed notification IDs:', e);
+		UserPreferences.removeItem(NOTIFICATION_DEDUPLICATOR_KEY);
 		return false;
 	}
 };
@@ -28,7 +33,12 @@ export const markNotificationAsProcessed = (id?: string | null): void => {
 		const storedJson = UserPreferences.getString(NOTIFICATION_DEDUPLICATOR_KEY);
 		let processedIds: string[] = [];
 		if (storedJson) {
-			processedIds = JSON.parse(storedJson);
+			const parsed = JSON.parse(storedJson);
+			if (Array.isArray(parsed)) {
+				processedIds = parsed;
+			} else {
+				UserPreferences.removeItem(NOTIFICATION_DEDUPLICATOR_KEY);
+			}
 		}
 
 		// Avoid duplicates in the array
@@ -42,5 +52,6 @@ export const markNotificationAsProcessed = (id?: string | null): void => {
 		}
 	} catch (e) {
 		console.warn('[NotificationDeduplicator] Error writing processed notification IDs:', e);
+		UserPreferences.removeItem(NOTIFICATION_DEDUPLICATOR_KEY);
 	}
 };
