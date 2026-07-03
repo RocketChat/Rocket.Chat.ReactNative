@@ -13,10 +13,6 @@ export interface IMessageAvatar {
 	small?: boolean;
 }
 
-export interface IMessageContent {
-	isIgnored: boolean;
-}
-
 export interface IMessageEmoji {
 	content: string;
 	standardEmojiStyle: { fontSize: number };

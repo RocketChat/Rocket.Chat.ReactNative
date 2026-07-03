@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -35,6 +34,7 @@ import {
 	useMessageAuthor,
 	useMessageField,
 	useMessageGrouping,
+	useMessageIgnored,
 	useMessageLongPress,
 	useMessagePress,
 	useMessageStatus,
@@ -45,7 +45,6 @@ import {
 type TMessageProps = {
 	isPreview?: boolean;
 	highlighted?: boolean;
-	isIgnored: boolean;
 	isBeingEdited?: boolean;
 	small?: boolean;
 };
@@ -74,7 +73,7 @@ const MessageInner = (props: TMessageProps) => {
 				{showTimeLarge ? <MessageTime /> : null}
 				<>
 					<Quote />
-					<Content isIgnored={props.isIgnored} />
+					<Content />
 					<Attachments author={author} />
 				</>
 				<Urls />
@@ -96,7 +95,7 @@ const MessageInner = (props: TMessageProps) => {
 		content = (
 			<>
 				<User />
-				<Content isIgnored={props.isIgnored} />
+				<Content />
 				<CallButton />
 				{showTimeLarge ? <MessageTime /> : null}
 			</>
@@ -122,7 +121,7 @@ const MessageInner = (props: TMessageProps) => {
 				{showTimeLarge ? <MessageTime /> : null}
 				<View style={{ gap: 4 }}>
 					<Quote />
-					<Content isIgnored={props.isIgnored} />
+					<Content />
 					<Attachments author={author} />
 					<Urls />
 					<Thread />
@@ -148,8 +147,9 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 	const { u: author } = useMessageAuthor();
 	const id = useMessageField(item => item.id);
 	const { autoTranslateLanguage } = useAutoTranslate();
+	const isIgnored = useMessageIgnored();
 
-	if (isThreadReply || isThreadSequential || isInfo || props.isIgnored) {
+	if (isThreadReply || isThreadSequential || isInfo || isIgnored) {
 		const thread = isThreadReply ? <RepliedThread isHeader={isHeader} /> : null;
 		const infoStyle: ViewStyle = isInfo ? { alignItems: 'center' } : {};
 		return (
@@ -164,7 +164,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 						index={2}
 						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
-							<Content isIgnored={props.isIgnored} />
+							<Content />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
 									<Attachments author={author} />
@@ -190,7 +190,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 						<MessageInner
 							isPreview={props.isPreview}
 							highlighted={props.highlighted}
-							isIgnored={props.isIgnored}
 							isBeingEdited={props.isBeingEdited}
 							small={props.small}
 						/>
@@ -215,10 +214,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const type = useMessageField(item => item.t);
 	const id = useMessageField(item => item.id);
 	const isBeingEdited = useIsBeingEdited(id);
-	const [isManualUnignored, setIsManualUnignored] = useState(false);
-	const isIgnored = isManualUnignored ? false : props.isIgnored ?? false;
-	const revealIgnored = () => setIsManualUnignored(true);
-	const onPressAction = useMessagePress({ isIgnored, revealIgnored });
+	const onPressAction = useMessagePress();
 	const onLongPress = useMessageLongPress();
 	const accessibilityLabelValue = useMessageAccessibilityLabel();
 	const isDisabled = (isInfo && !isThreadReply) || archived || isTemp || type === 'jitsi_call_started';
@@ -236,13 +232,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	if (hasError || isInfo) {
 		return (
 			<A11y.Order>
-				<Message
-					isPreview={props.isPreview}
-					highlighted={props.highlighted}
-					isIgnored={isIgnored}
-					isBeingEdited={isBeingEdited}
-					small={props.small}
-				/>
+				<Message isPreview={props.isPreview} highlighted={props.highlighted} isBeingEdited={isBeingEdited} small={props.small} />
 			</A11y.Order>
 		);
 	}
@@ -273,7 +263,6 @@ const MessageTouchable = (props: TMessageProps) => {
 					<Message
 						isPreview={props.isPreview}
 						highlighted={props.highlighted}
-						isIgnored={isIgnored}
 						isBeingEdited={isBeingEdited}
 						small={props.small}
 						handleLongPress={!isDisabled ? handleLongPress : undefined}

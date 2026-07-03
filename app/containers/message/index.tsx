@@ -28,8 +28,9 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			previousItem={previousItem}
 			onPress={props.onPress}
 			onLongPress={props.onLongPress}
-			threadBadgeColor={props.threadBadgeColor}>
-			<Message isPreview={props.isPreview} highlighted={props.highlighted} isIgnored={props.isIgnored ?? false} />
+			threadBadgeColor={props.threadBadgeColor}
+			isIgnored={props.isIgnored}>
+			<Message isPreview={props.isPreview} highlighted={props.highlighted} />
 			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 		</MessageProvider>
 	);

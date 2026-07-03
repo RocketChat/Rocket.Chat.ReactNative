@@ -8,7 +8,6 @@ import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
-import { type IMessageContent } from './interfaces';
 
 mockedStore.dispatch(
 	setUser({
@@ -20,7 +19,7 @@ mockedStore.dispatch(
 	})
 );
 
-type TOverrides = Partial<IMessageContent> & {
+type TOverrides = {
 	attachments?: IAttachment[];
 	isEncrypted?: boolean;
 	msg?: string;
@@ -33,18 +32,7 @@ type TOverrides = Partial<IMessageContent> & {
 	hasError?: boolean;
 	autoTranslateLanguage?: string;
 	tmid?: string;
-};
-
-const baseProps: TOverrides = {
-	_id: 'msg-1',
-	isTemp: false,
-	isInfo: false,
-	isEdited: false,
-	isEncrypted: false,
-	isIgnored: false,
-	isTranslated: false,
-	isHeader: false,
-	hasError: false
+	isIgnored?: boolean;
 };
 
 const buildItem = (
@@ -63,7 +51,7 @@ const buildItem = (
 	} as unknown as TAnyMessageModel);
 
 const tree = (overrides: TOverrides) => {
-	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, ...contentProps } = overrides;
+	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, isIgnored } = overrides;
 	const contextValue = {
 		user: { username: 'john' },
 		onLinkPress: jest.fn(),
@@ -74,8 +62,8 @@ const tree = (overrides: TOverrides) => {
 	return (
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
-				<MessageProvider item={buildItem(msg, attachments, isEncrypted, tmid)}>
-					<Content {...(baseProps as IMessageContent)} {...(contentProps as IMessageContent)} />
+				<MessageProvider item={buildItem(msg, attachments, isEncrypted, tmid)} isIgnored={isIgnored}>
+					<Content />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useCallback, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
@@ -25,17 +25,24 @@ import {
 
 type MessageStoreState = {
 	tick: number;
+	manualUnignored: boolean;
 	onPress?: () => void;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	threadBadgeColor?: string;
+	ignoredSeed: boolean;
 };
 
 const createMessageStore = (initial: Partial<MessageStoreState>) =>
-	createStore<MessageStoreState>(() => ({ tick: 0, ...initial }));
+	createStore<MessageStoreState>(() => ({ tick: 0, manualUnignored: false, ...initial }));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
-type MessageCtxValue = { store: MessageStore; item: TAnyMessageModel; previousItem?: TAnyMessageModel };
+type MessageCtxValue = {
+	store: MessageStore;
+	item: TAnyMessageModel;
+	previousItem?: TAnyMessageModel;
+	revealIgnored: () => void;
+};
 
 const MessageStoreContext = createContext<MessageCtxValue | null>(null);
 
@@ -71,6 +78,7 @@ export const MessageProvider = ({
 	onPress,
 	onLongPress,
 	threadBadgeColor,
+	isIgnored,
 	children
 }: {
 	item: TAnyMessageModel;
@@ -78,11 +86,12 @@ export const MessageProvider = ({
 	onPress?: () => void;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	threadBadgeColor?: string;
+	isIgnored?: boolean;
 	children: ReactNode;
 }): ReactElement => {
 	'use memo';
 
-	const [store] = useState(() => createMessageStore({ onPress, onLongPress, threadBadgeColor }));
+	const [store] = useState(() => createMessageStore({ onPress, onLongPress, threadBadgeColor, ignoredSeed: isIgnored ?? false }));
 
 	// Header grouping and thread position depend on the previous record too, so each effect
 	// subscribes one record; both feed the same tick. Keeping them separate means changing
@@ -92,10 +101,14 @@ export const MessageProvider = ({
 
 	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
 	useEffect(() => {
-		store.setState({ onPress, onLongPress, threadBadgeColor });
+		store.setState({ onPress, onLongPress, threadBadgeColor, ignoredSeed: isIgnored ?? false });
 	});
 
-	return <MessageStoreContext.Provider value={{ store, item, previousItem }}>{children}</MessageStoreContext.Provider>;
+	const revealIgnored = useCallback(() => store.setState({ manualUnignored: true }), [store]);
+
+	return (
+		<MessageStoreContext.Provider value={{ store, item, previousItem, revealIgnored }}>{children}</MessageStoreContext.Provider>
+	);
 };
 
 export const useReactions = (): TAnyMessageModel['reactions'] => useMessageField(item => item.reactions);
@@ -298,6 +311,14 @@ export const useThreadBadgeColor = (): string | undefined => {
 	const { store } = useMessageCtx();
 	return useStore(store, s => s.threadBadgeColor);
 };
+export const useMessageIgnored = (): boolean => {
+	const { store } = useMessageCtx();
+	return useStore(store, s => (s.manualUnignored ? false : s.ignoredSeed));
+};
+export const useRevealIgnored = (): (() => void) => {
+	const { revealIgnored } = useMessageCtx();
+	return revealIgnored;
+};
 
 export const useMessageLongPress = (): (() => void) => {
 	const { item } = useMessageCtx();
@@ -327,19 +348,15 @@ export const useOnLinkPress = (): ((link: string) => void) => {
 	};
 };
 
-export const useMessagePress = ({
-	isIgnored,
-	revealIgnored
-}: {
-	isIgnored: boolean;
-	revealIgnored: () => void;
-}): (() => void) => {
+export const useMessagePress = (): (() => void) => {
 	const { item } = useMessageCtx();
 	const isThreadRoom = useIsThreadRoom();
 	const onPress = useOnPressRaw();
 	const onThreadPress = useOnThreadPress();
 	const onDiscussionPress = useOnDiscussionPress();
 	const closeEmojiAndAction = useCloseEmojiAndAction();
+	const isIgnored = useMessageIgnored();
+	const revealIgnored = useRevealIgnored();
 
 	// pressHandlerRef holds the latest press logic; updated after every render via
 	// useEffect so the render body stays free of ref writes.

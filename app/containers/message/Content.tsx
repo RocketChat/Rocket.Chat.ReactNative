@@ -5,7 +5,6 @@ import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage, getPreviewMessageFromAttachment } from './utils';
-import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { useSetting } from '../../lib/hooks/useSetting';
@@ -15,6 +14,7 @@ import {
 	useIsEncrypted,
 	useIsInfo,
 	useMessageAuthor,
+	useMessageIgnored,
 	useMessageStatus,
 	useMessageText,
 	useOnLinkPress,
@@ -22,7 +22,7 @@ import {
 } from './MessageStore';
 import { useAutoTranslate, useGetCustomEmoji, useIsThreadRoom, useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
-const Content = (props: IMessageContent) => {
+const Content = () => {
 	'use memo';
 
 	const { theme } = useTheme();
@@ -41,6 +41,7 @@ const Content = (props: IMessageContent) => {
 	const { isTemp } = useMessageStatus();
 	const { messageText, isTranslated } = useMessageText();
 	const { u: author, role } = useMessageAuthor();
+	const isIgnored = useMessageIgnored();
 
 	if (isInfo) {
 		// @ts-ignore
@@ -95,7 +96,7 @@ const Content = (props: IMessageContent) => {
 		);
 	}
 
-	if (props.isIgnored) {
+	if (isIgnored) {
 		content = (
 			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${messageText}`}>
 				{I18n.t('Message_Ignored')}
