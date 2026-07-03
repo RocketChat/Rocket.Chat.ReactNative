@@ -9,7 +9,7 @@ import Attachments from '../Attachments';
 import {
 	useContentData,
 	useIsInfo,
-	useMessageAuthor,
+	useMessageField,
 	useMessageGrouping,
 	useMessageText,
 	useThreadPosition
@@ -24,7 +24,7 @@ const CompactMessage = () => {
 	const isInfo = useIsInfo();
 	const { messageText, isTranslated } = useMessageText();
 	const { t: type, attachments } = useContentData();
-	const { u: author } = useMessageAuthor();
+	const author = useMessageField(item => item.u);
 	const { autoTranslateLanguage } = useAutoTranslate();
 
 	const thread = isThreadReply ? <RepliedThread isHeader={isHeader} /> : null;

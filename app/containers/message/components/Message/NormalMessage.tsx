@@ -4,7 +4,7 @@ import { A11y } from 'react-native-a11y-order';
 import styles from '../../styles';
 import MessageAvatar from '../MessageAvatar';
 import RightIcons from '../RightIcons';
-import { MessageInner } from '../Message';
+import { MessageInner } from './MessageInner';
 import { useMessageField, useMessageGrouping, useMessageText } from '../../stores/MessageStore';
 import { useAutoTranslate } from '../../stores/MessageRoomStore';
 

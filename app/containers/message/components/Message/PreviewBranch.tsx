@@ -4,13 +4,13 @@ import Attachments from '../Attachments';
 import Quote from '../Attachments/Quote';
 import Urls from '../Urls';
 import MessageTime from '../Time';
-import { useAttachments, useMessageAuthor } from '../../stores/MessageStore';
+import { useAttachments, useMessageField } from '../../stores/MessageStore';
 
 const PreviewBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
 
 	const attachments = useAttachments();
-	const { u: author } = useMessageAuthor();
+	const author = useMessageField(item => item.u);
 
 	return (
 		<>

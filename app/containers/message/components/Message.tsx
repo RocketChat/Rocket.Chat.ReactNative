@@ -1,14 +1,7 @@
 import { A11y } from 'react-native-a11y-order';
 
 import { useTheme } from '../../../theme';
-import { WidthAwareView } from './WidthAwareView';
-import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Touch from './Touch';
-import BlocksBranch from './Message/BlocksBranch';
-import JitsiBranch from './Message/JitsiBranch';
-import DiscussionBranch from './Message/DiscussionBranch';
-import PreviewBranch from './Message/PreviewBranch';
-import DefaultBranch from './Message/DefaultBranch';
 import CompactMessage from './Message/CompactMessage';
 import NormalMessage from './Message/NormalMessage';
 import { useLastFocusedMessageRef } from '../../../lib/a11y/useLastFocusedMessageRef';
@@ -18,10 +11,8 @@ import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHin
 import { useIsBeingEdited } from '../../../views/RoomView/InteractionStore';
 import { useArchived } from '../stores/MessageRoomStore';
 import {
-	useBlocks,
 	useIsInfo,
 	useMessageField,
-	useMessageGrouping,
 	useMessageIgnored,
 	useMessageLongPress,
 	useMessagePress,
@@ -33,32 +24,6 @@ type TMessageProps = {
 	isPreview?: boolean;
 	highlighted?: boolean;
 };
-
-export const MessageInner = (props: TMessageProps) => {
-	'use memo';
-
-	const { isLargeFontScale } = useResponsiveLayout();
-	const isHeader = useMessageGrouping();
-	const type = useMessageField(item => item.t);
-	const { blocks } = useBlocks();
-	const showTimeLarge = isLargeFontScale && isHeader;
-
-	let branch;
-	if (blocks && blocks.length) {
-		branch = <BlocksBranch showTimeLarge={showTimeLarge} />;
-	} else if (type === 'jitsi_call_started') {
-		branch = <JitsiBranch showTimeLarge={showTimeLarge} />;
-	} else if (type === 'discussion-created') {
-		branch = <DiscussionBranch showTimeLarge={showTimeLarge} />;
-	} else if (props.isPreview) {
-		branch = <PreviewBranch showTimeLarge={showTimeLarge} />;
-	} else {
-		branch = <DefaultBranch showTimeLarge={showTimeLarge} />;
-	}
-
-	return <WidthAwareView>{branch}</WidthAwareView>;
-};
-MessageInner.displayName = 'MessageInner';
 
 const Message = (props: TMessageProps) => {
 	'use memo';
