@@ -58,7 +58,6 @@ export const useMessageAccessibilityLabel = (): string => {
 		label = i18n.t('Encrypted_message');
 	}
 	if (isInfo) {
-		// @ts-ignore
 		label = getInfoMessage({ type, role, msg, author, comment });
 	}
 	label = stripMentions(label, mentions, channels);

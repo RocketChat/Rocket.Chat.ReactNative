@@ -66,9 +66,7 @@ export const useMessageField = <T,>(selector: (item: TAnyMessageModel) => T): T 
 
 // Plain REST objects (no experimentalSubscribe) never emit again after the initial render.
 const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
-	// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
 	if (typeof m.experimentalSubscribe !== 'function') return undefined;
-	// @ts-ignore: experimentalSubscribe is not yet in WatermelonDB's TS types
 	return m.experimentalSubscribe(() => store.setState(s => ({ tick: s.tick + 1 })));
 };
 

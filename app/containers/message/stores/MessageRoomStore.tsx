@@ -17,7 +17,7 @@ export type MessageRoomState = {
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
-	closeEmojiAndAction?: (action?: Function, params?: any) => void;
+	closeEmojiAndAction?: (action?: (params?: unknown) => void, params?: unknown) => void;
 	// row action handlers
 	onReactionPress?: (emoji: string, id: string) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;
@@ -26,7 +26,7 @@ export type MessageRoomState = {
 	onThreadPress?: (item: TAnyMessageModel) => void;
 	replyBroadcast?: (item: TAnyMessageModel) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
-	onAnswerButtonPress?: Function;
+	onAnswerButtonPress?: (message: string, tshow?: boolean) => void;
 	onEncryptedPress?: () => void;
 	archived?: boolean;
 	isReadReceiptEnabled?: boolean;
@@ -78,14 +78,14 @@ const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
 	'autoTranslateLanguage'
 ];
 
-export const pickMessageRoomState = (source: Record<string, any> = {}): Partial<MessageRoomState> => {
-	const state: Partial<MessageRoomState> = {};
+export const pickMessageRoomState = (source: Record<string, unknown> = {}): Partial<MessageRoomState> => {
+	const state: Record<string, unknown> = {};
 	ROOM_STATE_KEYS.forEach(key => {
 		if (source[key] !== undefined) {
-			(state as Record<string, unknown>)[key] = source[key];
+			state[key] = source[key];
 		}
 	});
-	return state;
+	return state as Partial<MessageRoomState>;
 };
 
 export const createMessageRoomStore = (initial: MessageRoomState) => createStore<MessageRoomState>(() => ({ ...initial }));
