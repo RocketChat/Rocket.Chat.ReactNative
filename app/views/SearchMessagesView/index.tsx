@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Component } from 'react';
+import parse from 'url-parse';
 
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -259,6 +260,25 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		}
 	};
 
+	jumpToMessageByUrl = (messageUrl: string) => {
+		try {
+			const messageId = parse(messageUrl, true).query.msg;
+			if (!messageId) {
+				return;
+			}
+			const { isMasterDetail } = this.props;
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams({
+				rid: this.rid,
+				jumpToMessageId: messageId,
+				t: this.t,
+				room: this.room as TSubscriptionModel
+			});
+		} catch (e) {
+			log(e);
+		}
+	};
+
 	onEndReached = async () => {
 		const { serverVersion } = this.props;
 		const { searchText, messages, loading } = this.state;
@@ -301,6 +321,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				showAttachment={this.showAttachment}
+				jumpToMessage={this.jumpToMessageByUrl}
 				user={user}
 				baseUrl={baseUrl}
 				rid={this.rid}
