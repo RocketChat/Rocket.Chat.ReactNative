@@ -7,17 +7,15 @@ import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 import { isQuoteAttachment } from './utils';
 import { useGetCustomEmoji } from '../../MessageRoomStore';
-import { useContentData, useTranslateLanguage } from '../../MessageStore';
+import { useTranslateLanguage } from '../../MessageStore';
 
 const Quote: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
 	const getCustomEmoji = useGetCustomEmoji() ?? (() => null);
-	const { attachments: storeAttachments } = useContentData();
-	const resolved = attachments ?? storeAttachments;
 
-	const quotes = resolved?.filter(isQuoteAttachment);
+	const quotes = attachments?.filter(isQuoteAttachment);
 
 	if (!quotes || !quotes?.length) {
 		return null;

@@ -60,7 +60,7 @@ const MessageInner = (props: TMessageProps) => {
 
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
-	const { t: type } = useContentData();
+	const { t: type, attachments } = useContentData();
 	const { blocks } = useBlocks();
 	const { u: author } = useMessageAuthor();
 	const showTimeLarge = isLargeFontScale && isHeader;
@@ -72,9 +72,9 @@ const MessageInner = (props: TMessageProps) => {
 				<User />
 				{showTimeLarge ? <MessageTime /> : null}
 				<>
-					<Quote />
+					<Quote attachments={attachments} />
 					<Content />
-					<Attachments author={author} />
+					<Attachments attachments={attachments} author={author} />
 				</>
 				<Urls />
 			</>
@@ -120,9 +120,9 @@ const MessageInner = (props: TMessageProps) => {
 				<User />
 				{showTimeLarge ? <MessageTime /> : null}
 				<View style={{ gap: 4 }}>
-					<Quote />
+					<Quote attachments={attachments} />
 					<Content />
-					<Attachments author={author} />
+					<Attachments attachments={attachments} author={author} />
 					<Urls />
 					<Thread />
 					<Reactions />
@@ -143,7 +143,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
 	const isInfo = useIsInfo();
 	const { messageText, isTranslated } = useMessageText();
-	const { t: type } = useContentData();
+	const { t: type, attachments } = useContentData();
 	const { u: author } = useMessageAuthor();
 	const id = useMessageField(item => item.id);
 	const { autoTranslateLanguage } = useAutoTranslate();
@@ -167,7 +167,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 							<Content />
 							{isInfo && type === 'message_pinned' ? (
 								<View pointerEvents='none'>
-									<Attachments author={author} />
+									<Attachments attachments={attachments} author={author} />
 								</View>
 							) : null}
 						</View>
