@@ -29,11 +29,10 @@ type MessageStoreState = {
 	onPress?: () => void;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	threadBadgeColor?: string;
-	ignoredSeed: boolean;
 };
 
 const createMessageStore = (initial: Partial<MessageStoreState>) =>
-	createStore<MessageStoreState>(() => ({ tick: 0, manualUnignored: false, ignoredSeed: false, ...initial }));
+	createStore<MessageStoreState>(() => ({ tick: 0, manualUnignored: false, ...initial }));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
@@ -42,6 +41,7 @@ type MessageCtxValue = {
 	item: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
 	revealIgnored: () => void;
+	isIgnored: boolean;
 };
 
 const MessageStoreContext = createContext<MessageCtxValue | null>(null);
@@ -91,7 +91,7 @@ export const MessageProvider = ({
 }): ReactElement => {
 	'use memo';
 
-	const [store] = useState(() => createMessageStore({ onPress, onLongPress, threadBadgeColor, ignoredSeed: isIgnored ?? false }));
+	const [store] = useState(() => createMessageStore({ onPress, onLongPress, threadBadgeColor }));
 
 	// Header grouping and thread position depend on the previous record too, so each effect
 	// subscribes one record; both feed the same tick. Keeping them separate means changing
@@ -101,13 +101,15 @@ export const MessageProvider = ({
 
 	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
 	useEffect(() => {
-		store.setState({ onPress, onLongPress, threadBadgeColor, ignoredSeed: isIgnored ?? false });
+		store.setState({ onPress, onLongPress, threadBadgeColor });
 	});
 
 	const revealIgnored = () => store.setState({ manualUnignored: true });
 
 	return (
-		<MessageStoreContext.Provider value={{ store, item, previousItem, revealIgnored }}>{children}</MessageStoreContext.Provider>
+		<MessageStoreContext.Provider value={{ store, item, previousItem, revealIgnored, isIgnored: isIgnored ?? false }}>
+			{children}
+		</MessageStoreContext.Provider>
 	);
 };
 
@@ -312,8 +314,9 @@ export const useThreadBadgeColor = (): string | undefined => {
 	return useStore(store, s => s.threadBadgeColor);
 };
 export const useMessageIgnored = (): boolean => {
-	const { store } = useMessageCtx();
-	return useStore(store, s => (s.manualUnignored ? false : s.ignoredSeed));
+	const { store, isIgnored } = useMessageCtx();
+	const manualUnignored = useStore(store, s => s.manualUnignored);
+	return manualUnignored ? false : isIgnored;
 };
 export const useRevealIgnored = (): (() => void) => {
 	const { revealIgnored } = useMessageCtx();
