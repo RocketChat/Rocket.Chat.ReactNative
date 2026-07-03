@@ -13,7 +13,7 @@ import {
 	useThreadData,
 	useThreadPosition
 } from '../MessageStore';
-import { useAutoTranslate } from '../MessageRoomStore';
+import { useAutoTranslate, useIsReadReceiptEnabled } from '../MessageRoomStore';
 import { useSetting } from '../../../lib/hooks/useSetting';
 
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {
@@ -31,7 +31,7 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 	return result;
 };
 
-export const useMessageAccessibilityLabel = ({ isReadReceiptEnabled }: { isReadReceiptEnabled?: boolean }): string => {
+export const useMessageAccessibilityLabel = (): string => {
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const { autoTranslateLanguage } = useAutoTranslate();
 	const { attachments, mentions, channels, comment, t: type } = useContentData();
@@ -42,6 +42,7 @@ export const useMessageAccessibilityLabel = ({ isReadReceiptEnabled }: { isReadR
 	const isInfo = useIsInfo();
 	const isEncrypted = useIsEncrypted();
 	const { ts, unread } = useMessageMeta();
+	const isReadReceiptEnabled = useIsReadReceiptEnabled();
 
 	const imageDescriptionLabel = useImageDescriptionLabel(attachments, messageText);
 	const msg = messageText || '';

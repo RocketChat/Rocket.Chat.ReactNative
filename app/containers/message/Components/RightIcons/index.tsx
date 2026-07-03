@@ -1,7 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { type MessageType } from '../../../../definitions';
 import Edited from './Edited';
 import Encrypted from './Encrypted';
 import MessageError from './MessageError';
@@ -16,36 +15,20 @@ const styles = StyleSheet.create({
 });
 
 interface IRightIcons {
-	type: MessageType;
 	msg?: string;
-	isEdited: boolean;
-	isReadReceiptEnabled?: boolean;
-	unread?: boolean;
-	hasError: boolean;
-	isTranslated: boolean;
-	pinned?: boolean;
 }
 
-const RightIcons = ({
-	type,
-	msg,
-	isEdited,
-	hasError,
-	isReadReceiptEnabled,
-	unread,
-	isTranslated,
-	pinned
-}: IRightIcons): ReactElement => {
+const RightIcons = ({ msg }: IRightIcons): ReactElement => {
 	'use memo';
 
 	return (
 		<View style={styles.actionIcons}>
-			<Pinned pinned={pinned} testID={`${msg}-pinned`} />
-			<Encrypted type={type} />
-			<Edited testID={`${msg}-edited`} isEdited={isEdited} />
-			<MessageError hasError={hasError} />
-			<Translated isTranslated={isTranslated} />
-			<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
+			<Pinned testID={`${msg}-pinned`} />
+			<Encrypted />
+			<Edited testID={`${msg}-edited`} />
+			<MessageError />
+			<Translated />
+			<ReadReceipt />
 		</View>
 	);
 };

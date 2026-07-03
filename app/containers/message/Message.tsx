@@ -31,13 +31,11 @@ import { useArchived, useAutoTranslate } from './MessageRoomStore';
 import {
 	useBlocks,
 	useContentData,
-	useIsEdited,
 	useIsInfo,
 	useMessageAuthor,
 	useMessageField,
 	useMessageGrouping,
 	useMessageLongPress,
-	useMessageMeta,
 	useMessagePress,
 	useMessageStatus,
 	useMessageText,
@@ -45,7 +43,6 @@ import {
 } from './MessageStore';
 
 type TMessageProps = {
-	isReadReceiptEnabled?: boolean;
 	isPreview?: boolean;
 	highlighted?: boolean;
 	isIgnored: boolean;
@@ -73,7 +70,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (props.isPreview) {
 		content = (
 			<>
-				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User />
 				{showTimeLarge ? <MessageTime /> : null}
 				<>
 					<Quote />
@@ -88,7 +85,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (type === 'discussion-created') {
 		content = (
 			<>
-				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User />
 				{showTimeLarge ? <MessageTime /> : null}
 				<Discussion />
 			</>
@@ -98,7 +95,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (type === 'jitsi_call_started') {
 		content = (
 			<>
-				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User />
 				<Content isIgnored={props.isIgnored} />
 				<CallButton />
 				{showTimeLarge ? <MessageTime /> : null}
@@ -109,7 +106,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (blocks && blocks.length) {
 		content = (
 			<>
-				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User />
 				<Blocks />
 				<Thread />
 				<Reactions />
@@ -121,7 +118,7 @@ const MessageInner = (props: TMessageProps) => {
 	if (!content) {
 		content = (
 			<>
-				<User isReadReceiptEnabled={props.isReadReceiptEnabled} />
+				<User />
 				{showTimeLarge ? <MessageTime /> : null}
 				<View style={{ gap: 4 }}>
 					<Quote />
@@ -150,9 +147,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 	const { t: type } = useContentData();
 	const { u: author } = useMessageAuthor();
 	const id = useMessageField(item => item.id);
-	const isEdited = useIsEdited();
-	const { hasError } = useMessageStatus();
-	const { unread, pinned } = useMessageMeta();
 	const { autoTranslateLanguage } = useAutoTranslate();
 
 	if (isThreadReply || isThreadSequential || isInfo || props.isIgnored) {
@@ -194,7 +188,6 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<MessageAvatar />
 					<View style={styles.messageContent}>
 						<MessageInner
-							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							isPreview={props.isPreview}
 							highlighted={props.highlighted}
 							isIgnored={props.isIgnored}
@@ -202,18 +195,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 							small={props.small}
 						/>
 					</View>
-					{!isHeader ? (
-						<RightIcons
-							type={type}
-							msg={messageText}
-							isEdited={isEdited}
-							hasError={hasError}
-							isReadReceiptEnabled={props.isReadReceiptEnabled}
-							unread={unread}
-							pinned={pinned}
-							isTranslated={isTranslated}
-						/>
-					) : null}
+					{!isHeader ? <RightIcons msg={messageText} /> : null}
 				</View>
 			</A11y.Index>
 		</View>
@@ -238,9 +220,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const revealIgnored = () => setIsManualUnignored(true);
 	const onPressAction = useMessagePress({ isIgnored, revealIgnored });
 	const onLongPress = useMessageLongPress();
-	const accessibilityLabelValue = useMessageAccessibilityLabel({
-		isReadReceiptEnabled: props.isReadReceiptEnabled
-	});
+	const accessibilityLabelValue = useMessageAccessibilityLabel();
 	const isDisabled = (isInfo && !isThreadReply) || archived || isTemp || type === 'jitsi_call_started';
 	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
 	const accessibilityHint = useMessageAccessibilityHint();
@@ -257,7 +237,6 @@ const MessageTouchable = (props: TMessageProps) => {
 		return (
 			<A11y.Order>
 				<Message
-					isReadReceiptEnabled={props.isReadReceiptEnabled}
 					isPreview={props.isPreview}
 					highlighted={props.highlighted}
 					isIgnored={isIgnored}
@@ -292,7 +271,6 @@ const MessageTouchable = (props: TMessageProps) => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
 					<Message
-						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						isPreview={props.isPreview}
 						highlighted={props.highlighted}
 						isIgnored={isIgnored}

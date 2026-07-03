@@ -4,7 +4,7 @@ import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useMessageField } from '../../MessageStore';
 
-const Pinned = ({ testID }: { pinned?: boolean; testID?: string }): ReactElement | null => {
+const Pinned = ({ testID }: { testID?: string }): ReactElement | null => {
 	'use memo';
 
 	const pinned = useMessageField(item => item.pinned);

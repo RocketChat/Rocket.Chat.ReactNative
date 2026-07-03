@@ -8,14 +8,7 @@ import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useSetting } from '../../lib/hooks/useSetting';
-import {
-	useIsEdited,
-	useMessageAuthor,
-	useMessageGrouping,
-	useMessageMeta,
-	useMessageStatus,
-	useMessageText
-} from './MessageStore';
+import { useMessageAuthor, useMessageGrouping, useMessageMeta } from './MessageStore';
 import { useMessageUser, useNavToRoomInfo } from './MessageRoomStore';
 
 const styles = StyleSheet.create({
@@ -47,11 +40,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IMessageUser {
-	isReadReceiptEnabled?: boolean;
-}
-
-const User = ({ isReadReceiptEnabled }: IMessageUser) => {
+const User = () => {
 	'use memo';
 
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
@@ -61,10 +50,7 @@ const User = ({ isReadReceiptEnabled }: IMessageUser) => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
 	const { u: author, alias } = useMessageAuthor();
-	const { hasError } = useMessageStatus();
-	const isEdited = useIsEdited();
-	const { ts, unread, pinned, t: type } = useMessageMeta();
-	const { isTranslated } = useMessageText();
+	const { ts, t: type } = useMessageMeta();
 
 	if (isHeader) {
 		const username = (useRealName && author?.name) || author?.username;
@@ -102,15 +88,7 @@ const User = ({ isReadReceiptEnabled }: IMessageUser) => {
 					</Text>
 					{isLargeFontScale ? null : <MessageTime ts={ts as Date | undefined} />}
 				</Pressable>
-				<RightIcons
-					type={type}
-					isEdited={isEdited}
-					hasError={hasError}
-					isReadReceiptEnabled={isReadReceiptEnabled}
-					unread={unread}
-					pinned={pinned}
-					isTranslated={isTranslated}
-				/>
+				<RightIcons />
 			</View>
 		);
 	}

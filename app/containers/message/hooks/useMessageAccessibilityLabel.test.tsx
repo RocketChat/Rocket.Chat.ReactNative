@@ -13,8 +13,6 @@ jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
 
-type TArgs = { isReadReceiptEnabled?: boolean };
-
 const FIXED_TS = new Date('2024-01-15T12:34:56Z');
 const HOUR = FIXED_TS.toLocaleTimeString();
 
@@ -28,15 +26,10 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 		...overrides
 	} as TAnyMessageModel);
 
-const renderLabel = (
-	item: TAnyMessageModel,
-	args: TArgs = {},
-	config: Record<string, any> = {},
-	previousItem?: TAnyMessageModel
-) => {
+const renderLabel = (item: TAnyMessageModel, config: Record<string, any> = {}, previousItem?: TAnyMessageModel) => {
 	const spy = jest.fn();
 	const Probe = () => {
-		spy(useMessageAccessibilityLabel(args));
+		spy(useMessageAccessibilityLabel());
 		return null;
 	};
 	render(
@@ -128,11 +121,11 @@ describe('useMessageAccessibilityLabel', () => {
 
 	it('builds a translated message with only user, hour and translated marker as prefix', () => {
 		expect(
-			renderLabel(
-				buildItem({ autoTranslate: true, translations: [{ _id: 't1', language: 'en', value: 'translated text' }] }),
-				{},
-				{ autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
-			)
+			renderLabel(buildItem({ autoTranslate: true, translations: [{ _id: 't1', language: 'en', value: 'translated text' }] }), {
+				autoTranslateRoom: true,
+				autoTranslateLanguage: 'en',
+				user: { username: 'bob' }
+			})
 		).toBe(`alice ${HOUR} Message translated into English.`);
 	});
 
@@ -146,8 +139,7 @@ describe('useMessageAccessibilityLabel', () => {
 					unread: true,
 					attachments: [{ image_url: 'https://example.com/img.png', altText: 'A wavy pattern' }]
 				}),
-				{ isReadReceiptEnabled: true },
-				{ autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
+				{ isReadReceiptEnabled: true, autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
 			)
 		).toBe(`alice ${HOUR} Message translated into English. Image description: A wavy pattern Message was not read`);
 	});

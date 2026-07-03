@@ -7,7 +7,7 @@ import { useTheme } from '../../../../theme';
 import { useMessageCtx, useMessageStatus } from '../../MessageStore';
 import { useErrorActionsShow } from '../../MessageRoomStore';
 
-const MessageError = (_props: { hasError: boolean }) => {
+const MessageError = () => {
 	'use memo';
 
 	const { theme } = useTheme();

@@ -6,7 +6,7 @@ import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
 import { useMessageField } from '../../MessageStore';
 import { useOnEncryptedPress } from '../../MessageRoomStore';
 
-const Encrypted = (_props: { type: string }) => {
+const Encrypted = () => {
 	'use memo';
 
 	const onEncryptedPress = useOnEncryptedPress();

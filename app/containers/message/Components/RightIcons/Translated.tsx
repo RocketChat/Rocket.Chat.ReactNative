@@ -4,7 +4,7 @@ import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useMessageText } from '../../MessageStore';
 
-const Translated = (_props: { isTranslated: boolean }) => {
+const Translated = () => {
 	'use memo';
 
 	const { isTranslated } = useMessageText();

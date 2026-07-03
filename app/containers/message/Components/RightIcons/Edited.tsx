@@ -4,7 +4,7 @@ import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useIsEdited } from '../../MessageStore';
 
-const Edited = ({ testID }: { isEdited: boolean; testID?: string }) => {
+const Edited = ({ testID }: { testID?: string }) => {
 	'use memo';
 
 	const isEdited = useIsEdited();
