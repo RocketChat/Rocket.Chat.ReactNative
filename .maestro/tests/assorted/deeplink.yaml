@@ -376,6 +376,8 @@ tags:
     commands:
       - tapOn:
           text: 'Login'
+          rightOf:
+            text: 'Cancel'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'

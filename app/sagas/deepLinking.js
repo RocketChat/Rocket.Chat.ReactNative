@@ -266,7 +266,13 @@ const handleOpen = function* handleOpen({ params }) {
 				return;
 			}
 			if (!hostAlreadyConnected) {
-				yield take(types.SERVER.SELECT_SUCCESS);
+				// The confirm prompt can sit open for seconds while the NewServer connection
+				// (emitted above) completes, so SERVER.SELECT_SUCCESS may have already fired by
+				// the time we get here. Guard the take instead of hanging on an event that's past.
+				const serverSelected = yield select(state => state.server.server === host && state.server.connected);
+				if (!serverSelected) {
+					yield take(types.SERVER.SELECT_SUCCESS);
+				}
 				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
 				const connected = yield select(state => state.meteor.connected);
 				if (!connected) {

@@ -288,6 +288,41 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
 
+	// Ordering race: the confirm prompt stays open (real native Alert) long enough for the
+	// NewServer connection — kicked off *before* the prompt — to complete. SERVER.SELECT_SUCCESS
+	// then fires while the user is still deciding, so the take must be guarded or the saga hangs
+	// on WorkspaceView without ever logging in (the iOS deep-link symptom).
+	it('completes the chain when SERVER.SELECT_SUCCESS fires while the confirm prompt is open', async () => {
+		// Capture onPress instead of auto-confirming, mimicking a prompt the user hasn't tapped yet.
+		let confirm: (() => void) | undefined;
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onPress }: any) => {
+			confirm = onPress;
+		});
+
+		const { store, actions } = setupRecordingStore();
+		const loginRequested = () => actions.some(a => a.type === LOGIN.REQUEST);
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		// Prompt is open, not yet confirmed. The connection completes now: both
+		// SERVER.SELECT_SUCCESS and the socket connect fire before the saga reaches its takes.
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
+		// Still parked in the prompt — no premature login.
+		expect(loginRequested()).toBe(false);
+
+		// User confirms. The guard sees the server is already selected + connected and skips the
+		// stale takes, so loginRequest fires instead of the saga hanging.
+		confirm?.();
+		await flushSagaMicrotasks();
+		expect(loginRequested()).toBe(true);
+	});
+
 	// loginRequest must not fire until the socket is connected (locks the gate).
 	it('does not dispatch loginRequest until METEOR.SUCCESS', async () => {
 		const { store, actions } = setupRecordingStore();
