@@ -37,7 +37,6 @@ import {
 	type ISubscription,
 	SubscriptionType,
 	type TSubscriptionModel,
-	type TGetCustomEmoji,
 	type ICustomEmoji
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
@@ -207,15 +206,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 	searchDebounced = debounce(async (searchText: string) => {
 		await this.getMessages(searchText, true);
 	}, textInputDebounceTime);
-
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
 
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;

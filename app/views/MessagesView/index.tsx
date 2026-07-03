@@ -29,7 +29,6 @@ import {
 	type IMessage,
 	type TAnyMessageModel,
 	type IUrl,
-	type TGetCustomEmoji,
 	type ICustomEmoji
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
@@ -285,15 +284,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			this.setState({ loading: false });
 			console.error(error);
 		}
-	};
-
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
 	};
 
 	showAttachment = (attachment: IAttachment) => {
