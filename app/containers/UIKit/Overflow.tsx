@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Popover from 'react-native-popover-view';
 
 import { CustomIcon } from '../CustomIcon';
@@ -45,7 +45,7 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();
 	const options = element?.options || [];
 	const [show, onShow] = useState(false);
-	const touchableRef = useRef<any>(null);
+	const touchableRef = useRef<View>(null);
 
 	const onOptionPress = ({ value }: any) => {
 		onShow(false);
