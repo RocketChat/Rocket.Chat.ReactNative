@@ -34,6 +34,7 @@ export interface IBiometricTrustStore {
 	// auto-lock window. Owns the persisted flag so callers don't touch UserPreferences directly.
 	isRelockPending(): boolean;
 	setRelockPending(pending: boolean): void;
+	invalidate(): Promise<void>;
 	// Applies a biometry on/off toggle as one operation: enroll/disenroll the sentinel and persist
 	// the flag, keeping the keychain state and flag in sync. Returns the enroll result so callers
 	// can roll back their UI when enrollment fails (e.g. user cancels the OS prompt).

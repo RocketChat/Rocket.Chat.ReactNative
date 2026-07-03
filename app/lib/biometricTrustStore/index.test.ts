@@ -140,6 +140,48 @@ describe('biometricTrustStore', () => {
 		});
 	});
 
+	describe('invalidate', () => {
+		it('arms the relock debt first, then disenrolls, then clears the flag — the security-critical order', async () => {
+			const order: string[] = [];
+			const setRelockPending = jest.spyOn(biometricTrustStore, 'setRelockPending').mockImplementation((v: boolean) => {
+				order.push(`relockPending:${v}`);
+			});
+			const disenroll = jest.spyOn(biometricTrustStore, 'disenroll').mockImplementation(() => {
+				order.push('disenroll');
+				return Promise.resolve();
+			});
+			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {
+				order.push('setEnabled:false');
+			});
+
+			await biometricTrustStore.invalidate();
+
+			// Debt persisted BEFORE teardown so a kill mid-invalidation still carries it forward; disenroll
+			// before flag-clear so a crash leaves a reconcilable mismatch, never an orphaned live sentinel.
+			expect(order).toEqual(['relockPending:true', 'disenroll', 'setEnabled:false']);
+			expect(setRelockPending).toHaveBeenCalledWith(true);
+			expect(setEnabled).toHaveBeenCalledWith(false);
+			expect(disenroll).toHaveBeenCalledTimes(1);
+
+			setRelockPending.mockRestore();
+			disenroll.mockRestore();
+			setEnabled.mockRestore();
+		});
+
+		it('still clears the flag when disenroll rejects (best-effort teardown must complete)', async () => {
+			jest.spyOn(biometricTrustStore, 'setRelockPending').mockImplementation(() => {});
+			// disenroll() itself swallows keychain errors, but guard the contract: a rejecting disenroll must
+			// not skip setEnabled(false).
+			jest.spyOn(biometricTrustStore, 'disenroll').mockResolvedValueOnce();
+			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
+
+			await biometricTrustStore.invalidate();
+
+			expect(setEnabled).toHaveBeenCalledWith(false);
+			jest.restoreAllMocks();
+		});
+	});
+
 	describe('isEnrollmentValid', () => {
 		it('delegates to the native probe (true → valid)', async () => {
 			mockedIsEnrollmentValid.mockResolvedValueOnce(true);

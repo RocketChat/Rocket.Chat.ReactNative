@@ -162,13 +162,19 @@ const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 	if (!biometricTrustStore.isEnabled()) {
 		return false;
 	}
-	// iOS path: sentinel gone → changed.
-	if (!(await biometricTrustStore.hasEnrollment())) {
+	// Fail closed: a rejecting keychain/probe read forces the passcode rather than leaving the session
+	// unlocked (warm-resume callers only log the throw).
+	try {
+		// iOS path: sentinel gone → changed.
+		if (!(await biometricTrustStore.hasEnrollment())) {
+			return true;
+		}
+		// Android path: sentinel present but the native probe key was invalidated → changed. Always valid
+		// on iOS, so this never produces a false positive there.
+		return !(await biometricTrustStore.isEnrollmentValid());
+	} catch {
 		return true;
 	}
-	// Android path: sentinel present but the native probe key was invalidated → changed. Always valid
-	// on iOS, so this never produces a false positive there.
-	return !(await biometricTrustStore.isEnrollmentValid());
 };
 
 // A biometric enrollment change reaches us two ways:
@@ -189,17 +195,19 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	//  - cold launch: the init migration already reconciled the flag off (it runs before us) and left a
 	//    relock marker, since it would otherwise have consumed the signal silently.
 	// Either way, surface it explicitly: tear down any remaining trust state (mirroring
-	// resolveBiometricTrust's invalidation path), clear the marker, and show the passcode with the
-	// "enrollment changed" notice and biometry hidden — rather than letting PasscodeEnter rediscover it
-	// as a generic `unavailable` outcome that carries no reason subtitle.
 	const enrollmentChanged = await isEnrollmentRelockRequired();
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
-			await biometricTrustStore.disenroll();
-			biometricTrustStore.setEnabled(false);
+			// invalidate() arms the relock debt AND tears down trust (disenroll → clear flag) in the
+			// security-critical order — see its contract.
+			await biometricTrustStore.invalidate();
+		} else {
+			// Cold launch: the migration already cleared the flag and armed the marker. Re-affirm it so
+			// the clear below is balanced regardless of which path armed the debt.
+			biometricTrustStore.setRelockPending(true);
 		}
-		biometricTrustStore.setRelockPending(false);
 		await openModal(false, canCloseModal, 'enrollmentChanged');
+		biometricTrustStore.setRelockPending(false);
 		return;
 	}
 
@@ -210,6 +218,7 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// OS biometric sheet with the app content still visible underneath, defeating screen lock — so the
 	// verify()/invalidation flow lives in PasscodeEnter's biometry() for both the auto and button paths.
 	await openModal(hasBiometry, canCloseModal);
+	biometricTrustStore.setRelockPending(false);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {

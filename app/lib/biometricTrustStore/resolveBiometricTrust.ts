@@ -14,26 +14,17 @@ export type BiometricTrustOutcome = { unlocked: true } | { unlocked: false; moda
 // PasscodeEnter.biometry() for both the auto-prompt (fired behind the modal on mount) and the manual
 // retry button.
 //
-// On any invalidation we MUST disenroll() before clearing the enabled flag: a crash between the two
-// then leaves a flag/sentinel mismatch the migration's reconciliation can still clean up, whereas a
-// cleared flag with a live sentinel would look like a healthy disabled state and orphan the sentinel.
+// Invalidation arms the relock debt before teardown (invalidate()'s contract) so a mid-modal
+// force-kill can't drop it; cleared only after the passcode is entered.
 export const resolveBiometricTrust = async (result: TrustResult): Promise<BiometricTrustOutcome> => {
 	switch (result.kind) {
 		case 'success':
 			return { unlocked: true };
 		case 'enrollmentChanged':
-			await biometricTrustStore.disenroll();
-			biometricTrustStore.setEnabled(false);
+			await biometricTrustStore.invalidate();
 			return { unlocked: false, modal: { hasBiometry: false, reason: 'enrollmentChanged' } };
 		case 'unavailable':
-			// On iOS an enrollment change deletes the sentinel, so verify() returns `unavailable` (via
-			// hasEnrollment()) before the errSecItemNotFound read-path can classify it as enrollmentChanged.
-			// Either way the flag is now out of sync with a missing sentinel, so clear it here rather than
-			// leaving the migration to reconcile it on a later launch. No reason subtitle: `unavailable`
-			// can also be benign (e.g. a THIS_DEVICE_ONLY sentinel not restored from a device backup),
-			// not necessarily an enrollment change.
-			await biometricTrustStore.disenroll();
-			biometricTrustStore.setEnabled(false);
+			await biometricTrustStore.invalidate();
 			return { unlocked: false, modal: { hasBiometry: false } };
 		case 'canceled':
 		case 'error':

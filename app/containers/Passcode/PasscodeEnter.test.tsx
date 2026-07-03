@@ -17,6 +17,8 @@ jest.mock('../../lib/biometricTrustStore', () => ({
 		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
+		setRelockPending: jest.fn(),
+		invalidate: jest.fn(() => Promise.resolve()),
 		setBiometryEnabled: jest.fn()
 	}
 }));
@@ -37,6 +39,8 @@ jest.mock('../../i18n', () => ({ t: (key: string) => key }));
 const mockedBiometryAuth = biometryAuth as jest.Mock;
 const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
+const mockedSetRelockPending = biometricTrustStore.setRelockPending as jest.Mock;
+const mockedInvalidate = biometricTrustStore.invalidate as jest.Mock;
 
 // biometry() runs on mount (auto, from behind the modal) and on button press; both share the same
 // trust-resolution logic. These cover the auto path plus a manual re-trigger.
@@ -44,16 +48,29 @@ describe('PasscodeEnter biometry', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedDisenroll.mockResolvedValue(undefined);
+		// invalidate() is the single teardown primitive (ordering verified in index.test.ts); delegate to
+		// the same mocks so the disenroll/flag/relock assertions below still exercise the real sequence.
+		mockedInvalidate.mockImplementation(async () => {
+			biometricTrustStore.setRelockPending(true);
+			await biometricTrustStore.disenroll();
+			biometricTrustStore.setEnabled(false);
+		});
 	});
 
-	it('enrollmentChanged on mount → disenrolls, clears flag, hides biometry button', async () => {
+	it('enrollmentChanged on mount → invalidates (arms relock debt, disenrolls, clears flag), hides biometry button', async () => {
 		mockedBiometryAuth.mockResolvedValueOnce({ kind: 'enrollmentChanged' });
 		const finishProcess = jest.fn();
 
 		const { queryByTestId } = render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
-		await waitFor(() => expect(mockedDisenroll).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(mockedInvalidate).toHaveBeenCalledTimes(1));
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		// The relock debt must be armed here so a force-kill at this passcode screen still forces the
+		// passcode on the next cold launch (the flag is now off, so the live check can't re-detect it).
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(true);
+		// ...and NOT cleared: the passcode has not been entered yet (finishProcess never fired).
+		expect(mockedSetRelockPending).not.toHaveBeenCalledWith(false);
 		expect(finishProcess).not.toHaveBeenCalled();
 		await waitFor(() => expect(queryByTestId('biometry-button')).toBeNull());
 	});

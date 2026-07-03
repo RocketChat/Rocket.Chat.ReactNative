@@ -129,6 +129,13 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		UserPreferences.setBool(BIOMETRIC_PENDING_RELOCK_KEY, pending);
 	},
 
+	async invalidate() {
+		biometricTrustStore.setRelockPending(true);
+
+		await biometricTrustStore.disenroll();
+		biometricTrustStore.setEnabled(false);
+	},
+
 	async setBiometryEnabled(enabled: boolean) {
 		if (enabled) {
 			const result = await biometricTrustStore.enroll();
