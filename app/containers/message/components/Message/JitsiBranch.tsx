@@ -1,0 +1,21 @@
+import User from '../User';
+import Content from '../Content';
+import CallButton from '../CallButton';
+import MessageTime from '../Time';
+
+const JitsiBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
+	'use memo';
+
+	return (
+		<>
+			<User />
+			<Content />
+			<CallButton />
+			{showTimeLarge ? <MessageTime /> : null}
+		</>
+	);
+};
+
+JitsiBranch.displayName = 'MessageJitsiBranch';
+
+export default JitsiBranch;

@@ -1,44 +1,31 @@
-import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
-import User from './User';
-import styles from '../styles';
-import RepliedThread from './RepliedThread';
-import MessageAvatar from './MessageAvatar';
-import Attachments from './Attachments';
-import Urls from './Urls';
-import Thread from './Thread';
-import Blocks from './Blocks';
-import Reactions from './Reactions';
-import Broadcast from './Broadcast';
-import Discussion from './Discussion';
-import Content from './Content';
-import CallButton from './CallButton';
 import { useTheme } from '../../../theme';
-import RightIcons from './RightIcons';
 import { WidthAwareView } from './WidthAwareView';
-import MessageTime from './Time';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import Quote from './Attachments/Quote';
 import Touch from './Touch';
+import BlocksBranch from './Message/BlocksBranch';
+import JitsiBranch from './Message/JitsiBranch';
+import DiscussionBranch from './Message/DiscussionBranch';
+import PreviewBranch from './Message/PreviewBranch';
+import DefaultBranch from './Message/DefaultBranch';
+import CompactMessage from './Message/CompactMessage';
+import NormalMessage from './Message/NormalMessage';
 import { useLastFocusedMessageRef } from '../../../lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from '../hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from '../hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHint';
 import { useIsBeingEdited } from '../../../views/RoomView/InteractionStore';
-import { useArchived, useAutoTranslate } from '../stores/MessageRoomStore';
+import { useArchived } from '../stores/MessageRoomStore';
 import {
 	useBlocks,
-	useContentData,
 	useIsInfo,
-	useMessageAuthor,
 	useMessageField,
 	useMessageGrouping,
 	useMessageIgnored,
 	useMessageLongPress,
 	useMessagePress,
 	useMessageStatus,
-	useMessageText,
 	useThreadPosition
 } from '../stores/MessageStore';
 
@@ -47,151 +34,44 @@ type TMessageProps = {
 	highlighted?: boolean;
 };
 
-interface IMessageA11y {
-	accessibilityActions?: AccessibilityActionInfo[];
-	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
-	handleLongPress?: () => void;
-}
-
-const MessageInner = (props: TMessageProps) => {
+export const MessageInner = (props: TMessageProps) => {
 	'use memo';
 
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
-	const { t: type, attachments } = useContentData();
+	const type = useMessageField(item => item.t);
 	const { blocks } = useBlocks();
-	const { u: author } = useMessageAuthor();
 	const showTimeLarge = isLargeFontScale && isHeader;
 
-	let content;
-	if (props.isPreview) {
-		content = (
-			<>
-				<User />
-				{showTimeLarge ? <MessageTime /> : null}
-				<>
-					<Quote attachments={attachments} />
-					<Content />
-					<Attachments attachments={attachments} author={author} />
-				</>
-				<Urls />
-			</>
-		);
-	}
-
-	if (type === 'discussion-created') {
-		content = (
-			<>
-				<User />
-				{showTimeLarge ? <MessageTime /> : null}
-				<Discussion />
-			</>
-		);
-	}
-
-	if (type === 'jitsi_call_started') {
-		content = (
-			<>
-				<User />
-				<Content />
-				<CallButton />
-				{showTimeLarge ? <MessageTime /> : null}
-			</>
-		);
-	}
-
+	let branch;
 	if (blocks && blocks.length) {
-		content = (
-			<>
-				<User />
-				<Blocks />
-				<Thread />
-				<Reactions />
-				{showTimeLarge ? <MessageTime /> : null}
-			</>
-		);
+		branch = <BlocksBranch showTimeLarge={showTimeLarge} />;
+	} else if (type === 'jitsi_call_started') {
+		branch = <JitsiBranch showTimeLarge={showTimeLarge} />;
+	} else if (type === 'discussion-created') {
+		branch = <DiscussionBranch showTimeLarge={showTimeLarge} />;
+	} else if (props.isPreview) {
+		branch = <PreviewBranch showTimeLarge={showTimeLarge} />;
+	} else {
+		branch = <DefaultBranch showTimeLarge={showTimeLarge} />;
 	}
 
-	if (!content) {
-		content = (
-			<>
-				<User />
-				{showTimeLarge ? <MessageTime /> : null}
-				<View style={{ gap: 4 }}>
-					<Quote attachments={attachments} />
-					<Content />
-					<Attachments attachments={attachments} author={author} />
-					<Urls />
-					<Thread />
-					<Reactions />
-					<Broadcast />
-				</View>
-			</>
-		);
-	}
-
-	return <WidthAwareView>{content}</WidthAwareView>;
+	return <WidthAwareView>{branch}</WidthAwareView>;
 };
 MessageInner.displayName = 'MessageInner';
 
-const Message = (props: TMessageProps & IMessageA11y) => {
+const Message = (props: TMessageProps) => {
 	'use memo';
 
-	const isHeader = useMessageGrouping();
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
 	const isInfo = useIsInfo();
-	const { messageText, isTranslated } = useMessageText();
-	const { t: type, attachments } = useContentData();
-	const { u: author } = useMessageAuthor();
-	const id = useMessageField(item => item.id);
-	const { autoTranslateLanguage } = useAutoTranslate();
 	const isIgnored = useMessageIgnored();
 
 	if (isThreadReply || isThreadSequential || isInfo || isIgnored) {
-		const thread = isThreadReply ? <RepliedThread isHeader={isHeader} /> : null;
-		const infoStyle: ViewStyle = isInfo ? { alignItems: 'center' } : {};
-		return (
-			<View style={[styles.container, { marginTop: 4 }]}>
-				{thread}
-				<View style={[styles.flex, infoStyle]}>
-					<MessageAvatar small />
-					<A11y.Index
-						accessible={isTranslated}
-						accessibilityLabel={messageText || ''}
-						accessibilityLanguage={autoTranslateLanguage}
-						index={2}
-						style={{ flex: 1 }}>
-						<View style={styles.messageContent}>
-							<Content />
-							{isInfo && type === 'message_pinned' ? (
-								<View pointerEvents='none'>
-									<Attachments attachments={attachments} author={author} />
-								</View>
-							) : null}
-						</View>
-					</A11y.Index>
-				</View>
-			</View>
-		);
+		return <CompactMessage />;
 	}
 
-	return (
-		<View testID={`message-${id}`} style={styles.container}>
-			<A11y.Index
-				accessible={isTranslated}
-				accessibilityLabel={messageText || ''}
-				accessibilityLanguage={autoTranslateLanguage}
-				index={2}>
-				<View style={styles.flex}>
-					<MessageAvatar />
-					<View style={styles.messageContent}>
-						<MessageInner isPreview={props.isPreview} />
-					</View>
-					{!isHeader ? <RightIcons /> : null}
-				</View>
-			</A11y.Index>
-		</View>
-	);
+	return <NormalMessage isPreview={props.isPreview} />;
 };
 Message.displayName = 'Message';
 
@@ -253,7 +133,7 @@ const MessageTouchable = (props: TMessageProps) => {
 					onAccessibilityAction={e => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
-					<Message isPreview={props.isPreview} handleLongPress={!isDisabled ? handleLongPress : undefined} />
+					<Message isPreview={props.isPreview} />
 				</Touch>
 			</A11y.Index>
 		</A11y.Order>
