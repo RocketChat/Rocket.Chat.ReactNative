@@ -19,7 +19,6 @@ interface IPasscodePasscodeEnter {
 
 const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
-	const attempts = parseInt(UserPreferences.getString(ATTEMPTS_KEY) || '0', 10);
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
 
@@ -57,7 +56,8 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 			if (sha256(p) === passcode) {
 				finishProcess();
 			} else {
-				const nextAttempts = attempts + 1;
+				const currentAttempts = parseInt(UserPreferences.getString(ATTEMPTS_KEY) || '0', 10);
+				const nextAttempts = currentAttempts + 1;
 				if (nextAttempts >= MAX_ATTEMPTS) {
 					setStatus(TYPE.LOCKED);
 					UserPreferences.setString(LOCKED_OUT_TIMER_KEY, new Date().toISOString());

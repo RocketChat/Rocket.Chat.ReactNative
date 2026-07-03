@@ -125,8 +125,15 @@ describe('ProfileView submit', () => {
 	it('saves when the username is corrected to a valid value', async () => {
 		(saveUserProfile as jest.Mock).mockResolvedValue(true);
 
-		const { getByTestId } = renderProfile();
+		const { getByTestId, findByText } = renderProfile();
 
+		// Submit invalid username first
+		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus b');
+		fireEvent.press(getByTestId('profile-view-submit'));
+		await findByText(I18n.t('Username_invalid'));
+		expect(saveUserProfile).not.toHaveBeenCalled();
+
+		// Correct it to a valid username and submit
 		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus.b');
 		fireEvent.press(getByTestId('profile-view-submit'));
 
