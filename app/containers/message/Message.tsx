@@ -45,8 +45,6 @@ import {
 type TMessageProps = {
 	isPreview?: boolean;
 	highlighted?: boolean;
-	isBeingEdited?: boolean;
-	small?: boolean;
 };
 
 interface IMessageA11y {
@@ -187,12 +185,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 				<View style={styles.flex}>
 					<MessageAvatar />
 					<View style={styles.messageContent}>
-						<MessageInner
-							isPreview={props.isPreview}
-							highlighted={props.highlighted}
-							isBeingEdited={props.isBeingEdited}
-							small={props.small}
-						/>
+						<MessageInner isPreview={props.isPreview} />
 					</View>
 					{!isHeader ? <RightIcons msg={messageText} /> : null}
 				</View>
@@ -232,7 +225,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	if (hasError || isInfo) {
 		return (
 			<A11y.Order>
-				<Message isPreview={props.isPreview} highlighted={props.highlighted} isBeingEdited={isBeingEdited} small={props.small} />
+				<Message isPreview={props.isPreview} />
 			</A11y.Order>
 		);
 	}
@@ -260,13 +253,7 @@ const MessageTouchable = (props: TMessageProps) => {
 					onAccessibilityAction={e => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
-					<Message
-						isPreview={props.isPreview}
-						highlighted={props.highlighted}
-						isBeingEdited={isBeingEdited}
-						small={props.small}
-						handleLongPress={!isDisabled ? handleLongPress : undefined}
-					/>
+					<Message isPreview={props.isPreview} handleLongPress={!isDisabled ? handleLongPress : undefined} />
 				</Touch>
 			</A11y.Index>
 		</A11y.Order>
