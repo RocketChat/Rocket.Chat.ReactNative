@@ -88,8 +88,8 @@ importers:
         specifier: 0.31.31
         version: 0.31.31
       '@rocket.chat/mobile-crypto':
-        specifier: RocketChat/rocket.chat-mobile-crypto#adbcf7cde4469f31efe1d4bc72a98a0ced1b80f5
-        version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/adbcf7cde4469f31efe1d4bc72a98a0ced1b80f5(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: RocketChat/rocket.chat-mobile-crypto#main
+        version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@rocket.chat/sdk':
         specifier: RocketChat/Rocket.Chat.js.SDK#mobile
         version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f
@@ -2447,8 +2447,8 @@ packages:
   '@rocket.chat/message-parser@0.31.31':
     resolution: {integrity: sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==}
 
-  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/adbcf7cde4469f31efe1d4bc72a98a0ced1b80f5':
-    resolution: {gitHosted: true, integrity: sha512-SG6J3uBJycW9YPMEYoD5d20cpxuLMVLy5sAWiGG1jQwMJddq8FCCB7ixTrfAaKiX5VlDoI7Ch4G//ocjczqGOQ==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/adbcf7cde4469f31efe1d4bc72a98a0ced1b80f5}
+  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c':
+    resolution: {gitHosted: true, integrity: sha512-v3uaVCYlj9gGZkAZe3JWQkhlGaRyahmnagbMSKtSnl+6WuLNxaPOf0GjJKVuxBdqkXPPhr23JIihVlch3FVeCQ==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
     version: 0.4.0
     peerDependencies:
       react: '*'
@@ -10462,7 +10462,7 @@ snapshots:
     dependencies:
       tldts: 5.7.112
 
-  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/adbcf7cde4469f31efe1d4bc72a98a0ced1b80f5(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
