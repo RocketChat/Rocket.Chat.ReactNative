@@ -14,18 +14,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRightIcons {
-	msg?: string;
-}
-
-const RightIcons = ({ msg }: IRightIcons): ReactElement => {
+const RightIcons = (): ReactElement => {
 	'use memo';
 
 	return (
 		<View style={styles.actionIcons}>
-			<Pinned testID={`${msg}-pinned`} />
+			<Pinned />
 			<Encrypted />
-			<Edited testID={`${msg}-edited`} />
+			<Edited />
 			<MessageError />
 			<Translated />
 			<ReadReceipt />

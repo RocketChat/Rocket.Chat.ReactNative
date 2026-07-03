@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { type TGetCustomEmoji } from '../../../definitions/IEmoji';
 import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
 import { type IRoomInfoParam } from '../../../views/SearchMessagesView';
+import { useSetting } from '../../../lib/hooks/useSetting';
 
 export type MessageRoomState = {
 	// stable handlers
@@ -104,13 +105,15 @@ const useMessageRoomStore = <T,>(selector: (state: MessageRoomState) => T): T =>
 export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
 	'use memo';
 
-	const [store] = useState(() => createMessageRoomStore(state));
+	const Message_TimeFormat = useSetting('Message_TimeFormat') as string;
+	const resolvedState = { ...state, timeFormat: state.timeFormat ?? Message_TimeFormat };
+	const [store] = useState(() => createMessageRoomStore(resolvedState));
 
 	// No dependency array: the store must mirror the provider's props every render.
 	// setState notifies every listener on each render, but handlers/constants are stable
 	// refs, so each selector's snapshot stays Object.is-equal and no consumer re-renders.
 	useEffect(() => {
-		store.setState(state);
+		store.setState(resolvedState);
 	});
 
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;

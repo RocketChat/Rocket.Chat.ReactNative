@@ -1,10 +1,12 @@
 import { render } from '@testing-library/react-native';
 import { type ComponentProps } from 'react';
 import { A11y } from 'react-native-a11y-order';
+import { Provider } from 'react-redux';
 
 import { type TAnyMessageModel } from '../../../../../definitions';
 import { MessageProvider } from '../../../stores/MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { mockedStore } from '../../../../../reducers/mockedStore';
 import ImageContainer from './Container';
 
 jest.mock('../../../../markdown', () => {
@@ -42,13 +44,15 @@ const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContain
 	};
 	const item = { id: contextValue.id } as unknown as TAnyMessageModel;
 	return render(
-		<A11y.Order>
-			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
-				<MessageProvider item={item}>
-					<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
-				</MessageProvider>
-			</MessageRoomProvider>
-		</A11y.Order>
+		<Provider store={mockedStore}>
+			<A11y.Order>
+				<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+					<MessageProvider item={item}>
+						<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
+					</MessageProvider>
+				</MessageRoomProvider>
+			</A11y.Order>
+		</Provider>
 	);
 };
 

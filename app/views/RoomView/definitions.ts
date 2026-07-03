@@ -14,7 +14,6 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 	isAuthenticated: boolean;
 	Message_GroupingPeriod?: number;
-	Message_TimeFormat?: string;
 	Message_Read_Receipt_Enabled?: boolean;
 	Hide_System_Messages?: string[];
 	baseUrl: string;

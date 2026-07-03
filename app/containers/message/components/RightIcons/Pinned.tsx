@@ -2,14 +2,15 @@ import { type ReactElement } from 'react';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
-import { useMessageField } from '../../stores/MessageStore';
+import { useMessageField, useMessageText } from '../../stores/MessageStore';
 
-const Pinned = ({ testID }: { testID?: string }): ReactElement | null => {
+const Pinned = (): ReactElement | null => {
 	'use memo';
 
 	const pinned = useMessageField(item => item.pinned);
+	const { messageText } = useMessageText();
 
-	if (pinned) return <CustomIcon testID={testID} name='pin' size={16} style={styles.rightIcons} />;
+	if (pinned) return <CustomIcon testID={`${messageText}-pinned`} name='pin' size={16} style={styles.rightIcons} />;
 	return null;
 };
 

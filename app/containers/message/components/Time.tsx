@@ -1,4 +1,4 @@
-import { Text, type TextStyle } from 'react-native';
+import { Text } from 'react-native';
 
 import dayjs from '../../../lib/dayjs';
 import { useTheme } from '../../../theme';
@@ -6,12 +6,7 @@ import messageStyles from '../styles';
 import { useMessageField } from '../stores/MessageStore';
 import { useTimeFormat } from '../stores/MessageRoomStore';
 
-interface IMessageTime {
-	ts?: Date;
-	style?: TextStyle;
-}
-
-const MessageTime = ({ style }: IMessageTime) => {
+const MessageTime = () => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -20,7 +15,7 @@ const MessageTime = ({ style }: IMessageTime) => {
 
 	const time = dayjs(ts).format(timeFormat);
 
-	return <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }, style]}>{time}</Text>;
+	return <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>;
 };
 
 export default MessageTime;

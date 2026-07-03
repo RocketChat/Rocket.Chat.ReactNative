@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react-native';
+import { Provider } from 'react-redux';
 
 import Thread from '../Thread';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
 import { type TAnyMessageModel } from '../../../../definitions';
+import { mockedStore } from '../../../../reducers/mockedStore';
 
 const baseContextValue = {
 	threadBadgeColor: undefined,
@@ -18,11 +20,13 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 
 const renderThread = (item: TAnyMessageModel) =>
 	render(
-		<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
-			<MessageProvider item={item}>
-				<Thread />
-			</MessageProvider>
-		</MessageRoomProvider>
+		<Provider store={mockedStore}>
+			<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
+				<MessageProvider item={item}>
+					<Thread />
+				</MessageProvider>
+			</MessageRoomProvider>
+		</Provider>
 	);
 
 describe('Thread — tlm-only update regression', () => {
@@ -34,11 +38,13 @@ describe('Thread — tlm-only update regression', () => {
 
 		const updatedItem = buildItem({ tlm: new Date('2024-01-01T00:00:00Z') });
 		rerender(
-			<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
-				<MessageProvider item={updatedItem}>
-					<Thread />
-				</MessageProvider>
-			</MessageRoomProvider>
+			<Provider store={mockedStore}>
+				<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
+					<MessageProvider item={updatedItem}>
+						<Thread />
+					</MessageProvider>
+				</MessageRoomProvider>
+			</Provider>
 		);
 
 		expect(getByTestId('message-thread-button-hello')).toBeTruthy();

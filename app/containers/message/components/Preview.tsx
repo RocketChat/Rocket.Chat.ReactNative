@@ -7,10 +7,9 @@ import { type TAnyMessageModel, type TGetCustomEmoji } from '../../../definition
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 	'use memo';
 
-	const { user, baseUrl, Message_TimeFormat, customEmojis } = useAppSelector(state => ({
+	const { user, baseUrl, customEmojis } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		baseUrl: state.server.server,
-		Message_TimeFormat: state.settings.Message_TimeFormat as string,
 		customEmojis: state.customEmojis
 	}));
 
@@ -19,12 +18,7 @@ const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 		return emoji ?? null;
 	};
 	return (
-		<MessageRoomProvider
-			user={user}
-			baseUrl={baseUrl}
-			getCustomEmoji={getCustomEmoji}
-			rid={message.rid}
-			timeFormat={Message_TimeFormat}>
+		<MessageRoomProvider user={user} baseUrl={baseUrl} getCustomEmoji={getCustomEmoji} rid={message.rid}>
 			<Message item={message} isPreview />
 		</MessageRoomProvider>
 	);

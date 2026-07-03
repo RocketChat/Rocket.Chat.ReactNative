@@ -1,7 +1,9 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Text } from 'react-native';
+import { Provider } from 'react-redux';
 
 import { type TAnyMessageModel } from '../../../../definitions';
+import { mockedStore } from '../../../../reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 import { messagesStatus } from '../../../../lib/constants/messagesStatus';
 import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from '../MessageRoomStore';
@@ -130,11 +132,13 @@ const renderDerived = (
 		return null;
 	};
 	render(
-		<MessageRoomProvider {...pickMessageRoomState(config ?? {})}>
-			<MessageProvider item={item} previousItem={previousItem}>
-				<Probe />
-			</MessageProvider>
-		</MessageRoomProvider>
+		<Provider store={mockedStore}>
+			<MessageRoomProvider {...pickMessageRoomState(config ?? {})}>
+				<MessageProvider item={item} previousItem={previousItem}>
+					<Probe />
+				</MessageProvider>
+			</MessageRoomProvider>
+		</Provider>
 	);
 	const latest = () => {
 		const { calls } = spy.mock;
@@ -492,11 +496,13 @@ describe('MessageStore', () => {
 				return calls[calls.length - 1]?.[0];
 			};
 			const wrap = (previousItem: TAnyMessageModel) => (
-				<MessageRoomProvider {...pickMessageRoomState({ broadcast: false, Message_GroupingPeriod: 300 })}>
-					<MessageProvider item={item} previousItem={previousItem}>
-						<Probe />
-					</MessageProvider>
-				</MessageRoomProvider>
+				<Provider store={mockedStore}>
+					<MessageRoomProvider {...pickMessageRoomState({ broadcast: false, Message_GroupingPeriod: 300 })}>
+						<MessageProvider item={item} previousItem={previousItem}>
+							<Probe />
+						</MessageProvider>
+					</MessageRoomProvider>
+				</Provider>
 			);
 
 			const { rerender } = render(wrap(previousTemp));

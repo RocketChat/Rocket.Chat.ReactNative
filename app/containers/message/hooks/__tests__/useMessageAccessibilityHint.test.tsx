@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react-native';
+import { Provider } from 'react-redux';
 
 import { useMessageAccessibilityHint } from '../useMessageAccessibilityHint';
 import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import { type TAnyMessageModel } from '../../../../definitions';
+import { mockedStore } from '../../../../reducers/mockedStore';
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
 	({ id: 'msg-1', ...overrides } as TAnyMessageModel);
@@ -15,11 +17,13 @@ const renderHint = (item: TAnyMessageModel, config: Record<string, any> = {}) =>
 		return null;
 	};
 	render(
-		<MessageRoomProvider {...pickMessageRoomState(config)}>
-			<MessageProvider item={item}>
-				<Probe />
-			</MessageProvider>
-		</MessageRoomProvider>
+		<Provider store={mockedStore}>
+			<MessageRoomProvider {...pickMessageRoomState(config)}>
+				<MessageProvider item={item}>
+					<Probe />
+				</MessageProvider>
+			</MessageRoomProvider>
+		</Provider>
 	);
 	const { calls } = spy.mock;
 	return calls[calls.length - 1][0];

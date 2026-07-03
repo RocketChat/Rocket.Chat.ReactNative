@@ -1,6 +1,8 @@
 import { act, render } from '@testing-library/react-native';
+import { Provider } from 'react-redux';
 
 import { MessageRoomProvider, pickMessageRoomState, useTimeFormat } from '../MessageRoomStore';
+import { mockedStore } from '../../../../reducers/mockedStore';
 
 describe('MessageRoomStore', () => {
 	it('mirrors updated provider props into the store after mount', () => {
@@ -10,9 +12,11 @@ describe('MessageRoomStore', () => {
 			return null;
 		};
 		const wrap = (timeFormat: string) => (
-			<MessageRoomProvider {...pickMessageRoomState({ timeFormat })}>
-				<Probe />
-			</MessageRoomProvider>
+			<Provider store={mockedStore}>
+				<MessageRoomProvider {...pickMessageRoomState({ timeFormat })}>
+					<Probe />
+				</MessageRoomProvider>
+			</Provider>
 		);
 
 		const { rerender } = render(wrap('MMM Do YYYY'));

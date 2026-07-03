@@ -187,7 +187,7 @@ const Message = (props: TMessageProps & IMessageA11y) => {
 					<View style={styles.messageContent}>
 						<MessageInner isPreview={props.isPreview} />
 					</View>
-					{!isHeader ? <RightIcons msg={messageText} /> : null}
+					{!isHeader ? <RightIcons /> : null}
 				</View>
 			</A11y.Index>
 		</View>

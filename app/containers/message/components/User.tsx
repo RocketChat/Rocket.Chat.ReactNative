@@ -50,7 +50,7 @@ const User = () => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
 	const { u: author, alias } = useMessageAuthor();
-	const { ts, t: type } = useMessageMeta();
+	const { t: type } = useMessageMeta();
 
 	if (isHeader) {
 		const username = (useRealName && author?.name) || author?.username;
@@ -86,7 +86,7 @@ const User = () => {
 					<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{textContent}
 					</Text>
-					{isLargeFontScale ? null : <MessageTime ts={ts as Date | undefined} />}
+					{isLargeFontScale ? null : <MessageTime />}
 				</Pressable>
 				<RightIcons />
 			</View>

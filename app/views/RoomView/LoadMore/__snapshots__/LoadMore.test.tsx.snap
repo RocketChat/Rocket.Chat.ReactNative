@@ -895,7 +895,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -2018,7 +2017,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -2929,7 +2927,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -3507,7 +3504,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -4630,7 +4626,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -5541,7 +5536,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -6119,7 +6113,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                   {
                                     "color": "#6C727A",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -7242,7 +7235,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                   {
                                     "color": "#6C727A",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -8153,7 +8145,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                   {
                                     "color": "#6C727A",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
