@@ -5,7 +5,7 @@ import { setUser } from '../../../../../actions/login';
 import { mockedStore } from '../../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../../definitions';
 import { MessageProvider } from '../../../stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
 import CollapsibleQuote from '.';
 
 const testAttachment = {
@@ -39,8 +39,7 @@ const initialMockedStoreState = () => {
 
 initialMockedStoreState();
 
-const contextValue = {
-	onLongPress: () => {},
+const contextValue: Partial<MessageRoomState> = {
 	user: { username: 'Marcos' }
 };
 
@@ -48,7 +47,7 @@ const item = { id: 'collapsible-quote-msg' } as unknown as TAnyMessageModel;
 
 const Render = () => (
 	<Provider store={mockedStore}>
-		<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+		<MessageRoomProvider {...contextValue}>
 			<MessageProvider item={item}>
 				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} />
 			</MessageProvider>

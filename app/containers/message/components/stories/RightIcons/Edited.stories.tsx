@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../../definitions';
-import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { MessageRoomProvider } from '../../../stores/MessageRoomStore';
 import { MessageProvider } from '../../../stores/MessageStore';
 import EditedLeaf from '../../RightIcons/Edited';
 
@@ -26,7 +26,7 @@ const plainItem = {
 
 const StoryWrapper = ({ item, children }: { item: TAnyMessageModel; children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState({})}>
+		<MessageRoomProvider>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

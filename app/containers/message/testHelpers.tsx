@@ -5,12 +5,11 @@ import { render } from '@testing-library/react-native';
 import { type TAnyMessageModel } from '../../definitions';
 import { mockedStore } from '../../reducers/mockedStore';
 import { MessageProvider } from './stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from './stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from './stores/MessageRoomStore';
 
 interface IMessageProvidersOptions {
 	item?: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
-	context?: Record<string, unknown>;
 	room?: Partial<MessageRoomState>;
 	withRedux?: boolean;
 }
@@ -18,12 +17,11 @@ interface IMessageProvidersOptions {
 export const MessageProviders = ({
 	item,
 	previousItem,
-	context,
 	room,
 	withRedux = true,
 	children
 }: IMessageProvidersOptions & { children: ReactNode }): ReactElement => {
-	const roomState = room ?? pickMessageRoomState(context ?? {});
+	const roomState = room ?? {};
 
 	let tree: ReactNode = children;
 	if (item) {

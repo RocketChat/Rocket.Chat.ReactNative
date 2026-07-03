@@ -54,7 +54,7 @@ const buildOnReactionPress = (item: FakeItem) => (emoji: string) => {
 const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPress: (emoji: string) => void }) => (
 	<MessageProviders
 		item={item}
-		context={{
+		room={{
 			user: { username: 'john' },
 			reactionInit: jest.fn(),
 			onReactionPress,

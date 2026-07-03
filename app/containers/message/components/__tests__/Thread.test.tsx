@@ -3,15 +3,13 @@ import { Provider } from 'react-redux';
 
 import Thread from '../Thread';
 import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 
-const baseContextValue = {
-	threadBadgeColor: undefined,
+const baseContextValue: Partial<MessageRoomState> = {
 	toggleFollowThread: jest.fn(),
 	user: { id: 'user1', username: 'user1' },
-	replies: [],
 	onThreadPress: jest.fn()
 };
 
@@ -21,7 +19,7 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 const renderThread = (item: TAnyMessageModel) =>
 	render(
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
+			<MessageRoomProvider {...baseContextValue}>
 				<MessageProvider item={item}>
 					<Thread />
 				</MessageProvider>
@@ -39,7 +37,7 @@ describe('Thread — tlm-only update regression', () => {
 		const updatedItem = buildItem({ tlm: new Date('2024-01-01T00:00:00Z') });
 		rerender(
 			<Provider store={mockedStore}>
-				<MessageRoomProvider {...pickMessageRoomState(baseContextValue)}>
+				<MessageRoomProvider {...baseContextValue}>
 					<MessageProvider item={updatedItem}>
 						<Thread />
 					</MessageProvider>

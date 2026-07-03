@@ -5,7 +5,7 @@ import MessageContainer from '../index';
 import { type TAnyMessageModel } from '../../../definitions';
 import { createInteractionStore, InteractionStoreContext } from '../../../views/RoomView/InteractionStore';
 import { renderWithMessageProviders } from '../testHelpers';
-import { pickMessageRoomState } from '../stores/MessageRoomStore';
+import { type MessageRoomState } from '../stores/MessageRoomStore';
 
 jest.mock('../components/Touch', () => {
 	const { forwardRef } = require('react');
@@ -60,10 +60,12 @@ const baseProps = {
 	rid: 'room-1'
 };
 
+const room: Partial<MessageRoomState> = { rid: baseProps.rid };
+
 const renderContainer = (itemOverrides: Record<string, any> = {}, propOverrides: Record<string, any> = {}) => {
 	const props = { ...baseProps, ...propOverrides };
 	return renderWithMessageProviders(<MessageContainer item={createMockMessage(itemOverrides)} {...props} />, {
-		room: pickMessageRoomState(props)
+		room
 	});
 };
 
@@ -99,7 +101,7 @@ describe('edit highlight reacts to InteractionStore', () => {
 			<InteractionStoreContext.Provider value={store}>
 				<MessageContainer item={item} {...baseProps} />
 			</InteractionStoreContext.Provider>,
-			{ room: pickMessageRoomState(baseProps) }
+			{ room }
 		);
 		expect(getByTestId('message-editing-msg-1')).toBeTruthy();
 	});
@@ -111,7 +113,7 @@ describe('edit highlight reacts to InteractionStore', () => {
 			<InteractionStoreContext.Provider value={store}>
 				<MessageContainer item={item} {...baseProps} />
 			</InteractionStoreContext.Provider>,
-			{ room: pickMessageRoomState(baseProps) }
+			{ room }
 		);
 		await act(() => {
 			store.getState().actions.reset();

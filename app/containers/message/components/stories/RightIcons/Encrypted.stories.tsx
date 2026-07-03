@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createMockedStore } from '../../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../../../../lib/constants/keys';
-import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
 import { MessageProvider } from '../../../stores/MessageStore';
 import EncryptedLeaf from '../../RightIcons/Encrypted';
 
@@ -26,13 +26,13 @@ const plainItem = {
 	autoTranslate: false
 } as unknown as TAnyMessageModel;
 
-const room = {
+const room: Partial<MessageRoomState> = {
 	onEncryptedPress: () => {}
 };
 
 const StoryWrapper = ({ item, children }: { item: TAnyMessageModel; children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState(room)}>
+		<MessageRoomProvider {...room}>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

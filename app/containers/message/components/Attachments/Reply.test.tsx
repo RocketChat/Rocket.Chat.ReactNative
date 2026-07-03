@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import Reply from './Reply';
 import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
@@ -63,9 +63,9 @@ const renderReply = ({
 	attachment?: IAttachment;
 	msg?: string;
 	isEncrypted?: boolean;
-	ctx?: Record<string, any>;
+	ctx?: Partial<MessageRoomState>;
 }) => {
-	const contextValue = {
+	const contextValue: Partial<MessageRoomState> = {
 		user: { id: 'user-1', username: 'john', token: 'token' },
 		baseUrl: 'https://open.rocket.chat',
 		timeFormat: 'HH:mm',
@@ -73,7 +73,7 @@ const renderReply = ({
 	};
 	return render(
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem(isEncrypted)}>
 					<Reply attachment={attachment as IAttachment} getCustomEmoji={getCustomEmoji} msg={msg} />
 				</MessageProvider>

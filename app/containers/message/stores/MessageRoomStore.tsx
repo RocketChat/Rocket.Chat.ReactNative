@@ -43,51 +43,6 @@ export type MessageRoomState = {
 	autoTranslateLanguage?: string;
 };
 
-// The room-scoped fields this store owns. Tests and stories use pickMessageRoomState to
-// derive MessageRoomProvider props from a single fixture object. Add a field to
-// MessageRoomState → add its key here.
-const ROOM_STATE_KEYS: (keyof MessageRoomState)[] = [
-	'getCustomEmoji',
-	'navToRoomInfo',
-	'showAttachment',
-	'blockAction',
-	'handleEnterCall',
-	'fetchThreadName',
-	'toggleFollowThread',
-	'jumpToMessage',
-	'closeEmojiAndAction',
-	'onReactionPress',
-	'onReactionLongPress',
-	'reactionInit',
-	'onDiscussionPress',
-	'onThreadPress',
-	'replyBroadcast',
-	'errorActionsShow',
-	'onAnswerButtonPress',
-	'onEncryptedPress',
-	'archived',
-	'isReadReceiptEnabled',
-	'rid',
-	'user',
-	'baseUrl',
-	'broadcast',
-	'isThreadRoom',
-	'Message_GroupingPeriod',
-	'timeFormat',
-	'autoTranslateRoom',
-	'autoTranslateLanguage'
-];
-
-export const pickMessageRoomState = (source: Record<string, unknown> = {}): Partial<MessageRoomState> => {
-	const state: Record<string, unknown> = {};
-	ROOM_STATE_KEYS.forEach(key => {
-		if (source[key] !== undefined) {
-			state[key] = source[key];
-		}
-	});
-	return state as Partial<MessageRoomState>;
-};
-
 export const createMessageRoomStore = (initial: MessageRoomState) => createStore<MessageRoomState>(() => ({ ...initial }));
 
 export type MessageRoomStore = ReturnType<typeof createMessageRoomStore>;

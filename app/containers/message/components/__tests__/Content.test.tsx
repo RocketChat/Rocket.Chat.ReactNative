@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 
 import Content from '../Content';
 import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { setUser } from '../../../../actions/login';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
@@ -52,16 +52,15 @@ const buildItem = (
 
 const tree = (overrides: TOverrides) => {
 	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, isIgnored } = overrides;
-	const contextValue = {
+	const contextValue: Partial<MessageRoomState> = {
 		user: { username: 'john' },
-		onLinkPress: jest.fn(),
 		getCustomEmoji: jest.fn(),
 		navToRoomInfo: jest.fn(),
 		autoTranslateLanguage
 	};
 	return (
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem(msg, attachments, isEncrypted, tmid)} isIgnored={isIgnored}>
 					<Content />
 				</MessageProvider>

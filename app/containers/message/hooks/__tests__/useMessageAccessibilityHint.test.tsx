@@ -2,7 +2,7 @@ import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { useMessageAccessibilityHint } from '../useMessageAccessibilityHint';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
@@ -10,7 +10,7 @@ import { mockedStore } from '../../../../reducers/mockedStore';
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
 	({ id: 'msg-1', ...overrides } as TAnyMessageModel);
 
-const renderHint = (item: TAnyMessageModel, config: Record<string, any> = {}) => {
+const renderHint = (item: TAnyMessageModel, config: Partial<MessageRoomState> = {}) => {
 	const spy = jest.fn();
 	const Probe = () => {
 		spy(useMessageAccessibilityHint());
@@ -18,7 +18,7 @@ const renderHint = (item: TAnyMessageModel, config: Record<string, any> = {}) =>
 	};
 	render(
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...pickMessageRoomState(config)}>
+			<MessageRoomProvider {...config}>
 				<MessageProvider item={item}>
 					<Probe />
 				</MessageProvider>

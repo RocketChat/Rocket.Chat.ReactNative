@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import ReactionsLeaf from '../Reactions';
 
@@ -20,7 +20,7 @@ const item = {
 	]
 } as unknown as TAnyMessageModel;
 
-const room = {
+const room: Partial<MessageRoomState> = {
 	user: { id: 'reader-id', username: 'rocket.cat' },
 	getCustomEmoji: () => null,
 	onReactionPress: () => {},
@@ -30,7 +30,7 @@ const room = {
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState(room)}>
+		<MessageRoomProvider {...room}>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

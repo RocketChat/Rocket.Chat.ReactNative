@@ -6,7 +6,7 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 import { messagesStatus } from '../../../../lib/constants/messagesStatus';
-import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from '../MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../MessageRoomStore';
 import {
 	MessageProvider,
 	useAvatar,
@@ -133,7 +133,7 @@ const renderDerived = (
 	};
 	render(
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...pickMessageRoomState(config ?? {})}>
+			<MessageRoomProvider {...(config ?? {})}>
 				<MessageProvider item={item} previousItem={previousItem}>
 					<Probe />
 				</MessageProvider>
@@ -497,7 +497,7 @@ describe('MessageStore', () => {
 			};
 			const wrap = (previousItem: TAnyMessageModel) => (
 				<Provider store={mockedStore}>
-					<MessageRoomProvider {...pickMessageRoomState({ broadcast: false, Message_GroupingPeriod: 300 })}>
+					<MessageRoomProvider broadcast={false} Message_GroupingPeriod={300}>
 						<MessageProvider item={item} previousItem={previousItem}>
 							<Probe />
 						</MessageProvider>

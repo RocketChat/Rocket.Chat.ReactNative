@@ -4,7 +4,7 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { useMediaAutoDownload } from '../useMediaAutoDownload';
 import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '../../../../definitions';
 import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
@@ -90,13 +90,13 @@ const renderMediaHook = ({
 	file: IAttachment;
 	author?: IUserMessage;
 	showAttachment?: (file: IAttachment) => void;
-	ctx?: Record<string, any>;
+	ctx?: Partial<MessageRoomState>;
 }) => {
-	const contextValue = { baseUrl: 'https://open.rocket.chat', user: USER, ...ctx };
+	const contextValue: Partial<MessageRoomState> = { baseUrl: 'https://open.rocket.chat', user: USER, ...ctx };
 	const item = { id: 'msg-1' } as unknown as TAnyMessageModel;
 	const wrapper = ({ children }: { children: ReactNode }) => (
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={item}>{children}</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>

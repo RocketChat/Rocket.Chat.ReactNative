@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import BroadcastLeaf from '../Broadcast';
 
@@ -23,7 +23,7 @@ const ownAuthorItem = {
 	autoTranslate: false
 } as unknown as TAnyMessageModel;
 
-const room = {
+const room: Partial<MessageRoomState> = {
 	broadcast: true,
 	user: { id: 'reader-id', username: 'rocket.cat' },
 	replyBroadcast: () => {}
@@ -31,7 +31,7 @@ const room = {
 
 const StoryWrapper = ({ item, children }: { item: TAnyMessageModel; children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState(room)}>
+		<MessageRoomProvider {...room}>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

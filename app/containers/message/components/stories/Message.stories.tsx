@@ -17,7 +17,7 @@ import {
 import { mockedStore as store } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 import { createInteractionStore, InteractionStoreContext } from '../../../../views/RoomView/InteractionStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 
 const _theme = 'light';
 
@@ -75,23 +75,24 @@ const getCustomEmoji = (content: string): ICustomEmoji | null => {
 	return customEmoji ?? null;
 };
 
-const storyContextValue = {
-	user,
-	baseUrl,
+const containerHandlers = {
 	onPress: () => {},
 	onLongPress: () => {},
+	threadBadgeColor: themes[_theme].badgeBackgroundLevel1
+};
+
+const roomHandlers: Partial<MessageRoomState> = {
+	user,
+	baseUrl,
 	reactionInit: () => {},
-	onErrorPress: () => {},
 	replyBroadcast: () => {},
 	onReactionPress: () => {},
 	onEncryptedPress: () => {},
 	onDiscussionPress: () => {},
 	onThreadPress: () => {},
 	onReactionLongPress: () => {},
-	onLinkPress: () => {},
 	onAnswerButtonPress: () => {},
 	jumpToMessage: () => {},
-	threadBadgeColor: themes[_theme].badgeBackgroundLevel1,
 	getCustomEmoji,
 	navToRoomInfo: () => {},
 	showAttachment: undefined,
@@ -231,21 +232,25 @@ const renderMessageStory = (fontScale: number, props: any) => {
 	const containerProps = {
 		item,
 		previousItem,
+		isIgnored,
+		...containerHandlers
+	};
+
+	const room: Partial<MessageRoomState> = {
 		rid,
 		Message_GroupingPeriod: 300,
 		timeFormat,
 		broadcast,
 		archived,
-		isIgnored,
 		isReadReceiptEnabled,
 		autoTranslateRoom: autoTranslateRoom ?? (isTranslated ? true : undefined),
 		autoTranslateLanguage: autoTranslateLanguage ?? (isTranslated ? 'en' : undefined),
-		...storyContextValue
+		...roomHandlers
 	};
 
 	return (
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(fontScale)}>
-			<MessageRoomProvider {...pickMessageRoomState(containerProps)}>
+			<MessageRoomProvider {...room}>
 				<MessageContainer {...containerProps} />
 			</MessageRoomProvider>
 		</ResponsiveLayoutContext.Provider>

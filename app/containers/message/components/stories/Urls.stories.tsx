@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import UrlsLeaf from '../Urls';
 
@@ -26,14 +26,14 @@ const item = {
 	]
 } as unknown as TAnyMessageModel;
 
-const room = {
+const room: Partial<MessageRoomState> = {
 	user: { id: 'reader-id', username: 'reader', token: 'token' },
 	baseUrl: 'https://open.rocket.chat'
 };
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState(room)}>
+		<MessageRoomProvider {...room}>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

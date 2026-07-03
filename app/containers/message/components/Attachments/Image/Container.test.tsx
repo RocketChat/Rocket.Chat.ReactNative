@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 
 import { type TAnyMessageModel } from '../../../../../definitions';
 import { MessageProvider } from '../../../stores/MessageStore';
-import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../../reducers/mockedStore';
 import ImageContainer from './Container';
 
@@ -35,18 +35,16 @@ jest.mock('../../../../../lib/hooks/useAltTextSupported', () => ({
 }));
 
 const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) => {
-	const contextValue = {
-		id: 'message-id',
+	const id = 'message-id';
+	const contextValue: Partial<MessageRoomState> = {
 		baseUrl: 'https://open.rocket.chat',
-		user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
-		onLongPress: jest.fn(),
-		translateLanguage: undefined
+		user: { id: 'user-id', username: 'rocket.cat', token: 'token' }
 	};
-	const item = { id: contextValue.id } as unknown as TAnyMessageModel;
+	const item = { id } as unknown as TAnyMessageModel;
 	return render(
 		<Provider store={mockedStore}>
 			<A11y.Order>
-				<MessageRoomProvider {...pickMessageRoomState(contextValue)}>
+				<MessageRoomProvider {...contextValue}>
 					<MessageProvider item={item}>
 						<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
 					</MessageProvider>

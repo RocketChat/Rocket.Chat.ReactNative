@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { MessageRoomProvider, pickMessageRoomState, useTimeFormat } from '../MessageRoomStore';
+import { MessageRoomProvider, useTimeFormat } from '../MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 
 describe('MessageRoomStore', () => {
@@ -13,7 +13,7 @@ describe('MessageRoomStore', () => {
 		};
 		const wrap = (timeFormat: string) => (
 			<Provider store={mockedStore}>
-				<MessageRoomProvider {...pickMessageRoomState({ timeFormat })}>
+				<MessageRoomProvider timeFormat={timeFormat}>
 					<Probe />
 				</MessageRoomProvider>
 			</Provider>

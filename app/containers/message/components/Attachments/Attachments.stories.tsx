@@ -5,16 +5,13 @@ import { Provider } from 'react-redux';
 import { createMockedStore } from '../../../../reducers/mockedStore';
 import { selectServerSuccess } from '../../../../actions/server';
 import { type TAnyMessageModel } from '../../../../definitions';
-import { MessageRoomProvider, pickMessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import Attachments from './Attachments';
 
-const mockMessageContext = {
-	id: 'msg-id',
+const mockMessageContext: Partial<MessageRoomState> = {
 	baseUrl: 'https://open.rocket.chat',
 	user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
-	onLongPress: () => {},
-	translateLanguage: undefined,
 	getCustomEmoji: () => null,
 	showAttachment: undefined
 };
@@ -23,7 +20,7 @@ const mockItem = { id: 'msg-id', msg: '', u: { username: 'rocket.cat' }, autoTra
 
 const StoryWrapper = ({ store, children }: { store: any; children: ReactNode }) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState(mockMessageContext)}>
+		<MessageRoomProvider {...mockMessageContext}>
 			<MessageProvider item={mockItem}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

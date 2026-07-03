@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../../definitions';
-import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
 import { MessageProvider } from '../../../stores/MessageStore';
 import TranslatedLeaf from '../../RightIcons/Translated';
 
@@ -24,9 +24,17 @@ const plainItem = {
 	u: { _id: 'author-id', username: 'other.user' }
 } as unknown as TAnyMessageModel;
 
-const StoryWrapper = ({ item, room, children }: { item: TAnyMessageModel; room: Record<string, any>; children: ReactNode }) => (
+const StoryWrapper = ({
+	item,
+	room,
+	children
+}: {
+	item: TAnyMessageModel;
+	room: Partial<MessageRoomState>;
+	children: ReactNode;
+}) => (
 	<Provider store={store}>
-		<MessageRoomProvider {...pickMessageRoomState(room)}>
+		<MessageRoomProvider {...room}>
 			<MessageProvider item={item}>{children}</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

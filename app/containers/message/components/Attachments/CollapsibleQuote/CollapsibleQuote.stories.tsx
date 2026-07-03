@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import { MessageRoomProvider, pickMessageRoomState } from '../../../stores/MessageRoomStore';
+import { MessageRoomProvider } from '../../../stores/MessageRoomStore';
 import CollapsibleQuote from '.';
 
 const testAttachment = {
@@ -23,7 +23,7 @@ export default {
 
 export const Item = () => (
 	<View style={{ padding: 10 }}>
-		<MessageRoomProvider {...pickMessageRoomState({ onLongPress: () => {}, user: { username: 'Marcos' } })}>
+		<MessageRoomProvider user={{ username: 'Marcos' }}>
 			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} />
 		</MessageRoomProvider>
 	</View>
