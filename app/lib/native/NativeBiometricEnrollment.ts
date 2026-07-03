@@ -1,5 +1,5 @@
 import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import { Platform, TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
 	/**
@@ -25,14 +25,15 @@ export interface Spec extends TurboModule {
 }
 
 // On iOS there is no native counterpart (the BIOMETRY_CURRENT_SET sentinel surfaces enrollment
-// changes for free), so TurboModuleRegistry.get returns null and these fall back to safe no-ops
-// that report "valid" — matching the legacy NativeModules.BiometricEnrollment === undefined path.
+// changes for free), so TurboModuleRegistry.get returns null and these fall back to safe no-ops.
+// On Android this probe is the only enrollment-change signal, so a missing module (registration
+// broken) must fail closed — report "invalid" so the passcode is forced rather than silently bypassed.
 const NativeBiometricEnrollment =
 	TurboModuleRegistry.get<Spec>('BiometricEnrollment') ??
 	({
 		enrollProbe: () => Promise.resolve(false),
 		disenrollProbe: () => Promise.resolve(false),
-		isEnrollmentValid: () => Promise.resolve(true)
+		isEnrollmentValid: () => Promise.resolve(Platform.OS === 'ios')
 	} as Spec);
 
 export default NativeBiometricEnrollment;

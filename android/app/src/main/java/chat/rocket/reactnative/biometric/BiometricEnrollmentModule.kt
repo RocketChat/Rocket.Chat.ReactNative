@@ -105,17 +105,12 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
             keyStore = loadKeyStore()
 
             if (!keyStore.containsAlias(KEY_ALIAS)) {
-                // No baseline yet (fresh install/upgrade, or just disenrolled). Establish one bound to
-                // the current enrollment and report valid — there is no prior enrollment to differ from.
-                try {
-                    createProbeKey()
-                    promise.resolve(true)
-                } catch (e: Exception) {
-                    // Couldn't bind a baseline — most likely biometrics were removed entirely. Treat as
-                    // a change so the passcode is required.
-                    Log.w(TAG, "isEnrollmentValid: probe baseline creation failed", e)
-                    promise.resolve(false)
-                }
+                // The JS layer only calls this once biometry is enabled and the sentinel exists, so the
+                // baseline should already be here. A missing alias means enrollProbe() silently failed or
+                // the key was dropped out of lockstep — fail closed rather than self-heal to whatever the
+                // current enrollment is.
+                Log.w(TAG, "isEnrollmentValid: probe alias missing — treating as enrollment change")
+                promise.resolve(false)
                 return
             }
         } catch (e: Exception) {
