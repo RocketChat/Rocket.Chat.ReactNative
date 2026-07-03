@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
-import { all, call, delay, put, take, takeLatest } from 'typed-redux-saga';
+import { call, delay, put, take, takeLatest } from 'typed-redux-saga';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -278,9 +278,7 @@ const handleOpen = function* handleOpen({ params }: { params: Partial<IParams> }
 			// InsideStack is mounted and goRoom dispatches into the correct stack.
 			const currentRoot = yield* appSelector(state => state.app.root);
 			if (currentRoot !== RootEnum.ROOT_INSIDE) {
-				yield* take(
-					(action: any) => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE
-				);
+				yield* take((action: any) => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
 			}
 			yield* call(completeDeepLinkNavigation, params);
 		} else {
@@ -303,6 +301,10 @@ interface ICallPushParams {
 const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }: { params: ICallPushParams }) {
 	try {
 		yield* put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const currentRoot = yield* appSelector(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_INSIDE) {
+			yield* take((action: any) => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+		}
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
 		const room = yield* call([subsCollection, 'find'], params.rid);
@@ -311,11 +313,17 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }: { pa
 			yield* call(navigateToRoom, { item: room as any, isMasterDetail });
 			const uid = params.caller?._id;
 			const { rid, callId, event } = params;
-			if (event === 'accept' && uid) {
-				yield* call(notifyUser, `${uid}/video-conference`, {
-					action: 'accepted',
-					params: { uid, rid, callId }
-				});
+			if (event === 'accept') {
+				if (uid) {
+					try {
+						yield* call(notifyUser, `${uid}/video-conference`, {
+							action: 'accepted',
+							params: { uid, rid, callId }
+						});
+					} catch (e) {
+						log(e);
+					}
+				}
 				yield* call(videoConfJoin, callId, true, false, true);
 			} else if (event === 'decline' && uid) {
 				yield* call(notifyUser, `${uid}/video-conference`, {

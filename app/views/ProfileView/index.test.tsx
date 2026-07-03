@@ -82,8 +82,16 @@ const navigation = {
 
 const dispatch = jest.fn();
 
-const renderProfile = () => {
-	(useAppSelector as jest.Mock).mockImplementation((selector: (state: any) => unknown) => selector(buildState()));
+const renderProfile = (stateOverrides = {}) => {
+	const defaultState = buildState();
+	const mergedState = {
+		...defaultState,
+		settings: {
+			...defaultState.settings,
+			...stateOverrides
+		}
+	};
+	(useAppSelector as jest.Mock).mockImplementation((selector: (state: any) => unknown) => selector(mergedState));
 	return render(<ProfileView navigation={navigation} />);
 };
 
@@ -113,9 +121,9 @@ describe('ProfileView submit', () => {
 	});
 
 	it('does not save when the username contains invalid characters', async () => {
-		const { getByTestId, findByText } = renderProfile();
+		const { getByTestId, findByText } = renderProfile({ UTF8_User_Names_Validation: '[a-z]+' });
 
-		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus b');
+		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus.b');
 		fireEvent.press(getByTestId('profile-view-submit'));
 
 		await findByText(I18n.t('Username_invalid'));
@@ -125,12 +133,19 @@ describe('ProfileView submit', () => {
 	it('saves when the username is corrected to a valid value', async () => {
 		(saveUserProfile as jest.Mock).mockResolvedValue(true);
 
-		const { getByTestId } = renderProfile();
+		const { getByTestId, findByText } = renderProfile({ UTF8_User_Names_Validation: '[a-z]+' });
 
+		// Submit invalid username first (contains dot)
 		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus.b');
 		fireEvent.press(getByTestId('profile-view-submit'));
+		await findByText(I18n.t('Username_invalid'));
+		expect(saveUserProfile).not.toHaveBeenCalled();
 
-		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledWith({ username: 'cygnus.b' }, {}));
+		// Correct it to a valid username and submit
+		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnusb');
+		fireEvent.press(getByTestId('profile-view-submit'));
+
+		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledWith({ username: 'cygnusb' }, {}));
 	});
 
 	it('asks for the current password before changing the email', async () => {

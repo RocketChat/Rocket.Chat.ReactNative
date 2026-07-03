@@ -10,6 +10,8 @@ export interface IParams {
 	fullURL: string;
 	type: string;
 	token: string;
+	credentialToken?: string;
+	credentialSecret?: string;
 	callId?: string;
 	username?: string;
 	voipAcceptFailed?: boolean;

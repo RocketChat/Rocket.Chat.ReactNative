@@ -98,7 +98,12 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		username: yup
 			.string()
 			.required(I18n.t('Username_required'))
-			.test('valid-username', I18n.t('Username_invalid'), value => isValidUsername(value ?? '', UTF8_User_Names_Validation))
+			.test('valid-username', I18n.t('Username_invalid'), value => {
+				if (!Accounts_AllowUsernameChange || value === user?.username) {
+					return true;
+				}
+				return isValidUsername(value ?? '', UTF8_User_Names_Validation);
+			})
 	});
 	const isMasterDetail = useMasterDetail();
 	const {
