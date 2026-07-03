@@ -62,9 +62,11 @@ export const MessageRoomProvider = ({ children, ...state }: { children: ReactNod
 	const resolvedState = { ...state, timeFormat: state.timeFormat ?? Message_TimeFormat };
 	const [store] = useState(() => createMessageRoomStore(resolvedState));
 
-	// No dependency array: the store must mirror the provider's props every render.
-	// setState notifies every listener on each render, but handlers/constants are stable
-	// refs, so each selector's snapshot stays Object.is-equal and no consumer re-renders.
+	// Runs every render by design: resolvedState is rebuilt from props each render, so it can never
+	// be a stable dependency (state is a rest-spread, fresh each render — useMemo can't stabilize it).
+	// Per-field Object.is bail in each selector means this mirror only re-renders a consumer whose own
+	// field changed. A field-level deps array would reintroduce the hand-maintained key list the zustand
+	// migration deliberately removed.
 	useEffect(() => {
 		store.setState(resolvedState);
 	});

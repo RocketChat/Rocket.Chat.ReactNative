@@ -100,7 +100,7 @@ export const MessageProvider = ({
 	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
 	useEffect(() => {
 		store.setState({ onPress, onLongPress, threadBadgeColor });
-	});
+	}, [onPress, onLongPress, threadBadgeColor, store]);
 
 	const revealIgnored = () => store.setState({ manualUnignored: true });
 
