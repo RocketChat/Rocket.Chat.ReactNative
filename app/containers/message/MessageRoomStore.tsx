@@ -107,7 +107,8 @@ export const MessageRoomProvider = ({ children, ...state }: { children: ReactNod
 	const [store] = useState(() => createMessageRoomStore(state));
 
 	// No dependency array: the store must mirror the provider's props every render.
-	// Handlers/constants are stable refs, so unchanged slices won't trigger a notify.
+	// setState notifies every listener on each render, but handlers/constants are stable
+	// refs, so each selector's snapshot stays Object.is-equal and no consumer re-renders.
 	useEffect(() => {
 		store.setState(state);
 	});
