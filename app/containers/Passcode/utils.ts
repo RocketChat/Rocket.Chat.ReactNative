@@ -2,10 +2,13 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import dayjs from '../../lib/dayjs';
 import { LOCKED_OUT_TIMER_KEY, TIME_TO_LOCK } from '../../lib/constants/localAuthentication';
 
-export const getLockedUntil = () => {
+export const getLockedUntil = (): Date | null => {
 	const t = UserPreferences.getString(LOCKED_OUT_TIMER_KEY);
 	if (t) {
-		return dayjs(t).add(TIME_TO_LOCK, 'millisecond').toDate();
+		const parsed = dayjs(t);
+		if (parsed.isValid()) {
+			return parsed.add(TIME_TO_LOCK, 'millisecond').toDate();
+		}
 	}
 	return null;
 };
