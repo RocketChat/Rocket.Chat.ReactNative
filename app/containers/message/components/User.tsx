@@ -8,7 +8,7 @@ import { messageHaveAuthorName } from '../utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useSetting } from '../../../lib/hooks/useSetting';
-import { useMessageAuthor, useMessageGrouping, useMessageMeta } from '../stores/MessageStore';
+import { useMessageAuthor, useMessageGrouping, useMessageHeaderMeta } from '../stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '../stores/MessageRoomStore';
 
 const styles = StyleSheet.create({
@@ -50,7 +50,7 @@ const User = () => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
 	const { u: author, alias } = useMessageAuthor();
-	const { t: type } = useMessageMeta();
+	const { t: type } = useMessageHeaderMeta();
 
 	if (isHeader) {
 		const username = (useRealName && author?.name) || author?.username;

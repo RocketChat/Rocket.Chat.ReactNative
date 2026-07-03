@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect, useLayoutEffect, useState, type ReactElement } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import axios from 'axios';
 
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import Touchable from './Touchable';
 import openLink from '../../../lib/methods/helpers/openLink';
 import sharedStyles from '../../../views/Styles';
@@ -16,6 +15,7 @@ import { type IUrl } from '../../../definitions';
 import { WidthAwareContext } from './WidthAwareView';
 import { useUrls } from '../stores/MessageStore';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
+import { useSetting } from '../../../lib/hooks/useSetting';
 
 const styles = StyleSheet.create({
 	container: {
@@ -123,22 +123,18 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
-	const API_Embed = useAppSelector(state => state.settings.API_Embed);
+	const API_Embed = useSetting('API_Embed') as boolean;
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-	const getImageUrl = useCallback(() => {
-		const _imageUrl = url.image || url.url;
-
-		if (!_imageUrl) return null;
-		if (_imageUrl.startsWith('http')) return _imageUrl;
-		return `${baseUrl}/${_imageUrl}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
-	}, [url.image, url.url, baseUrl, user?.id, user?.token]);
 
 	useEffect(() => {
 		const verifyUrlIsImage = async () => {
 			try {
-				const _imageUrl = getImageUrl();
-				if (!_imageUrl || !API_Embed) return;
+				const rawImageUrl = url.image || url.url;
+				if (!rawImageUrl || !API_Embed) return;
+
+				const _imageUrl = rawImageUrl.startsWith('http')
+					? rawImageUrl
+					: `${baseUrl}/${rawImageUrl}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
 
 				const response = await axios.head(_imageUrl);
 				const contentType = response.headers['content-type'];
@@ -150,7 +146,7 @@ const Url = ({ url }: { url: IUrl }) => {
 			}
 		};
 		verifyUrlIsImage();
-	}, [url.image, url.url, API_Embed, getImageUrl]);
+	}, [url.image, url.url, API_Embed, baseUrl, user?.id, user?.token]);
 
 	const onPress = () => openLink(url.url, theme);
 

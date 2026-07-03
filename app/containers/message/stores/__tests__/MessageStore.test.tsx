@@ -21,7 +21,7 @@ import {
 	useMessageField,
 	useMessageGrouping,
 	useMessageIgnored,
-	useMessageMeta,
+	useMessageHeaderMeta,
 	useMessageStatus,
 	useMessageText,
 	useReactions,
@@ -539,10 +539,10 @@ describe('MessageStore', () => {
 			expect(latest()).toEqual({ messageText: 'Olá mundo', isTranslated: true });
 		});
 
-		it('useMessageMeta returns ts, unread, pinned and t', () => {
+		it('useMessageHeaderMeta returns ts, unread, pinned and t', () => {
 			const ts = new Date('2024-01-01T10:00:00Z');
 			const model = buildFakeModel({ ts, unread: true, pinned: true, t: 'room_changed_topic' });
-			const { latest } = renderDerived(model, useMessageMeta);
+			const { latest } = renderDerived(model, useMessageHeaderMeta);
 			expect(latest()).toEqual({ ts: model.ts, unread: model.unread, pinned: model.pinned, t: model.t });
 		});
 	});

@@ -8,7 +8,7 @@ import {
 	useIsEncrypted,
 	useIsInfo,
 	useMessageAuthor,
-	useMessageMeta,
+	useMessageHeaderMeta,
 	useMessageText,
 	useThreadData,
 	useThreadPosition
@@ -41,7 +41,7 @@ export const useMessageAccessibilityLabel = (): string => {
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
 	const isInfo = useIsInfo();
 	const isEncrypted = useIsEncrypted();
-	const { ts, unread } = useMessageMeta();
+	const { ts, unread } = useMessageHeaderMeta();
 	const isReadReceiptEnabled = useIsReadReceiptEnabled();
 
 	const imageDescriptionLabel = useImageDescriptionLabel(attachments, messageText);

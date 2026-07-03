@@ -178,7 +178,7 @@ export const useContentData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'ch
 	);
 };
 
-export const useMessageMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> => {
+export const useMessageHeaderMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> => {
 	const { store, item } = useMessageCtx();
 	return useStore(
 		store,
@@ -299,14 +299,6 @@ export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTran
 	);
 };
 
-export const useOnPressRaw = (): MessageStoreState['onPress'] => {
-	const { store } = useMessageCtx();
-	return useStore(store, s => s.onPress);
-};
-export const useOnLongPressRaw = (): MessageStoreState['onLongPress'] => {
-	const { store } = useMessageCtx();
-	return useStore(store, s => s.onLongPress);
-};
 export const useThreadBadgeColor = (): string | undefined => {
 	const { store } = useMessageCtx();
 	return useStore(store, s => s.threadBadgeColor);
@@ -322,12 +314,12 @@ export const useRevealIgnored = (): (() => void) => {
 };
 
 export const useMessageLongPress = (): (() => void) => {
-	const { item } = useMessageCtx();
+	const { item, store } = useMessageCtx();
 	const isInfo = useIsInfo();
 	const { hasError } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
 	const archived = useArchived();
-	const onLongPress = useOnLongPressRaw();
+	const onLongPress = useStore(store, s => s.onLongPress);
 	return () => {
 		if (isInfo || hasError || isEncrypted || archived) {
 			return;
@@ -350,9 +342,9 @@ export const useOnLinkPress = (): ((link: string) => void) => {
 };
 
 export const useMessagePress = (): (() => void) => {
-	const { item } = useMessageCtx();
+	const { item, store } = useMessageCtx();
 	const isThreadRoom = useIsThreadRoom();
-	const onPress = useOnPressRaw();
+	const onPress = useStore(store, s => s.onPress);
 	const onThreadPress = useOnThreadPress();
 	const onDiscussionPress = useOnDiscussionPress();
 	const closeEmojiAndAction = useCloseEmojiAndAction();

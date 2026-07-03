@@ -6,8 +6,7 @@ import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
-import { themes } from '../../../lib/constants/colors';
-import { type TSupportedThemes, useTheme } from '../../../theme';
+import { useTheme } from '../../../theme';
 import { useMessageCtx, useMessageId, useReactions } from '../stores/MessageStore';
 import {
 	useGetCustomEmoji,
@@ -25,12 +24,12 @@ interface IReaction {
 
 interface IMessageReaction {
 	reaction: IReaction;
-	theme: TSupportedThemes;
 }
 
-const AddReaction = ({ theme }: { theme: TSupportedThemes }) => {
+const AddReaction = () => {
 	'use memo';
 
+	const { colors } = useTheme();
 	const reactionInit = useReactionInit();
 	const id = useMessageId();
 	const { fontScale } = useWindowDimensions();
@@ -42,19 +41,20 @@ const AddReaction = ({ theme }: { theme: TSupportedThemes }) => {
 			testID='message-add-reaction'
 			accessibilityRole='button'
 			accessibilityLabel={I18n.t('Add_reaction')}
-			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
+			style={[styles.reactionButton, { backgroundColor: colors.surfaceRoom }]}
 			hitSlop={BUTTON_HIT_SLOP}
-			android_ripple={{ color: themes[theme].strokeLight }}>
-			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
-				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
+			android_ripple={{ color: colors.strokeLight }}>
+			<View style={[styles.reactionContainer, { borderColor: colors.strokeLight, height }]}>
+				<CustomIcon name='reaction-add' size={20} color={colors.badgeBackgroundLevel2} />
 			</View>
 		</Touchable>
 	);
 };
 
-const Reaction = ({ reaction, theme }: IMessageReaction) => {
+const Reaction = ({ reaction }: IMessageReaction) => {
 	'use memo';
 
+	const { colors } = useTheme();
 	const { item } = useMessageCtx();
 	const id = useMessageId();
 	const onReactionPress = useOnReactionPress();
@@ -73,21 +73,18 @@ const Reaction = ({ reaction, theme }: IMessageReaction) => {
 			accessibilityRole='button'
 			accessibilityLabel={`${reaction.emoji}, ${reaction.usernames.length}`}
 			accessibilityState={{ selected: reacted }}
-			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
+			style={[styles.reactionButton, { backgroundColor: reacted ? colors.surfaceNeutral : colors.surfaceRoom }]}
 			hitSlop={BUTTON_HIT_SLOP}
-			android_ripple={{ color: themes[theme].strokeLight }}>
+			android_ripple={{ color: colors.strokeLight }}>
 			<View
-				style={[
-					styles.reactionContainer,
-					{ borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight, height }
-				]}>
+				style={[styles.reactionContainer, { borderColor: reacted ? colors.badgeBackgroundLevel2 : colors.strokeLight, height }]}>
 				<Emoji
 					content={reaction.emoji}
 					standardEmojiStyle={styles.reactionEmoji}
 					customEmojiStyle={styles.reactionCustomEmoji}
 					getCustomEmoji={getCustomEmoji ?? (() => null)}
 				/>
-				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
+				<Text style={[styles.reactionCount, { color: colors.badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
 		</Touchable>
 	);
@@ -96,7 +93,6 @@ const Reaction = ({ reaction, theme }: IMessageReaction) => {
 const Reactions = () => {
 	'use memo';
 
-	const { theme } = useTheme();
 	const reactions = useReactions();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {
@@ -105,9 +101,9 @@ const Reactions = () => {
 	return (
 		<View style={styles.reactionsContainer}>
 			{reactions.map(reaction => (
-				<Reaction key={reaction.emoji} reaction={reaction} theme={theme} />
+				<Reaction key={reaction.emoji} reaction={reaction} />
 			))}
-			<AddReaction theme={theme} />
+			<AddReaction />
 		</View>
 	);
 };
