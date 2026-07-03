@@ -190,11 +190,8 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// check on every lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
-	// An enrollment change reaches us two ways:
-	//  - warm foreground: the flag is still enabled but the sentinel was dropped → live check catches it.
-	//  - cold launch: the init migration already reconciled the flag off (it runs before us) and left a
-	//    relock marker, since it would otherwise have consumed the signal silently.
-	// Either way, surface it explicitly: tear down any remaining trust state (mirroring
+	// Surface an enrollment change explicitly (see isEnrollmentRelockRequired): tear down any remaining
+	// trust state and force the lock screen instead of unlocking.
 	const enrollmentChanged = await isEnrollmentRelockRequired();
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
@@ -258,9 +255,8 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 			// A biometric enrollment change must force the lock screen regardless of how recently the user
 			// authenticated — otherwise re-enrolling a face/fingerprint inside the auto-lock window would
-			// bypass authentication entirely. We detect it both live (warm foreground, flag still set) and
-			// via the relock marker the init migration leaves on cold launch. handleLocalAuthentication
-			// re-detects and shows the passcode with biometry disabled and the enrollment-changed notice.
+			// bypass authentication entirely. handleLocalAuthentication re-detects it and shows the passcode
+			// with biometry disabled and the enrollment-changed notice.
 			const enrollmentChanged = await isEnrollmentRelockRequired();
 
 			// if it was not possible to get `timesync` from server, the biometric enrollment changed, or the last authenticated session is older than the configured auto lock time, authentication is required
