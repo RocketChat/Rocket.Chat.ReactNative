@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
@@ -7,7 +7,7 @@ import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
 import { getMessageTranslation } from '../utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
 import { messagesStatus } from '../../../lib/constants/messagesStatus';
-import { debounce } from '../../../lib/methods/helpers';
+import { useDebounce } from '../../../lib/methods/helpers/debounce';
 import openLink from '../../../lib/methods/helpers/openLink';
 import { useTheme } from '../../../theme';
 import {
@@ -359,11 +359,8 @@ export const useMessagePress = (): (() => void) => {
 	const isIgnored = useMessageIgnored();
 	const revealIgnored = useRevealIgnored();
 
-	// pressHandlerRef holds the latest press logic; updated after every render via
-	// useEffect so the render body stays free of ref writes.
-	const pressHandlerRef = useRef<() => void>(() => {});
-	useEffect(() => {
-		pressHandlerRef.current = () => {
+	const handlePress = useDebounce(
+		() => {
 			if (isIgnored) {
 				return revealIgnored();
 			}
@@ -377,20 +374,15 @@ export const useMessagePress = (): (() => void) => {
 			if (item.dlm && onDiscussionPress) {
 				onDiscussionPress(item);
 			}
-		};
-	});
-	// onPressRef holds the single debounced instance for the component lifetime.
-	// Initialised to a noop; replaced with the real debounced fn in the first effect
-	// so that pressHandlerRef.current is never read during render.
-	const onPressRef = useRef(debounce(() => {}, 300, true));
-	useEffect(() => {
-		onPressRef.current = debounce(() => pressHandlerRef.current?.(), 300, true);
-	}, []);
+		},
+		300,
+		{ leading: true, trailing: false }
+	);
 
 	return () => {
 		if (closeEmojiAndAction) {
-			return closeEmojiAndAction(onPressRef.current);
+			return closeEmojiAndAction(handlePress);
 		}
-		return onPressRef.current();
+		return handlePress();
 	};
 };
