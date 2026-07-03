@@ -178,6 +178,24 @@ export const useContentData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'ch
 	);
 };
 
+export const useInfoData = (): Pick<TAnyMessageModel, 't' | 'comment'> => {
+	const { store, item } = useMessageCtx();
+	return useStore(
+		store,
+		useShallow(() => ({ t: item.t, comment: item.comment }))
+	);
+};
+
+export const useMarkdownData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'channels' | 't'> => {
+	const { store, item } = useMessageCtx();
+	return useStore(
+		store,
+		useShallow(() => ({ md: item.md, mentions: item.mentions, channels: item.channels, t: item.t }))
+	);
+};
+
+export const useAttachments = (): TAnyMessageModel['attachments'] => useMessageField(item => item.attachments);
+
 export const useMessageHeaderMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> => {
 	const { store, item } = useMessageCtx();
 	return useStore(
