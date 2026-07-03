@@ -1,4 +1,4 @@
-import { createContext, useContext, useCallback, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
@@ -104,7 +104,7 @@ export const MessageProvider = ({
 		store.setState({ onPress, onLongPress, threadBadgeColor, ignoredSeed: isIgnored ?? false });
 	});
 
-	const revealIgnored = useCallback(() => store.setState({ manualUnignored: true }), [store]);
+	const revealIgnored = () => store.setState({ manualUnignored: true });
 
 	return (
 		<MessageStoreContext.Provider value={{ store, item, previousItem, revealIgnored }}>{children}</MessageStoreContext.Provider>
@@ -199,11 +199,11 @@ const computeIsHeader = (
 	try {
 		if (
 			prev &&
-			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+			// @ts-expect-error IMessage types ts as Date, IMessageFromServer as string; the date op is valid at runtime
 			prev.ts.toDateString() === item.ts.toDateString() &&
 			prev.u?.username === item.u?.username &&
 			!(prev.groupable === false || item.groupable === false || broadcast === true) &&
-			// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+			// @ts-expect-error IMessage types ts as Date, IMessageFromServer as string; the date op is valid at runtime
 			item.ts - prev.ts < Message_GroupingPeriod * 1000 &&
 			prev.tmid === item.tmid &&
 			item.t !== 'rm' &&
