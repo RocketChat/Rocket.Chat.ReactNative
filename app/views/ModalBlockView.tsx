@@ -16,8 +16,8 @@ import { ContainerTypes, ModalActions, type TModalAction } from '../containers/U
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
 import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
-import { MessageRoomProvider } from '../containers/message/MessageRoomStore';
-import { MessageProvider } from '../containers/message/MessageStore';
+import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '../containers/message/stores/MessageStore';
 import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({

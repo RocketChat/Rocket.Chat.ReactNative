@@ -99,7 +99,7 @@ import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import { createInteractionStore, InteractionStoreContext, type InteractionStore } from './InteractionStore';
-import { MessageRoomProvider } from '../../containers/message/MessageRoomStore';
+import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { resolveJumpAnchor } from './services/resolveJumpAnchor';

@@ -7,7 +7,7 @@ import styles from './styles';
 import AllTab from './AllTab';
 import UsersList from './UsersList';
 import { TabView } from '../TabView';
-import Emoji from '../message/Emoji';
+import Emoji from '../message/components/Emoji';
 
 interface IReactionsListProps {
 	getCustomEmoji: TGetCustomEmoji;

@@ -4,8 +4,8 @@ import { render } from '@testing-library/react-native';
 
 import { type TAnyMessageModel } from '../../definitions';
 import { mockedStore } from '../../reducers/mockedStore';
-import { MessageProvider } from './MessageStore';
-import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from './MessageRoomStore';
+import { MessageProvider } from './stores/MessageStore';
+import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from './stores/MessageRoomStore';
 
 interface IMessageProvidersOptions {
 	item?: TAnyMessageModel;

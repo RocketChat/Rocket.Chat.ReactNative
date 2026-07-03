@@ -13,8 +13,8 @@ import {
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
-import { useBaseUrl, useMessageUser } from '../MessageRoomStore';
-import { useMessageId } from '../MessageStore';
+import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
+import { useMessageId } from '../stores/MessageStore';
 import { useFile } from './useFile';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {

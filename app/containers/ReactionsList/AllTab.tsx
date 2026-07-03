@@ -1,7 +1,7 @@
 import { memo, type ReactElement } from 'react';
 import { Text, View, FlatList } from 'react-native';
 
-import Emoji from '../message/Emoji';
+import Emoji from '../message/components/Emoji';
 import { useTheme } from '../../theme';
 import { type IReaction } from '../../definitions';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';

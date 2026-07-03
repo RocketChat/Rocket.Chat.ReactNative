@@ -12,8 +12,8 @@ import {
 	useMessageText,
 	useThreadData,
 	useThreadPosition
-} from '../MessageStore';
-import { useAutoTranslate, useIsReadReceiptEnabled } from '../MessageRoomStore';
+} from '../stores/MessageStore';
+import { useAutoTranslate, useIsReadReceiptEnabled } from '../stores/MessageRoomStore';
 import { useSetting } from '../../../lib/hooks/useSetting';
 
 const stripMentions = (label: string, mentions: IUserMention[] = [], channels: IUserChannel[] = []) => {

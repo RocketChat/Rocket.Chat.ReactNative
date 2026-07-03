@@ -7,7 +7,7 @@ import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
-import { MessageRoomProvider } from '../../containers/message/MessageRoomStore';
+import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';

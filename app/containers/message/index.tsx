@@ -1,9 +1,9 @@
 import { memo } from 'react';
 
-import Message from './Message';
+import Message from './components/Message';
 import { type TAnyMessageModel } from '../../definitions';
 import MessageSeparator from '../MessageSeparator';
-import { MessageProvider } from './MessageStore';
+import { MessageProvider } from './stores/MessageStore';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;

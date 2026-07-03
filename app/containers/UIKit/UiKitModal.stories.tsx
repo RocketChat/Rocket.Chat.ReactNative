@@ -3,8 +3,8 @@ import { Button, View } from 'react-native';
 
 import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
-import { MessageRoomProvider } from '../message/MessageRoomStore';
-import { MessageProvider } from '../message/MessageStore';
+import { MessageRoomProvider } from '../message/stores/MessageRoomStore';
+import { MessageProvider } from '../message/stores/MessageStore';
 import { type TAnyMessageModel } from '../../definitions';
 
 export default {
