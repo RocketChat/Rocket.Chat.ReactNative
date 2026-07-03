@@ -47,7 +47,7 @@ const Thread = () => {
 				}}
 				user={{ id: user?.id ?? '' }}
 				badgeColor={threadBadgeColor}
-				toggleFollowThread={toggleFollowThread as Function}
+				toggleFollowThread={toggleFollowThread}
 				style={styles.threadDetails}
 			/>
 		</View>

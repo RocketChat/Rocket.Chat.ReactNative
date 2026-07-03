@@ -10,7 +10,7 @@ import { MessageRoomProvider, pickMessageRoomState, type MessageRoomState } from
 interface IMessageProvidersOptions {
 	item?: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
-	context?: Record<string, any>;
+	context?: Record<string, unknown>;
 	room?: Partial<MessageRoomState>;
 	withRedux?: boolean;
 }

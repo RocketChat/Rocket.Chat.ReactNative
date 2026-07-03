@@ -50,7 +50,6 @@ const Content = () => {
 	const isIgnored = useMessageIgnored();
 
 	if (isInfo) {
-		// @ts-ignore
 		const infoMessage = getInfoMessage({ type, role, msg: messageText, author, comment });
 
 		const renderMessageContent = (

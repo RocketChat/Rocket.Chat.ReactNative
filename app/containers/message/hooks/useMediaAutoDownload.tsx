@@ -56,7 +56,7 @@ export const useMediaAutoDownload = ({
 }: {
 	file: IAttachment;
 	author?: IUserMessage;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 }) => {
 	'use memo';
 

@@ -89,7 +89,7 @@ const renderMediaHook = ({
 }: {
 	file: IAttachment;
 	author?: IUserMessage;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 	ctx?: Record<string, any>;
 }) => {
 	const contextValue = { baseUrl: 'https://open.rocket.chat', user: USER, ...ctx };
