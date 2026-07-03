@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react-native';
+import { StyleSheet } from 'react-native';
 
 import Markdown from '.';
 
@@ -61,9 +62,9 @@ describe('Markdown textStyle integration', () => {
 		const mentionNode = getByText('@rocket.cat');
 		const hashtagNode = getByText('#general');
 
-		expect(plainTextNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
-		expect(linkNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
-		expect(mentionNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
-		expect(hashtagNode.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ color: 'red' })]));
+		expect(StyleSheet.flatten(plainTextNode.props.style).color).toBe('red');
+		expect(StyleSheet.flatten(linkNode.props.style).color).toBe('red');
+		expect(StyleSheet.flatten(mentionNode.props.style).color).toBe('red');
+		expect(StyleSheet.flatten(hashtagNode.props.style).color).toBe('red');
 	});
 });
