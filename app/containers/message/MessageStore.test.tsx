@@ -1,4 +1,5 @@
-import { act, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
+import { Text } from 'react-native';
 
 import { type TAnyMessageModel } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
@@ -17,11 +18,13 @@ import {
 	useMessageCtx,
 	useMessageField,
 	useMessageGrouping,
+	useMessageIgnored,
 	useMessageMeta,
 	useMessageStatus,
 	useMessageText,
 	useReactions,
 	useRepliedThreadData,
+	useRevealIgnored,
 	useThreadData,
 	useThreadPosition,
 	useUrls
@@ -563,6 +566,61 @@ describe('MessageStore', () => {
 				return null;
 			};
 			expect(() => render(<Probe />)).toThrow('Message hooks must be used within a MessageProvider');
+		});
+	});
+
+	describe('ignored messages', () => {
+		it('useMessageIgnored reflects the isIgnored seed', () => {
+			const model = buildFakeModel();
+			const ignoredSpy = jest.fn();
+			const notIgnoredSpy = jest.fn();
+			const IgnoredProbe = () => {
+				ignoredSpy(useMessageIgnored());
+				return null;
+			};
+			const NotIgnoredProbe = () => {
+				notIgnoredSpy(useMessageIgnored());
+				return null;
+			};
+
+			render(
+				<MessageProvider item={model} isIgnored>
+					<IgnoredProbe />
+				</MessageProvider>
+			);
+			render(
+				<MessageProvider item={model}>
+					<NotIgnoredProbe />
+				</MessageProvider>
+			);
+
+			expect(ignoredSpy).toHaveBeenLastCalledWith(true);
+			expect(notIgnoredSpy).toHaveBeenLastCalledWith(false);
+		});
+
+		it('revealIgnored flips useMessageIgnored to false and stays revealed across re-renders', () => {
+			const model = buildFakeModel();
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageIgnored());
+				const reveal = useRevealIgnored();
+				return <Text testID='reveal' onPress={reveal} />;
+			};
+			const wrap = () => (
+				<MessageProvider item={model} isIgnored>
+					<Probe />
+				</MessageProvider>
+			);
+
+			const { rerender, getByTestId } = render(wrap());
+			expect(spy).toHaveBeenLastCalledWith(true);
+
+			fireEvent.press(getByTestId('reveal'));
+			expect(spy).toHaveBeenLastCalledWith(false);
+
+			// manualUnignored is never reset, so re-rendering with the same isIgnored seed keeps it revealed.
+			act(() => rerender(wrap()));
+			expect(spy).toHaveBeenLastCalledWith(false);
 		});
 	});
 });
