@@ -127,6 +127,7 @@ const Message = memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
 							<Content {...props} />
+							{props.isInfo ? <MessageTime ts={props.ts} timeFormat={props.timeFormat} /> : null}
 							{props.isInfo && props.type === 'message_pinned' ? (
 								<View pointerEvents='none'>
 									<Attachments {...props} />
