@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 
-import { WidthAwareContext } from '../../WidthAwareView';
-import { MessageImage } from './Image';
+import { WidthAwareContext } from '../WidthAwareView';
+import { MessageImage } from '../Attachments/Image/Image';
 
 const MOCK_URI = 'https://picsum.photos/400/300';
 

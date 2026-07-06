@@ -1,9 +1,12 @@
 import { generateSnapshots } from '../../../../../../.rnstorybook/generateSnapshots';
+import * as attachments from '../Attachments.stories';
 import * as broadcast from '../Broadcast.stories';
 import * as callButton from '../CallButton.stories';
+import * as collapsibleQuote from '../CollapsibleQuote.stories';
 import * as content from '../Content.stories';
 import * as discussion from '../Discussion.stories';
 import * as emoji from '../Emoji.stories';
+import * as image from '../Image.stories';
 import * as messageAvatar from '../MessageAvatar.stories';
 import * as reactions from '../Reactions.stories';
 import * as repliedThread from '../RepliedThread.stories';
@@ -18,11 +21,14 @@ import * as pinned from '../RightIcons/Pinned.stories';
 import * as readReceipt from '../RightIcons/ReadReceipt.stories';
 import * as translated from '../RightIcons/Translated.stories';
 
+generateSnapshots(attachments);
 generateSnapshots(broadcast);
 generateSnapshots(callButton);
+generateSnapshots(collapsibleQuote);
 generateSnapshots(content);
 generateSnapshots(discussion);
 generateSnapshots(emoji);
+generateSnapshots(image);
 generateSnapshots(messageAvatar);
 generateSnapshots(reactions);
 generateSnapshots(repliedThread);

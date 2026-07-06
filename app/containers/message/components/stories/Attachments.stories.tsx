@@ -7,7 +7,7 @@ import { selectServerSuccess } from '../../../../actions/server';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
-import Attachments from './Attachments';
+import Attachments from '../Attachments/Attachments';
 
 const mockMessageContext: Partial<MessageRoomState> = {
 	baseUrl: 'https://open.rocket.chat',
