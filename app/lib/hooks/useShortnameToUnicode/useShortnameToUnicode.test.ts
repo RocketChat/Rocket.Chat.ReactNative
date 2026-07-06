@@ -2,10 +2,13 @@ import useShortnameToUnicode from './index';
 import { setUser } from '../../../actions/login';
 import { setCustomEmojis } from '../../../actions/customEmojis';
 import { mockedStore } from '../../../reducers/mockedStore';
+import { initStore } from '../../store/auxStore';
 
 jest.mock('../useAppSelector', () => ({
 	useAppSelector: (selector: (state: ReturnType<typeof mockedStore.getState>) => unknown) => selector(mockedStore.getState())
 }));
+
+initStore(mockedStore);
 
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(
