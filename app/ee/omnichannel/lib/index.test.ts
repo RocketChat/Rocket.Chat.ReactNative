@@ -45,13 +45,24 @@ jest.mock('../../../lib/services/restApi', () => ({
 	getAgentDepartments: jest.fn().mockResolvedValue({ success: true, departments: [] })
 }));
 
+jest.mock('../../../lib/methods/helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
 import sdk from '../../../lib/services/sdk';
 import { store } from '../../../lib/store/auxStore';
 import { compareServerVersion } from '../../../lib/methods/helpers';
+import EventEmitter from '../../../lib/methods/helpers/events';
+import subscribeInquiry from './subscriptions/inquiry';
+import log from '../../../lib/methods/helpers/log';
 
 const mockSdkPost = sdk.post as jest.Mock;
 const mockMethodCallWrapper = sdk.methodCallWrapper as jest.Mock;
 const mockCompareServerVersion = compareServerVersion as jest.Mock;
+const mockAddEventListener = EventEmitter.addEventListener as jest.Mock;
+const mockSubscribeInquiry = subscribeInquiry as jest.Mock;
+const mockLog = log as jest.Mock;
 
 beforeEach(() => {
 	jest.clearAllMocks();
@@ -143,5 +154,31 @@ describe('isOmnichannelStatusAvailable', () => {
 
 		expect(isOmnichannelStatusAvailable!('not-available')).toBe(false);
 		expect(isOmnichannelStatusAvailable!(undefined)).toBe(false);
+	});
+});
+
+describe('Omnichannel.subscribeInquiry', () => {
+	it('does not produce an unhandled rejection when subscribeInquiry() rejects', async () => {
+		const rejection = new Error('inquiry: @subscribeInquiry user.id not found');
+		mockSubscribeInquiry.mockRejectedValueOnce(rejection);
+
+		jest.isolateModules(() => {
+			require('./index');
+		});
+
+		const subscribeListener = mockAddEventListener.mock.calls.find(([event]) => event === 'INQUIRY_SUBSCRIBE')?.[1];
+		expect(subscribeListener).toBeDefined();
+
+		const unhandled = jest.fn();
+		process.on('unhandledRejection', unhandled);
+
+		subscribeListener();
+		await Promise.resolve();
+		await Promise.resolve();
+		await Promise.resolve();
+
+		process.off('unhandledRejection', unhandled);
+		expect(unhandled).not.toHaveBeenCalled();
+		expect(mockLog).toHaveBeenCalledWith(rejection);
 	});
 });

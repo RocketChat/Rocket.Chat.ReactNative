@@ -132,7 +132,7 @@ describe('subscribeInquiry', () => {
 			login: { user: {} },
 			inquiry: { queued: [] }
 		});
-		await expect(subscribeInquiry() as any).rejects.toBeUndefined();
+		await expect(subscribeInquiry() as any).rejects.toThrow('inquiry: @subscribeInquiry user.id not found');
 	});
 
 	it('queue handler dispatches inquiryQueueAdd for new queued items', () => {

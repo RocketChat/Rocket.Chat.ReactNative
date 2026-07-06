@@ -3,6 +3,7 @@ import { compareServerVersion } from '../../../lib/methods/helpers';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { store as reduxStore } from '../../../lib/store/auxStore';
 import subscribeInquiry from './subscriptions/inquiry';
+import log from '../../../lib/methods/helpers/log';
 
 export const isOmnichannelStatusAvailable = (statusLivechat: string | undefined): boolean => statusLivechat === 'available';
 
@@ -55,7 +56,11 @@ class Omnichannel {
 
 	subscribeInquiry = async () => {
 		console.log('[RCRN] Subscribing to inquiry');
-		this.inquirySub = await subscribeInquiry();
+		try {
+			this.inquirySub = await subscribeInquiry();
+		} catch (e) {
+			log(e);
+		}
 	};
 
 	unsubscribeInquiry = () => {
