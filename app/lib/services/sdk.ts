@@ -16,6 +16,7 @@ import {
 	type PathFor,
 	type ResultFor
 } from '../../definitions/rest/helpers';
+import { type ILoginDataResponse } from '../../definitions/rest/v1/auth';
 
 export async function normalizeResponseError(response: Response): Promise<{ status: number; data: any }> {
 	try {
@@ -248,10 +249,16 @@ class Sdk {
 		return result.twoFactorCode;
 	}
 
-	async login(credentials: any): Promise<any> {
+	async login(credentials: any): Promise<ILoginDataResponse> {
 		try {
-			const loginResult = await this.post('/v1/login', credentials);
-			if (!loginResult?.success) {
+			// /v1/login is a special-cased Rocket.Chat endpoint: it replies with { status, data }
+			// instead of the { success, data } convention the generic REST types assume, so the
+			// inferred result type doesn't match the real shape here — cast to the documented one.
+			const loginResult = (await this.post('/v1/login', credentials)) as unknown as {
+				status: string;
+				data: ILoginDataResponse;
+			};
+			if (loginResult?.status !== 'success' || !loginResult.data) {
 				return Promise.reject(new Error('Invalid response from server'));
 			}
 			await this.current?.account.loginWithToken(loginResult.data.authToken);

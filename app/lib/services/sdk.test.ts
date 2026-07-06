@@ -182,7 +182,7 @@ describe('Sdk.login', () => {
 
 	it('calls loginWithToken with the authToken from the REST response', async () => {
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
 		});
 		setInternalSdk(fake);
@@ -191,8 +191,8 @@ describe('Sdk.login', () => {
 		expect(result.authToken).toBe('tok-abc');
 	});
 
-	it('rejects when the REST response has success: false', async () => {
-		const fake = buildFakeSdkWithLogin({ success: false });
+	it('rejects when the REST response has status: error', async () => {
+		const fake = buildFakeSdkWithLogin({ status: 'error' });
 		setInternalSdk(fake);
 		await expect(sdk.login({ user: 'john', password: 'wrong' })).rejects.toThrow('Invalid response from server');
 	});
@@ -208,7 +208,7 @@ describe('Sdk.login', () => {
 
 	it('sets X-Auth-Token and X-User-Id in getHeaders after successful login', async () => {
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
 		});
 		setInternalSdk(fake);
@@ -220,7 +220,7 @@ describe('Sdk.login', () => {
 
 	it('clears X-Auth-Token and X-User-Id from getHeaders after logout', async () => {
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
 		});
 		setInternalSdk(fake);
@@ -235,7 +235,7 @@ describe('Sdk.login', () => {
 		// Deep link logins reach sdk.login with `{ resume }` instead of `{ user, password }`,
 		// but the header centralization reads authToken/userId from the same /v1/login response.
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-deep', userId: 'uid-deep', me: { username: 'jane' } }
 		});
 		setInternalSdk(fake);
@@ -255,7 +255,7 @@ describe('Sdk.login', () => {
 		// Login on server1 → token1/user1; re-initialize for server2 → headers cleared;
 		// login on server2 → token2/user2 (server1 credentials never leak).
 		const server1Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
@@ -265,7 +265,7 @@ describe('Sdk.login', () => {
 		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-1');
 
 		const server2Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);
@@ -282,7 +282,7 @@ describe('Sdk.login', () => {
 	it('switches to the deep link server credentials when already logged in on another server', async () => {
 		// Already authenticated on server1.
 		const server1Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
@@ -292,7 +292,7 @@ describe('Sdk.login', () => {
 
 		// A deep link targeting server2 re-initializes on the new host, then logs in with the resume token.
 		const server2Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);

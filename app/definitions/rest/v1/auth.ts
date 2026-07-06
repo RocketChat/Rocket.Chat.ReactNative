@@ -13,6 +13,16 @@ export interface ILoginMeResponse {
 	roles: string[];
 	settings: IUserSettings;
 	avatarUrl: string;
+	language?: string;
+	statusText?: string;
+	customFields?: {
+		[key: string]: any;
+	};
+	statusLivechat?: string;
+	avatarETag?: string;
+	bio?: string;
+	nickname?: string;
+	requirePasswordChange?: boolean;
 }
 
 export interface ILoginDataResponse {
