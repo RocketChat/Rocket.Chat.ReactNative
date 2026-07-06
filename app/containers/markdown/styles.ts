@@ -59,6 +59,7 @@ export default StyleSheet.create({
 		...Platform.select({
 			ios: sharedStyles.textSemibold,
 			android: {
+				...sharedStyles.textSemibold,
 				fontWeight: '700'
 			}
 		})
