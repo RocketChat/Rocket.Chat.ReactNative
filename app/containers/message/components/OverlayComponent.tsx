@@ -1,9 +1,9 @@
 import { type StyleProp, View, type ViewStyle } from 'react-native';
 
-import styles from '../../styles';
-import { useTheme } from '../../../../theme';
-import RCActivityIndicator from '../../../ActivityIndicator';
-import { CustomIcon, type TIconsName } from '../../../CustomIcon';
+import styles from '../styles';
+import { useTheme } from '../../../theme';
+import RCActivityIndicator from '../../ActivityIndicator';
+import { CustomIcon, type TIconsName } from '../../CustomIcon';
 
 const OverlayComponent = ({
 	loading = false,

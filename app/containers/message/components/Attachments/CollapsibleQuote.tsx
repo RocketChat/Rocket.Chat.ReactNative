@@ -2,16 +2,16 @@ import { transparentize } from 'color2k';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../../../lib/constants/colors';
-import { type IAttachment } from '../../../../../definitions/IAttachment';
-import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
-import { CustomIcon } from '../../../../CustomIcon';
-import { useTheme } from '../../../../../theme';
-import sharedStyles from '../../../../../views/Styles';
-import Markdown from '../../../../markdown';
-import { useMessageUser } from '../../../stores/MessageRoomStore';
-import Touchable from '../../Touchable';
-import { BUTTON_HIT_SLOP } from '../../../utils';
+import { themes } from '../../../../lib/constants/colors';
+import { type IAttachment } from '../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { CustomIcon } from '../../../CustomIcon';
+import { useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
+import Markdown from '../../../markdown';
+import { useMessageUser } from '../../stores/MessageRoomStore';
+import Touchable from '../Touchable';
+import { BUTTON_HIT_SLOP } from '../../utils';
 
 const styles = StyleSheet.create({
 	button: {
