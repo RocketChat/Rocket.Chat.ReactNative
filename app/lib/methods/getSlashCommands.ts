@@ -16,7 +16,6 @@ export function getSlashCommands() {
 			if (!result.success) {
 				return resolve();
 			}
-			// @ts-ignore
 			const { commands } = result;
 			if (commands && commands.length) {
 				await db.write(async () => {
