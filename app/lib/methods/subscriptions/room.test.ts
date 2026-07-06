@@ -3,6 +3,7 @@ import { loadMissedMessages } from '../loadMissedMessages';
 import { clearUserTyping } from '../../../actions/usersTyping';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
+const mockOnConnectionStatus = jest.fn<() => void, [(status: string) => void]>(() => jest.fn());
 const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
 	Promise.resolve({ stop: jest.fn() })
 );
@@ -10,6 +11,7 @@ jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
 		subscribeRoom: (rid: string) => mockSubscribeRoom(rid),
+		onConnectionStatus: (cb: (status: string) => void) => mockOnConnectionStatus(cb),
 		onStreamData: (event: string, cb: (...args: unknown[]) => void) => mockOnStreamData(event, cb)
 	}
 }));
@@ -136,6 +138,21 @@ describe('RoomSubscription', () => {
 
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+
+		it('wires handleConnected/handleClose through onConnectionStatus, not onStreamData', async () => {
+			await sub.subscribe();
+
+			expect(mockOnConnectionStatus).toHaveBeenCalledTimes(1);
+			const statusCallback = mockOnConnectionStatus.mock.calls[0][0];
+
+			mockSubscribeRoom.mockClear();
+			statusCallback('connected');
+			await Promise.resolve();
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+
+			statusCallback('closed');
+			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
 		});
 	});
 

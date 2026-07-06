@@ -362,6 +362,15 @@ class Sdk {
 		});
 	}
 
+	onConnectionStatus(
+		callback: (status: 'idle' | 'connecting' | 'connected' | 'failed' | 'closed' | 'disconnected' | 'reconnecting') => void
+	): () => void {
+		if (!this.current) {
+			return () => {};
+		}
+		return this.current.connection.on('connection', callback);
+	}
+
 	stream(...args: Parameters<DDPSDK['stream']>) {
 		return this.current?.stream(...args);
 	}
