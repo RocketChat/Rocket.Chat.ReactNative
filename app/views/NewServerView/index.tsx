@@ -53,7 +53,6 @@ const NewServerView = () => {
 	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
-	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 
 	const onChangeText = (text: string) => {
 		setValue('workspaceUrl', text);
@@ -148,11 +147,7 @@ const NewServerView = () => {
 	}, [connecting, previousServer]);
 
 	return (
-		<FormContainer
-			style={formContainerStyle}
-			showAppVersion={showBottomInfo}
-			testID='new-server-view'
-			keyboardShouldPersistTaps='handled'>
+		<FormContainer showAppVersion={showBottomInfo} testID='new-server-view' keyboardShouldPersistTaps='handled'>
 			<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
 				<Image
 					style={{

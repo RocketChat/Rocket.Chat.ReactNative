@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -45,6 +45,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
+	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
@@ -132,6 +133,7 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+			contentContainerStyle={{ paddingBottom: bottom }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}

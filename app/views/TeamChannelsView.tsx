@@ -2,6 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
 import { deleteRoom } from '../actions/room';
@@ -87,6 +88,7 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
 	displayMode: DisplayMode;
+	insets: EdgeInsets;
 }
 class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
@@ -549,6 +551,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 
 	renderScroll = () => {
 		const { loading, data, search, isSearching, searchText } = this.state;
+		const { insets } = this.props;
 		if (loading) {
 			return <BackgroundContainer loading />;
 		}
@@ -570,6 +573,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				keyboardShouldPersistTaps='always'
 				onEndReached={() => this.load()}
 				onEndReachedThreshold={0.5}
+				contentContainerStyle={{ paddingBottom: insets.bottom }}
 				ListFooterComponent={this.renderFooter}
 			/>
 		);
@@ -601,4 +605,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(withMasterDetail(TeamChannelsView)))));
+export default connect(mapStateToProps)(
+	withDimensions(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(TeamChannelsView)))))
+);
