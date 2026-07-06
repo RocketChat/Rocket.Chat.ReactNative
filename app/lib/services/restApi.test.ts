@@ -1,7 +1,7 @@
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 
-import { mediaCallsStateSignals } from './restApi';
+import { findOrCreateInvite, mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
@@ -115,6 +115,30 @@ describe('mediaCallsStateSignals', () => {
 		const result = await mediaCallsStateSignals('device-id');
 
 		expect(result).toEqual({ signals: [], success: false });
+	});
+});
+
+describe('findOrCreateInvite', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('returns an invite with a url field', async () => {
+		mockSdkPost.mockResolvedValueOnce({
+			success: true,
+			_id: 'inv1',
+			days: 1,
+			maxUses: 0,
+			rid: 'room1',
+			url: 'https://example.com/invite/abc'
+		});
+
+		const invite = await findOrCreateInvite({ rid: 'room1', days: 1, maxUses: 0 });
+
+		expect(mockSdkPost).toHaveBeenCalledWith('/v1/findOrCreateInvite', { rid: 'room1', days: 1, maxUses: 0 });
+		expect(invite.success).toBe(true);
+		if (!invite.success) return;
+		expect(invite.url).toBe('https://example.com/invite/abc');
 	});
 });
 
