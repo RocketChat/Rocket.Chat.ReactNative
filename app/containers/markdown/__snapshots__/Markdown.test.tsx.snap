@@ -5,6 +5,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -151,6 +152,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -424,6 +426,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -986,6 +989,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -1031,11 +1035,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "#095AD2",
@@ -1092,6 +1092,7 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -1296,11 +1297,1770 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "gap": 16,
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 24,
+            "fontWeight": "700",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="H1 "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        H1 
+      </Text>
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "700",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="bold"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          bold
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "fontStyle": "italic",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="italic"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          italic
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "textDecorationLine": "line-through",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="strike"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          strike
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "fontFamily": "Courier New",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingLeft": 2,
+              "paddingTop": 2,
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderColor": "#CBCED1",
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text>
+          code
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {},
+            false,
+          ]
+        }
+      >
+         
+        🚀
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#9B1325",
+            },
+          ]
+        }
+      >
+        rocket.cat
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        test-channel
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onLongPress={[Function]}
+        onPress={[Function]}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        https://rocket.chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 22,
+            "fontWeight": "700",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="H2 "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        H2 
+      </Text>
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "700",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="bold"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 22,
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          bold
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "fontStyle": "italic",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="italic"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 22,
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          italic
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "textDecorationLine": "line-through",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="strike"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 22,
+                "fontWeight": "700",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          strike
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "fontFamily": "Courier New",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingLeft": 2,
+              "paddingTop": 2,
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderColor": "#CBCED1",
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text>
+          code
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {},
+            false,
+          ]
+        }
+      >
+         
+        🚀
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#9B1325",
+            },
+          ]
+        }
+      >
+        rocket.cat
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        test-channel
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onLongPress={[Function]}
+        onPress={[Function]}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        https://rocket.chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="H3 "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        H3 
+      </Text>
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "700",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="bold"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 20,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          bold
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "fontStyle": "italic",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="italic"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 20,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          italic
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "textDecorationLine": "line-through",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="strike"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 20,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          strike
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "fontFamily": "Courier New",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingLeft": 2,
+              "paddingTop": 2,
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderColor": "#CBCED1",
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text>
+          code
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {},
+            false,
+          ]
+        }
+      >
+         
+        🚀
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            {
+              "color": "#9B1325",
+            },
+          ]
+        }
+      >
+        rocket.cat
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        test-channel
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onLongPress={[Function]}
+        onPress={[Function]}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        https://rocket.chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 18,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="H4 "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        H4 
+      </Text>
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "700",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="bold"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          bold
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "fontStyle": "italic",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="italic"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          italic
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          {
+            "textDecorationLine": "line-through",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="strike"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          strike
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "fontFamily": "Courier New",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "paddingLeft": 2,
+              "paddingTop": 2,
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderColor": "#CBCED1",
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text>
+          code
+        </Text>
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {},
+            false,
+          ]
+        }
+      >
+         
+        🚀
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            {
+              "color": "#9B1325",
+            },
+          ]
+        }
+      >
+        rocket.cat
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        test-channel
+      </Text>
+      <Text
+        accessibilityLabel=" "
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+         
+      </Text>
+      <Text
+        onLongPress={[Function]}
+        onPress={[Function]}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            {
+              "color": "#095AD2",
+            },
+          ]
+        }
+      >
+        https://rocket.chat
+      </Text>
+    </Text>
+  </View>
+</View>
+`;
+
 exports[`Story Snapshots: Image should match snapshot 1`] = `
 <View
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -1386,6 +3146,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -1753,6 +3514,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -2937,6 +4699,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -2983,11 +4746,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#9B1325",
@@ -3019,11 +4778,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -3054,11 +4809,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -3089,11 +4840,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -3160,11 +4907,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -3217,11 +4960,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#9B1325",
@@ -3253,11 +4992,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -3288,11 +5023,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -3323,11 +5054,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -3394,11 +5121,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -3420,6 +5143,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -3483,11 +5207,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#9B1325",
@@ -3519,11 +5239,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -3554,11 +5270,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -3589,11 +5301,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -3625,11 +5333,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "600",
-                  "textAlign": "left",
                 },
                 {
                   "color": "#095AD2",
@@ -3709,11 +5413,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#9B1325",
@@ -3756,11 +5456,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#8E6300",
@@ -3802,11 +5498,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -3848,11 +5540,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -3895,11 +5583,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#095AD2",
@@ -3994,11 +5678,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#9B1325",
@@ -4072,11 +5752,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#8E6300",
@@ -4149,11 +5825,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -4226,11 +5898,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -4304,11 +5972,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#095AD2",
@@ -4403,11 +6067,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#9B1325",
@@ -4447,11 +6107,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#8E6300",
@@ -4490,11 +6146,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -4533,11 +6185,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -4577,11 +6225,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
                   },
                   {
                     "color": "#095AD2",
@@ -4676,11 +6320,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
                         "fontSize": 16,
-                        "fontWeight": "600",
-                        "textAlign": "left",
                       },
                       {
                         "color": "#9B1325",
@@ -4739,11 +6379,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
                         "fontSize": 16,
-                        "fontWeight": "600",
-                        "textAlign": "left",
                       },
                       {
                         "color": "#8E6300",
@@ -4801,11 +6437,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
                         "fontSize": 16,
-                        "fontWeight": "600",
-                        "textAlign": "left",
                       },
                       {
                         "color": "#974809",
@@ -4863,11 +6495,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
                         "fontSize": 16,
-                        "fontWeight": "600",
-                        "textAlign": "left",
                       },
                       {
                         "color": "#974809",
@@ -4926,11 +6554,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
                         "fontSize": 16,
-                        "fontWeight": "600",
-                        "textAlign": "left",
                       },
                       {
                         "color": "#095AD2",
@@ -4955,6 +6579,7 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -5106,6 +6731,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -5952,6 +7578,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }
@@ -6437,11 +8064,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -6481,11 +8104,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -6524,11 +8143,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -6567,11 +8182,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -6654,11 +8265,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -6715,11 +8322,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
                 "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -6991,6 +8594,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
   style={
     {
       "backgroundColor": "#FFFFFF",
+      "gap": 16,
       "marginHorizontal": 15,
       "marginVertical": 50,
     }

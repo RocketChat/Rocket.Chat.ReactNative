@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: 15,
 		backgroundColor: themes[theme].surfaceRoom,
-		marginVertical: 50
+		marginVertical: 50,
+		gap: 16
 	}
 });
 
@@ -165,6 +166,39 @@ export const Headers = () => (
 		<Markdown msg='## Header 2' />
 		<Markdown msg='### Header 3' />
 		<Markdown msg='#### Header 4' />
+	</View>
+);
+
+export const HeadersWithFormatting = () => (
+	<View style={styles.container}>
+		<Markdown
+			msg='# H1 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+			getCustomEmoji={getCustomEmoji}
+		/>
+		<Markdown
+			msg='## H2 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+			getCustomEmoji={getCustomEmoji}
+		/>
+		<Markdown
+			msg='### H3 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+			getCustomEmoji={getCustomEmoji}
+		/>
+		<Markdown
+			msg='#### H4 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+			getCustomEmoji={getCustomEmoji}
+		/>
 	</View>
 );
 
