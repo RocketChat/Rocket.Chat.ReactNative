@@ -25,11 +25,17 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 		if (displayMsg || !tmid) {
 			return;
 		}
+		let ignore = false;
 		const fetch = async () => {
 			const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
-			setFetchedName(threadName);
+			if (!ignore) {
+				setFetchedName(threadName);
+			}
 		};
 		fetch();
+		return () => {
+			ignore = true;
+		};
 	}, [tmid, id, displayMsg, fetchThreadName]);
 
 	if (!tmid || !isHeader) {
