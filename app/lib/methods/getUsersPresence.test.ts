@@ -190,7 +190,14 @@ describe('getUsersPresence', () => {
 		setVersion('4.1.0', { settings: {} });
 		(sdk.get as jest.Mock).mockResolvedValue({ success: true, users: [] });
 		await getUsersPresence(['uid1']);
-		expect(sdk.subscribe).toHaveBeenCalledWith('stream-user-presence', ['', { added: ['uid1'] }]);
+		expect(sdk.subscribe).toHaveBeenCalledWith('stream-user-presence', '', { added: ['uid1'] });
+	});
+
+	it('spreads the subscribe params instead of nesting them in one array', async () => {
+		setVersion('4.1.0', { settings: {} });
+		(sdk.get as jest.Mock).mockResolvedValue({ success: true, users: [] });
+		await getUsersPresence(['user-1', 'user-2']);
+		expect(sdk.subscribe).toHaveBeenCalledWith('stream-user-presence', '', { added: ['user-1', 'user-2'] });
 	});
 
 	it('dispatches setActiveUsers with user presence data', async () => {
