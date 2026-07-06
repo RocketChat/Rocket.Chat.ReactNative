@@ -318,15 +318,6 @@ jest.mock('@lodev09/react-native-true-sheet', () => {
 	};
 });
 
-jest.mock('react-native-math-view', () => {
-	const react = require('react-native');
-	return {
-		__esModule: true,
-		default: react.View, // Default export
-		MathText: react.View // {...} Named export
-	};
-});
-
 jest.mock('react-native-keyboard-controller');
 
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
