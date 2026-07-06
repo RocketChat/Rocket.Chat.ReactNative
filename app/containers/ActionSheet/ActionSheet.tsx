@@ -1,7 +1,14 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard, type LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
+import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
+import {
+	AccessibilityInfo,
+	findNodeHandle,
+	Keyboard,
+	type LayoutChangeEvent,
+	useWindowDimensions,
+	type View
+} from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -11,25 +18,23 @@ import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
 
-const ActionSheet = React.memo(
-	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+const ActionSheet = memo(
+	forwardRef(({ children }: { children: ReactElement }, ref) => {
 		const { colors } = useTheme();
-		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
+		const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);
+		const handleRef = useRef<View>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
-		// TrueSheet detects the bottom inset for Android 16 and iOS
-		// To avoid content hiding behind navigation bar on older Android versions
-		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
-		const bottom = isIOS || isNewAndroid ? 0 : windowHeight * 0.03;
-		const itemHeight = 48 * fontScale;
+		const itemHeight = useActionSheetItemHeight();
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
 			setContentHeight(layout.height);
@@ -62,9 +67,25 @@ const ActionSheet = React.memo(
 			hideActionSheet: hide
 		}));
 
+		const focusHandle = () => {
+			const node = findNodeHandle(handleRef.current);
+			if (node) AccessibilityInfo.setAccessibilityFocus(node);
+		};
+
+		const onDidPresent = () => {
+			// On Android the bottom sheet is hosted in a separate window; TalkBack
+			// needs a moment after the present animation before it can target nodes
+			// inside it, so defer the focus call slightly.
+			if (isAndroid) {
+				setTimeout(focusHandle, 300);
+				return;
+			}
+			focusHandle();
+		};
+
 		const renderHeader = () => (
 			<GestureHandlerRootView style={{ flex: 0 }}>
-				<Handle onPress={hide} />
+				<Handle ref={handleRef} onPress={hide} />
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</GestureHandlerRootView>
 		);
@@ -82,7 +103,6 @@ const ActionSheet = React.memo(
 
 		const { detents, maxHeight, scrollEnabled } = useActionSheetDetents({
 			windowHeight,
-			bottomInset: bottom,
 			itemHeight,
 			optionsLength: data?.options?.length || 0,
 			snaps: effectiveSnaps,
@@ -93,7 +113,7 @@ const ActionSheet = React.memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false || (!scrollEnabled && isAndroid);
+		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =
@@ -120,6 +140,7 @@ const ActionSheet = React.memo(
 					header={renderHeader()}
 					scrollable={isScrollable}
 					style={styles.container}
+					onDidPresent={onDidPresent}
 					onDidDismiss={onDidDismiss}>
 					<GestureHandlerRootView style={styles.contentContainer}>
 						<BottomSheetContent
@@ -128,6 +149,7 @@ const ActionSheet = React.memo(
 							hasCancel={data?.hasCancel}
 							onLayout={handleContentLayout}
 							fullContainer={data.fullContainer}
+							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
 							scrollEnabled={scrollEnabled}>
 							{data?.children}

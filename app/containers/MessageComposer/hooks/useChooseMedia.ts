@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
@@ -11,7 +10,13 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { useMessageComposerApi } from '../context';
+import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
+
+const normalizeAttachment = (item: IShareAttachment) =>
+	item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };
 
 export const useChooseMedia = ({
 	rid,
@@ -25,7 +30,9 @@ export const useChooseMedia = ({
 	'use memo';
 
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+	const { addAttachments } = useMessageComposerApi();
 	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
+	const altTextSupported = useAltTextSupported();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
@@ -38,18 +45,7 @@ export const useChooseMedia = ({
 		try {
 			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
 			image = forceJpgExtension(image);
-			const file = image as any; // FIXME: unify those types to remove the need for any
-			const canUploadResult = canUploadFile({
-				file,
-				allowList,
-				maxFileSize,
-				permissionToUploadFile: permissionToUpload
-			});
-			if (canUploadResult.success) {
-				return openShareView([image]);
-			}
-
-			handleError(canUploadResult.error);
+			await handleSelectedAttachments([image as IShareAttachment]);
 		} catch (e) {
 			log(e);
 		}
@@ -58,18 +54,7 @@ export const useChooseMedia = ({
 	const takeVideo = async () => {
 		try {
 			const video = await ImagePicker.openCamera({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
-			const file = video as any; // FIXME: unify those types to remove the need for any
-			const canUploadResult = canUploadFile({
-				file,
-				allowList,
-				maxFileSize,
-				permissionToUploadFile: permissionToUpload
-			});
-			if (canUploadResult.success) {
-				return openShareView([video]);
-			}
-
-			handleError(canUploadResult.error);
+			await handleSelectedAttachments([video as IShareAttachment]);
 		} catch (e) {
 			log(e);
 		}
@@ -83,7 +68,7 @@ export const useChooseMedia = ({
 				...libPickerLabels
 			})) as unknown as ImageOrVideo[]; // FIXME: type this
 			attachments = attachments.map(att => forceJpgExtension(att));
-			openShareView(attachments);
+			await handleSelectedAttachments(attachments as IShareAttachment[]);
 		} catch (e) {
 			log(e);
 		}
@@ -99,17 +84,8 @@ export const useChooseMedia = ({
 					size: asset.size,
 					mime: asset.mimeType,
 					path: asset.uri
-				} as any;
-				const canUploadResult = canUploadFile({
-					file,
-					allowList,
-					maxFileSize,
-					permissionToUploadFile: permissionToUpload
-				});
-				if (canUploadResult.success) {
-					return openShareView([file]);
-				}
-				handleError(canUploadResult.error);
+				} as IShareAttachment;
+				await handleSelectedAttachments([file]);
 			}
 		} catch (e) {
 			log(e);
@@ -146,8 +122,33 @@ export const useChooseMedia = ({
 		}
 	};
 
-	const handleError = (error?: string) => {
-		Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
+	const prepareAttachments = (attachments: IShareAttachment[]) => {
+		const items = attachments.map(item => {
+			const normalizedItem = normalizeAttachment(item);
+			const { success: canUpload, error } = canUploadFile({
+				file: normalizedItem as IShareAttachment,
+				allowList,
+				maxFileSize,
+				permissionToUploadFile: permissionToUpload
+			});
+
+			return {
+				...normalizedItem,
+				canUpload,
+				error
+			};
+		});
+
+		addAttachments(items as IShareAttachment[]);
+	};
+
+	const handleSelectedAttachments = async (attachments: IShareAttachment[]) => {
+		if (altTextSupported) {
+			prepareAttachments(attachments);
+			return;
+		}
+
+		await openShareView(attachments.map(item => normalizeAttachment(item)) as IShareAttachment[]);
 	};
 
 	return {

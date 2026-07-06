@@ -1,9 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
@@ -36,6 +37,7 @@ import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 interface IMessagesViewProps {
 	user: {
@@ -54,6 +56,7 @@ interface IMessagesViewProps {
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 interface IMessagesViewState {
@@ -78,7 +81,7 @@ interface IParams {
 	roomUserId?: string;
 }
 
-class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewState> {
+class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;
@@ -357,7 +360,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -371,6 +374,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				/>
 			</SafeAreaView>
@@ -382,8 +386,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(MessagesView)))));

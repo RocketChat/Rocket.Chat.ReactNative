@@ -12,18 +12,20 @@ import { EmojiSearchbar } from './EmojiSearchbar';
 import { Toolbar } from './Toolbar';
 import { Quotes } from './Quotes';
 import { ComposerInput } from './ComposerInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../lib/constants/accessibility';
 
 interface MessageComposerContentProps {
 	recordingAudio: boolean;
 	action: TMessageAction | undefined;
+	showEmojiSearchbar: boolean;
 	composerInputComponentRef: RefObject<IComposerInput>;
 	composerInputRef: RefObject<any>;
-	children?: ReactElement;
+	children?: ReactElement | null;
 	onLayout: (event: LayoutChangeEvent) => void;
 }
 
 export const MessageComposerContent = memo<MessageComposerContentProps>(
-	({ recordingAudio, action, composerInputComponentRef, composerInputRef, children, onLayout }) => {
+	({ recordingAudio, action, showEmojiSearchbar, composerInputComponentRef, composerInputRef, children, onLayout }) => {
 		'use memo';
 
 		const { colors } = useTheme();
@@ -35,6 +37,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 
 		return (
 			<View
+				nativeID={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID}
 				style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]}
 				testID='message-composer'
 				onLayout={onLayout}>
@@ -45,7 +48,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 				</View>
 				<Quotes />
 				<Toolbar />
-				<EmojiSearchbar />
+				{showEmojiSearchbar ? <EmojiSearchbar /> : null}
 				<SendThreadToChannel />
 				{children}
 			</View>

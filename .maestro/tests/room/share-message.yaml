@@ -1,9 +1,9 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Share Message
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 tags:
-  - test-12
+  - test-9
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}

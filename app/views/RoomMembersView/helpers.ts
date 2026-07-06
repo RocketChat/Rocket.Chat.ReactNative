@@ -17,9 +17,9 @@ import {
 	toggleMuteUserInRoom,
 	getRoomRoles,
 	removeTeamMember,
-	createDirectMessage,
 	teamListRoomsOfUser
 } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
 import database from '../../lib/database';
 import { type RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';

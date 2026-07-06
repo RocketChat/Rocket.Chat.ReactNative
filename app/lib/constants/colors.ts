@@ -120,7 +120,7 @@ const dark = {
 	fontAnnotation: '#9EA2A8',
 	fontHint: '#9EA2A8',
 	fontSecondaryInfo: '#9EA2A8',
-	fontDefault: '#E4E7EA',
+	fontDefault: '#C1C7D0',
 	fontTitlesLabels: '#F2F3F5',
 	fontInfo: '#739EDE',
 	fontDanger: '#CF6E7A',

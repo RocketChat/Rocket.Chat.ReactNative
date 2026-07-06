@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 

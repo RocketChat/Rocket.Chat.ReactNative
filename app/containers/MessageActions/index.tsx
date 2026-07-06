@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, memo } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import {
@@ -31,10 +32,15 @@ import {
 	markAsUnread,
 	toggleStarMessage,
 	togglePinMessage,
-	createDirectMessage,
 	translateMessage,
 	reportMessage
 } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+
+// Extra delay on top of the action sheet animation so accessibility focus is restored
+// only after the sheet is fully dismissed.
+const REFOCUS_BUFFER = 50;
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -69,7 +75,7 @@ export interface IMessageActions {
 	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
 }
 
-const MessageActions = React.memo(
+const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{
@@ -112,6 +118,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
+			const { restoreFocusOnClose } = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -580,6 +587,8 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
+				// Buffer so focus lands after the action sheet is fully dismissed, not mid-animation.
+				const onClose = restoreFocusOnClose(ACTION_SHEET_ANIMATION_DURATION + REFOCUS_BUFFER);
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
@@ -589,7 +598,8 @@ const MessageActions = React.memo(
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
 						</>
-					)
+					),
+					onClose
 				});
 			};
 
@@ -609,7 +619,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_AllowPinning: state.settings.Message_AllowPinning as boolean,
 	Message_AllowStarring: state.settings.Message_AllowStarring as boolean,
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users as boolean,
-	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
@@ -619,4 +628,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withMasterDetail(MessageActions));

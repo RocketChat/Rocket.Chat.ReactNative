@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -1458,6 +1457,77 @@ export const MessageWithNestedReplyAndFile = () => (
 				}
 			]}
 		/>
+		<Message
+			msg='Forwarded message with nested audio'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'audio.mp3',
+							audio_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Forwarded message with nested video'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'video.mp4',
+							video_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Message forwarded twice with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							message_link: 'https://open.rocket.chat/group/msg-id-2',
+							ts: date,
+							timeFormat: 'LT',
+							text: '',
+							attachments: [
+								{
+									author_name: 'user',
+									ts: date,
+									timeFormat: 'LT',
+									type: 'file',
+									title: 'document.pdf',
+									title_link: '/file-upload/abc/document.pdf'
+								}
+							]
+						}
+					]
+				}
+			]}
+		/>
 	</>
 );
 
@@ -1511,6 +1581,77 @@ export const MessageWithReplyAndFileLargeFont = () => (
 				}
 			]}
 		/>
+		<MessageLargeFont
+			msg='Forwarded message with nested audio'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'audio.mp3',
+							audio_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Forwarded message with nested video'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'video.mp4',
+							video_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Message forwarded twice with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							message_link: 'https://open.rocket.chat/group/msg-id-2',
+							ts: date,
+							timeFormat: 'LT',
+							text: '',
+							attachments: [
+								{
+									author_name: 'user',
+									ts: date,
+									timeFormat: 'LT',
+									type: 'file',
+									title: 'document.pdf',
+									title_link: '/file-upload/abc/document.pdf'
+								}
+							]
+						}
+					]
+				}
+			]}
+		/>
 	</>
 );
 
@@ -1552,6 +1693,37 @@ export const MessageWithThread = () => (
 			]}
 			isThreadReply
 		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with image attachment'
+			attachments={[
+				{
+					title: 'example.png',
+					image_url: '/file-upload/c4wcNhrbXJLBvAJtN/example.png'
+				}
+			]}
+			isThreadReply
+		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with file attachment'
+			attachments={[
+				{
+					title: 'presentation.pptx',
+					title_link: '/file-upload/c4wcNhrbXJLBvAJtN/presentation.pptx'
+				}
+			]}
+			isThreadReply
+		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with multiple attachments'
+			attachments={[
+				{ title: 'first-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/first-file.pdf' },
+				{ title: 'second-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/second-file.pdf' }
+			]}
+			isThreadReply
+		/>
 	</>
 );
 
@@ -1572,6 +1744,37 @@ export const MessageWithThreadLargeFont = () => (
 					description: 'This is a description :nyan_rocket:',
 					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 				}
+			]}
+			isThreadReply
+		/>
+		<MessageLargeFont
+			tmid='1'
+			tmsg='Thread with image attachment'
+			attachments={[
+				{
+					title: 'example.png',
+					image_url: '/file-upload/c4wcNhrbXJLBvAJtN/example.png'
+				}
+			]}
+			isThreadReply
+		/>
+		<MessageLargeFont
+			tmid='1'
+			tmsg='Thread with file attachment'
+			attachments={[
+				{
+					title: 'presentation.pptx',
+					title_link: '/file-upload/c4wcNhrbXJLBvAJtN/presentation.pptx'
+				}
+			]}
+			isThreadReply
+		/>
+		<MessageLargeFont
+			tmid='1'
+			tmsg='Thread with multiple attachments'
+			attachments={[
+				{ title: 'first-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/first-file.pdf' },
+				{ title: 'second-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/second-file.pdf' }
 			]}
 			isThreadReply
 		/>

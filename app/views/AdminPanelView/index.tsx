@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
@@ -10,12 +10,13 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { type AdminPanelStackParamList } from '../../stacks/types';
 import { type IApplicationState } from '../../definitions';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const AdminPanelView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AdminPanelStackParamList, 'AdminPanelView'>>();
 	const baseUrl = useSelector((state: IApplicationState) => state.server.server);
 	const token = useSelector((state: IApplicationState) => getUserSelector(state).token);
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 
 	useEffect(() => {
 		navigation.setOptions({

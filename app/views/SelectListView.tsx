@@ -1,8 +1,8 @@
-import React from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
 import { type RouteProp } from '@react-navigation/native';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
 import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
@@ -16,8 +16,8 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
-import { type IApplicationState } from '../definitions';
 import { type TDataSelect } from '../definitions/IDataSelect';
+import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -39,9 +39,10 @@ interface ISelectListViewProps {
 	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
-class SelectListView extends React.Component<ISelectListViewProps, ISelectListViewState> {
+class SelectListView extends Component<ISelectListViewProps, ISelectListViewState> {
 	private title: string;
 
 	private infoText: string;
@@ -191,7 +192,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 
 	render() {
 		const { data, isSearching, dataFiltered } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
 				<FlatList
@@ -200,7 +201,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom, paddingBottom: insets.bottom }}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>
@@ -208,8 +209,4 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(withTheme(SelectListView));
+export default withTheme(withMasterDetail(withSafeAreaInsets(SelectListView)));
