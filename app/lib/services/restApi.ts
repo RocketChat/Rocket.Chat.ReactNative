@@ -978,11 +978,11 @@ export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string
 export const translateMessage = (messageId: string, targetLanguage: string) =>
 	sdk.post('/v1/autotranslate.translateMessage', { messageId, targetLanguage });
 
-export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }): any =>
+export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }) =>
 	// RC 2.4.0
 	sdk.post('/v1/findOrCreateInvite', { rid, days, maxUses });
 
-export const validateInviteToken = (token: string): any =>
+export const validateInviteToken = (token: string) =>
 	// RC 2.4.0
 	sdk.post('/v1/validateInviteToken', { token });
 
