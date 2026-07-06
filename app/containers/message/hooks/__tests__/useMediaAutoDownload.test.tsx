@@ -209,6 +209,18 @@ describe('useMediaAutoDownload', () => {
 			await waitFor(() => expect(mockDownloadMediaFile).toHaveBeenCalled());
 			await waitFor(() => expect(result.current.status).toBe('to-download'));
 		});
+
+		it('retries and succeeds after a previous download failure', async () => {
+			mockFetchAutoDownloadEnabled.mockReturnValue(true);
+			mockDownloadMediaFile.mockRejectedValueOnce(new Error('boom'));
+			const { result } = renderMediaHook({ file: { image_url: '/img' } });
+			await waitFor(() => expect(mockDownloadMediaFile).toHaveBeenCalledTimes(1));
+			await waitFor(() => expect(result.current.status).toBe('to-download'));
+
+			await act(async () => result.current.onPress());
+			await waitFor(() => expect(mockDownloadMediaFile).toHaveBeenCalledTimes(2));
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+		});
 	});
 
 	describe('onPress', () => {
