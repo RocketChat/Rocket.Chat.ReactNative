@@ -21,7 +21,7 @@ interface IHeadingProps {
 
 const Heading = ({ value, level }: IHeadingProps): ReactElement => {
 	const { theme } = useTheme();
-	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
+	const { useRealName, username, navToRoomInfo, mentions, channels, getCustomEmoji, onLinkPress } = useContext(MarkdownContext);
 	const textStyle = styles[`heading${level}`];
 
 	return (
@@ -33,6 +33,8 @@ const Heading = ({ value, level }: IHeadingProps): ReactElement => {
 					navToRoomInfo,
 					mentions,
 					channels,
+					getCustomEmoji,
+					onLinkPress,
 					textStyle
 				}}>
 				{value.map((block, index) => {
