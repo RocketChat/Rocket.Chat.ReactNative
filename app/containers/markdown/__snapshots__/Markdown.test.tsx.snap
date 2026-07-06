@@ -1120,7 +1120,30 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
         ]
       }
     >
-      Header 1
+      <Text
+        accessibilityLabel="Header 1"
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        Header 1
+      </Text>
     </Text>
   </View>
   <View
@@ -1146,7 +1169,30 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
         ]
       }
     >
-      Header 2
+      <Text
+        accessibilityLabel="Header 2"
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        Header 2
+      </Text>
     </Text>
   </View>
   <View
@@ -1172,7 +1218,30 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
         ]
       }
     >
-      Header 3
+      <Text
+        accessibilityLabel="Header 3"
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        Header 3
+      </Text>
     </Text>
   </View>
   <View
@@ -1198,7 +1267,30 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
         ]
       }
     >
-      Header 4
+      <Text
+        accessibilityLabel="Header 4"
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+          ]
+        }
+      >
+        Header 4
+      </Text>
     </Text>
   </View>
 </View>
