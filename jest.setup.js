@@ -29,7 +29,8 @@ jest.mock('react-native-worklets', () => ({
 	callMicrotasks: jest.fn(),
 	executeOnUIRuntimeSync: jest.fn(fn => fn()),
 	serializableMappingCache: { get: jest.fn(), set: jest.fn(), has: jest.fn(() => false), delete: jest.fn() },
-	scheduleOnRN: jest.fn((fn, ...args) => fn(...args))
+	scheduleOnRN: jest.fn((fn, ...args) => fn(...args)),
+	scheduleOnUI: jest.fn()
 }));
 
 // @ts-ignore

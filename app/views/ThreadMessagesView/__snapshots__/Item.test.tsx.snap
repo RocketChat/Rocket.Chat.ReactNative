@@ -139,6 +139,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -156,6 +157,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -663,6 +666,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -680,6 +684,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -1187,6 +1193,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1204,6 +1211,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -1698,6 +1707,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -1715,6 +1725,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -2242,6 +2254,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2259,6 +2272,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -2750,6 +2765,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -2767,6 +2783,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -3258,6 +3276,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -3275,6 +3294,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -3766,6 +3787,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -3783,6 +3805,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -4274,6 +4298,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -4291,6 +4316,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -4802,6 +4829,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -4819,6 +4847,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -5313,6 +5343,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -5330,6 +5361,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />
@@ -5824,6 +5857,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                sfEffect={null}
                 source={
                   [
                     {
@@ -5841,6 +5875,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "width": 36,
                   }
                 }
+                symbolSize={null}
+                symbolWeight={null}
                 transition={null}
                 width={36}
               />

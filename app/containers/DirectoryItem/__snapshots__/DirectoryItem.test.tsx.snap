@@ -149,6 +149,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -166,6 +167,8 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />
@@ -429,6 +432,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -446,6 +450,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />
@@ -709,6 +715,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -726,6 +733,8 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />
@@ -958,6 +967,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -975,6 +985,8 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />
@@ -1448,6 +1460,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -1465,6 +1478,8 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />
@@ -1728,6 +1743,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -1745,6 +1761,8 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />
@@ -2027,6 +2045,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -2044,6 +2063,8 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                       "width": 30,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={30}
                 />

@@ -1,8 +1,7 @@
 diff --git a/node_modules/react-native/React/Views/RCTViewManager.m b/node_modules/react-native/React/Views/RCTViewManager.m
-index f017cb8..f6aaafb 100644
 --- a/node_modules/react-native/React/Views/RCTViewManager.m
 +++ b/node_modules/react-native/React/Views/RCTViewManager.m
-@@ -225,7 +225,9 @@ RCT_CUSTOM_VIEW_PROPERTY(accessibilityRole, UIAccessibilityTraits, RCTView)
+@@ -223,7 +223,9 @@
  {
    UIAccessibilityTraits accessibilityRoleTraits =
        json ? [RCTConvert UIAccessibilityTraits:json] : UIAccessibilityTraitNone;
@@ -13,7 +12,7 @@ index f017cb8..f6aaafb 100644
      view.accessibilityRoleTraits = accessibilityRoleTraits;
      view.reactAccessibilityElement.accessibilityRole = json ? [RCTConvert NSString:json] : nil;
      [self updateAccessibilityTraitsForRole:view withDefaultView:defaultView];
-@@ -235,7 +237,8 @@ RCT_CUSTOM_VIEW_PROPERTY(accessibilityRole, UIAccessibilityTraits, RCTView)
+@@ -233,7 +235,8 @@
  RCT_CUSTOM_VIEW_PROPERTY(role, UIAccessibilityTraits, RCTView)
  {
    UIAccessibilityTraits roleTraits = json ? [RCTConvert UIAccessibilityTraits:json] : UIAccessibilityTraitNone;
@@ -23,16 +22,3 @@ index f017cb8..f6aaafb 100644
      view.roleTraits = roleTraits;
      view.reactAccessibilityElement.role = json ? [RCTConvert NSString:json] : nil;
      [self updateAccessibilityTraitsForRole:view withDefaultView:defaultView];
-diff --git a/node_modules/react-native/scripts/cocoapods/new_architecture.rb b/node_modules/react-native/scripts/cocoapods/new_architecture.rb
-index 7d8f8e6..d2852a2 100644
---- a/node_modules/react-native/scripts/cocoapods/new_architecture.rb
-+++ b/node_modules/react-native/scripts/cocoapods/new_architecture.rb
-@@ -163,7 +163,7 @@ class NewArchitectureHelper
-             .uniq{ |p| p.path }
-             .map{ |p| p.path }
- 
--        excluded_info_plist = ["/Pods", "Tests", "metainternal", ".bundle", "build/", "DerivedData/"]
-+        excluded_info_plist = ["/Pods", "Tests", "metainternal", ".bundle", "build/", "DerivedData/", ".xcframework", ".framework"]
-         projectPaths.each do |projectPath|
-             projectFolderPath = File.dirname(projectPath)
-             infoPlistFiles = `find #{projectFolderPath} -name "Info.plist"`
