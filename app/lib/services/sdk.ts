@@ -429,7 +429,14 @@ class Sdk {
 
 	async logout(): Promise<void> {
 		if (this.current?.account) {
-			await Promise.race([this.current.account.logout(), new Promise<void>(resolve => setTimeout(resolve, 5000))]);
+			const TIMEOUT = Symbol('logout-timeout');
+			const result = await Promise.race([
+				this.current.account.logout(),
+				new Promise<typeof TIMEOUT>(resolve => setTimeout(() => resolve(TIMEOUT), 5000))
+			]);
+			if (result === TIMEOUT) {
+				log(new Error('Sdk.logout(): account.logout() timed out after 5s; server session may still be valid'));
+			}
 		}
 		this.setHeaders({
 			'X-Auth-Token': '',

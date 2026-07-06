@@ -308,6 +308,22 @@ describe('Sdk.login', () => {
 	});
 });
 
+describe('Sdk.logout', () => {
+	it('logs when the account.logout() call times out instead of completing', async () => {
+		jest.useFakeTimers();
+		const log = jest.requireMock('../methods/helpers/log').default;
+		const fake = { account: { logout: jest.fn(() => new Promise(() => {})) } }; // never resolves
+		setInternalSdk(fake);
+
+		const logoutPromise = sdk.logout();
+		jest.advanceTimersByTime(5000);
+		await logoutPromise;
+
+		expect(log).toHaveBeenCalledWith(expect.objectContaining({ message: expect.stringContaining('timed out') }));
+		jest.useRealTimers();
+	});
+});
+
 describe('normalizeResponseError', () => {
 	it('parses a JSON body and returns { status, data }', async () => {
 		const response = new Response(JSON.stringify({ error: 'not-found' }), { status: 404 });
