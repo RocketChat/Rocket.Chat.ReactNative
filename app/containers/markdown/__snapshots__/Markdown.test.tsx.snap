@@ -1035,7 +1035,11 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "#095AD2",
@@ -1628,7 +1632,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -1674,7 +1682,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -2064,7 +2076,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -2110,7 +2126,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -2500,7 +2520,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -2546,7 +2570,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -2936,7 +2964,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -2982,7 +3014,11 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
               "fontSize": 16,
+              "fontWeight": "600",
+              "textAlign": "left",
             },
             {
               "backgroundColor": "transparent",
@@ -4746,7 +4782,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#9B1325",
@@ -4778,7 +4818,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -4809,7 +4853,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -4840,7 +4888,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -4907,7 +4959,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -4960,7 +5016,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#9B1325",
@@ -4992,7 +5052,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -5023,7 +5087,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -5054,7 +5122,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -5121,7 +5193,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -5207,7 +5283,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#9B1325",
@@ -5239,7 +5319,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#8E6300",
@@ -5270,7 +5354,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -5301,7 +5389,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#974809",
@@ -5333,7 +5425,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
             style={
               [
                 {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
                 },
                 {
                   "color": "#095AD2",
@@ -5413,7 +5509,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#9B1325",
@@ -5456,7 +5556,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#8E6300",
@@ -5498,7 +5602,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -5540,7 +5648,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -5583,7 +5695,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#095AD2",
@@ -5678,7 +5794,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#9B1325",
@@ -5752,7 +5872,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#8E6300",
@@ -5825,7 +5949,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -5898,7 +6026,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -5972,7 +6104,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#095AD2",
@@ -6067,7 +6203,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#9B1325",
@@ -6107,7 +6247,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#8E6300",
@@ -6146,7 +6290,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -6185,7 +6333,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#974809",
@@ -6225,7 +6377,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
               style={
                 [
                   {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
                   },
                   {
                     "color": "#095AD2",
@@ -6320,7 +6476,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontWeight": "600",
+                        "textAlign": "left",
                       },
                       {
                         "color": "#9B1325",
@@ -6379,7 +6539,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontWeight": "600",
+                        "textAlign": "left",
                       },
                       {
                         "color": "#8E6300",
@@ -6437,7 +6601,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontWeight": "600",
+                        "textAlign": "left",
                       },
                       {
                         "color": "#974809",
@@ -6495,7 +6663,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontWeight": "600",
+                        "textAlign": "left",
                       },
                       {
                         "color": "#974809",
@@ -6554,7 +6726,11 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   style={
                     [
                       {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontWeight": "600",
+                        "textAlign": "left",
                       },
                       {
                         "color": "#095AD2",
@@ -8064,7 +8240,11 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -8104,7 +8284,11 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -8143,7 +8327,11 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -8182,7 +8370,11 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -8265,7 +8457,11 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "red",
@@ -8322,7 +8518,11 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
           style={
             [
               {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
               },
               {
                 "color": "red",
