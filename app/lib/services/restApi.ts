@@ -458,7 +458,6 @@ export const forwardLivechat = (transferData: any) => {
 	return sdk.methodCallWrapper('livechat:transfer', transferData);
 };
 
-// fix me
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
 	sdk.get(`/v1/livechat/department/${departmentId}?includeAgents=false`);
