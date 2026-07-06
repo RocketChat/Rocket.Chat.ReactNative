@@ -22,7 +22,7 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	const [fetchedName, setFetchedName] = useState<string | undefined>();
 
 	useEffect(() => {
-		if (displayMsg) {
+		if (displayMsg || !tmid) {
 			return;
 		}
 		const fetch = async () => {
