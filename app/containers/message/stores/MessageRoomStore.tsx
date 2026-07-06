@@ -55,23 +55,50 @@ const useMessageRoomStore = <T,>(selector: (state: MessageRoomState) => T): T =>
 	return useStore(store, selector);
 };
 
-export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
+const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
 	'use memo';
 
-	const Message_TimeFormat = useSetting('Message_TimeFormat') as string;
-	const resolvedState = { ...state, timeFormat: state.timeFormat ?? Message_TimeFormat };
-	const [store] = useState(() => createMessageRoomStore(resolvedState));
+	const [store] = useState(() => createMessageRoomStore(state));
 
-	// Runs every render by design: resolvedState is rebuilt from props each render, so it can never
-	// be a stable dependency (state is a rest-spread, fresh each render — useMemo can't stabilize it).
-	// Per-field Object.is bail in each selector means this mirror only re-renders a consumer whose own
-	// field changed. A field-level deps array would reintroduce the hand-maintained key list the zustand
-	// migration deliberately removed.
+	// state is a rest-spread rebuilt from props each render, so it can never be a stable
+	// dependency (useMemo can't stabilize it, and a field-level deps array would reintroduce the
+	// hand-maintained key list the zustand migration deliberately removed). Diffing against the
+	// store's current state before calling setState keeps this from forcing a zustand
+	// notification (and consumer re-render) on every render; per-field Object.is bail in each
+	// selector still means only a consumer whose own field changed re-renders.
 	useEffect(() => {
-		store.setState(resolvedState);
+		const current = store.getState();
+		const changed = Object.keys(state).some(
+			key => !Object.is(state[key as keyof MessageRoomState], current[key as keyof MessageRoomState])
+		);
+		if (changed) {
+			store.setState(state);
+		}
 	});
 
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;
+};
+
+const MessageRoomProviderWithSetting = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
+	'use memo';
+
+	const Message_TimeFormat = useSetting('Message_TimeFormat') as string;
+
+	return (
+		<MessageRoomStoreProvider {...state} timeFormat={Message_TimeFormat}>
+			{children}
+		</MessageRoomStoreProvider>
+	);
+};
+
+export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
+	'use memo';
+
+	return state.timeFormat != null ? (
+		<MessageRoomStoreProvider {...state}>{children}</MessageRoomStoreProvider>
+	) : (
+		<MessageRoomProviderWithSetting {...state}>{children}</MessageRoomProviderWithSetting>
+	);
 };
 
 export const useNavToRoomInfo = (): ((navParam: IRoomInfoParam) => void) | undefined => useMessageRoomStore(s => s.navToRoomInfo);
