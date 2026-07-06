@@ -72,7 +72,6 @@ import { removeServer, logout } from './logout';
 import UserPreferences from './userPreferences';
 import { getDeviceToken } from '../notifications';
 import log from './helpers/log';
-import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
 
 describe('removeServer', () => {
