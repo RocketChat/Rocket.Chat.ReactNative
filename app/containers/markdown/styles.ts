@@ -57,7 +57,7 @@ export default StyleSheet.create({
 	mention: {
 		fontSize: 16,
 		...Platform.select({
-			ios: {},
+			ios: sharedStyles.textSemibold,
 			android: {
 				fontWeight: '700'
 			}
