@@ -5,14 +5,14 @@ import ThreadDetails from '../../ThreadDetails';
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import Touchable from './Touchable';
-import { useMessageCtx, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from '../stores/MessageStore';
+import { useMessageItem, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from '../stores/MessageStore';
 import { useIsThreadRoom, useMessageUser, useOnThreadPress, useToggleFollowThread } from '../stores/MessageRoomStore';
 
 const Thread = () => {
 	'use memo';
 
 	const { theme, colors } = useTheme();
-	const { item } = useMessageCtx();
+	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
 	const threadBadgeColor = useThreadBadgeColor();
 	const toggleFollowThread = useToggleFollowThread();

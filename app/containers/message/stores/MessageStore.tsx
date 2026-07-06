@@ -25,44 +25,46 @@ import {
 
 type MessageStoreState = {
 	tick: number;
+	item: TAnyMessageModel;
+	previousItem?: TAnyMessageModel;
+	isIgnored: boolean;
 	manualUnignored: boolean;
+	reveal: () => void;
 	onPress?: () => void;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	threadBadgeColor?: string;
 };
 
-const createMessageStore = (initial: Partial<MessageStoreState>) =>
-	createStore<MessageStoreState>(() => ({ tick: 0, manualUnignored: false, ...initial }));
+const createMessageStore = (
+	initial: Pick<MessageStoreState, 'item' | 'previousItem' | 'isIgnored' | 'onPress' | 'onLongPress' | 'threadBadgeColor'>
+) =>
+	createStore<MessageStoreState>(set => ({
+		tick: 0,
+		manualUnignored: false,
+		reveal: () => set({ manualUnignored: true }),
+		...initial
+	}));
 
 type MessageStore = ReturnType<typeof createMessageStore>;
 
-type MessageCtxValue = {
-	store: MessageStore;
-	item: TAnyMessageModel;
-	previousItem?: TAnyMessageModel;
-	revealIgnored: () => void;
-	isIgnored: boolean;
-};
+const MessageStoreContext = createContext<MessageStore | null>(null);
 
-const MessageStoreContext = createContext<MessageCtxValue | null>(null);
-
-export const useMessageCtx = (): MessageCtxValue => {
-	const ctx = useContext(MessageStoreContext);
-	if (!ctx) {
+const useMessageStore = <T,>(selector: (state: MessageStoreState) => T): T => {
+	const store = useContext(MessageStoreContext);
+	if (!store) {
 		throw new Error('Message hooks must be used within a MessageProvider');
 	}
-	return ctx;
+	return useStore(store, selector);
 };
+
+export const useMessageItem = (): TAnyMessageModel => useMessageStore(s => s.item);
 
 // The selector must return a referentially stable value for an unchanged field (Object.is bail);
 // for multiple fields use a focused domain hook with useShallow, never call this hook repeatedly.
 // Stability of JSON fields depends on the model's @json(..., { memo: true }) decorators
 // (app/lib/database/model/Message.js); a field that drops memo:true returns a fresh ref every
 // access and would defeat both the Object.is and useShallow bail.
-export const useMessageField = <T,>(selector: (item: TAnyMessageModel) => T): T => {
-	const { store, item } = useMessageCtx();
-	return useStore(store, () => selector(item));
-};
+export const useMessageField = <T,>(selector: (item: TAnyMessageModel) => T): T => useMessageStore(s => selector(s.item));
 
 // Plain REST objects (no experimentalSubscribe) never emit again after the initial render.
 const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
@@ -89,7 +91,9 @@ export const MessageProvider = ({
 }): ReactElement => {
 	'use memo';
 
-	const [store] = useState(() => createMessageStore({ onPress, onLongPress, threadBadgeColor }));
+	const [store] = useState(() =>
+		createMessageStore({ item, previousItem, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
+	);
 
 	// Header grouping and thread position depend on the previous record too, so each effect
 	// subscribes one record; both feed the same tick. Keeping them separate means changing
@@ -102,107 +106,63 @@ export const MessageProvider = ({
 		store.setState({ onPress, onLongPress, threadBadgeColor });
 	}, [onPress, onLongPress, threadBadgeColor, store]);
 
-	const revealIgnored = () => store.setState({ manualUnignored: true });
+	// Push item/previousItem prop changes into the store so field selectors re-read (temp→server swap, neighbour changes).
+	useEffect(() => {
+		store.setState({ item, previousItem });
+	}, [item, previousItem, store]);
 
-	return (
-		<MessageStoreContext.Provider value={{ store, item, previousItem, revealIgnored, isIgnored: isIgnored ?? false }}>
-			{children}
-		</MessageStoreContext.Provider>
-	);
+	// Reset the manual reveal only when the ignore state actually transitions.
+	useEffect(() => {
+		store.setState({ isIgnored: isIgnored ?? false, manualUnignored: false });
+	}, [isIgnored, store]);
+
+	return <MessageStoreContext.Provider value={store}>{children}</MessageStoreContext.Provider>;
 };
 
 export const useReactions = (): TAnyMessageModel['reactions'] => useMessageField(item => item.reactions);
 
 export const useUrls = (): TAnyMessageModel['urls'] => useMessageField(item => item.urls);
 
-export const useBlocks = (): Pick<TAnyMessageModel, 'blocks' | 'id'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ blocks: item.blocks, id: item.id }))
-	);
-};
+export const useBlocks = (): Pick<TAnyMessageModel, 'blocks' | 'id'> =>
+	useMessageStore(useShallow(s => ({ blocks: s.item.blocks, id: s.item.id })));
 
-export const useDiscussion = (): Pick<TAnyMessageModel, 'dcount' | 'dlm'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ dcount: item.dcount, dlm: item.dlm }))
-	);
-};
+export const useDiscussion = (): Pick<TAnyMessageModel, 'dcount' | 'dlm'> =>
+	useMessageStore(useShallow(s => ({ dcount: s.item.dcount, dlm: s.item.dlm })));
 
-export const useThreadData = (): Pick<TAnyMessageModel, 'tcount' | 'tlm' | 'tmid' | 'id'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ tcount: item.tcount, tlm: item.tlm, tmid: item.tmid, id: item.id }))
-	);
-};
+export const useThreadData = (): Pick<TAnyMessageModel, 'tcount' | 'tlm' | 'tmid' | 'id'> =>
+	useMessageStore(useShallow(s => ({ tcount: s.item.tcount, tlm: s.item.tlm, tmid: s.item.tmid, id: s.item.id })));
 
-export const useRepliedThreadData = (): Pick<TAnyMessageModel, 'tmid' | 'tmsg' | 'id'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ tmid: item.tmid, tmsg: item.tmsg, id: item.id }))
-	);
-};
+export const useRepliedThreadData = (): Pick<TAnyMessageModel, 'tmid' | 'tmsg' | 'id'> =>
+	useMessageStore(useShallow(s => ({ tmid: s.item.tmid, tmsg: s.item.tmsg, id: s.item.id })));
 
-export const useMessageAuthor = (): Pick<TAnyMessageModel, 'u' | 'alias' | 'role'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ u: item.u, alias: item.alias, role: item.role }))
-	);
-};
+export const useMessageAuthor = (): Pick<TAnyMessageModel, 'u' | 'alias' | 'role'> =>
+	useMessageStore(useShallow(s => ({ u: s.item.u, alias: s.item.alias, role: s.item.role })));
 
-export const useAvatar = (): Pick<TAnyMessageModel, 'avatar' | 'emoji'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ avatar: item.avatar, emoji: item.emoji }))
-	);
-};
+export const useAvatar = (): Pick<TAnyMessageModel, 'avatar' | 'emoji'> =>
+	useMessageStore(useShallow(s => ({ avatar: s.item.avatar, emoji: s.item.emoji })));
 
-export const useContentData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'channels' | 'comment' | 'attachments' | 't'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({
-			md: item.md,
-			mentions: item.mentions,
-			channels: item.channels,
-			comment: item.comment,
-			attachments: item.attachments,
-			t: item.t
+export const useContentData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'channels' | 'comment' | 'attachments' | 't'> =>
+	useMessageStore(
+		useShallow(s => ({
+			md: s.item.md,
+			mentions: s.item.mentions,
+			channels: s.item.channels,
+			comment: s.item.comment,
+			attachments: s.item.attachments,
+			t: s.item.t
 		}))
 	);
-};
 
-export const useInfoData = (): Pick<TAnyMessageModel, 't' | 'comment'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ t: item.t, comment: item.comment }))
-	);
-};
+export const useInfoData = (): Pick<TAnyMessageModel, 't' | 'comment'> =>
+	useMessageStore(useShallow(s => ({ t: s.item.t, comment: s.item.comment })));
 
-export const useMarkdownData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'channels' | 't'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ md: item.md, mentions: item.mentions, channels: item.channels, t: item.t }))
-	);
-};
+export const useMarkdownData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'channels' | 't'> =>
+	useMessageStore(useShallow(s => ({ md: s.item.md, mentions: s.item.mentions, channels: s.item.channels, t: s.item.t })));
 
 export const useAttachments = (): TAnyMessageModel['attachments'] => useMessageField(item => item.attachments);
 
-export const useMessageHeaderMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({ ts: item.ts, unread: item.unread, pinned: item.pinned, t: item.t }))
-	);
-};
+export const useMessageHeaderMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> =>
+	useMessageStore(useShallow(s => ({ ts: s.item.ts, unread: s.item.unread, pinned: s.item.pinned, t: s.item.t })));
 
 const computeIsHeader = (
 	prev: TAnyMessageModel | undefined,
@@ -236,39 +196,38 @@ const computeIsHeader = (
 };
 
 export const useMessageGrouping = (): boolean => {
-	const { store, item, previousItem } = useMessageCtx();
 	const broadcast = useBroadcast();
 	const Message_GroupingPeriod = useMessageGroupingPeriod();
-	return useStore(store, () =>
-		computeIsHeader(previousItem, item, !!broadcast, Message_GroupingPeriod, item.status === messagesStatus.ERROR)
+	return useMessageStore(s =>
+		computeIsHeader(s.previousItem, s.item, !!broadcast, Message_GroupingPeriod, s.item.status === messagesStatus.ERROR)
 	);
 };
 
 export const useThreadPosition = (): { isThreadReply: boolean; isThreadSequential: boolean } => {
-	const { store, item, previousItem } = useMessageCtx();
 	const isThreadRoom = useIsThreadRoom();
-	return useStore(
-		store,
-		useShallow(() => {
+	return useMessageStore(
+		useShallow(s => {
 			if (isThreadRoom) {
 				return { isThreadReply: false, isThreadSequential: false };
 			}
-			const isThreadReply = !!(previousItem && item.tmid && previousItem.tmid !== item.tmid && previousItem.id !== item.tmid);
-			return { isThreadReply, isThreadSequential: !!item.tmid };
+			const isThreadReply = !!(
+				s.previousItem &&
+				s.item.tmid &&
+				s.previousItem.tmid !== s.item.tmid &&
+				s.previousItem.id !== s.item.tmid
+			);
+			return { isThreadReply, isThreadSequential: !!s.item.tmid };
 		})
 	);
 };
 
-export const useMessageStatus = (): { hasError: boolean; isTemp: boolean } => {
-	const { store, item } = useMessageCtx();
-	return useStore(
-		store,
-		useShallow(() => ({
-			hasError: item.status === messagesStatus.ERROR,
-			isTemp: item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR
+export const useMessageStatus = (): { hasError: boolean; isTemp: boolean } =>
+	useMessageStore(
+		useShallow(s => ({
+			hasError: s.item.status === messagesStatus.ERROR,
+			isTemp: s.item.status === messagesStatus.TEMP || s.item.status === messagesStatus.ERROR
 		}))
 	);
-};
 
 export const useIsEncrypted = (): boolean => useMessageField(item => item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE);
 
@@ -287,28 +246,25 @@ export const useMessageId = (): TAnyMessageModel['id'] => useMessageField(item =
 export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(item => item.replies);
 
 export const useTranslateLanguage = (): string | undefined => {
-	const { store, item } = useMessageCtx();
 	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
 	const user = useMessageUser();
-	return useStore(store, () => {
-		const otherUserMessage = item.u?.username !== user?.username;
-		const canTranslate = autoTranslateRoom && autoTranslateLanguage && item.autoTranslate !== false && otherUserMessage;
+	return useMessageStore(s => {
+		const otherUserMessage = s.item.u?.username !== user?.username;
+		const canTranslate = autoTranslateRoom && autoTranslateLanguage && s.item.autoTranslate !== false && otherUserMessage;
 		return canTranslate ? autoTranslateLanguage : undefined;
 	});
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
-	const { store, item } = useMessageCtx();
 	const user = useMessageUser();
 	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
-	return useStore(
-		store,
-		useShallow(() => {
-			let messageText = item.msg;
+	return useMessageStore(
+		useShallow(s => {
+			let messageText = s.item.msg;
 			let isTranslated = false;
-			const otherUserMessage = item.u?.username !== user?.username;
-			if (autoTranslateRoom && item.autoTranslate && autoTranslateLanguage && otherUserMessage) {
-				const translated = getMessageTranslation(item, autoTranslateLanguage);
+			const otherUserMessage = s.item.u?.username !== user?.username;
+			if (autoTranslateRoom && s.item.autoTranslate && autoTranslateLanguage && otherUserMessage) {
+				const translated = getMessageTranslation(s.item, autoTranslateLanguage);
 				isTranslated = !!translated;
 				messageText = translated || messageText;
 			}
@@ -317,29 +273,21 @@ export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTran
 	);
 };
 
-export const useThreadBadgeColor = (): string | undefined => {
-	const { store } = useMessageCtx();
-	return useStore(store, s => s.threadBadgeColor);
-};
-export const useMessageIgnored = (): boolean => {
-	const { store, isIgnored } = useMessageCtx();
-	const manualUnignored = useStore(store, s => s.manualUnignored);
-	return manualUnignored ? false : isIgnored;
-};
-export const useRevealIgnored = (): (() => void) => {
-	const { revealIgnored } = useMessageCtx();
-	return revealIgnored;
-};
+export const useThreadBadgeColor = (): string | undefined => useMessageStore(s => s.threadBadgeColor);
+
+export const useMessageIgnored = (): boolean => useMessageStore(s => (s.manualUnignored ? false : s.isIgnored));
+
+export const useRevealIgnored = (): (() => void) => useMessageStore(s => s.reveal);
 
 export const useMessageLongPress = (): (() => void) => {
 	'use memo';
 
-	const { item, store } = useMessageCtx();
+	const item = useMessageItem();
 	const isInfo = useIsInfo();
 	const { hasError } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
 	const archived = useArchived();
-	const onLongPress = useStore(store, s => s.onLongPress);
+	const onLongPress = useMessageStore(s => s.onLongPress);
 	return () => {
 		if (isInfo || hasError || isEncrypted || archived) {
 			return;
@@ -349,7 +297,7 @@ export const useMessageLongPress = (): (() => void) => {
 };
 
 export const useOnLinkPress = (): ((link: string) => void) => {
-	const { item } = useMessageCtx();
+	const item = useMessageItem();
 	const jumpToMessage = useJumpToMessage();
 	const { theme } = useTheme();
 	return (link: string) => {
@@ -364,9 +312,9 @@ export const useOnLinkPress = (): ((link: string) => void) => {
 export const useMessagePress = (): (() => void) => {
 	'use memo';
 
-	const { item, store } = useMessageCtx();
+	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
-	const onPress = useStore(store, s => s.onPress);
+	const onPress = useMessageStore(s => s.onPress);
 	const onThreadPress = useOnThreadPress();
 	const onDiscussionPress = useOnDiscussionPress();
 	const closeEmojiAndAction = useCloseEmojiAndAction();

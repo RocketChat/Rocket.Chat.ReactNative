@@ -171,11 +171,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
-		const selectedMessages = props.route.params?.messageId ? [props.route.params.messageId] : [];
-		this.interactionStore = createInteractionStore({
-			selectedMessages,
-			action: selectedMessages.length ? 'quote' : null
-		});
+		const { messageId } = props.route.params ?? {};
+		this.interactionStore = createInteractionStore(messageId ? { kind: 'quote', messageIds: [messageId] } : null);
 		this.state = {
 			joined: true,
 			room,
@@ -226,7 +223,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	componentDidMount() {
 		const { navigation, dispatch } = this.props;
-		const { selectedMessages } = this.interactionStore.getState();
+		const { interaction } = this.interactionStore.getState();
 		dispatch(clearInAppFeedback());
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
@@ -256,8 +253,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
-			if (selectedMessages.length === 1) {
-				this.onQuoteInit(selectedMessages[0]);
+			if (interaction?.kind === 'quote' && interaction.messageIds.length === 1) {
+				this.onQuoteInit(interaction.messageIds[0]);
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -798,8 +795,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditInit = (messageId: string) => {
-		const { action, actions } = this.interactionStore.getState();
-		if (action) {
+		const { interaction, actions } = this.interactionStore.getState();
+		if (interaction) {
 			return;
 		}
 		actions.setEditing(messageId);
@@ -844,14 +841,14 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onQuoteInit = (messageId: string) => {
-		const { action, selectedMessages, actions } = this.interactionStore.getState();
-		if (action === 'quote') {
-			if (!selectedMessages.includes(messageId)) {
+		const { interaction, actions } = this.interactionStore.getState();
+		if (interaction?.kind === 'quote') {
+			if (!interaction.messageIds.includes(messageId)) {
 				actions.appendQuote(messageId);
 			}
 			return;
 		}
-		if (action) {
+		if (interaction) {
 			return;
 		}
 		actions.initQuote(messageId);
@@ -867,15 +864,12 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
-		const { selectedMessages } = this.interactionStore.getState();
+		const { interaction } = this.interactionStore.getState();
+		const messageId = interaction?.kind === 'react' ? interaction.messageId : undefined;
 		setTimeout(() => {
 			showActionSheet({
 				children: (
-					<ReactionPicker
-						messageId={selectedMessages[0]}
-						onEmojiSelected={this.onReactionPress}
-						reactionClose={this.onReactionClose}
-					/>
+					<ReactionPicker messageId={messageId} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
@@ -886,7 +880,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionInit = (messageId: string) => {
-		if (this.interactionStore.getState().action) {
+		if (this.interactionStore.getState().interaction) {
 			return;
 		}
 		this.handleCloseEmoji(() => {
@@ -902,8 +896,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		const { action } = this.interactionStore.getState();
-		if (action && action !== 'quote') {
+		const { interaction } = this.interactionStore.getState();
+		if (interaction && interaction.kind !== 'quote') {
 			return;
 		}
 		// if it's a thread message on main room, we disable the long press

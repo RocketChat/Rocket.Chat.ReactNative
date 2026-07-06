@@ -7,13 +7,13 @@ import { BUTTON_HIT_SLOP } from '../utils';
 import I18n from '../../../i18n';
 import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';
-import { useMessageAuthor, useMessageCtx } from '../stores/MessageStore';
+import { useMessageAuthor, useMessageItem } from '../stores/MessageStore';
 import { useBroadcast, useMessageUser, useReplyBroadcast } from '../stores/MessageRoomStore';
 
 const Broadcast = () => {
 	'use memo';
 
-	const { item } = useMessageCtx();
+	const item = useMessageItem();
 	const user = useMessageUser();
 	const replyBroadcast = useReplyBroadcast();
 	const broadcast = useBroadcast();

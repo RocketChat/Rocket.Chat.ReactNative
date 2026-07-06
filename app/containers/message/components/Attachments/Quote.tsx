@@ -24,7 +24,14 @@ const Quote: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) =>
 	const quotesElements = quotes.map((file: IAttachment, index: number) => {
 		const msg = getMessageFromAttachment(file, translateLanguage);
 
-		return <Reply key={index} attachment={file} getCustomEmoji={getCustomEmoji} msg={msg} />;
+		return (
+			<Reply
+				key={file.title_link || file.message_link || `reply-${index}`}
+				attachment={file}
+				getCustomEmoji={getCustomEmoji}
+				msg={msg}
+			/>
+		);
 	});
 
 	return <View style={{ gap: 4 }}>{quotesElements}</View>;
