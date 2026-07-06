@@ -478,6 +478,36 @@ describe('Sdk.post', () => {
 		expect(twoFactor).toHaveBeenNthCalledWith(2, { method: 'totp', invalid: true });
 		expect(result).toEqual({ success: true });
 	});
+
+	it('does not leak x-2fa-code into a concurrent request while a 2FA retry is in flight', async () => {
+		// The retried call is held open on this gate so we can read shared headers while it is still in flight.
+		let releaseRetry!: (value: any) => void;
+		const retryGate = new Promise(resolve => {
+			releaseRetry = resolve;
+		});
+
+		const post = jest.fn();
+		post.mockRejectedValueOnce({ data: { errorType: 'totp-required', details: { method: 'totp' } } });
+		post.mockImplementationOnce(() => retryGate);
+
+		const fake = buildFakeSdkWithRest({ rest: { post } });
+		setInternalSdk(fake);
+		(twoFactor as jest.Mock).mockResolvedValueOnce({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
+
+		const retryPromise = (sdk as any).post('/v1/rooms.info', {});
+
+		// Let the retry run up to the point where it has fired its retried network call (still pending on retryGate).
+		await new Promise(resolve => setTimeout(resolve, 0));
+
+		// A concurrent, unrelated call reads the shared headers while the 2FA retry is still in flight.
+		const concurrentHeaders = sdk.getHeaders();
+
+		releaseRetry({ success: true });
+		const result = await retryPromise;
+
+		expect(result).toEqual({ success: true });
+		expect(concurrentHeaders['x-2fa-code']).toBeUndefined();
+	});
 });
 
 describe('Sdk.methodCall', () => {

@@ -166,11 +166,24 @@ class Sdk {
 			? void
 			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
 	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
+		return this.postWithHeaders(endpoint, params, {});
+	}
+
+	/**
+	 * Same as `post`, but merges `extraHeaders` into a per-call headers object instead of mutating the shared
+	 * `this.headers`. Used for the 2FA retry so the transient `x-2fa-code`/`x-2fa-method` headers never become
+	 * visible to any other `get`/`post`/`delete` call that might be in flight at the same time.
+	 */
+	private async postWithHeaders<TPath extends PathFor<'POST'>>(
+		endpoint: TPath,
+		params: any,
+		extraHeaders: Record<string, string>
+	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
 		const isMethodCall = !!endpoint?.includes('/v1/method.call');
 		try {
 			const sdk = this.ensureInitialized();
 			// @ts-ignore
-			const result = await sdk.rest.post(endpoint, params, { headers: this.headers });
+			const result = await sdk.rest.post(endpoint, params, { headers: { ...this.headers, ...extraHeaders } });
 
 			/**
 			 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -196,19 +209,15 @@ class Sdk {
 				const { details } = isMethodCall ? normalized : normalized?.data;
 				try {
 					const totpResult = await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-					this.setHeaders({
+					// Recurse (not into `post`) so a retry that itself gets challenged again keeps using
+					// per-call headers, without ever touching the shared `this.headers`.
+					return await this.postWithHeaders(endpoint, params, {
 						'x-2fa-code': totpResult.twoFactorCode,
 						'x-2fa-method': totpResult.twoFactorMethod
 					});
-					return await this.post(endpoint, params);
 				} catch {
 					// twoFactor was canceled
 					return {} as ResultFor<'POST', MatchPathPattern<TPath>>;
-				} finally {
-					const next = { ...this.headers };
-					delete next['x-2fa-code'];
-					delete next['x-2fa-method'];
-					this.headers = next;
 				}
 			} else {
 				throw normalized;
