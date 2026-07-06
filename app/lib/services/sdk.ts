@@ -5,6 +5,7 @@ import { type ClientStream, DDPSDK } from '@rocket.chat/ddp-client';
 import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion, random } from '../methods/helpers';
+import log from '../methods/helpers/log';
 import UserPreferences from '../methods/userPreferences';
 import { headers as defaultHeaders } from '../methods/helpers/defaultHeaders';
 import { BASIC_AUTH_KEY } from '../methods/helpers/fetch';
@@ -338,6 +339,7 @@ class Sdk {
 			subscriptions.push(this.current.client.subscribe(topic, `${rid}/messagesRead`));
 			return Promise.resolve(subscriptions);
 		} catch (e) {
+			log(e);
 			return Promise.resolve(subscriptions);
 		}
 	}

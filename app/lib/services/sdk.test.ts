@@ -23,6 +23,8 @@ jest.mock('../methods/userPreferences', () => ({
 	}
 }));
 
+jest.mock('../methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
 jest.mock('@rocket.chat/ddp-client', () => ({
 	DDPSDK: {
 		create: jest.fn(),
@@ -827,6 +829,21 @@ describe('Sdk.subscribeRoom', () => {
 		expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-room', 'rid-1/deleteMessageBulk');
 		expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-room', 'rid-1/messagesRead');
 		expect(subs).toHaveLength(5);
+	});
+
+	it('logs the error when subscribing throws, instead of swallowing it silently', async () => {
+		const log = jest.requireMock('../methods/helpers/log').default;
+		const fake = {
+			client: {
+				subscribe: jest.fn(() => {
+					throw new Error('socket not ready');
+				})
+			}
+		};
+		setInternalSdk(fake);
+		const result = await sdk.subscribeRoom('room-1');
+		expect(result).toEqual([]);
+		expect(log).toHaveBeenCalledWith(expect.any(Error));
 	});
 });
 
