@@ -17,11 +17,11 @@ import {
 	useIsEncrypted,
 	useIsInfo,
 	useMessageAuthor,
-	useMessageCtx,
 	useMessageField,
 	useMessageGrouping,
 	useMessageIgnored,
 	useMessageHeaderMeta,
+	useMessageItem,
 	useMessageStatus,
 	useMessageText,
 	useReactions,
@@ -180,7 +180,7 @@ describe('MessageStore', () => {
 			expect(() => renderMessage(plainItem, { reactions: useReactions })).not.toThrow();
 		});
 
-		it('reflects an item identity change synchronously', () => {
+		it('reflects an item identity change', () => {
 			const modelA = buildFakeModel({ id: 'msg-a', msg: 'Model A' });
 			const modelB = buildFakeModel({ id: 'msg-b', msg: 'Model B' });
 			const spy = jest.fn();
@@ -191,6 +191,22 @@ describe('MessageStore', () => {
 			act(() => rerender(<MsgValueProbe item={modelB} spy={spy} />));
 
 			expect(spy).toHaveBeenLastCalledWith('Model B');
+		});
+
+		it('useMessageItem returns a stable ref across a tick bump (in-place mutation)', () => {
+			const model = buildFakeModel();
+			const { renderCount, latestValue } = renderMessage(model, { item: useMessageItem });
+
+			expect(latestValue('item')).toBe(model);
+			const baseline = renderCount('item');
+
+			act(() => {
+				(model as any).urls = [{ url: 'x' }];
+				model._emit();
+			});
+
+			expect(renderCount('item')).toBe(baseline);
+			expect(latestValue('item')).toBe(model);
 		});
 	});
 
@@ -558,9 +574,9 @@ describe('MessageStore', () => {
 			consoleErrorSpy.mockRestore();
 		});
 
-		it('useMessageCtx throws', () => {
+		it('useMessageItem throws', () => {
 			const Probe = () => {
-				useMessageCtx();
+				useMessageItem();
 				return null;
 			};
 			expect(() => render(<Probe />)).toThrow('Message hooks must be used within a MessageProvider');
@@ -624,9 +640,36 @@ describe('MessageStore', () => {
 			fireEvent.press(getByTestId('reveal'));
 			expect(spy).toHaveBeenLastCalledWith(false);
 
-			// manualUnignored is never reset, so re-rendering with the same isIgnored seed keeps it revealed.
+			// The reset effect is keyed on isIgnored; a re-render with the same seed does not re-run it, so the reveal sticks.
 			act(() => rerender(wrap()));
 			expect(spy).toHaveBeenLastCalledWith(false);
+		});
+
+		it('re-hides after the ignore state transitions away and back', () => {
+			const model = buildFakeModel();
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageIgnored());
+				const reveal = useRevealIgnored();
+				return <Text testID='reveal' onPress={reveal} />;
+			};
+			const wrap = (ignored: boolean) => (
+				<MessageProvider item={model} isIgnored={ignored}>
+					<Probe />
+				</MessageProvider>
+			);
+
+			const { rerender, getByTestId } = render(wrap(true));
+			expect(spy).toHaveBeenLastCalledWith(true);
+
+			fireEvent.press(getByTestId('reveal'));
+			expect(spy).toHaveBeenLastCalledWith(false);
+
+			act(() => rerender(wrap(false)));
+			expect(spy).toHaveBeenLastCalledWith(false);
+
+			act(() => rerender(wrap(true)));
+			expect(spy).toHaveBeenLastCalledWith(true);
 		});
 	});
 });

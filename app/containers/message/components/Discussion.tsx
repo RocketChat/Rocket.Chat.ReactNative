@@ -8,14 +8,14 @@ import { CustomIcon } from '../../CustomIcon';
 import { DISCUSSION } from '../constants';
 import { formatDateThreads } from '../../../lib/methods/helpers/room';
 import { useTheme } from '../../../theme';
-import { useDiscussion, useMessageCtx, useMessageText } from '../stores/MessageStore';
+import { useDiscussion, useMessageItem, useMessageText } from '../stores/MessageStore';
 import { useOnDiscussionPress } from '../stores/MessageRoomStore';
 
 const Discussion = () => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const { item } = useMessageCtx();
+	const item = useMessageItem();
 	const { dcount, dlm } = useDiscussion();
 	const { messageText } = useMessageText();
 	let time;

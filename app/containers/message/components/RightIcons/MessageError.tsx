@@ -4,14 +4,14 @@ import styles from '../../styles';
 import { BUTTON_HIT_SLOP } from '../../utils';
 import { themes } from '../../../../lib/constants/colors';
 import { useTheme } from '../../../../theme';
-import { useMessageCtx, useMessageStatus } from '../../stores/MessageStore';
+import { useMessageItem, useMessageStatus } from '../../stores/MessageStore';
 import { useErrorActionsShow } from '../../stores/MessageRoomStore';
 
 const MessageError = () => {
 	'use memo';
 
 	const { theme } = useTheme();
-	const { item } = useMessageCtx();
+	const item = useMessageItem();
 	const errorActionsShow = useErrorActionsShow();
 	const { hasError } = useMessageStatus();
 

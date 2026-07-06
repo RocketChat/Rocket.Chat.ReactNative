@@ -8,7 +8,7 @@ import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
 import { useTheme } from '../../../theme';
 import { useCustomEmoji } from '../../../lib/hooks/useCustomEmoji';
-import { useMessageCtx, useMessageId, useReactions } from '../stores/MessageStore';
+import { useMessageId, useMessageItem, useReactions } from '../stores/MessageStore';
 import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
 
 interface IReaction {
@@ -50,7 +50,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const { item } = useMessageCtx();
+	const item = useMessageItem();
 	const id = useMessageId();
 	const onReactionPress = useOnReactionPress();
 	const onReactionLongPress = useOnReactionLongPress();
