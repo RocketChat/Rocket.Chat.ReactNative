@@ -332,6 +332,8 @@ export const useRevealIgnored = (): (() => void) => {
 };
 
 export const useMessageLongPress = (): (() => void) => {
+	'use memo';
+
 	const { item, store } = useMessageCtx();
 	const isInfo = useIsInfo();
 	const { hasError } = useMessageStatus();
@@ -360,6 +362,8 @@ export const useOnLinkPress = (): ((link: string) => void) => {
 };
 
 export const useMessagePress = (): (() => void) => {
+	'use memo';
+
 	const { item, store } = useMessageCtx();
 	const isThreadRoom = useIsThreadRoom();
 	const onPress = useStore(store, s => s.onPress);
