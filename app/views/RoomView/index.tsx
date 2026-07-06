@@ -117,6 +117,8 @@ import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
+const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
+
 class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
@@ -299,7 +301,12 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		if (!dequal(nextProps.route?.params, route?.params)) {
 			return true;
 		}
-		return roomAttrsUpdate.some(key => !dequal(nextState.roomUpdate[key], roomUpdate[key]));
+		return roomAttrsUpdate.some(key => {
+			if (key === 'lastMessage' && this.t !== 'l') {
+				return false;
+			}
+			return !dequal(nextState.roomUpdate[key], roomUpdate[key]);
+		});
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
@@ -447,11 +454,15 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		const { Hide_System_Messages } = this.props;
 
 		// FIXME: handle servers with version < 3.0.0
-		let hideSystemMessages = Array.isArray(sysMes) ? sysMes : Hide_System_Messages;
-		if (!Array.isArray(hideSystemMessages)) {
-			hideSystemMessages = [];
+		// Return stable refs (model field / redux prop / shared empty) — a fresh [] here re-subscribes
+		// the message-list WatermelonDB query on every RoomView render (fetchMessages dep).
+		if (Array.isArray(sysMes)) {
+			return sysMes;
 		}
-		return hideSystemMessages ?? [];
+		if (Array.isArray(Hide_System_Messages)) {
+			return Hide_System_Messages;
+		}
+		return EMPTY_HIDE_SYSTEM_MESSAGES;
 	}
 
 	setHeader = () => {
