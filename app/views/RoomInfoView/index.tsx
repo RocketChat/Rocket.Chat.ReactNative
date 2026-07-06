@@ -273,15 +273,35 @@ const RoomInfoView = (): ReactElement => {
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
 			await toggleBlockUser(r.rid, userBlocked, !blocker);
+			const updatedRoom = { ...r, blocker: !blocker };
+			if (roomFromRid) {
+				setRoomFromRid(updatedRoom);
+			} else {
+				setRoom(updatedRoom);
+			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	const handleIgnoreUser = () => {
+	const handleIgnoreUser = async () => {
 		const r = roomFromRid || room;
 		const isIgnored = r?.ignored?.includes?.(roomUser._id);
-		if (r?.rid) handleIgnore(roomUser._id, !isIgnored, r?.rid);
+		if (!r?.rid) return;
+		const shouldIgnore = !isIgnored;
+		const success = await handleIgnore(roomUser._id, shouldIgnore, r?.rid);
+		if (success) {
+			const currentIgnored = r?.ignored || [];
+			const updatedIgnored = shouldIgnore
+				? [...currentIgnored, roomUser._id]
+				: currentIgnored.filter((id: string) => id !== roomUser._id);
+			const updatedRoom = { ...r, ignored: updatedIgnored };
+			if (roomFromRid) {
+				setRoomFromRid(updatedRoom);
+			} else {
+				setRoom(updatedRoom);
+			}
+		}
 	};
 
 	const handleReportUser = () => {
