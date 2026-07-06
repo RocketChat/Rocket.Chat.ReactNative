@@ -18,22 +18,25 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	const fetchThreadName = useFetchThreadName();
 	const { tmid, tmsg, id } = useRepliedThreadData();
 	const isEncrypted = useIsEncrypted();
-	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
+	const displayMsg = isEncrypted ? I18n.t('Encrypted_message') : tmsg;
+	const [fetchedName, setFetchedName] = useState<string | undefined>();
 
 	useEffect(() => {
-		if (!msg) {
-			fetch();
+		if (displayMsg) {
+			return;
 		}
-	}, []);
+		const fetch = async () => {
+			const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
+			setFetchedName(threadName);
+		};
+		fetch();
+	}, [tmid, id, displayMsg, fetchThreadName]);
 
 	if (!tmid || !isHeader) {
 		return null;
 	}
 
-	const fetch = async () => {
-		const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
-		setMsg(threadName);
-	};
+	const msg = displayMsg || fetchedName;
 
 	if (!msg) {
 		return null;
