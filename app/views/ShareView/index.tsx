@@ -39,7 +39,12 @@ import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachmen
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
-import { createInteractionStore, InteractionStoreContext, type InteractionStore } from '../RoomView/InteractionStore';
+import {
+	createInteractionStore,
+	InteractionStoreContext,
+	type InteractionStore,
+	type TInteraction
+} from '../RoomView/InteractionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -52,8 +57,6 @@ interface IShareViewState {
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
-	selectedMessages: string[];
-	action: TMessageAction;
 }
 
 interface IShareViewProps {
@@ -74,6 +77,11 @@ interface IShareViewProps {
 
 type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
 
+// ShareView only supports the quote flow (messages are filled later via startShareView -> setQuotes);
+// edit/react/reply carry no messageId here, so they can't be represented by the union.
+const mapActionToInteraction = (action: TMessageAction): TInteraction =>
+	action === 'quote' ? { kind: 'quote', messageIds: [] } : null;
+
 class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messageComposerRef: RefObject<IMessageComposerRef | null>;
 	private files: any[];
@@ -91,7 +99,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 		this.finishShareView = props.route.params?.finishShareView;
 		this.sentMessage = false;
-		this.interactionStore = createInteractionStore({ action: props.route.params?.action, selectedMessages: [] });
+		this.interactionStore = createInteractionStore(mapActionToInteraction(props.route.params?.action));
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -102,11 +110,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
-			mediaAllowList: this.isShareExtension
-				? this.serverInfo?.FileUpload_MediaTypeWhiteList
-				: props.FileUpload_MediaTypeWhiteList,
-			selectedMessages: [],
-			action: props.route.params?.action
+			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
 		};
 		this.getServerInfo();
 	}
@@ -122,8 +126,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		console.countReset(`${this.constructor.name}.render calls`);
 		if (this.finishShareView && !this.sentMessage) {
 			const text = this.messageComposerRef.current?.getText();
-			this.finishShareView(text, this.state.selectedMessages);
+			this.finishShareView(text, this.getSelectedMessageIds());
 		}
+	};
+
+	// ShareView's interaction store only ever holds the quote flow.
+	getSelectedMessageIds = (): string[] => {
+		const { interaction } = this.interactionStore.getState();
+		return interaction?.kind === 'quote' ? interaction.messageIds : [];
 	};
 
 	getThreadId = (thread: TThreadModel | string | undefined) => {
@@ -239,7 +249,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Synchronization needed for Fabric to work
 			await new Promise(resolve => setTimeout(resolve, 100));
 			this.messageComposerRef.current?.setInput(text);
-			this.setState({ selectedMessages });
 			this.interactionStore.getState().actions.setQuotes(selectedMessages);
 		}
 	};
@@ -249,7 +258,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread, action, selectedMessages } = this.state;
+		const { attachments, room, text, thread } = this.state;
 		const { navigation, server, user, dispatch } = this.props;
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
@@ -267,8 +276,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		let msg: string | undefined;
-		if (action === 'quote') {
-			msg = await prepareQuoteMessage('', selectedMessages);
+		const { interaction } = this.interactionStore.getState();
+		if (interaction?.kind === 'quote') {
+			msg = await prepareQuoteMessage('', interaction.messageIds);
 		}
 
 		const { isAltTextSupported } = this;
@@ -297,7 +307,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		} catch {
 			if (!this.isShareExtension) {
 				const text = this.messageComposerRef.current?.getText();
-				this.finishShareView(text, this.state.selectedMessages);
+				this.finishShareView(text, this.getSelectedMessageIds());
 			}
 		}
 
@@ -383,9 +393,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	}
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		const { selectedMessages } = this.state;
-		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
+		const newSelectedMessages = this.getSelectedMessageIds().filter(item => item !== messageId);
 		this.interactionStore.getState().actions.setQuotes(newSelectedMessages);
 	};
 

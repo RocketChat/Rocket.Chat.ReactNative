@@ -1,7 +1,14 @@
 import { createContext, type ReactElement, useContext, useState } from 'react';
 import { createStore, useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 
 import { type TMessageAction } from './context';
+
+export type TInteraction =
+	| { kind: 'edit'; messageId: string }
+	| { kind: 'quote'; messageIds: string[] }
+	| { kind: 'react'; messageId: string }
+	| null;
 
 type TInteractionActions = {
 	setEditing(messageId: string): void;
@@ -14,28 +21,34 @@ type TInteractionActions = {
 };
 
 type InteractionState = {
-	action: TMessageAction;
-	selectedMessages: string[];
+	interaction: TInteraction;
 	// Built once inside the store initializer — stable ref for consumers.
 	actions: TInteractionActions;
 };
 
-export const createInteractionStore = (initialState?: { action?: TMessageAction; selectedMessages?: string[] }) =>
+export const createInteractionStore = (initialInteraction?: TInteraction) =>
 	createStore<InteractionState>()(set => ({
-		action: initialState?.action ?? null,
-		selectedMessages: initialState?.selectedMessages ?? [],
+		interaction: initialInteraction ?? null,
 		actions: {
-			setEditing: messageId => set({ action: 'edit', selectedMessages: [messageId] }),
-			initQuote: messageId => set({ action: 'quote', selectedMessages: [messageId] }),
-			appendQuote: messageId => set(state => ({ selectedMessages: [...state.selectedMessages, messageId] })),
+			setEditing: messageId => set({ interaction: { kind: 'edit', messageId } }),
+			initQuote: messageId => set({ interaction: { kind: 'quote', messageIds: [messageId] } }),
+			appendQuote: messageId =>
+				set(state =>
+					state.interaction?.kind === 'quote'
+						? { interaction: { kind: 'quote', messageIds: [...state.interaction.messageIds, messageId] } }
+						: { interaction: { kind: 'quote', messageIds: [messageId] } }
+				),
 			removeQuote: messageId =>
 				set(state => {
-					const msgs = state.selectedMessages.filter(m => m !== messageId);
-					return { selectedMessages: msgs, action: msgs.length ? 'quote' : null };
+					if (state.interaction?.kind !== 'quote') {
+						return {};
+					}
+					const messageIds = state.interaction.messageIds.filter(m => m !== messageId);
+					return { interaction: messageIds.length ? { kind: 'quote', messageIds } : null };
 				}),
-			setReacting: messageId => set({ action: 'react', selectedMessages: [messageId] }),
-			setQuotes: messageIds => set({ action: messageIds.length ? 'quote' : null, selectedMessages: messageIds }),
-			reset: () => set({ action: null, selectedMessages: [] })
+			setReacting: messageId => set({ interaction: { kind: 'react', messageId } }),
+			setQuotes: messageIds => set({ interaction: messageIds.length ? { kind: 'quote', messageIds } : null }),
+			reset: () => set({ interaction: null })
 		}
 	}));
 
@@ -55,19 +68,29 @@ const useInteractionStore = <T,>(selector: (state: InteractionState) => T): T =>
 	return useStore(store, selector);
 };
 
-export const useMessageAction = (): TMessageAction => useInteractionStore(s => s.action);
-export const useSelectedMessages = (): string[] => useInteractionStore(s => s.selectedMessages);
+export const useMessageAction = (): TMessageAction => useInteractionStore(s => s.interaction?.kind ?? null);
+
+export const useSelectedMessages = (): string[] =>
+	useInteractionStore(
+		useShallow(s => {
+			const { interaction } = s;
+			if (!interaction) {
+				return [];
+			}
+			return interaction.kind === 'quote' ? interaction.messageIds : [interaction.messageId];
+		})
+	);
 
 export const useIsBeingEdited = (messageId: string): boolean => {
 	const store = useContext(InteractionStoreContext) ?? fallbackStore;
-	return useStore(store, s => s.action === 'edit' && s.selectedMessages[0] === messageId);
+	return useStore(store, s => s.interaction?.kind === 'edit' && s.interaction.messageId === messageId);
 };
 
 export const InteractionProvider = ({
 	initialState,
 	children
 }: {
-	initialState?: { action?: TMessageAction; selectedMessages?: string[] };
+	initialState?: TInteraction;
 	children: ReactElement;
 }): ReactElement => {
 	'use memo';

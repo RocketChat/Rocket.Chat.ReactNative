@@ -12,8 +12,8 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { type IPermissionsState } from '../../reducers/permissions';
 import { type IMessage, type IShareAttachment } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
-import { type IRoomContext, RoomContext, type TMessageAction } from '../../views/RoomView/context';
-import { InteractionProvider } from '../../views/RoomView/InteractionStore';
+import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
+import { InteractionProvider, type TInteraction } from '../../views/RoomView/InteractionStore';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
 import { search } from '../../lib/methods/search';
@@ -122,7 +122,7 @@ const Render = ({
 	children
 }: {
 	context?: Partial<IRoomContext>;
-	interactionState?: { action?: TMessageAction; selectedMessages?: string[] };
+	interactionState?: TInteraction;
 	children?: ReactElement;
 }) => (
 	<Provider store={mockedStore}>
@@ -649,7 +649,7 @@ describe('MessageComposer', () => {
 			return renderAndFlush(
 				<Render
 					context={{ rid: 'rid', onSendMessage, editCancel, editRequest }}
-					interactionState={{ action: 'edit', selectedMessages: [id] }}
+					interactionState={{ kind: 'edit', messageId: id }}
 				/>
 			);
 		});
@@ -682,9 +682,7 @@ describe('MessageComposer', () => {
 		const editRequest = jest.fn();
 		const id = 'image';
 		test('edit image', async () => {
-			await renderAndFlush(
-				<Render context={{ rid: 'rid', editRequest }} interactionState={{ action: 'edit', selectedMessages: [id] }} />
-			);
+			await renderAndFlush(<Render context={{ rid: 'rid', editRequest }} interactionState={{ kind: 'edit', messageId: id }} />);
 			await screen.findByTestId('message-composer');
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(editRequest).toHaveBeenCalledWith({ id, msg: `Attachment description for ${id}`, rid: 'rid' });
@@ -716,14 +714,14 @@ describe('MessageComposer', () => {
 
 	describe('Quote', () => {
 		test('Add quote `abc`', async () => {
-			render(<Render interactionState={{ action: 'quote', selectedMessages: ['abc'] }} />);
+			render(<Render interactionState={{ kind: 'quote', messageIds: ['abc'] }} />);
 			await screen.findByTestId('composer-quote-abc');
 			expect(screen.queryByTestId('composer-quote-abc')).toBeOnTheScreen();
 			expect(screen.toJSON()).toMatchSnapshot();
 		});
 
 		test('Add quote `def`', async () => {
-			render(<Render interactionState={{ action: 'quote', selectedMessages: ['abc', 'def'] }} />);
+			render(<Render interactionState={{ kind: 'quote', messageIds: ['abc', 'def'] }} />);
 			await screen.findByTestId('composer-quote-abc');
 			expect(screen.queryByTestId('composer-quote-abc')).toBeOnTheScreen();
 			expect(screen.queryByTestId('composer-quote-def')).toBeOnTheScreen();
@@ -732,9 +730,7 @@ describe('MessageComposer', () => {
 
 		test('Remove a quote', async () => {
 			const onRemoveQuoteMessage = jest.fn();
-			render(
-				<Render context={{ onRemoveQuoteMessage }} interactionState={{ action: 'quote', selectedMessages: ['abc', 'def'] }} />
-			);
+			render(<Render context={{ onRemoveQuoteMessage }} interactionState={{ kind: 'quote', messageIds: ['abc', 'def'] }} />);
 			await screen.findByTestId('composer-quote-def');
 			await user.press(screen.getByTestId('composer-quote-remove-def'));
 			expect(onRemoveQuoteMessage).toHaveBeenCalledTimes(1);

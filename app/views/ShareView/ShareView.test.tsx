@@ -103,9 +103,7 @@ const makeInstance = ({
 		room: { rid: 'room-id', t: 'c' } as any,
 		thread: '',
 		maxFileSize: undefined,
-		mediaAllowList: undefined,
-		selectedMessages: [],
-		action: null
+		mediaAllowList: undefined
 	};
 
 	if (serverInfoVersion) {
@@ -177,5 +175,37 @@ describe('ShareView', () => {
 		expect(fileArg?.msg).toBe('my caption');
 
 		spy.mockRestore();
+	});
+
+	it('send() builds msg from prepareQuoteMessage using the interaction store quote ids', async () => {
+		const shareView = makeInstance({
+			mime: 'image/jpeg',
+			serverVersion: '8.3.0',
+			serverInfoVersion: '8.3.0',
+			isShareExtension: true
+		});
+		shareView.state.attachments[0].canUpload = true;
+		shareView.state = {
+			...shareView.state,
+			selected: shareView.state.attachments[0]
+		};
+		shareView.saveSelectedDescription = jest.fn() as any;
+
+		shareView.interactionStore.getState().actions.setQuotes(['msg-1']);
+
+		const prepareQuoteMessageMod = require('../../containers/MessageComposer/helpers/prepareQuoteMessage');
+		const prepareSpy = jest.spyOn(prepareQuoteMessageMod, 'prepareQuoteMessage').mockResolvedValue('quoted-text');
+
+		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
+
+		await shareView.send();
+
+		expect(prepareSpy).toHaveBeenCalledWith('', ['msg-1']);
+		const fileArg = spy.mock.calls[0]?.[1] as { msg?: string } | undefined;
+		expect(fileArg?.msg).toBe('quoted-text');
+
+		spy.mockRestore();
+		prepareSpy.mockRestore();
 	});
 });

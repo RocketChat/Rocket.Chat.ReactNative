@@ -2401,7 +2401,7 @@ export const Temp = () => <Message msg='Temp message' status={messagesStatus.TEM
 
 export const TempLargeFont = () => <MessageLargeFont msg='Temp message' status={messagesStatus.TEMP} isTemp />;
 
-const editingStore = createInteractionStore({ action: 'edit', selectedMessages: ['editing-message'] });
+const editingStore = createInteractionStore({ kind: 'edit', messageId: 'editing-message' });
 
 export const Editing = () => (
 	<InteractionStoreContext.Provider value={editingStore}>

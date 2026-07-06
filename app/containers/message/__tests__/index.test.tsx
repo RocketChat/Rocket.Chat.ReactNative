@@ -95,7 +95,7 @@ it('fires the onLongPress callback when long-pressed', () => {
 
 describe('edit highlight reacts to InteractionStore', () => {
 	it('shows editing testID when the store marks this message as being edited', () => {
-		const store = createInteractionStore({ action: 'edit', selectedMessages: ['msg-1'] });
+		const store = createInteractionStore({ kind: 'edit', messageId: 'msg-1' });
 		const item = createMockMessage({ id: 'msg-1' });
 		const { getByTestId } = renderWithMessageProviders(
 			<InteractionStoreContext.Provider value={store}>
@@ -107,7 +107,7 @@ describe('edit highlight reacts to InteractionStore', () => {
 	});
 
 	it('removes editing testID when the store resets', async () => {
-		const store = createInteractionStore({ action: 'edit', selectedMessages: ['msg-1'] });
+		const store = createInteractionStore({ kind: 'edit', messageId: 'msg-1' });
 		const item = createMockMessage({ id: 'msg-1' });
 		const { queryByTestId } = renderWithMessageProviders(
 			<InteractionStoreContext.Provider value={store}>
