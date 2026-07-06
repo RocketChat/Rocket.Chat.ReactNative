@@ -181,4 +181,30 @@ describe('Omnichannel.subscribeInquiry', () => {
 		expect(unhandled).not.toHaveBeenCalled();
 		expect(mockLog).toHaveBeenCalledWith(rejection);
 	});
+
+	it('stops the previous inquiry subscription before creating a new one on repeated INQUIRY_SUBSCRIBE', async () => {
+		const firstStop = jest.fn();
+		const secondStop = jest.fn();
+		mockSubscribeInquiry.mockResolvedValueOnce({ stop: firstStop }).mockResolvedValueOnce({ stop: secondStop });
+
+		jest.isolateModules(() => {
+			require('./index');
+		});
+
+		const subscribeListener = mockAddEventListener.mock.calls.find(([event]) => event === 'INQUIRY_SUBSCRIBE')?.[1];
+		expect(subscribeListener).toBeDefined();
+
+		subscribeListener();
+		await Promise.resolve();
+		await Promise.resolve();
+
+		expect(firstStop).not.toHaveBeenCalled();
+
+		subscribeListener();
+		await Promise.resolve();
+		await Promise.resolve();
+
+		expect(firstStop).toHaveBeenCalledTimes(1);
+		expect(secondStop).not.toHaveBeenCalled();
+	});
 });
