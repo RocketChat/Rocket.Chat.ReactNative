@@ -1,10 +1,10 @@
 import { render, waitFor } from '@testing-library/react-native';
 import { Image as ExpoImage } from 'expo-image';
 
-import { WidthAwareContext } from '../../WidthAwareView';
-import { MessageImage } from './Image';
+import { WidthAwareContext } from '../WidthAwareView';
+import { MessageImage } from '../Attachments/Image/Image';
 
-jest.mock('../../../../../lib/methods/userPreferences', () => ({
+jest.mock('../../../../lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn(() => [true, jest.fn()])
 }));
 

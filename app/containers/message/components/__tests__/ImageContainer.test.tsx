@@ -3,20 +3,20 @@ import { type ComponentProps } from 'react';
 import { A11y } from 'react-native-a11y-order';
 import { Provider } from 'react-redux';
 
-import { type TAnyMessageModel } from '../../../../../definitions';
-import { MessageProvider } from '../../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../../reducers/mockedStore';
-import ImageContainer from './Container';
+import { type TAnyMessageModel } from '../../../../definitions';
+import { MessageProvider } from '../../stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
+import { mockedStore } from '../../../../reducers/mockedStore';
+import ImageContainer from '../Attachments/Image/Container';
 
-jest.mock('../../../../markdown', () => {
+jest.mock('../../../markdown', () => {
 	const React = require('react');
 	const { Text } = require('react-native');
 
 	return ({ msg }: { msg?: string }) => <Text>{msg}</Text>;
 });
 
-jest.mock('../../../hooks/useMediaAutoDownload', () => ({
+jest.mock('../../hooks/useMediaAutoDownload', () => ({
 	useMediaAutoDownload: jest.fn(() => ({
 		status: 'downloaded',
 		onPress: jest.fn(),
@@ -25,12 +25,12 @@ jest.mock('../../../hooks/useMediaAutoDownload', () => ({
 	}))
 }));
 
-jest.mock('./Image', () => ({
+jest.mock('../Attachments/Image/Image', () => ({
 	MessageImage: () => null
 }));
 
 const mockUseAltTextSupported = jest.fn();
-jest.mock('../../../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('../../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => mockUseAltTextSupported()
 }));
 

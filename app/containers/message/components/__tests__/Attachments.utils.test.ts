@@ -1,5 +1,5 @@
 import { type IAttachment } from '../../../../definitions';
-import { isContentAttachment, isQuoteAttachment } from './utils';
+import { isContentAttachment, isQuoteAttachment } from '../Attachments/utils';
 
 describe('Attachments predicates', () => {
 	const quote: IAttachment = { author_name: 'rocket.cat', ts: new Date(), text: 'quoted message' };
