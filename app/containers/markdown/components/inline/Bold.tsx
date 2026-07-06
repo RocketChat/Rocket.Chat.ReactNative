@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
 });
 
 const Bold = ({ value }: IBoldProps) => {
+	'use memo';
+
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 
 	return (

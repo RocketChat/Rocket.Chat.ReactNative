@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
 });
 
 const Strike = ({ value }: IStrikeProps) => {
+	'use memo';
+
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 
 	return (

@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
 });
 
 const Italic = ({ value }: IItalicProps) => {
+	'use memo';
+
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 
 	return (

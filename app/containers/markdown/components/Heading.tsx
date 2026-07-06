@@ -20,6 +20,8 @@ interface IHeadingProps {
 }
 
 const Heading = ({ value, level }: IHeadingProps): ReactElement => {
+	'use memo';
+
 	const { theme } = useTheme();
 	const { useRealName, username, navToRoomInfo, mentions, channels, getCustomEmoji, onLinkPress } = useContext(MarkdownContext);
 	const textStyle = styles[`heading${level}`];
