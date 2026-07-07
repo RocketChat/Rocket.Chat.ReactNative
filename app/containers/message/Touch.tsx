@@ -1,14 +1,12 @@
 import { forwardRef, type ReactNode, type RefObject } from 'react';
+import { TouchableOpacity, TouchableHighlight, type TouchableWithoutFeedbackProps } from 'react-native-gesture-handler';
 import {
 	View,
 	StyleSheet,
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
-	type AccessibilityActionInfo,
-	TouchableOpacity,
-	TouchableHighlight,
-	type TouchableWithoutFeedbackProps
+	type AccessibilityActionInfo
 } from 'react-native';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 

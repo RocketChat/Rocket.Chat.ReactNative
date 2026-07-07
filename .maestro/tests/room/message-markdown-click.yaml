@@ -3,23 +3,19 @@ name: Message Markdown
 jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-9
 
 ---
-- evalScript: ${output.user = output.utils.createUser()}
-
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.user.username}
-      PASSWORD: ${output.user.password}
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
-      ROOM: 'maestro-message-clickable-test'
+      ROOM: 'maestro-message-clickable-test-temp'
 
 - extendedWaitUntil:
     visible:
@@ -63,7 +59,7 @@ tags:
 # Wait for room view to be visible again
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-maestro-message-clickable-test'
+      id: 'room-view-title-maestro-message-clickable-test-temp'
     timeout: 60000
 
 # Tap on the URL link to open alert
@@ -78,7 +74,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          point: 66%,63%
+          point: 66%,59%
 
 # Verify alert is shown with the link
 - extendedWaitUntil:
@@ -106,7 +102,7 @@ tags:
       platform: iOS
     commands:
       - longPressOn:
-          point: 66%,63%
+          point: 66%,59%
 
 # Verify clipboard has the link alert
 - extendedWaitUntil:
@@ -143,7 +139,7 @@ tags:
 # Wait for room view to be visible again
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-maestro-message-clickable-test'
+      id: 'room-view-title-maestro-message-clickable-test-temp'
     timeout: 60000
 
 # Tap on message with thread to open thread room
@@ -163,7 +159,7 @@ tags:
 # Wait for room view to be visible again
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-maestro-message-clickable-test'
+      id: 'room-view-title-maestro-message-clickable-test-temp'
     timeout: 60000
 
 # Tap on "View thread" button
@@ -183,7 +179,7 @@ tags:
 # Wait for room view to be visible again
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-maestro-message-clickable-test'
+      id: 'room-view-title-maestro-message-clickable-test-temp'
     timeout: 60000
 
 # Now tap on a message within the thread
@@ -195,3 +191,97 @@ tags:
     visible:
       id: 'room-view-title-message with thread'
     timeout: 60000
+
+# Go back to main room
+- tapOn:
+    id: header-back
+
+# Wait for room view to be visible again
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test-temp'
+    timeout: 60000
+
+# Long press on avatar and make sure it show user info
+- longPressOn: "rohit.bansal's avatar"
+- extendedWaitUntil:
+    visible:
+      text: '.*User info*.'
+    timeout: 60000
+
+# Go back to main room
+- tapOn: Back
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test-temp'
+    timeout: 60000
+
+# This is to make sure that button is in correct state before we test
+- runFlow:
+    when:
+      visible:
+        id: 'thread-unfollow'
+    commands:
+      - tapOn:
+          id: 'thread-unfollow'
+
+# Click follow to notification button and make sure it stays in room and the button changes to unfollow
+- tapOn:
+    id: 'thread-follow'
+- extendedWaitUntil:
+    visible:
+      id: 'thread-unfollow'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test-temp'
+    timeout: 60000
+
+# Click unfollow to notification button and make sure it stays in room and the button changes to follow
+- tapOn:
+    id: 'thread-unfollow'
+- extendedWaitUntil:
+    visible:
+      id: 'thread-follow'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test-temp'
+    timeout: 60000
+
+# Click UI Kit Button
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: '55%,86%'
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: Tap Me
+
+- extendedWaitUntil:
+    visible:
+      text: '.*Button tap received! This reply is private to you*.'
+    timeout: 10000
+
+# Click Emphemeral UI Kit Button
+- tapOn:
+    id: message-composer-input
+- inputText:
+    text: '/send-emphemeral-button'
+- extendedWaitUntil:
+    visible:
+      id: autocomplete-item-send-emphemeral-button
+    timeout: 10000
+- tapOn:
+    id: autocomplete-item-send-emphemeral-button
+- tapOn:
+    id: 'message-composer-send'
+- tapOn: 'Ephemeral Button'
+- extendedWaitUntil:
+    visible:
+      text: '.*A very secret message visible after clicking Ephemeral Button"*.'
+    timeout: 10000

@@ -79,7 +79,10 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name='user' size={24} />
-					<Text style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
+					<Text
+						testID={`thread-user-${replies}`}
+						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
+						numberOfLines={1}>
 						{replies}
 					</Text>
 				</View>
@@ -88,6 +91,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 				<Touch
 					accessibilityLabel={i18n.t(isFollowing ? 'Unfollow_thread' : 'Follow_thread')}
+					testID={isFollowing ? 'thread-unfollow' : 'thread-follow'}
 					onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />
 				</Touch>
