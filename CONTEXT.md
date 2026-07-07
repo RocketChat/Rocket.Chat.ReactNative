@@ -2,45 +2,45 @@
 
 ## Rooms & Conversations
 
-| Term               | Definition                                                                                                                     | Aliases to avoid              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| **Room**           | A server-side conversation container with shared state (name, type, settings)                                                  | Chat, conversation            |
-| **Subscription**   | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open)                         | Membership, room entry        |
-| **Channel**        | A public Room (type `'c'`) visible to all server users                                                                         | Public room                   |
-| **Group**          | A private Room (type `'p'`) visible only to invited members                                                                    | Private room, private channel |
-| **Direct Message** | A 1-on-1 private Room (type `'d'`) between two users                                                                           | DM, PM, private message       |
-| **Thread**         | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                | Reply chain                   |
-| **Discussion**     | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms | Sub-room, sub-channel         |
-| **Team**           | An organizational container that groups multiple Channels and users under a single entity                                      | Workspace (ambiguous) |
-| **Broadcast Room** | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                | Broadcast channel    |
-| **Reply Broadcast**| The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                     | Broadcast reply      |
+| Term                | Definition                                                                                                                     | Aliases to avoid              |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
+| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                  | Chat, conversation            |
+| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open)                         | Membership, room entry        |
+| **Channel**         | A public Room (type `'c'`) visible to all server users                                                                         | Public room                   |
+| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                    | Private room, private channel |
+| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                           | DM, PM, private message       |
+| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                | Reply chain                   |
+| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms | Sub-room, sub-channel         |
+| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                      | Workspace (ambiguous)         |
+| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                | Broadcast channel             |
+| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                     | Broadcast reply               |
 
 ## Messages
 
 ### Core
 
-| Term               | Definition                                                                                                 | Aliases to avoid          |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- | ------------------------- |
-| **Message**        | A unit of communication within a Room, identified by `_id` with content in `msg` and parsed markdown in `md` | Chat message, text        |
-| **Thread Message** | A Message that belongs to a Thread, identified by presence of `tmid`                                       | Reply, thread reply       |
-| **Thread Parent**  | The Message a Thread is spawned from; the target of its Thread Messages' `tmid`                            | Thread root, parent message |
-| **Attachment**     | Rich media or structured data embedded in a Message (image, video, audio, file, or action buttons)         | File, media               |
-| **Reaction**       | An emoji response to a Message, tracking which usernames reacted                                           | Emoji reaction            |
-| **Mention**        | An `@username` reference within a Message that triggers notifications                                      | Tag, ping                 |
-| **Draft Message**  | A user's unsent composition stored on a Subscription or Thread (`draftMessage` field)                      | Unsent message            |
-| **Snippet**        | A saved excerpt from a Message                                                                             | —                         |
+| Term               | Definition                                                                                                   | Aliases to avoid            |
+| ------------------ | ------------------------------------------------------------------------------------------------------------ | --------------------------- |
+| **Message**        | A unit of communication within a Room, identified by `_id` with content in `msg` and parsed markdown in `md` | Chat message, text          |
+| **Thread Message** | A Message that belongs to a Thread, identified by presence of `tmid`                                         | Reply, thread reply         |
+| **Thread Parent**  | The Message a Thread is spawned from; the target of its Thread Messages' `tmid`                              | Thread root, parent message |
+| **Attachment**     | Rich media or structured data embedded in a Message (image, video, audio, file, or action buttons)           | File, media                 |
+| **Reaction**       | An emoji response to a Message, tracking which usernames reacted                                             | Emoji reaction              |
+| **Mention**        | An `@username` reference within a Message that triggers notifications                                        | Tag, ping                   |
+| **Draft Message**  | A user's unsent composition stored on a Subscription or Thread (`draftMessage` field)                        | Unsent message              |
+| **Snippet**        | A saved excerpt from a Message                                                                               | —                           |
 
 ### System Messages
 
 A **System Message** is any server-generated Message (carrying a `t` type field) rather than a user-typed one. The code draws a hard boundary between room-event system messages and typed-event system messages — keep them apart.
 
-| Term                            | Definition                                                                                                                                       | Aliases to avoid      |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| **System Message**              | A server-generated Message identified by a `t` type field; umbrella term covering Info Messages and the typed events below                       | Event, notification   |
-| **Info Message**                | A System Message that records a room event (user joined, room archived, role changed, muted) — rendered compact and non-interactive. Excludes `e2e`, `discussion-created`, `jitsi_call_started`, and `videoconf` | System event, event message |
-| **Discussion-Created Message**  | A System Message (`t = 'discussion-created'`) recording that a Discussion was spawned from this Message; rendered with a link to the new Room    | —                     |
-| **Call Message**                | A System Message (`t = 'jitsi_call_started'` or `t = 'videoconf'`) recording a Video Conference and offering a join affordance                    | Video call message    |
-| **Encrypted Message**           | A System Message (`t = 'e2e'`) whose content is pending E2E decryption (`e2e !== 'done'`); shown as an "Encrypted message" placeholder until decrypted | Pending E2E message   |
+| Term                           | Definition                                                                                                                                                                                                       | Aliases to avoid            |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| **System Message**             | A server-generated Message identified by a `t` type field; umbrella term covering Info Messages and the typed events below                                                                                       | Event, notification         |
+| **Info Message**               | A System Message that records a room event (user joined, room archived, role changed, muted) — rendered compact and non-interactive. Excludes `e2e`, `discussion-created`, `jitsi_call_started`, and `videoconf` | System event, event message |
+| **Discussion-Created Message** | A System Message (`t = 'discussion-created'`) recording that a Discussion was spawned from this Message; rendered with a link to the new Room                                                                    | —                           |
+| **Call Message**               | A System Message (`t = 'jitsi_call_started'` or `t = 'videoconf'`) recording a Video Conference and offering a join affordance                                                                                   | Video call message          |
+| **Encrypted Message**          | A System Message (`t = 'e2e'`) whose content is pending E2E decryption (`e2e !== 'done'`); shown as an "Encrypted message" placeholder until decrypted                                                           | Pending E2E message         |
 
 ### Content & Visibility States
 
@@ -67,7 +67,7 @@ A **System Message** is any server-generated Message (carrying a `t` type field)
 The delivery lifecycle of a Message (`status` field). Exactly one status at a time; not to be confused with Message Flags.
 
 | Term      | Definition                                                           | Aliases to avoid |
-| --------- | --------------------------------------------------------------------- | ---------------- |
+| --------- | -------------------------------------------------------------------- | ---------------- |
 | **Sent**  | Message successfully delivered to server (status `0`)                | Delivered        |
 | **Temp**  | Message created locally but not yet confirmed by server (status `1`) | Pending, sending |
 | **Error** | Message that failed to send (status `2`)                             | Failed           |
@@ -76,17 +76,17 @@ The delivery lifecycle of a Message (`status` field). Exactly one status at a ti
 
 Independent boolean markers on a Message, orthogonal to its Status — a Message can be both Pinned and Starred, and either regardless of delivery state.
 
-| Term        | Definition                                                                                   | Aliases to avoid |
+| Term        | Definition                                                                                    | Aliases to avoid |
 | ----------- | --------------------------------------------------------------------------------------------- | ---------------- |
 | **Pinned**  | A Message flagged as important for the whole Room; visible to all Members via the pinned list | Bookmarked       |
 | **Starred** | A Message bookmarked by the current user for personal reference; visible only to that user    | Saved            |
 
 ## Message Separators
 
-| Term                 | Definition                                                                                          | Aliases to avoid |
-| -------------------- | --------------------------------------------------------------------------------------------------- | ---------------- |
-| **Date Separator**   | A divider rendered between two Messages on different days, showing the date of the newer Message    | Date divider     |
-| **Unread Separator** | A divider rendered between the last read Message and the first unread Message in a Room             | Unread divider   |
+| Term                 | Definition                                                                                       | Aliases to avoid |
+| -------------------- | ------------------------------------------------------------------------------------------------ | ---------------- |
+| **Date Separator**   | A divider rendered between two Messages on different days, showing the date of the newer Message | Date divider     |
+| **Unread Separator** | A divider rendered between the last read Message and the first unread Message in a Room          | Unread divider   |
 
 ## Message Loading
 
@@ -108,20 +108,20 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. They have different owners and are migrated independently, so keep them apart.
 
-| Term                  | Definition                                                                              | Owner                          | Scope                                                                |
-| --------------------- | --------------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
-| **Interaction state** | Which Message is selected and the current Message Action (Quote, Edit, or React)        | A per-Room interaction store   | Migrated to the per-Room store as part of the Message row work       |
-| **Positional state**  | Which Message is highlighted and the jump or scroll position                            | The Room view scroll machinery | Stays with the Room view scroll machinery and is migrated separately |
+| Term                  | Definition                                                                       | Owner                          | Scope                                                                |
+| --------------------- | -------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| **Interaction state** | Which Message is selected and the current Message Action (Quote, Edit, or React) | A per-Room interaction store   | Migrated to the per-Room store as part of the Message row work       |
+| **Positional state**  | Which Message is highlighted and the jump or scroll position                     | The Room view scroll machinery | Stays with the Room view scroll machinery and is migrated separately |
 
 ### Message Actions
 
 A **Message Action** is the current interaction mode on a Message in the Room view. The three actions are **Quote**, **Edit**, and **React** — there is no "reply" action; replying in a Thread is a separate navigation, not an interaction mode.
 
-| Term       | Definition                                                                               | Aliases to avoid |
-| ---------- | ---------------------------------------------------------------------------------------- | ---------------- |
-| **Quote**  | A Message Action where one or more Messages are selected to be quoted into the composer  | Multi-quote      |
-| **Edit**   | A Message Action where a single Message is being edited by the current user              | Editing          |
-| **React**  | A Message Action where a single Message is the target of a reaction picker               | Reacting         |
+| Term      | Definition                                                                              | Aliases to avoid |
+| --------- | --------------------------------------------------------------------------------------- | ---------------- |
+| **Quote** | A Message Action where one or more Messages are selected to be quoted into the composer | Multi-quote      |
+| **Edit**  | A Message Action where a single Message is being edited by the current user             | Editing          |
+| **React** | A Message Action where a single Message is the target of a reaction picker              | Reacting         |
 
 ## Users & Roles
 
@@ -244,7 +244,7 @@ A **Message Action** is the current interaction mode on a Message in the Room vi
 - **"Window"** is used metaphorically in the Subscriptions dialogue ("a Subscription is the user's window into it"); a **Message Window** is the concrete observed Message range in the Room view. Disambiguate when both could be meant.
 - **"Load more"** is directional: older Messages are an **Older Loader** (`MORE`/`PREVIOUS_CHUNK`), newer Messages are a **Newer Loader** (`NEXT_CHUNK`). Avoid bare "load more".
 - **"System message" vs "Info message"** — **System Message** is the umbrella (any `t`-bearing server Message); **Info Message** is the narrower set of room-event System Messages. The typed events `e2e`, `discussion-created`, `jitsi_call_started`, and `videoconf` are System Messages but NOT Info Messages — each gets its own rendering branch.
-- **"Thread reply"** is overloaded. The glossary's **Thread Message** is the data concept (any Message with `tmid`); the code's `isThreadReply` is a *rendering position* — the first Thread Message in a run shown in the parent Room, which gets the "in reply to" header. Do not use "thread reply" for the data concept.
+- **"Thread reply"** is overloaded. The glossary's **Thread Message** is the data concept (any Message with `tmid`); the code's `isThreadReply` is a _rendering position_ — the first Thread Message in a run shown in the parent Room, which gets the "in reply to" header. Do not use "thread reply" for the data concept.
 - **"Preview"** is overloaded. **Message Preview** (`isPreview`) is a Message rendered outside its Room (search, pinned, share, notifications). `PreviewContent` is a different concept: the compact body of a Thread Message shown in the parent Room. Disambiguate when either could be meant.
 - **"Muted"** is overloaded: a User can be muted in a Room (a moderator action that removes send permission, recorded by `user-muted`/`mute_unmute` System Messages) OR be an **Ignored User** (a per-viewer filter that hides their Messages behind an Ignored Message placeholder, stored in `room.ignored`). Muting is a room permission; ignoring is a personal filter. Different concepts — keep them apart.
 - **"Reply"** is overloaded: **Reply Broadcast** is the action available to non-authorized users in a Broadcast Room; replying in a **Thread** is navigation into the Thread view. Neither is a **Message Action** — there is no "reply" Message Action.
