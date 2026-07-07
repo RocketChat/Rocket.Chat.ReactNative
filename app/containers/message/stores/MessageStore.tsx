@@ -95,21 +95,22 @@ export const MessageProvider = ({
 		createMessageStore({ item, previousItem, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
 	);
 
-	// Header grouping and thread position depend on the previous record too, so each effect
-	// subscribes one record; both feed the same tick. Keeping them separate means changing
-	// previousItem does not tear down and recreate item's subscription.
-	useEffect(() => subscribeModel(item, store), [item, store]);
-	useEffect(() => (previousItem ? subscribeModel(previousItem, store) : undefined), [previousItem, store]);
+	// Push item/previousItem into the store and (re)subscribe both records to the same tick.
+	// Resubscribing on either change is a single sync commit, so there's no observable churn.
+	useEffect(() => {
+		store.setState({ item, previousItem });
+		const unsubscribeItem = subscribeModel(item, store);
+		const unsubscribePrevious = previousItem ? subscribeModel(previousItem, store) : undefined;
+		return () => {
+			unsubscribeItem?.();
+			unsubscribePrevious?.();
+		};
+	}, [item, previousItem, store]);
 
 	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
 	useEffect(() => {
 		store.setState({ onPress, onLongPress, threadBadgeColor });
 	}, [onPress, onLongPress, threadBadgeColor, store]);
-
-	// Push item/previousItem prop changes into the store so field selectors re-read (temp→server swap, neighbour changes).
-	useEffect(() => {
-		store.setState({ item, previousItem });
-	}, [item, previousItem, store]);
 
 	// Reset the manual reveal only when the ignore state actually transitions.
 	useEffect(() => {
