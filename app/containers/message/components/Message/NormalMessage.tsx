@@ -26,7 +26,7 @@ const NormalMessage = ({ isPreview }: { isPreview?: boolean }) => {
 				<View style={styles.flex}>
 					<MessageAvatar />
 					<View style={styles.messageContent}>
-						<MessageInner isPreview={isPreview} />
+						<MessageInner isPreview={isPreview} isHeader={isHeader} />
 					</View>
 					{!isHeader ? <RightIcons /> : null}
 				</View>

@@ -5,13 +5,12 @@ import JitsiBranch from './JitsiBranch';
 import DiscussionBranch from './DiscussionBranch';
 import PreviewBranch from './PreviewBranch';
 import DefaultBranch from './DefaultBranch';
-import { useBlocks, useMessageField, useMessageGrouping } from '../../stores/MessageStore';
+import { useBlocks, useMessageField } from '../../stores/MessageStore';
 
-export const MessageInner = ({ isPreview }: { isPreview?: boolean }) => {
+export const MessageInner = ({ isPreview, isHeader }: { isPreview?: boolean; isHeader: boolean }) => {
 	'use memo';
 
 	const { isLargeFontScale } = useResponsiveLayout();
-	const isHeader = useMessageGrouping();
 	const type = useMessageField(item => item.t);
 	const { blocks } = useBlocks();
 	const showTimeLarge = isLargeFontScale && isHeader;
