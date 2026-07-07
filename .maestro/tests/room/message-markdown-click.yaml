@@ -283,5 +283,5 @@ tags:
 - tapOn: 'Ephemeral Button'
 - extendedWaitUntil:
     visible:
-      text: '.*A very secret message visible after clicking Ephemeral Button"*.'
+      text: '.*A very secret message visible after clicking Ephemeral Button*.'
     timeout: 10000
