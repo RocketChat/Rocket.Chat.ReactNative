@@ -81,6 +81,7 @@ class MessageContainer extends Component<IMessageContainerProps, IMessageContain
 	};
 
 	state = { isManualUnignored: false };
+	linkLongPressed = { current: false };
 
 	private subscription?: Function;
 
@@ -190,7 +191,7 @@ class MessageContainer extends Component<IMessageContainerProps, IMessageContain
 
 	onLongPress = () => {
 		const { archived, onLongPress, item } = this.props;
-		if (this.isInfo || this.hasError || this.isEncrypted || archived) {
+		if (this.isInfo || this.hasError || this.isEncrypted || archived || this.linkLongPressed.current) {
 			return;
 		}
 		if (onLongPress) {
@@ -450,7 +451,8 @@ class MessageContainer extends Component<IMessageContainerProps, IMessageContain
 					toggleFollowThread,
 					replies,
 					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
-					isEncrypted: this.isEncrypted
+					isEncrypted: this.isEncrypted,
+					linkLongPressed: this.linkLongPressed,
 				}}>
 				{/* @ts-ignore*/}
 				<Message

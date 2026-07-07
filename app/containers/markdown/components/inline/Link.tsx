@@ -12,6 +12,7 @@ import EventEmitter from '../../../../lib/methods/helpers/events';
 import { themes } from '../../../../lib/constants/colors';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
+import MessageContext from '../../../../containers/message/Context';
 
 interface ILinkProps {
 	value: LinkProps['value'];
@@ -19,6 +20,7 @@ interface ILinkProps {
 
 const Link = ({ value }: ILinkProps) => {
 	const { theme } = useTheme();
+	const { linkLongPressed } = useContext(MessageContext);
 	const { onLinkPress, textStyle } = useContext(MarkdownContext);
 	const { src, label } = value;
 	const handlePress = () => {
@@ -39,12 +41,23 @@ const Link = ({ value }: ILinkProps) => {
 		if (!src.value) {
 			return;
 		}
+
+		linkLongPressed.current = true;
+
 		if (process.env.RUNNING_E2E_TESTS === 'true') {
-			Alert.alert('Link Long Pressed', src.value);
+			Alert.alert('Link Long Pressed', src.value, [
+				{
+					text: 'OK',
+					onPress: () => {
+						linkLongPressed.current = false;
+					}
+				}
+			]);
 			return;
 		}
 		Clipboard.setString(src.value);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		linkLongPressed.current = false;
 	};
 
 	return (
