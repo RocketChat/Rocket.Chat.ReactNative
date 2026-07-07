@@ -91,7 +91,7 @@ jest.mock('expo-font', () => ({
 	__esModule: true
 }));
 
-jest.mock('expo-av', () => {
+jest.mock('./app/lib/methods/helpers/expoAvShim', () => {
 	const InterruptionModeAndroid = {
 		DoNotMix: 1,
 		DuckOthers: 2

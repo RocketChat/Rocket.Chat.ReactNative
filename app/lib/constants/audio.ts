@@ -1,5 +1,10 @@
-import { Audio, type AudioMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { type RecordingOptions } from 'expo-av/build/Audio';
+import {
+	Audio,
+	type AudioMode,
+	InterruptionModeAndroid,
+	InterruptionModeIOS,
+	type RecordingOptions
+} from '../methods/helpers/expoAvShim';
 
 export const RECORDING_EXTENSION = '.aac';
 export const RECORDING_SETTINGS: RecordingOptions = {

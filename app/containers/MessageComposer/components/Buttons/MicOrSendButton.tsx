@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { Audio } from '../../../../lib/methods/helpers/expoAvShim';
 import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';

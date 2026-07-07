@@ -1,4 +1,4 @@
-import { type AVPlaybackStatus, Audio } from 'expo-av';
+import { type AVPlaybackStatus, Audio } from './helpers/expoAvShim';
 import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';

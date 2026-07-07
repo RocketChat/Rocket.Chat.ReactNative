@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Video, ResizeMode } from 'expo-av';
+import { Video, ResizeMode } from '../../lib/methods/helpers/expoAvShim';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';

@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { Audio } from '../../lib/methods/helpers/expoAvShim';
 import { useEffect, useRef, memo } from 'react';
 
 export enum ERingerSounds {

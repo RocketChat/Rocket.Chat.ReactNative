@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { Audio } from '../../methods/helpers/expoAvShim';
 
 import log from '../../methods/helpers/log';
 
