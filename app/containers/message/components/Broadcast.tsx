@@ -5,7 +5,6 @@ import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import { BUTTON_HIT_SLOP } from '../utils';
 import I18n from '../../../i18n';
-import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';
 import { useMessageAuthor, useMessageItem } from '../stores/MessageStore';
 import { useBroadcast, useMessageUser, useReplyBroadcast } from '../stores/MessageRoomStore';
@@ -17,7 +16,7 @@ const Broadcast = () => {
 	const user = useMessageUser();
 	const replyBroadcast = useReplyBroadcast();
 	const broadcast = useBroadcast();
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const { u: author } = useMessageAuthor();
 	const isOwn = author?._id === user?.id;
 
@@ -26,12 +25,12 @@ const Broadcast = () => {
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={() => replyBroadcast?.(item)}
-					style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
+					style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='message-broadcast-reply'>
 					<View style={styles.buttonInnerContainer}>
-						<CustomIcon name='arrow-back' size={20} color={themes[theme].fontWhite} />
-						<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{I18n.t('Reply')}</Text>
+						<CustomIcon name='arrow-back' size={20} color={colors.fontWhite} />
+						<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Reply')}</Text>
 					</View>
 				</Touchable>
 			</View>

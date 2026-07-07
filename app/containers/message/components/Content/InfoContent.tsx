@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import styles from '../../styles';
 import { getInfoMessage, messageHaveAuthorName } from '../../utils';
 import { useTheme } from '../../../../theme';
-import { themes } from '../../../../lib/constants/colors';
 import { type MessageTypesValues } from '../../../../definitions';
 import { useInfoData, useMessageAuthor, useMessageText } from '../../stores/MessageStore';
 import User from '../User';
@@ -11,7 +10,7 @@ import User from '../User';
 const InfoContent = () => {
 	'use memo';
 
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const { t: type, comment } = useInfoData();
 	const { u: author, role } = useMessageAuthor();
 	const { messageText } = useMessageText();
@@ -19,7 +18,7 @@ const InfoContent = () => {
 	const infoMessage = getInfoMessage({ type, role, msg: messageText, author, comment });
 
 	const renderMessageContent = (
-		<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} accessibilityLabel={infoMessage}>
+		<Text style={[styles.textInfo, { color: colors.fontSecondaryInfo }]} accessibilityLabel={infoMessage}>
 			{infoMessage}
 		</Text>
 	);

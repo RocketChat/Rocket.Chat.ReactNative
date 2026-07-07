@@ -2,7 +2,6 @@ import { transparentize } from 'color2k';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../../lib/constants/colors';
 import { type IAttachment } from '../../../../definitions/IAttachment';
 import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../CustomIcon';
@@ -88,7 +87,7 @@ const AttText = ({ text, getCustomEmoji }: IMessageAttText) => {
 const Fields = ({ attachment, getCustomEmoji }: IMessageFields) => {
 	'use memo';
 
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const user = useMessageUser();
 
 	if (!attachment.fields) {
@@ -99,7 +98,7 @@ const Fields = ({ attachment, getCustomEmoji }: IMessageFields) => {
 		<>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-					<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
+					<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: colors.fontDefault }]}>
 						{field.title}
 					</Text>
 					<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
@@ -112,7 +111,7 @@ const Fields = ({ attachment, getCustomEmoji }: IMessageFields) => {
 const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 	'use memo';
 
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 
 	if (!attachment) {
@@ -123,8 +122,7 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 		setCollapsed(!collapsed);
 	};
 
-	const { fontSecondaryInfo } = themes[theme];
-	let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium } = themes[theme];
+	let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium } = colors;
 
 	try {
 		if (attachment.color) {
@@ -158,7 +156,7 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 				<View style={styles.touchableContainer}>
 					<View style={styles.attachmentContainer}>
 						<View style={styles.authorContainer}>
-							<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
+							<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</Text>
 						</View>
 						{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
 						{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}

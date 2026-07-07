@@ -3,11 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
-import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
-import { type TSupportedThemes, useTheme } from '../../../../theme';
+import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
@@ -88,20 +87,21 @@ interface IMessageReply {
 	msg?: string;
 }
 
-const Title = ({ attachment, theme }: { attachment: IAttachment; theme: TSupportedThemes }) => {
+const Title = ({ attachment }: { attachment: IAttachment }) => {
 	'use memo';
 
+	const { colors } = useTheme();
 	const timeFormat = useTimeFormat();
 	const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? (
-				<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint }]}>
+				<Text numberOfLines={1} style={[styles.author, { color: colors.fontHint }]}>
 					{attachment.author_name}
 				</Text>
 			) : null}
-			{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
-			{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
+			{time ? <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text> : null}
+			{attachment.title ? <Text style={[styles.title, { color: colors.fontDefault }]}>{attachment.title}</Text> : null}
 		</View>
 	);
 };
@@ -143,17 +143,10 @@ const UrlImage = ({ image }: { image?: string }) => {
 	return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 };
 
-const Fields = ({
-	attachment,
-	theme,
-	getCustomEmoji
-}: {
-	attachment: IAttachment;
-	theme: TSupportedThemes;
-	getCustomEmoji: TGetCustomEmoji;
-}) => {
+const Fields = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 	'use memo';
 
+	const { colors } = useTheme();
 	const user = useMessageUser();
 
 	if (!attachment.fields) {
@@ -164,7 +157,7 @@ const Fields = ({
 		<View style={styles.fieldsContainer}>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-					<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
+					<Text style={[styles.fieldTitle, { color: colors.fontDefault }]}>{field.title}</Text>
 					<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
 				</View>
 			))}
@@ -176,7 +169,7 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 	'use memo';
 
 	const [loading, setLoading] = useState(false);
-	const { theme } = useTheme();
+	const { colors, theme } = useTheme();
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const id = useMessageId();
@@ -201,7 +194,7 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 		openLink(url, theme);
 	};
 
-	let { strokeLight } = themes[theme];
+	let { strokeLight } = colors;
 	if (attachment.color) {
 		strokeLight = attachment.color;
 	}
@@ -220,17 +213,17 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 				disabled={!!(loading || attachment.message_link)}>
 				<View style={styles.attachmentContainer}>
 					<View style={styles.titleAndDescriptionContainer}>
-						<Title attachment={attachment} theme={theme} />
+						<Title attachment={attachment} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
 						<Quote attachments={attachment.attachments} />
 						<Attachments attachments={attachment.attachments} />
-						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />
 						{loading ? (
 							<View style={styles.backdrop}>
 								<View
 									style={[
 										styles.backdrop,
-										{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
+										{ backgroundColor: colors.surfaceNeutral, opacity: colors.attachmentLoadingOpacity }
 									]}></View>
 								<RCActivityIndicator />
 							</View>
