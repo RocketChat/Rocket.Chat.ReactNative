@@ -122,24 +122,12 @@ export default StyleSheet.create({
 		lineHeight: 24
 	},
 	heading5: {
-		...Platform.select({
-			ios: sharedStyles.textMedium,
-			android: {
-				...sharedStyles.textMedium,
-				fontWeight: '700'
-			}
-		}),
+		...sharedStyles.textMedium,
 		fontSize: 16,
 		lineHeight: 22
 	},
 	heading6: {
-		...Platform.select({
-			ios: sharedStyles.textMedium,
-			android: {
-				...sharedStyles.textMedium,
-				fontWeight: '700'
-			}
-		}),
+		...sharedStyles.textMedium,
 		fontSize: 14,
 		lineHeight: 20
 	},
