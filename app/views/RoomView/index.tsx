@@ -96,8 +96,8 @@ import {
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { RoomContext } from './context';
-import { createInteractionStore, InteractionStoreContext, type InteractionStore } from './InteractionStore';
+import { createInteractionStore, type InteractionStore } from './InteractionStore';
+import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
@@ -1629,79 +1629,76 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		const federated = 'id' in room && isRoomFederated(room);
 
 		return (
-			<InteractionStoreContext.Provider value={this.interactionStore}>
-				<RoomContext.Provider
-					value={{
-						rid,
-						t,
-						room,
-						tmid: this.tmid,
-						sharing: false,
-						updateAutocompleteVisible: this.updateAutocompleteVisible,
-						isAutocompleteVisible,
-						onRemoveQuoteMessage: this.onRemoveQuoteMessage,
-						editCancel: this.onEditCancel,
-						editRequest: this.onEditRequest,
-						onSendMessage: this.handleSendMessage,
-						setQuotesAndText: this.setQuotesAndText,
-						getText: this.getText
-					}}>
-					<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-						{!this.tmid ? (
-							<Banner
-								title={I18n.t('Announcement')}
-								text={announcement}
-								bannerClosed={bannerClosed}
-								closeBanner={this.closeBanner}
-							/>
-						) : null}
-						<MessageRoomProvider
-							navToRoomInfo={this.navToRoomInfo}
-							showAttachment={this.showAttachment}
-							blockAction={this.blockAction}
-							handleEnterCall={this.handleEnterCall}
-							fetchThreadName={this.fetchThreadName}
-							toggleFollowThread={this.toggleFollowThread}
-							jumpToMessage={this.jumpToMessageByUrl}
-							closeEmojiAndAction={this.handleCloseEmoji}
-							onReactionPress={this.onReactionPress}
-							onReactionLongPress={this.onReactionLongPress}
-							reactionInit={this.onReactionInit}
-							onDiscussionPress={this.onDiscussionPress}
-							onThreadPress={this.onThreadPress}
-							replyBroadcast={this.replyBroadcast}
-							errorActionsShow={this.errorActionsShow}
-							onAnswerButtonPress={this.handleSendMessage}
-							onEncryptedPress={this.onEncryptedPress}
-							archived={'id' in room && room.archived}
-							isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
+			<RoomProviders
+				store={this.interactionStore}
+				rid={rid}
+				t={t}
+				room={room}
+				tmid={this.tmid}
+				sharing={false}
+				isAutocompleteVisible={isAutocompleteVisible}
+				updateAutocompleteVisible={this.updateAutocompleteVisible}
+				onRemoveQuoteMessage={this.onRemoveQuoteMessage}
+				editCancel={this.onEditCancel}
+				editRequest={this.onEditRequest}
+				onSendMessage={this.handleSendMessage}
+				setQuotesAndText={this.setQuotesAndText}
+				getText={this.getText}>
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+					{!this.tmid ? (
+						<Banner
+							title={I18n.t('Announcement')}
+							text={announcement}
+							bannerClosed={bannerClosed}
+							closeBanner={this.closeBanner}
+						/>
+					) : null}
+					<MessageRoomProvider
+						navToRoomInfo={this.navToRoomInfo}
+						showAttachment={this.showAttachment}
+						blockAction={this.blockAction}
+						handleEnterCall={this.handleEnterCall}
+						fetchThreadName={this.fetchThreadName}
+						toggleFollowThread={this.toggleFollowThread}
+						jumpToMessage={this.jumpToMessageByUrl}
+						closeEmojiAndAction={this.handleCloseEmoji}
+						onReactionPress={this.onReactionPress}
+						onReactionLongPress={this.onReactionLongPress}
+						reactionInit={this.onReactionInit}
+						onDiscussionPress={this.onDiscussionPress}
+						onThreadPress={this.onThreadPress}
+						replyBroadcast={this.replyBroadcast}
+						errorActionsShow={this.errorActionsShow}
+						onAnswerButtonPress={this.handleSendMessage}
+						onEncryptedPress={this.onEncryptedPress}
+						archived={'id' in room && room.archived}
+						isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
+						rid={rid}
+						user={user as any}
+						baseUrl={baseUrl}
+						broadcast={'id' in room && room.broadcast}
+						isThreadRoom={!!this.tmid}
+						Message_GroupingPeriod={Message_GroupingPeriod}
+						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
+						<List
+							ref={this.list}
+							listRef={this.flatList}
 							rid={rid}
-							user={user as any}
-							baseUrl={baseUrl}
-							broadcast={'id' in room && room.broadcast}
-							isThreadRoom={!!this.tmid}
-							Message_GroupingPeriod={Message_GroupingPeriod}
-							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-							<List
-								ref={this.list}
-								listRef={this.flatList}
-								rid={rid}
-								t={t as RoomType}
-								tmid={this.tmid}
-								renderRow={this.renderItem}
-								hideSystemMessages={this.hideSystemMessages}
-								showMessageInMainThread={user.showMessageInMainThread ?? false}
-								serverVersion={serverVersion}
-							/>
-						</MessageRoomProvider>
-						{this.renderFooter()}
-						{this.renderActions()}
-						<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-						<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-					</SafeAreaView>
-				</RoomContext.Provider>
-			</InteractionStoreContext.Provider>
+							t={t as RoomType}
+							tmid={this.tmid}
+							renderRow={this.renderItem}
+							hideSystemMessages={this.hideSystemMessages}
+							showMessageInMainThread={user.showMessageInMainThread ?? false}
+							serverVersion={serverVersion}
+						/>
+					</MessageRoomProvider>
+					{this.renderFooter()}
+					{this.renderActions()}
+					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+				</SafeAreaView>
+			</RoomProviders>
 		);
 	}
 }
