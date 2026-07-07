@@ -38,13 +38,8 @@ import {
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomContext } from '../RoomView/context';
-import {
-	createInteractionStore,
-	InteractionStoreContext,
-	type InteractionStore,
-	type TInteraction
-} from '../RoomView/InteractionStore';
+import { RoomProviders } from '../RoomView/RoomProviders';
+import { createInteractionStore, type InteractionStore, type TInteraction } from '../RoomView/InteractionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -403,31 +398,28 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		if (attachments.length) {
 			return (
-				<InteractionStoreContext.Provider value={this.interactionStore}>
-					<RoomContext.Provider
-						value={{
-							rid: room.rid,
-							t: room.t,
-							room,
-							tmid: this.getThreadId(thread),
-							sharing: true,
-							onSendMessage: this.send,
-							onRemoveQuoteMessage: this.onRemoveQuoteMessage
-						}}>
-						<View style={styles.container}>
-							<Preview
-								// using key just to reset zoom/move after change selected
-								key={selected?.path}
-								item={selected}
-								length={attachments.length}
-								theme={theme}
-							/>
-							<MessageComposerContainer ref={this.messageComposerRef}>
-								<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
-							</MessageComposerContainer>
-						</View>
-					</RoomContext.Provider>
-				</InteractionStoreContext.Provider>
+				<RoomProviders
+					store={this.interactionStore}
+					rid={room.rid}
+					t={room.t}
+					room={room}
+					tmid={this.getThreadId(thread)}
+					sharing
+					onSendMessage={this.send}
+					onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
+					<View style={styles.container}>
+						<Preview
+							// using key just to reset zoom/move after change selected
+							key={selected?.path}
+							item={selected}
+							length={attachments.length}
+							theme={theme}
+						/>
+						<MessageComposerContainer ref={this.messageComposerRef}>
+							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
+						</MessageComposerContainer>
+					</View>
+				</RoomProviders>
 			);
 		}
 
