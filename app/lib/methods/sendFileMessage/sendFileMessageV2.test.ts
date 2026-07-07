@@ -169,4 +169,14 @@ describe('sendFileMessageV2', () => {
 			})
 		);
 	});
+
+	it('does not destroy the local upload record when mediaConfirm fails', async () => {
+		(fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 500 });
+		const { createUploadRecord } = require('./utils');
+
+		await expect(sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com')).rejects.toThrow();
+
+		const [, mockUploadRecord] = await createUploadRecord.mock.results[0].value;
+		expect(mockUploadRecord.destroyPermanently).not.toHaveBeenCalled();
+	});
 });

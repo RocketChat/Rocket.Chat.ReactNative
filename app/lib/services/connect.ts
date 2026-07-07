@@ -55,6 +55,12 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		await sdk.initialize(server);
 		await getSettings();
 
+		// A newer connect() call may have switched servers while getSettings() was in flight —
+		// bail out rather than wiring up listeners/dispatching against the wrong sdk instance.
+		if (sdk.server !== server) {
+			return;
+		}
+
 		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
@@ -100,7 +106,10 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection(
 			'stream-notify-all',
-			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
+			protectedFunction(async (ddpMessage: { fields?: { args?: any; eventName: string } }) => {
+				if (!ddpMessage.fields) {
+					return;
+				}
 				const { eventName } = ddpMessage.fields;
 				if (/public-settings-changed/.test(eventName)) {
 					const { _id, value } = ddpMessage.fields.args[1];
@@ -136,7 +145,12 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection(
 			'stream-roles',
-			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
+			protectedFunction((ddpMessage: any) => {
+				if (!ddpMessage?.fields) {
+					return;
+				}
+				onRolesChanged(ddpMessage);
+			})
 		);
 
 		// RC 4.1
@@ -160,7 +174,10 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection(
 			'stream-notify-logged',
-			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
+			protectedFunction(async (ddpMessage: { fields?: { args?: any; eventName?: any } }) => {
+				if (!ddpMessage.fields) {
+					return;
+				}
 				const { eventName } = ddpMessage.fields;
 
 				// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
@@ -251,7 +268,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection('stream-force_logout', () => store.dispatch(logout(true)));
 	} catch (e) {
-		console.error('Connection error:', e);
+		log(e);
 		throw e;
 	}
 }
@@ -384,10 +401,12 @@ function checkAndReopen(): Promise<boolean> {
 
 /**
  * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
- * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
- * close and can read true for a stale session. Redux resets to
- * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
- * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
+ * Trusts redux state rather than the ddp-client's own connection/account state,
+ * which isn't cleared on socket close and can appear valid for a stale session.
+ * Redux resets to `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched from the
+ * `connection.on('connection', ...)` handler in `connect()` when `status ===
+ * 'connected'`) and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers
+ * the handshake.
  */
 async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
 	const isReady = () => {
@@ -470,7 +489,7 @@ async function getLoginServices(server: string) {
 			store.dispatch(setLoginServices({}));
 		}
 	} catch (error) {
-		console.log(error);
+		log(error);
 		store.dispatch(setLoginServices({}));
 	}
 }

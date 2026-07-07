@@ -8,9 +8,11 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 const count = 50;
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
-	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('/v1/chat.syncMessages', { roomId, next, count, type });
-	return result;
+	const response = await sdk.get('/v1/chat.syncMessages', { roomId, next, count, type });
+	if (!response.success) {
+		return undefined;
+	}
+	return response.result;
 };
 
 const getSyncMessagesFromCursor = async (
@@ -35,9 +37,9 @@ const getSyncMessagesFromCursor = async (
 	const [updatedMessages, deletedMessages] = await Promise.all(promises);
 	return {
 		deleted: deletedMessages?.deleted ?? [],
-		deletedNext: deletedMessages?.cursor.next,
+		deletedNext: deletedMessages?.cursor?.next,
 		updated: updatedMessages?.updated ?? [],
-		updatedNext: updatedMessages?.cursor.next
+		updatedNext: updatedMessages?.cursor?.next
 	};
 };
 
@@ -81,9 +83,11 @@ async function load({
 		lastOpenISOString = lastUpdate?.toISOString();
 	}
 	// RC 0.60.0
-	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('/v1/chat.syncMessages', { roomId, lastUpdate: lastOpenISOString });
-	return result;
+	const response = await sdk.get('/v1/chat.syncMessages', { roomId, lastUpdate: lastOpenISOString });
+	if (!response.success) {
+		return undefined;
+	}
+	return response.result;
 }
 
 export async function loadMissedMessages(args: {
@@ -104,7 +108,7 @@ export async function loadMissedMessages(args: {
 			updatedNext,
 			deleted,
 			deletedNext
-		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
+		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext?: number | null; deletedNext?: number | null } = data;
 		// @ts-ignore // TODO: remove loaderItem obligatoriness
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 

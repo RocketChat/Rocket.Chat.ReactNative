@@ -57,19 +57,22 @@ jest.mock('../services/restApi', () => ({
 }));
 
 jest.mock('./subscriptions/rooms', () => ({
-	roomsSubscription: null
+	roomsSubscription: {
+		stop: jest.fn()
+	}
 }));
 
 jest.mock('./getUsersPresence', () => ({
-	_activeUsersSubTimeout: { activeUsersSubTimeout: false }
+	_activeUsersSubTimeout: { activeUsersSubTimeout: undefined }
 }));
 
 import { DDPSDK } from '@rocket.chat/ddp-client';
 
-import { removeServer } from './logout';
+import { removeServer, logout } from './logout';
 import UserPreferences from './userPreferences';
 import { getDeviceToken } from '../notifications';
 import log from './helpers/log';
+import sdk from '../services/sdk';
 
 describe('removeServer', () => {
 	beforeEach(() => {
@@ -172,5 +175,81 @@ describe('removeServer', () => {
 
 		await removeServer({ server: 'https://example.com' });
 		expect(close).toHaveBeenCalled();
+	});
+});
+
+describe('logout', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		// Reset sdk.current to undefined before each test
+		(sdk as any).current = undefined;
+	});
+
+	afterEach(() => {
+		// Restore roomsSubscription to its original state to prevent test isolation issues
+		const mockRoomsSubscription = jest.requireMock('./subscriptions/rooms');
+		if (!mockRoomsSubscription.roomsSubscription || !mockRoomsSubscription.roomsSubscription.stop) {
+			mockRoomsSubscription.roomsSubscription = {
+				stop: jest.fn()
+			};
+		}
+	});
+
+	it('stops the rooms subscription, clears the presence timer, logs out of the sdk, and disconnects', async () => {
+		// Setup
+		(sdk as any).current = {}; // Make sdk.current truthy so disconnect() is called
+		const mockRoomsSubscription = jest.requireMock('./subscriptions/rooms');
+		const mockConnect = jest.requireMock('../services/connect');
+		const mockSdk = jest.requireMock('../services/sdk').default;
+		const mockActiveUsersTimeout = jest.requireMock('./getUsersPresence')._activeUsersSubTimeout;
+
+		// Set up a timeout ID to be cleared
+		mockActiveUsersTimeout.activeUsersSubTimeout = 123;
+
+		// Execute
+		await logout({ server: 'https://example.com' });
+
+		// Assert
+		expect(mockRoomsSubscription.roomsSubscription.stop).toHaveBeenCalled();
+		expect(mockSdk.logout).toHaveBeenCalled();
+		expect(mockConnect.disconnect).toHaveBeenCalled();
+		// Verify the timeout was cleared
+		expect(mockActiveUsersTimeout.activeUsersSubTimeout).toBe(false);
+	});
+
+	it('handles missing roomsSubscription gracefully', async () => {
+		// Setup
+		(sdk as any).current = {};
+		const mockRoomsSubscription = jest.requireMock('./subscriptions/rooms');
+		const mockConnect = jest.requireMock('../services/connect');
+		const mockSdk = jest.requireMock('../services/sdk').default;
+
+		// Set roomsSubscription to null to test the optional chaining
+		mockRoomsSubscription.roomsSubscription = null;
+
+		// Execute
+		await logout({ server: 'https://example.com' });
+
+		// Assert - should not throw and disconnect should still be called
+		expect(mockSdk.logout).toHaveBeenCalled();
+		expect(mockConnect.disconnect).toHaveBeenCalled();
+	});
+
+	it('handles missing timeout gracefully', async () => {
+		// Setup
+		(sdk as any).current = {};
+		const mockSdk = jest.requireMock('../services/sdk').default;
+		const mockConnect = jest.requireMock('../services/connect');
+		const mockActiveUsersTimeout = jest.requireMock('./getUsersPresence')._activeUsersSubTimeout;
+
+		// Set activeUsersSubTimeout to undefined
+		mockActiveUsersTimeout.activeUsersSubTimeout = undefined;
+
+		// Execute
+		await logout({ server: 'https://example.com' });
+
+		// Assert - should not throw
+		expect(mockSdk.logout).toHaveBeenCalled();
+		expect(mockConnect.disconnect).toHaveBeenCalled();
 	});
 });

@@ -4,6 +4,7 @@ import { pendingHangups } from './voip/pendingHangups';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { setUser } from '../../actions/login';
 import database from '../database';
+import { onRolesChanged } from '../methods/getRoles';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -36,7 +37,12 @@ jest.mock('./sdk', () => {
 				return state.server;
 			},
 			disconnect: (...args: any[]) => mockSdkDisconnect(...args),
-			initialize: (s: string) => mockSdkInitialize(s),
+			// Mirrors the real sdk.ts: initialize() synchronously assigns the server before
+			// resolving, so `sdk.server` reflects the in-flight connect() call's target.
+			initialize: (s: string) => {
+				state.server = s;
+				return mockSdkInitialize(s);
+			},
 			onCollection: (...args: any[]) => mockSdkOnCollection(...args),
 			login: (...args: any[]) => mockSdkLogin(...args),
 			get current() {
@@ -480,6 +486,30 @@ describe('connect — connection status handler', () => {
 		expect(mockSdkInitialize).not.toHaveBeenCalled();
 	});
 
+	it('bails out if a newer connect() call switched servers while getSettings() was in flight', async () => {
+		const getSettingsMock = jest.requireMock('../methods/getSettings').getSettings as jest.Mock;
+		let resolveSettingsA: () => void;
+		getSettingsMock.mockImplementationOnce(
+			() =>
+				new Promise<void>(resolve => {
+					resolveSettingsA = resolve;
+				})
+		);
+
+		sdkMock.__setServer(undefined);
+		const connectAPromise = connect({ server: 'https://a.example.com' });
+		await Promise.resolve(); // let connect(A) reach the getSettings() await
+
+		// Simulate connect(B) having already taken over.
+		sdkMock.__setServer('https://b.example.com');
+
+		resolveSettingsA!();
+		await connectAPromise;
+
+		// connect(A)'s continuation must not have registered a connection listener for the stale call.
+		expect(mockConnectionOn).not.toHaveBeenCalled();
+	});
+
 	it('dispatches connectSuccess and loginRequest(resume) on reconnect when user has a token', async () => {
 		await connect({ server: SERVER });
 		const listener = getCapturedConnectionListener();
@@ -632,6 +662,7 @@ describe('checkAndReopen', () => {
 describe('connect — rooms subscription guard reset on close', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },
@@ -672,6 +703,7 @@ describe('connect — stream-notify-logged updateAvatar', () => {
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },
@@ -936,5 +968,44 @@ describe('connection status handler (Fix 4 regression)', () => {
 		await flushMicrotasks();
 		const actions = mockStoreDispatch.mock.calls.map(([action]) => (action as any).type);
 		expect(actions).not.toContain('INQUIRY_REQUEST');
+	});
+});
+
+// Regression: stream-notify-all/stream-roles/stream-notify-logged handlers are wrapped in
+// protectedFunction, which only catches synchronous throws. A fieldless payload reaching an
+// async handler that destructures `ddpMessage.fields` without a guard would reject instead of
+// throw, producing an unhandled promise rejection. Each handler must bail out early instead.
+describe('connect — collection handlers guard against fieldless payloads', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('ignores a stream-notify-all message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-notify-all');
+
+		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
+	});
+
+	it('ignores a stream-roles message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-roles');
+
+		expect(() => handler({ msg: 'added' })).not.toThrow();
+		expect(onRolesChanged).not.toHaveBeenCalled();
+	});
+
+	it('ignores a stream-notify-logged message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-notify-logged');
+
+		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
 	});
 });

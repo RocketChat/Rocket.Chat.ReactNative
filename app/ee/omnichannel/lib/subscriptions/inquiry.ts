@@ -115,6 +115,6 @@ export default function subscribeInquiry() {
 		};
 	} catch (e) {
 		log(e);
-		return Promise.reject();
+		return Promise.reject(e instanceof Error ? e : new Error('subscribeInquiry failed'));
 	}
 }

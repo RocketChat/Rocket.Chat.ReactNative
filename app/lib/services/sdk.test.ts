@@ -23,6 +23,8 @@ jest.mock('../methods/userPreferences', () => ({
 	}
 }));
 
+jest.mock('../methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
 jest.mock('@rocket.chat/ddp-client', () => ({
 	DDPSDK: {
 		create: jest.fn(),
@@ -180,7 +182,7 @@ describe('Sdk.login', () => {
 
 	it('calls loginWithToken with the authToken from the REST response', async () => {
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
 		});
 		setInternalSdk(fake);
@@ -189,8 +191,8 @@ describe('Sdk.login', () => {
 		expect(result.authToken).toBe('tok-abc');
 	});
 
-	it('rejects when the REST response has success: false', async () => {
-		const fake = buildFakeSdkWithLogin({ success: false });
+	it('rejects when the REST response has status: error', async () => {
+		const fake = buildFakeSdkWithLogin({ status: 'error' });
 		setInternalSdk(fake);
 		await expect(sdk.login({ user: 'john', password: 'wrong' })).rejects.toThrow('Invalid response from server');
 	});
@@ -206,7 +208,7 @@ describe('Sdk.login', () => {
 
 	it('sets X-Auth-Token and X-User-Id in getHeaders after successful login', async () => {
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
 		});
 		setInternalSdk(fake);
@@ -218,7 +220,7 @@ describe('Sdk.login', () => {
 
 	it('clears X-Auth-Token and X-User-Id from getHeaders after logout', async () => {
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
 		});
 		setInternalSdk(fake);
@@ -233,7 +235,7 @@ describe('Sdk.login', () => {
 		// Deep link logins reach sdk.login with `{ resume }` instead of `{ user, password }`,
 		// but the header centralization reads authToken/userId from the same /v1/login response.
 		const fake = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-deep', userId: 'uid-deep', me: { username: 'jane' } }
 		});
 		setInternalSdk(fake);
@@ -253,7 +255,7 @@ describe('Sdk.login', () => {
 		// Login on server1 → token1/user1; re-initialize for server2 → headers cleared;
 		// login on server2 → token2/user2 (server1 credentials never leak).
 		const server1Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
@@ -263,7 +265,7 @@ describe('Sdk.login', () => {
 		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-1');
 
 		const server2Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);
@@ -280,7 +282,7 @@ describe('Sdk.login', () => {
 	it('switches to the deep link server credentials when already logged in on another server', async () => {
 		// Already authenticated on server1.
 		const server1Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
@@ -290,7 +292,7 @@ describe('Sdk.login', () => {
 
 		// A deep link targeting server2 re-initializes on the new host, then logs in with the resume token.
 		const server2Sdk = buildFakeSdkWithLogin({
-			success: true,
+			status: 'success',
 			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
 		});
 		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);
@@ -303,6 +305,22 @@ describe('Sdk.login', () => {
 		// server1 credentials must not survive the deep link switch.
 		expect(headers['X-Auth-Token']).not.toBe('tok-1');
 		expect(headers['X-User-Id']).not.toBe('uid-1');
+	});
+});
+
+describe('Sdk.logout', () => {
+	it('logs when the account.logout() call times out instead of completing', async () => {
+		jest.useFakeTimers();
+		const log = jest.requireMock('../methods/helpers/log').default;
+		const fake = { account: { logout: jest.fn(() => new Promise(() => {})) } }; // never resolves
+		setInternalSdk(fake);
+
+		const logoutPromise = sdk.logout();
+		jest.advanceTimersByTime(5000);
+		await logoutPromise;
+
+		expect(log).toHaveBeenCalledWith(expect.objectContaining({ message: expect.stringContaining('timed out') }));
+		jest.useRealTimers();
 	});
 });
 
@@ -475,6 +493,36 @@ describe('Sdk.post', () => {
 		expect(twoFactor).toHaveBeenNthCalledWith(1, { method: 'totp', invalid: false });
 		expect(twoFactor).toHaveBeenNthCalledWith(2, { method: 'totp', invalid: true });
 		expect(result).toEqual({ success: true });
+	});
+
+	it('does not leak x-2fa-code into a concurrent request while a 2FA retry is in flight', async () => {
+		// The retried call is held open on this gate so we can read shared headers while it is still in flight.
+		let releaseRetry!: (value: any) => void;
+		const retryGate = new Promise(resolve => {
+			releaseRetry = resolve;
+		});
+
+		const post = jest.fn();
+		post.mockRejectedValueOnce({ data: { errorType: 'totp-required', details: { method: 'totp' } } });
+		post.mockImplementationOnce(() => retryGate);
+
+		const fake = buildFakeSdkWithRest({ rest: { post } });
+		setInternalSdk(fake);
+		(twoFactor as jest.Mock).mockResolvedValueOnce({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
+
+		const retryPromise = (sdk as any).post('/v1/rooms.info', {});
+
+		// Let the retry run up to the point where it has fired its retried network call (still pending on retryGate).
+		await new Promise(resolve => setTimeout(resolve, 0));
+
+		// A concurrent, unrelated call reads the shared headers while the 2FA retry is still in flight.
+		const concurrentHeaders = sdk.getHeaders();
+
+		releaseRetry({ success: true });
+		const result = await retryPromise;
+
+		expect(result).toEqual({ success: true });
+		expect(concurrentHeaders['x-2fa-code']).toBeUndefined();
 	});
 });
 
@@ -764,6 +812,32 @@ describe('Sdk.initialize', () => {
 		expect(handleTwoFactorChallenge).toHaveBeenCalledWith(expect.any(Function));
 	});
 
+	it('resolves the registered 2FA challenge handler with the code from twoFactor() — covers GET/DELETE 2FA', async () => {
+		const handleTwoFactorChallenge = jest.fn();
+		(DDPSDK.create as jest.Mock).mockReturnValue({ rest: { handleTwoFactorChallenge } });
+		sdk.initialize('https://example.com');
+		const registeredHandler = handleTwoFactorChallenge.mock.calls[0][0];
+
+		(twoFactor as jest.Mock).mockResolvedValueOnce({ twoFactorCode: '654321', twoFactorMethod: 'totp' });
+
+		const code = await registeredHandler({ method: 'totp', invalidAttempt: false });
+
+		expect(code).toBe('654321');
+		expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false });
+	});
+
+	it('propagates a cancellation from the registered 2FA challenge handler', async () => {
+		const handleTwoFactorChallenge = jest.fn();
+		(DDPSDK.create as jest.Mock).mockReturnValue({ rest: { handleTwoFactorChallenge } });
+		sdk.initialize('https://example.com');
+		const registeredHandler = handleTwoFactorChallenge.mock.calls[0][0];
+
+		(twoFactor as jest.Mock).mockRejectedValueOnce(new Error('cancelled'));
+
+		await expect(registeredHandler({ method: 'totp', invalidAttempt: true })).rejects.toThrow('cancelled');
+		expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
 	it('resets headers to defaults — does not carry Authorization across server switches', () => {
 		(sdk as any).serverUrl = 'https://old';
 		sdk.setBasicAuth('dXNlcjpwYXNz');
@@ -827,6 +901,21 @@ describe('Sdk.subscribeRoom', () => {
 		expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-room', 'rid-1/deleteMessageBulk');
 		expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-room', 'rid-1/messagesRead');
 		expect(subs).toHaveLength(5);
+	});
+
+	it('logs the error when subscribing throws, instead of swallowing it silently', async () => {
+		const log = jest.requireMock('../methods/helpers/log').default;
+		const fake = {
+			client: {
+				subscribe: jest.fn(() => {
+					throw new Error('socket not ready');
+				})
+			}
+		};
+		setInternalSdk(fake);
+		const result = await sdk.subscribeRoom('room-1');
+		expect(result).toEqual([]);
+		expect(log).toHaveBeenCalledWith(expect.any(Error));
 	});
 });
 
