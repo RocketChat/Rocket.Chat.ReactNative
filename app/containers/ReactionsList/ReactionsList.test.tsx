@@ -105,15 +105,11 @@ const mockStore = createStore(
 			server: {
 				server: 'https://open.rocket.chat',
 				version: '6.0.0'
-			}
+			},
+			customEmojis: {}
 		}
 	) => state
 );
-
-const mockGetCustomEmoji = (emoji: string) => ({
-	name: emoji,
-	extension: 'png'
-});
 
 const mockReactions: IReaction[] = [
 	{
@@ -138,13 +134,13 @@ describe('ReactionsList Integration Tests', () => {
 	});
 
 	it('renders empty ReactionsList when no reactions', () => {
-		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={[]} />);
+		renderWithRedux(<ReactionsList reactions={[]} />);
 		expect(screen.getByTestId('reactionsList')).toBeOnTheScreen();
 		expect(screen.getByTestId('reactionsListAllTab')).toBeOnTheScreen();
 	});
 
 	it('renders ReactionsList with reactions and allows navigation between tabs', () => {
-		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={mockReactions} />);
+		renderWithRedux(<ReactionsList reactions={mockReactions} />);
 
 		// Verify All tab content
 		expect(screen.getByText('4 people reacted')).toBeOnTheScreen();
@@ -185,14 +181,15 @@ describe('ReactionsList Integration Tests', () => {
 					server: {
 						server: 'https://open.rocket.chat',
 						version: '6.0.0'
-					}
+					},
+					customEmojis: {}
 				}
 			) => state
 		);
 
 		render(
 			<Provider store={storeWithoutRealNames}>
-				<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={mockReactions} />
+				<ReactionsList reactions={mockReactions} />
 			</Provider>
 		);
 
@@ -227,7 +224,7 @@ describe('ReactionsList Integration Tests', () => {
 			}
 		];
 
-		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={customReactions} />);
+		renderWithRedux(<ReactionsList reactions={customReactions} />);
 
 		// Verify custom emoji is rendered
 		expect(screen.getByTestId('tab-:custom_emoji:')).toBeOnTheScreen();

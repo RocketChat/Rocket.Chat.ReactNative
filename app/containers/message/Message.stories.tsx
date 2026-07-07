@@ -70,15 +70,6 @@ const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
 	height: 800
 });
 
-const getCustomEmoji = (content: string) => {
-	const customEmoji = {
-		marioparty: { name: content, extension: 'gif' },
-		react_rocket: { name: content, extension: 'png' },
-		nyan_rocket: { name: content, extension: 'png' }
-	}[content];
-	return customEmoji;
-};
-
 export default {
 	title: 'Message',
 	decorators: [
@@ -101,7 +92,6 @@ export const Message = (props: any) => (
 			ts={date}
 			timeFormat='LT'
 			isHeader
-			getCustomEmoji={getCustomEmoji}
 			theme={_theme}
 			{...props}
 		/>
@@ -118,7 +108,6 @@ const MessageLargeFont = (props: any) => (
 			ts={date}
 			timeFormat='LT'
 			isHeader
-			getCustomEmoji={getCustomEmoji}
 			theme={_theme}
 			{...props}
 		/>

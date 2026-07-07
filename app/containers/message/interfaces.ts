@@ -3,9 +3,9 @@ import { type StyleProp } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
 import { type IUserChannel } from '../markdown/interfaces';
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import {
 	type IAttachment,
+	type IReaction,
 	type IThread,
 	type IUrl,
 	type IUserMention,
@@ -76,7 +76,6 @@ export interface IMessageEmoji {
 	content: string;
 	standardEmojiStyle: { fontSize: number };
 	customEmojiStyle: StyleProp<ImageStyle>;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessageThread extends Pick<IThread, 'msg' | 'tcount' | 'tlm' | 'id'> {
@@ -116,7 +115,7 @@ export interface IMessageInner
 	blocks: [];
 	urls?: IUrl[];
 	isPreview?: boolean;
-	getCustomEmoji: TGetCustomEmoji;
+	reactions?: IReaction[];
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {
