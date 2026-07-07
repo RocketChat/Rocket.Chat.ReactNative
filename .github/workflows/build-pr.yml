@@ -24,6 +24,9 @@ jobs:
     needs: [run-eslint-and-test]
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
