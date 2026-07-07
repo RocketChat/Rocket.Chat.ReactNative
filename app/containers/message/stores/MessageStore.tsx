@@ -174,25 +174,22 @@ const computeIsHeader = (
 	if (hasError || (prev && prev.status === messagesStatus.ERROR)) {
 		return true;
 	}
-	try {
-		if (
-			prev &&
-			// @ts-expect-error IMessage types ts as Date, IMessageFromServer as string; the date op is valid at runtime
-			prev.ts.toDateString() === item.ts.toDateString() &&
-			prev.u?.username === item.u?.username &&
-			!(prev.groupable === false || item.groupable === false || broadcast === true) &&
-			// @ts-expect-error IMessage types ts as Date, IMessageFromServer as string; the date op is valid at runtime
-			item.ts - prev.ts < Message_GroupingPeriod * 1000 &&
-			prev.tmid === item.tmid &&
-			item.t !== 'rm' &&
-			prev.t !== 'rm'
-		) {
-			return false;
-		}
-		return true;
-	} catch {
+	// Grouping only applies to DB models with a Date ts; REST-sourced messages carry a string ts and are always headers.
+	if (!prev || Message_GroupingPeriod == null || !(prev.ts instanceof Date) || !(item.ts instanceof Date)) {
 		return true;
 	}
+	if (
+		prev.ts.toDateString() === item.ts.toDateString() &&
+		prev.u?.username === item.u?.username &&
+		!(prev.groupable === false || item.groupable === false || broadcast === true) &&
+		item.ts.getTime() - prev.ts.getTime() < Message_GroupingPeriod * 1000 &&
+		prev.tmid === item.tmid &&
+		item.t !== 'rm' &&
+		prev.t !== 'rm'
+	) {
+		return false;
+	}
+	return true;
 };
 
 export const useMessageGrouping = (): boolean => {

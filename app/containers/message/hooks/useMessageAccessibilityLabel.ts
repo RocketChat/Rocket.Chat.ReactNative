@@ -62,7 +62,7 @@ export const useMessageAccessibilityLabel = (): string => {
 	}
 	label = stripMentions(label, mentions, channels);
 
-	const hour = ts ? new Date(ts as Date).toLocaleTimeString() : '';
+	const hour = ts ? new Date(ts).toLocaleTimeString() : '';
 	const user = useRealName ? author?.name : author?.username || '';
 	const readOrUnreadLabel = !unread && unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const readReceipt = isReadReceiptEnabled && !isInfo ? readOrUnreadLabel : '';
