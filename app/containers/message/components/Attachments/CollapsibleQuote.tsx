@@ -123,7 +123,8 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 		setCollapsed(!collapsed);
 	};
 
-	let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium, fontSecondaryInfo } = themes[theme];
+	const { fontSecondaryInfo } = themes[theme];
+	let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium } = themes[theme];
 
 	try {
 		if (attachment.color) {
@@ -131,7 +132,6 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 			strokeExtraLight = attachment.color;
 			strokeLight = attachment.color;
 			strokeMedium = attachment.color;
-			fontSecondaryInfo = fontSecondaryInfo;
 		}
 	} catch (e) {
 		// fallback to default
