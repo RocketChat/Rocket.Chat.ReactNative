@@ -106,7 +106,10 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection(
 			'stream-notify-all',
-			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
+			protectedFunction(async (ddpMessage: { fields?: { args?: any; eventName: string } }) => {
+				if (!ddpMessage.fields) {
+					return;
+				}
 				const { eventName } = ddpMessage.fields;
 				if (/public-settings-changed/.test(eventName)) {
 					const { _id, value } = ddpMessage.fields.args[1];
@@ -142,7 +145,12 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection(
 			'stream-roles',
-			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
+			protectedFunction((ddpMessage: any) => {
+				if (!ddpMessage?.fields) {
+					return;
+				}
+				onRolesChanged(ddpMessage);
+			})
 		);
 
 		// RC 4.1
@@ -166,7 +174,10 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection(
 			'stream-notify-logged',
-			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
+			protectedFunction(async (ddpMessage: { fields?: { args?: any; eventName?: any } }) => {
+				if (!ddpMessage.fields) {
+					return;
+				}
 				const { eventName } = ddpMessage.fields;
 
 				// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`

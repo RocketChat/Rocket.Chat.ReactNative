@@ -4,6 +4,7 @@ import { pendingHangups } from './voip/pendingHangups';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { setUser } from '../../actions/login';
 import database from '../database';
+import { onRolesChanged } from '../methods/getRoles';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -967,5 +968,44 @@ describe('connection status handler (Fix 4 regression)', () => {
 		await flushMicrotasks();
 		const actions = mockStoreDispatch.mock.calls.map(([action]) => (action as any).type);
 		expect(actions).not.toContain('INQUIRY_REQUEST');
+	});
+});
+
+// Regression: stream-notify-all/stream-roles/stream-notify-logged handlers are wrapped in
+// protectedFunction, which only catches synchronous throws. A fieldless payload reaching an
+// async handler that destructures `ddpMessage.fields` without a guard would reject instead of
+// throw, producing an unhandled promise rejection. Each handler must bail out early instead.
+describe('connect — collection handlers guard against fieldless payloads', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('ignores a stream-notify-all message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-notify-all');
+
+		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
+	});
+
+	it('ignores a stream-roles message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-roles');
+
+		expect(() => handler({ msg: 'added' })).not.toThrow();
+		expect(onRolesChanged).not.toHaveBeenCalled();
+	});
+
+	it('ignores a stream-notify-logged message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-notify-logged');
+
+		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
 	});
 });
