@@ -257,7 +257,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 
 		sdk.onCollection('stream-force_logout', () => store.dispatch(logout(true)));
 	} catch (e) {
-		console.error('Connection error:', e);
+		log(e);
 		throw e;
 	}
 }
@@ -478,7 +478,7 @@ async function getLoginServices(server: string) {
 			store.dispatch(setLoginServices({}));
 		}
 	} catch (error) {
-		console.log(error);
+		log(error);
 		store.dispatch(setLoginServices({}));
 	}
 }
