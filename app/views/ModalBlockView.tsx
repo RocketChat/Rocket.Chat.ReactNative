@@ -97,8 +97,9 @@ const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 // A UIKit modal is not a message, but the shared media components it can render
 // (ImageContainer -> Button -> Touchable) assume a per-message context. Provide an
 // empty one: no long-press target, no id-scoped cache. Images still load via the
-// room provider's user/baseUrl.
-const EMPTY_MESSAGE = {} as TAnyMessageModel;
+// room provider's user/baseUrl. Routed through `unknown` (the repo's convention for
+// fake TAnyMessageModel fixtures) so the cast reads as intentional, not a real message.
+const EMPTY_MESSAGE = {} as unknown as TAnyMessageModel;
 
 class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
