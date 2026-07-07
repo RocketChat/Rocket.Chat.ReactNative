@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: 15,
 		backgroundColor: themes[theme].surfaceRoom,
-		marginVertical: 50,
-		gap: 16
+		marginVertical: 50
 	}
 });
 
