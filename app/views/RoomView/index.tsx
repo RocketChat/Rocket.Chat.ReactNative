@@ -70,7 +70,6 @@ import {
 	type TAnyMessageModel,
 	type TSubscriptionModel,
 	type IEmoji,
-	type TGetCustomEmoji,
 	type RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
@@ -932,7 +931,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	onReactionLongPress = (message: TAnyMessageModel) => {
 		const { showActionSheet } = this.props;
 		this.handleCloseEmoji(showActionSheet, {
-			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
+			children: <ReactionsList reactions={message?.reactions} />,
 			snaps: ['50%'],
 			enableContentPanningGesture: false,
 			fullContainer: true
@@ -1127,15 +1126,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			Review.pushPositiveEvent();
 		});
 		this.resetAction();
-	};
-
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
 	};
 
 	setLastOpen = (lastOpen: Date | null) => this.setState({ lastOpen });
@@ -1720,7 +1710,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
-	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,

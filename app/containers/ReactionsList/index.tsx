@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
 
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import { type IReaction } from '../../definitions';
 import I18n from '../../i18n';
 import styles from './styles';
@@ -8,9 +7,9 @@ import AllTab from './AllTab';
 import UsersList from './UsersList';
 import { TabView } from '../TabView';
 import Emoji from '../message/components/Emoji';
+import { useCustomEmoji } from '../../lib/hooks/useCustomEmoji';
 
 interface IReactionsListProps {
-	getCustomEmoji: TGetCustomEmoji;
 	reactions?: IReaction[];
 }
 
@@ -50,12 +49,13 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 	};
 };
 
-const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
+const ReactionsList = ({ reactions }: IReactionsListProps) => {
+	const getCustomEmoji = useCustomEmoji();
 	const { routes, sortedReactions } = useRoutes(reactions);
 
 	const renderScene = ({ route }: { route: IRoute }) => {
 		if (route.key === 'all') {
-			return <AllTab reactions={sortedReactions} getCustomEmoji={getCustomEmoji} />;
+			return <AllTab reactions={sortedReactions} />;
 		}
 		if (route.emoji && route.usernames && route.names) {
 			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names} />;

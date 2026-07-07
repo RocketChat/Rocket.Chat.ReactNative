@@ -48,7 +48,7 @@ const MessageAvatar = ({ small }: IMessageAvatar) => {
 					size={size}
 					borderRadius={4}
 					onPress={onPress}
-					getCustomEmoji={getCustomEmoji ?? (() => null)}
+					getCustomEmoji={getCustomEmoji}
 					avatar={avatar}
 					emoji={emoji}
 				/>

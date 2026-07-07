@@ -1,13 +1,7 @@
 import { type EdgeInsets } from 'react-native-safe-area-context';
 
 import { type ChatsStackParamList } from '../../stacks/types';
-import {
-	type IBaseScreen,
-	type ILastMessage,
-	type ILoggedUser,
-	type TSubscriptionModel,
-	type ICustomEmojis
-} from '../../definitions';
+import { type IBaseScreen, type ILastMessage, type ILoggedUser, type TSubscriptionModel } from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -18,7 +12,6 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	Hide_System_Messages?: string[];
 	baseUrl: string;
 	serverVersion: string | null;
-	customEmojis: ICustomEmojis;
 	isMasterDetail: boolean;
 	replyBroadcast: Function;
 	width: number;

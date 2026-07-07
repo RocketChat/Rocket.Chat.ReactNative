@@ -77,7 +77,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 					content={reaction.emoji}
 					standardEmojiStyle={styles.reactionEmoji}
 					customEmojiStyle={styles.reactionCustomEmoji}
-					getCustomEmoji={getCustomEmoji ?? (() => null)}
+					getCustomEmoji={getCustomEmoji}
 				/>
 				<Text style={[styles.reactionCount, { color: colors.badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
