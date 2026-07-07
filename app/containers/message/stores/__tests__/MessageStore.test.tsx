@@ -740,10 +740,10 @@ describe('MessageStore', () => {
 	describe('translation boundary on item.autoTranslate', () => {
 		const translationConfig = { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR', user: { username: 'alice' } };
 
-		it('useTranslateLanguage returns the language when autoTranslate is undefined', () => {
+		it('useTranslateLanguage returns undefined when autoTranslate is undefined', () => {
 			const model = buildFakeModel({ autoTranslate: undefined, u: { _id: 'u2', username: 'bob' } });
 			const { latest } = renderDerived(model, useTranslateLanguage, { config: translationConfig });
-			expect(latest()).toBe('pt-BR');
+			expect(latest()).toBeUndefined();
 		});
 
 		it('useTranslateLanguage returns the language when autoTranslate is true', () => {

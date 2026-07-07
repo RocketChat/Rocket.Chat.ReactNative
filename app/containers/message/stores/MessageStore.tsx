@@ -247,7 +247,7 @@ export const useTranslateLanguage = (): string | undefined => {
 	const user = useMessageUser();
 	return useMessageStore(s => {
 		const otherUserMessage = s.item.u?.username !== user?.username;
-		const canTranslate = autoTranslateRoom && autoTranslateLanguage && s.item.autoTranslate !== false && otherUserMessage;
+		const canTranslate = autoTranslateRoom && autoTranslateLanguage && s.item.autoTranslate && otherUserMessage;
 		return canTranslate ? autoTranslateLanguage : undefined;
 	});
 };
