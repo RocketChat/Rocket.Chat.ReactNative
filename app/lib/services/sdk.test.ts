@@ -812,6 +812,32 @@ describe('Sdk.initialize', () => {
 		expect(handleTwoFactorChallenge).toHaveBeenCalledWith(expect.any(Function));
 	});
 
+	it('resolves the registered 2FA challenge handler with the code from twoFactor() — covers GET/DELETE 2FA', async () => {
+		const handleTwoFactorChallenge = jest.fn();
+		(DDPSDK.create as jest.Mock).mockReturnValue({ rest: { handleTwoFactorChallenge } });
+		sdk.initialize('https://example.com');
+		const registeredHandler = handleTwoFactorChallenge.mock.calls[0][0];
+
+		(twoFactor as jest.Mock).mockResolvedValueOnce({ twoFactorCode: '654321', twoFactorMethod: 'totp' });
+
+		const code = await registeredHandler({ method: 'totp', invalidAttempt: false });
+
+		expect(code).toBe('654321');
+		expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false });
+	});
+
+	it('propagates a cancellation from the registered 2FA challenge handler', async () => {
+		const handleTwoFactorChallenge = jest.fn();
+		(DDPSDK.create as jest.Mock).mockReturnValue({ rest: { handleTwoFactorChallenge } });
+		sdk.initialize('https://example.com');
+		const registeredHandler = handleTwoFactorChallenge.mock.calls[0][0];
+
+		(twoFactor as jest.Mock).mockRejectedValueOnce(new Error('cancelled'));
+
+		await expect(registeredHandler({ method: 'totp', invalidAttempt: true })).rejects.toThrow('cancelled');
+		expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
 	it('resets headers to defaults — does not carry Authorization across server switches', () => {
 		(sdk as any).serverUrl = 'https://old';
 		sdk.setBasicAuth('dXNlcjpwYXNz');
