@@ -8,14 +8,15 @@ import {
 	type AccessibilityActionInfo,
 	TouchableOpacity,
 	TouchableHighlight,
-	type TouchableWithoutFeedbackProps
+	type TouchableHighlightProps,
+	type TouchableOpacityProps
 } from 'react-native';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
 import { isIOS } from '../lib/methods/helpers';
 
-export interface ITouchProps extends TouchableWithoutFeedbackProps {
+export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightProps {
 	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;

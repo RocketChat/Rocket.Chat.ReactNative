@@ -25,7 +25,7 @@ const Button = memo(({ style, text, disabled, onPress, icon, testID }: IPasscode
 			testID={testID}
 			style={[styles.buttonView, { backgroundColor: 'transparent' }, style]}
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
-			rippleColor={colors.buttonBackgroundSecondaryPress}
+			android_rippleColor={colors.buttonBackgroundSecondaryPress}
 			enabled={!disabled}
 			onPress={press}>
 			{icon ? (
