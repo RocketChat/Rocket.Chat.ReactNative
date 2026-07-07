@@ -78,7 +78,7 @@ interface IShareViewProps {
 type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
 
 // ShareView only supports the quote flow (messages are filled later via startShareView -> setQuotes);
-// edit/react/reply carry no messageId here, so they can't be represented by the union.
+// edit/react carry no messageId here, so they can't be represented by the union.
 const mapActionToInteraction = (action: TMessageAction): TInteraction =>
 	action === 'quote' ? { kind: 'quote', messageIds: [] } : null;
 

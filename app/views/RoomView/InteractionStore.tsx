@@ -2,7 +2,7 @@ import { createContext, type ReactElement, useContext, useState } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type TMessageAction } from './context';
+import { type TMessageAction } from '../../definitions';
 
 export type TInteraction =
 	| { kind: 'edit'; messageId: string }

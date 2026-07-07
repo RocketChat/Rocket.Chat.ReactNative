@@ -1,7 +1,5 @@
 import { createContext, useContext } from 'react';
 
-export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
-
 export interface IRoomContext {
 	rid?: string;
 	t?: string;
