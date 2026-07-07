@@ -4,7 +4,7 @@ import { fireEvent } from '@testing-library/react-native';
 import MessageContainer from '../index';
 import { type TAnyMessageModel } from '../../../definitions';
 import { createInteractionStore, InteractionStoreContext } from '../../../views/RoomView/InteractionStore';
-import { renderWithMessageProviders } from '../testHelpers';
+import { renderWithMessageProviders } from '../index.testHelpers';
 import { type MessageRoomState } from '../stores/MessageRoomStore';
 
 jest.mock('../components/Touch', () => {
