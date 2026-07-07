@@ -31,7 +31,6 @@ import {
 	type IShareAttachment,
 	type IUser,
 	RootEnum,
-	type TMessageAction,
 	type TSubscriptionModel,
 	type TThreadModel
 } from '../../definitions';
@@ -39,7 +38,7 @@ import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachmen
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomProviders } from '../RoomView/RoomProviders';
-import { createInteractionStore, type InteractionStore, type TInteraction } from '../RoomView/InteractionStore';
+import { createInteractionStore, type InteractionStore } from '../RoomView/InteractionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -72,11 +71,6 @@ interface IShareViewProps {
 
 type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
 
-// ShareView only supports the quote flow (messages are filled later via startShareView -> setQuotes);
-// edit/react carry no messageId here, so they can't be represented by the union.
-const mapActionToInteraction = (action: TMessageAction): TInteraction =>
-	action === 'quote' ? { kind: 'quote', messageIds: [] } : null;
-
 class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messageComposerRef: RefObject<IMessageComposerRef | null>;
 	private files: any[];
@@ -94,7 +88,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 		this.finishShareView = props.route.params?.finishShareView;
 		this.sentMessage = false;
-		this.interactionStore = createInteractionStore(mapActionToInteraction(props.route.params?.action));
+		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuotes.
+		this.interactionStore = createInteractionStore();
 
 		this.state = {
 			selected: {} as IShareAttachment,
