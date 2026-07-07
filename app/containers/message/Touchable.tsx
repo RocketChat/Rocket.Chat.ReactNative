@@ -1,5 +1,5 @@
 import { useContext, memo, type ReactNode, type FC } from 'react';
-import { Pressable, type PressableProps } from 'react-native-gesture-handler';
+import { Pressable, type PressableProps } from 'react-native';
 
 import MessageContext from './Context';
 

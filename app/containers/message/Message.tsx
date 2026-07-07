@@ -23,7 +23,7 @@ import { WidthAwareView } from './Components/WidthAwareView';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
-import Touch from './Touch';
+import Touch from '../Touch';
 import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
