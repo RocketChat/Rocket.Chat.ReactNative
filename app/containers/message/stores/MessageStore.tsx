@@ -11,7 +11,7 @@ import { useDebounce } from '../../../lib/methods/helpers/debounce';
 import openLink from '../../../lib/methods/helpers/openLink';
 import { useTheme } from '../../../theme';
 import {
-	useArchived,
+	useIsArchived,
 	useAutoTranslate,
 	useBroadcast,
 	useCloseEmojiAndAction,
@@ -286,7 +286,7 @@ export const useMessageLongPress = (): (() => void) => {
 	const isInfo = useIsInfoMessage();
 	const { hasError } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
-	const archived = useArchived();
+	const archived = useIsArchived();
 	const onLongPress = useMessageStore(s => s.onLongPress);
 	return () => {
 		if (isInfo || hasError || isEncrypted || archived) {

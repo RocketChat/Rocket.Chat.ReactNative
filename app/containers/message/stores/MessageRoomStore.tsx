@@ -122,7 +122,7 @@ export const useErrorActionsShow = (): MessageRoomState['errorActionsShow'] => u
 export const useOnAnswerButtonPress = (): MessageRoomState['onAnswerButtonPress'] =>
 	useMessageRoomStore(s => s.onAnswerButtonPress);
 export const useOnEncryptedPress = (): MessageRoomState['onEncryptedPress'] => useMessageRoomStore(s => s.onEncryptedPress);
-export const useArchived = (): boolean | undefined => useMessageRoomStore(s => s.archived);
+export const useIsArchived = (): boolean | undefined => useMessageRoomStore(s => s.archived);
 export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);

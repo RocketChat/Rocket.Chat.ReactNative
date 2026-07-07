@@ -9,7 +9,7 @@ import { useMessageAccessibilityLabel } from '../hooks/useMessageAccessibilityLa
 import { useMessageAccessibilityActions } from '../hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHint';
 import { useIsBeingEdited } from '../../../views/RoomView/InteractionStore';
-import { useArchived } from '../stores/MessageRoomStore';
+import { useIsArchived } from '../stores/MessageRoomStore';
 import {
 	useIsInfoMessage,
 	useMessageField,
@@ -47,7 +47,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const { isThreadReply } = useThreadPosition();
 	const isInfo = useIsInfoMessage();
-	const archived = useArchived();
+	const archived = useIsArchived();
 	const { hasError, isTemp } = useMessageStatus();
 	const type = useMessageField(item => item.t);
 	const id = useMessageField(item => item.id);

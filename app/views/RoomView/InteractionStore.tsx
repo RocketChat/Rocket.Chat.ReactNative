@@ -33,11 +33,15 @@ export const createInteractionStore = (initialInteraction?: TInteraction) =>
 			setEditing: messageId => set({ interaction: { kind: 'edit', messageId } }),
 			initQuote: messageId => set({ interaction: { kind: 'quote', messageIds: [messageId] } }),
 			appendQuote: messageId =>
-				set(state =>
-					state.interaction?.kind === 'quote'
-						? { interaction: { kind: 'quote', messageIds: [...state.interaction.messageIds, messageId] } }
-						: { interaction: { kind: 'quote', messageIds: [messageId] } }
-				),
+				set(state => {
+					if (state.interaction?.kind !== 'quote') {
+						return { interaction: { kind: 'quote', messageIds: [messageId] } };
+					}
+					if (state.interaction.messageIds.includes(messageId)) {
+						return {};
+					}
+					return { interaction: { kind: 'quote', messageIds: [...state.interaction.messageIds, messageId] } };
+				}),
 			removeQuote: messageId =>
 				set(state => {
 					if (state.interaction?.kind !== 'quote') {
