@@ -9,7 +9,6 @@ import { useMessageAccessibilityLabel } from '../hooks/useMessageAccessibilityLa
 import { useMessageAccessibilityActions } from '../hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHint';
 import { useIsBeingEdited } from '../../../views/RoomView/InteractionStore';
-import { useIsArchived } from '../stores/MessageRoomStore';
 import {
 	useIsInfoMessage,
 	useMessageField,
@@ -17,6 +16,7 @@ import {
 	useMessageLongPress,
 	useMessagePress,
 	useMessageStatus,
+	useMessageTouchable,
 	useThreadPosition
 } from '../stores/MessageStore';
 
@@ -45,18 +45,15 @@ const MessageTouchable = (props: TMessageProps) => {
 
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
-	const { isThreadReply } = useThreadPosition();
 	const isInfo = useIsInfoMessage();
-	const archived = useIsArchived();
-	const { hasError, isTemp } = useMessageStatus();
-	const type = useMessageField(item => item.t);
+	const { hasError } = useMessageStatus();
+	const { tappable } = useMessageTouchable();
 	const id = useMessageField(item => item.id);
 	const isBeingEdited = useIsBeingEdited(id);
 	const onPressAction = useMessagePress();
 	const onLongPress = useMessageLongPress();
 	const accessibilityLabelValue = useMessageAccessibilityLabel();
-	const isDisabled = (isInfo && !isThreadReply) || archived || isTemp || type === 'jitsi_call_started';
-	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
+	const accessibilityActions = useMessageAccessibilityActions(!tappable);
 	const accessibilityHint = useMessageAccessibilityHint();
 
 	let backgroundColor = undefined;
@@ -87,7 +84,7 @@ const MessageTouchable = (props: TMessageProps) => {
 					componentRef={touchRef}
 					onLongPress={handleLongPress}
 					onPress={onPressAction}
-					disabled={isDisabled}
+					disabled={!tappable}
 					style={{ backgroundColor }}
 					testID={isBeingEdited ? `message-editing-${id}` : undefined}
 					accessible

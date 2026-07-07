@@ -277,17 +277,34 @@ export const useMessageIgnored = (): boolean => useMessageStore(s => (s.manualUn
 
 export const useRevealIgnored = (): (() => void) => useMessageStore(s => s.reveal);
 
+// Single source of truth for pressability, shared by the Touch gate, long-press guard and
+// press guard. longPressable drops encrypted messages (tap can still open a thread; the action
+// sheet is suppressed); revealsIgnored is tappable ∧ isIgnored (a tap reveals instead of pressing).
+export const useMessageTouchable = (): { tappable: boolean; longPressable: boolean; revealsIgnored: boolean } => {
+	'use memo';
+
+	const isInfo = useIsInfoMessage();
+	const { hasError, isTemp } = useMessageStatus();
+	const isEncrypted = useIsEncrypted();
+	const archived = useIsArchived();
+	const isIgnored = useMessageIgnored();
+	const type = useMessageField(item => item.t);
+
+	const tappable = !(isInfo || hasError || archived || isTemp || type === 'jitsi_call_started');
+	const longPressable = tappable && !isEncrypted;
+	const revealsIgnored = tappable && isIgnored;
+
+	return { tappable, longPressable, revealsIgnored };
+};
+
 export const useMessageLongPress = (): (() => void) => {
 	'use memo';
 
 	const item = useMessageItem();
-	const isInfo = useIsInfoMessage();
-	const { hasError } = useMessageStatus();
-	const isEncrypted = useIsEncrypted();
-	const archived = useIsArchived();
+	const { longPressable } = useMessageTouchable();
 	const onLongPress = useMessageStore(s => s.onLongPress);
 	return () => {
-		if (isInfo || hasError || isEncrypted || archived) {
+		if (!longPressable) {
 			return;
 		}
 		onLongPress?.(item);
@@ -318,12 +335,12 @@ export const useMessagePress = (): (() => void) => {
 	const onThreadPress = useOnThreadPress();
 	const onDiscussionPress = useOnDiscussionPress();
 	const closeEmojiAndAction = useCloseEmojiAndAction();
-	const isIgnored = useMessageIgnored();
+	const { revealsIgnored } = useMessageTouchable();
 	const revealIgnored = useRevealIgnored();
 
 	const handlePress = useDebounce(
 		() => {
-			if (isIgnored) {
+			if (revealsIgnored) {
 				return revealIgnored();
 			}
 			if (onPress) {
