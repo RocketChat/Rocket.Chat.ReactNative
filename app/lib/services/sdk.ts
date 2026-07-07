@@ -155,7 +155,7 @@ class Sdk {
 		}
 	}
 
-	async post<TPath extends PathFor<'POST'>>(
+	post<TPath extends PathFor<'POST'>>(
 		endpoint: TPath,
 		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
 			? void
