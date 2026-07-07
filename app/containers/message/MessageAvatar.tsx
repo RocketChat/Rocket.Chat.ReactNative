@@ -16,7 +16,7 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 	return <View style={{ width, alignItems: 'flex-end' }}>{children}</View>;
 };
 
-const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
+const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji }: IMessageAvatar) => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);
@@ -41,7 +41,6 @@ const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, em
 					size={size}
 					borderRadius={4}
 					onPress={onPress}
-					getCustomEmoji={getCustomEmoji}
 					avatar={avatar}
 					emoji={emoji}
 				/>

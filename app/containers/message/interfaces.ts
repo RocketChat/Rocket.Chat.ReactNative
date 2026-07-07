@@ -19,7 +19,6 @@ export interface IMessageAttachments {
 	attachments?: IAttachment[];
 	timeFormat?: string;
 	showAttachment?: (file: IAttachment) => void;
-	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 }
 
@@ -30,7 +29,6 @@ export interface IMessageAvatar {
 	author?: IUserMessage;
 	small?: boolean;
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessageBlocks {
@@ -59,7 +57,6 @@ export interface IMessageContent {
 	md?: Root;
 	isEdited: boolean;
 	isEncrypted: boolean;
-	getCustomEmoji: TGetCustomEmoji;
 	channels?: IUserChannel[];
 	mentions?: IUserMention[];
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
@@ -119,6 +116,7 @@ export interface IMessageInner
 	blocks: [];
 	urls?: IUrl[];
 	isPreview?: boolean;
+	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {

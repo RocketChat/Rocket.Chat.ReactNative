@@ -14,6 +14,7 @@ import {
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';
+import { setCustomEmojis } from '../../actions/customEmojis';
 
 const _theme = 'light';
 
@@ -51,6 +52,13 @@ const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
 store.dispatch(updateSettings('API_Embed', true));
+store.dispatch(
+	setCustomEmojis({
+		marioparty: { name: 'marioparty', extension: 'gif' },
+		react_rocket: { name: 'react_rocket', extension: 'png' },
+		nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
+	})
+);
 
 const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
 	fontScale,

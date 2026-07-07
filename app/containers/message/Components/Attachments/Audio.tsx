@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { View } from 'react-native';
 
 import { type IAttachment, type IUserMessage } from '../../../../definitions';
-import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import AudioPlayer from '../../../AudioPlayer';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
@@ -10,7 +9,6 @@ import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 
 interface IMessageAudioProps {
 	file: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
 }

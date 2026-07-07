@@ -28,7 +28,7 @@ export const Item = () => (
 				onLongPress: () => {},
 				user: { username: 'Marcos' }
 			}}>
-			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} timeFormat='LT' />
+			<CollapsibleQuote attachment={testAttachment} timeFormat='LT' />
 		</MessageContext.Provider>
 	</View>
 );

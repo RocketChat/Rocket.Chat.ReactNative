@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { type IUserMessage } from '../../../../definitions';
 import { type IAttachment } from '../../../../definitions/IAttachment';
-import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import I18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
@@ -37,7 +36,6 @@ const styles = StyleSheet.create({
 interface IMessageVideo {
 	file: IAttachment;
 	showAttachment?: (file: IAttachment) => void;
-	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
 }

@@ -5,7 +5,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
 import { type IAttachment } from '../../../../../definitions/IAttachment';
-import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
@@ -69,18 +68,15 @@ const styles = StyleSheet.create({
 
 interface IMessageAttText {
 	text?: string;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 interface IMessageFields {
 	attachment: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 const AttText = memo(
@@ -126,7 +122,7 @@ const Fields = memo(
 );
 
 const CollapsibleQuote = memo(
-	({ attachment, getCustomEmoji }: IMessageReply) => {
+	({ attachment }: IMessageReply) => {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -177,8 +173,8 @@ const CollapsibleQuote = memo(
 							<View style={styles.authorContainer}>
 								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 							</View>
-							{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
-							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
+							{!collapsed && <AttText text={attachment.text} />}
+							{!collapsed && <Fields attachment={attachment} />}
 						</View>
 						<View style={styles.iconContainer}>
 							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
