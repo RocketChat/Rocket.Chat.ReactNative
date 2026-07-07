@@ -1,6 +1,7 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
 import { type ChatsStackParamList } from '../stacks/types';
@@ -38,6 +39,7 @@ interface ISelectListViewProps {
 	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 class SelectListView extends Component<ISelectListViewProps, ISelectListViewState> {
@@ -190,7 +192,7 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 
 	render() {
 		const { data, isSearching, dataFiltered } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
 				<FlatList
@@ -199,7 +201,7 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom, paddingBottom: insets.bottom }}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>
@@ -207,4 +209,4 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 	}
 }
 
-export default withTheme(withMasterDetail(SelectListView));
+export default withTheme(withMasterDetail(withSafeAreaInsets(SelectListView)));

@@ -1,6 +1,8 @@
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import * as stories from './Markdown.stories';
 
-jest.useFakeTimers({ now: new Date('2026-01-01T12:00:00Z').getTime() });
+beforeAll(() => {
+	jest.useFakeTimers({ now: new Date('2026-02-01T00:00:00.000Z').getTime() });
+});
 
 generateSnapshots(stories);
