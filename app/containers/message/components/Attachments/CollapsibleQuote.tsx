@@ -170,7 +170,6 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 	);
 };
 
-CollapsibleQuote.displayName = 'CollapsibleQuote';
 Fields.displayName = 'CollapsibleQuoteFields';
 
 export default CollapsibleQuote;

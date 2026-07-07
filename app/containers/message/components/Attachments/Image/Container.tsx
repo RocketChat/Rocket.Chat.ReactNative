@@ -61,6 +61,4 @@ const ImageContainer = ({
 	return image;
 };
 
-ImageContainer.displayName = 'MessageImageContainer';
-
 export default ImageContainer;

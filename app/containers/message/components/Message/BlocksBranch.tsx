@@ -18,6 +18,4 @@ const BlocksBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-BlocksBranch.displayName = 'MessageBlocksBranch';
-
 export default BlocksBranch;

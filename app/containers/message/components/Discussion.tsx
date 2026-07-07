@@ -44,6 +44,4 @@ const Discussion = () => {
 	);
 };
 
-Discussion.displayName = 'MessageDiscussion';
-
 export default Discussion;

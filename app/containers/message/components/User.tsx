@@ -95,6 +95,4 @@ const User = () => {
 	return null;
 };
 
-User.displayName = 'MessageUser';
-
 export default User;

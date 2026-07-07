@@ -14,6 +14,4 @@ const DiscussionBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-DiscussionBranch.displayName = 'MessageDiscussionBranch';
-
 export default DiscussionBranch;

@@ -16,6 +16,4 @@ const JitsiBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-JitsiBranch.displayName = 'MessageJitsiBranch';
-
 export default JitsiBranch;

@@ -98,5 +98,3 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 		</>
 	);
 };
-
-MessageImage.displayName = 'MessageImage';

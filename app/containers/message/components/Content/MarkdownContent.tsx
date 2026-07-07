@@ -34,6 +34,4 @@ const MarkdownContent = () => {
 	);
 };
 
-MarkdownContent.displayName = 'MessageMarkdownContent';
-
 export default MarkdownContent;

@@ -37,6 +37,4 @@ const Quote: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) =>
 	return <View style={{ gap: 4 }}>{quotesElements}</View>;
 };
 
-Quote.displayName = 'MessageQuote';
-
 export default Quote;

@@ -28,6 +28,4 @@ const CallButton = () => {
 	);
 };
 
-CallButton.displayName = 'CallButton';
-
 export default CallButton;

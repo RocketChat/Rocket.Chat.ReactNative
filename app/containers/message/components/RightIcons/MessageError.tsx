@@ -25,6 +25,4 @@ const MessageError = () => {
 	);
 };
 
-MessageError.displayName = 'MessageError';
-
 export default MessageError;

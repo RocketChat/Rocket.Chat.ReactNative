@@ -39,6 +39,4 @@ const Broadcast = () => {
 	return null;
 };
 
-Broadcast.displayName = 'MessageBroadcast';
-
 export default Broadcast;

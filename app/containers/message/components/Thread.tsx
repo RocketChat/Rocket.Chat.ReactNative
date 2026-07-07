@@ -54,6 +54,4 @@ const Thread = () => {
 	);
 };
 
-Thread.displayName = 'MessageThread';
-
 export default Thread;

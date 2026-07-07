@@ -194,9 +194,4 @@ const Urls = (): ReactElement[] | null => {
 	return urls.map((url: IUrl) => <Url url={url} key={url.url} />);
 };
 
-UrlContent.displayName = 'MessageUrlContent';
-UrlImage.displayName = 'MessageUrlImage';
-Url.displayName = 'MessageUrl';
-Urls.displayName = 'MessageUrls';
-
 export default Urls;

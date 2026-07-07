@@ -22,6 +22,4 @@ const EncryptedContent = () => {
 	);
 };
 
-EncryptedContent.displayName = 'MessageEncryptedContent';
-
 export default EncryptedContent;

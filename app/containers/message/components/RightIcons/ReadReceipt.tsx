@@ -28,6 +28,5 @@ const ReadReceipt = () => {
 	}
 	return null;
 };
-ReadReceipt.displayName = 'MessageReadReceipt';
 
 export default ReadReceipt;

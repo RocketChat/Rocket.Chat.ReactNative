@@ -24,6 +24,4 @@ const DefaultBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-DefaultBranch.displayName = 'MessageDefaultBranch';
-
 export default DefaultBranch;

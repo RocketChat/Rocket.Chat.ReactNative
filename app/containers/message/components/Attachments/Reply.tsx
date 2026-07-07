@@ -237,9 +237,6 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 	);
 };
 
-Reply.displayName = 'MessageReply';
-Title.displayName = 'MessageReplyTitle';
-Description.displayName = 'MessageReplyDescription';
 Fields.displayName = 'MessageReplyFields';
 
 export default Reply;

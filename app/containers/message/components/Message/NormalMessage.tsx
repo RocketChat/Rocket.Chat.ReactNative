@@ -35,6 +35,4 @@ const NormalMessage = ({ isPreview }: { isPreview?: boolean }) => {
 	);
 };
 
-NormalMessage.displayName = 'MessageNormal';
-
 export default NormalMessage;

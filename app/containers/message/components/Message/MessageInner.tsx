@@ -30,4 +30,3 @@ export const MessageInner = ({ isPreview, isHeader }: { isPreview?: boolean; isH
 
 	return <WidthAwareView>{branch}</WidthAwareView>;
 };
-MessageInner.displayName = 'MessageInner';

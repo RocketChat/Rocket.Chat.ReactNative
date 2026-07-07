@@ -25,6 +25,4 @@ const PreviewContent = () => {
 	);
 };
 
-PreviewContent.displayName = 'MessagePreviewContent';
-
 export default PreviewContent;

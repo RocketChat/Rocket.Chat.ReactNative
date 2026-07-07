@@ -34,6 +34,4 @@ const InfoContent = () => {
 	return renderMessageContent;
 };
 
-InfoContent.displayName = 'MessageInfoContent';
-
 export default InfoContent;

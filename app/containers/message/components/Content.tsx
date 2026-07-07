@@ -39,6 +39,4 @@ const Content = () => {
 	return null;
 };
 
-Content.displayName = 'MessageContent';
-
 export default Content;

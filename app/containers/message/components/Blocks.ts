@@ -36,6 +36,4 @@ const Blocks = () => {
 	return null;
 };
 
-Blocks.displayName = 'MessageBlocks';
-
 export default Blocks;

@@ -14,6 +14,4 @@ const PreviewBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-PreviewBranch.displayName = 'MessagePreviewBranch';
-
 export default PreviewBranch;

@@ -61,6 +61,4 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	);
 };
 
-RepliedThread.displayName = 'MessageRepliedThread';
-
 export default RepliedThread;

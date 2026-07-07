@@ -55,6 +55,4 @@ const CompactMessage = () => {
 	);
 };
 
-CompactMessage.displayName = 'MessageCompact';
-
 export default CompactMessage;

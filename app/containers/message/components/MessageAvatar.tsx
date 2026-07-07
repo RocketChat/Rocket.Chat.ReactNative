@@ -58,6 +58,4 @@ const MessageAvatar = ({ small }: IMessageAvatar) => {
 	return <AvatarContainer />;
 };
 
-MessageAvatar.displayName = 'MessageAvatar';
-
 export default MessageAvatar;

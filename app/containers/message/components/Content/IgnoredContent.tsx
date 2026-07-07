@@ -21,6 +21,4 @@ const IgnoredContent = () => {
 	);
 };
 
-IgnoredContent.displayName = 'MessageIgnoredContent';
-
 export default IgnoredContent;

@@ -16,6 +16,4 @@ const Emoji = ({ content, standardEmojiStyle, customEmojiStyle, getCustomEmoji }
 	return <Text style={standardEmojiStyle}>{formatShortnameToUnicode(content)}</Text>;
 };
 
-Emoji.displayName = 'MessageEmoji';
-
 export default Emoji;

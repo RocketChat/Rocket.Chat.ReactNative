@@ -38,7 +38,6 @@ const Message = (props: TMessageProps) => {
 
 	return <NormalMessage isPreview={props.isPreview} />;
 };
-Message.displayName = 'Message';
 
 const MessageTouchable = (props: TMessageProps) => {
 	'use memo';
@@ -101,7 +100,5 @@ const MessageTouchable = (props: TMessageProps) => {
 		</A11y.Order>
 	);
 };
-
-MessageTouchable.displayName = 'MessageTouchable';
 
 export default MessageTouchable;

@@ -98,6 +98,4 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageA
 	return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 };
 
-Attachments.displayName = 'MessageAttachments';
-
 export default Attachments;

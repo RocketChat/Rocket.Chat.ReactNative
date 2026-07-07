@@ -103,8 +103,4 @@ const Reactions = () => {
 	);
 };
 
-Reaction.displayName = 'MessageReaction';
-Reactions.displayName = 'MessageReactions';
-AddReaction.displayName = 'MessageAddReaction';
-
 export default Reactions;

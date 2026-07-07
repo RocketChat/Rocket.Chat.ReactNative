@@ -17,6 +17,4 @@ const ContentWrapper = ({ children }: { children: ReactNode }) => {
 	);
 };
 
-ContentWrapper.displayName = 'MessageContentWrapper';
-
 export default ContentWrapper;
