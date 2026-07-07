@@ -11,7 +11,7 @@ import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHin
 import { useIsBeingEdited } from '../../../views/RoomView/InteractionStore';
 import { useArchived } from '../stores/MessageRoomStore';
 import {
-	useIsInfo,
+	useIsInfoMessage,
 	useMessageField,
 	useMessageIgnored,
 	useMessageLongPress,
@@ -29,7 +29,7 @@ const Message = (props: TMessageProps) => {
 	'use memo';
 
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
-	const isInfo = useIsInfo();
+	const isInfo = useIsInfoMessage();
 	const isIgnored = useMessageIgnored();
 
 	if (isThreadReply || isThreadSequential || isInfo || isIgnored) {
@@ -46,7 +46,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const { isThreadReply } = useThreadPosition();
-	const isInfo = useIsInfo();
+	const isInfo = useIsInfoMessage();
 	const archived = useArchived();
 	const { hasError, isTemp } = useMessageStatus();
 	const type = useMessageField(item => item.t);

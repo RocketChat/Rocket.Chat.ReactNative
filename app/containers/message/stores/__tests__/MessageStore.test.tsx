@@ -1,11 +1,13 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, renderHook } from '@testing-library/react-native';
+import { type ReactNode } from 'react';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { type TAnyMessageModel } from '../../../../definitions';
+import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 import { messagesStatus } from '../../../../lib/constants/messagesStatus';
+import openLink from '../../../../lib/methods/helpers/openLink';
 import { MessageRoomProvider, type MessageRoomState } from '../MessageRoomStore';
 import {
 	MessageProvider,
@@ -15,7 +17,7 @@ import {
 	useDiscussion,
 	useIsEdited,
 	useIsEncrypted,
-	useIsInfo,
+	useIsInfoMessage,
 	useMessageAuthor,
 	useMessageField,
 	useMessageGrouping,
@@ -24,13 +26,22 @@ import {
 	useMessageItem,
 	useMessageStatus,
 	useMessageText,
+	useOnLinkPress,
 	useReactions,
 	useRepliedThreadData,
 	useRevealIgnored,
 	useThreadData,
 	useThreadPosition,
+	useTranslateLanguage,
 	useUrls
 } from '../MessageStore';
+
+jest.mock('../../../../lib/methods/helpers/openLink', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
+const mockOpenLink = openLink as jest.Mock;
 
 type Subscriber = () => void;
 
@@ -146,6 +157,17 @@ const renderDerived = (
 	};
 	return { latest, spy };
 };
+
+const wrapWithProviders =
+	(item: TAnyMessageModel, config?: Partial<MessageRoomState>) =>
+	({ children }: { children: ReactNode }) =>
+		(
+			<Provider store={mockedStore}>
+				<MessageRoomProvider {...(config ?? {})}>
+					<MessageProvider item={item}>{children}</MessageProvider>
+				</MessageRoomProvider>
+			</Provider>
+		);
 
 describe('MessageStore', () => {
 	describe('field hooks', () => {
@@ -359,22 +381,22 @@ describe('MessageStore', () => {
 			expect(latest()).toBe(false);
 		});
 
-		it('useIsInfo returns false for a discussion-created message', () => {
+		it('useIsInfoMessage returns false for a discussion-created message', () => {
 			const model = buildFakeModel({ t: 'discussion-created' });
-			const { latest } = renderDerived(model, useIsInfo);
+			const { latest } = renderDerived(model, useIsInfoMessage);
 			expect(latest()).toBe(false);
 		});
 
-		it('useIsInfo returns the type for an info message', () => {
+		it('useIsInfoMessage returns true for an info message', () => {
 			const model = buildFakeModel({ t: 'room_changed_topic' });
-			const { latest } = renderDerived(model, useIsInfo);
-			expect(latest()).toBe('room_changed_topic');
+			const { latest } = renderDerived(model, useIsInfoMessage);
+			expect(latest()).toBe(true);
 		});
 
-		it('useIsInfo returns undefined for a default text message', () => {
+		it('useIsInfoMessage returns false for a default text message', () => {
 			const model = buildFakeModel();
-			const { latest } = renderDerived(model, useIsInfo);
-			expect(latest()).toBeUndefined();
+			const { latest } = renderDerived(model, useIsInfoMessage);
+			expect(latest()).toBe(false);
 		});
 
 		it('useIsEdited returns false for a default model', () => {
@@ -670,6 +692,80 @@ describe('MessageStore', () => {
 
 			act(() => rerender(wrap(true)));
 			expect(spy).toHaveBeenLastCalledWith(true);
+		});
+	});
+
+	describe('useOnLinkPress', () => {
+		beforeEach(() => {
+			mockOpenLink.mockClear();
+		});
+
+		it('jumps to the message when the link matches an attachment message_link', () => {
+			const jumpToMessage = jest.fn();
+			const link = 'https://example.com/msg-link';
+			const model = buildFakeModel({ attachments: [{ message_link: link } as IAttachment] });
+			const { result } = renderHook(() => useOnLinkPress(), { wrapper: wrapWithProviders(model, { jumpToMessage }) });
+
+			result.current(link);
+
+			expect(jumpToMessage).toHaveBeenCalledWith(link);
+			expect(mockOpenLink).not.toHaveBeenCalled();
+		});
+
+		it('opens the link when it does not match any attachment message_link', () => {
+			const jumpToMessage = jest.fn();
+			const link = 'https://example.com/other';
+			const model = buildFakeModel({ attachments: [{ message_link: 'https://example.com/msg-link' } as IAttachment] });
+			const { result } = renderHook(() => useOnLinkPress(), { wrapper: wrapWithProviders(model, { jumpToMessage }) });
+
+			result.current(link);
+
+			expect(jumpToMessage).not.toHaveBeenCalled();
+			expect(mockOpenLink).toHaveBeenCalledWith(link, 'light');
+		});
+
+		it('does not jump when attachments is undefined', () => {
+			const jumpToMessage = jest.fn();
+			const link = 'https://example.com/msg-link';
+			const model = buildFakeModel({ attachments: undefined });
+			const { result } = renderHook(() => useOnLinkPress(), { wrapper: wrapWithProviders(model, { jumpToMessage }) });
+
+			result.current(link);
+
+			expect(jumpToMessage).not.toHaveBeenCalled();
+			expect(mockOpenLink).toHaveBeenCalledWith(link, 'light');
+		});
+	});
+
+	describe('translation boundary on item.autoTranslate', () => {
+		const translationConfig = { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR', user: { username: 'alice' } };
+
+		it('useTranslateLanguage returns the language when autoTranslate is undefined', () => {
+			const model = buildFakeModel({ autoTranslate: undefined, u: { _id: 'u2', username: 'bob' } });
+			const { latest } = renderDerived(model, useTranslateLanguage, { config: translationConfig });
+			expect(latest()).toBe('pt-BR');
+		});
+
+		it('useTranslateLanguage returns the language when autoTranslate is true', () => {
+			const model = buildFakeModel({ autoTranslate: true, u: { _id: 'u2', username: 'bob' } });
+			const { latest } = renderDerived(model, useTranslateLanguage, { config: translationConfig });
+			expect(latest()).toBe('pt-BR');
+		});
+
+		it('useTranslateLanguage returns undefined when autoTranslate is false', () => {
+			const model = buildFakeModel({ autoTranslate: false, u: { _id: 'u2', username: 'bob' } });
+			const { latest } = renderDerived(model, useTranslateLanguage, { config: translationConfig });
+			expect(latest()).toBeUndefined();
+		});
+
+		it('useMessageText does not translate when autoTranslate is undefined, even in an auto-translating room', () => {
+			const model = buildFakeModel({
+				autoTranslate: undefined,
+				translations: [{ _id: 't1', language: 'pt-BR', value: 'Olá mundo' }],
+				u: { _id: 'u2', username: 'bob' }
+			});
+			const { latest } = renderDerived(model, useMessageText, { config: translationConfig });
+			expect(latest()).toEqual({ messageText: model.msg, isTranslated: false });
 		});
 	});
 });

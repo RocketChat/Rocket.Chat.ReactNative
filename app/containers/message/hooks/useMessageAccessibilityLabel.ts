@@ -6,7 +6,7 @@ import { type IUserChannel, type IUserMention } from '../../../definitions';
 import {
 	useContentData,
 	useIsEncrypted,
-	useIsInfo,
+	useIsInfoMessage,
 	useMessageAuthor,
 	useMessageHeaderMeta,
 	useMessageText,
@@ -39,7 +39,7 @@ export const useMessageAccessibilityLabel = (): string => {
 	const { messageText, isTranslated } = useMessageText();
 	const { tmid } = useThreadData();
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
-	const isInfo = useIsInfo();
+	const isInfo = useIsInfoMessage();
 	const isEncrypted = useIsEncrypted();
 	const { ts, unread } = useMessageHeaderMeta();
 	const isReadReceiptEnabled = useIsReadReceiptEnabled();

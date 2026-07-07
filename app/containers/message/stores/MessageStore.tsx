@@ -231,12 +231,12 @@ export const useMessageStatus = (): { hasError: boolean; isTemp: boolean } =>
 
 export const useIsEncrypted = (): boolean => useMessageField(item => item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE);
 
-export const useIsInfo = (): string | boolean =>
+export const useIsInfoMessage = (): boolean =>
 	useMessageField(item => {
 		if (['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(item.t as string)) {
 			return false;
 		}
-		return item.t;
+		return !!item.t;
 	});
 
 export const useIsEdited = (): boolean => useMessageField(item => (item.editedBy && !!item.editedBy.username) ?? false);
@@ -283,7 +283,7 @@ export const useMessageLongPress = (): (() => void) => {
 	'use memo';
 
 	const item = useMessageItem();
-	const isInfo = useIsInfo();
+	const isInfo = useIsInfoMessage();
 	const { hasError } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
 	const archived = useArchived();
@@ -297,6 +297,8 @@ export const useMessageLongPress = (): (() => void) => {
 };
 
 export const useOnLinkPress = (): ((link: string) => void) => {
+	'use memo';
+
 	const item = useMessageItem();
 	const jumpToMessage = useJumpToMessage();
 	const { theme } = useTheme();

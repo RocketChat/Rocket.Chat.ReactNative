@@ -8,7 +8,7 @@ import Content from '../Content';
 import Attachments from '../Attachments';
 import {
 	useContentData,
-	useIsInfo,
+	useIsInfoMessage,
 	useMessageField,
 	useMessageGrouping,
 	useMessageText,
@@ -21,7 +21,7 @@ const CompactMessage = () => {
 
 	const isHeader = useMessageGrouping();
 	const { isThreadReply } = useThreadPosition();
-	const isInfo = useIsInfo();
+	const isInfo = useIsInfoMessage();
 	const { messageText, isTranslated } = useMessageText();
 	const { t: type, attachments } = useContentData();
 	const author = useMessageField(item => item.u);

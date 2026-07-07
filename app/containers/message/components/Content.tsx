@@ -3,13 +3,13 @@ import IgnoredContent from './Content/IgnoredContent';
 import InfoContent from './Content/InfoContent';
 import MarkdownContent from './Content/MarkdownContent';
 import PreviewContent from './Content/PreviewContent';
-import { useIsEncrypted, useIsInfo, useMessageIgnored, useMessageText, useThreadData } from '../stores/MessageStore';
+import { useIsEncrypted, useIsInfoMessage, useMessageIgnored, useMessageText, useThreadData } from '../stores/MessageStore';
 import { useIsThreadRoom } from '../stores/MessageRoomStore';
 
 const Content = () => {
 	'use memo';
 
-	const isInfo = useIsInfo();
+	const isInfo = useIsInfoMessage();
 	const isIgnored = useMessageIgnored();
 	const isEncrypted = useIsEncrypted();
 	const { tmid } = useThreadData();
