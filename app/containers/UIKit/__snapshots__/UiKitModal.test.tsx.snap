@@ -29,13 +29,13 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
       Title
     </Text>
     <A11yOrderView
-      orderKey="«r0»"
+      orderKey="_r_0_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r0»"
+        orderKey="_r_0_"
       >
         <View
           style={
@@ -721,13 +721,13 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
       Description
     </Text>
     <A11yOrderView
-      orderKey="«r1»"
+      orderKey="_r_1_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r1»"
+        orderKey="_r_1_"
       >
         <View
           style={
@@ -2723,13 +2723,13 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey="«r2»"
+      orderKey="_r_2_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r2»"
+        orderKey="_r_2_"
       >
         <View
           style={
@@ -2827,13 +2827,13 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       Outgoing Title
     </Text>
     <A11yOrderView
-      orderKey="«r3»"
+      orderKey="_r_3_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r3»"
+        orderKey="_r_3_"
       >
         <View
           style={
@@ -3347,13 +3347,13 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       Describe your update
     </Text>
     <A11yOrderView
-      orderKey="«r4»"
+      orderKey="_r_4_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r4»"
+        orderKey="_r_4_"
       >
         <View
           style={
@@ -3477,13 +3477,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       First field
     </Text>
     <A11yOrderView
-      orderKey="«r5»"
+      orderKey="_r_5_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r5»"
+        orderKey="_r_5_"
       >
         <View
           style={
@@ -3581,13 +3581,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       Second field
     </Text>
     <A11yOrderView
-      orderKey="«r6»"
+      orderKey="_r_6_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r6»"
+        orderKey="_r_6_"
       >
         <View
           style={
@@ -3747,13 +3747,13 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey="«r7»"
+    orderKey="_r_7_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r7»"
+      orderKey="_r_7_"
     >
       <View
         style={
@@ -4401,13 +4401,13 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey="«r8»"
+    orderKey="_r_8_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r8»"
+      orderKey="_r_8_"
     >
       <View
         style={
@@ -4833,6 +4833,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
       onLoadStart={[Function]}
       onProgress={[Function]}
       placeholder={[]}
+      sfEffect={null}
       source={
         [
           {
@@ -4847,6 +4848,8 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           "width": 88,
         }
       }
+      symbolSize={null}
+      symbolWeight={null}
       transition={null}
       width={88}
     />

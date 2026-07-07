@@ -19,7 +19,10 @@ generateSnapshots(stories);
 jest.mock('./serviceLogin', () => ({}));
 
 jest.mock('react-native/Libraries/Linking/Linking', () => ({
-	openURL: jest.fn()
+	__esModule: true,
+	default: {
+		openURL: jest.fn()
+	}
 }));
 
 const SERVER = 'https://demo.rocket.chat';
