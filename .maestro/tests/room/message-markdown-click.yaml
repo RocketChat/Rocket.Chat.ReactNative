@@ -280,6 +280,7 @@ tags:
     id: autocomplete-item-send-emphemeral-button
 - tapOn:
     id: 'message-composer-send'
+- hideKeyboard
 - tapOn: 'Ephemeral Button'
 - extendedWaitUntil:
     visible:
