@@ -953,10 +953,10 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onDiscussionPress = debounce(
-		async (item: TAnyMessageModel) => {
+		async (drid: TAnyMessageModel['drid']) => {
 			const { isMasterDetail } = this.props;
-			if (!item.drid) return;
-			const sub = await getRoomInfo(item.drid);
+			if (!drid) return;
+			const sub = await getRoomInfo(drid);
 			if (sub) {
 				goRoom({
 					item: sub as TGoRoomItem,

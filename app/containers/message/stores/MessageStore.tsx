@@ -333,7 +333,7 @@ export const useMessagePress = (): (() => void) => {
 				onThreadPress?.(item);
 			}
 			if (item.dlm && onDiscussionPress) {
-				onDiscussionPress(item);
+				onDiscussionPress(item.drid);
 			}
 		},
 		300,

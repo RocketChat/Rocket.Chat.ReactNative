@@ -8,14 +8,14 @@ import { CustomIcon } from '../../CustomIcon';
 import { DISCUSSION } from '../constants';
 import { formatDateThreads } from '../../../lib/methods/helpers/room';
 import { useTheme } from '../../../theme';
-import { useDiscussion, useMessageItem, useMessageText } from '../stores/MessageStore';
+import { useDiscussion, useMessageField, useMessageText } from '../stores/MessageStore';
 import { useOnDiscussionPress } from '../stores/MessageRoomStore';
 
 const Discussion = () => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const item = useMessageItem();
+	const drid = useMessageField(item => item.drid);
 	const { dcount, dlm } = useDiscussion();
 	const { messageText } = useMessageText();
 	let time;
@@ -30,7 +30,7 @@ const Discussion = () => {
 			<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{messageText}</Text>
 			<View style={[styles.buttonContainer, { gap: 8 }]}>
 				<Touchable
-					onPress={() => onDiscussionPress?.(item)}
+					onPress={() => onDiscussionPress?.(drid)}
 					style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}>
 					<View style={styles.buttonInnerContainer}>
