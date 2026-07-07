@@ -767,5 +767,25 @@ describe('MessageStore', () => {
 			const { latest } = renderDerived(model, useMessageText, { config: translationConfig });
 			expect(latest()).toEqual({ messageText: model.msg, isTranslated: false });
 		});
+
+		it('useMessageText translates when autoTranslate is true', () => {
+			const model = buildFakeModel({
+				autoTranslate: true,
+				translations: [{ _id: 't1', language: 'pt-BR', value: 'Olá mundo' }],
+				u: { _id: 'u2', username: 'bob' }
+			});
+			const { latest } = renderDerived(model, useMessageText, { config: translationConfig });
+			expect(latest()).toEqual({ messageText: 'Olá mundo', isTranslated: true });
+		});
+
+		it('useMessageText does not translate when autoTranslate is false', () => {
+			const model = buildFakeModel({
+				autoTranslate: false,
+				translations: [{ _id: 't1', language: 'pt-BR', value: 'Olá mundo' }],
+				u: { _id: 'u2', username: 'bob' }
+			});
+			const { latest } = renderDerived(model, useMessageText, { config: translationConfig });
+			expect(latest()).toEqual({ messageText: model.msg, isTranslated: false });
+		});
 	});
 });
