@@ -390,10 +390,12 @@ function checkAndReopen(): Promise<boolean> {
 
 /**
  * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
- * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
- * close and can read true for a stale session. Redux resets to
- * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
- * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
+ * Trusts redux state rather than the ddp-client's own connection/account state,
+ * which isn't cleared on socket close and can appear valid for a stale session.
+ * Redux resets to `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched from the
+ * `connection.on('connection', ...)` handler in `connect()` when `status ===
+ * 'connected'`) and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers
+ * the handshake.
  */
 async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
 	const isReady = () => {

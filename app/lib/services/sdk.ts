@@ -270,6 +270,8 @@ class Sdk {
 			if (loginResult?.status !== 'success' || !loginResult.data) {
 				return Promise.reject(new Error('Invalid response from server'));
 			}
+			// Auth is tracked in two places, both required: loginWithToken() sets the DDP-level session used
+			// by methodCall()/subscribe(), while setHeaders() below sets the REST-level auth used by get/post/delete.
 			await this.current?.account.loginWithToken(loginResult.data.authToken);
 
 			this.setHeaders({
@@ -293,6 +295,7 @@ class Sdk {
 			}
 			const [method, ...params] = args;
 			const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(this.code ? [this.code] : []));
+			// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures on the next call.
 			if (this.code) {
 				this.code = null;
 			}
@@ -430,6 +433,7 @@ class Sdk {
 	async logout(): Promise<void> {
 		if (this.current?.account) {
 			const TIMEOUT = Symbol('logout-timeout');
+			// account.logout() can hang indefinitely on a dead socket; cap it so app-level logout always completes.
 			const result = await Promise.race([
 				this.current.account.logout(),
 				new Promise<typeof TIMEOUT>(resolve => setTimeout(() => resolve(TIMEOUT), 5000))
