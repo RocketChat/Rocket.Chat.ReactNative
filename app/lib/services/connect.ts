@@ -55,6 +55,12 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		await sdk.initialize(server);
 		await getSettings();
 
+		// A newer connect() call may have switched servers while getSettings() was in flight —
+		// bail out rather than wiring up listeners/dispatching against the wrong sdk instance.
+		if (sdk.server !== server) {
+			return;
+		}
+
 		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
