@@ -57,9 +57,7 @@ runs:
         path: |
           ~/.pods
           ios/Pods
-        key: pods-v1-{{ checksum "ios/Podfile.lock" }}
-        restore-keys: |
-          pods-v1-
+        key: pods-v2-${{ hashFiles('ios/Podfile.lock') }}
 
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
