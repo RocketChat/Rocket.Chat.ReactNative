@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { type PressableProps } from 'react-native';
 
-import Touchable from '../../Touchable';
+import MessageActionTouchable from '../../MessageActionTouchable';
 import styles from '../../../styles';
 
 interface IMessageButton {
@@ -22,13 +22,13 @@ export const Button = ({
 	'use memo';
 
 	return (
-		<Touchable
+		<MessageActionTouchable
 			accessibilityLabel={accessibilityLabel}
 			accessibilityRole={accessibilityRole}
 			disabled={disabled}
 			onPress={onPress}
 			style={styles.imageContainer}>
 			{children}
-		</Touchable>
+		</MessageActionTouchable>
 	);
 };

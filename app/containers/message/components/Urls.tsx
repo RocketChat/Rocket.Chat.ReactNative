@@ -4,7 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import axios from 'axios';
 
-import Touchable from './Touchable';
+import MessageActionTouchable from './MessageActionTouchable';
 import openLink from '../../../lib/methods/helpers/openLink';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
@@ -162,7 +162,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	}
 
 	return (
-		<Touchable
+		<MessageActionTouchable
 			onPress={onPress}
 			onLongPress={onLongPress}
 			style={[
@@ -179,7 +179,7 @@ const Url = ({ url }: { url: IUrl }) => {
 				{imageUrl ? <UrlImage image={imageUrl} hasContent={hasContent} /> : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 			</>
-		</Touchable>
+		</MessageActionTouchable>
 	);
 };
 const Urls = (): ReactElement[] | null => {

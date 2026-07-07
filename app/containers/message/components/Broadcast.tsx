@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import Touchable from './Touchable';
+import MessageActionTouchable from './MessageActionTouchable';
 import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import { BUTTON_HIT_SLOP } from '../utils';
@@ -23,7 +23,7 @@ const Broadcast = () => {
 	if (broadcast && !isOwn) {
 		return (
 			<View style={styles.buttonContainer}>
-				<Touchable
+				<MessageActionTouchable
 					onPress={() => replyBroadcast?.(item)}
 					style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}
@@ -32,7 +32,7 @@ const Broadcast = () => {
 						<CustomIcon name='arrow-back' size={20} color={colors.fontWhite} />
 						<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Reply')}</Text>
 					</View>
-				</Touchable>
+				</MessageActionTouchable>
 			</View>
 		);
 	}

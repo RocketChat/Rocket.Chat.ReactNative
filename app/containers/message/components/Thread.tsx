@@ -4,7 +4,7 @@ import styles from '../styles';
 import ThreadDetails from '../../ThreadDetails';
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
-import Touchable from './Touchable';
+import MessageActionTouchable from './MessageActionTouchable';
 import { useMessageItem, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from '../stores/MessageStore';
 import { useIsThreadRoom, useMessageUser, useOnThreadPress, useToggleFollowThread } from '../stores/MessageRoomStore';
 
@@ -31,14 +31,14 @@ const Thread = () => {
 
 	return (
 		<View style={styles.buttonContainer}>
-			<Touchable
+			<MessageActionTouchable
 				onPress={() => onThreadPress?.(item)}
 				accessibilityRole='button'
 				accessibilityLabel={I18n.t('View_Thread')}
 				style={[styles.button, { backgroundColor }]}
 				testID={`message-thread-button-${messageText}`}>
 				<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
-			</Touchable>
+			</MessageActionTouchable>
 			<ThreadDetails
 				item={{
 					tcount,

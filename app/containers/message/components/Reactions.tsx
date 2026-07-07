@@ -1,7 +1,7 @@
 import { Text, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../../i18n';
-import Touchable from './Touchable';
+import MessageActionTouchable from './MessageActionTouchable';
 import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import Emoji from './Emoji';
@@ -30,7 +30,7 @@ const AddReaction = () => {
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	return (
-		<Touchable
+		<MessageActionTouchable
 			onPress={() => reactionInit?.(id)}
 			key='message-add-reaction'
 			testID='message-add-reaction'
@@ -42,7 +42,7 @@ const AddReaction = () => {
 			<View style={[styles.reactionContainer, { borderColor: colors.strokeLight, height }]}>
 				<CustomIcon name='reaction-add' size={20} color={colors.badgeBackgroundLevel2} />
 			</View>
-		</Touchable>
+		</MessageActionTouchable>
 	);
 };
 
@@ -60,7 +60,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user?.username) !== -1;
 	return (
-		<Touchable
+		<MessageActionTouchable
 			onPress={() => onReactionPress?.(reaction.emoji, id)}
 			onLongPress={() => onReactionLongPress?.(item)}
 			key={reaction.emoji}
@@ -81,7 +81,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 				/>
 				<Text style={[styles.reactionCount, { color: colors.badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
-		</Touchable>
+		</MessageActionTouchable>
 	);
 };
 

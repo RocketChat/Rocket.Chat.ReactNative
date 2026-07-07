@@ -14,7 +14,7 @@ import { Attachments } from './components';
 import Quote from './Quote';
 import { useBaseUrl, useMessageUser, useTimeFormat } from '../../stores/MessageRoomStore';
 import { useIsEncrypted, useMessageId } from '../../stores/MessageStore';
-import Touchable from '../Touchable';
+import MessageActionTouchable from '../MessageActionTouchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
 
@@ -201,7 +201,7 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 
 	return (
 		<View style={{ gap: 4 }}>
-			<Touchable
+			<MessageActionTouchable
 				testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 				onPress={onPress}
 				style={[
@@ -231,7 +231,7 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 					</View>
 					<UrlImage image={attachment.thumb_url} />
 				</View>
-			</Touchable>
+			</MessageActionTouchable>
 			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
 		</View>
 	);

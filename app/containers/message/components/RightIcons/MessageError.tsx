@@ -1,4 +1,4 @@
-import Touchable from '../Touchable';
+import MessageActionTouchable from '../MessageActionTouchable';
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { BUTTON_HIT_SLOP } from '../../utils';
@@ -19,9 +19,9 @@ const MessageError = () => {
 	}
 
 	return (
-		<Touchable onPress={() => errorActionsShow?.(item)} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
+		<MessageActionTouchable onPress={() => errorActionsShow?.(item)} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='warning' color={colors.buttonBackgroundDangerDefault} size={16} />
-		</Touchable>
+		</MessageActionTouchable>
 	);
 };
 

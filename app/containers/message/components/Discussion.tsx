@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import Touchable from './Touchable';
+import MessageActionTouchable from './MessageActionTouchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from '../utils';
 import styles from '../styles';
 import I18n from '../../../i18n';
@@ -29,7 +29,7 @@ const Discussion = () => {
 			<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
 			<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{messageText}</Text>
 			<View style={[styles.buttonContainer, { gap: 8 }]}>
-				<Touchable
+				<MessageActionTouchable
 					onPress={() => onDiscussionPress?.(drid)}
 					style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}>
@@ -37,7 +37,7 @@ const Discussion = () => {
 						<CustomIcon name='discussions' size={16} color={colors.fontWhite} />
 						<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{buttonText}</Text>
 					</View>
-				</Touchable>
+				</MessageActionTouchable>
 				<Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
 			</View>
 		</View>

@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import Touchable from './Touchable';
+import MessageActionTouchable from './MessageActionTouchable';
 import { BUTTON_HIT_SLOP } from '../utils';
 import styles from '../styles';
 import I18n from '../../../i18n';
@@ -15,7 +15,7 @@ const CallButton = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.buttonContainer}>
-			<Touchable
+			<MessageActionTouchable
 				onPress={handleEnterCall}
 				style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 				hitSlop={BUTTON_HIT_SLOP}>
@@ -23,7 +23,7 @@ const CallButton = () => {
 					<CustomIcon name='video' size={16} color={colors.fontWhite} />
 					<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Click_to_join')}</Text>
 				</View>
-			</Touchable>
+			</MessageActionTouchable>
 		</View>
 	);
 };

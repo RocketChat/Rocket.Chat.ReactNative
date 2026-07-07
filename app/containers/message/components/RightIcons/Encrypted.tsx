@@ -1,4 +1,4 @@
-import Touchable from '../Touchable';
+import MessageActionTouchable from '../MessageActionTouchable';
 import { CustomIcon } from '../../../CustomIcon';
 import { BUTTON_HIT_SLOP } from '../../utils';
 import styles from '../../styles';
@@ -17,9 +17,9 @@ const Encrypted = () => {
 	}
 
 	return (
-		<Touchable onPress={onEncryptedPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
+		<MessageActionTouchable onPress={onEncryptedPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='encrypted' size={16} />
-		</Touchable>
+		</MessageActionTouchable>
 	);
 };
 

@@ -12,7 +12,7 @@ import sharedStyles from '../../../../views/Styles';
 import { type TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
-import Touchable from '../Touchable';
+import MessageActionTouchable from '../MessageActionTouchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import { useMessageUser } from '../../stores/MessageRoomStore';
 import BlurComponent from '../OverlayComponent';
@@ -102,9 +102,9 @@ const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVi
 	return (
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
-			<Touchable onPress={_onPress} style={messageStyles.image}>
+			<MessageActionTouchable onPress={_onPress} style={messageStyles.image}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
-			</Touchable>
+			</MessageActionTouchable>
 		</View>
 	);
 };

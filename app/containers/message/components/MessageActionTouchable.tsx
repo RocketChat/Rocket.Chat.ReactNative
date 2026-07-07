@@ -8,7 +8,7 @@ interface IProps extends PressableProps {
 	onLongPress?: () => void;
 }
 
-const RCTouchable: FC<IProps> = ({ children, ...props }) => {
+const MessageActionTouchable: FC<IProps> = ({ children, ...props }) => {
 	'use memo';
 
 	const onLongPress = useMessageLongPress();
@@ -20,4 +20,4 @@ const RCTouchable: FC<IProps> = ({ children, ...props }) => {
 	);
 };
 
-export default RCTouchable;
+export default MessageActionTouchable;

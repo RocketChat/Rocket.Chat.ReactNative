@@ -9,7 +9,7 @@ import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import Markdown from '../../../markdown';
 import { useMessageUser } from '../../stores/MessageRoomStore';
-import Touchable from '../Touchable';
+import MessageActionTouchable from '../MessageActionTouchable';
 import { BUTTON_HIT_SLOP } from '../../utils';
 
 const styles = StyleSheet.create({
@@ -137,7 +137,7 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 
 	return (
 		<>
-			<Touchable
+			<MessageActionTouchable
 				testID={`collapsibleQuoteTouchable-${attachment.title}`}
 				onPress={onPress}
 				style={[
@@ -165,7 +165,7 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 						<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
 					</View>
 				</View>
-			</Touchable>
+			</MessageActionTouchable>
 		</>
 	);
 };
