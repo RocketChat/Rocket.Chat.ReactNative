@@ -60,21 +60,16 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 
 	const [store] = useState(() => createMessageRoomStore(state));
 
-	// state is a rest-spread rebuilt from props each render, so it can never be a stable
-	// dependency (useMemo can't stabilize it, and a field-level deps array would reintroduce the
-	// hand-maintained key list the zustand migration deliberately removed). Diffing against the
-	// store's current state before calling setState keeps this from forcing a zustand
-	// notification (and consumer re-render) on every render; per-field Object.is bail in each
-	// selector still means only a consumer whose own field changed re-renders.
+	// Only timeFormat/autoTranslateRoom/autoTranslateLanguage (the reactive tail) change after
+	// mount; the rest are constants/handlers captured once above. Keying on just those 3 fields
+	// lets React's own dependency diff replace the old full 28-key Object.is scan.
 	useEffect(() => {
-		const current = store.getState();
-		const changed = Object.keys(state).some(
-			key => !Object.is(state[key as keyof MessageRoomState], current[key as keyof MessageRoomState])
-		);
-		if (changed) {
-			store.setState(state);
-		}
-	});
+		store.setState({
+			timeFormat: state.timeFormat,
+			autoTranslateRoom: state.autoTranslateRoom,
+			autoTranslateLanguage: state.autoTranslateLanguage
+		});
+	}, [state.timeFormat, state.autoTranslateRoom, state.autoTranslateLanguage, store]);
 
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;
 };
