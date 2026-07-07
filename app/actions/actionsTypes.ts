@@ -22,7 +22,9 @@ export const ROOM = createRequestTypes('ROOM', [
 	'FORWARD',
 	'USER_TYPING',
 	'HISTORY_REQUEST',
-	'HISTORY_FINISHED'
+	'HISTORY_FINISHED',
+	'HISTORY_UI_LOADER_PUSH',
+	'HISTORY_UI_LOADER_POP'
 ]);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,
@@ -37,7 +39,6 @@ export const APP = createRequestTypes('APP', [
 	'READY',
 	'INIT',
 	'INIT_LOCAL_SETTINGS',
-	'SET_MASTER_DETAIL',
 	'SET_NOTIFICATION_PRESENCE_CAP',
 	'SET_NET_INFO_STATE'
 ]);

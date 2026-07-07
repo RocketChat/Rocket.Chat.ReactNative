@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import { type ReactElement, useEffect, useRef } from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
-import { useIsInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
 
 const DOUBLE_TAP_WINDOW_MS = 300;
 
@@ -15,12 +14,11 @@ export const HeaderCallButton = ({
 	rid: string;
 	disabled: boolean;
 	accessibilityLabel: string;
-}): React.ReactElement | null => {
+}): ReactElement | null => {
 	'use memo';
 
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 	const { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
-	const isInActiveVoipCall = useIsInActiveVoipCall();
 
 	const lastTapRef = useRef(0);
 	const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -67,7 +65,7 @@ export const HeaderCallButton = ({
 		return (
 			<HeaderButton.Item
 				accessibilityLabel={accessibilityLabel}
-				disabled={disabledTooltip || disabled || isInActiveVoipCall}
+				disabled={disabledTooltip || disabled || isInActiveCall}
 				iconName='phone'
 				onPress={showInitCallActionSheet}
 				testID='room-view-header-call'

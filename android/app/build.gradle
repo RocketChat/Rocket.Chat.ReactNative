@@ -90,10 +90,17 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.73.0"
+        versionName "4.75.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
-        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
+    }
+
+    packaging {
+        resources {
+            // bcprov-jdk18on and its transitive jspecify both ship this OSGi bundle
+            // manifest inside their multi-release jars; it is unused on Android.
+            excludes += ["META-INF/versions/9/OSGI-INF/MANIFEST.MF"]
+        }
     }
 
     signingConfigs {

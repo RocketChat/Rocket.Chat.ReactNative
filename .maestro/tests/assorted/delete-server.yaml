@@ -5,7 +5,7 @@ onFlowStart:
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-6
+  - test-7
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}

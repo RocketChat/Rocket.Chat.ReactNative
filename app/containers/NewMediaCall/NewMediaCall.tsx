@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -9,7 +9,7 @@ import { FilterHeader } from './FilterHeader';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { useTheme } from '../../theme';
 
-export const NewMediaCall = (): React.ReactElement => {
+export const NewMediaCall = (): ReactElement => {
 	const { colors } = useTheme();
 	const reset = usePeerAutocompleteStore(state => state.reset);
 	const { bottom } = useSafeAreaInsets();

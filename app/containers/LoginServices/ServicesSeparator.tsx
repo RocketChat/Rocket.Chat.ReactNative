@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Button from '../Button';
 import OrSeparator from '../OrSeparator';
 import { useTheme } from '../../theme';
@@ -7,12 +5,10 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { type IServicesSeparator } from './interfaces';
 
-const ServicesSeparator = ({ services, separator, collapsed, onPress }: IServicesSeparator) => {
+const ServicesSeparator = ({ separator, collapsed, onPress, totalServices }: IServicesSeparator) => {
 	const { colors } = useTheme();
 
-	const { length } = Object.values(services);
-
-	if (length > 3 && separator) {
+	if (totalServices > 3 && separator) {
 		return (
 			<>
 				<Button
@@ -26,7 +22,7 @@ const ServicesSeparator = ({ services, separator, collapsed, onPress }: IService
 			</>
 		);
 	}
-	if (length > 0 && separator) {
+	if (totalServices > 0 && separator) {
 		return <OrSeparator />;
 	}
 	return null;

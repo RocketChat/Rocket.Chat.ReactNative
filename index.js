@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry, LogBox, PermissionsAndroid, Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
+import DeviceInfo from 'react-native-device-info';
 
 import { name as appName } from './app.json';
 
@@ -22,7 +23,7 @@ if (process.env.USE_STORYBOOK) {
 
 	LogBox.ignoreAllLogs();
 
-	if (Platform.OS === 'android') {
+	if (Platform.OS === 'android' && DeviceInfo.hasSystemFeatureSync('android.software.telecom')) {
 		const options = {
 			android: {
 				// TODO: i18n

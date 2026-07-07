@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
@@ -15,7 +15,7 @@ import { colors } from '../../lib/constants/colors';
 import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
-import { search } from '../../lib/methods/search';
+import { searchRemote } from '../../lib/methods/search';
 import database from '../../lib/database';
 import { useMessageComposerApi } from './context';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
@@ -25,7 +25,8 @@ jest.useFakeTimers();
 
 // Ensure search returns at least one item so autocomplete renders
 jest.mock('../../lib/methods/search', () => ({
-	search: jest.fn(() => [{ _id: 'u1', username: 'john', name: 'John' }])
+	searchLocal: jest.fn(() => []),
+	searchRemote: jest.fn(() => [{ _id: 'u1', username: 'john', name: 'John' }])
 }));
 
 jest.mock('../../lib/services/restApi', () => ({
@@ -48,7 +49,7 @@ const advanceComposerTimers = async (time = 500) => {
 	});
 };
 
-const renderAndFlush = async (ui: React.ReactElement) => {
+const renderAndFlush = async (ui: ReactElement) => {
 	render(ui);
 	await act(async () => {
 		await Promise.resolve();
@@ -117,7 +118,7 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const Render = ({ context, children }: { context?: Partial<IRoomContext>; children?: React.ReactElement }) => (
+const Render = ({ context, children }: { context?: Partial<IRoomContext>; children?: ReactElement }) => (
 	<Provider store={mockedStore}>
 		<RoomContext.Provider value={{ ...initialContext, ...context }}>
 			<MessageComposerContainer>
@@ -458,7 +459,7 @@ describe('MessageComposer', () => {
 
 		test('select @ user inserts mention and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
-			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
 			render(<Render context={{ onSendMessage }} />);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
@@ -543,7 +544,7 @@ describe('MessageComposer', () => {
 
 		test('select # room inserts channel and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
-			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ rid: 'r1', name: 'general', t: 'c' }]);
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [{ rid: 'r1', name: 'general', t: 'c' }]);
 			render(<Render context={{ onSendMessage }} />);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');

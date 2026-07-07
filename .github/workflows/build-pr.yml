@@ -3,7 +3,7 @@ name: Build PR
 on:
   pull_request:
     branches:
-      - '*'
+      - '**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,6 +19,29 @@ jobs:
       contents: read
     uses: ./.github/workflows/eslint.yml
 
+  generate-pr-changelog:
+    name: Generate PR Changelog
+    needs: [run-eslint-and-test]
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Generate changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr view "${{ github.event.pull_request.number }}" --json title,number,commits > pr.json
+          node .github/scripts/changelog.js pr
+
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-changelog
+          path: changelog.txt
+          retention-days: 15
+
   android-build-store:
     name: Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
@@ -26,7 +49,7 @@ jobs:
       contents: read
       pull-requests: write
     uses: ./.github/workflows/build-android.yml
-    needs: [run-eslint-and-test]
+    needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
     with:
       trigger: "pr"
@@ -38,7 +61,7 @@ jobs:
       contents: read
       pull-requests: write
     uses: ./.github/workflows/build-ios.yml
-    needs: [run-eslint-and-test]
+    needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
     with:
       trigger: "pr"
@@ -61,17 +84,33 @@ jobs:
     needs: [e2e-hold]
     secrets: inherit
 
+  # Validates flow tags and emits the shard list both matrices fan out over.
+  e2e-shards:
+    name: E2E Shard Preflight
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    needs: [e2e-hold]
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.shards.outputs.shards }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Assert Maestro shard coverage
+        id: shards
+        run: bash .github/scripts/assert-maestro-shards.sh
+
   e2e-run-android:
     name: E2E Run Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     permissions:
       contents: read
     uses: ./.github/workflows/maestro-android.yml
-    needs: [e2e-build-android]
+    needs: [e2e-build-android, e2e-shards]
     secrets: inherit
     strategy:
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        shard: ${{ fromJSON(needs.e2e-shards.outputs.shards) }}
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
@@ -91,11 +130,11 @@ jobs:
     permissions:
       contents: read
     uses: ./.github/workflows/maestro-ios.yml
-    needs: [e2e-build-ios]
+    needs: [e2e-build-ios, e2e-shards]
     secrets: inherit
     strategy:
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        shard: ${{ fromJSON(needs.e2e-shards.outputs.shards) }}
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}

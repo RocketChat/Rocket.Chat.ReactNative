@@ -1,11 +1,13 @@
-import React from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { type EdgeInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
@@ -41,6 +43,7 @@ import {
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const QUERY_SIZE = 50;
 
@@ -77,8 +80,9 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	theme: TSupportedThemes;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
-class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
+class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
 
 	private rid: string;
@@ -306,7 +310,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
@@ -317,6 +321,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				data={messages}
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+				contentContainerStyle={{ paddingBottom: insets.bottom }}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
@@ -350,11 +355,10 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
-	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(SearchMessagesView));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

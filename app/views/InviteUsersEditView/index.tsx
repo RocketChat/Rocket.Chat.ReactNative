@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';

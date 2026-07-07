@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -25,7 +25,7 @@ type TCallHeader = {
 	direct: boolean;
 };
 
-export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): React.ReactElement => {
+export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): ReactElement => {
 	const style = useStyle();
 	const { colors } = useTheme();
 	const calling = useAppSelector(state => state.videoConf.calling);

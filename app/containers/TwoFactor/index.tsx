@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -18,7 +18,7 @@ import sharedStyles from '../../views/Styles';
 import styles from './styles';
 import { type ICredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import log from '../../lib/methods/helpers/log';
@@ -62,14 +62,12 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(() => {
+const TwoFactor = memo(() => {
 	const schema = yup.object().shape({
 		code: yup.string().required(I18n.t('Code_required'))
 	});
 	const { colors } = useTheme();
-	const { isMasterDetail } = useAppSelector(state => ({
-		isMasterDetail: state.app.isMasterDetail as boolean
-	}));
+	const isMasterDetail = useMasterDetail();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const {

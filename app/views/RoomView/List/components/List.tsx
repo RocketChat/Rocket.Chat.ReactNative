@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -23,18 +23,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
-	const [visible, setVisible] = useState(false);
+const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
-				scheduleOnRN(setVisible, true);
+				scheduleOnRN(setScrolledPastLimit, true);
 			} else {
-				scheduleOnRN(setVisible, false);
+				scheduleOnRN(setScrolledPastLimit, false);
 			}
 		}
 	});
+
+	// Anchored window: loaded rows' bottom edge isn't the Live Tail, so force the FAB visible to keep a path back to live.
+	const visible = scrolledPastLimit || !!isAnchored;
 
 	const isScreenReaderEnabled = useIsScreenReaderEnabled();
 
@@ -57,7 +60,7 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 						: undefined
 				}
 				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
+				initialNumToRender={20}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}

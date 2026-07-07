@@ -47,3 +47,71 @@ jobs:
     secrets: inherit
     with:
       trigger: develop
+
+  # Single writer of the AVD + SDK caches: PR-written caches aren't visible to
+  # other PRs, so develop seeds them and the shards restore read-only.
+  seed-android-avd:
+    name: Seed Android AVD Cache
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_AVD_HOME: /home/runner/.android/avd
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup Java
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Cache Android AVD
+        id: avd-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ runner.os }}-api34
+
+      # The emulator + system image live outside ~/.android/avd — cache them
+      # separately so shards don't each re-download ~1 GB.
+      - name: Cache Android SDK packages (emulator + system image)
+        id: sdk-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            /usr/local/lib/android/sdk/emulator
+            /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
+          key: android-sdk-emu-${{ runner.os }}-api34
+
+      # Retried install so a corrupt partial download self-heals
+      - name: Pre-install Android SDK packages (cache miss only)
+        if: steps.sdk-cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/preinstall-android-sdk
+
+      - name: Enable KVM group permissions
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Generate AVD snapshot (cache miss only)
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
+        timeout-minutes: 45
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          profile: pixel_7_pro
+          cores: 4
+          ram-size: 6144M
+          force-avd-creation: true
+          disable-animations: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: echo "AVD snapshot generated for cache"

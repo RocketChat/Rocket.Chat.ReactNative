@@ -1,6 +1,5 @@
-import React, { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type ICustomEmojis, type IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -53,9 +52,8 @@ const EmojiCategory = ({
 	emojis,
 	onEmojiSelected,
 	bottomSheet = false
-}: IEmojiCategoryProps): React.ReactElement | null => {
+}: IEmojiCategoryProps): ReactElement | null => {
 	const items = useEmojis(category);
-	const { bottom } = useSafeAreaInsets();
 
 	if (!parentWidth) {
 		return null;
@@ -63,7 +61,7 @@ const EmojiCategory = ({
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
-	const contentPaddingBottom = bottomSheet ? Math.max(0, MIN_BOTTOM_SHEET_BREATHING_ROOM - bottom) : undefined;
+	const contentPaddingBottom = bottomSheet ? MIN_BOTTOM_SHEET_BREATHING_ROOM : undefined;
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 

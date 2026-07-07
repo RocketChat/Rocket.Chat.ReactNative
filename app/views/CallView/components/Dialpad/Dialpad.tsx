@@ -1,5 +1,5 @@
-import React from 'react';
 import { View } from 'react-native';
+import type { ReactElement } from 'react';
 
 import { FormTextInput } from '../../../../containers/TextInput';
 import { styles } from './styles';
@@ -37,7 +37,7 @@ interface IDialpad {
 	testID?: string;
 }
 
-export const DialpadGrid = (): React.ReactElement => (
+export const DialpadGrid = (): ReactElement => (
 	<View style={styles.grid}>
 		{DIALPAD_KEYS.map((row, rowIndex) => (
 			<View key={rowIndex} style={styles.row}>
@@ -49,7 +49,7 @@ export const DialpadGrid = (): React.ReactElement => (
 	</View>
 );
 
-const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
+const Dialpad = ({ testID }: IDialpad): ReactElement => {
 	const { layoutMode } = useCallLayoutMode();
 	const { width, height } = useResponsiveLayout();
 	const { colors } = useTheme();

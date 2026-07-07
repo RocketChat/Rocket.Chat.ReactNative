@@ -1,4 +1,3 @@
-import React from 'react';
 import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -25,6 +24,7 @@ import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
@@ -55,7 +55,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 		return;
 	}
 	const serverRecord = yield getServerById(server);
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	const isMasterDetail = getIsMasterDetail();
 	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
@@ -479,11 +479,17 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		yield race({
+		// Only cancel handleLoginSuccess if a workspace switch interrupts it.
+		// Cancelling on the 2s timeout would rip the saga before it reaches
+		// appStart(ROOT_INSIDE), stranding users on the login screen when
+		// permissions/enterprise fetches run long (issue #7333).
+		const { selectRequest } = yield race({
 			selectRequest: take(types.SERVER.SELECT_REQUEST),
 			timeout: delay(2000)
 		});
-		yield cancel(loginSuccessTask);
+		if (selectRequest) {
+			yield cancel(loginSuccessTask);
+		}
 	}
 };
 export default root;

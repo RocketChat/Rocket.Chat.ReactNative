@@ -40,10 +40,6 @@ pnpm storybook:start       # Start Metro with Storybook UI
 pnpm storybook-generate    # Generate story snapshots
 ```
 
-## Worktree contract
-
-When using worktrees (`wt`), the post-start hook runs `pnpm install` only. `wt step copy-ignored` is opt-in and only used when the worktree will perform a native build (iOS/Android/Pods/Gradle/Bundler caches).
-
 ## Code Style
 
 - **Prettier**: tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line
@@ -99,3 +95,7 @@ When using worktrees (`wt`), the post-start hook runs `pnpm install` only. `wt s
 - `index.js` — registers app, conditionally loads Storybook
 - `app/index.tsx` — Redux provider, theme, navigation, notifications setup
 - `app/AppContainer.tsx` — root navigation container
+
+## Continuous Integration
+
+CI triggers, call graph, and manual gates: see `.github/README.md`.

@@ -6,10 +6,10 @@ import { type TIconsName } from '../CustomIcon';
 type TAuthType = 'oauth' | 'oauth_custom' | 'saml' | 'cas' | 'apple';
 
 type TServiceName = 'facebook' | 'github' | 'gitlab' | 'google' | 'linkedin' | 'meteor-developer' | 'twitter' | 'wordpress';
-export interface IOpenOAuth {
+export interface IOpenSSOWebView {
 	url: string;
-	ssoToken?: string;
-	authType?: TAuthType;
+	ssoToken: string;
+	authType: 'saml' | 'cas';
 }
 
 export interface IItemService {
@@ -24,6 +24,7 @@ export interface IItemService {
 	authorizePath: string;
 	clientId: string;
 	scope: string;
+	hideButtonOnMobile?: boolean;
 }
 
 export interface IServiceLogin {
@@ -54,7 +55,7 @@ export interface IServiceList {
 }
 
 export interface IServicesSeparator {
-	services: IServices;
+	totalServices: number;
 	separator: boolean;
 	collapsed: boolean;
 	onPress(): void;

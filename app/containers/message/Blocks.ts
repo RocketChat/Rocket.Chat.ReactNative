@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement } from 'react';
 
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 import { type IMessageBlocks } from './interfaces';
@@ -8,7 +8,7 @@ const Blocks = ({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
 
 	if (blocks && blocks.length > 0) {
 		const appId = blocks[0]?.appId || '';
-		return React.createElement(
+		return createElement(
 			messageBlockWithContext({
 				action: async ({ actionId, value, blockId }: { actionId: string; value: string; blockId: string }) => {
 					if (blockAction) {

@@ -36,6 +36,22 @@
 | **Pinned**  | Message flagged as important and pinned to the Room by a user        | Bookmarked       |
 | **Starred** | Message bookmarked by the current user for personal reference        | Saved            |
 
+## Message Loading
+
+| Term                | Definition                                                                                                                         | Aliases to avoid       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **Message Window**  | The contiguous range of Messages the Room view currently observes and renders (distinct from what is synced to the database)       | Page, feed             |
+| **Live Tail**       | The newest end of a Room's Messages; a Message Window at the Live Tail receives new Messages automatically                         | Bottom, latest         |
+| **Live Window**     | A Message Window whose newest edge is the Live Tail — grows older as you scroll up and follows new Messages at the bottom          | —                      |
+| **Anchored Window** | A Message Window pinned around a Jump to Message target instead of the Live Tail; deliberately does not follow new Messages        | —                      |
+| **Chunk**           | A contiguous run of Messages synced from the server into the local database, bracketed by Loader Rows where more exists            | Batch, page            |
+| **Gap**             | A region between two Chunks where Messages exist on the server but not yet locally; represented by a Loader Row                    | Hole                   |
+| **Loader Row**      | A placeholder Message record marking a Gap; becoming visible triggers a server fetch                                               | Load-more, spinner row |
+| **Older Loader**    | A Loader Row marking older Messages (types `MORE`, `PREVIOUS_CHUNK`) — resolving it fetches Messages before it                     | Load previous          |
+| **Newer Loader**    | A Loader Row marking newer Messages (type `NEXT_CHUNK`) — resolving it fetches Messages after it                                   | Load next              |
+| **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
+| **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
+
 ## Users & Roles
 
 | Term            | Definition                                                                         | Aliases to avoid        |
@@ -80,15 +96,16 @@
 
 ## Video & Voice
 
-| Term                        | Definition                                                                                                                                                                                                | Aliases to avoid           |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| **Video Conference**        | A video/voice call session with status lifecycle (calling, started, expired, ended, declined)                                                                                                             | Video call, meeting        |
-| **Direct Video Conference** | A 1-on-1 Video Conference                                                                                                                                                                                 | —                          |
-| **Group Video Conference**  | A multi-participant Video Conference with title and anonymous user support                                                                                                                                | —                          |
-| **VOIP**                    | Voice-over-IP phone-style call, separate from Video Conference — uses ICE servers and media streams                                                                                                       | Phone call, voice call     |
-| **Native Accept**           | An incoming VOIP call answered by native code (CallKit on iOS, Telecom on Android) before the JS runtime is available; native issues the REST accept and JS reconciles state on launch via initial events | JS accept, app accept      |
-| **Per-call DDP**            | A short-lived DDP client opened by native code per incoming VOIP call so accept and signaling land before JS boots; separate from the main app DDP session                                                | Native socket, side socket |
-| **Media Signal**            | A typed event on the `@rocket.chat/media-signaling` wire protocol (offer, answer, ICE candidate, state update) carried over DDP `stream-notify-user` and replayable via REST `media-calls.stateSignals`   | Signal, RTC event          |
+| Term                        | Definition                                                                                                                                                                                                | Aliases to avoid               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Video Conference**        | A video/voice call session with status lifecycle (calling, started, expired, ended, declined)                                                                                                             | Video call, meeting            |
+| **Direct Video Conference** | A 1-on-1 Video Conference                                                                                                                                                                                 | —                              |
+| **Group Video Conference**  | A multi-participant Video Conference with title and anonymous user support                                                                                                                                | —                              |
+| **VOIP**                    | Voice-over-IP phone-style call, separate from Video Conference — uses ICE servers and media streams                                                                                                       | Phone call, voice call         |
+| **Native Accept**           | An incoming VOIP call answered by native code (CallKit on iOS, Telecom on Android) before the JS runtime is available; native issues the REST accept and JS reconciles state on launch via initial events | JS accept, app accept          |
+| **Per-call DDP**            | A short-lived DDP client opened by native code per incoming VOIP call so accept and signaling land before JS boots; separate from the main app DDP session                                                | Native socket, side socket     |
+| **Media Signal**            | A typed event on the `@rocket.chat/media-signaling` wire protocol (offer, answer, ICE candidate, state update) carried over DDP `stream-notify-user` and replayable via REST `media-calls.stateSignals`   | Signal, RTC event              |
+| **Pending Hangup**          | A VOIP call id recorded in-memory when the user taps End while the WebSocket is unhealthy, so the hangup Media Signal can be replayed through the lib's transporter on the next post-login reconnect      | Hangup intent, deferred hangup |
 
 ## Server & Connection
 
@@ -129,6 +146,9 @@
 - An **Omnichannel Room** connects exactly one **Visitor** with zero or one **Agents** (via **Served By**)
 - An **Agent** belongs to one or more **Departments**
 - An **Inquiry** becomes an **Omnichannel Room** when picked up by an **Agent**
+- A **Room** view shows a **Live Window** by default; a **Jump to Message** replaces it with an **Anchored Window**
+- A **Gap** is bracketed by **Loader Rows**; resolving a Loader Row fetches a **Chunk** and may shrink or close the Gap
+- **Jump to Message** fetches a **Chunk** centered on the target (`loadSurroundingMessages`), bracketed by an **Older Loader** and a **Newer Loader** when more Messages exist on either side
 
 ## Example dialogue
 
@@ -146,3 +166,6 @@
 - **"Account"** is sometimes used loosely to mean either **User** (the identity) or **Server** (the connected instance). These are distinct: a **User** authenticates on a **Server**.
 - **"Channel"** in everyday speech can mean any Room, but in domain terms it strictly means a public Room (type `'c'`). A private Room is a **Group** (type `'p'`).
 - **"Forward"** in omnichannel context means **Transfer** (reassigning a room to another agent/department). The codebase uses both `forwardRoom` and "transfer" — prefer **Transfer** as the domain term.
+- **"History"** is overloaded: **Server History** is the recent-Servers reconnection list; **Room History** is older Messages fetched on demand. The action `roomHistoryRequest` and saga `ROOM.HISTORY_REQUEST` refer to **Room History**.
+- **"Window"** is used metaphorically in the Subscriptions dialogue ("a Subscription is the user's window into it"); a **Message Window** is the concrete observed Message range in the Room view. Disambiguate when both could be meant.
+- **"Load more"** is directional: older Messages are an **Older Loader** (`MORE`/`PREVIOUS_CHUNK`), newer Messages are a **Newer Loader** (`NEXT_CHUNK`). Avoid bare "load more".

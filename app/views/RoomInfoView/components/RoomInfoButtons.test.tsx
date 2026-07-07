@@ -1,6 +1,6 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { RoomInfoButtons } from './RoomInfoButtons';
 import { mockedStore } from '../../../reducers/mockedStore';
@@ -34,7 +34,7 @@ jest.mock('../../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =>
 	({
