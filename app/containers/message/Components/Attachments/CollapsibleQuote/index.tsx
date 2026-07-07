@@ -84,7 +84,7 @@ interface IMessageReply {
 }
 
 const AttText = memo(
-	({ text, getCustomEmoji }: IMessageAttText) => {
+	({ text }: IMessageAttText) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -93,13 +93,13 @@ const AttText = memo(
 			return null;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
+		return <Markdown msg={text} username={user.username} />;
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
 const Fields = memo(
-	({ attachment, getCustomEmoji }: IMessageFields) => {
+	({ attachment }: IMessageFields) => {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -116,7 +116,7 @@ const Fields = memo(
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
 							{field.title}
 						</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
+						<Markdown msg={field?.value || ''} username={user.username} />
 					</View>
 				))}
 			</>

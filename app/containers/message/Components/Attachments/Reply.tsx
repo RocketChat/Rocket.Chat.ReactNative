@@ -120,7 +120,7 @@ const Title = memo(
 );
 
 const Description = memo(
-	({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+	({ attachment }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -140,7 +140,7 @@ const Description = memo(
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
+		return <Markdown msg={text} username={user.username} />;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
@@ -173,15 +173,7 @@ const UrlImage = memo(
 );
 
 const Fields = memo(
-	({
-		attachment,
-		theme,
-		getCustomEmoji
-	}: {
-		attachment: IAttachment;
-		theme: TSupportedThemes;
-		getCustomEmoji: TGetCustomEmoji;
-	}) => {
+	({ attachment, theme }: { attachment: IAttachment; theme: TSupportedThemes; getCustomEmoji: TGetCustomEmoji }) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -195,7 +187,7 @@ const Fields = memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
+						<Markdown msg={field?.value || ''} username={user.username} />
 					</View>
 				))}
 			</View>
@@ -280,7 +272,7 @@ const Reply = memo(
 						<UrlImage image={attachment.thumb_url} />
 					</View>
 				</Touchable>
-				{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
+				{msg ? <Markdown msg={msg} username={user.username} /> : null}
 			</View>
 		);
 	},

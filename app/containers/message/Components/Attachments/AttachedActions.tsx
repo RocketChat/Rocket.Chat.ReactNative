@@ -13,7 +13,7 @@ export type TElement = {
 	text: string;
 };
 
-const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+const AttachedActions = ({ attachment }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 	'use memo';
 
 	const { onAnswerButtonPress } = useContext(MessageContext);
@@ -41,7 +41,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 	});
 	return (
 		<>
-			<Markdown msg={attachment.text} getCustomEmoji={getCustomEmoji} />
+			<Markdown msg={attachment.text} />
 			{attachedButtons}
 		</>
 	);
