@@ -217,6 +217,17 @@
 		"storybook": "~9.0.9",
 		"typescript": "~5.9.3"
 	},
+	"expo": {
+		"autolinking": {
+			"android": {
+				"buildFromSource": [
+					"expo-asset",
+					"expo-file-system",
+					"expo-font"
+				]
+			}
+		}
+	},
 	"snyk": true,
 	"engines": {
 		"node": ">=18"
