@@ -1593,7 +1593,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	render() {
-		console.count(`${this.constructor.name}.render calls`);
 		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom, canAutoTranslate } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod, Message_Read_Receipt_Enabled } =
 			this.props;
