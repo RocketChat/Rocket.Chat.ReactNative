@@ -1,4 +1,4 @@
-import { useContext, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type Heading as HeadingProps } from '@rocket.chat/message-parser';
 
@@ -11,7 +11,7 @@ import { Bold, Italic, Link, Strike } from './inline/index';
 import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
-import MarkdownContext from '../contexts/MarkdownContext';
+import MarkdownContext, { useMarkdownContext } from '../contexts/MarkdownContext';
 import Timestamp from './Timestamp';
 
 interface IHeadingProps {
@@ -23,22 +23,13 @@ const Heading = ({ value, level }: IHeadingProps): ReactElement => {
 	'use memo';
 
 	const { theme } = useTheme();
-	const { useRealName, username, navToRoomInfo, mentions, channels, getCustomEmoji, onLinkPress } = useContext(MarkdownContext);
 	const textStyle = styles[`heading${level}`];
+	const context = useMarkdownContext({ textStyle });
+	const { useRealName, username, navToRoomInfo, mentions, channels } = context;
 
 	return (
 		<Text style={[textStyle, { color: themes[theme].fontDefault }]}>
-			<MarkdownContext.Provider
-				value={{
-					useRealName,
-					username,
-					navToRoomInfo,
-					mentions,
-					channels,
-					getCustomEmoji,
-					onLinkPress,
-					textStyle
-				}}>
+			<MarkdownContext.Provider value={context}>
 				{value.map((block, index) => {
 					switch (block.type) {
 						case 'IMAGE':

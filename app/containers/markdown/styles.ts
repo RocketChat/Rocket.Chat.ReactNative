@@ -118,11 +118,23 @@ export default StyleSheet.create({
 		fontSize: 18
 	},
 	heading5: {
-		...sharedStyles.textMedium,
+		...Platform.select({
+			ios: sharedStyles.textMedium,
+			android: {
+				...sharedStyles.textMedium,
+				fontWeight: '700'
+			}
+		}),
 		fontSize: 16
 	},
 	heading6: {
-		...sharedStyles.textMedium,
+		...Platform.select({
+			ios: sharedStyles.textMedium,
+			android: {
+				...sharedStyles.textMedium,
+				fontWeight: '700'
+			}
+		}),
 		fontSize: 14
 	},
 	quote: {

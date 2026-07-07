@@ -105,7 +105,8 @@ export default StyleSheet.create({
 				fontWeight: '600'
 			},
 			android: {
-				fontFamily: 'Inter-SemiBold'
+				fontFamily: 'Inter-SemiBold',
+				fontWeight: '700'
 			}
 		})
 	},
@@ -117,7 +118,8 @@ export default StyleSheet.create({
 				fontWeight: '700'
 			},
 			android: {
-				fontFamily: 'Inter-Bold'
+				fontFamily: 'Inter-Bold',
+				fontWeight: '700'
 			}
 		})
 	},

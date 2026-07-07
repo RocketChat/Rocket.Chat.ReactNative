@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
@@ -24,4 +24,11 @@ const defaultState = {
 };
 
 const MarkdownContext = createContext<IMarkdownContext>(defaultState);
+
+export const useMarkdownContext = (overrides?: Partial<IMarkdownContext>): IMarkdownContext => {
+	const context = useContext(MarkdownContext);
+	if (!overrides) return context;
+	return { ...context, ...overrides };
+};
+
 export default MarkdownContext;
