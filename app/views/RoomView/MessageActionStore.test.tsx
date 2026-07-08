@@ -1,12 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import {
-	createMessageActionStore,
-	MessageActionProvider,
-	useIsBeingEdited,
-	useMessageAction,
-	useSelectedMessages
-} from './MessageActionStore';
+import { createMessageActionStore, MessageActionProvider, useIsBeingEdited, useMessageAction } from './MessageActionStore';
 
 describe('MessageActionStore', () => {
 	describe('useIsBeingEdited', () => {
@@ -59,13 +53,71 @@ describe('MessageActionStore', () => {
 			};
 			expect(() => render(<Probe />)).toThrow('Interaction hooks must be used within a MessageActionProvider');
 		});
+	});
 
-		it('useSelectedMessages throws', () => {
+	describe('useMessageAction under a provider', () => {
+		it('returns null when there is no action', () => {
+			const spy = jest.fn();
 			const Probe = () => {
-				useSelectedMessages();
+				spy(useMessageAction());
 				return null;
 			};
-			expect(() => render(<Probe />)).toThrow('Interaction hooks must be used within a MessageActionProvider');
+
+			render(
+				<MessageActionProvider>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(null);
+		});
+
+		it('returns the edit action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageAction());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith({ kind: 'edit', messageId: 'msg-1' });
+		});
+
+		it('returns the quote action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageAction());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1', 'msg-2'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
+		});
+
+		it('returns the react action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useMessageAction());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'react', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith({ kind: 'react', messageId: 'msg-1' });
 		});
 	});
 

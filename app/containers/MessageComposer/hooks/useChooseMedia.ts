@@ -10,7 +10,7 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/MessageActionStore';
+import { useMessageAction } from '../../../views/RoomView/MessageActionStore';
 import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { useMessageComposerApi } from '../context';
@@ -34,7 +34,6 @@ export const useChooseMedia = ({
 	const { addAttachments } = useMessageComposerApi();
 	const { setQuotesAndText, getText } = useRoomContext();
 	const action = useMessageAction();
-	const selectedMessages = useSelectedMessages();
 	const altTextSupported = useAltTextSupported();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
@@ -97,6 +96,12 @@ export const useChooseMedia = ({
 
 	const startShareView = () => {
 		const text = getText?.() || '';
+		let selectedMessages: string[] = [];
+		if (action?.kind === 'quote') {
+			selectedMessages = action.messageIds;
+		} else if (action) {
+			selectedMessages = [action.messageId];
+		}
 		return {
 			selectedMessages,
 			text
@@ -118,7 +123,7 @@ export const useChooseMedia = ({
 				room,
 				thread: thread || tmid,
 				attachments,
-				action,
+				action: action?.kind ?? null,
 				finishShareView,
 				startShareView
 			});

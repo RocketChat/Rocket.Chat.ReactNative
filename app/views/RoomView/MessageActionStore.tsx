@@ -1,6 +1,5 @@
 import { createContext, type ReactNode, useContext, useState } from 'react';
 import { createStore, useStore } from 'zustand';
-import { useShallow } from 'zustand/react/shallow';
 
 export type TMessageActionState =
 	| { kind: 'edit'; messageId: string }
@@ -70,19 +69,8 @@ const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): 
 	return useStore(store, selector);
 };
 
-export const useMessageAction = (): NonNullable<TMessageActionState>['kind'] | null =>
-	useMessageActionStore(s => s.action?.kind ?? null);
-
-export const useSelectedMessages = (): string[] =>
-	useMessageActionStore(
-		useShallow(s => {
-			const { action } = s;
-			if (!action) {
-				return [];
-			}
-			return action.kind === 'quote' ? action.messageIds : [action.messageId];
-		})
-	);
+// `action` is a single ref replaced wholesale on every `set` — no useShallow needed.
+export const useMessageAction = (): TMessageActionState => useMessageActionStore(s => s.action);
 
 export const useIsBeingEdited = (messageId: string): boolean => {
 	const store = useContext(MessageActionStoreContext) ?? fallbackStore;

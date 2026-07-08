@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { saveDraftMessage } from '../../../lib/methods/draftMessage';
 import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/MessageActionStore';
+import { useMessageAction } from '../../../views/RoomView/MessageActionStore';
 import { useFocused } from '../context';
 
 export const useAutoSaveDraft = (text = '') => {
@@ -12,7 +12,6 @@ export const useAutoSaveDraft = (text = '') => {
 	const route = useRoute();
 	const { rid, tmid } = useRoomContext();
 	const action = useMessageAction();
-	const selectedMessages = useSelectedMessages();
 	const focused = useFocused();
 	const oldText = useRef('');
 	const intervalRef = useRef<number | null>(null);
@@ -22,11 +21,13 @@ export const useAutoSaveDraft = (text = '') => {
 	const saveMessageDraft = useCallback(
 		(m?: string) => {
 			if (route.name === 'ShareView') return;
-			if (action === 'edit') return;
+			if (action?.kind === 'edit') return;
 
 			let draftMessage = '';
-			if (selectedMessages?.length) {
-				draftMessage = JSON.stringify({ quotes: selectedMessages, msg: text });
+			if (action?.kind === 'quote') {
+				draftMessage = JSON.stringify({ quotes: action.messageIds, msg: text });
+			} else if (action?.kind === 'react') {
+				draftMessage = JSON.stringify({ quotes: [action.messageId], msg: text });
 			} else {
 				draftMessage = m ?? text;
 			}
@@ -35,7 +36,7 @@ export const useAutoSaveDraft = (text = '') => {
 				saveDraftMessage({ rid, tmid, draftMessage });
 			}
 		},
-		[action, rid, tmid, text, selectedMessages, route.name]
+		[action, rid, tmid, text, route.name]
 	);
 
 	// if focused on composer input, saves every N seconds

@@ -9,7 +9,7 @@ export const CancelEdit = () => {
 	const { editCancel } = useRoomContext();
 	const action = useMessageAction();
 
-	if (action !== 'edit') {
+	if (action?.kind !== 'edit') {
 		return null;
 	}
 	return (

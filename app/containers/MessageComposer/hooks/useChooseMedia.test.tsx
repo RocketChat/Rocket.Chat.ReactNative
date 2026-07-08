@@ -19,8 +19,7 @@ jest.mock('../../../views/RoomView/context', () => ({
 }));
 
 jest.mock('../../../views/RoomView/MessageActionStore', () => ({
-	useMessageAction: jest.fn(),
-	useSelectedMessages: jest.fn()
+	useMessageAction: jest.fn()
 }));
 
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
@@ -52,7 +51,6 @@ const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSe
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
 const mockUseRoomContext = require('../../../views/RoomView/context').useRoomContext as jest.Mock;
 const mockUseMessageAction = require('../../../views/RoomView/MessageActionStore').useMessageAction as jest.Mock;
-const mockUseSelectedMessages = require('../../../views/RoomView/MessageActionStore').useSelectedMessages as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 const mockGetThreadById = require('../../../lib/database/services/Thread').getThreadById as jest.Mock;
@@ -78,7 +76,6 @@ describe('useChooseMedia', () => {
 			getText: jest.fn(() => 'draft')
 		});
 		mockUseMessageAction.mockReturnValue(null);
-		mockUseSelectedMessages.mockReturnValue([]);
 		mockGetSubscriptionByRoomId.mockResolvedValue({ rid: 'room-id', t: 'c' });
 		mockGetThreadById.mockResolvedValue({ id: 'thread-id' });
 	});
