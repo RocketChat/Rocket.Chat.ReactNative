@@ -10,7 +10,7 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/InteractionStore';
+import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/MessageActionStore';
 import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { useMessageComposerApi } from '../context';

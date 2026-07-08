@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import { useMessageAction, useSelectedMessages } from '../../views/RoomView/InteractionStore';
+import { useMessageAction, useSelectedMessages } from '../../views/RoomView/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import {

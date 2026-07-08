@@ -2,13 +2,14 @@ import type Model from '@nozbe/watermelondb/Model';
 import { type Root } from '@rocket.chat/message-parser';
 
 import { type MessageTypeLoad } from '../lib/constants/messageTypeLoad';
+import { type TMessageActionState } from '../views/RoomView/MessageActionStore';
 import { type IAttachment } from './IAttachment';
 import { type IReaction } from './IReaction';
 import { type TThreadMessageModel } from './IThreadMessage';
 import { type TThreadModel } from './IThread';
 import { type IUrl, type IUrlFromServer } from './IUrl';
 
-export type TMessageAction = 'quote' | 'edit' | 'react' | null;
+export type TMessageAction = NonNullable<TMessageActionState>['kind'] | null;
 
 export type MessageType =
 	| 'jitsi_call_started'

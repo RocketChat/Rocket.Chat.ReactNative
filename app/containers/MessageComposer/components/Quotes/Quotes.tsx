@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useMessageAction, useSelectedMessages } from '../../../../views/RoomView/InteractionStore';
+import { useMessageAction, useSelectedMessages } from '../../../../views/RoomView/MessageActionStore';
 
 export const Quotes = (): ReactElement | null => {
 	'use memo';

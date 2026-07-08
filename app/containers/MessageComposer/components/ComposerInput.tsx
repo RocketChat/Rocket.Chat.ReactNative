@@ -33,7 +33,7 @@ import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/InteractionStore';
+import { useMessageAction, useSelectedMessages } from '../../../views/RoomView/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';

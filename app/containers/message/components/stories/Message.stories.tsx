@@ -16,7 +16,7 @@ import {
 import { mockedStore as store } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 import { setCustomEmojis } from '../../../../actions/customEmojis';
-import { createInteractionStore, InteractionStoreContext } from '../../../../views/RoomView/InteractionStore';
+import { createMessageActionStore, MessageActionStoreContext } from '../../../../views/RoomView/MessageActionStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 
 const _theme = 'light';
@@ -2401,18 +2401,18 @@ export const Temp = () => <Message msg='Temp message' status={messagesStatus.TEM
 
 export const TempLargeFont = () => <MessageLargeFont msg='Temp message' status={messagesStatus.TEMP} isTemp />;
 
-const editingStore = createInteractionStore({ kind: 'edit', messageId: 'editing-message' });
+const editingStore = createMessageActionStore({ kind: 'edit', messageId: 'editing-message' });
 
 export const Editing = () => (
-	<InteractionStoreContext.Provider value={editingStore}>
+	<MessageActionStoreContext.Provider value={editingStore}>
 		<Message id='editing-message' msg='Message being edited' />
-	</InteractionStoreContext.Provider>
+	</MessageActionStoreContext.Provider>
 );
 
 export const EditingLargeFont = () => (
-	<InteractionStoreContext.Provider value={editingStore}>
+	<MessageActionStoreContext.Provider value={editingStore}>
 		<MessageLargeFont id='editing-message' msg='Message being edited' />
-	</InteractionStoreContext.Provider>
+	</MessageActionStoreContext.Provider>
 );
 
 export const SystemMessages = () => (
