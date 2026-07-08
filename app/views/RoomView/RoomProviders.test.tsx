@@ -2,11 +2,11 @@ import { render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
 import { useRoomContext, type IRoomContext } from './context';
-import { createInteractionStore } from './InteractionStore';
+import { createMessageActionStore } from './MessageActionStore';
 
 describe('RoomProviders', () => {
 	it('keeps the same RoomContext value reference across re-renders with unchanged props', () => {
-		const store = createInteractionStore();
+		const store = createMessageActionStore();
 		const room = { rid: 'rid-1' };
 		const values: IRoomContext[] = [];
 
@@ -29,7 +29,7 @@ describe('RoomProviders', () => {
 	});
 
 	it('produces a new RoomContext value reference when a prop changes', () => {
-		const store = createInteractionStore();
+		const store = createMessageActionStore();
 		const values: IRoomContext[] = [];
 
 		const Probe = () => {

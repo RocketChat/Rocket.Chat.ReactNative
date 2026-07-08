@@ -3,7 +3,7 @@ import { fireEvent } from '@testing-library/react-native';
 
 import MessageContainer from '../index';
 import { type TAnyMessageModel } from '../../../definitions';
-import { createInteractionStore, InteractionStoreContext } from '../../../views/RoomView/InteractionStore';
+import { createMessageActionStore, MessageActionStoreContext } from '../../../views/RoomView/MessageActionStore';
 import { renderWithMessageProviders } from '../index.testHelpers';
 import { type MessageRoomState } from '../stores/MessageRoomStore';
 
@@ -93,30 +93,30 @@ it('fires the onLongPress callback when long-pressed', () => {
 	expect(onLongPress).toHaveBeenCalledTimes(1);
 });
 
-describe('edit highlight reacts to InteractionStore', () => {
+describe('edit highlight reacts to MessageActionStore', () => {
 	it('shows editing testID when the store marks this message as being edited', () => {
-		const store = createInteractionStore({ kind: 'edit', messageId: 'msg-1' });
+		const store = createMessageActionStore({ kind: 'edit', messageId: 'msg-1' });
 		const item = createMockMessage({ id: 'msg-1' });
 		const { getByTestId } = renderWithMessageProviders(
-			<InteractionStoreContext.Provider value={store}>
+			<MessageActionStoreContext.Provider value={store}>
 				<MessageContainer item={item} {...baseProps} />
-			</InteractionStoreContext.Provider>,
+			</MessageActionStoreContext.Provider>,
 			{ room }
 		);
 		expect(getByTestId('message-editing-msg-1')).toBeTruthy();
 	});
 
-	it('removes editing testID when the store resets', async () => {
-		const store = createInteractionStore({ kind: 'edit', messageId: 'msg-1' });
+	it('removes editing testID when the store clears', async () => {
+		const store = createMessageActionStore({ kind: 'edit', messageId: 'msg-1' });
 		const item = createMockMessage({ id: 'msg-1' });
 		const { queryByTestId } = renderWithMessageProviders(
-			<InteractionStoreContext.Provider value={store}>
+			<MessageActionStoreContext.Provider value={store}>
 				<MessageContainer item={item} {...baseProps} />
-			</InteractionStoreContext.Provider>,
+			</MessageActionStoreContext.Provider>,
 			{ room }
 		);
 		await act(() => {
-			store.getState().actions.reset();
+			store.getState().actions.clear();
 		});
 		expect(queryByTestId('message-editing-msg-1')).toBeNull();
 	});

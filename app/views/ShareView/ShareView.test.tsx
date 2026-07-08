@@ -177,7 +177,7 @@ describe('ShareView', () => {
 		spy.mockRestore();
 	});
 
-	it('send() builds msg from prepareQuoteMessage using the interaction store quote ids', async () => {
+	it('send() builds msg from prepareQuoteMessage using the message action store quote ids', async () => {
 		const shareView = makeInstance({
 			mime: 'image/jpeg',
 			serverVersion: '8.3.0',
@@ -191,7 +191,7 @@ describe('ShareView', () => {
 		};
 		shareView.saveSelectedDescription = jest.fn() as any;
 
-		shareView.interactionStore.getState().actions.setQuotes(['msg-1']);
+		shareView.messageActionStore.getState().actions.setQuoteMessageIds(['msg-1']);
 
 		const prepareQuoteMessageMod = require('../../containers/MessageComposer/helpers/prepareQuoteMessage');
 		const prepareSpy = jest.spyOn(prepareQuoteMessageMod, 'prepareQuoteMessage').mockResolvedValue('quoted-text');

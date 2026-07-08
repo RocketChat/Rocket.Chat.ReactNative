@@ -8,7 +8,7 @@ import { useLastFocusedMessageRef } from '../../../lib/a11y/useLastFocusedMessag
 import { useMessageAccessibilityLabel } from '../hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from '../hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHint';
-import { useIsBeingEdited } from '../../../views/RoomView/InteractionStore';
+import { useIsBeingEdited } from '../../../views/RoomView/MessageActionStore';
 import {
 	useIsInfoMessage,
 	useMessageField,

@@ -38,7 +38,7 @@ import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachmen
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomProviders } from '../RoomView/RoomProviders';
-import { createInteractionStore, type InteractionStore } from '../RoomView/InteractionStore';
+import { createMessageActionStore, type TMessageActionStore } from '../RoomView/MessageActionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -78,7 +78,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private serverInfo: TShareServerInfo;
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
-	private interactionStore: InteractionStore;
+	private messageActionStore: TMessageActionStore;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -88,8 +88,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 		this.finishShareView = props.route.params?.finishShareView;
 		this.sentMessage = false;
-		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuotes.
-		this.interactionStore = createInteractionStore();
+		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuoteMessageIds.
+		this.messageActionStore = createMessageActionStore();
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -120,10 +120,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
-	// ShareView's interaction store only ever holds the quote flow.
+	// ShareView's message action store only ever holds the quote flow.
 	getSelectedMessageIds = (): string[] => {
-		const { interaction } = this.interactionStore.getState();
-		return interaction?.kind === 'quote' ? interaction.messageIds : [];
+		const { action } = this.messageActionStore.getState();
+		return action?.kind === 'quote' ? action.messageIds : [];
 	};
 
 	getThreadId = (thread: TThreadModel | string | undefined) => {
@@ -239,7 +239,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Synchronization needed for Fabric to work
 			await new Promise(resolve => setTimeout(resolve, 100));
 			this.messageComposerRef.current?.setInput(text);
-			this.interactionStore.getState().actions.setQuotes(selectedMessages);
+			this.messageActionStore.getState().actions.setQuoteMessageIds(selectedMessages);
 		}
 	};
 
@@ -266,9 +266,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		let msg: string | undefined;
-		const { interaction } = this.interactionStore.getState();
-		if (interaction?.kind === 'quote') {
-			msg = await prepareQuoteMessage('', interaction.messageIds);
+		const { action } = this.messageActionStore.getState();
+		if (action?.kind === 'quote') {
+			msg = await prepareQuoteMessage('', action.messageIds);
 		}
 
 		const { isAltTextSupported } = this;
@@ -384,7 +384,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	onRemoveQuoteMessage = (messageId: string) => {
 		const newSelectedMessages = this.getSelectedMessageIds().filter(item => item !== messageId);
-		this.interactionStore.getState().actions.setQuotes(newSelectedMessages);
+		this.messageActionStore.getState().actions.setQuoteMessageIds(newSelectedMessages);
 	};
 
 	renderContent = () => {
@@ -394,7 +394,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (attachments.length) {
 			return (
 				<RoomProviders
-					store={this.interactionStore}
+					store={this.messageActionStore}
 					rid={room.rid}
 					t={room.t}
 					room={room}

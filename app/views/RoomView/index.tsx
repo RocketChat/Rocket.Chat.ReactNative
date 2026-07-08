@@ -96,7 +96,7 @@ import {
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { createInteractionStore, type InteractionStore } from './InteractionStore';
+import { createMessageActionStore, type TMessageActionStore } from './MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import AudioManager from '../../lib/methods/AudioManager';
@@ -145,7 +145,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private interactionStore: InteractionStore;
+	private messageActionStore: TMessageActionStore;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -171,7 +171,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
 		const { messageId } = props.route.params ?? {};
-		this.interactionStore = createInteractionStore(messageId ? { kind: 'quote', messageIds: [messageId] } : null);
+		this.messageActionStore = createMessageActionStore(messageId ? { kind: 'quote', messageIds: [messageId] } : null);
 		this.state = {
 			joined: true,
 			room,
@@ -222,7 +222,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	componentDidMount() {
 		const { navigation, dispatch } = this.props;
-		const { interaction } = this.interactionStore.getState();
+		const { action } = this.messageActionStore.getState();
 		dispatch(clearInAppFeedback());
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
@@ -252,8 +252,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
-			if (interaction?.kind === 'quote' && interaction.messageIds.length === 1) {
-				this.onQuoteInit(interaction.messageIds[0]);
+			if (action?.kind === 'quote' && action.messageIds.length === 1) {
+				this.onQuoteInit(action.messageIds[0]);
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -794,11 +794,11 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditInit = (messageId: string) => {
-		const { interaction, actions } = this.interactionStore.getState();
-		if (interaction) {
+		const { action, actions } = this.messageActionStore.getState();
+		if (action) {
 			return;
 		}
-		actions.setEditing(messageId);
+		actions.startEditing(messageId);
 	};
 
 	onEditCancel = () => {
@@ -840,31 +840,31 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onQuoteInit = (messageId: string) => {
-		const { interaction, actions } = this.interactionStore.getState();
-		if (interaction?.kind === 'quote') {
-			if (!interaction.messageIds.includes(messageId)) {
-				actions.appendQuote(messageId);
+		const { action, actions } = this.messageActionStore.getState();
+		if (action?.kind === 'quote') {
+			if (!action.messageIds.includes(messageId)) {
+				actions.addQuote(messageId);
 			}
 			return;
 		}
-		if (interaction) {
+		if (action) {
 			return;
 		}
-		actions.initQuote(messageId);
+		actions.startQuote(messageId);
 	};
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		this.interactionStore.getState().actions.removeQuote(messageId);
+		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
 
 	resetAction = () => {
-		this.interactionStore.getState().actions.reset();
+		this.messageActionStore.getState().actions.clear();
 	};
 
 	showReactionPicker = () => {
 		const { showActionSheet } = this.props;
-		const { interaction } = this.interactionStore.getState();
-		const messageId = interaction?.kind === 'react' ? interaction.messageId : undefined;
+		const { action } = this.messageActionStore.getState();
+		const messageId = action?.kind === 'react' ? action.messageId : undefined;
 		setTimeout(() => {
 			showActionSheet({
 				children: (
@@ -879,11 +879,11 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReactionInit = (messageId: string) => {
-		if (this.interactionStore.getState().interaction) {
+		if (this.messageActionStore.getState().action) {
 			return;
 		}
 		this.handleCloseEmoji(() => {
-			this.interactionStore.getState().actions.setReacting(messageId);
+			this.messageActionStore.getState().actions.startReacting(messageId);
 			this.showReactionPicker();
 		});
 	};
@@ -895,8 +895,8 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onMessageLongPress = (message: TAnyMessageModel) => {
-		const { interaction } = this.interactionStore.getState();
-		if (interaction && interaction.kind !== 'quote') {
+		const { action } = this.messageActionStore.getState();
+		if (action && action.kind !== 'quote') {
 			return;
 		}
 		// if it's a thread message on main room, we disable the long press
@@ -1379,7 +1379,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	setQuotesAndText = (text: string, quotes: string[]) => {
-		this.interactionStore.getState().actions.setQuotes(quotes);
+		this.messageActionStore.getState().actions.setQuoteMessageIds(quotes);
 		this.messageComposerRef.current?.setInput(text || '');
 	};
 
@@ -1630,7 +1630,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 		return (
 			<RoomProviders
-				store={this.interactionStore}
+				store={this.messageActionStore}
 				rid={rid}
 				t={t}
 				room={room}
