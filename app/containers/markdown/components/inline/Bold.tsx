@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Bold as BoldProps } from '@rocket.chat/message-parser';
 
@@ -6,7 +5,6 @@ import { Italic, Link, Strike } from './index';
 import Plain from '../Plain';
 import sharedStyles from '../../../../views/Styles';
 import AtMention from '../mentions/AtMention';
-import MarkdownContext from '../../contexts/MarkdownContext';
 import { Hashtag } from '../mentions';
 
 interface IBoldProps {
@@ -22,8 +20,6 @@ const styles = StyleSheet.create({
 const Bold = ({ value }: IBoldProps) => {
 	'use memo';
 
-	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
-
 	return (
 		<Text style={styles.text}>
 			{value.map(block => {
@@ -37,17 +33,9 @@ const Bold = ({ value }: IBoldProps) => {
 					case 'ITALIC':
 						return <Italic value={block.value} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} channels={channels} navToRoomInfo={navToRoomInfo} />;
+						return <Hashtag hashtag={block.value.value} />;
 					case 'MENTION_USER':
-						return (
-							<AtMention
-								mention={block.value.value}
-								username={username}
-								navToRoomInfo={navToRoomInfo}
-								useRealName={useRealName}
-								mentions={mentions}
-							/>
-						);
+						return <AtMention mention={block.value.value} />;
 					default:
 						return null;
 				}

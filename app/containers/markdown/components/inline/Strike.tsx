@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 
@@ -6,7 +5,6 @@ import { Bold, Italic, Link } from './index';
 import Plain from '../Plain';
 import AtMention from '../mentions/AtMention';
 import Hashtag from '../mentions/Hashtag';
-import MarkdownContext from '../../contexts/MarkdownContext';
 
 interface IStrikeProps {
 	value: StrikeProps['value'];
@@ -21,8 +19,6 @@ const styles = StyleSheet.create({
 const Strike = ({ value }: IStrikeProps) => {
 	'use memo';
 
-	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
-
 	return (
 		<Text style={styles.text}>
 			{value.map(block => {
@@ -36,17 +32,9 @@ const Strike = ({ value }: IStrikeProps) => {
 					case 'ITALIC':
 						return <Italic value={block.value} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} channels={channels} navToRoomInfo={navToRoomInfo} />;
+						return <Hashtag hashtag={block.value.value} />;
 					case 'MENTION_USER':
-						return (
-							<AtMention
-								mention={block.value.value}
-								username={username}
-								navToRoomInfo={navToRoomInfo}
-								useRealName={useRealName}
-								mentions={mentions}
-							/>
-						);
+						return <AtMention mention={block.value.value} />;
 					default:
 						return null;
 				}

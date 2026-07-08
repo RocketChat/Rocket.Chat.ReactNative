@@ -25,7 +25,6 @@ const Heading = ({ value, level }: IHeadingProps): ReactElement => {
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 	const context = useMarkdownContext({ textStyle });
-	const { useRealName, username, navToRoomInfo, mentions, channels } = context;
 
 	return (
 		<Text style={[textStyle, { color: themes[theme].fontDefault }]}>
@@ -45,19 +44,11 @@ const Heading = ({ value, level }: IHeadingProps): ReactElement => {
 						case 'LINK':
 							return <Link value={block.value} />;
 						case 'MENTION_USER':
-							return (
-								<AtMention
-									mention={block.value.value}
-									useRealName={useRealName}
-									username={username}
-									navToRoomInfo={navToRoomInfo}
-									mentions={mentions}
-								/>
-							);
+							return <AtMention mention={block.value.value} />;
 						case 'EMOJI':
 							return <Emoji block={block} index={index} />;
 						case 'MENTION_CHANNEL':
-							return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+							return <Hashtag hashtag={block.value.value} />;
 						case 'INLINE_CODE':
 							return <InlineCode value={block.value} />;
 						case 'TIMESTAMP':
