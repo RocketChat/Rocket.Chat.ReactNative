@@ -1,5 +1,6 @@
 import type Model from '@nozbe/watermelondb/Model';
 import { type Root } from '@rocket.chat/message-parser';
+import { type LayoutBlock } from '@rocket.chat/ui-kit';
 
 import { type MessageTypeLoad } from '../lib/constants/messageTypeLoad';
 import { type IAttachment } from './IAttachment';
@@ -56,6 +57,11 @@ export interface IMessageTranslations {
 }
 
 export type E2EType = 'pending' | 'done';
+
+export interface IE2EEMentions {
+	e2eUserMentions: string[];
+	e2eChannelMentions: string[];
+}
 
 export interface ILastMessage {
 	_id?: string;
@@ -173,14 +179,14 @@ export interface IMessage extends IMessageFromServer {
 	autoTranslate?: boolean;
 	translations?: IMessageTranslations[];
 	tmsg?: string;
-	blocks?: any;
+	blocks?: LayoutBlock[] | null;
 	e2e?: E2EType;
 	tshow?: boolean;
 	comment?: string;
 	subscription?: { id: string };
 	user?: string;
 	editedAt?: string | Date;
-	e2eMentions?: any;
+	e2eMentions?: IE2EEMentions;
 }
 
 export type TMessageModel = IMessage &

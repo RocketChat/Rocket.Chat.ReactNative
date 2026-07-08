@@ -261,7 +261,7 @@ describe('MessageStore', () => {
 
 	describe('domain hooks', () => {
 		it('useBlocks selects blocks and id', () => {
-			const model = buildFakeModel({ blocks: [{ appId: 'app-1' }] });
+			const model = buildFakeModel({ blocks: [{ type: 'divider', appId: 'app-1' }] });
 			const { latestValue } = renderMessage(model, { blocks: useBlocks });
 			expect(latestValue('blocks')).toEqual({ blocks: model.blocks, id: model.id });
 		});
