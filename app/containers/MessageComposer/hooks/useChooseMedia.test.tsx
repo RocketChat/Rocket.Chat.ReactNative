@@ -18,7 +18,7 @@ jest.mock('../../../views/RoomView/context', () => ({
 	useRoomContext: jest.fn()
 }));
 
-jest.mock('../../../views/RoomView/MessageActionStore', () => ({
+jest.mock('../../message/stores/MessageActionStore', () => ({
 	useMessageAction: jest.fn()
 }));
 
@@ -50,7 +50,7 @@ const mockGetDocumentAsync = require('expo-document-picker').getDocumentAsync as
 const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSelector as jest.Mock;
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
 const mockUseRoomContext = require('../../../views/RoomView/context').useRoomContext as jest.Mock;
-const mockUseMessageAction = require('../../../views/RoomView/MessageActionStore').useMessageAction as jest.Mock;
+const mockUseMessageAction = require('../../message/stores/MessageActionStore').useMessageAction as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 const mockGetThreadById = require('../../../lib/database/services/Thread').getThreadById as jest.Mock;

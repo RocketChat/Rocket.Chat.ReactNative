@@ -96,7 +96,7 @@ import {
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { createMessageActionStore, type TMessageActionStore } from './MessageActionStore';
+import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import AudioManager from '../../lib/methods/AudioManager';

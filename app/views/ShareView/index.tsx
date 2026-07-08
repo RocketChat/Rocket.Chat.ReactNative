@@ -38,7 +38,7 @@ import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachmen
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomProviders } from '../RoomView/RoomProviders';
-import { createMessageActionStore, type TMessageActionStore } from '../RoomView/MessageActionStore';
+import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {

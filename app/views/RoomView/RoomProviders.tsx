@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { RoomContext, type IRoomContext } from './context';
-import { type TMessageActionStore, MessageActionStoreContext } from './MessageActionStore';
+import { type TMessageActionStore, MessageActionStoreContext } from '../../containers/message/stores/MessageActionStore';
 
 type IRoomProvidersProps = IRoomContext & {
 	store: TMessageActionStore;

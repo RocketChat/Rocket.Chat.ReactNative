@@ -2,7 +2,7 @@ import { render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
 import { useRoomContext, type IRoomContext } from './context';
-import { createMessageActionStore } from './MessageActionStore';
+import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 
 describe('RoomProviders', () => {
 	it('keeps the same RoomContext value reference across re-renders with unchanged props', () => {

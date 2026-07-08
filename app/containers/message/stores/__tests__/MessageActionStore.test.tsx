@@ -6,7 +6,7 @@ import {
 	MessageActionProvider,
 	useIsBeingEdited,
 	useMessageAction
-} from './MessageActionStore';
+} from '../MessageActionStore';
 
 describe('MessageActionStore', () => {
 	describe('useIsBeingEdited', () => {

@@ -16,7 +16,7 @@ import {
 import { mockedStore as store } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 import { setCustomEmojis } from '../../../../actions/customEmojis';
-import { createMessageActionStore, MessageActionStoreContext } from '../../../../views/RoomView/MessageActionStore';
+import { createMessageActionStore, MessageActionStoreContext } from '../../stores/MessageActionStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 
 const _theme = 'light';
