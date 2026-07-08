@@ -81,4 +81,27 @@ describe('useFile', () => {
 		expect(result.current[0]).not.toBe(file);
 		expect(result.current[0].title_link).toBe('/forwarded');
 	});
+
+	// Documents the current contract: isMessagePersisted is seeded once and the effect only ever
+	// flips it to false, so it can't recover to true on a later messageId change. Not fixed: the
+	// only caller keys its list by that same id, so a real id change always remounts the hook fresh.
+	it('stays stuck not-persisted after rerendering with a real persisted messageId (documents current contract)', async () => {
+		mockGetThreadMessageById.mockResolvedValue(undefined);
+		mockGetMessageById.mockResolvedValue(undefined);
+		const { result, rerender } = renderHook(({ messageId }: { messageId: string }) => useFile(file, messageId), {
+			initialProps: { messageId: '' }
+		});
+
+		await flushEffect();
+		expect(result.current[0]).toBe(file);
+
+		mockGetMessageById.mockResolvedValue({ id: 'msg-id' });
+		rerender({ messageId: 'msg-id' });
+		await flushEffect();
+
+		expect(mockGetMessageById).toHaveBeenCalledWith('msg-id');
+		act(() => result.current[1]({ title_link: '/forwarded' }));
+		expect(result.current[0]).not.toBe(file);
+		expect(result.current[0].title_link).toBe('/forwarded');
+	});
 });
