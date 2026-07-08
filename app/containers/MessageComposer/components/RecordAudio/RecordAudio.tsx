@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 import { useEffect, useRef, useState, type ReactElement } from 'react';
-import { Audio } from '../../../../lib/methods/helpers/expoAvShim';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
 
+import { Audio } from '../../../../lib/methods/helpers/expoAvShim';
 import { useTheme } from '../../../../theme';
 import { BaseButton } from '../Buttons';
 import { CustomIcon } from '../../../CustomIcon';

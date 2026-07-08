@@ -1,6 +1,6 @@
 import { type ReactElement, useEffect } from 'react';
-import { Audio, InterruptionModeIOS } from '../../lib/methods/helpers/expoAvShim';
 
+import { Audio, InterruptionModeIOS } from '../../lib/methods/helpers/expoAvShim';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
 import { styles } from './styles';

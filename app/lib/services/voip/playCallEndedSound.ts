@@ -1,5 +1,4 @@
 import { Audio } from '../../methods/helpers/expoAvShim';
-
 import log from '../../methods/helpers/log';
 
 // Module-scoped state so it survives React tree unmounts and is safe to call

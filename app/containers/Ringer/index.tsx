@@ -1,5 +1,6 @@
-import { Audio } from '../../lib/methods/helpers/expoAvShim';
 import { useEffect, useRef, memo } from 'react';
+
+import { Audio } from '../../lib/methods/helpers/expoAvShim';
 
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',

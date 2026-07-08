@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { type AVPlaybackStatus } from '../../lib/methods/helpers/expoAvShim';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 
+import { type AVPlaybackStatus } from '../../lib/methods/helpers/expoAvShim';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import Seek from './Seek';
