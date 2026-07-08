@@ -57,9 +57,23 @@ export type TMessageActionStore = ReturnType<typeof createMessageActionStore>;
 
 export const MessageActionStoreContext = createContext<TMessageActionStore | null>(null);
 
+const noOpAction = (): never => {
+	throw new Error('MessageActionStore: no provider — actions unavailable');
+};
+
+const NO_OP_ACTIONS: TMessageActionActions = {
+	startEditing: noOpAction,
+	startQuote: noOpAction,
+	addQuote: noOpAction,
+	removeQuote: noOpAction,
+	startReacting: noOpAction,
+	setQuoteMessageIds: noOpAction,
+	clear: noOpAction
+};
+
 // Rows rendered outside a RoomView (search, pinned) can never be in edit mode.
-// Using a module-level fallback avoids a conditional hook call in useIsBeingEdited.
-const fallbackStore = createMessageActionStore();
+// `action` is fixed at null (no `set` param) and its actions always throw — a safe, inert fallback.
+export const inertStore = createStore<MessageActionState>()(() => ({ action: null, actions: NO_OP_ACTIONS }));
 
 const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): T => {
 	const store = useContext(MessageActionStoreContext);
@@ -72,8 +86,12 @@ const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): 
 // `action` is a single ref replaced wholesale on every `set` — no useShallow needed.
 export const useMessageAction = (): TMessageActionState => useMessageActionStore(s => s.action);
 
+/**
+ * Unlike `useMessageAction`, which throws without a provider, this hook degrades to `false` via
+ * an inert store — search/pinned message rows render outside a `MessageActionProvider` and can never be editing.
+ */
 export const useIsBeingEdited = (messageId: string): boolean => {
-	const store = useContext(MessageActionStoreContext) ?? fallbackStore;
+	const store = useContext(MessageActionStoreContext) ?? inertStore;
 	return useStore(store, s => s.action?.kind === 'edit' && s.action.messageId === messageId);
 };
 
