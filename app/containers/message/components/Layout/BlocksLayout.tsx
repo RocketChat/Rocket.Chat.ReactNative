@@ -4,7 +4,7 @@ import Thread from '../Thread';
 import Reactions from '../Reactions';
 import MessageTime from '../Time';
 
-const BlocksBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
+const BlocksLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
 
 	return (
@@ -18,4 +18,4 @@ const BlocksBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-export default BlocksBranch;
+export default BlocksLayout;

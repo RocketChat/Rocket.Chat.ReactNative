@@ -4,8 +4,8 @@ import Quote from '../Attachments/Quote';
 import Urls from '../Urls';
 import { useAttachments, useMessageField } from '../../stores/MessageStore';
 
-// Shared leaf composition for DefaultBranch and PreviewBranch
-export const BranchAttachmentContent = () => {
+// Shared leaf composition for StandardLayout and PreviewLayout
+export const AttachmentLayout = () => {
 	'use memo';
 
 	const attachments = useAttachments();

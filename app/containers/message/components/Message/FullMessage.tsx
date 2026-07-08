@@ -4,11 +4,11 @@ import { A11y } from 'react-native-a11y-order';
 import styles from '../../styles';
 import MessageAvatar from '../MessageAvatar';
 import RightIcons from '../RightIcons';
-import { MessageInner } from './MessageInner';
+import { Layout } from '../Layout';
 import { useMessageField, useMessageGrouping, useMessageText } from '../../stores/MessageStore';
 import { useAutoTranslate } from '../../stores/MessageRoomStore';
 
-const NormalMessage = ({ isPreview }: { isPreview?: boolean }) => {
+const FullMessage = ({ isPreview }: { isPreview?: boolean }) => {
 	'use memo';
 
 	const isHeader = useMessageGrouping();
@@ -26,7 +26,7 @@ const NormalMessage = ({ isPreview }: { isPreview?: boolean }) => {
 				<View style={styles.flex}>
 					<MessageAvatar />
 					<View style={styles.messageContent}>
-						<MessageInner isPreview={isPreview} isHeader={isHeader} />
+						<Layout isPreview={isPreview} isHeader={isHeader} />
 					</View>
 					{!isHeader ? <RightIcons /> : null}
 				</View>
@@ -35,4 +35,4 @@ const NormalMessage = ({ isPreview }: { isPreview?: boolean }) => {
 	);
 };
 
-export default NormalMessage;
+export default FullMessage;

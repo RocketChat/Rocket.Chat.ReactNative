@@ -1,14 +1,14 @@
 import { A11y } from 'react-native-a11y-order';
 
-import { useTheme } from '../../../theme';
-import Touch from './Touch';
-import CompactMessage from './Message/CompactMessage';
-import NormalMessage from './Message/NormalMessage';
-import { useLastFocusedMessageRef } from '../../../lib/a11y/useLastFocusedMessageRef';
-import { useMessageAccessibilityLabel } from '../hooks/useMessageAccessibilityLabel';
-import { useMessageAccessibilityActions } from '../hooks/useMessageAccessibilityActions';
-import { useMessageAccessibilityHint } from '../hooks/useMessageAccessibilityHint';
-import { useIsBeingEdited } from '../stores/MessageActionStore';
+import { useTheme } from '../../../../theme';
+import Touch from '../Touch';
+import CompactMessage from './CompactMessage';
+import FullMessage from './FullMessage';
+import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
+import { useMessageAccessibilityLabel } from '../../hooks/useMessageAccessibilityLabel';
+import { useMessageAccessibilityActions } from '../../hooks/useMessageAccessibilityActions';
+import { useMessageAccessibilityHint } from '../../hooks/useMessageAccessibilityHint';
+import { useIsBeingEdited } from '../../stores/MessageActionStore';
 import {
 	useIsInfoMessage,
 	useMessageField,
@@ -18,7 +18,7 @@ import {
 	useMessageStatus,
 	useMessageTouchable,
 	useThreadPosition
-} from '../stores/MessageStore';
+} from '../../stores/MessageStore';
 
 type TMessageProps = {
 	isPreview?: boolean;
@@ -36,7 +36,7 @@ const Message = (props: TMessageProps) => {
 		return <CompactMessage />;
 	}
 
-	return <NormalMessage isPreview={props.isPreview} />;
+	return <FullMessage isPreview={props.isPreview} />;
 };
 
 const MessageTouchable = (props: TMessageProps) => {

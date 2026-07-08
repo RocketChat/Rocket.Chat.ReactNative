@@ -2,7 +2,7 @@ import User from '../User';
 import Discussion from '../Discussion';
 import MessageTime from '../Time';
 
-const DiscussionBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
+const DiscussionLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
 
 	return (
@@ -14,4 +14,4 @@ const DiscussionBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-export default DiscussionBranch;
+export default DiscussionLayout;

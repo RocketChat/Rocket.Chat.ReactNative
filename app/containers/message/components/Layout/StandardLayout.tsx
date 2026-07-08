@@ -5,9 +5,9 @@ import Thread from '../Thread';
 import Reactions from '../Reactions';
 import Broadcast from '../Broadcast';
 import MessageTime from '../Time';
-import { BranchAttachmentContent } from './BranchAttachmentContent';
+import { AttachmentLayout } from './AttachmentLayout';
 
-const DefaultBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
+const StandardLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
 
 	return (
@@ -15,7 +15,7 @@ const DefaultBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 			<User />
 			{showTimeLarge ? <MessageTime /> : null}
 			<View style={{ gap: 4 }}>
-				<BranchAttachmentContent />
+				<AttachmentLayout />
 				<Thread />
 				<Reactions />
 				<Broadcast />
@@ -24,4 +24,4 @@ const DefaultBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-export default DefaultBranch;
+export default StandardLayout;

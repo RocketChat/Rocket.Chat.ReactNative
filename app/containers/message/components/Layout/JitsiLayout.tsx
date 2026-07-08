@@ -3,7 +3,7 @@ import Content from '../Content';
 import CallButton from '../CallButton';
 import MessageTime from '../Time';
 
-const JitsiBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
+const JitsiLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
 
 	return (
@@ -16,4 +16,4 @@ const JitsiBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	);
 };
 
-export default JitsiBranch;
+export default JitsiLayout;
