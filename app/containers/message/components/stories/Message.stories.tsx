@@ -1,3 +1,4 @@
+import { type ComponentType } from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -101,7 +102,7 @@ const roomHandlers: Partial<MessageRoomState> = {
 export default {
 	title: 'Message',
 	decorators: [
-		(Story: any) => (
+		(Story: ComponentType) => (
 			<NavigationContainer>
 				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
 					<Story />
@@ -119,7 +120,7 @@ const editedByFixture = { _id: 'edited-by', username: 'diego.mello' };
 
 let storyMessageIdCounter = 0;
 
-const buildMessage = (overrides: Record<string, any> = {}): TAnyMessageModel => {
+const buildMessage = (overrides: Record<string, unknown> = {}): TAnyMessageModel => {
 	const definedOverrides = Object.fromEntries(Object.entries(overrides).filter(([, value]) => value !== undefined));
 	return {
 		id: `story-message-${++storyMessageIdCounter}`,
@@ -162,7 +163,7 @@ const buildMessage = (overrides: Record<string, any> = {}): TAnyMessageModel => 
 // Builds the message model for a single <Message>/<MessageLargeFont> call, pulling the
 // scalar display flags (author/type/hasError/status/isEdited/isTranslated) out of the
 // props that used to be passed straight to the leaf component.
-const buildItem = (props: any): TAnyMessageModel => {
+const buildItem = (props: Record<string, unknown>): TAnyMessageModel => {
 	const { author: authorOverride, type, hasError, status, isEdited, isTranslated, ...itemProps } = props;
 	const resolvedAuthor = authorOverride ?? (isTranslated ? otherUser : author);
 	return buildMessage({
@@ -205,7 +206,7 @@ const resolvePreviousItem = (item: TAnyMessageModel, isHeader: boolean | undefin
 	return undefined;
 };
 
-const renderMessageStory = (fontScale: number, props: any) => {
+const renderMessageStory = (fontScale: number, props: Record<string, unknown>) => {
 	const {
 		isHeader,
 		isThreadReply,
@@ -220,7 +221,21 @@ const renderMessageStory = (fontScale: number, props: any) => {
 		autoTranslateRoom,
 		autoTranslateLanguage,
 		...itemProps
-	} = props;
+	} = props as {
+		isHeader?: boolean;
+		isThreadReply?: boolean;
+		previousItem?: TAnyMessageModel;
+		broadcast?: boolean;
+		archived?: boolean;
+		timeFormat?: string;
+		useRealName?: boolean;
+		isReadReceiptEnabled?: boolean;
+		isIgnored?: boolean;
+		isTranslated?: boolean;
+		autoTranslateRoom?: boolean;
+		autoTranslateLanguage?: string;
+		[key: string]: unknown;
+	};
 
 	const item = buildItem({ ...itemProps, isTranslated });
 	const previousItem = previousItemOverride ?? resolvePreviousItem(item, isHeader, isThreadReply);
@@ -254,10 +269,10 @@ const renderMessageStory = (fontScale: number, props: any) => {
 	);
 };
 
-export const Message = (props: any) => renderMessageStory(1, props);
+export const Message = (props: Record<string, unknown>) => renderMessageStory(1, props);
 
 // The large font components are not perfect because the text's font scale increases only with the device's font size setting.
-const MessageLargeFont = (props: any) => renderMessageStory(FONT_SCALE_LIMIT, props);
+const MessageLargeFont = (props: Record<string, unknown>) => renderMessageStory(FONT_SCALE_LIMIT, props);
 
 export const Basic = () => (
 	<>

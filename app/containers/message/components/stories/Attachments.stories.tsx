@@ -17,7 +17,7 @@ const mockMessageContext: Partial<MessageRoomState> = {
 
 const mockItem = { id: 'msg-id', msg: '', u: { username: 'rocket.cat' }, autoTranslate: false } as unknown as TAnyMessageModel;
 
-const StoryWrapper = ({ store, children }: { store: any; children: ReactNode }) => (
+const StoryWrapper = ({ store, children }: { store: ReturnType<typeof createMockedStore>; children: ReactNode }) => (
 	<Provider store={store}>
 		<MessageRoomProvider {...mockMessageContext}>
 			<MessageProvider item={mockItem}>{children}</MessageProvider>
