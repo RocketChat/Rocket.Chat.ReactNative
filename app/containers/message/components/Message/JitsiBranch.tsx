@@ -9,7 +9,7 @@ const JitsiBranch = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	return (
 		<>
 			<User />
-			<Content />
+			<Content isInfo />
 			<CallButton />
 			{showTimeLarge ? <MessageTime /> : null}
 		</>

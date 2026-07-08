@@ -2843,3 +2843,7 @@ export const InlineKatex = () => (
 	</>
 );
 export const InlineKatexLargeFont = () => <MessageLargeFont {...inlineKatex} />;
+
+export const JitsiCall = () => <Message type='jitsi_call_started' />;
+
+export const JitsiCallLargeFont = () => <MessageLargeFont type='jitsi_call_started' />;
