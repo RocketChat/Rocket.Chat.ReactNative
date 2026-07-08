@@ -51,6 +51,8 @@ const Touch = forwardRef<View, ITouchProps>(
 		},
 		ref
 	) => {
+		'use memo';
+
 		const { colors } = useTheme();
 		// The background color must be applied to the RectButton, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
