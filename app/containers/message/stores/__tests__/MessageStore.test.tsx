@@ -1050,4 +1050,43 @@ describe('MessageStore', () => {
 			expect(latest()).toEqual({ messageText: model.msg, isTranslated: false });
 		});
 	});
+
+	describe('useMessageField misuse guard (dev)', () => {
+		let warnSpy: jest.SpyInstance;
+
+		beforeEach(() => {
+			warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+		});
+
+		afterEach(() => {
+			warnSpy.mockRestore();
+		});
+
+		// A selector that returns a fresh object on every call never lets React's useSyncExternalStore
+		// snapshot settle, so this misuse also trips React's own update-depth guard. The dev warning
+		// still fires (once) before that crash, which is what this test asserts.
+		it('warns when the selector returns a new object every call for unchanged data', () => {
+			const model = buildFakeModel();
+
+			expect(() => {
+				renderMessageHook(() => useMessageField(item => ({ id: item.id })), model);
+			}).toThrow('Maximum update depth exceeded');
+
+			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('[MessageStore] useMessageField selector'));
+		});
+
+		it('does not warn for a primitive field selector', () => {
+			const model = buildFakeModel();
+			renderMessageHook(() => useMessageField(item => item.id), model);
+
+			expect(warnSpy).not.toHaveBeenCalled();
+		});
+
+		it('does not warn for a memoized object field selector (stable reference across calls)', () => {
+			const model = buildFakeModel();
+			renderMessageHook(() => useMessageField(item => item.reactions), model);
+
+			expect(warnSpy).not.toHaveBeenCalled();
+		});
+	});
 });

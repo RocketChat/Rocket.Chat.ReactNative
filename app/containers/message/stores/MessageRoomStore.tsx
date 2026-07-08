@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -55,10 +55,61 @@ const useMessageRoomStore = <T,>(selector: (state: MessageRoomState) => T): T =>
 	return useStore(store, selector);
 };
 
+// Handlers and room constants captured once at mount by MessageRoomStoreProvider below (everything
+// outside the reactive-tail resync effect). Callers MUST pass referentially stable values for these.
+const FROZEN_KEYS = [
+	'navToRoomInfo',
+	'showAttachment',
+	'blockAction',
+	'handleEnterCall',
+	'fetchThreadName',
+	'toggleFollowThread',
+	'jumpToMessage',
+	'closeEmojiAndAction',
+	'onReactionPress',
+	'onReactionLongPress',
+	'reactionInit',
+	'onDiscussionPress',
+	'onThreadPress',
+	'replyBroadcast',
+	'errorActionsShow',
+	'onAnswerButtonPress',
+	'onEncryptedPress',
+	'rid',
+	'user',
+	'baseUrl',
+	'isThreadRoom'
+] as const satisfies readonly (keyof MessageRoomState)[];
+
+const useFrozenHandlersGuardProd = (_state: MessageRoomState): void => {};
+
+// Warns once (after mount) if a frozen handler/constant's identity changes, since the provider
+// only captures the initial value and never re-syncs it (see FROZEN_KEYS above).
+const useFrozenHandlersGuardDev = (state: MessageRoomState): void => {
+	const initialRef = useRef(state);
+	const warnedRef = useRef(false);
+	useEffect(() => {
+		if (warnedRef.current) return;
+		const changed = FROZEN_KEYS.filter(key => !Object.is(initialRef.current[key], state[key]));
+		if (changed.length > 0) {
+			warnedRef.current = true;
+			console.warn(
+				`[MessageRoomStore] handler/constant identity changed after mount for: ${changed.join(', ')}. ` +
+					'MessageRoomProvider captures these once; pass referentially stable values.'
+			);
+		}
+	});
+};
+
+const useFrozenHandlersGuard: (state: MessageRoomState) => void = __DEV__
+	? useFrozenHandlersGuardDev
+	: useFrozenHandlersGuardProd;
+
 const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
 	'use memo';
 
 	const [store] = useState(() => createMessageRoomStore(state));
+	useFrozenHandlersGuard(state);
 
 	// These fields can change mid-session (e.g. an open room gets archived), unlike the
 	// constants/handlers captured once above. The dep array keeps store writes on-change only.

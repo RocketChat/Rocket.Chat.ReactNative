@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { act, render } from '@testing-library/react-native';
+import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { MessageRoomProvider, useAutoTranslate, useIsArchived, useTimeFormat } from '../MessageRoomStore';
@@ -130,5 +131,50 @@ describe('MessageRoomStore', () => {
 
 		act(() => rerender(wrap(true)));
 		expect(spy).toHaveBeenLastCalledWith(true);
+	});
+
+	describe('frozen handler guard (dev)', () => {
+		let warnSpy: jest.SpyInstance;
+
+		beforeEach(() => {
+			warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+		});
+
+		afterEach(() => {
+			warnSpy.mockRestore();
+		});
+
+		it('warns once when a frozen handler identity changes after mount', () => {
+			const wrap = (navToRoomInfo: () => void) => (
+				<Provider store={mockedStore}>
+					<MessageRoomProvider timeFormat='fixed-format' navToRoomInfo={navToRoomInfo}>
+						<Text>probe</Text>
+					</MessageRoomProvider>
+				</Provider>
+			);
+
+			const { rerender } = render(wrap(() => {}));
+			expect(warnSpy).not.toHaveBeenCalled();
+
+			act(() => rerender(wrap(() => {})));
+
+			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('navToRoomInfo'));
+		});
+
+		it('does not warn when the same handler reference is passed across re-renders', () => {
+			const navToRoomInfo = () => {};
+			const wrap = () => (
+				<Provider store={mockedStore}>
+					<MessageRoomProvider timeFormat='fixed-format' navToRoomInfo={navToRoomInfo}>
+						<Text>probe</Text>
+					</MessageRoomProvider>
+				</Provider>
+			);
+
+			const { rerender } = render(wrap());
+			act(() => rerender(wrap()));
+
+			expect(warnSpy).not.toHaveBeenCalled();
+		});
 	});
 });

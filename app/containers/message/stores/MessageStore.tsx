@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
@@ -65,7 +65,50 @@ export const useMessageItem = (): TAnyMessageModel => useMessageStore(s => s.ite
 // (app/lib/database/model/Message.js); a field that drops memo:true returns a fresh ref every
 // access and would defeat both the Object.is and useShallow bail.
 // Guarded by app/lib/database/model/__tests__/Message.memo.test.ts.
-export const useMessageField = <T,>(selector: (item: TAnyMessageModel) => T): T => useMessageStore(s => selector(s.item));
+const isRecordOrArray = (value: unknown): value is Record<string, unknown> | unknown[] =>
+	typeof value === 'object' && value !== null;
+
+const shallowEqual = (a: Record<string, unknown> | unknown[], b: Record<string, unknown> | unknown[]): boolean => {
+	const aKeys = Object.keys(a);
+	const bKeys = Object.keys(b);
+	if (aKeys.length !== bKeys.length) return false;
+	return aKeys.every(key => Object.is((a as Record<string, unknown>)[key], (b as Record<string, unknown>)[key]));
+};
+
+const useMessageFieldProd = <T,>(selector: (item: TAnyMessageModel) => T): T => useMessageStore(s => selector(s.item));
+
+// Detects a selector that returns a fresh object/array every call (e.g. an inline `i => ({ a: i.a })`):
+// on an unchanged tick, a memoized field selector keeps returning the same reference (Object.is bail
+// holds), while a naive selector produces a new-but-shallow-equal value every time. Warns once.
+const useMessageFieldDev = <T,>(selector: (item: TAnyMessageModel) => T): T => {
+	const prevRef = useRef<{ tick: number; result: T } | undefined>(undefined);
+	const warnedRef = useRef(false);
+	return useMessageStore(s => {
+		const result = selector(s.item);
+		const prev = prevRef.current;
+		if (
+			!warnedRef.current &&
+			prev &&
+			prev.tick === s.tick &&
+			!Object.is(prev.result, result) &&
+			isRecordOrArray(prev.result) &&
+			isRecordOrArray(result) &&
+			shallowEqual(prev.result, result)
+		) {
+			warnedRef.current = true;
+			console.warn(
+				'[MessageStore] useMessageField selector returned a new reference for unchanged data. ' +
+					'Use a useShallow domain hook instead of an inline object/array selector.'
+			);
+		}
+		prevRef.current = { tick: s.tick, result };
+		return result;
+	});
+};
+
+export const useMessageField: <T>(selector: (item: TAnyMessageModel) => T) => T = __DEV__
+	? useMessageFieldDev
+	: useMessageFieldProd;
 
 // Plain REST objects (no experimentalSubscribe) never emit again after the initial render.
 const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
