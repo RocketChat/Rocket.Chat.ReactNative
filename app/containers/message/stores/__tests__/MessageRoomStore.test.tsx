@@ -8,6 +8,26 @@ import { mockedStore } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 
 describe('MessageRoomStore', () => {
+	describe('outside a MessageRoomProvider', () => {
+		let consoleErrorSpy: jest.SpyInstance;
+
+		beforeEach(() => {
+			consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+		});
+
+		afterEach(() => {
+			consoleErrorSpy.mockRestore();
+		});
+
+		it('useIsArchived throws', () => {
+			const Probe = () => {
+				useIsArchived();
+				return null;
+			};
+			expect(() => render(<Probe />)).toThrow('Message room hooks must be used within a MessageRoomProvider');
+		});
+	});
+
 	it('mirrors updated provider props into the store after mount', () => {
 		const spy = jest.fn();
 		const Probe = () => {
