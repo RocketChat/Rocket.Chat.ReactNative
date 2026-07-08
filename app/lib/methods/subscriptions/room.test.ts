@@ -231,6 +231,26 @@ describe('RoomSubscription', () => {
 
 			expect(mockOnStreamData).not.toHaveBeenCalled();
 		});
+
+		it('re-subscribes on the authenticated "login" event, not the pre-auth "connected" event', async () => {
+			await sub.subscribe();
+
+			expect(mockOnStreamData).toHaveBeenCalledWith('login', sub.handleConnected);
+			expect(mockOnStreamData).not.toHaveBeenCalledWith('connected', expect.anything());
+		});
+
+		it('survives a poisoned subscription array (undefined entry from a rejected sub) and still re-subscribes', async () => {
+			// A pre-auth subscribe rejected by the server (nosub) resolves to undefined inside Promise.all.
+			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			mockSubscribeRoom.mockResolvedValueOnce([undefined as any]).mockResolvedValueOnce([freshSub]);
+
+			await sub.subscribe();
+			mockSubscribeRoom.mockClear();
+
+			await expect(sub.handleConnected()).resolves.toBeUndefined();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
 	});
 
 	describe('isAlive guard', () => {

@@ -51,7 +51,7 @@ export default class RoomSubscription {
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = sdk.onStreamData('connected', this.handleConnected);
+		this.connectedListener = sdk.onStreamData('login', this.handleConnected);
 		this.disconnectedListener = sdk.onStreamData('close', this.handleClose);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
@@ -70,7 +70,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.unsubscribe?.().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}
@@ -100,7 +100,7 @@ export default class RoomSubscription {
 		try {
 			if (this.promises) {
 				const oldSubs = await this.promises;
-				oldSubs.forEach(sub => sub.unsubscribe().catch(() => {}));
+				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));
 			}
 			this.promises = sdk.subscribeRoom(this.rid);
 			await this.promises;
