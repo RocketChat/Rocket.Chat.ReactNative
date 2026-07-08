@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { act, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { MessageRoomProvider, useAutoTranslate, useTimeFormat } from '../MessageRoomStore';
+import { MessageRoomProvider, useAutoTranslate, useIsArchived, useTimeFormat } from '../MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 
@@ -109,5 +109,26 @@ describe('MessageRoomStore', () => {
 
 		expect(autoTranslateSpy).toHaveBeenLastCalledWith({ autoTranslateRoom: true, autoTranslateLanguage: undefined });
 		expect(timeFormatSpy.mock.calls.length).toBe(timeFormatCallsBefore);
+	});
+
+	it('resyncs archived when a room gets archived mid-session', () => {
+		const spy = jest.fn();
+		const Probe = () => {
+			spy(useIsArchived());
+			return null;
+		};
+		const wrap = (archived: boolean) => (
+			<Provider store={mockedStore}>
+				<MessageRoomProvider timeFormat='fixed-format' archived={archived}>
+					<Probe />
+				</MessageRoomProvider>
+			</Provider>
+		);
+
+		const { rerender } = render(wrap(false));
+		expect(spy).toHaveBeenLastCalledWith(false);
+
+		act(() => rerender(wrap(true)));
+		expect(spy).toHaveBeenLastCalledWith(true);
 	});
 });

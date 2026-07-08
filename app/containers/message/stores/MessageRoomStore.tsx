@@ -60,16 +60,28 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 
 	const [store] = useState(() => createMessageRoomStore(state));
 
-	// Only timeFormat/autoTranslateRoom/autoTranslateLanguage (the reactive tail) change after
-	// mount; the rest are constants/handlers captured once above. Keying on just those 3 fields
-	// lets React's own dependency diff replace the old full 28-key Object.is scan.
+	// These fields can change mid-session (e.g. an open room gets archived), unlike the
+	// constants/handlers captured once above. The dep array keeps store writes on-change only.
 	useEffect(() => {
 		store.setState({
 			timeFormat: state.timeFormat,
 			autoTranslateRoom: state.autoTranslateRoom,
-			autoTranslateLanguage: state.autoTranslateLanguage
+			autoTranslateLanguage: state.autoTranslateLanguage,
+			archived: state.archived,
+			broadcast: state.broadcast,
+			isReadReceiptEnabled: state.isReadReceiptEnabled,
+			Message_GroupingPeriod: state.Message_GroupingPeriod
 		});
-	}, [state.timeFormat, state.autoTranslateRoom, state.autoTranslateLanguage, store]);
+	}, [
+		state.timeFormat,
+		state.autoTranslateRoom,
+		state.autoTranslateLanguage,
+		state.archived,
+		state.broadcast,
+		state.isReadReceiptEnabled,
+		state.Message_GroupingPeriod,
+		store
+	]);
 
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;
 };
