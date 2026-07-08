@@ -64,6 +64,7 @@ export const useMessageItem = (): TAnyMessageModel => useMessageStore(s => s.ite
 // Stability of JSON fields depends on the model's @json(..., { memo: true }) decorators
 // (app/lib/database/model/Message.js); a field that drops memo:true returns a fresh ref every
 // access and would defeat both the Object.is and useShallow bail.
+// Guarded by app/lib/database/model/__tests__/Message.memo.test.ts.
 export const useMessageField = <T,>(selector: (item: TAnyMessageModel) => T): T => useMessageStore(s => selector(s.item));
 
 // Plain REST objects (no experimentalSubscribe) never emit again after the initial render.
