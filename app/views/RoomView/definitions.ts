@@ -30,7 +30,6 @@ export type TStateAttrsUpdate = keyof IRoomViewState;
 export type TRoomUpdate = keyof TSubscriptionModel;
 
 export interface IRoomViewState {
-	[key: string]: any;
 	joined: boolean;
 	room:
 		| TSubscriptionModel
@@ -59,4 +58,8 @@ export interface IRoomViewState {
 	isAutocompleteVisible: boolean;
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;
+	canForwardGuest: boolean;
+	canReturnQueue: boolean;
+	canViewCannedResponse: boolean;
+	canPlaceLivechatOnHold: boolean;
 }

@@ -5,13 +5,11 @@ export const stateAttrsUpdate = [
 	'lastOpen',
 	'canAutoTranslate',
 	'loading',
-	'editing',
 	'readOnly',
 	'member',
 	'canForwardGuest',
 	'canReturnQueue',
-	'canViewCannedResponse',
-	'rightButtonsWidth'
+	'canViewCannedResponse'
 ] as TStateAttrsUpdate[];
 
 export const roomAttrsUpdate = [
