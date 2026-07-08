@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+name: Two Factor Modal Test
+onFlowStart:
+  - runFlow: ../../../helpers/setup.yaml
+tags:
+  - test-2
+
+---
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-login.yaml
+- tapOn:
+    id: 'login-view-email'
+- inputText: 'mobile+e2e_2fa_modal_test@rocket.chat'
+- pressKey: enter
+- tapOn:
+    id: 'login-view-password'
+- inputText: 'e2e_2fa_modal_test'
+- runFlow: '../../../helpers/hide-keyboard.yaml'
+- tapOn:
+    id: login-view-submit
+
+# Verify that 2FA modal is visible
+- extendedWaitUntil:
+    visible: '.*Open your authentication app and enter the code.*'
+    timeout: 5000
+- assertVisible: "Cancel"
+- assertVisible: "Verify"
+
+# Click verify button with wrong TOTP to make sure it's clickable and working
+- tapOn:
+    id: 'two-factor-input'
+- inputText: '000000'
+- tapOn: "Verify"
+- extendedWaitUntil:
+    visible: '.*Invalid code.*'
+    timeout: 5000
+
+# Click cancel button and it should hide 2FA modal
+- tapOn: 'Cancel'
+- extendedWaitUntil:
+    visible: '.*Your credentials were rejected! Please try again.*'
+    timeout: 5000
+- tapOn: 'OK'
+- extendedWaitUntil:
+    notVisible: '.*Your credentials were rejected! Please try again.*'
+    timeout: 5000
