@@ -91,40 +91,40 @@ const NOOP_PERMISSION_RESPONSE = { granted: false, status: 'undetermined', canAs
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Audio {
 	export class Sound {
-		static async createAsync(_source: unknown, _initialStatus?: unknown): Promise<{ sound: Sound; status: AVPlaybackStatus }> {
-			return { sound: new Sound(), status: RESOLVED_PLAYBACK_STATUS };
+		static createAsync(_source: unknown, _initialStatus?: unknown): Promise<{ sound: Sound; status: AVPlaybackStatus }> {
+			return Promise.resolve({ sound: new Sound(), status: RESOLVED_PLAYBACK_STATUS });
 		}
 
-		async playAsync(): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		playAsync(): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async pauseAsync(): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		pauseAsync(): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async stopAsync(): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		stopAsync(): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async unloadAsync(): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		unloadAsync(): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async loadAsync(_source: unknown): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		loadAsync(_source: unknown): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async setPositionAsync(_millis: number): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		setPositionAsync(_millis: number): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async setRateAsync(_rate: number, _shouldCorrectPitch?: boolean): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		setRateAsync(_rate: number, _shouldCorrectPitch?: boolean): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
-		async setIsLoopingAsync(_isLooping: boolean): Promise<AVPlaybackStatus> {
-			return RESOLVED_PLAYBACK_STATUS;
+		setIsLoopingAsync(_isLooping: boolean): Promise<AVPlaybackStatus> {
+			return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 		}
 
 		setOnPlaybackStatusUpdate(_callback: ((status: AVPlaybackStatus) => void) | null): void {}
@@ -140,18 +140,18 @@ export namespace Audio {
 	}
 
 	export class Recording {
-		async prepareToRecordAsync(_options?: RecordingOptions): Promise<RecordingStatus> {
-			return { canRecord: true, isRecording: false, isDoneRecording: false, durationMillis: 0 };
+		prepareToRecordAsync(_options?: RecordingOptions): Promise<RecordingStatus> {
+			return Promise.resolve({ canRecord: true, isRecording: false, isDoneRecording: false, durationMillis: 0 });
 		}
 
 		setOnRecordingStatusUpdate(_callback: ((status: RecordingStatus) => void) | null): void {}
 
-		async startAsync(): Promise<RecordingStatus> {
-			return { canRecord: true, isRecording: true, isDoneRecording: false, durationMillis: 0 };
+		startAsync(): Promise<RecordingStatus> {
+			return Promise.resolve({ canRecord: true, isRecording: true, isDoneRecording: false, durationMillis: 0 });
 		}
 
-		async stopAndUnloadAsync(): Promise<RecordingStatus> {
-			return { canRecord: false, isRecording: false, isDoneRecording: true, durationMillis: 0 };
+		stopAndUnloadAsync(): Promise<RecordingStatus> {
+			return Promise.resolve({ canRecord: false, isRecording: false, isDoneRecording: true, durationMillis: 0 });
 		}
 
 		getURI(): string | null {
@@ -159,7 +159,7 @@ export namespace Audio {
 		}
 	}
 
-	export const setAudioModeAsync = async (_mode: Partial<AudioMode>): Promise<void> => {};
+	export const setAudioModeAsync = (_mode: Partial<AudioMode>): Promise<void> => Promise.resolve();
 
 	export const AndroidOutputFormat = { AAC_ADTS: 6 } as const;
 	export const AndroidAudioEncoder = { AAC: 3 } as const;
@@ -188,13 +188,11 @@ export namespace Audio {
 		}
 	};
 
-	export const requestPermissionsAsync = async (): Promise<{ granted: boolean; status: string; canAskAgain: boolean }> => ({
-		...NOOP_PERMISSION_RESPONSE
-	});
+	export const requestPermissionsAsync = (): Promise<{ granted: boolean; status: string; canAskAgain: boolean }> =>
+		Promise.resolve({ ...NOOP_PERMISSION_RESPONSE });
 
-	export const getPermissionsAsync = async (): Promise<{ granted: boolean; status: string; canAskAgain: boolean }> => ({
-		...NOOP_PERMISSION_RESPONSE
-	});
+	export const getPermissionsAsync = (): Promise<{ granted: boolean; status: string; canAskAgain: boolean }> =>
+		Promise.resolve({ ...NOOP_PERMISSION_RESPONSE });
 }
 
 interface VideoProps {
@@ -212,8 +210,8 @@ interface VideoProps {
 }
 
 export class Video extends Component<VideoProps> {
-	async stopAsync(): Promise<AVPlaybackStatus> {
-		return RESOLVED_PLAYBACK_STATUS;
+	stopAsync(): Promise<AVPlaybackStatus> {
+		return Promise.resolve(RESOLVED_PLAYBACK_STATUS);
 	}
 
 	render() {
