@@ -2,6 +2,7 @@ import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@r
 import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -75,6 +76,7 @@ const RoomMembersView = (): ReactElement => {
 
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
+	const { bottom } = useSafeAreaInsets();
 
 	const latestSearchRequest = useRef(0);
 
@@ -434,6 +436,7 @@ const RoomMembersView = (): ReactElement => {
 					</View>
 				)}
 				style={styles.list}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={

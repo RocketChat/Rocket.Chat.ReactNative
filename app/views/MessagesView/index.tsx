@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
@@ -54,6 +55,7 @@ interface IMessagesViewProps {
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 interface IMessagesViewState {
@@ -334,7 +336,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme, user, baseUrl } = this.props;
+		const { theme, user, baseUrl, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -356,6 +358,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 						keyExtractor={item => item._id}
 						onEndReached={this.load}
+						contentContainerStyle={{ paddingBottom: insets.bottom }}
 						ListFooterComponent={loading ? <ActivityIndicator /> : null}
 					/>
 				</MessageRoomProvider>
@@ -370,4 +373,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(MessagesView))));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(MessagesView)))));

@@ -6,7 +6,6 @@ import {
 	findNodeHandle,
 	Keyboard,
 	type LayoutChangeEvent,
-	Platform,
 	useWindowDimensions,
 	type View
 } from 'react-native';
@@ -19,6 +18,7 @@ import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
@@ -26,7 +26,7 @@ export const ACTION_SHEET_ANIMATION_DURATION = 250;
 const ActionSheet = memo(
 	forwardRef(({ children }: { children: ReactElement }, ref) => {
 		const { colors } = useTheme();
-		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
+		const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);
 		const handleRef = useRef<View>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
@@ -34,11 +34,7 @@ const ActionSheet = memo(
 		const [contentHeight, setContentHeight] = useState(0);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
-		// TrueSheet detects the bottom inset for Android 16 and iOS
-		// To avoid content hiding behind navigation bar on older Android versions
-		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
-		const bottom = isIOS || isNewAndroid ? 0 : windowHeight * 0.03;
-		const itemHeight = 48 * fontScale;
+		const itemHeight = useActionSheetItemHeight();
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
 			setContentHeight(layout.height);
@@ -107,7 +103,6 @@ const ActionSheet = memo(
 
 		const { detents, maxHeight, scrollEnabled } = useActionSheetDetents({
 			windowHeight,
-			bottomInset: bottom,
 			itemHeight,
 			optionsLength: data?.options?.length || 0,
 			snaps: effectiveSnaps,
@@ -118,7 +113,7 @@ const ActionSheet = memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false || (!scrollEnabled && isAndroid);
+		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =
