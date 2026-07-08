@@ -1,6 +1,6 @@
 import { act, fireEvent, render, renderHook } from '@testing-library/react-native';
 import { type ReactNode } from 'react';
-import { Text } from 'react-native';
+import { Keyboard, Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
@@ -24,8 +24,11 @@ import {
 	useMessageIgnored,
 	useMessageHeaderMeta,
 	useMessageItem,
+	useMessageLongPress,
+	useMessagePress,
 	useMessageStatus,
 	useMessageText,
+	useMessageTouchable,
 	useOnLinkPress,
 	useReactions,
 	useRepliedThreadData,
@@ -168,6 +171,30 @@ const wrapWithProviders =
 				</MessageRoomProvider>
 			</Provider>
 		);
+
+// Like wrapWithProviders, but also forwards the row-level MessageProvider props (onPress,
+// onLongPress, isIgnored) needed by the touch/press/long-press hooks.
+const renderMessageHook = <T,>(
+	useHook: () => T,
+	item: TAnyMessageModel,
+	options: {
+		isIgnored?: boolean;
+		onPress?: () => void;
+		onLongPress?: (msg: TAnyMessageModel) => void;
+		config?: Partial<MessageRoomState>;
+	} = {}
+) =>
+	renderHook(() => useHook(), {
+		wrapper: ({ children }: { children: ReactNode }) => (
+			<Provider store={mockedStore}>
+				<MessageRoomProvider {...(options.config ?? {})}>
+					<MessageProvider item={item} isIgnored={options.isIgnored} onPress={options.onPress} onLongPress={options.onLongPress}>
+						{children}
+					</MessageProvider>
+				</MessageRoomProvider>
+			</Provider>
+		)
+	});
 
 describe('MessageStore', () => {
 	describe('field hooks', () => {
@@ -734,6 +761,241 @@ describe('MessageStore', () => {
 
 			expect(jumpToMessage).not.toHaveBeenCalled();
 			expect(mockOpenLink).toHaveBeenCalledWith(link, 'light');
+		});
+	});
+
+	describe('useMessageTouchable', () => {
+		it('is fully tappable and long-pressable for a plain text message', () => {
+			const model = buildFakeModel();
+			const { result } = renderMessageHook(useMessageTouchable, model);
+			expect(result.current).toEqual({ tappable: true, longPressable: true, revealsIgnored: false });
+		});
+
+		it('is untouchable for an info message', () => {
+			const model = buildFakeModel({ t: 'room_changed_topic' });
+			const { result } = renderMessageHook(useMessageTouchable, model);
+			expect(result.current).toEqual({ tappable: false, longPressable: false, revealsIgnored: false });
+		});
+
+		it('is untouchable when the message has an error status', () => {
+			const model = buildFakeModel({ status: messagesStatus.ERROR });
+			const { result } = renderMessageHook(useMessageTouchable, model);
+			expect(result.current).toEqual({ tappable: false, longPressable: false, revealsIgnored: false });
+		});
+
+		it('is untouchable when the room is archived', () => {
+			const model = buildFakeModel();
+			const { result } = renderMessageHook(useMessageTouchable, model, { config: { archived: true } });
+			expect(result.current).toEqual({ tappable: false, longPressable: false, revealsIgnored: false });
+		});
+
+		// Post-refactor: tappable now also excludes isTemp, so a still-sending message loses both
+		// tap and long-press here — the old long-press guard only checked isInfo/hasError/isEncrypted/archived.
+		it('is untouchable while the message is temp (sending)', () => {
+			const model = buildFakeModel({ status: messagesStatus.TEMP });
+			const { result } = renderMessageHook(useMessageTouchable, model);
+			expect(result.current).toEqual({ tappable: false, longPressable: false, revealsIgnored: false });
+		});
+
+		// Post-refactor: tappable now also excludes jitsi_call_started, which the old long-press guard did not.
+		it('is untouchable for a jitsi_call_started message', () => {
+			const model = buildFakeModel({ t: 'jitsi_call_started' });
+			const { result } = renderMessageHook(useMessageTouchable, model);
+			expect(result.current).toEqual({ tappable: false, longPressable: false, revealsIgnored: false });
+		});
+
+		it('is tappable but not long-pressable for a pending encrypted message', () => {
+			const model = buildFakeModel({ t: E2E_MESSAGE_TYPE, e2e: 'pending' });
+			const { result } = renderMessageHook(useMessageTouchable, model);
+			expect(result.current).toEqual({ tappable: true, longPressable: false, revealsIgnored: false });
+		});
+
+		it('reveals ignored on an otherwise-tappable ignored message', () => {
+			const model = buildFakeModel();
+			const { result } = renderMessageHook(useMessageTouchable, model, { isIgnored: true });
+			expect(result.current).toEqual({ tappable: true, longPressable: true, revealsIgnored: true });
+		});
+
+		it('does not reveal ignored when the message is not tappable', () => {
+			const model = buildFakeModel();
+			const { result } = renderMessageHook(useMessageTouchable, model, { isIgnored: true, config: { archived: true } });
+			expect(result.current).toEqual({ tappable: false, longPressable: false, revealsIgnored: false });
+		});
+	});
+
+	describe('useMessageLongPress', () => {
+		it('fires onLongPress with the item when longPressable', () => {
+			const model = buildFakeModel();
+			const onLongPress = jest.fn();
+			const { result } = renderMessageHook(useMessageLongPress, model, { onLongPress });
+
+			act(() => result.current());
+
+			expect(onLongPress).toHaveBeenCalledWith(model);
+		});
+
+		it('does not fire onLongPress for an info message', () => {
+			const model = buildFakeModel({ t: 'room_changed_topic' });
+			const onLongPress = jest.fn();
+			const { result } = renderMessageHook(useMessageLongPress, model, { onLongPress });
+
+			act(() => result.current());
+
+			expect(onLongPress).not.toHaveBeenCalled();
+		});
+
+		it('does not fire onLongPress for an encrypted message', () => {
+			const model = buildFakeModel({ t: E2E_MESSAGE_TYPE, e2e: 'pending' });
+			const onLongPress = jest.fn();
+			const { result } = renderMessageHook(useMessageLongPress, model, { onLongPress });
+
+			act(() => result.current());
+
+			expect(onLongPress).not.toHaveBeenCalled();
+		});
+
+		// See useMessageTouchable above: this suppression is new vs the pre-refactor guard.
+		it('does not fire onLongPress on a temp (sending) message', () => {
+			const model = buildFakeModel({ status: messagesStatus.TEMP });
+			const onLongPress = jest.fn();
+			const { result } = renderMessageHook(useMessageLongPress, model, { onLongPress });
+
+			act(() => result.current());
+
+			expect(onLongPress).not.toHaveBeenCalled();
+		});
+
+		it('does not fire onLongPress on a jitsi_call_started message', () => {
+			const model = buildFakeModel({ t: 'jitsi_call_started' });
+			const onLongPress = jest.fn();
+			const { result } = renderMessageHook(useMessageLongPress, model, { onLongPress });
+
+			act(() => result.current());
+
+			expect(onLongPress).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('useMessagePress', () => {
+		let dismissSpy: jest.SpyInstance;
+
+		beforeEach(() => {
+			jest.useFakeTimers();
+			dismissSpy = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => {});
+		});
+
+		afterEach(() => {
+			dismissSpy.mockRestore();
+			jest.useRealTimers();
+		});
+
+		it('reveals an ignored message instead of pressing', () => {
+			const model = buildFakeModel({ tmid: 't1' });
+			const onThreadPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { isIgnored: true, config: { onThreadPress } });
+
+			act(() => result.current());
+
+			expect(dismissSpy).not.toHaveBeenCalled();
+			expect(onThreadPress).not.toHaveBeenCalled();
+		});
+
+		it('calls the row onPress handler and skips keyboard dismiss and thread/discussion routing', () => {
+			const model = buildFakeModel({ tmid: 't1', dlm: new Date(), drid: 'drid-1' });
+			const onPress = jest.fn();
+			const onThreadPress = jest.fn();
+			const onDiscussionPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { onPress, config: { onThreadPress, onDiscussionPress } });
+
+			act(() => result.current());
+
+			expect(onPress).toHaveBeenCalledTimes(1);
+			expect(dismissSpy).not.toHaveBeenCalled();
+			expect(onThreadPress).not.toHaveBeenCalled();
+			expect(onDiscussionPress).not.toHaveBeenCalled();
+		});
+
+		it('dismisses the keyboard and routes to thread press for a threaded reply', () => {
+			const model = buildFakeModel({ tmid: 't1' });
+			const onThreadPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress } });
+
+			act(() => result.current());
+
+			expect(dismissSpy).toHaveBeenCalledTimes(1);
+			expect(onThreadPress).toHaveBeenCalledWith(model);
+		});
+
+		it('routes to thread press for a root message that has replies (tlm)', () => {
+			const model = buildFakeModel({ tlm: new Date() });
+			const onThreadPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress } });
+
+			act(() => result.current());
+
+			expect(onThreadPress).toHaveBeenCalledWith(model);
+		});
+
+		it('does not route to thread press while already inside the thread room', () => {
+			const model = buildFakeModel({ tmid: 't1' });
+			const onThreadPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress, isThreadRoom: true } });
+
+			act(() => result.current());
+
+			expect(onThreadPress).not.toHaveBeenCalled();
+		});
+
+		it('routes to discussion press when the message has a discussion', () => {
+			const model = buildFakeModel({ dlm: new Date(), drid: 'drid-1' });
+			const onDiscussionPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onDiscussionPress } });
+
+			act(() => result.current());
+
+			expect(onDiscussionPress).toHaveBeenCalledWith('drid-1');
+		});
+
+		it('debounces on the leading edge, suppressing an immediate repeat until the window elapses', () => {
+			const model = buildFakeModel({ tmid: 't1' });
+			const onThreadPress = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress } });
+
+			act(() => result.current());
+			expect(onThreadPress).toHaveBeenCalledTimes(1);
+
+			act(() => result.current());
+			expect(onThreadPress).toHaveBeenCalledTimes(1);
+
+			act(() => jest.advanceTimersByTime(300));
+
+			act(() => result.current());
+			expect(onThreadPress).toHaveBeenCalledTimes(2);
+		});
+
+		it('routes the debounced press through closeEmojiAndAction instead of running it directly', () => {
+			const model = buildFakeModel({ tmid: 't1' });
+			const onThreadPress = jest.fn();
+			const closeEmojiAndAction = jest.fn();
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress, closeEmojiAndAction } });
+
+			act(() => result.current());
+
+			expect(closeEmojiAndAction).toHaveBeenCalledWith(expect.any(Function));
+			expect(dismissSpy).not.toHaveBeenCalled();
+			expect(onThreadPress).not.toHaveBeenCalled();
+		});
+
+		it('runs the gated press once closeEmojiAndAction invokes the handler it was given', () => {
+			const model = buildFakeModel({ tmid: 't1' });
+			const onThreadPress = jest.fn();
+			const closeEmojiAndAction = jest.fn((action?: (params?: unknown) => void) => action?.());
+			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress, closeEmojiAndAction } });
+
+			act(() => result.current());
+
+			expect(dismissSpy).toHaveBeenCalledTimes(1);
+			expect(onThreadPress).toHaveBeenCalledWith(model);
 		});
 	});
 
