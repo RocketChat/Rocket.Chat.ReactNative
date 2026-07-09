@@ -1,7 +1,6 @@
 import { type StyleProp } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import { type IAttachment, type IUserMessage } from '../../definitions';
 
 export interface IMessageAttachments {
@@ -17,7 +16,6 @@ export interface IMessageEmoji {
 	content: string;
 	standardEmojiStyle: { fontSize: number };
 	customEmojiStyle: StyleProp<ImageStyle>;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessageRepliedThread {

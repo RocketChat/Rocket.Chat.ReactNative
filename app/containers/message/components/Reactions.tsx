@@ -7,7 +7,6 @@ import styles from '../styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
 import { useTheme } from '../../../theme';
-import { useCustomEmoji } from '../../../lib/hooks/useCustomEmoji';
 import { useMessageId, useMessageItem, useReactions } from '../stores/MessageStore';
 import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
 
@@ -55,7 +54,6 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 	const onReactionPress = useOnReactionPress();
 	const onReactionLongPress = useOnReactionLongPress();
 	const user = useMessageUser();
-	const getCustomEmoji = useCustomEmoji();
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user?.username) !== -1;
@@ -73,12 +71,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 			android_ripple={{ color: colors.strokeLight }}>
 			<View
 				style={[styles.reactionContainer, { borderColor: reacted ? colors.badgeBackgroundLevel2 : colors.strokeLight, height }]}>
-				<Emoji
-					content={reaction.emoji}
-					standardEmojiStyle={styles.reactionEmoji}
-					customEmojiStyle={styles.reactionCustomEmoji}
-					getCustomEmoji={getCustomEmoji}
-				/>
+				<Emoji content={reaction.emoji} standardEmojiStyle={styles.reactionEmoji} customEmojiStyle={styles.reactionCustomEmoji} />
 				<Text style={[styles.reactionCount, { color: colors.badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
 		</MessageActionTouchable>

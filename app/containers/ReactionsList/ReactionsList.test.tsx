@@ -2,6 +2,7 @@ import { type ReactElement, type ReactNode } from 'react';
 import { screen, render, fireEvent, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { Image as ExpoImage } from 'expo-image';
 
 import ReactionsList from './index';
 import { type IReaction } from '../../definitions';
@@ -215,6 +216,30 @@ describe('ReactionsList Integration Tests', () => {
 	});
 
 	it('handles custom emojis correctly', () => {
+		const storeWithCustomEmoji = createStore(
+			(
+				state = {
+					settings: {
+						UI_Use_Real_Name: true
+					},
+					login: {
+						user: {
+							id: 'user123',
+							username: 'testuser',
+							name: 'Test User'
+						}
+					},
+					server: {
+						server: 'https://open.rocket.chat',
+						version: '6.0.0'
+					},
+					customEmojis: {
+						custom_emoji: { name: 'custom_emoji', extension: 'png' }
+					}
+				}
+			) => state
+		);
+
 		const customReactions: IReaction[] = [
 			{
 				_id: 'reaction3',
@@ -224,11 +249,18 @@ describe('ReactionsList Integration Tests', () => {
 			}
 		];
 
-		renderWithRedux(<ReactionsList reactions={customReactions} />);
+		render(
+			<Provider store={storeWithCustomEmoji}>
+				<ReactionsList reactions={customReactions} />
+			</Provider>
+		);
 
-		// Verify custom emoji is rendered
 		expect(screen.getByTestId('tab-:custom_emoji:')).toBeOnTheScreen();
 		expect(screen.getByText('1 person reacted')).toBeOnTheScreen();
+
+		// Resolves against the store and renders as a custom emoji image, not the shortname text
+		expect(screen.UNSAFE_getAllByType(ExpoImage).length).toBeGreaterThan(0);
+		expect(screen.queryByText(':custom_emoji:')).toBeNull();
 	});
 });
 

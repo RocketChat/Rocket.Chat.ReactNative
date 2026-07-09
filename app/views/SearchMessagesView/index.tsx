@@ -38,8 +38,7 @@ import {
 	type IAttachment,
 	type ISubscription,
 	SubscriptionType,
-	type TSubscriptionModel,
-	type ICustomEmoji
+	type TSubscriptionModel
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -75,9 +74,6 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
 	baseUrl: string;
 	serverVersion: string;
-	customEmojis: {
-		[key: string]: ICustomEmoji;
-	};
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
@@ -359,8 +355,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	customEmojis: state.customEmojis
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

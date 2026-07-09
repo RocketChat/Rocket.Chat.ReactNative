@@ -45,8 +45,6 @@ const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 const mockOpenLink = openLink as jest.Mock;
 const mockFormatAttachmentUrl = formatAttachmentUrl as jest.Mock;
 
-const getCustomEmoji = jest.fn();
-
 const buildItem = (isEncrypted?: boolean) =>
 	({
 		id: 'msg-1',
@@ -75,7 +73,7 @@ const renderReply = ({
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem(isEncrypted)}>
-					<Reply attachment={attachment as IAttachment} getCustomEmoji={getCustomEmoji} msg={msg} />
+					<Reply attachment={attachment as IAttachment} msg={msg} />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>

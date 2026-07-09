@@ -7,7 +7,6 @@ import { type IReaction } from '../../definitions';
 import I18n from '../../i18n';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useCustomEmoji } from '../../lib/hooks/useCustomEmoji';
 
 interface IAllReactionsListItemProps {
 	item: IReaction;
@@ -19,7 +18,6 @@ interface IAllTabProps {
 
 const AllReactionsListItem = ({ item }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
-	const getCustomEmoji = useCustomEmoji();
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const username = useAppSelector(state => state.login.user.username);
 	const count = item.usernames.length;
@@ -47,7 +45,6 @@ const AllReactionsListItem = ({ item }: IAllReactionsListItemProps) => {
 				content={item.emoji}
 				standardEmojiStyle={styles.allTabStandardEmojiStyle}
 				customEmojiStyle={styles.allTabCustomEmojiStyle}
-				getCustomEmoji={getCustomEmoji}
 			/>
 			<View style={styles.textContainer}>
 				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>

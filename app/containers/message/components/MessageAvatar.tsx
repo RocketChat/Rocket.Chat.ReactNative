@@ -6,7 +6,6 @@ import styles from '../styles';
 import { type IMessageAvatar } from '../interfaces';
 import { SubscriptionType } from '../../../definitions';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { useCustomEmoji } from '../../../lib/hooks/useCustomEmoji';
 import { useAvatar, useMessageField, useMessageGrouping } from '../stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '../stores/MessageRoomStore';
 
@@ -23,7 +22,6 @@ const MessageAvatar = ({ small }: IMessageAvatar) => {
 
 	const user = useMessageUser();
 	const navToRoomInfo = useNavToRoomInfo();
-	const getCustomEmoji = useCustomEmoji();
 	const { fontScaleLimited } = useResponsiveLayout();
 	const { avatar, emoji } = useAvatar();
 	const author = useMessageField(item => item.u);
@@ -48,7 +46,6 @@ const MessageAvatar = ({ small }: IMessageAvatar) => {
 					size={size}
 					borderRadius={4}
 					onPress={onPress}
-					getCustomEmoji={getCustomEmoji}
 					avatar={avatar}
 					emoji={emoji}
 				/>

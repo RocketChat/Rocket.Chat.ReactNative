@@ -12,14 +12,12 @@ import { useTranslateLanguage } from '../../stores/MessageStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
-import { useCustomEmoji } from '../../../../lib/hooks/useCustomEmoji';
 
 const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
 	const showAttachment = useShowAttachment();
-	const getCustomEmoji = useCustomEmoji();
 
 	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 
@@ -36,7 +34,6 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageA
 					key={file.image_url}
 					file={file}
 					showAttachment={showAttachment}
-					getCustomEmoji={getCustomEmoji}
 					author={author}
 					msg={msg}
 					imagePreview={file.image_preview}
@@ -46,50 +43,22 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageA
 		}
 
 		if (file.audio_url) {
-			return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
+			return <Audio key={file.audio_url} file={file} author={author} msg={msg} />;
 		}
 
 		if (file.video_url) {
-			return (
-				<Video
-					key={file.video_url}
-					file={file}
-					showAttachment={showAttachment}
-					getCustomEmoji={getCustomEmoji}
-					author={author}
-					msg={msg}
-				/>
-			);
+			return <Video key={file.video_url} file={file} showAttachment={showAttachment} author={author} msg={msg} />;
 		}
 
 		if (file.actions && file.actions.length > 0) {
-			return (
-				<AttachedActions
-					key={file.title_link || file.message_link || `actions-${index}`}
-					attachment={file}
-					getCustomEmoji={getCustomEmoji}
-				/>
-			);
+			return <AttachedActions key={file.title_link || file.message_link || `actions-${index}`} attachment={file} />;
 		}
 		if (typeof file.collapsed === 'boolean') {
-			return (
-				<CollapsibleQuote
-					key={file.title_link || file.message_link || `collapsible-${index}`}
-					attachment={file}
-					getCustomEmoji={getCustomEmoji}
-				/>
-			);
+			return <CollapsibleQuote key={file.title_link || file.message_link || `collapsible-${index}`} attachment={file} />;
 		}
 
 		if (file.attachments?.length) {
-			return (
-				<Reply
-					key={file.title_link || file.message_link || `reply-${index}`}
-					attachment={file}
-					getCustomEmoji={getCustomEmoji}
-					msg={msg}
-				/>
-			);
+			return <Reply key={file.title_link || file.message_link || `reply-${index}`} attachment={file} msg={msg} />;
 		}
 
 		return null;

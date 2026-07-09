@@ -12,15 +12,7 @@ import { WidthAwareView } from '../../WidthAwareView';
 import { useAltTextSupported } from '../../../../../lib/hooks/useAltTextSupported';
 import I18n from '../../../../../i18n';
 
-const ImageContainer = ({
-	file,
-	showAttachment,
-	getCustomEmoji,
-	author,
-	msg,
-	imagePreview,
-	imageType
-}: IImageContainer): ReactElement | null => {
+const ImageContainer = ({ file, showAttachment, author, msg, imagePreview, imageType }: IImageContainer): ReactElement | null => {
 	'use memo';
 
 	const user = useMessageUser();
@@ -52,7 +44,7 @@ const ImageContainer = ({
 	if (msg) {
 		return (
 			<View style={{ gap: 4 }}>
-				<Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} />
+				<Markdown msg={msg} username={user?.username} />
 				{image}
 			</View>
 		);

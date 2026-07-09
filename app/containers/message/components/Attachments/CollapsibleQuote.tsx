@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { type IAttachment } from '../../../../definitions/IAttachment';
-import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
@@ -59,20 +58,17 @@ const styles = StyleSheet.create({
 
 interface IMessageAttText {
 	text?: string;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 interface IMessageFields {
 	attachment: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
 interface IMessageReply {
 	attachment: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AttText = ({ text, getCustomEmoji }: IMessageAttText) => {
+const AttText = ({ text }: IMessageAttText) => {
 	'use memo';
 
 	const user = useMessageUser();
@@ -81,10 +77,10 @@ const AttText = ({ text, getCustomEmoji }: IMessageAttText) => {
 		return null;
 	}
 
-	return <Markdown msg={text} username={user?.username} getCustomEmoji={getCustomEmoji} />;
+	return <Markdown msg={text} username={user?.username} />;
 };
 
-const Fields = ({ attachment, getCustomEmoji }: IMessageFields) => {
+const Fields = ({ attachment }: IMessageFields) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -101,14 +97,14 @@ const Fields = ({ attachment, getCustomEmoji }: IMessageFields) => {
 					<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: colors.fontDefault }]}>
 						{field.title}
 					</Text>
-					<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
+					<Markdown msg={field?.value || ''} username={user?.username} />
 				</View>
 			))}
 		</>
 	);
 };
 
-const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
+const CollapsibleQuote = ({ attachment }: IMessageReply) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -158,8 +154,8 @@ const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
 						<View style={styles.authorContainer}>
 							<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</Text>
 						</View>
-						{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
-						{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
+						{!collapsed && <AttText text={attachment.text} />}
+						{!collapsed && <Fields attachment={attachment} />}
 					</View>
 					<View style={styles.iconContainer}>
 						<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />

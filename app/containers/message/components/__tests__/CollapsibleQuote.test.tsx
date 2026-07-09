@@ -23,8 +23,6 @@ const testAttachment = {
 	collapsed: true
 };
 
-const mockFn = jest.fn();
-
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(
 		setUser({
@@ -40,7 +38,8 @@ const initialMockedStoreState = () => {
 initialMockedStoreState();
 
 const contextValue: Partial<MessageRoomState> = {
-	user: { username: 'Marcos' }
+	user: { username: 'Marcos' },
+	timeFormat: 'LT'
 };
 
 const item = { id: 'collapsible-quote-msg' } as unknown as TAnyMessageModel;
@@ -49,7 +48,7 @@ const Render = () => (
 	<Provider store={mockedStore}>
 		<MessageRoomProvider {...contextValue}>
 			<MessageProvider item={item}>
-				<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} />
+				<CollapsibleQuote attachment={testAttachment} />
 			</MessageProvider>
 		</MessageRoomProvider>
 	</Provider>

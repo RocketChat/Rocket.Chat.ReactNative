@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
+import { type IAttachment } from '../../../../definitions';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
 
 interface IMessageReply {
 	attachment: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
 	msg?: string;
 }
 
@@ -106,7 +105,7 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 	);
 };
 
-const Description = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+const Description = ({ attachment }: { attachment: IAttachment }) => {
 	'use memo';
 
 	const user = useMessageUser();
@@ -126,7 +125,7 @@ const Description = ({ attachment, getCustomEmoji }: { attachment: IAttachment; 
 		return <MarkdownPreview msg={text} numberOfLines={0} />;
 	}
 
-	return <Markdown msg={text} username={user?.username} getCustomEmoji={getCustomEmoji} />;
+	return <Markdown msg={text} username={user?.username} />;
 };
 
 const UrlImage = ({ image }: { image?: string }) => {
@@ -143,7 +142,7 @@ const UrlImage = ({ image }: { image?: string }) => {
 	return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 };
 
-const Fields = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+const Fields = ({ attachment }: { attachment: IAttachment }) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -158,14 +157,14 @@ const Fields = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCu
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 					<Text style={[styles.fieldTitle, { color: colors.fontDefault }]}>{field.title}</Text>
-					<Markdown msg={field?.value || ''} username={user?.username} getCustomEmoji={getCustomEmoji} />
+					<Markdown msg={field?.value || ''} username={user?.username} />
 				</View>
 			))}
 		</View>
 	);
 };
 
-const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
+const Reply = ({ attachment, msg }: IMessageReply) => {
 	'use memo';
 
 	const [loading, setLoading] = useState(false);
@@ -214,10 +213,10 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 				<View style={styles.attachmentContainer}>
 					<View style={styles.titleAndDescriptionContainer}>
 						<Title attachment={attachment} />
-						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
+						<Description attachment={attachment} />
 						<Quote attachments={attachment.attachments} />
 						<Attachments attachments={attachment.attachments} />
-						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />
+						<Fields attachment={attachment} />
 						{loading ? (
 							<View style={styles.backdrop}>
 								<View
@@ -232,7 +231,7 @@ const Reply = ({ attachment, getCustomEmoji, msg }: IMessageReply) => {
 					<UrlImage image={attachment.thumb_url} />
 				</View>
 			</MessageActionTouchable>
-			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
+			{msg ? <Markdown msg={msg} username={user?.username} /> : null}
 		</View>
 	);
 };

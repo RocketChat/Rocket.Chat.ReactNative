@@ -1,7 +1,6 @@
 import { View } from 'react-native';
 
 import { type IAttachment, type IUserMessage } from '../../../../definitions';
-import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import AudioPlayer from '../../../AudioPlayer';
 import Markdown from '../../../markdown';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
@@ -10,12 +9,11 @@ import { useMessageId } from '../../stores/MessageStore';
 
 interface IMessageAudioProps {
 	file: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
 }
 
-const MessageAudio = ({ file, getCustomEmoji, author, msg }: IMessageAudioProps) => {
+const MessageAudio = ({ file, author, msg }: IMessageAudioProps) => {
 	'use memo';
 
 	const user = useMessageUser();
@@ -25,7 +23,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, msg }: IMessageAudioProps)
 
 	return (
 		<View style={{ gap: 4 }}>
-			{msg ? <Markdown msg={msg} username={user?.username} getCustomEmoji={getCustomEmoji} /> : null}
+			{msg ? <Markdown msg={msg} username={user?.username} /> : null}
 			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid ?? ''} />
 		</View>
 	);

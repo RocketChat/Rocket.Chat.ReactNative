@@ -7,7 +7,6 @@ import AllTab from './AllTab';
 import UsersList from './UsersList';
 import { TabView } from '../TabView';
 import Emoji from '../message/components/Emoji';
-import { useCustomEmoji } from '../../lib/hooks/useCustomEmoji';
 
 interface IReactionsListProps {
 	reactions?: IReaction[];
@@ -50,7 +49,6 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 };
 
 const ReactionsList = ({ reactions }: IReactionsListProps) => {
-	const getCustomEmoji = useCustomEmoji();
 	const { routes, sortedReactions } = useRoutes(reactions);
 
 	const renderScene = ({ route }: { route: IRoute }) => {
@@ -74,12 +72,7 @@ const ReactionsList = ({ reactions }: IReactionsListProps) => {
 		if (tab.emoji) {
 			return (
 				<View style={styles.tabBarItem}>
-					<Emoji
-						content={tab.emoji}
-						standardEmojiStyle={styles.standardEmojiStyle}
-						customEmojiStyle={styles.customEmojiStyle}
-						getCustomEmoji={getCustomEmoji}
-					/>
+					<Emoji content={tab.emoji} standardEmojiStyle={styles.standardEmojiStyle} customEmojiStyle={styles.customEmojiStyle} />
 					<Text style={[styles.reactionCount, { color }]}>{tab.usernames?.length}</Text>
 				</View>
 			);

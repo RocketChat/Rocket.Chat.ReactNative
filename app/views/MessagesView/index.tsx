@@ -29,8 +29,7 @@ import {
 	type IAttachment,
 	type IMessage,
 	type TAnyMessageModel,
-	type IUrl,
-	type ICustomEmoji
+	type IUrl
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -51,7 +50,6 @@ interface IMessagesViewProps {
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: ICustomEmoji };
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	isMasterDetail: boolean;
@@ -369,8 +367,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	customEmojis: state.customEmojis
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(MessagesView)))));

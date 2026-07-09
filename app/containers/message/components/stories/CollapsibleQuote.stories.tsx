@@ -46,7 +46,7 @@ export default {
 export const Item = () => (
 	<StoryWrapper>
 		<View style={{ padding: 10 }}>
-			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={() => null} />
+			<CollapsibleQuote attachment={testAttachment} />
 		</View>
 	</StoryWrapper>
 );
