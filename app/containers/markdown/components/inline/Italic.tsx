@@ -44,7 +44,7 @@ function getStyle(heading: number | undefined, bold: boolean | undefined) {
 	if ((heading && heading < 3) || bold) {
 		return styles.boldItalic;
 	}
-	if(heading && heading < 5) {
+	if (heading && heading < 5) {
 		return styles.semiboldItalic;
 	}
 	return styles.text;
