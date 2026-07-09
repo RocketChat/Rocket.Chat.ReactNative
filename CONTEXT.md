@@ -104,18 +104,18 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 | **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
 | **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
 
-## Message Interaction & Position State
+## Message Action & Position State
 
-Two distinct kinds of transient per-Room state drive how the Room view renders Messages. They have different owners and are migrated independently, so keep them apart.
+Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
 
-| Term                  | Definition                                                                       | Owner                          | Scope                                                                |
-| --------------------- | -------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
-| **Interaction state** | Which Message is selected and the current Message Action (Quote, Edit, or React) | A per-Room interaction store   | Migrated to the per-Room store as part of the Message row work       |
-| **Positional state**  | Which Message is highlighted and the jump or scroll position                     | The Room view scroll machinery | Stays with the Room view scroll machinery and is migrated separately |
+| Term                     | Definition                                                                                                        |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| **Message Action State** | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active |
+| **Positional State**     | Which Message is highlighted and the jump or scroll position                                                      |
 
 ### Message Actions
 
-A **Message Action** is the current interaction mode on a Message in the Room view. The three actions are **Quote**, **Edit**, and **React** — there is no "reply" action; replying in a Thread is a separate navigation, not an interaction mode.
+A **Message Action** is the active mode on a Message in the Room view. The three actions are **Quote**, **Edit**, and **React** — there is no "reply" action; replying in a Thread is a separate navigation, not a Message Action.
 
 | Term      | Definition                                                                              | Aliases to avoid |
 | --------- | --------------------------------------------------------------------------------------- | ---------------- |
@@ -249,3 +249,4 @@ A **Message Action** is the current interaction mode on a Message in the Room vi
 - **"Muted"** is overloaded: a User can be muted in a Room (a moderator action that removes send permission, recorded by `user-muted`/`mute_unmute` System Messages) OR be an **Ignored User** (a per-viewer filter that hides their Messages behind an Ignored Message placeholder, stored in `room.ignored`). Muting is a room permission; ignoring is a personal filter. Different concepts — keep them apart.
 - **"Reply"** is overloaded: **Reply Broadcast** is the action available to non-authorized users in a Broadcast Room; replying in a **Thread** is navigation into the Thread view. Neither is a **Message Action** — there is no "reply" Message Action.
 - **"Status" vs "flags"** — a Message has exactly one delivery **Status** (Sent, Temp, Error). **Pinned** and **Starred** are independent **Message Flags**, not statuses; do not group them with delivery states.
+- **"Interaction" retired** — the selection-plus-action state was once an "interaction" concept; the canonical term is now **Message Action State**. Use **Message Action**, not "interaction", for which Message is selected and how. (Selection is not separate — it lives inside the active Message Action.)
