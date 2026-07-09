@@ -92,14 +92,16 @@ export const useIsBeingEdited = (messageId: string): boolean => {
 };
 
 export const MessageActionProvider = ({
+	store: externalStore,
 	initialAction,
 	children
 }: {
+	store?: TMessageActionStore;
 	initialAction?: TMessageActionState;
 	children: ReactNode;
 }): ReactNode => {
 	'use memo';
 
-	const [store] = useState(() => createMessageActionStore(initialAction));
+	const [store] = useState(() => externalStore ?? createMessageActionStore(initialAction));
 	return <MessageActionStoreContext.Provider value={store}>{children}</MessageActionStoreContext.Provider>;
 };

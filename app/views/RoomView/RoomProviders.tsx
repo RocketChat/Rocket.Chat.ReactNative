@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { RoomContext, type IRoomContext } from './context';
-import { type TMessageActionStore, MessageActionStoreContext } from '../../containers/message/stores/MessageActionStore';
+import { type TMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
 
 type IRoomProvidersProps = IRoomContext & {
 	store: TMessageActionStore;
@@ -28,7 +28,7 @@ export const RoomProviders = ({
 	'use memo';
 
 	return (
-		<MessageActionStoreContext.Provider value={store}>
+		<MessageActionProvider store={store}>
 			<RoomContext.Provider
 				value={{
 					rid,
@@ -47,6 +47,6 @@ export const RoomProviders = ({
 				}}>
 				{children}
 			</RoomContext.Provider>
-		</MessageActionStoreContext.Provider>
+		</MessageActionProvider>
 	);
 };
