@@ -37,6 +37,8 @@ export interface IUseRoomSubscriptionResult {
 	lastOpen: Date | null;
 	canAutoTranslate: boolean;
 	init: () => Promise<void>;
+	setLastOpen: (value: Date | null) => void;
+	setJoined: (value: boolean) => void;
 }
 
 export function useRoomSubscription({
@@ -189,9 +191,23 @@ export function useRoomSubscription({
 
 	useEffect(() => {
 		if (rid && isAuthenticated) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			init();
 		}
 	}, [rid, isAuthenticated, init]);
 
-	return { room, roomUpdate, joined, subscribed, member, roomUserId, loading, lastOpen, canAutoTranslate, init };
+	return {
+		room,
+		roomUpdate,
+		joined,
+		subscribed,
+		member,
+		roomUserId,
+		loading,
+		lastOpen,
+		canAutoTranslate,
+		init,
+		setLastOpen,
+		setJoined
+	};
 }

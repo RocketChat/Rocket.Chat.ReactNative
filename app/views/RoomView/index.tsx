@@ -1,9 +1,8 @@
-import { Component, createRef, type RefObject } from 'react';
-import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { AccessibilityInfo, InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
-import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
@@ -14,14 +13,13 @@ import { type TNavigation } from 'stacks/stackType';
 import dayjs from '../../lib/dayjs';
 import {
 	getRoutingConfig,
-	getUserInfo,
 	editMessage,
 	setReaction,
-	joinRoom,
+	joinRoom as joinRoomService,
 	toggleFollowMessage
 } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
-import { replyBroadcast } from '../../actions/messages';
+import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
@@ -29,7 +27,6 @@ import MessageErrorActions, { type IMessageErrorActions } from '../../containers
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import RoomHeader from '../../containers/RoomHeader';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -48,11 +45,8 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
-import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
-import RightButtons from './RightButtons';
-import LeftButtons from './LeftButtons';
 import styles from './styles';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
@@ -63,9 +57,7 @@ import {
 	type IAttachment,
 	type IMessage,
 	type IMessageEditAttachment,
-	type IOmnichannelSource,
 	type ISubscription,
-	type IVisitor,
 	SubscriptionType,
 	type TAnyMessageModel,
 	type TSubscriptionModel,
@@ -79,29 +71,17 @@ import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications
 import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
 import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
-import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
-import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
-import { readMessages } from '../../lib/methods/readMessages';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
-import {
-	isGroupChat,
-	getUidDirectMessage,
-	getRoomTitle,
-	canAutoTranslate as canAutoTranslateMethod,
-	debounce,
-	isIOS,
-	hasPermission
-} from '../../lib/methods/helpers';
+import { getUidDirectMessage, getRoomTitle, debounce, isIOS, hasPermission } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
-import { resolveJumpAnchor } from './services/resolveJumpAnchor';
 import { type TGetMessageInfoResult } from './services/getMessageInfo';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
@@ -109,346 +89,241 @@ import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/enc
 import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
-import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { useRoomSubscription } from './hooks/useRoomSubscription';
+import { useJumpToMessage } from './hooks/useJumpToMessage';
+import { useHeader } from './hooks/useHeader';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
-class RoomView extends Component<IRoomViewProps, IRoomViewState> {
-	private rid?: string;
-	private t?: string;
-	private tmid?: string;
-	private jumpToMessageId?: string;
-	private jumpToThreadId?: string;
-	private messageComposerRef: RefObject<IMessageComposerRef | null>;
-	private joinCode: RefObject<IJoinCode | null>;
+type TRoomViewReducerState = Pick<
+	IRoomViewState,
+	| 'readOnly'
+	| 'unreadsCount'
+	| 'isAutocompleteVisible'
+	| 'showMissingE2EEKey'
+	| 'showE2EEDisabledRoom'
+	| 'canForwardGuest'
+	| 'canReturnQueue'
+	| 'canViewCannedResponse'
+	| 'canPlaceLivechatOnHold'
+>;
+
+const initialReducerState: TRoomViewReducerState = {
+	readOnly: false,
+	unreadsCount: null,
+	isAutocompleteVisible: false,
+	showMissingE2EEKey: false,
+	showE2EEDisabledRoom: false,
+	canForwardGuest: false,
+	canReturnQueue: false,
+	canViewCannedResponse: false,
+	canPlaceLivechatOnHold: false
+};
+
+const roomViewStateReducer = (state: TRoomViewReducerState, partial: Partial<TRoomViewReducerState>): TRoomViewReducerState => ({
+	...state,
+	...partial
+});
+
+const RoomView = (props: IRoomViewProps) => {
+	const {
+		route,
+		navigation,
+		dispatch,
+		theme,
+		user,
+		isAuthenticated,
+		baseUrl,
+		serverVersion,
+		isMasterDetail,
+		width,
+		insets,
+		Message_GroupingPeriod,
+		Message_Read_Receipt_Enabled,
+		Hide_System_Messages,
+		transferLivechatGuestPermission,
+		viewCannedResponsesPermission,
+		livechatAllowManualOnHold,
+		inAppFeedback,
+		encryptionEnabled,
+		airGappedRestrictionRemainingDays,
+		isFederationEnabled,
+		isFederationModuleEnabled,
+		showActionSheet,
+		hideActionSheet
+	} = props;
+
+	const rid = route.params?.rid;
+	const t = route.params?.t;
+	/**
+	 * On threads, we don't have a subscription.
+	 * `room` is going to have only a few properties sent during navigation.
+	 * Use `tmid` as thread id.
+	 */
+	const tmid = route.params?.tmid;
+
+	const [messageActionStore] = useState(() => {
+		const quoteMessageId = route.params?.messageId;
+		return createMessageActionStore(quoteMessageId ? { kind: 'quote', messageIds: [quoteMessageId] } : null);
+	});
+
+	const [initialRoom] = useState<IRoomViewState['room']>(
+		() =>
+			route.params?.room ?? {
+				rid: rid as string,
+				t: t as string,
+				name: route.params?.name,
+				fname: route.params?.fname,
+				prid: route.params?.prid
+			}
+	);
+	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
+	// we don't need to subscribe to threads
+	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
+
+	const [state, setState] = useReducer(roomViewStateReducer, initialReducerState);
+
+	const messageComposerRef = useRef<IMessageComposerRef | null>(null);
+	const joinCodeRef = useRef<IJoinCode | null>(null);
 	// ListContainer component
-	private list: RefObject<IListContainerRef | null>;
+	const listRef = useRef<IListContainerRef | null>(null);
 	// FlatList inside ListContainer
-	private flatList: TListRef;
-	private mounted: boolean;
-	private subObserveQuery?: Subscription;
-	private subSubscription?: Subscription;
-	private queryUnreads?: Subscription;
-	private retryInitTimeout?: ReturnType<typeof setTimeout>;
-	private messageErrorActions?: IMessageErrorActions | null;
-	private messageActions?: IMessageActions | null;
-	// Type of InteractionManager.runAfterInteractions
-	private didMountInteraction?: {
-		then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
-		done: (...args: any[]) => any;
-		cancel: () => void;
-	};
-	private sub?: RoomClass;
-	private unsubscribeBlur?: () => void;
-	private messageActionStore: TMessageActionStore;
+	const flatListRef: TListRef = useRef(null);
+	const queryUnreadsRef = useRef<Subscription | null>(null);
+	const messageActionsRef = useRef<IMessageActions | null>(null);
+	const messageErrorActionsRef = useRef<IMessageErrorActions | null>(null);
+	const pendingJumpRef = useRef<string | undefined>(route.params?.jumpToMessageId);
+	const jumpToThreadIdRef = useRef<string | undefined>(route.params?.jumpToThreadId);
 
-	constructor(props: IRoomViewProps) {
-		super(props);
-		this.rid = props.route.params?.rid;
-		this.t = props.route.params?.t;
-		/**
-		 * On threads, we don't have a subscription.
-		 * `this.state.room` is going to have only a few properties sent during navigation.
-		 * Use `this.tmid` as thread id.
-		 */
-		this.tmid = props.route.params?.tmid;
-		const name = props.route.params?.name;
-		const fname = props.route.params?.fname;
-		const prid = props.route.params?.prid;
-		const room = props.route.params?.room ?? {
-			rid: this.rid as string,
-			t: this.t as string,
-			name,
-			fname,
-			prid
-		};
-		this.jumpToMessageId = props.route.params?.jumpToMessageId;
-		this.jumpToThreadId = props.route.params?.jumpToThreadId;
-		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
-		const { messageId } = props.route.params ?? {};
-		this.messageActionStore = createMessageActionStore(messageId ? { kind: 'quote', messageIds: [messageId] } : null);
-		this.state = {
-			joined: true,
-			room,
-			roomUpdate: {},
-			member: {},
-			lastOpen: null,
-			canAutoTranslate: false,
-			loading: true,
-			readOnly: false,
-			unreadsCount: null,
-			roomUserId,
-			canViewCannedResponse: false,
-			canForwardGuest: false,
-			canReturnQueue: false,
-			canPlaceLivechatOnHold: false,
-			isAutocompleteVisible: false,
-			showMissingE2EEKey: false,
-			showE2EEDisabledRoom: false
-		};
+	// Live-mirror refs let frozen provider handlers stay referentially stable while reading fresh values.
+	const roomRef = useRef(initialRoom);
+	const roomUserIdRef = useRef(initialRoomUserId);
+	const unreadsCountRef = useRef<number | null>(null);
+	const cancelJumpToMessageRef = useRef<() => void>(() => {});
+	const userRef = useRef(user);
 
-		this.setHeader();
-
-		if ('id' in room) {
-			// @ts-ignore TODO: type guard isn't helping here :(
-			this.observeRoom(room);
-		} else if (this.rid) {
-			this.findAndObserveRoom(this.rid);
-		}
-
-		this.setReadOnly();
-		this.updateE2EEState();
-
-		this.messageComposerRef = createRef();
-		this.list = createRef();
-		this.flatList = createRef();
-		this.joinCode = createRef();
-		this.mounted = false;
-
-		if (this.t === 'l') {
-			this.updateOmnichannel();
-		}
-
-		// we don't need to subscribe to threads
-		if (this.rid && !this.tmid) {
-			this.sub = new RoomClass(this.rid);
-		}
-	}
-
-	componentDidMount() {
-		const { navigation, dispatch } = this.props;
-		const { action } = this.messageActionStore.getState();
-		dispatch(clearInAppFeedback());
-		this.mounted = true;
-		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			const { isAuthenticated } = this.props;
-			this.setHeader();
-			if (this.rid) {
-				try {
-					this.sub?.subscribe?.();
-				} catch (e) {
-					log(e);
-				}
-				if (isAuthenticated) {
-					this.init();
-				} else {
-					EventEmitter.addEventListener('connected', this.handleConnected);
-				}
-			}
-			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
-			// rows and is fired from init()'s success path instead (see init) — firing it here would race
-			// loadThreadMessages and park on the live tail.
-			if (this.jumpToMessageId && !this.tmid) {
-				this.consumeJumpParam(this.jumpToMessageId);
-			}
-			if (this.jumpToThreadId && !this.jumpToMessageId) {
-				this.navToThread({ tmid: this.jumpToThreadId });
-			}
-			if (isIOS && this.rid) {
-				this.updateUnreadCount();
-			}
-			if (action?.kind === 'quote' && action.messageIds.length === 1) {
-				this.onQuoteInit(action.messageIds[0]);
-			}
-		});
-		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
-		this.unsubscribeBlur = navigation.addListener('blur', () => {
-			AudioManager.pauseAudio();
-		});
-	}
-
-	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
-		const { state } = this;
-		const { roomUpdate, member, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = state;
-		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
-		if (theme !== nextProps.theme) {
-			return true;
-		}
-		if (encryptionEnabled !== nextProps.encryptionEnabled) {
-			return true;
-		}
-		if (airGappedRestrictionRemainingDays !== nextProps.airGappedRestrictionRemainingDays) {
-			return true;
-		}
-		if (member.statusText !== nextState.member.statusText) {
-			return true;
-		}
-		if (isAutocompleteVisible !== nextState.isAutocompleteVisible) {
-			return true;
-		}
-		if (showMissingE2EEKey !== nextState.showMissingE2EEKey) {
-			return true;
-		}
-		if (showE2EEDisabledRoom !== nextState.showE2EEDisabledRoom) {
-			return true;
-		}
-		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
-		if (stateUpdated) {
-			return true;
-		}
-		if (!dequal(nextProps.insets, insets)) {
-			return true;
-		}
-		if (!dequal(nextProps.route?.params, route?.params)) {
-			return true;
-		}
-		return roomAttrsUpdate.some(key => {
-			if (key === 'lastMessage' && this.t !== 'l') {
-				return false;
-			}
-			return !dequal(nextState.roomUpdate[key], roomUpdate[key]);
-		});
-	}
-
-	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined } = this.state;
-		const { insets, route, encryptionEnabled } = this.props;
-
-		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.consumeJumpParam(route?.params?.jumpToMessageId);
-		}
-
-		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
-			this.navToThread({ tmid: route?.params?.jumpToThreadId });
-		}
-
-		// If it's a livechat room
-		if (this.t === 'l') {
-			if (
-				!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
-				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
-				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
-				prevState.joined !== joined
-			) {
-				this.updateOmnichannel();
-			}
-		}
-		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
-		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
-			this.setHeader();
-		}
-		this.setReadOnly();
-
-		if (
-			encryptionEnabled !== prevProps.encryptionEnabled ||
-			roomUpdate.encrypted !== prevState.roomUpdate.encrypted ||
-			roomUpdate.E2EKey !== prevState.roomUpdate.E2EKey
-		) {
-			this.updateE2EEState();
-		}
-
-		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
-		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			this.init();
-		}
-	}
-
-	updateOmnichannel = async () => {
-		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
-			this.canForwardGuest(),
-			this.canReturnQueue(),
-			this.canViewCannedResponse()
-		]);
-		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
-		if (this.mounted) {
-			this.setHeader();
-		}
-	};
-
-	async componentWillUnmount() {
-		const { dispatch } = this.props;
-		dispatch(clearInAppFeedback());
-		this.mounted = false;
-		this.unsubscribe();
-		if (this.didMountInteraction && this.didMountInteraction.cancel) {
-			this.didMountInteraction.cancel();
-		}
-		if (this.subSubscription && this.subSubscription.unsubscribe) {
-			this.subSubscription.unsubscribe();
-		}
-
-		if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
-			this.subObserveQuery.unsubscribe();
-		}
-		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
-			this.queryUnreads.unsubscribe();
-		}
-		if (this.retryInitTimeout) {
-			clearTimeout(this.retryInitTimeout);
-		}
-		if (this.unsubscribeBlur) {
-			this.unsubscribeBlur();
-		}
-		EventEmitter.removeListener('connected', this.handleConnected);
-		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
-		if (!this.tmid) {
-			await AudioManager.unloadRoomAudios(this.rid);
-		}
-	}
-
-	canForwardGuest = async () => {
-		const { transferLivechatGuestPermission } = this.props;
-		const permissions = await hasPermission([transferLivechatGuestPermission], this.rid);
-		return permissions[0] as boolean;
-	};
-
-	canPlaceLivechatOnHold = () => {
-		const { livechatAllowManualOnHold } = this.props;
-		const { room } = this.state;
-		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
-	};
-
-	canViewCannedResponse = async () => {
-		const { viewCannedResponsesPermission } = this.props;
-		const permissions = await hasPermission([viewCannedResponsesPermission], this.rid);
-		return permissions[0] as boolean;
-	};
-
-	canReturnQueue = async () => {
-		try {
-			const { returnQueue } = await getRoutingConfig();
-			return returnQueue;
-		} catch {
-			return false;
-		}
-	};
-
-	observeSubscriptions = () => {
-		try {
-			const db = database.active;
-			const observeSubCollection = db
-				.get('subscriptions')
-				.query(Q.where('rid', this.rid as string))
-				.observe();
-			this.subObserveQuery = observeSubCollection.subscribe(data => {
-				if (data[0]) {
-					if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
-						this.observeRoom(data[0]);
-						this.setState({ room: data[0], joined: true });
-						this.subObserveQuery.unsubscribe();
-					}
-				}
+	const navToRoom = useCallback(
+		async (message: TGetMessageInfoResult) => {
+			if (!message.rid) return;
+			const roomInfo = await getRoomInfo(message.rid);
+			return goRoom({
+				item: roomInfo as TGoRoomItem,
+				isMasterDetail,
+				jumpToMessageId: message.id
 			});
-		} catch (e) {
-			console.log("observeSubscriptions: Can't find subscription to observe");
+		},
+		[isMasterDetail]
+	);
+
+	const navToThread = useCallback(
+		async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
+			if (!rid) {
+				return;
+			}
+
+			if (item.tmid) {
+				let name = '';
+				let jumpToMessageId = '';
+				if ('id' in item) {
+					name = 'tmsg' in item ? item.tmsg ?? '' : '';
+					jumpToMessageId = item.id;
+				}
+				sendLoadingEvent({ visible: true, onCancel: cancelJumpToMessageRef.current });
+				const threadRecord = await getThreadById(item.tmid);
+				if (threadRecord?.t === 'rm') {
+					name = I18n.t('Thread');
+				}
+				if (!name) {
+					const result = await getThreadName(rid, item.tmid, jumpToMessageId);
+					// test if there isn't a thread
+					if (!result) {
+						sendLoadingEvent({ visible: false });
+						return;
+					}
+					name = result;
+				}
+				if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
+					name = I18n.t('Encrypted_message');
+				}
+				if (!jumpToMessageId) {
+					setTimeout(() => {
+						sendLoadingEvent({ visible: false });
+					}, 300);
+				}
+				return navigation.push('RoomView', {
+					rid,
+					tmid: item.tmid,
+					name,
+					t: SubscriptionType.THREAD,
+					roomUserId: roomUserIdRef.current,
+					jumpToMessageId
+				});
+			}
+
+			if ('tlm' in item) {
+				return navigation.push('RoomView', {
+					rid,
+					tmid: item.id,
+					name: makeThreadName(item),
+					t: SubscriptionType.THREAD,
+					roomUserId: roomUserIdRef.current
+				});
+			}
+		},
+		[rid, navigation]
+	);
+
+	const { jumpToMessage, cancelJumpToMessage } = useJumpToMessage({
+		rid,
+		tmid,
+		t,
+		listRef,
+		navToRoom,
+		navToThread
+	});
+
+	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
+	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
+	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
+	const consumeJumpParam = useCallback(
+		(messageId: string) => {
+			pendingJumpRef.current = undefined;
+			jumpToMessage(messageId);
+			navigation.setParams({ jumpToMessageId: undefined });
+		},
+		[jumpToMessage, navigation]
+	);
+
+	// Thread jump: fired from the subscription hook's success path — the thread window is populated by
+	// then, so the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
+	const onThreadMessagesLoaded = useCallback(() => {
+		if (pendingJumpRef.current) {
+			const messageId = pendingJumpRef.current;
+			pendingJumpRef.current = undefined;
+			consumeJumpParam(messageId);
 		}
-	};
+	}, [consumeJumpParam]);
 
-	get isOmnichannel() {
-		const { room } = this.state;
-		return room.t === 'l';
-	}
+	const { room, roomUpdate, joined, member, roomUserId, loading, lastOpen, canAutoTranslate, init, setLastOpen, setJoined } =
+		useRoomSubscription({
+			rid,
+			tmid,
+			t,
+			initialRoom,
+			roomUserId: initialRoomUserId,
+			isAuthenticated,
+			onThreadMessagesLoaded
+		});
 
-	get hideSystemMessages() {
-		const { sysMes } = this.state.room;
-		const { Hide_System_Messages } = this.props;
+	const isOmnichannel = room.t === 'l';
 
+	const hideSystemMessages = (() => {
+		const { sysMes } = room;
 		// FIXME: handle servers with version < 3.0.0
 		// Return stable refs (model field / redux prop / shared empty) — a fresh [] here re-subscribes
 		// the message-list WatermelonDB query on every RoomView render (fetchMessages dep).
@@ -459,885 +334,435 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			return Hide_System_Messages;
 		}
 		return EMPTY_HIDE_SYSTEM_MESSAGES;
-	}
+	})();
 
-	setHeader = () => {
-		const {
-			room,
-			unreadsCount,
-			roomUserId,
-			joined,
-			canForwardGuest,
-			canReturnQueue,
-			canPlaceLivechatOnHold,
-			showMissingE2EEKey,
-			showE2EEDisabledRoom
-		} = this.state;
-		const { navigation, isMasterDetail, baseUrl, user, route } = this.props;
-		const { rid, tmid } = this;
+	useEffect(() => {
+		roomRef.current = room;
+		roomUserIdRef.current = roomUserId;
+		userRef.current = user;
+		unreadsCountRef.current = state.unreadsCount;
+		cancelJumpToMessageRef.current = cancelJumpToMessage;
+	});
 
-		if (!rid) {
-			// Adding an empty View to prevent rendering the back button while maintaining the same header height.
-			const height = 37 * PixelRatio.getFontScale();
-			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
-			return;
-		}
-		if (!room.rid) {
-			return;
-		}
+	const resetAction = useCallback(() => {
+		messageActionStore.getState().actions.clear();
+	}, [messageActionStore]);
 
-		const prid = room?.prid;
-		const isGroupChatConst = isGroupChat(room as ISubscription);
-		let title = route.params?.name;
-		let parentTitle = '';
-		// TODO: I think it's safe to remove this, but we need to test tablet without rooms
-		if (!tmid) {
-			title = getRoomTitle(room);
-		}
-		if (tmid) {
-			parentTitle = getRoomTitle(room);
-		}
-		let subtitle: string | undefined;
-		let teamId: string | undefined;
-		let encrypted: boolean | undefined;
-		let userId: string | undefined;
-		let token: string | undefined;
-		let avatar: string | undefined;
-		let visitor: IVisitor | undefined;
-		let sourceType: IOmnichannelSource | undefined;
-		let departmentId: string | undefined;
-		if ('id' in room) {
-			subtitle = room.topic;
-			teamId = room.teamId;
-			encrypted = room.encrypted;
-			({ id: userId, token } = user);
-			avatar = room.name;
-			visitor = room.visitor;
-			departmentId = room.departmentId;
-		}
-
-		if ('source' in room) {
-			sourceType = room.source;
-			visitor = room.visitor;
-		}
-
-		const t = room?.t;
-		const teamMain = 'teamMain' in room ? room?.teamMain : false;
-		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
-		const iSubRoom = room as ISubscription;
-		const e2eeWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
-		navigation.setOptions({
-			headerLeft: () => (
-				<LeftButtons
-					rid={rid}
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
-				/>
-			),
-			headerTitle: () => (
-				<RoomHeader
-					prid={prid}
-					tmid={tmid}
-					title={title}
-					teamMain={teamMain}
-					parentTitle={parentTitle}
-					subtitle={subtitle}
-					type={t}
-					roomUserId={roomUserId}
-					visitor={visitor}
-					isGroupChat={isGroupChatConst}
-					onPress={this.goRoomActionsView}
-					testID={`room-view-title-${title}`}
-					sourceType={sourceType}
-					abacAttributes={iSubRoom.abacAttributes}
-					disabled={isInviteSubscription(iSubRoom)}
-				/>
-			),
-			headerRight: () => (
-				<RightButtons
-					roomName={title}
-					rid={rid}
-					tmid={tmid}
-					teamId={teamId}
-					joined={joined}
-					status={room.status}
-					omnichannelPermissions={omnichannelPermissions}
-					t={(this.t || t) as SubscriptionType}
-					encrypted={encrypted}
-					navigation={navigation}
-					toggleFollowThread={this.toggleFollowThread}
-					showActionSheet={this.showActionSheet}
-					departmentId={departmentId}
-					notificationsDisabled={iSubRoom?.disableNotifications}
-					hasE2EEWarning={e2eeWarning}
-					teamMain={teamMain}
-					isGroupChat={isGroupChatConst}
-				/>
-			)
-		});
-	};
-
-	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
-		logEvent(events.ROOM_GO_RA);
-		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
-		const { navigation, isMasterDetail } = this.props;
-		if (isMasterDetail) {
-			// @ts-ignore — navigation types expect a literal screen name
-			navigation.navigate('ModalStackNavigator', {
-				screen: screen ?? 'RoomActionsView',
-				params: {
-					rid: this.rid as string,
-					t: this.t as SubscriptionType,
-					room: room as ISubscription,
-					member,
-					showCloseModal: !!screen,
-					// @ts-ignore
-					joined,
-					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
-				}
-			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
-		} else if (this.rid && this.t) {
-			navigation.push('RoomActionsView', {
-				rid: this.rid,
-				t: this.t as SubscriptionType,
-				room: room as TSubscriptionModel,
-				member,
-				joined,
-				omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
-			});
-		}
-	};
-
-	setReadOnly = async () => {
-		const { room } = this.state;
-		const { user } = this.props;
-		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
-		this.setState({ readOnly });
-	};
-
-	updateE2EEState = () => {
-		const { room } = this.state;
-		const { encryptionEnabled } = this.props;
-
-		if (!('encrypted' in room)) {
-			if (this.mounted) {
-				this.setState({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
-			}
-			return;
-		}
-
-		const showMissingE2EEKey = isMissingRoomE2EEKey({
-			encryptionEnabled,
-			roomEncrypted: room.encrypted,
-			E2EKey: room.E2EKey
-		});
-
-		const showE2EEDisabledRoom = isE2EEDisabledEncryptedRoom({
-			encryptionEnabled,
-			roomEncrypted: room.encrypted
-		});
-
-		if (this.mounted) {
-			this.setState({ showMissingE2EEKey, showE2EEDisabledRoom });
-		} else {
-			// @ts-ignore
-			this.state.showMissingE2EEKey = showMissingE2EEKey;
-			// @ts-ignore
-			this.state.showE2EEDisabledRoom = showE2EEDisabledRoom;
-		}
-	};
-
-	init = async () => {
-		try {
-			this.setState({ loading: true });
-			const { room, joined } = this.state;
-			if (!this.rid) {
-				return;
-			}
-
-			if ('id' in room && isInviteSubscription(room)) {
-				this.setState({ loading: false });
-				return;
-			}
-
-			if (this.tmid) {
-				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
-				// Thread jump: fire here, not in componentDidMount — the thread window is populated now, so
-				// the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
-				// Read-and-clear so other init() callers can't re-fire it.
-				if (this.jumpToMessageId) {
-					const messageId = this.jumpToMessageId;
-					this.jumpToMessageId = undefined;
-					this.consumeJumpParam(messageId);
-				}
-			} else {
-				const newLastOpen = new Date();
-				await RoomServices.getMessages({
-					rid: room.rid,
-					t: room.t as RoomType,
-					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
-				});
-
-				// if room is joined
-				if (joined && 'id' in room) {
-					if (room.alert || room.unread || room.userMentions) {
-						this.setLastOpen(room.ls);
-					} else {
-						this.setLastOpen(null);
-					}
-					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
-				}
-			}
-
-			const canAutoTranslate = canAutoTranslateMethod();
-			const member = await this.getRoomMember();
-
-			this.setState({ canAutoTranslate, member, loading: false });
-		} catch (e) {
-			this.setState({ loading: false });
-			this.retryInitTimeout = setTimeout(() => {
-				this.init();
-			}, 300);
-		}
-	};
-
-	getRoomMember = async () => {
-		const { room } = this.state;
-		const { t } = room;
-
-		if ('id' in room && t === 'd' && !isGroupChat(room)) {
-			try {
-				const roomUserId = getUidDirectMessage(room);
-				this.setState({ roomUserId }, () => this.setHeader());
-
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					return result.user;
-				}
-			} catch (e) {
-				log(e);
-			}
-		}
-
-		return {};
-	};
-
-	findAndObserveRoom = async (rid: string) => {
-		try {
-			const db = database.active;
-			const subCollection = await db.get('subscriptions');
-			const room = await subCollection.find(rid);
-			this.setState({ room });
-			if (!this.tmid) {
-				this.setHeader();
-			}
-			this.observeRoom(room);
-		} catch (error) {
-			if (this.t !== 'd') {
-				console.log('Room not found');
-				this.internalSetState({ joined: false });
-			}
-			if (this.rid) {
-				this.observeSubscriptions();
-			}
-		}
-	};
-
-	unsubscribe = async () => {
-		if (this.sub && this.sub.unsubscribe) {
-			await this.sub.unsubscribe();
-		}
-		delete this.sub;
-	};
-
-	observeRoom = (room: TSubscriptionModel) => {
-		const observable = room.observe();
-		this.subSubscription = observable.subscribe(changes => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
-				ret[attr] = changes[attr];
-				return ret;
-			}, {});
-			if (this.mounted) {
-				this.internalSetState({ room: changes, roomUpdate });
-			} else {
-				// @ts-ignore
-				this.state.room = changes;
-				// @ts-ignore
-				this.state.roomUpdate = roomUpdate;
-			}
-		});
-	};
-
-	handleCloseEmoji = (action?: Function, params?: any) => {
-		if (this.messageComposerRef?.current) {
-			return this.messageComposerRef?.current.closeEmojiKeyboardAndAction(action, params);
+	const handleCloseEmoji = useCallback((action?: Function, params?: any) => {
+		if (messageComposerRef?.current) {
+			return messageComposerRef.current.closeEmojiKeyboardAndAction(action, params);
 		}
 		if (action) {
 			return action(params);
 		}
-	};
+	}, []);
 
-	errorActionsShow = (message: TAnyMessageModel) => {
-		this.handleCloseEmoji(this.messageErrorActions?.showMessageErrorActions, message);
-	};
+	const handleShowActionSheet = useCallback(
+		(options: any) => {
+			handleCloseEmoji(showActionSheet, options);
+		},
+		[handleCloseEmoji, showActionSheet]
+	);
 
-	showActionSheet = (options: any) => {
-		const { showActionSheet } = this.props;
-		this.handleCloseEmoji(showActionSheet, options);
-	};
+	const errorActionsShow = useCallback(
+		(message: TAnyMessageModel) => {
+			handleCloseEmoji(messageErrorActionsRef.current?.showMessageErrorActions, message);
+		},
+		[handleCloseEmoji]
+	);
 
-	onEditInit = (messageId: string) => {
-		const { action, actions } = this.messageActionStore.getState();
-		if (action) {
-			return;
-		}
-		actions.startEditing(messageId);
-	};
-
-	onEditCancel = () => {
-		this.resetAction();
-	};
-
-	onEditRequest = async (
-		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
-			attachments?: IMessageEditAttachment[];
-		}
-	) => {
-		try {
-			this.resetAction();
-			await editMessage(message);
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	onReplyInit = async (messageId: string) => {
-		const message = await getMessageById(messageId);
-		if (!message || !this.rid) {
-			return;
-		}
-
-		// If there's a thread already, we redirect to it
-		if (message.tlm) {
-			return this.onThreadPress(message);
-		}
-		const { roomUserId } = this.state;
-		const { navigation } = this.props;
-		navigation.push('RoomView', {
-			rid: this.rid,
-			tmid: messageId,
-			name: makeThreadName(message),
-			t: SubscriptionType.THREAD,
-			roomUserId
-		});
-	};
-
-	onQuoteInit = (messageId: string) => {
-		const { action, actions } = this.messageActionStore.getState();
-		if (action?.kind === 'quote') {
-			if (!action.messageIds.includes(messageId)) {
-				actions.addQuote(messageId);
+	const onEditInit = useCallback(
+		(messageId: string) => {
+			const { action, actions } = messageActionStore.getState();
+			if (action) {
+				return;
 			}
-			return;
-		}
-		if (action) {
-			return;
-		}
-		actions.startQuote(messageId);
-	};
+			actions.startEditing(messageId);
+		},
+		[messageActionStore]
+	);
 
-	onRemoveQuoteMessage = (messageId: string) => {
-		this.messageActionStore.getState().actions.removeQuote(messageId);
-	};
+	const onEditCancel = useCallback(() => {
+		resetAction();
+	}, [resetAction]);
 
-	resetAction = () => {
-		this.messageActionStore.getState().actions.clear();
-	};
+	const onEditRequest = useCallback(
+		async (
+			message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+				attachments?: IMessageEditAttachment[];
+			}
+		) => {
+			try {
+				resetAction();
+				await editMessage(message);
+			} catch (e) {
+				log(e);
+			}
+		},
+		[resetAction]
+	);
 
-	showReactionPicker = () => {
-		const { showActionSheet } = this.props;
-		const { action } = this.messageActionStore.getState();
+	const onQuoteInit = useCallback(
+		(messageId: string) => {
+			const { action, actions } = messageActionStore.getState();
+			if (action?.kind === 'quote') {
+				if (!action.messageIds.includes(messageId)) {
+					actions.addQuote(messageId);
+				}
+				return;
+			}
+			if (action) {
+				return;
+			}
+			actions.startQuote(messageId);
+		},
+		[messageActionStore]
+	);
+
+	const onRemoveQuoteMessage = useCallback(
+		(messageId: string) => {
+			messageActionStore.getState().actions.removeQuote(messageId);
+		},
+		[messageActionStore]
+	);
+
+	const onReactionClose = useCallback(() => {
+		resetAction();
+		hideActionSheet();
+	}, [resetAction, hideActionSheet]);
+
+	const onReactionPress = useCallback(
+		async (emoji: IEmoji, messageId: string) => {
+			try {
+				let shortname = '';
+				if (typeof emoji === 'string') {
+					shortname = emoji;
+				} else {
+					shortname = emoji.name;
+				}
+				await setReaction(shortname, messageId);
+				onReactionClose();
+				Review.pushPositiveEvent();
+			} catch (e) {
+				log(e);
+			}
+		},
+		[onReactionClose]
+	);
+
+	const showReactionPicker = useCallback(() => {
+		const { action } = messageActionStore.getState();
 		const messageId = action?.kind === 'react' ? action.messageId : undefined;
 		setTimeout(() => {
 			showActionSheet({
-				children: (
-					<ReactionPicker messageId={messageId} onEmojiSelected={this.onReactionPress} reactionClose={this.onReactionClose} />
-				),
+				children: <ReactionPicker messageId={messageId} onEmojiSelected={onReactionPress} reactionClose={onReactionClose} />,
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction,
+				onClose: resetAction,
 				fullContainer: true
 			});
 		}, 300);
-	};
+	}, [messageActionStore, showActionSheet, onReactionPress, onReactionClose, resetAction]);
 
-	onReactionInit = (messageId: string) => {
-		if (this.messageActionStore.getState().action) {
-			return;
-		}
-		this.handleCloseEmoji(() => {
-			this.messageActionStore.getState().actions.startReacting(messageId);
-			this.showReactionPicker();
-		});
-	};
-
-	onReactionClose = () => {
-		const { hideActionSheet } = this.props;
-		this.resetAction();
-		hideActionSheet();
-	};
-
-	onMessageLongPress = (message: TAnyMessageModel) => {
-		const { action } = this.messageActionStore.getState();
-		if (action && action.kind !== 'quote') {
-			return;
-		}
-		// if it's a thread message on main room, we disable the long press
-		if (message.tmid && !this.tmid) {
-			return;
-		}
-		this.handleCloseEmoji(this.messageActions?.showMessageActions, message);
-	};
-
-	showAttachment = (attachment: IAttachment) => {
-		const { navigation } = this.props;
-		// @ts-ignore
-		navigation.navigate('AttachmentView', { attachment });
-	};
-
-	onReactionPress = async (emoji: IEmoji, messageId: string) => {
-		try {
-			let shortname = '';
-			if (typeof emoji === 'string') {
-				shortname = emoji;
-			} else {
-				shortname = emoji.name;
+	const onReactionInit = useCallback(
+		(messageId: string) => {
+			if (messageActionStore.getState().action) {
+				return;
 			}
-			await setReaction(shortname, messageId);
-			this.onReactionClose();
-			Review.pushPositiveEvent();
-		} catch (e) {
-			log(e);
-		}
-	};
+			handleCloseEmoji(() => {
+				messageActionStore.getState().actions.startReacting(messageId);
+				showReactionPicker();
+			});
+		},
+		[messageActionStore, handleCloseEmoji, showReactionPicker]
+	);
 
-	onReactionLongPress = (message: TAnyMessageModel) => {
-		const { showActionSheet } = this.props;
-		this.handleCloseEmoji(showActionSheet, {
-			children: <ReactionsList reactions={message?.reactions} />,
-			snaps: ['50%'],
-			enableContentPanningGesture: false,
-			fullContainer: true
-		});
-	};
+	const onReactionLongPress = useCallback(
+		(message: TAnyMessageModel) => {
+			handleCloseEmoji(showActionSheet, {
+				children: <ReactionsList reactions={message?.reactions} />,
+				snaps: ['50%'],
+				enableContentPanningGesture: false,
+				fullContainer: true
+			});
+		},
+		[handleCloseEmoji, showActionSheet]
+	);
 
-	onEncryptedPress = () => {
+	const onMessageLongPress = useCallback(
+		(message: TAnyMessageModel) => {
+			const { action } = messageActionStore.getState();
+			if (action && action.kind !== 'quote') {
+				return;
+			}
+			// if it's a thread message on main room, we disable the long press
+			if (message.tmid && !tmid) {
+				return;
+			}
+			handleCloseEmoji(messageActionsRef.current?.showMessageActions, message);
+		},
+		[messageActionStore, tmid, handleCloseEmoji]
+	);
+
+	const showAttachment = useCallback(
+		(attachment: IAttachment) => {
+			// @ts-ignore
+			navigation.navigate('AttachmentView', { attachment });
+		},
+		[navigation]
+	);
+
+	const onEncryptedPress = useCallback(() => {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);
-		const { navigation, isMasterDetail } = this.props;
-
 		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
-
 		if (isMasterDetail) {
 			// @ts-ignore
 			return navigation.navigate('ModalStackNavigator', screen);
 		}
 		// @ts-ignore
 		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
-	};
+	}, [navigation, isMasterDetail]);
 
-	onDiscussionPress = debounce(
-		async (drid: TAnyMessageModel['drid']) => {
-			const { isMasterDetail } = this.props;
-			if (!drid) return;
-			const sub = await getRoomInfo(drid);
-			if (sub) {
-				goRoom({
-					item: sub as TGoRoomItem,
-					isMasterDetail
-				});
-			}
-		},
-		1000,
-		true
+	const onDiscussionPress = useMemo(
+		() =>
+			debounce(
+				async (drid: TAnyMessageModel['drid']) => {
+					if (!drid) return;
+					const discussion = await getRoomInfo(drid);
+					if (discussion) {
+						goRoom({
+							item: discussion as TGoRoomItem,
+							isMasterDetail
+						});
+					}
+				},
+				1000,
+				true
+			),
+		[isMasterDetail]
 	);
 
-	// eslint-disable-next-line react/sort-comp
-	updateUnreadCount = async () => {
-		if (!this.rid) {
+	const onThreadPress = useMemo(() => debounce((item: TAnyMessageModel) => navToThread(item), 1000, true), [navToThread]);
+
+	const onReplyInit = useCallback(
+		async (messageId: string) => {
+			const message = await getMessageById(messageId);
+			if (!message || !rid) {
+				return;
+			}
+			// If there's a thread already, we redirect to it
+			if (message.tlm) {
+				return onThreadPress(message);
+			}
+			navigation.push('RoomView', {
+				rid,
+				tmid: messageId,
+				name: makeThreadName(message),
+				t: SubscriptionType.THREAD,
+				roomUserId
+			});
+		},
+		[rid, navigation, roomUserId, onThreadPress]
+	);
+
+	const updateUnreadCount = useCallback(async () => {
+		if (!rid) {
 			return;
 		}
 		const db = database.active;
 		const observable = await db
 			.get('subscriptions')
-			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
+			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(rid)))
 			.observeWithColumns(['unread']);
 
-		this.queryUnreads = observable.subscribe(rooms => {
+		queryUnreadsRef.current = observable.subscribe(rooms => {
 			const unreadsCount = rooms.reduce(
-				(unreadCount, room) => (room.unread > 0 && !room.hideUnreadStatus ? unreadCount + room.unread : unreadCount),
+				(unreadCount, item) => (item.unread > 0 && !item.hideUnreadStatus ? unreadCount + item.unread : unreadCount),
 				0
 			);
-			if (this.state.unreadsCount !== unreadsCount) {
-				this.setState({ unreadsCount }, this.setHeader);
+			if (unreadsCountRef.current !== unreadsCount) {
+				setState({ unreadsCount });
 			}
 		});
-	};
+	}, [rid]);
 
-	onThreadPress = debounce((item: TAnyMessageModel) => this.navToThread(item), 1000, true);
-
-	shouldNavigateToRoom = (message: TGetMessageInfoResult) => {
-		if (message.tmid && message.tmid === this.tmid) {
-			return false;
-		}
-		if (!message.tmid && message.rid === this.rid) {
-			return false;
-		}
-		return true;
-	};
-
-	jumpToMessageByUrl = async (messageUrl?: string, isFromReply?: boolean) => {
-		if (!messageUrl) {
-			return;
-		}
-		try {
-			const parsedUrl = parse(messageUrl, true);
-			const messageId = parsedUrl.query.msg;
-			if (messageId) {
-				await this.jumpToMessage(messageId, isFromReply);
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
-	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
-	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
-	consumeJumpParam = (messageId: string) => {
-		this.jumpToMessageId = undefined;
-		this.jumpToMessage(messageId);
-		this.props.navigation.setParams({ jumpToMessageId: undefined });
-	};
-
-	jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
-		try {
-			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
-			const message = await RoomServices.getMessageInfo(messageId);
-
-			if (!message) {
-				this.cancelJumpToMessage();
+	const jumpToMessageByUrl = useCallback(
+		async (messageUrl?: string, isFromReply?: boolean) => {
+			if (!messageUrl) {
 				return;
 			}
-
-			if (this.shouldNavigateToRoom(message)) {
-				if (message.rid !== this.rid) {
-					this.navToRoom(message);
-				} else {
-					this.navToThread(message);
+			try {
+				const parsedUrl = parse(messageUrl, true);
+				const messageId = parsedUrl.query.msg;
+				if (messageId) {
+					await jumpToMessage(messageId, isFromReply);
 				}
-			} else if (!message.tmid && message.rid === this.rid && this.t === 'thread' && !message.replies) {
-				/**
-				 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
-				 */
-				return this.navToRoom(message);
-			} else {
-				/**
-				 * if it's from server, we don't have it saved locally and so we fetch surroundings
-				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
-				 *
-				 * The fetched Chunk lets us re-anchor the Message Window onto the target in ONE step: if a
-				 * Newer Loader brackets the target's Chunk it is non-contiguous with the Live Tail, so we
-				 * derive a finite upper ts bound (highTs) for an Anchored Window centered on it. A
-				 * contiguous target resolves to null and stays a Live Window. Thread/local targets are
-				 * never anchored.
-				 */
-				const inWindow = this.list.current?.isMessageInWindow(message.id) ?? false;
-				const highTs = await resolveJumpAnchor(
-					this.rid,
-					{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
-					inWindow,
-					{ loadSurroundingMessages, getLocalAnchorTs: RoomServices.getLocalAnchorTs }
-				);
-				// Synchronization needed for Fabric to work
-				await new Promise(res => setTimeout(res, 100));
-				// The list hook resolves on real completion (or via its own safety net), so we no longer
-				// race a 5s timeout that could yank a valid in-flight scroll.
-				await this.list.current?.jumpToMessage(message.id, highTs);
-				sendLoadingEvent({ visible: false });
+			} catch (e) {
+				log(e);
 			}
-		} catch (error: any) {
-			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
-				showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
-			} else {
-				log(error);
+		},
+		[jumpToMessage]
+	);
+
+	const replyBroadcast = useCallback(
+		(message: IMessage) => {
+			dispatch(replyBroadcastAction(message));
+		},
+		[dispatch]
+	);
+
+	const handleRoomRemoved = useCallback(
+		({ rid: removedRid }: { rid: string }) => {
+			if (removedRid === rid) {
+				Navigation.popToTop(isMasterDetail);
+				const currentRoom = roomRef.current;
+				currentRoom.t !== 'l' &&
+					showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(currentRoom) }), I18n.t('Oops'));
 			}
-			this.cancelJumpToMessage();
-		}
-	};
+		},
+		[rid, isMasterDetail]
+	);
 
-	cancelJumpToMessage = () => {
-		this.list.current?.cancelJumpToMessage();
-		sendLoadingEvent({ visible: false });
-	};
+	const handleSendMessage = useCallback(
+		(message: string, tshow?: boolean) => {
+			logEvent(events.ROOM_SEND_MESSAGE);
+			sendMessage(rid as string, message, tmid, userRef.current, tshow).then(() => {
+				setLastOpen(null);
+				Review.pushPositiveEvent();
+			});
+			resetAction();
+		},
+		[rid, tmid, setLastOpen, resetAction]
+	);
 
-	replyBroadcast = (message: IMessage) => {
-		const { dispatch } = this.props;
-		dispatch(replyBroadcast(message));
-	};
+	const onJoin = useCallback(() => {
+		setJoined(true);
+	}, [setJoined]);
 
-	handleConnected = () => {
-		this.init();
-		EventEmitter.removeListener('connected', this.handleConnected);
-	};
-
-	handleRoomRemoved = ({ rid }: { rid: string }) => {
-		const { room } = this.state;
-		const { isMasterDetail } = this.props;
-		if (rid === this.rid) {
-			Navigation.popToTop(isMasterDetail);
-			!this.isOmnichannel &&
-				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
-		}
-	};
-
-	internalSetState = (...args: any[]) => {
-		if (!this.mounted) {
-			return;
-		}
-		// @ts-ignore TODO: TS is complaining about this, but I don't feel like changing rn since it should be working
-		this.setState(...args);
-	};
-
-	handleSendMessage = (message: string, tshow?: boolean) => {
-		logEvent(events.ROOM_SEND_MESSAGE);
-		const { rid } = this.state.room;
-		const { user } = this.props;
-		sendMessage(rid, message, this.tmid, user, tshow).then(() => {
-			if (this.mounted) {
-				this.setLastOpen(null);
-			}
-			Review.pushPositiveEvent();
-		});
-		this.resetAction();
-	};
-
-	setLastOpen = (lastOpen: Date | null) => this.setState({ lastOpen });
-
-	onJoin = () => {
-		this.internalSetState({
-			joined: true
-		});
-	};
-
-	joinRoom = async () => {
+	const joinRoom = useCallback(async () => {
 		logEvent(events.ROOM_JOIN);
 		try {
-			const { room } = this.state;
-			const { serverVersion } = this.props;
-
-			if (this.isOmnichannel) {
+			if (isOmnichannel) {
 				if ('_id' in room) {
 					await takeInquiry(room._id, serverVersion as string);
 				}
-				this.onJoin();
+				onJoin();
 			} else {
-				const { joinCodeRequired, rid } = room;
+				const { joinCodeRequired, rid: roomRid } = room;
 				if (joinCodeRequired) {
-					this.joinCode.current?.show();
+					joinCodeRef.current?.show();
 				} else {
-					await joinRoom(rid, null, this.t as any);
-					this.onJoin();
+					await joinRoomService(roomRid, null, t as any);
+					onJoin();
 				}
 			}
 		} catch (e) {
 			log(e);
 		}
-	};
+	}, [isOmnichannel, room, serverVersion, onJoin, t]);
 
-	resumeRoom = async () => {
+	const resumeRoom = useCallback(async () => {
 		logEvent(events.ROOM_RESUME);
 		try {
-			const { room } = this.state;
-
-			if (this.isOmnichannel) {
+			if (isOmnichannel) {
 				if ('rid' in room) {
 					await takeResume(room.rid);
 				}
-				this.onJoin();
+				onJoin();
 			}
 		} catch (e) {
 			log(e);
 		}
-	};
+	}, [isOmnichannel, room, onJoin]);
 
-	getThreadName = (tmid: string, messageId: string) => {
-		const { rid } = this.state.room;
-		return getThreadName(rid, tmid, messageId);
-	};
-
-	fetchThreadName = async (tmid: string, messageId: string) => {
-		const { rid } = this.state.room;
-		const threadRecord = await getThreadById(tmid);
-		if (threadRecord?.t === 'rm') {
-			return I18n.t('Message_removed');
-		}
-		return getThreadName(rid, tmid, messageId);
-	};
-
-	toggleFollowThread = async (isFollowingThread: boolean, tmid?: string) => {
-		try {
-			const threadMessageId = tmid ?? this.tmid;
-			if (!threadMessageId) {
-				return;
-			}
-			await toggleFollowMessage(threadMessageId, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	getBadgeColor = (messageId: string) => {
-		const { room } = this.state;
-		const { theme } = this.props;
-		return getBadgeColor({ subscription: room, theme, messageId });
-	};
-
-	navToRoomInfo = (navParam: any) => {
-		const { navigation, isMasterDetail } = this.props;
-		const { room } = this.state;
-		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
-		navParam.fromRid = room.rid;
-		if (isMasterDetail) {
-			navParam.showCloseModal = true;
-			// @ts-ignore
-			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
-		} else {
-			navigation.navigate('RoomInfoView', navParam);
-		}
-	};
-
-	navToThread = async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
-		const { roomUserId } = this.state;
-		const { navigation } = this.props;
-
-		if (!this.rid) {
-			return;
-		}
-
-		if (item.tmid) {
-			let name = '';
-			let jumpToMessageId = '';
-			if ('id' in item) {
-				name = 'tmsg' in item ? item.tmsg ?? '' : '';
-				jumpToMessageId = item.id;
-			}
-			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
-			const threadRecord = await getThreadById(item.tmid);
+	const fetchThreadName = useCallback(
+		async (threadId: string, messageId: string) => {
+			const threadRecord = await getThreadById(threadId);
 			if (threadRecord?.t === 'rm') {
-				name = I18n.t('Thread');
+				return I18n.t('Message_removed');
 			}
-			if (!name) {
-				const result = await this.getThreadName(item.tmid, jumpToMessageId);
-				// test if there isn't a thread
-				if (!result) {
-					sendLoadingEvent({ visible: false });
+			return getThreadName(rid as string, threadId, messageId);
+		},
+		[rid]
+	);
+
+	const toggleFollowThread = useCallback(
+		async (isFollowingThread: boolean, threadId?: string) => {
+			try {
+				const threadMessageId = threadId ?? tmid;
+				if (!threadMessageId) {
 					return;
 				}
-				name = result;
+				await toggleFollowMessage(threadMessageId, !isFollowingThread);
+				EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+			} catch (e) {
+				log(e);
 			}
-			if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
-				name = I18n.t('Encrypted_message');
+		},
+		[tmid]
+	);
+
+	const navToRoomInfo = useCallback(
+		(navParam: any) => {
+			logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
+			navParam.fromRid = rid;
+			if (isMasterDetail) {
+				navParam.showCloseModal = true;
+				// @ts-ignore
+				navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
+			} else {
+				navigation.navigate('RoomInfoView', navParam);
 			}
-			if (!jumpToMessageId) {
-				setTimeout(() => {
-					sendLoadingEvent({ visible: false });
-				}, 300);
-			}
-			return navigation.push('RoomView', {
-				rid: this.rid,
-				tmid: item.tmid,
-				name,
-				t: SubscriptionType.THREAD,
-				roomUserId,
-				jumpToMessageId
-			});
-		}
-
-		if ('tlm' in item) {
-			return navigation.push('RoomView', {
-				rid: this.rid,
-				tmid: item.id,
-				name: makeThreadName(item),
-				t: SubscriptionType.THREAD,
-				roomUserId
-			});
-		}
-	};
-
-	navToRoom = async (message: TGetMessageInfoResult) => {
-		const { isMasterDetail } = this.props;
-		if (!message.rid) return;
-		const roomInfo = await getRoomInfo(message.rid);
-
-		return goRoom({
-			item: roomInfo as TGoRoomItem,
-			isMasterDetail,
-			jumpToMessageId: message.id
-		});
-	};
+		},
+		[rid, navigation, isMasterDetail]
+	);
 
 	// OLD METHOD - support versions before 5.0.0
-	handleEnterCall = () => {
+	const handleEnterCall = useCallback(() => {
 		if (isInActiveVoipCall()) return;
-		const { room } = this.state;
-		if ('id' in room) {
-			const { jitsiTimeout } = room;
+		const currentRoom = roomRef.current;
+		if ('id' in currentRoom) {
+			const { jitsiTimeout } = currentRoom;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
-				callJitsi({ room });
+				callJitsi({ room: currentRoom });
 			}
 		}
-	};
+	}, []);
 
-	blockAction = ({
-		actionId,
-		appId,
-		value,
-		blockId,
-		rid,
-		mid
-	}: {
-		actionId: string;
-		appId: string;
-		value: any;
-		blockId: string;
-		rid: string;
-		mid: string;
-	}) =>
-		triggerBlockAction({
-			blockId,
+	const blockAction = useCallback(
+		({
 			actionId,
-			value,
-			mid,
-			rid,
 			appId,
-			container: {
-				type: ContainerTypes.MESSAGE,
-				id: mid
-			}
-		});
+			value,
+			blockId,
+			rid: blockRid,
+			mid
+		}: {
+			actionId: string;
+			appId: string;
+			value: any;
+			blockId: string;
+			rid: string;
+			mid: string;
+		}) =>
+			triggerBlockAction({
+				blockId,
+				actionId,
+				value,
+				mid,
+				rid: blockRid,
+				appId,
+				container: {
+					type: ContainerTypes.MESSAGE,
+					id: mid
+				}
+			}),
+		[]
+	);
 
-	closeBanner = async () => {
-		const { room } = this.state;
+	const closeBanner = useCallback(async () => {
 		if ('id' in room) {
 			try {
 				const db = database.active;
@@ -1350,62 +775,301 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				// do nothing
 			}
 		}
+	}, [room]);
+
+	const hapticFeedback = useCallback(
+		(msgId: string) => {
+			dispatch(removeInAppFeedback(msgId));
+			const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
+			if (notificationInAppVibration || notificationInAppVibration === null) {
+				try {
+					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+				} catch {
+					// Do nothing: Haptic is unavailable
+				}
+			}
+		},
+		[dispatch]
+	);
+
+	const setQuotesAndText = useCallback(
+		(text: string, quotes: string[]) => {
+			messageActionStore.getState().actions.setQuoteMessageIds(quotes);
+			messageComposerRef.current?.setInput(text || '');
+		},
+		[messageActionStore]
+	);
+
+	const getText = useCallback(() => messageComposerRef.current?.getText(), []);
+
+	const goRoomActionsView = useCallback(
+		(screen?: keyof ModalStackParamList) => {
+			logEvent(events.ROOM_GO_RA);
+			if (isMasterDetail) {
+				// @ts-ignore — navigation types expect a literal screen name
+				navigation.navigate('ModalStackNavigator', {
+					screen: screen ?? 'RoomActionsView',
+					params: {
+						rid: rid as string,
+						t: t as SubscriptionType,
+						room: roomRef.current as ISubscription,
+						member,
+						showCloseModal: !!screen,
+						// @ts-ignore
+						joined,
+						omnichannelPermissions: {
+							canForwardGuest: state.canForwardGuest,
+							canReturnQueue: state.canReturnQueue,
+							canViewCannedResponse: state.canViewCannedResponse,
+							canPlaceLivechatOnHold: state.canPlaceLivechatOnHold
+						}
+					}
+				} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
+			} else if (rid && t) {
+				navigation.push('RoomActionsView', {
+					rid,
+					t: t as SubscriptionType,
+					room: roomRef.current as TSubscriptionModel,
+					member,
+					joined,
+					omnichannelPermissions: {
+						canForwardGuest: state.canForwardGuest,
+						canReturnQueue: state.canReturnQueue,
+						canViewCannedResponse: state.canViewCannedResponse,
+						canPlaceLivechatOnHold: state.canPlaceLivechatOnHold
+					}
+				});
+			}
+		},
+		[
+			rid,
+			t,
+			navigation,
+			isMasterDetail,
+			member,
+			joined,
+			state.canForwardGuest,
+			state.canReturnQueue,
+			state.canViewCannedResponse,
+			state.canPlaceLivechatOnHold
+		]
+	);
+
+	const updateAutocompleteVisible = useCallback(
+		(updatedAutocompleteVisible: boolean) => {
+			if (updatedAutocompleteVisible && !state.isAutocompleteVisible) {
+				// timeout to prevent conflict with default keyboard announcement.
+				setTimeout(() => {
+					AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
+				}, 800);
+			}
+			if (updatedAutocompleteVisible !== state.isAutocompleteVisible) {
+				setState({ isAutocompleteVisible: updatedAutocompleteVisible });
+			}
+		},
+		[state.isAutocompleteVisible]
+	);
+
+	const getCanForwardGuest = async () => {
+		const permissions = await hasPermission([transferLivechatGuestPermission], rid);
+		return permissions[0] as boolean;
 	};
 
-	isIgnored = (message: TAnyMessageModel): boolean => {
-		const { room } = this.state;
+	const getCanReturnQueue = async () => {
+		try {
+			const { returnQueue } = await getRoutingConfig();
+			return returnQueue;
+		} catch {
+			return false;
+		}
+	};
+
+	const getCanViewCannedResponse = async () => {
+		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
+		return permissions[0] as boolean;
+	};
+
+	const getCanPlaceLivechatOnHold = () =>
+		!!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
+
+	const updateOmnichannel = async () => {
+		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+			getCanForwardGuest(),
+			getCanReturnQueue(),
+			getCanViewCannedResponse()
+		]);
+		const canPlaceLivechatOnHold = getCanPlaceLivechatOnHold();
+		setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
+	};
+
+	const setReadOnly = useCallback(async () => {
+		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
+		setState({ readOnly });
+	}, [room, user]);
+
+	const updateE2EEState = useCallback(() => {
+		if (!('encrypted' in room)) {
+			setState({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
+			return;
+		}
+		const showMissingE2EEKey = isMissingRoomE2EEKey({
+			encryptionEnabled,
+			roomEncrypted: room.encrypted,
+			E2EKey: room.E2EKey
+		});
+		const showE2EEDisabledRoom = isE2EEDisabledEncryptedRoom({
+			encryptionEnabled,
+			roomEncrypted: room.encrypted
+		});
+		setState({ showMissingE2EEKey, showE2EEDisabledRoom });
+	}, [room, encryptionEnabled]);
+
+	useEffect(() => {
+		const { action } = messageActionStore.getState();
+		const didMountInteraction = InteractionManager.runAfterInteractions(() => {
+			if (rid) {
+				try {
+					sub?.subscribe?.();
+				} catch (e) {
+					log(e);
+				}
+			}
+			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
+			// rows and is fired from the subscription hook's success path instead.
+			if (pendingJumpRef.current && !tmid) {
+				consumeJumpParam(pendingJumpRef.current);
+			}
+			if (jumpToThreadIdRef.current && !pendingJumpRef.current) {
+				navToThread({ tmid: jumpToThreadIdRef.current });
+			}
+			if (isIOS && rid) {
+				updateUnreadCount();
+			}
+			if (action?.kind === 'quote' && action.messageIds.length === 1) {
+				onQuoteInit(action.messageIds[0]);
+			}
+		});
+		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
+		const unsubscribeBlur = navigation.addListener('blur', () => {
+			AudioManager.pauseAudio();
+		});
+		return () => {
+			if (didMountInteraction?.cancel) {
+				didMountInteraction.cancel();
+			}
+			if (queryUnreadsRef.current?.unsubscribe) {
+				queryUnreadsRef.current.unsubscribe();
+			}
+			unsubscribeBlur();
+			EventEmitter.removeListener('ROOM_REMOVED', handleRoomRemoved);
+			if (sub?.unsubscribe) {
+				sub.unsubscribe();
+			}
+			if (!tmid) {
+				AudioManager.unloadRoomAudios(rid);
+			}
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		dispatch(clearInAppFeedback());
+		return () => {
+			dispatch(clearInAppFeedback());
+		};
+	}, [dispatch]);
+
+	const prevJumpToMessageIdRef = useRef(route.params?.jumpToMessageId);
+	useEffect(() => {
+		const next = route.params?.jumpToMessageId;
+		if (next && next !== prevJumpToMessageIdRef.current) {
+			consumeJumpParam(next);
+		}
+		prevJumpToMessageIdRef.current = next;
+	}, [route.params?.jumpToMessageId, consumeJumpParam]);
+
+	const prevJumpToThreadIdRef = useRef(route.params?.jumpToThreadId);
+	useEffect(() => {
+		const next = route.params?.jumpToThreadId;
+		if (next && next !== prevJumpToThreadIdRef.current) {
+			navToThread({ tmid: next });
+		}
+		prevJumpToThreadIdRef.current = next;
+	}, [route.params?.jumpToThreadId, navToThread]);
+
+	// If it's a livechat room
+	useEffect(() => {
+		if (t === 'l') {
+			updateOmnichannel();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [roomUpdate.lastMessage?.token, roomUpdate.visitor, roomUpdate.status, joined]);
+
+	useEffect(() => {
+		setReadOnly();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [roomUpdate]);
+
+	useEffect(() => {
+		updateE2EEState();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [encryptionEnabled, roomUpdate.encrypted, roomUpdate.E2EKey]);
+
+	// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+	const prevStatusRef = useRef(roomUpdate.status);
+	useEffect(() => {
+		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
+			init();
+		}
+		prevStatusRef.current = roomUpdate.status;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [roomUpdate.status]);
+
+	useHeader({
+		rid,
+		tmid,
+		roomType: t as SubscriptionType,
+		roomName: route.params?.name,
+		room,
+		roomUpdate,
+		unreadsCount: state.unreadsCount,
+		roomUserId,
+		joined,
+		canForwardGuest: state.canForwardGuest,
+		canReturnQueue: state.canReturnQueue,
+		canPlaceLivechatOnHold: state.canPlaceLivechatOnHold,
+		showMissingE2EEKey: state.showMissingE2EEKey,
+		showE2EEDisabledRoom: state.showE2EEDisabledRoom,
+		navigation,
+		isMasterDetail,
+		baseUrl,
+		user,
+		goRoomActionsView,
+		toggleFollowThread,
+		showActionSheet: handleShowActionSheet
+	});
+
+	const isIgnored = (message: TAnyMessageModel): boolean => {
 		if ('id' in room) {
 			return room?.ignored?.includes?.(message?.u?._id) ?? false;
 		}
 		return false;
 	};
 
-	goToCannedResponses = () => {
-		const { room } = this.state;
-		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
-	};
-
-	hapticFeedback = (msgId: string) => {
-		const { dispatch } = this.props;
-		dispatch(removeInAppFeedback(msgId));
-		const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
-		if (notificationInAppVibration || notificationInAppVibration === null) {
-			try {
-				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-			} catch {
-				// Do nothing: Haptic is unavailable
-			}
-		}
-	};
-
-	setQuotesAndText = (text: string, quotes: string[]) => {
-		this.messageActionStore.getState().actions.setQuoteMessageIds(quotes);
-		this.messageComposerRef.current?.setInput(text || '');
-	};
-
-	getText = () => this.messageComposerRef.current?.getText();
-
-	getFederatedFooterDescription = (room: IRoomFederated) => {
-		const { isFederationEnabled, isFederationModuleEnabled } = this.props;
-
-		if (!isRoomNativeFederated(room)) {
+	const getFederatedFooterDescription = (federatedRoom: IRoomFederated) => {
+		if (!isRoomNativeFederated(federatedRoom)) {
 			return I18n.t('Federation_Matrix_room_description_invalid_version');
 		}
-
 		if (!isFederationEnabled) {
 			return I18n.t('Federation_Matrix_room_description_disabled');
 		}
-
 		if (!isFederationModuleEnabled) {
 			return I18n.t('Federation_Matrix_room_description_missing_module');
 		}
-
 		return undefined;
 	};
 
-	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen } = this.state;
-		const { inAppFeedback } = this.props;
+	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -1445,15 +1109,15 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			);
 		} else {
 			if (inAppFeedback?.[item.id]) {
-				this.hapticFeedback(item.id);
+				hapticFeedback(item.id);
 			}
 			content = (
 				<Message
 					item={item}
-					isIgnored={this.isIgnored(item)}
+					isIgnored={isIgnored(item)}
 					previousItem={previousItem}
-					onLongPress={this.onMessageLongPress}
-					threadBadgeColor={this.getBadgeColor(item?.id)}
+					onLongPress={onMessageLongPress}
+					threadBadgeColor={getBadgeColor({ subscription: room, theme, messageId: item?.id })}
 					highlighted={highlightedMessage === item.id}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
@@ -1464,12 +1128,10 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		return content;
 	};
 
-	renderFooter = () => {
-		const { joined, room, readOnly, loading } = this.state;
-		const { theme, insets, airGappedRestrictionRemainingDays } = this.props;
+	const renderFooter = () => {
 		const footerBottomInset = { paddingBottom: insets.bottom };
 
-		if (!this.rid) {
+		if (!rid) {
 			return null;
 		}
 		if ('onHold' in room && room.onHold) {
@@ -1477,7 +1139,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				<View style={[styles.joinRoomContainer, footerBottomInset]} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Chat_is_on_hold')}</Text>
 					<Touch
-						onPress={this.resumeRoom}
+						onPress={resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
 						enabled={!loading}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-chat-on-hold-button'>
@@ -1492,11 +1154,11 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				<View style={[styles.joinRoomContainer, footerBottomInset]} key='room-view-join' testID='room-view-join'>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
-						onPress={this.joinRoom}
+						onPress={joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
 						enabled={!loading}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-join-button'>
-							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
+							{I18n.t(isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
 					</Touch>
 				</View>
@@ -1514,7 +1176,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		if (readOnly) {
+		if (state.readOnly) {
 			return (
 				<View style={[styles.readOnly, footerBottomInset]}>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_read_only')}</Text>
@@ -1530,7 +1192,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('id' in room && isRoomFederated(room)) {
-			const description = this.getFederatedFooterDescription(room);
+			const description = getFederatedFooterDescription(room);
 
 			if (description) {
 				return (
@@ -1542,15 +1204,13 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		return (
-			<MessageComposerContainer ref={this.messageComposerRef}>
+			<MessageComposerContainer ref={messageComposerRef}>
 				<ComposerAttachments />
 			</MessageComposerContainer>
 		);
 	};
 
-	renderActions = () => {
-		const { room, readOnly } = this.state;
-		const { user } = this.props;
+	const renderActions = () => {
 		if (!('id' in room)) {
 			return null;
 		}
@@ -1558,150 +1218,127 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			<>
 				<MessageActions
 					ref={(ref: IMessageActions | null) => {
-						this.messageActions = ref;
+						messageActionsRef.current = ref;
 					}}
-					tmid={this.tmid}
+					tmid={tmid}
 					room={room}
 					user={user}
-					editInit={this.onEditInit}
-					replyInit={this.onReplyInit}
-					quoteInit={this.onQuoteInit}
-					reactionInit={this.onReactionInit}
-					onReactionPress={this.onReactionPress}
-					jumpToMessage={this.jumpToMessageByUrl}
-					isReadOnly={readOnly}
+					editInit={onEditInit}
+					replyInit={onReplyInit}
+					quoteInit={onQuoteInit}
+					reactionInit={onReactionInit}
+					onReactionPress={onReactionPress}
+					jumpToMessage={jumpToMessageByUrl}
+					isReadOnly={state.readOnly}
 				/>
 				<MessageErrorActions
 					ref={(ref: IMessageErrorActions | null) => {
-						this.messageErrorActions = ref;
+						messageErrorActionsRef.current = ref;
 					}}
-					tmid={this.tmid}
+					tmid={tmid}
 				/>
 			</>
 		);
 	};
 
-	updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
-		if (!!updatedAutocompleteVisible && !this.state.isAutocompleteVisible) {
-			// timeout to prevent conflict with default keyboard announcement.
-			setTimeout(() => {
-				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
-			}, 800);
-		}
-		if (updatedAutocompleteVisible !== this.state.isAutocompleteVisible) {
-			this.setState({ isAutocompleteVisible: updatedAutocompleteVisible });
-		}
-	};
-
-	render() {
-		const { room, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom, canAutoTranslate } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, navigation, Message_GroupingPeriod, Message_Read_Receipt_Enabled } =
-			this.props;
-		const { rid, t } = room;
-		let bannerClosed;
-		let announcement;
-		if ('id' in room) {
-			({ bannerClosed, announcement } = room);
-		}
-
-		if ('id' in room && isInviteSubscription(room)) {
-			const { title, description, inviter, accept, reject } = getInvitationData(room);
-
-			return (
-				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view-invited'>
-					<InvitedRoom title={title} description={description} inviter={inviter} onAccept={accept} onReject={reject} />
-				</SafeAreaView>
-			);
-		}
-
-		if ('encrypted' in room) {
-			// Missing room encryption key
-			if (showMissingE2EEKey) {
-				return <MissingRoomE2EEKey />;
-			}
-
-			// Encrypted room, but user session is not encrypted
-			if (showE2EEDisabledRoom) {
-				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
-			}
-		}
-
-		const federated = 'id' in room && isRoomFederated(room);
+	if ('id' in room && isInviteSubscription(room)) {
+		const { title, description, inviter, accept, reject } = getInvitationData(room);
 
 		return (
-			<RoomProviders
-				store={this.messageActionStore}
-				rid={rid}
-				t={t}
-				room={room}
-				tmid={this.tmid}
-				sharing={false}
-				isAutocompleteVisible={isAutocompleteVisible}
-				updateAutocompleteVisible={this.updateAutocompleteVisible}
-				onRemoveQuoteMessage={this.onRemoveQuoteMessage}
-				editCancel={this.onEditCancel}
-				editRequest={this.onEditRequest}
-				onSendMessage={this.handleSendMessage}
-				setQuotesAndText={this.setQuotesAndText}
-				getText={this.getText}>
-				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					{!this.tmid ? (
-						<Banner
-							title={I18n.t('Announcement')}
-							text={announcement}
-							bannerClosed={bannerClosed}
-							closeBanner={this.closeBanner}
-						/>
-					) : null}
-					<MessageRoomProvider
-						navToRoomInfo={this.navToRoomInfo}
-						showAttachment={this.showAttachment}
-						blockAction={this.blockAction}
-						handleEnterCall={this.handleEnterCall}
-						fetchThreadName={this.fetchThreadName}
-						toggleFollowThread={this.toggleFollowThread}
-						jumpToMessage={this.jumpToMessageByUrl}
-						closeEmojiAndAction={this.handleCloseEmoji}
-						onReactionPress={this.onReactionPress}
-						onReactionLongPress={this.onReactionLongPress}
-						reactionInit={this.onReactionInit}
-						onDiscussionPress={this.onDiscussionPress}
-						onThreadPress={this.onThreadPress}
-						replyBroadcast={this.replyBroadcast}
-						errorActionsShow={this.errorActionsShow}
-						onAnswerButtonPress={this.handleSendMessage}
-						onEncryptedPress={this.onEncryptedPress}
-						archived={'id' in room && room.archived}
-						isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-						rid={rid}
-						user={user as any}
-						baseUrl={baseUrl}
-						broadcast={'id' in room && room.broadcast}
-						isThreadRoom={!!this.tmid}
-						Message_GroupingPeriod={Message_GroupingPeriod}
-						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-						<List
-							ref={this.list}
-							listRef={this.flatList}
-							rid={rid}
-							t={t as RoomType}
-							tmid={this.tmid}
-							renderRow={this.renderItem}
-							hideSystemMessages={this.hideSystemMessages}
-							showMessageInMainThread={user.showMessageInMainThread ?? false}
-							serverVersion={serverVersion}
-						/>
-					</MessageRoomProvider>
-					{this.renderFooter()}
-					{this.renderActions()}
-					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-				</SafeAreaView>
-			</RoomProviders>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view-invited'>
+				<InvitedRoom title={title} description={description} inviter={inviter} onAccept={accept} onReject={reject} />
+			</SafeAreaView>
 		);
 	}
-}
+
+	if ('encrypted' in room) {
+		// Missing room encryption key
+		if (state.showMissingE2EEKey) {
+			return <MissingRoomE2EEKey />;
+		}
+
+		// Encrypted room, but user session is not encrypted
+		if (state.showE2EEDisabledRoom) {
+			return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
+		}
+	}
+
+	let bannerClosed;
+	let announcement;
+	if ('id' in room) {
+		({ bannerClosed, announcement } = room);
+	}
+
+	const federated = 'id' in room && isRoomFederated(room);
+
+	return (
+		<RoomProviders
+			store={messageActionStore}
+			rid={room.rid}
+			t={room.t}
+			room={room}
+			tmid={tmid}
+			sharing={false}
+			isAutocompleteVisible={state.isAutocompleteVisible}
+			updateAutocompleteVisible={updateAutocompleteVisible}
+			onRemoveQuoteMessage={onRemoveQuoteMessage}
+			editCancel={onEditCancel}
+			editRequest={onEditRequest}
+			onSendMessage={handleSendMessage}
+			setQuotesAndText={setQuotesAndText}
+			getText={getText}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+				{!tmid ? (
+					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
+				) : null}
+				<MessageRoomProvider
+					navToRoomInfo={navToRoomInfo}
+					showAttachment={showAttachment}
+					blockAction={blockAction}
+					handleEnterCall={handleEnterCall}
+					fetchThreadName={fetchThreadName}
+					toggleFollowThread={toggleFollowThread}
+					jumpToMessage={jumpToMessageByUrl}
+					closeEmojiAndAction={handleCloseEmoji}
+					onReactionPress={onReactionPress}
+					onReactionLongPress={onReactionLongPress}
+					reactionInit={onReactionInit}
+					onDiscussionPress={onDiscussionPress}
+					onThreadPress={onThreadPress}
+					replyBroadcast={replyBroadcast}
+					errorActionsShow={errorActionsShow}
+					onAnswerButtonPress={handleSendMessage}
+					onEncryptedPress={onEncryptedPress}
+					archived={'id' in room && room.archived}
+					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
+					rid={room.rid}
+					user={user as any}
+					baseUrl={baseUrl}
+					broadcast={'id' in room && room.broadcast}
+					isThreadRoom={!!tmid}
+					Message_GroupingPeriod={Message_GroupingPeriod}
+					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
+					<List
+						ref={listRef}
+						listRef={flatListRef}
+						rid={room.rid}
+						t={room.t as RoomType}
+						tmid={tmid}
+						renderRow={renderItem}
+						hideSystemMessages={hideSystemMessages}
+						showMessageInMainThread={user.showMessageInMainThread ?? false}
+						serverVersion={serverVersion}
+					/>
+				</MessageRoomProvider>
+				{renderFooter()}
+				{renderActions()}
+				<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
+				<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} theme={theme} />
+			</SafeAreaView>
+		</RoomProviders>
+	);
+};
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),

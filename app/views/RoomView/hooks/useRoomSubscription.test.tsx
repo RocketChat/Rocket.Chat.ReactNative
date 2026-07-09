@@ -266,4 +266,33 @@ describe('useRoomSubscription', () => {
 	it('roomAttrsUpdateColumns has exactly one entry per roomAttrsUpdate key', () => {
 		expect(Object.keys(roomAttrsUpdateColumns).sort()).toEqual([...roomAttrsUpdate].sort());
 	});
+
+	it('exposes setLastOpen and setJoined and updates the respective state', () => {
+		setupObserve();
+		const { result } = renderHook(() => useRoomSubscription({ rid: 'rid-1', initialRoom: stubRoom, isAuthenticated: false }));
+
+		expect(typeof result.current.setLastOpen).toBe('function');
+		expect(typeof result.current.setJoined).toBe('function');
+
+		const lastOpen = new Date();
+		act(() => {
+			result.current.setLastOpen(lastOpen);
+		});
+		expect(result.current.lastOpen).toBe(lastOpen);
+
+		act(() => {
+			result.current.setLastOpen(null);
+		});
+		expect(result.current.lastOpen).toBeNull();
+
+		act(() => {
+			result.current.setJoined(false);
+		});
+		expect(result.current.joined).toBe(false);
+
+		act(() => {
+			result.current.setJoined(true);
+		});
+		expect(result.current.joined).toBe(true);
+	});
 });
