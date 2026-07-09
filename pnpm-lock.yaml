@@ -96,6 +96,9 @@ importers:
       '@rocket.chat/ui-kit':
         specifier: ^0.39.0
         version: 0.39.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+      '@zoontek/react-native-navigation-bar':
+        specifier: ^1.1.1
+        version: 1.1.2(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       axios:
         specifier: 0.30.3
         version: 0.30.3
@@ -147,9 +150,6 @@ importers:
       expo-local-authentication:
         specifier: ~55.0.15
         version: 55.0.15(expo@55.0.27)
-      expo-navigation-bar:
-        specifier: ~55.0.14
-        version: 55.0.14(expo@55.0.27)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       expo-notifications:
         specifier: ~55.0.24
         version: 55.0.24(expo@55.0.27)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
@@ -3268,6 +3268,12 @@ packages:
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
 
+  '@zoontek/react-native-navigation-bar@1.1.2':
+    resolution: {integrity: sha512-ZEH516aS7Gvo6JDnpEBmH5geECnnzCCbh9jOGovywCjwMeOJxSlbcjkq3UFBWyqCeeQFsxTblhoszG/0nP0Wpw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
     deprecated: Use your platform's native atob() and btoa() methods instead
@@ -4637,13 +4643,6 @@ packages:
     peerDependenciesMeta:
       react-native-worklets:
         optional: true
-
-  expo-navigation-bar@55.0.14:
-    resolution: {integrity: sha512-fdjiDhoLbCOBrMsRPzuK3fyYg/xVFuiHPWSG2zM503Zx3rwCd9vLfyC4aCWgDEgSS8BSzyxDbivb0gt7+PSDNQ==}
-    peerDependencies:
-      expo: '*'
-      react: '*'
-      react-native: '*'
 
   expo-notifications@55.0.24:
     resolution: {integrity: sha512-aYywntFJ/pEQhEWfGJS3waL0MWJ0pS7v4MdCx5QP+/+6kfiFmXGTMaqwfOWSnOjvVBom0NV2JNYr0qwOzvZFRA==}
@@ -11705,6 +11704,11 @@ snapshots:
 
   '@yarnpkg/lockfile@1.1.0': {}
 
+  '@zoontek/react-native-navigation-bar@1.1.2(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      react: 19.2.7
+      react-native: 0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7)
+
   abab@2.0.6: {}
 
   abort-controller@3.0.0:
@@ -13309,16 +13313,6 @@ snapshots:
       react-native: 0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7)
     optionalDependencies:
       react-native-worklets: 0.7.4(@babel/core@7.29.7)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
-
-  expo-navigation-bar@55.0.14(expo@55.0.27)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7):
-    dependencies:
-      debug: 4.4.3
-      expo: 55.0.27(@babel/core@7.29.7)(@expo/dom-webview@55.0.6)(react-dom@19.2.7(react@19.2.7))(react-native-webview@13.16.0(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7))(react-native-worklets@0.7.4(@babel/core@7.29.7)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7))(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
-      react: 19.2.7
-      react-native: 0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7)
-      react-native-is-edge-to-edge: 1.2.1(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
-    transitivePeerDependencies:
-      - supports-color
 
   expo-notifications@55.0.24(expo@55.0.27)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(typescript@5.9.3):
     dependencies:

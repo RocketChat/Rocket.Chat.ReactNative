@@ -64,7 +64,6 @@ const Content = memo(
 				<Markdown
 					msg={props.msg}
 					md={props.type !== 'e2e' ? props.md : undefined}
-					getCustomEmoji={props.getCustomEmoji}
 					username={user.username}
 					channels={props.channels}
 					mentions={props.mentions}

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
@@ -27,9 +28,7 @@ import {
 	type IAttachment,
 	type IMessage,
 	type TAnyMessageModel,
-	type IUrl,
-	type TGetCustomEmoji,
-	type ICustomEmoji
+	type IUrl
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -50,11 +49,11 @@ interface IMessagesViewProps {
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: ICustomEmoji };
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 interface IMessagesViewState {
@@ -174,7 +173,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			attachments: item.attachments || [],
 			useRealName,
 			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo,
 			onPress: () => this.jumpToMessage({ item }),
 			rid: this.rid
@@ -301,15 +299,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		}
 	};
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -358,7 +347,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -372,6 +361,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				/>
 			</SafeAreaView>
@@ -382,8 +372,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	customEmojis: state.customEmojis,
 	useRealName: state.settings.UI_Use_Real_Name
 });
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(MessagesView))));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(MessagesView)))));
