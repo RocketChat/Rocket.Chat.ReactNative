@@ -1424,7 +1424,23 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "lineHeight": 30,
+              "textAlign": "left",
+            },
+            {
+              "fontStyle": "italic",
+            },
+          ]
+        }
+      >
         <Text
           accessibilityLabel="italic"
           style={
@@ -1882,7 +1898,23 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 22,
+              "fontWeight": "700",
+              "lineHeight": 28,
+              "textAlign": "left",
+            },
+            {
+              "fontStyle": "italic",
+            },
+          ]
+        }
+      >
         <Text
           accessibilityLabel="italic"
           style={
@@ -2340,7 +2372,23 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "lineHeight": 26,
+              "textAlign": "left",
+            },
+            {
+              "fontStyle": "italic",
+            },
+          ]
+        }
+      >
         <Text
           accessibilityLabel="italic"
           style={
@@ -2798,7 +2846,23 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "lineHeight": 24,
+              "textAlign": "left",
+            },
+            {
+              "fontStyle": "italic",
+            },
+          ]
+        }
+      >
         <Text
           accessibilityLabel="italic"
           style={
@@ -4213,7 +4277,13 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text>
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
               <Text
                 accessibilityLabel="italic"
                 style={
@@ -4406,7 +4476,13 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text>
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
               <Text
                 style={
                   {
@@ -4621,7 +4697,13 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text>
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
               <Text
                 style={
                   {
@@ -4724,7 +4806,13 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text>
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
               <Text
                 style={
                   {
@@ -5806,7 +5894,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
             Italic: 
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               accessibilityLabel=" "
               style={
@@ -5887,7 +5981,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               accessibilityLabel=" "
               style={
@@ -5968,7 +6068,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               accessibilityLabel=" "
               style={
@@ -6048,7 +6154,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               accessibilityLabel=" "
               style={
@@ -6128,7 +6240,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               accessibilityLabel=" "
               style={
@@ -6503,7 +6621,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
             Italic + Bold + Strikethrough: 
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               style={
                 {
@@ -6563,7 +6687,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               style={
                 {
@@ -6623,7 +6753,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               style={
                 {
@@ -6682,7 +6818,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               style={
                 {
@@ -6741,7 +6883,13 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               style={
                 {
@@ -7498,7 +7646,13 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         >
            
         </Text>
-        <Text>
+        <Text
+          style={
+            {
+              "fontStyle": "italic",
+            }
+          }
+        >
           <Text
             accessibilityLabel="italic"
             style={
@@ -7589,7 +7743,13 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             }
           }
         >
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               accessibilityLabel="bold with italic"
               style={
@@ -7692,7 +7852,13 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             }
           }
         >
-          <Text>
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
             <Text
               style={
                 {
@@ -7740,7 +7906,13 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         >
            
         </Text>
-        <Text>
+        <Text
+          style={
+            {
+              "fontStyle": "italic",
+            }
+          }
+        >
           <Text
             style={
               {
@@ -7895,7 +8067,19 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         >
            
         </Text>
-        <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "red",
+                "fontSize": 10,
+              },
+              {
+                "fontStyle": "italic",
+              },
+            ]
+          }
+        >
           <Text
             accessibilityLabel="italic"
             style={
@@ -8004,7 +8188,19 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
             }
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                  "fontSize": 10,
+                },
+                {
+                  "fontStyle": "italic",
+                },
+              ]
+            }
+          >
             <Text
               accessibilityLabel="bold with italic"
               style={
@@ -8125,7 +8321,19 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
             }
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                  "fontSize": 10,
+                },
+                {
+                  "fontStyle": "italic",
+                },
+              ]
+            }
+          >
             <Text
               style={
                 {
@@ -8183,7 +8391,19 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         >
            
         </Text>
-        <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "red",
+                "fontSize": 10,
+              },
+              {
+                "fontStyle": "italic",
+              },
+            ]
+          }
+        >
           <Text
             style={
               {

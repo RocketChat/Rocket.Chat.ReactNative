@@ -127779,7 +127779,13 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text>
+                                  <Text
+                                    style={
+                                      {
+                                        "fontStyle": "italic",
+                                      }
+                                    }
+                                  >
                                     <Text
                                       accessibilityLabel="Some text"
                                       style={
@@ -129016,7 +129022,13 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                     }
                                   }
                                 >
-                                  <Text>
+                                  <Text
+                                    style={
+                                      {
+                                        "fontStyle": "italic",
+                                      }
+                                    }
+                                  >
                                     <Text
                                       accessibilityLabel="Some text"
                                       style={
