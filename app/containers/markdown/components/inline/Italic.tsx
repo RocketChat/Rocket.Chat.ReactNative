@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-function getStyle(heading: number | undefined) {
-	if (heading && heading < 3) {
+function getStyle(heading: number | undefined, bold: boolean | undefined) {
+	if ((heading && heading < 3) || bold) {
 		return styles.boldItalic;
 	}
 	if(heading && heading < 5) {
@@ -53,11 +53,11 @@ function getStyle(heading: number | undefined) {
 const Italic = ({ value }: IItalicProps) => {
 	'use memo';
 
-	const { heading } = useContext(MarkdownContext);
-	const context = useMarkdownContext({ textStyle: getStyle(heading), heading });
+	const { heading, bold } = useContext(MarkdownContext);
+	const context = useMarkdownContext({ textStyle: getStyle(heading, bold) });
 
 	return (
-		<Text style={getStyle(heading)}>
+		<Text>
 			<MarkdownContext.Provider value={context}>
 				{value.map(block => {
 					switch (block.type) {
