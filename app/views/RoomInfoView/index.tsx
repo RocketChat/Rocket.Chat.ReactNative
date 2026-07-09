@@ -170,15 +170,22 @@ const RoomInfoView = (): ReactElement => {
 		}
 	};
 
+	// member may arrive without _id (RoomActionsView forwards it before its own fetch resolves)
+	const resolveRoomUserId = (r?: ISubscription) => {
+		if (roomUser._id) return roomUser._id;
+		const derived = getUidDirectMessage({ ...(r || { rid, t }), itsMe });
+		return derived && derived !== r?.rid ? derived : undefined;
+	};
+
 	const loadUser = async () => {
-		if (isEmpty(roomUser)) {
+		if (!roomUser._id) {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const r = handleRoles(user);
-					setRoomUser({ ...user, roles: r });
+					setRoomUser({ ...roomUser, ...user, roles: r });
 				}
 			} catch {
 				// do nothing
@@ -267,21 +274,40 @@ const RoomInfoView = (): ReactElement => {
 
 	const handleBlockUser = async () => {
 		const r = roomFromRid || room;
-		const userBlocked = roomUser._id;
+		const userBlocked = resolveRoomUserId(r);
 		const blocker = r?.blocker;
-		if (!r?.rid) return;
+		if (!r?.rid || !userBlocked) return;
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
 			await toggleBlockUser(r.rid, userBlocked, !blocker);
+			const updatedRoom = { ...r, blocker: !blocker };
+			if (roomFromRid) {
+				setRoomFromRid(updatedRoom);
+			} else {
+				setRoom(updatedRoom);
+			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	const handleIgnoreUser = () => {
+	const handleIgnoreUser = async () => {
 		const r = roomFromRid || room;
-		const isIgnored = r?.ignored?.includes?.(roomUser._id);
-		if (r?.rid) handleIgnore(roomUser._id, !isIgnored, r?.rid);
+		const userId = resolveRoomUserId(r);
+		if (!r?.rid || !userId) return;
+		const isIgnored = r?.ignored?.includes?.(userId);
+		const shouldIgnore = !isIgnored;
+		const success = await handleIgnore(userId, shouldIgnore, r?.rid);
+		if (success) {
+			const currentIgnored = r?.ignored || [];
+			const updatedIgnored = shouldIgnore ? [...currentIgnored, userId] : currentIgnored.filter((id: string) => id !== userId);
+			const updatedRoom = { ...r, ignored: updatedIgnored };
+			if (roomFromRid) {
+				setRoomFromRid(updatedRoom);
+			} else {
+				setRoom(updatedRoom);
+			}
+		}
 	};
 
 	const handleReportUser = () => {
@@ -322,7 +348,7 @@ const RoomInfoView = (): ReactElement => {
 						handleReportUser={handleReportUser}
 						isDirect={isDirect}
 						room={room || roomUser}
-						roomUserId={roomUser?._id}
+						roomUserId={roomUser?._id || roomUserId}
 						roomFromRid={roomFromRid}
 						serverVersion={serverVersion}
 						itsMe={itsMe}

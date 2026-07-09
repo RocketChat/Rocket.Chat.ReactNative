@@ -1,10 +1,12 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -15,7 +17,7 @@ import { useTheme } from '../../theme';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
-import { search as searchMethod } from '../../lib/methods/search';
+import { search as runSearch } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Item from './Item';
@@ -29,10 +31,15 @@ type TItem = ISearch | TSubscriptionModel;
 const NewMessageView = () => {
 	const [chats, setChats] = useState<TSubscriptionModel[]>([]);
 	const [search, setSearch] = useState<TItem[]>([]);
+	// True while the remote (spotlight) request is in flight, after local results are already painted
+	const [searching, setSearching] = useState(false);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
 
 	const { colors } = useTheme();
 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
+	const { bottom } = useSafeAreaInsets();
 
 	const { maxUsers, useRealName } = useAppSelector(
 		state => ({
@@ -68,8 +75,30 @@ const NewMessageView = () => {
 	}, []);
 
 	const handleSearch = useCallback(async (text: string) => {
-		const result = (await searchMethod({ text, filterRooms: false })) as ISearch[];
-		setSearch(result);
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
+		setSearching(true);
+
+		try {
+			// Paint local results immediately while the backend request is still in flight
+			const result = (await runSearch({
+				text,
+				filterRooms: false,
+				onLocal: localData => {
+					if (isStale()) return;
+					setSearch(localData as ISearch[]);
+				}
+			})) as ISearch[];
+			if (isStale()) return;
+			setSearch(result);
+		} catch (e) {
+			log(e);
+		} finally {
+			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
+			if (!isStale()) setSearching(false);
+		}
 	}, []);
 
 	const goRoom = useCallback(
@@ -103,8 +132,9 @@ const NewMessageView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={List.Separator}
+				ListFooterComponent={searching ? () => <ActivityIndicator /> : List.Separator}
 				style={{ backgroundColor: colors.surfaceTint }}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

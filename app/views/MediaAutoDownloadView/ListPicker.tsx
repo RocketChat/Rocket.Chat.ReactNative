@@ -1,6 +1,5 @@
 import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import * as List from '../../containers/List';
@@ -68,11 +67,10 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): ReactElement => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<View style={{ backgroundColor: colors.surfaceRoom }}>
 			<List.Separator />
 			{OPTIONS.map(i => (
 				<Fragment key={i.value}>
