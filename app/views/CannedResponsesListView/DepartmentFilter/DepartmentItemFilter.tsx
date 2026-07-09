@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { PixelRatio, StyleSheet, Text, View } from 'react-native';
 
 import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IDepartmentItemFilter {
 	currentDepartment: ILivechatDepartment;
@@ -17,7 +18,6 @@ export const ROW_HEIGHT = 44;
 const styles = StyleSheet.create({
 	container: {
 		paddingVertical: 11,
-		height: ROW_HEIGHT,
 		paddingHorizontal: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -31,11 +31,13 @@ const styles = StyleSheet.create({
 
 const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartmentItemFilter) => {
 	const { colors } = useTheme();
+	const { fontScale } = useResponsiveLayout();
+	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 	const iconName = currentDepartment?._id === value?._id ? 'check' : null;
 
 	return (
 		<Touch onPress={() => onPress(value)} style={{ backgroundColor: colors.surfaceRoom }}>
-			<View style={styles.container}>
+			<View style={[styles.container, { height }]}>
 				<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{value?.name}</Text>
 				{iconName ? <CustomIcon name={iconName} size={22} color={colors.fontSecondaryInfo} /> : null}
 			</View>

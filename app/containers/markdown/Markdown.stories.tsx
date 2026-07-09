@@ -2,8 +2,9 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
+import { setCustomEmojis } from '../../actions/customEmojis';
+import { mockedStore } from '../../reducers/mockedStore';
 import { themes } from '../../lib/constants/colors';
-import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 
@@ -27,14 +28,12 @@ d
 e`;
 const sequentialEmptySpacesText = 'a       b                                                                             c';
 
-const getCustomEmoji: TGetCustomEmoji = content => {
-	const customEmoji = {
-		marioparty: { name: content, extension: 'gif' },
-		react_rocket: { name: content, extension: 'png' },
-		nyan_rocket: { name: content, extension: 'png' }
-	}[content] as ICustomEmoji;
-	return customEmoji;
+const customEmojis = {
+	marioparty: { name: 'marioparty', extension: 'gif' },
+	react_rocket: { name: 'react_rocket', extension: 'png' },
+	nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
 };
+mockedStore.dispatch(setCustomEmojis(customEmojis));
 
 export default {
 	title: 'Markdown',
@@ -94,8 +93,8 @@ export const Emoji = () => (
 	<View style={styles.container}>
 		<Markdown msg='Unicode: 😃😇👍' />
 		<Markdown msg='Shortnames: :joy: :+1:' />
-		<Markdown msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:' getCustomEmoji={getCustomEmoji} />
-		<Markdown msg='😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} />
+		<Markdown msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:' />
+		<Markdown msg='😃 :+1: :marioparty:' />
 	</View>
 );
 

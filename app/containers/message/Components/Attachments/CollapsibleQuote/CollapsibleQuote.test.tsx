@@ -21,8 +21,6 @@ const testAttachment = {
 	collapsed: true
 };
 
-const mockFn = jest.fn();
-
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(
 		setUser({
@@ -44,7 +42,7 @@ const Render = () => (
 				onLongPress: () => {},
 				user: { username: 'Marcos' }
 			}}>
-			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+			<CollapsibleQuote attachment={testAttachment} timeFormat='LT' />
 		</MessageContext.Provider>
 	</Provider>
 );

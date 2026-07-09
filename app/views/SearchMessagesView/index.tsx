@@ -4,8 +4,10 @@ import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
@@ -34,9 +36,7 @@ import {
 	type IAttachment,
 	type ISubscription,
 	SubscriptionType,
-	type TSubscriptionModel,
-	type TGetCustomEmoji,
-	type ICustomEmoji
+	type TSubscriptionModel
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -72,12 +72,10 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
 	baseUrl: string;
 	serverVersion: string;
-	customEmojis: {
-		[key: string]: ICustomEmoji;
-	};
 	theme: TSupportedThemes;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -207,15 +205,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		await this.getMessages(searchText, true);
 	}, textInputDebounceTime);
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -294,7 +283,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isThreadRoom
 				showAttachment={this.showAttachment}
-				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
 				theme={theme}
@@ -307,7 +295,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
@@ -318,6 +306,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				data={messages}
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+				contentContainerStyle={{ paddingBottom: insets.bottom }}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
@@ -353,8 +342,7 @@ const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
-export default connect(mapStateToProps)(withTheme(withMasterDetail(SearchMessagesView)));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

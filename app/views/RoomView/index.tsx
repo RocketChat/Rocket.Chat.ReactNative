@@ -70,7 +70,6 @@ import {
 	type TAnyMessageModel,
 	type TSubscriptionModel,
 	type IEmoji,
-	type TGetCustomEmoji,
 	type RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
@@ -932,7 +931,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	onReactionLongPress = (message: TAnyMessageModel) => {
 		const { showActionSheet } = this.props;
 		this.handleCloseEmoji(showActionSheet, {
-			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
+			children: <ReactionsList reactions={message?.reactions} />,
 			snaps: ['50%'],
 			enableContentPanningGesture: false,
 			fullContainer: true
@@ -1127,15 +1126,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			Review.pushPositiveEvent();
 		});
 		this.resetAction();
-	};
-
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
 	};
 
 	setLastOpen = (lastOpen: Date | null) => this.setState({ lastOpen });
@@ -1505,7 +1495,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
-					getCustomEmoji={this.getCustomEmoji}
 					handleEnterCall={this.handleEnterCall}
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
@@ -1526,14 +1515,15 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	renderFooter = () => {
 		const { joined, room, readOnly, loading } = this.state;
-		const { theme, airGappedRestrictionRemainingDays } = this.props;
+		const { theme, insets, airGappedRestrictionRemainingDays } = this.props;
+		const footerBottomInset = { paddingBottom: insets.bottom };
 
 		if (!this.rid) {
 			return null;
 		}
 		if ('onHold' in room && room.onHold) {
 			return (
-				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
+				<View style={[styles.joinRoomContainer, footerBottomInset]} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Chat_is_on_hold')}</Text>
 					<Touch
 						onPress={this.resumeRoom}
@@ -1548,7 +1538,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (!joined) {
 			return (
-				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
+				<View style={[styles.joinRoomContainer, footerBottomInset]} key='room-view-join' testID='room-view-join'>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
@@ -1563,7 +1553,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === 0) {
 			return (
-				<View style={styles.readOnly}>
+				<View style={[styles.readOnly, footerBottomInset]}>
 					<Text style={[styles.previewMode, { color: themes[theme].fontDefault }]}>
 						{I18n.t('AirGapped_workspace_read_only_title')}
 					</Text>
@@ -1575,14 +1565,14 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (readOnly) {
 			return (
-				<View style={styles.readOnly}>
+				<View style={[styles.readOnly, footerBottomInset]}>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if ('id' in room && isBlocked(room)) {
 			return (
-				<View style={styles.readOnly}>
+				<View style={[styles.readOnly, footerBottomInset]}>
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
@@ -1593,7 +1583,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 			if (description) {
 				return (
-					<View style={styles.readOnly}>
+					<View style={[styles.readOnly, footerBottomInset]}>
 						<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{description}</Text>
 					</View>
 				);
@@ -1740,7 +1730,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isAuthenticated: state.login.isAuthenticated,
 	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
 	Message_TimeFormat: state.settings.Message_TimeFormat as string,
-	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,

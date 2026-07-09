@@ -17,7 +17,6 @@ const AvatarContainer = ({
 	type,
 	children,
 	onPress,
-	getCustomEmoji,
 	isStatic,
 	rid,
 	accessibilityLabel,
@@ -61,7 +60,6 @@ const AvatarContainer = ({
 			userId={id}
 			token={token}
 			onPress={onPress}
-			getCustomEmoji={getCustomEmoji}
 			isStatic={isStatic}
 			rid={rid}
 			blockUnauthenticatedAccess={blockUnauthenticatedAccess}
