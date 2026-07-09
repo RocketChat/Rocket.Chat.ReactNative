@@ -102,7 +102,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		});
 		await sdk.current?.connection.connect();
 
-		sdk.onCollection('users', (ddpMessage: any) => _setUser(ddpMessage));
+		sdk.onCollection('users', (ddpMessage: unknown) => _setUser(ddpMessage as IActiveUsers));
 
 		sdk.onCollection(
 			'stream-notify-all',
@@ -117,7 +117,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 					const settingsCollection = db.get('settings');
 
 					// Check if the _id exists in defaultSettings
-					if (defaultSettings.hasOwnProperty(_id)) {
+					if (Object.hasOwn(defaultSettings, _id)) {
 						try {
 							const settingsRecord = await settingsCollection.find(_id);
 							// @ts-ignore

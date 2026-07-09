@@ -1050,7 +1050,6 @@ export const editMediaMessage = async (
 	const response = await fetch(`${serverUrl}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 		method: 'POST',
 		headers: {
-			...sdk.getHeaders(),
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({

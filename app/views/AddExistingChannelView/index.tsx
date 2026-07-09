@@ -145,8 +145,7 @@ const AddExistingChannelView = () => {
 			}
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
-			const errorKey = e?.data?.error ?? 'error-unknown';
-			showErrorAlert(I18n.t(errorKey), I18n.t('Add_Existing_Channel'), () => {});
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			log(e);
 		} finally {
 			sendLoadingEvent({ visible: false });
