@@ -6,7 +6,7 @@ jest.mock('../../methods/helpers/log', () => ({
 	default: (...args: unknown[]) => mockLog(...args)
 }));
 
-// Mock expo-av at the test boundary, matching the style used in the VoIP services directory.
+// Mock the expo-av shim at the test boundary, matching the style used in the VoIP services directory.
 const mockLoadAsync = jest.fn(() => Promise.resolve());
 const mockPlayAsync = jest.fn(() => Promise.resolve());
 const mockUnloadAsync = jest.fn(() => Promise.resolve());
@@ -24,7 +24,7 @@ const mockSoundInstance = {
 	setOnPlaybackStatusUpdate: mockSetOnPlaybackStatusUpdate
 };
 
-jest.mock('expo-av', () => ({
+jest.mock('../../methods/helpers/expoAvShim', () => ({
 	Audio: {
 		Sound: jest.fn(() => mockSoundInstance)
 	}
