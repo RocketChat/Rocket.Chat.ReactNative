@@ -51,19 +51,19 @@ describe('AudioManager', () => {
 		jest.clearAllMocks();
 	});
 
-	it('loadAudio caches the player keyed by msgId/rid/uri', () => {
+	it('loadAudio caches the player keyed by msgId/rid/uri', async () => {
 		const { AudioManager, players } = setup();
-		const key1 = AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
-		const key2 = AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
+		const key1 = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
+		const key2 = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 
 		expect(key1).toBe(key2);
 		expect(players).toHaveLength(1);
 	});
 
-	it('loadAudio returns different keys for different uris', () => {
+	it('loadAudio returns different keys for different uris', async () => {
 		const { AudioManager, players } = setup();
-		const key1 = AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
-		const key2 = AudioManager.loadAudio({ rid: 'room-1', uri: 'file://b.mp3' });
+		const key1 = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
+		const key2 = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://b.mp3' });
 
 		expect(key1).not.toBe(key2);
 		expect(players).toHaveLength(2);
@@ -71,8 +71,8 @@ describe('AudioManager', () => {
 
 	it('unloadRoomAudios releases only players for the given rid', async () => {
 		const { AudioManager, players } = setup();
-		AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
-		AudioManager.loadAudio({ rid: 'room-2', uri: 'file://b.mp3' });
+		await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
+		await AudioManager.loadAudio({ rid: 'room-2', uri: 'file://b.mp3' });
 		const [player1, player2] = players;
 
 		await AudioManager.unloadRoomAudios('room-1');
@@ -83,8 +83,8 @@ describe('AudioManager', () => {
 
 	it('unloadRoomAudios matches by exact rid segment, not substring', async () => {
 		const { AudioManager, players } = setup();
-		AudioManager.loadAudio({ rid: 'room-1', uri: 'file://room-10/x.mp3' });
-		AudioManager.loadAudio({ rid: 'room-10', uri: 'file://x.mp3' });
+		await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://room-10/x.mp3' });
+		await AudioManager.loadAudio({ rid: 'room-10', uri: 'file://x.mp3' });
 		const [playerSubstring, playerExact] = players;
 
 		await AudioManager.unloadRoomAudios('room-1');
@@ -95,7 +95,7 @@ describe('AudioManager', () => {
 
 	it('onEnd releases the player when didJustFinish is true', async () => {
 		const { AudioManager, players } = setup();
-		const key = AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
+		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 		AudioManager.addAudioRendered(key);
 
 		await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true, currentTime: 5, duration: 5 });
@@ -105,7 +105,7 @@ describe('AudioManager', () => {
 
 	it('setPositionAsync seeks the player', async () => {
 		const { AudioManager, players } = setup();
-		const key = AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
+		const key = await AudioManager.loadAudio({ rid: 'room-1', uri: 'file://a.mp3' });
 
 		await AudioManager.setPositionAsync(key, 10);
 

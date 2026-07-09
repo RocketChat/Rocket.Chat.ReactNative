@@ -22,7 +22,7 @@ class AudioManagerClass {
 	private audioPlaying = '';
 	private audiosRendered = new Set<string>();
 
-	loadAudio = ({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string => {
+	loadAudio = async ({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> => {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.audiosRendered.add(audioKey);
 		this.audioUris[audioKey] = uri;
@@ -34,7 +34,7 @@ class AudioManagerClass {
 		return audioKey;
 	};
 
-	playAudio = async (audioKey: string) => {
+	async playAudio(audioKey: string) {
 		if (this.audioPlaying && this.audioPlaying !== audioKey) {
 			this.pauseAudio();
 		}
@@ -70,14 +70,14 @@ class AudioManagerClass {
 		}
 	};
 
-	pauseAudio = () => {
+	async pauseAudio() {
 		if (this.audioPlaying) {
 			this.audioQueue[this.audioPlaying]?.pause();
 			this.audioPlaying = '';
 		}
 	};
 
-	setPositionAsync = async (audioKey: string, time: number) => {
+	async setPositionAsync(audioKey: string, time: number){
 		this.audioPositions[audioKey] = time;
 		const player = this.audioQueue[audioKey];
 		if (!player) {
@@ -90,7 +90,7 @@ class AudioManagerClass {
 		}
 	};
 
-	setRateAsync = (audioKey: string, value = 1.0) => {
+	async setRateAsync(audioKey: string, value = 1.0) {
 		this.audioRates[audioKey] = value;
 		try {
 			this.audioQueue[audioKey]?.setPlaybackRate(value);
@@ -99,14 +99,14 @@ class AudioManagerClass {
 		}
 	};
 
-	onPlaybackStatusUpdate = (audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) => {
+	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void){
 		if (status) {
 			callback(status);
 			this.onEnd(audioKey, status);
 		}
 	};
 
-	setOnPlaybackStatusUpdate = (audioKey: string, callback: (status: AudioStatus) => void): void => {
+	setOnPlaybackStatusUpdate (audioKey: string, callback: (status: AudioStatus) => void){
 		this.audioCallbacks[audioKey] = callback;
 		this.audioSubscriptions[audioKey]?.();
 		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
@@ -115,7 +115,7 @@ class AudioManagerClass {
 		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
 	};
 
-	onEnd = async (audioKey: string, status: AudioStatus) => {
+	async onEnd(audioKey: string, status: AudioStatus) {
 		if (!this.audioQueue[audioKey]) {
 			return;
 		}
@@ -146,7 +146,7 @@ class AudioManagerClass {
 		return getAudioKey({ msgId: message.id, rid, uri });
 	};
 
-	getNextAudioMessage = async (msgId: string, rid: string) => {
+	async getNextAudioMessage(msgId: string, rid: string) {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
@@ -166,7 +166,7 @@ class AudioManagerClass {
 		return null;
 	};
 
-	playNextAudioInSequence = async (previousAudioKey: string) => {
+	async playNextAudioInSequence(previousAudioKey: string) {
 		const meta = this.audioMeta[previousAudioKey];
 		if (!meta) {
 			return;
@@ -184,7 +184,7 @@ class AudioManagerClass {
 		}
 	};
 
-	unloadRoomAudios = async (rid?: string) => {
+	async unloadRoomAudios(rid?: string) {
 		if (!rid) return;
 		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => this.audioMeta[audioKey]?.rid === rid);
 		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
