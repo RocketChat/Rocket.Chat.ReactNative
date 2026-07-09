@@ -36,9 +36,7 @@ import {
 	type IAttachment,
 	type ISubscription,
 	SubscriptionType,
-	type TSubscriptionModel,
-	type TGetCustomEmoji,
-	type ICustomEmoji
+	type TSubscriptionModel
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -74,9 +72,6 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
 	baseUrl: string;
 	serverVersion: string;
-	customEmojis: {
-		[key: string]: ICustomEmoji;
-	};
 	theme: TSupportedThemes;
 	useRealName: boolean;
 	isMasterDetail: boolean;
@@ -210,15 +205,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		await this.getMessages(searchText, true);
 	}, textInputDebounceTime);
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -297,7 +283,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isThreadRoom
 				showAttachment={this.showAttachment}
-				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
 				theme={theme}
@@ -357,8 +342,7 @@ const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
 export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

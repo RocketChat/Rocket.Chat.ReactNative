@@ -28,9 +28,7 @@ import {
 	type IAttachment,
 	type IMessage,
 	type TAnyMessageModel,
-	type IUrl,
-	type TGetCustomEmoji,
-	type ICustomEmoji
+	type IUrl
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -51,7 +49,6 @@ interface IMessagesViewProps {
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: ICustomEmoji };
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	useRealName: boolean;
@@ -176,7 +173,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			attachments: item.attachments || [],
 			useRealName,
 			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo,
 			onPress: () => this.jumpToMessage({ item }),
 			rid: this.rid
@@ -303,15 +299,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		}
 	};
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -385,7 +372,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	customEmojis: state.customEmojis,
 	useRealName: state.settings.UI_Use_Real_Name
 });
 

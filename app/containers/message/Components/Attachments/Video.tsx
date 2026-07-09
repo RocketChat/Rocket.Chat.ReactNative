@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { type IUserMessage } from '../../../../definitions';
 import { type IAttachment } from '../../../../definitions/IAttachment';
-import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import I18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
@@ -37,7 +36,6 @@ const styles = StyleSheet.create({
 interface IMessageVideo {
 	file: IAttachment;
 	showAttachment?: (file: IAttachment) => void;
-	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
 }
@@ -70,7 +68,7 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 	);
 };
 
-const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVideo): ReactElement | null => {
+const Video = ({ file, showAttachment, author, msg }: IMessageVideo): ReactElement | null => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);
@@ -101,7 +99,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVi
 
 	return (
 		<View style={{ gap: 4 }}>
-			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
+			{msg ? <Markdown msg={msg} username={user.username} /> : null}
 			<Touchable onPress={_onPress} style={messageStyles.image}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>

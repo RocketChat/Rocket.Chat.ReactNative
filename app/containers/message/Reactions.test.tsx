@@ -37,13 +37,11 @@ const TestWrapper = ({ initialReactions }: { initialReactions: IReaction[] }) =>
 					onReactionPress: handleReactionPress,
 					onReactionLongPress: jest.fn()
 				}}>
-				<Reactions reactions={reactions} getCustomEmoji={getCustomEmoji} />
+				<Reactions reactions={reactions} />
 			</MessageContext.Provider>
 		</Provider>
 	);
 };
-
-const getCustomEmoji = jest.fn();
 
 it('renders all reactions and AddReaction button', () => {
 	const reactions: IReaction[] = [
