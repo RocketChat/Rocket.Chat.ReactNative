@@ -6,7 +6,6 @@ import {
 	type ILastMessage,
 	type ILoggedUser,
 	type TSubscriptionModel,
-	type ICustomEmojis,
 	type TMessageAction
 } from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
@@ -21,7 +20,6 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	Hide_System_Messages?: string[];
 	baseUrl: string;
 	serverVersion: string | null;
-	customEmojis: ICustomEmojis;
 	isMasterDetail: boolean;
 	replyBroadcast: Function;
 	width: number;

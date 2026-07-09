@@ -28,7 +28,6 @@ const baseProps: Partial<IMessageContent> = {
 	isTranslated: false,
 	isHeader: false,
 	hasError: false,
-	getCustomEmoji: jest.fn(),
 	navToRoomInfo: jest.fn()
 };
 

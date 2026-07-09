@@ -9,7 +9,6 @@ interface IMarkdownContext {
 	useRealName?: boolean;
 	username?: string;
 	navToRoomInfo?: Function;
-	getCustomEmoji?: Function;
 	onLinkPress?: Function;
 	heading?: number;
 	bold?: boolean;

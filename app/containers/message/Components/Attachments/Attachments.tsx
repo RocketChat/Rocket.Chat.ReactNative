@@ -14,7 +14,7 @@ import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
 
 const Attachments: FC<IMessageAttachments> = memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, author }: IMessageAttachments) => {
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
@@ -34,7 +34,6 @@ const Attachments: FC<IMessageAttachments> = memo(
 						key={file.image_url}
 						file={file}
 						showAttachment={showAttachment}
-						getCustomEmoji={getCustomEmoji}
 						author={author}
 						msg={msg}
 						imagePreview={file.image_preview}
@@ -44,30 +43,15 @@ const Attachments: FC<IMessageAttachments> = memo(
 			}
 
 			if (file.audio_url) {
-				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
+				return <Audio key={file.audio_url} file={file} author={author} msg={msg} />;
 			}
 
 			if (file.video_url) {
-				return (
-					<Video
-						key={file.video_url}
-						file={file}
-						showAttachment={showAttachment}
-						getCustomEmoji={getCustomEmoji}
-						author={author}
-						msg={msg}
-					/>
-				);
+				return <Video key={file.video_url} file={file} showAttachment={showAttachment} author={author} msg={msg} />;
 			}
 
 			if (file.actions && file.actions.length > 0) {
-				return (
-					<AttachedActions
-						key={file.title_link || file.message_link || `actions-${index}`}
-						attachment={file}
-						getCustomEmoji={getCustomEmoji}
-					/>
-				);
+				return <AttachedActions key={file.title_link || file.message_link || `actions-${index}`} attachment={file} />;
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return (
@@ -75,7 +59,6 @@ const Attachments: FC<IMessageAttachments> = memo(
 						key={file.title_link || file.message_link || `collapsible-${index}`}
 						attachment={file}
 						timeFormat={timeFormat}
-						getCustomEmoji={getCustomEmoji}
 					/>
 				);
 			}
@@ -86,7 +69,6 @@ const Attachments: FC<IMessageAttachments> = memo(
 						key={file.title_link || file.message_link || `reply-${index}`}
 						attachment={file}
 						timeFormat={timeFormat}
-						getCustomEmoji={getCustomEmoji}
 						showAttachment={showAttachment}
 						msg={msg}
 					/>
