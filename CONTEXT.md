@@ -2,18 +2,21 @@
 
 ## Rooms & Conversations
 
-| Term                | Definition                                                                                                                     | Aliases to avoid              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                  | Chat, conversation            |
-| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open)                         | Membership, room entry        |
-| **Channel**         | A public Room (type `'c'`) visible to all server users                                                                         | Public room                   |
-| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                    | Private room, private channel |
-| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                           | DM, PM, private message       |
-| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                | Reply chain                   |
-| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms | Sub-room, sub-channel         |
-| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                      | Workspace (ambiguous)         |
-| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                | Broadcast channel             |
-| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                     | Broadcast reply               |
+| Term                | Definition                                                                                                                                                                                               | Aliases to avoid              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                                                                                            | Chat, conversation            |
+| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open)                                                                                                   | Membership, room entry        |
+| **Subscribed Room** | A Room the user has joined, backed by a persisted Subscription model. Detected by the presence of a Subscription record.                                                                                 | Joined room                   |
+| **Preview Mode**    | Viewing a Room without joining: no Subscription record exists and the Room data comes from navigation params or a REST lookup. Persists until the user joins. Detected by the absence of a Subscription. | —                             |
+| **Invited**         | A Room where a Subscription exists but its status is `invited` and not yet accepted. Detected by a Subscription whose status is `invited`.                                                               | —                             |
+| **Channel**         | A public Room (type `'c'`) visible to all server users                                                                                                                                                   | Public room                   |
+| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                                                                                              | Private room, private channel |
+| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                                                                                     | DM, PM, private message       |
+| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                                                                                          | Reply chain                   |
+| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms                                                                           | Sub-room, sub-channel         |
+| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                                                                                                | Workspace (ambiguous)         |
+| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                                                                                          | Broadcast channel             |
+| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                                                                                               | Broadcast reply               |
 
 ## Messages
 
@@ -108,10 +111,12 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. They have different owners and are migrated independently, so keep them apart.
 
-| Term                  | Definition                                                                       | Owner                          | Scope                                                                |
-| --------------------- | -------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
-| **Interaction state** | Which Message is selected and the current Message Action (Quote, Edit, or React) | A per-Room interaction store   | Migrated to the per-Room store as part of the Message row work       |
-| **Positional state**  | Which Message is highlighted and the jump or scroll position                     | The Room view scroll machinery | Stays with the Room view scroll machinery and is migrated separately |
+| Term                               | Definition                                                                                                   | Owner                         | Scope                                                          |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------- | -------------------------------------------------------------- |
+| **Interaction state**              | Which Message is selected and the current Message Action (Quote, Edit, or React)                             | A per-Room interaction store  | Migrated to the per-Room store as part of the Message row work |
+| **Positional state**               | Umbrella for which Message is highlighted and the jump or scroll position. Splits across two owners (below). | —                             | —                                                              |
+| **Jump orchestration**             | Deciding to jump to a Message, resolving its anchor, and requesting the jump                                 | RoomView (`useJumpToMessage`) | Owned by RoomView as part of the room-screen hooks migration   |
+| **Scroll and highlight execution** | Performing the scroll onto the target Message and rendering its highlight                                    | The List component            | Already shipped in the List component                          |
 
 ### Message Actions
 
