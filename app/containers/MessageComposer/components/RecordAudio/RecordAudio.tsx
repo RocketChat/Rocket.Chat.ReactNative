@@ -35,7 +35,6 @@ export const RecordAudio = (): ReactElement | null => {
 	const recorderState = useAudioRecorderState(audioRecorder);
 
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
-	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();

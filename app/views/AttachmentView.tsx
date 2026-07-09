@@ -1,11 +1,12 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { useCallback, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
-import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { useCallback, useLayoutEffect, useState, type Dispatch, type SetStateAction, type ReactElement, useEffect } from 'react';
+import { Alert, PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system/legacy';
+import { useEventListener } from 'expo';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -34,7 +35,7 @@ const VideoContent = ({
 	attachment: IAttachment;
 	user: { id: string; token: string };
 	baseUrl: string;
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
 	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 
@@ -56,7 +57,7 @@ const VideoContent = ({
 		}
 	});
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const blurSub = navigation.addListener('blur', () => {
 			player.pause();
 		});
