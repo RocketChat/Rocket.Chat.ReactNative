@@ -3,9 +3,8 @@ import { type Bold as BoldProps } from '@rocket.chat/message-parser';
 
 import { Italic, Link, Strike } from './index';
 import Plain from '../Plain';
+import { Hashtag, AtMention } from '../mentions';
 import sharedStyles from '../../../../views/Styles';
-import AtMention from '../mentions/AtMention';
-import { Hashtag } from '../mentions';
 
 interface IBoldProps {
 	value: BoldProps['value'];

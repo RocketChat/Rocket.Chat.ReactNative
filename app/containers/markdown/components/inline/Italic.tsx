@@ -3,8 +3,7 @@ import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 
 import { Bold, Link, Strike } from './index';
 import Plain from '../Plain';
-import AtMention from '../mentions/AtMention';
-import Hashtag from '../mentions/Hashtag';
+import { AtMention, Hashtag } from '../mentions';
 
 interface IItalicProps {
 	value: ItalicProps['value'];

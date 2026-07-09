@@ -3,8 +3,7 @@ import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 
 import { Bold, Italic, Link } from './index';
 import Plain from '../Plain';
-import AtMention from '../mentions/AtMention';
-import Hashtag from '../mentions/Hashtag';
+import { AtMention, Hashtag } from '../mentions';
 
 interface IStrikeProps {
 	value: StrikeProps['value'];
