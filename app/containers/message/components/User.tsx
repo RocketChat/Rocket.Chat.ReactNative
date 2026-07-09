@@ -8,8 +8,8 @@ import { messageHaveAuthorName } from '../utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useSetting } from '../../../lib/hooks/useSetting';
-import { useMessageAuthor, useMessageGrouping, useMessageHeaderMeta } from '../stores/MessageStore';
-import { useMessageUser, useNavToRoomInfo } from '../stores/MessageRoomStore';
+import { useIsOwnMessage, useMessageAuthor, useMessageGrouping, useMessageHeaderMeta } from '../stores/MessageStore';
+import { useNavToRoomInfo } from '../stores/MessageRoomStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -44,18 +44,17 @@ const User = () => {
 	'use memo';
 
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
-	const user = useMessageUser();
 	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();
 	const { u: author, alias } = useMessageAuthor();
 	const { t: type } = useMessageHeaderMeta();
+	const itsMe = useIsOwnMessage();
 
 	if (isHeader) {
 		const username = (useRealName && author?.name) || author?.username;
 		const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
-		const itsMe = author?._id === user?.id;
 
 		const onUserPress = () => {
 			navToRoomInfo?.({
