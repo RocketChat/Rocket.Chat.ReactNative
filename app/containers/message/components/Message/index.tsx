@@ -2,8 +2,7 @@ import { A11y } from 'react-native-a11y-order';
 
 import { useTheme } from '../../../../theme';
 import Touch from '../Touch';
-import CompactMessage from './CompactMessage';
-import FullMessage from './FullMessage';
+import Message, { type TMessageProps } from './Message';
 import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from '../../hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from '../../hooks/useMessageAccessibilityActions';
@@ -12,32 +11,11 @@ import { useIsBeingEdited } from '../../stores/MessageActionStore';
 import {
 	useIsInfoMessage,
 	useMessageField,
-	useMessageIgnored,
 	useMessageLongPress,
 	useMessagePress,
 	useMessageStatus,
-	useMessageTouchable,
-	useThreadPosition
+	useMessageTouchable
 } from '../../stores/MessageStore';
-
-type TMessageProps = {
-	isPreview?: boolean;
-	highlighted?: boolean;
-};
-
-const Message = (props: TMessageProps) => {
-	'use memo';
-
-	const { isThreadReply, isThreadSequential } = useThreadPosition();
-	const isInfo = useIsInfoMessage();
-	const isIgnored = useMessageIgnored();
-
-	if (isThreadReply || isThreadSequential || isInfo || isIgnored) {
-		return <CompactMessage />;
-	}
-
-	return <FullMessage isPreview={props.isPreview} />;
-};
 
 const MessageTouchable = (props: TMessageProps) => {
 	'use memo';
