@@ -174,28 +174,24 @@ export const HeadersWithFormatting = () => (
 			mentions={mentions}
 			channels={channels}
 			username='rocket.cat'
-			getCustomEmoji={getCustomEmoji}
 		/>
 		<Markdown
 			msg='## H2 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
 			mentions={mentions}
 			channels={channels}
 			username='rocket.cat'
-			getCustomEmoji={getCustomEmoji}
 		/>
 		<Markdown
 			msg='### H3 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
 			mentions={mentions}
 			channels={channels}
 			username='rocket.cat'
-			getCustomEmoji={getCustomEmoji}
 		/>
 		<Markdown
 			msg='#### H4 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
 			mentions={mentions}
 			channels={channels}
 			username='rocket.cat'
-			getCustomEmoji={getCustomEmoji}
 		/>
 	</View>
 );
