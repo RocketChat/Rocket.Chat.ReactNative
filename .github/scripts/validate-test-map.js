@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Validates the sniffler test-map against the repo so it cannot silently rot.
-// Four checks:
+// Five checks:
 //   Orphan flow    ERROR   — a `test-N`-tagged YAML under .maestro/tests/ with
 //                            no test-map entry (sniffler never selects it).
 //   Dangling glob  ERROR   — a dependsOn glob that matches zero files on disk.
@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const fg = require('fast-glob');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const ROOT = process.env.TESTMAP_ROOT || path.resolve(__dirname, '..', '..');
 const TEST_MAP_PATH = path.join(ROOT, '.sniffler', 'test-map.json');
 const CONFIG_PATH = path.join(ROOT, '.sniffler', 'config.json');
 const FLOWS_DIR = path.join(ROOT, '.maestro', 'tests');
@@ -67,7 +67,7 @@ const viewDirs = fs
 	.map(d => `app/views/${d.name}`);
 
 const allDependsOn = testMap.flatMap(e => e.dependsOn || []);
-const uncovered = viewDirs.filter(dir => !allDependsOn.some(g => g.startsWith(dir)));
+const uncovered = viewDirs.filter(dir => !allDependsOn.some(g => g.startsWith(`${dir}/`)));
 for (const dir of uncovered) {
 	ann('warning', dir, `Uncovered view: "${dir}" has no dependsOn anchor in any test-map entry — new screen with no Maestro flow?`);
 	warnCount++;

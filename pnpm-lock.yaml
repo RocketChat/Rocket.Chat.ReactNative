@@ -536,7 +536,7 @@ importers:
         specifier: 3.4.8
         version: 3.4.8(@babel/runtime@7.25.9)
       sniffler:
-        specifier: ^0.4.0
+        specifier: 0.4.0
         version: 0.4.0
       storybook:
         specifier: ~9.0.9
@@ -2454,7 +2454,7 @@ packages:
     resolution: {integrity: sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==}
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c':
-    resolution: {gitHosted: true, integrity: sha512-v3uaVCYlj9gGZkAZe3JWQkhlGaRyahmnagbMSKtSnl+6WuLNxaPOf0GjJKVuxBdqkXPPhr23JIihVlch3FVeCQ==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
     version: 0.4.0
     peerDependencies:
       react: '*'
