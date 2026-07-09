@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Text, View, useWindowDimensions } from 'react-native';
 import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
@@ -7,8 +6,8 @@ import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
 import { useTheme } from '../../../../theme';
 import styles from '../../styles';
 import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
-import MarkdownContext from '../../contexts/MarkdownContext';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useCustomEmoji } from '../../../../lib/hooks/useCustomEmoji';
 import { getUserSelector } from '../../../../selectors/login';
 import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -34,7 +33,7 @@ function getEmojiToken(block: EmojiProps, isAvatar: boolean) {
 
 const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmojiProps) => {
 	const { colors } = useTheme();
-	const { getCustomEmoji } = useContext(MarkdownContext);
+	const getCustomEmoji = useCustomEmoji();
 	const { fontScale } = useWindowDimensions();
 	const { fontScaleLimited } = useResponsiveLayout();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();

@@ -3,7 +3,7 @@ import { useContext, useState, memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
+import { type IAttachment } from '../../../../definitions';
 import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
-	getCustomEmoji: TGetCustomEmoji;
 	msg?: string;
 	showAttachment?: (file: IAttachment) => void;
 }
@@ -120,7 +119,7 @@ const Title = memo(
 );
 
 const Description = memo(
-	({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+	({ attachment }: { attachment: IAttachment }) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -140,7 +139,7 @@ const Description = memo(
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
+		return <Markdown msg={text} username={user.username} />;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
@@ -173,15 +172,7 @@ const UrlImage = memo(
 );
 
 const Fields = memo(
-	({
-		attachment,
-		theme,
-		getCustomEmoji
-	}: {
-		attachment: IAttachment;
-		theme: TSupportedThemes;
-		getCustomEmoji: TGetCustomEmoji;
-	}) => {
+	({ attachment, theme }: { attachment: IAttachment; theme: TSupportedThemes }) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -195,7 +186,7 @@ const Fields = memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
+						<Markdown msg={field?.value || ''} username={user.username} />
 					</View>
 				))}
 			</View>
@@ -206,7 +197,7 @@ const Fields = memo(
 );
 
 const Reply = memo(
-	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
+	({ attachment, timeFormat, msg, showAttachment }: IMessageReply) => {
 		'use memo';
 
 		const [loading, setLoading] = useState(false);
@@ -252,20 +243,10 @@ const Reply = memo(
 					<View style={styles.attachmentContainer}>
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
-							<Quote
-								attachments={attachment.attachments}
-								getCustomEmoji={getCustomEmoji}
-								timeFormat={timeFormat}
-								showAttachment={showAttachment}
-							/>
-							<Attachments
-								attachments={attachment.attachments}
-								getCustomEmoji={getCustomEmoji}
-								timeFormat={timeFormat}
-								showAttachment={showAttachment}
-							/>
-							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							<Description attachment={attachment} />
+							<Quote attachments={attachment.attachments} timeFormat={timeFormat} showAttachment={showAttachment} />
+							<Attachments attachments={attachment.attachments} timeFormat={timeFormat} showAttachment={showAttachment} />
+							<Fields attachment={attachment} theme={theme} />
 							{loading ? (
 								<View style={styles.backdrop}>
 									<View
@@ -280,7 +261,7 @@ const Reply = memo(
 						<UrlImage image={attachment.thumb_url} />
 					</View>
 				</Touchable>
-				{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
+				{msg ? <Markdown msg={msg} username={user.username} /> : null}
 			</View>
 		);
 	},
