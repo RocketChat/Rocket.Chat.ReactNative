@@ -19,6 +19,7 @@
 		"build-icon-set": "node scripts/build-icon-set.js",
 		"organize-translations": "node scripts/organize-translations.js",
 		"e2e:start": "RUNNING_E2E_TESTS=true react-native start",
+		"e2e:changed": "bash .github/scripts/e2e-changed.sh",
 		"storybook:start": "USE_STORYBOOK=true react-native start --reset-cache",
 		"storybook-generate": "sb-rn-get-stories",
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
@@ -212,9 +213,11 @@
 		"jest-cli": "^29.7.0",
 		"jest-expo": "~54.0.16",
 		"patch-package": "~8.0.1",
+		"fast-glob": "3.3.3",
 		"prettier": "2.8.8",
 		"react-dom": "19.1.0",
 		"react-native-dotenv": "3.4.8",
+		"sniffler": "^0.4.0",
 		"storybook": "~9.0.9",
 		"typescript": "~5.9.3"
 	},

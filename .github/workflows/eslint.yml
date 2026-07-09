@@ -19,3 +19,6 @@ jobs:
 
       - name: Run Tests
         run: pnpm test --runInBand
+
+      - name: Validate sniffler test-map freshness
+        run: node .github/scripts/validate-test-map.js

@@ -1,0 +1,326 @@
+[
+  {
+    "test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
+    "dependsOn": ["app/views/StatusView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",
+    "dependsOn": ["app/views/AccessibilityAndAppearanceView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/broadcast.yaml",
+    "dependsOn": [
+      "app/views/NewMessageView/**",
+      "app/views/SelectedUsersView/**",
+      "app/views/CreateChannelView/**",
+      "app/views/RoomInfoView/**",
+      "app/sagas/createChannel.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/assorted/change-avatar.yaml",
+    "dependsOn": ["app/views/ChangeAvatarView/**", "app/views/ProfileView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/changeserver.yaml",
+    "dependsOn": [
+      "app/views/NewServerView/**",
+      "app/views/WorkspaceView/**",
+      "app/views/RegisterView/**",
+      "app/views/RoomsListView/**",
+      "app/sagas/login.js",
+      "app/sagas/rooms.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/assorted/deeplink.yaml",
+    "dependsOn": [
+      "app/views/NewServerView/**",
+      "app/views/SelectServerView.tsx",
+      "app/views/WorkspaceView/**",
+      "app/views/ShareListView/**",
+      "app/views/ShareView/**",
+      "app/views/RoomsListView/**",
+      "app/views/ThreadMessagesView/**",
+      "app/sagas/login.js",
+      "app/sagas/rooms.js",
+      "app/sagas/inviteLinks.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/assorted/delete-server.yaml",
+    "dependsOn": [
+      "app/views/NewServerView/**",
+      "app/views/WorkspaceView/**",
+      "app/views/RegisterView/**",
+      "app/views/RoomsListView/**",
+      "app/sagas/login.js",
+      "app/sagas/rooms.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/assorted/display-perf.yaml",
+    "dependsOn": ["app/views/DisplayPrefsView.tsx", "app/views/RoomsListView/**", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/assorted/i18n.yaml",
+    "dependsOn": ["app/views/LanguageView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/in-app-notification.yaml",
+    "dependsOn": ["app/views/RoomsListView/**", "app/containers/InAppNotification/**", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/assorted/join-from-directory.yaml",
+    "dependsOn": ["app/views/DirectoryView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/join-protected-room.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/sagas/room.js", "app/sagas/inviteLinks.js"]
+  },
+  {
+    "test": ".maestro/tests/assorted/join-public-room.yaml",
+    "dependsOn": ["app/views/RoomActionsView/**", "app/views/RoomView/**", "app/sagas/room.js", "app/sagas/inviteLinks.js"]
+  },
+  {
+    "test": ".maestro/tests/assorted/profile.yaml",
+    "dependsOn": ["app/views/ProfileView/**", "app/views/ChangePasswordView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/setting.yaml",
+    "dependsOn": [
+      "app/views/SettingsView/**",
+      "app/views/LegalView.tsx",
+      "app/views/MediaAutoDownloadView/**",
+      "app/views/DefaultBrowserView/**",
+      "app/views/GetHelpView.tsx"
+    ]
+  },
+  {
+    "test": ".maestro/tests/assorted/status.yaml",
+    "dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
+  },
+  {
+    "test": ".maestro/tests/assorted/user-preferences.yaml",
+    "dependsOn": [
+      "app/views/UserPreferencesView/**",
+      "app/views/UserNotificationPreferencesView/**",
+      "app/views/PushTroubleshootView/**",
+      "app/sagas/troubleshootingNotification.ts"
+    ]
+  },
+  {
+    "test": ".maestro/tests/e2ee/e2e-encryption.yaml",
+    "dependsOn": [
+      "app/views/E2EEncryptionSecurityView/**",
+      "app/views/E2EEnterYourPasswordView.tsx",
+      "app/views/SecurityPrivacyView.tsx",
+      "app/views/RoomView/**",
+      "app/views/CreateChannelView/**",
+      "app/views/NewMessageView/**",
+      "app/views/SelectedUsersView/**",
+      "app/views/E2EEToggleRoomView/**",
+      "app/sagas/room.js",
+      "app/sagas/encryption.js",
+      "app/sagas/createChannel.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/keyboardNavigation/keyboard-navigation-components.yaml",
+    "dependsOn": ["app/views/AccessibilityAndAppearanceView/**", "app/views/ThemeView.tsx"]
+  },
+  {
+    "test": ".maestro/tests/keyboardNavigation/keyboard-navigation-onboarding.yaml",
+    "dependsOn": ["app/views/NewServerView/**", "app/views/LoginView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/keyboardNavigation/keyboard-navigation-room.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/sagas/room.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/change-password.yaml",
+    "dependsOn": ["app/views/RoomsListView/**", "app/views/ChangePasswordView/**", "app/sagas/login.js", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/forgot-password.yaml",
+    "dependsOn": ["app/views/ForgotPasswordView.tsx", "app/views/LoginView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/legal.yaml",
+    "dependsOn": ["app/views/LegalView.tsx", "app/views/LoginView/**", "app/views/RegisterView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/login/invalid-credentials.yaml",
+    "dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/login/login.yaml",
+    "dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/register/create-account.yaml",
+    "dependsOn": ["app/views/RegisterView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/register/email-used.yaml",
+    "dependsOn": ["app/views/RegisterView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/register/username-used.yaml",
+    "dependsOn": ["app/views/RegisterView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/roomslist.yaml",
+    "dependsOn": ["app/views/RoomsListView/**", "app/sagas/login.js", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/server-history.yaml",
+    "dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/servers-history-small-screen.yaml",
+    "dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/workspace/invalid-workspace.yaml",
+    "dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/onboarding/workspace/valid-workspace.yaml",
+    "dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
+  },
+  {
+    "test": ".maestro/tests/room/create-dm-group.yaml",
+    "dependsOn": ["app/views/NewMessageView/**", "app/views/SelectedUsersView/**", "app/sagas/messages.js", "app/sagas/createChannel.js"]
+  },
+  {
+    "test": ".maestro/tests/room/create-room.yaml",
+    "dependsOn": [
+      "app/views/NewMessageView/**",
+      "app/views/SelectedUsersView/**",
+      "app/views/CreateChannelView/**",
+      "app/sagas/messages.js",
+      "app/sagas/createChannel.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/room/discussion.yaml",
+    "dependsOn": [
+      "app/views/NewMessageView/**",
+      "app/views/SelectedUsersView/**",
+      "app/views/CreateDiscussionView/**",
+      "app/views/RoomActionsView/**",
+      "app/views/RoomInfoView/**",
+      "app/views/DiscussionsView/**",
+      "app/sagas/room.js",
+      "app/sagas/createDiscussion.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/room/ignoreuser.yaml",
+    "dependsOn": ["app/views/RoomInfoView/**", "app/views/ReportUserView/**", "app/views/RoomActionsView/**", "app/sagas/room.js"]
+  },
+  {
+    "test": ".maestro/tests/room/jump-to-message.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/views/SearchMessagesView/**", "app/views/ThreadMessagesView/**", "app/sagas/room.js"]
+  },
+  {
+    "test": ".maestro/tests/room/mark-as-unread.yaml",
+    "dependsOn": ["app/views/RoomsListView/**", "app/containers/MessageActions/**", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/room/message-markdown-click.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
+  },
+  {
+    "test": ".maestro/tests/room/reaction-picker-small-screen.yaml",
+    "dependsOn": ["app/containers/EmojiPicker/**", "app/containers/ReactionsList/**"]
+  },
+  {
+    "test": ".maestro/tests/room/room-actions.yaml",
+    "dependsOn": [
+      "app/views/RoomActionsView/**",
+      "app/views/RoomMembersView/**",
+      "app/views/MessagesView/**",
+      "app/views/NotificationPreferencesView/**",
+      "app/views/SelectedUsersView/**",
+      "app/sagas/room.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/room/room-info.yaml",
+    "dependsOn": ["app/views/RoomInfoView/**", "app/views/RoomInfoEditView/**"]
+  },
+  {
+    "test": ".maestro/tests/room/room-last-message-thread-50-plus.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/sagas/room.js"]
+  },
+  {
+    "test": ".maestro/tests/room/room.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/views/RoomInfoView/**", "app/sagas/room.js", "app/sagas/messages.js"]
+  },
+  {
+    "test": ".maestro/tests/room/search-member.yaml",
+    "dependsOn": ["app/views/RoomMembersView/**"]
+  },
+  {
+    "test": ".maestro/tests/room/search.yaml",
+    "dependsOn": ["app/views/RoomsListView/**", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/room/servers-list-small-screen.yaml",
+    "dependsOn": ["app/views/NewServerView/**", "app/views/RoomsListView/**", "app/sagas/login.js", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/room/share-message.yaml",
+    "dependsOn": ["app/views/ForwardMessageView/**", "app/containers/MessageActions/**"]
+  },
+  {
+    "test": ".maestro/tests/room/threads.yaml",
+    "dependsOn": ["app/views/RoomView/**", "app/views/ThreadMessagesView/**", "app/sagas/room.js"]
+  },
+  {
+    "test": ".maestro/tests/room/unread-badge.yaml",
+    "dependsOn": ["app/views/RoomsListView/**", "app/sagas/rooms.js"]
+  },
+  {
+    "test": ".maestro/tests/teams/convert-team.yaml",
+    "dependsOn": [
+      "app/views/RoomActionsView/**",
+      "app/views/SelectListView.tsx",
+      "app/views/CreateChannelView/**",
+      "app/views/NewMessageView/**",
+      "app/views/SelectedUsersView/**",
+      "app/sagas/room.js",
+      "app/sagas/createChannel.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/teams/create-team.yaml",
+    "dependsOn": [
+      "app/views/NewMessageView/**",
+      "app/views/SelectedUsersView/**",
+      "app/views/CreateChannelView/**",
+      "app/views/RoomInfoView/**",
+      "app/views/RoomInfoEditView/**",
+      "app/views/RoomActionsView/**",
+      "app/sagas/room.js",
+      "app/sagas/createChannel.js"
+    ]
+  },
+  {
+    "test": ".maestro/tests/teams/team.yaml",
+    "dependsOn": [
+      "app/views/RoomActionsView/**",
+      "app/views/TeamChannelsView.tsx",
+      "app/views/AddChannelTeamView.tsx",
+      "app/views/AddExistingChannelView/**",
+      "app/views/RoomMembersView/**",
+      "app/views/SelectedUsersView/**",
+      "app/views/SelectListView.tsx",
+      "app/views/CreateChannelView/**",
+      "app/sagas/room.js",
+      "app/sagas/createChannel.js"
+    ]
+  }
+]
