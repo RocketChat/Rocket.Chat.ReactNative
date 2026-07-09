@@ -24,7 +24,7 @@ const Bold = ({ value }: IBoldProps) => {
 
 	return (
 		<Text style={styles.text}>
-			<MarkdownContext value={context}>
+			<MarkdownContext.Provider value={context}>
 				{value.map(block => {
 					switch (block.type) {
 						case 'LINK':
@@ -43,7 +43,7 @@ const Bold = ({ value }: IBoldProps) => {
 							return null;
 					}
 				})}
-			</MarkdownContext>
+			</MarkdownContext.Provider>
 		</Text>
 	);
 };
