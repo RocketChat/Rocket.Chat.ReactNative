@@ -32,9 +32,7 @@ const styles = StyleSheet.create({
 				fontStyle: 'italic'
 			},
 			android: {
-				fontFamily: 'Inter-SemiBoldItalic',
-				fontStyle: 'normal',
-				fontWeight: 'normal'
+				fontFamily: 'Inter-SemiBoldItalic'
 			}
 		})
 	}
@@ -57,7 +55,7 @@ const Italic = ({ value }: IItalicProps) => {
 	const context = useMarkdownContext({ textStyle: getStyle(heading, bold) });
 
 	return (
-		<Text>
+		<Text style={context.textStyle}>
 			<MarkdownContext.Provider value={context}>
 				{value.map(block => {
 					switch (block.type) {
