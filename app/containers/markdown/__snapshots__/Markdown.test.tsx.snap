@@ -1424,13 +1424,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
-      >
+      <Text>
         <Text
           accessibilityLabel="italic"
           style={
@@ -1443,14 +1437,19 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "lineHeight": 30,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "lineHeight": 30,
+                  "textAlign": "left",
+                },
+                {
+                  "fontStyle": "italic",
+                },
+              ],
             ]
           }
         >
@@ -1883,13 +1882,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
-      >
+      <Text>
         <Text
           accessibilityLabel="italic"
           style={
@@ -1902,14 +1895,19 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 22,
-                "fontWeight": "700",
-                "lineHeight": 28,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "700",
+                  "lineHeight": 28,
+                  "textAlign": "left",
+                },
+                {
+                  "fontStyle": "italic",
+                },
+              ],
             ]
           }
         >
@@ -2342,13 +2340,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
-      >
+      <Text>
         <Text
           accessibilityLabel="italic"
           style={
@@ -2361,14 +2353,19 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 20,
-                "fontWeight": "600",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "fontStyle": "italic",
+                },
+              ],
             ]
           }
         >
@@ -2801,13 +2798,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       >
          
       </Text>
-      <Text
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
-      >
+      <Text>
         <Text
           accessibilityLabel="italic"
           style={
@@ -2820,14 +2811,19 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "600",
-                "lineHeight": 24,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "fontStyle": "italic",
+                },
+              ],
             ]
           }
         >
@@ -4217,13 +4213,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text
-              style={
-                {
-                  "fontStyle": "italic",
-                }
-              }
-            >
+            <Text>
               <Text
                 accessibilityLabel="italic"
                 style={
@@ -4235,6 +4225,9 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "fontStyle": "italic",
                     },
                   ]
                 }
@@ -4413,13 +4406,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text
-              style={
-                {
-                  "fontStyle": "italic",
-                }
-              }
-            >
+            <Text>
               <Text
                 style={
                   {
@@ -4441,6 +4428,9 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       },
                       {
                         "color": "#2F343D",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                     ]
                   }
@@ -4631,13 +4621,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text
-              style={
-                {
-                  "fontStyle": "italic",
-                }
-              }
-            >
+            <Text>
               <Text
                 style={
                   {
@@ -4656,6 +4640,9 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       },
                       {
                         "color": "#2F343D",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                     ]
                   }
@@ -4737,13 +4724,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text
-              style={
-                {
-                  "fontStyle": "italic",
-                }
-              }
-            >
+            <Text>
               <Text
                 style={
                   {
@@ -4772,6 +4753,9 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         },
                         {
                           "color": "#2F343D",
+                        },
+                        {
+                          "fontStyle": "italic",
                         },
                       ]
                     }
@@ -5822,13 +5806,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
             Italic: 
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel=" "
               style={
@@ -5840,6 +5818,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -5856,6 +5837,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "600",
                     "textAlign": "left",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                   {
                     "color": "#9B1325",
@@ -5877,6 +5861,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontStyle": "italic",
+                  },
                 ]
               }
             >
@@ -5900,13 +5887,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel=" "
               style={
@@ -5918,6 +5899,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -5934,6 +5918,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "600",
                     "textAlign": "left",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                   {
                     "color": "#8E6300",
@@ -5955,6 +5942,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontStyle": "italic",
+                  },
                 ]
               }
             >
@@ -5978,13 +5968,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel=" "
               style={
@@ -5996,6 +5980,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -6011,6 +5998,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "600",
                     "textAlign": "left",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                   {
                     "color": "#974809",
@@ -6032,6 +6022,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontStyle": "italic",
+                  },
                 ]
               }
             >
@@ -6055,13 +6048,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel=" "
               style={
@@ -6073,6 +6060,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -6088,6 +6078,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "600",
                     "textAlign": "left",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                   {
                     "color": "#974809",
@@ -6109,6 +6102,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontStyle": "italic",
+                  },
                 ]
               }
             >
@@ -6132,13 +6128,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel=" "
               style={
@@ -6150,6 +6140,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -6166,6 +6159,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "600",
                     "textAlign": "left",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                   {
                     "color": "#095AD2",
@@ -6186,6 +6182,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -6504,13 +6503,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
             Italic + Bold + Strikethrough: 
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -6538,6 +6531,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                         "fontSize": 16,
                         "fontWeight": "600",
                         "textAlign": "left",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                       {
                         "color": "#9B1325",
@@ -6567,13 +6563,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -6601,6 +6591,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                         "fontSize": 16,
                         "fontWeight": "600",
                         "textAlign": "left",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                       {
                         "color": "#8E6300",
@@ -6630,13 +6623,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -6663,6 +6650,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                         "fontSize": 16,
                         "fontWeight": "600",
                         "textAlign": "left",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                       {
                         "color": "#974809",
@@ -6692,13 +6682,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -6725,6 +6709,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                         "fontSize": 16,
                         "fontWeight": "600",
                         "textAlign": "left",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                       {
                         "color": "#974809",
@@ -6754,13 +6741,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
           >
              
           </Text>
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -6788,6 +6769,9 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                         "fontSize": 16,
                         "fontWeight": "600",
                         "textAlign": "left",
+                      },
+                      {
+                        "fontStyle": "italic",
                       },
                       {
                         "color": "#095AD2",
@@ -7514,13 +7498,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         >
            
         </Text>
-        <Text
-          style={
-            {
-              "fontStyle": "italic",
-            }
-          }
-        >
+        <Text>
           <Text
             accessibilityLabel="italic"
             style={
@@ -7532,6 +7510,9 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontStyle": "italic",
                 },
               ]
             }
@@ -7608,13 +7589,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel="bold with italic"
               style={
@@ -7626,6 +7601,9 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -7714,13 +7692,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -7739,6 +7711,9 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "fontStyle": "italic",
                     },
                   ]
                 }
@@ -7765,13 +7740,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         >
            
         </Text>
-        <Text
-          style={
-            {
-              "fontStyle": "italic",
-            }
-          }
-        >
+        <Text>
           <Text
             style={
               {
@@ -7790,6 +7759,9 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontStyle": "italic",
                   },
                 ]
               }
@@ -7923,13 +7895,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         >
            
         </Text>
-        <Text
-          style={
-            {
-              "fontStyle": "italic",
-            }
-          }
-        >
+        <Text>
           <Text
             accessibilityLabel="italic"
             style={
@@ -7942,10 +7908,15 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
-                {
-                  "color": "red",
-                  "fontSize": 10,
-                },
+                [
+                  {
+                    "color": "red",
+                    "fontSize": 10,
+                  },
+                  {
+                    "fontStyle": "italic",
+                  },
+                ],
               ]
             }
           >
@@ -8033,13 +8004,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               accessibilityLabel="bold with italic"
               style={
@@ -8052,10 +8017,15 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "color": "red",
-                    "fontSize": 10,
-                  },
+                  [
+                    {
+                      "color": "red",
+                      "fontSize": 10,
+                    },
+                    {
+                      "fontStyle": "italic",
+                    },
+                  ],
                 ]
               }
             >
@@ -8155,13 +8125,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            style={
-              {
-                "fontStyle": "italic",
-              }
-            }
-          >
+          <Text>
             <Text
               style={
                 {
@@ -8181,10 +8145,15 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
-                    {
-                      "color": "red",
-                      "fontSize": 10,
-                    },
+                    [
+                      {
+                        "color": "red",
+                        "fontSize": 10,
+                      },
+                      {
+                        "fontStyle": "italic",
+                      },
+                    ],
                   ]
                 }
               >
@@ -8214,13 +8183,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         >
            
         </Text>
-        <Text
-          style={
-            {
-              "fontStyle": "italic",
-            }
-          }
-        >
+        <Text>
           <Text
             style={
               {
@@ -8240,10 +8203,15 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "color": "red",
-                    "fontSize": 10,
-                  },
+                  [
+                    {
+                      "color": "red",
+                      "fontSize": 10,
+                    },
+                    {
+                      "fontStyle": "italic",
+                    },
+                  ],
                 ]
               }
             >

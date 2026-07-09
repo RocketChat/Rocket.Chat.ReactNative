@@ -11,6 +11,7 @@ interface IMarkdownContext {
 	navToRoomInfo?: Function;
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
+	heading?: number;
 	textStyle?: StyleProp<TextStyle>;
 }
 
@@ -26,9 +27,21 @@ const defaultState = {
 const MarkdownContext = createContext<IMarkdownContext>(defaultState);
 
 export const useMarkdownContext = (overrides?: Partial<IMarkdownContext>): IMarkdownContext => {
-	const context = useContext(MarkdownContext);
-	if (!overrides) return context;
-	return { ...context, ...overrides };
+    const context = useContext(MarkdownContext);
+    if (!overrides) return context;
+
+    // Merge the context and overrides
+    const newContext = { ...context, ...overrides };
+
+    // Deep merge textStyle if both exist
+    if (context.textStyle && overrides.textStyle) {
+        newContext.textStyle = [
+            ...(Array.isArray(context.textStyle) ? context.textStyle : [context.textStyle]),
+            ...(Array.isArray(overrides.textStyle) ? overrides.textStyle : [overrides.textStyle])
+        ];
+    }
+
+    return newContext;
 };
 
 export default MarkdownContext;

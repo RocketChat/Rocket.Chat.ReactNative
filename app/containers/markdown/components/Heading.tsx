@@ -24,7 +24,7 @@ const Heading = ({ value, level }: IHeadingProps): ReactElement => {
 
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
-	const context = useMarkdownContext({ textStyle });
+	const context = useMarkdownContext({ textStyle, heading: level });
 
 	return (
 		<Text style={[textStyle, { color: themes[theme].fontDefault }]}>
