@@ -1,7 +1,7 @@
 import { type ReactNode, type FC } from 'react';
 import { Pressable, type PressableProps } from 'react-native';
 
-import { useMessageLongPress } from '../stores/MessageStore';
+import { useMessageLongPress } from '../../stores/MessageStore';
 
 interface IProps extends PressableProps {
 	children: ReactNode;

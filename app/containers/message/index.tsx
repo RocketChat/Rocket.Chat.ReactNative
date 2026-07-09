@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import Message from './components/Message';
+import MessageTouchable from './components/Touchable/MessageTouchable';
 import { type TAnyMessageModel } from '../../definitions';
 import MessageSeparator from '../MessageSeparator';
 import { MessageProvider } from './stores/MessageStore';
@@ -30,7 +30,7 @@ const MessageContainer = (props: IMessageContainerProps) => {
 			onLongPress={props.onLongPress}
 			threadBadgeColor={props.threadBadgeColor}
 			isIgnored={props.isIgnored}>
-			<Message isPreview={props.isPreview} highlighted={props.highlighted} />
+			<MessageTouchable isPreview={props.isPreview} highlighted={props.highlighted} />
 			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 		</MessageProvider>
 	);

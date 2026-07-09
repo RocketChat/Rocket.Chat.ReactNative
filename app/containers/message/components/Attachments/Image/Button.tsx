@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { type PressableProps } from 'react-native';
 
-import MessageActionTouchable from '../../MessageActionTouchable';
+import MessageActionTouchable from '../../Touchable/MessageActionTouchable';
 import styles from '../../../styles';
 
 interface IMessageButton {

@@ -14,7 +14,7 @@ import { Attachments } from './components';
 import Quote from './Quote';
 import { useBaseUrl, useMessageUser, useTimeFormat } from '../../stores/MessageRoomStore';
 import { useIsEncrypted, useMessageId } from '../../stores/MessageStore';
-import MessageActionTouchable from '../MessageActionTouchable';
+import MessageActionTouchable from '../Touchable/MessageActionTouchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
 

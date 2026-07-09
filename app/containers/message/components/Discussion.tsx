@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import MessageActionTouchable from './MessageActionTouchable';
+import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from '../utils';
 import styles from '../styles';
 import I18n from '../../../i18n';

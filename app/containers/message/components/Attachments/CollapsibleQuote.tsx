@@ -8,7 +8,7 @@ import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import Markdown from '../../../markdown';
 import { useMessageUser } from '../../stores/MessageRoomStore';
-import MessageActionTouchable from '../MessageActionTouchable';
+import MessageActionTouchable from '../Touchable/MessageActionTouchable';
 import { BUTTON_HIT_SLOP } from '../../utils';
 
 const styles = StyleSheet.create({

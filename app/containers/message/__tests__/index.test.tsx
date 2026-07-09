@@ -7,7 +7,7 @@ import { createMessageActionStore, MessageActionStoreContext } from '../stores/M
 import { renderWithMessageProviders } from './testHelpers';
 import { type MessageRoomState } from '../stores/MessageRoomStore';
 
-jest.mock('../components/Touch', () => {
+jest.mock('../components/Touchable/Touch', () => {
 	const { forwardRef } = require('react');
 	const { TouchableOpacity } = require('react-native');
 	return forwardRef(({ children, onPress, onLongPress, ...props }: any, ref: any) => (
