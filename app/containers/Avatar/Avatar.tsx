@@ -6,7 +6,6 @@ import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import { type IAvatar } from './interfaces';
-import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
 import Touch from '../Touch';
 import sdk from '../../lib/services/sdk';
@@ -21,7 +20,6 @@ const Avatar = memo(
 		token,
 		onPress,
 		emoji,
-		getCustomEmoji,
 		avatarETag,
 		isStatic,
 		rid,
@@ -51,16 +49,11 @@ const Avatar = memo(
 		let image;
 		if (emoji) {
 			image = (
-				<MarkdownContext.Provider
-					value={{
-						getCustomEmoji
-					}}>
-					<Emoji
-						block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
-						style={avatarStyle}
-						isAvatar={true}
-					/>
-				</MarkdownContext.Provider>
+				<Emoji
+					block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
+					style={avatarStyle}
+					isAvatar={true}
+				/>
 			);
 		} else {
 			let uri = avatar;
