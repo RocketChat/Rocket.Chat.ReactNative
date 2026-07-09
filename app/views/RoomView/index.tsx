@@ -1759,5 +1759,3 @@ const mapStateToProps = (state: IApplicationState) => ({
 export default connect(mapStateToProps)(
 	withDimensions(withTheme(withSafeAreaInsets(withActionSheet(withMasterDetail(RoomView)))))
 );
-
-// e2e-obs C2 scratch — reverted after observation
