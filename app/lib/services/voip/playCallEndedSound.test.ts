@@ -11,7 +11,8 @@ jest.mock('../../methods/helpers/log', () => ({
 const expoAudio = require('expo-audio');
 
 const mockCreateAudioPlayer = expoAudio.createAudioPlayer as jest.Mock;
-const mockPlayer = expoAudio.createAudioPlayer();
+
+const getActualPlayer = () => mockCreateAudioPlayer.mock.results[0].value;
 
 beforeEach(() => {
 	jest.clearAllMocks();
@@ -25,20 +26,19 @@ describe('playCallEndedSound', () => {
 		playCallEndedSound();
 
 		expect(mockCreateAudioPlayer).toHaveBeenCalledTimes(1);
-		expect(mockPlayer.play).toHaveBeenCalledTimes(1);
+		expect(getActualPlayer().play).toHaveBeenCalledTimes(1);
 	});
 
 	it('registers a playback status listener', () => {
 		playCallEndedSound();
 
-		expect(mockPlayer.addListener).toHaveBeenCalledWith('playbackStatusUpdate', expect.any(Function));
+		expect(getActualPlayer().addListener).toHaveBeenCalledWith('playbackStatusUpdate', expect.any(Function));
 	});
 
 	it('removes the player when didJustFinish fires', () => {
 		playCallEndedSound();
 
-		// Use the player that was actually created in this test
-		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+		const actualPlayer = getActualPlayer();
 		const statusCallback = actualPlayer.addListener.mock.calls.find(
 			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
 		)?.[1];
@@ -52,7 +52,7 @@ describe('playCallEndedSound', () => {
 	it('does not remove when didJustFinish is false', () => {
 		playCallEndedSound();
 
-		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+		const actualPlayer = getActualPlayer();
 		const addListenerCalls = actualPlayer.addListener.mock.calls;
 		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: false });
@@ -69,27 +69,25 @@ describe('playCallEndedSound', () => {
 
 		// createAudioPlayer and play must each have been called exactly once (coalescing)
 		expect(mockCreateAudioPlayer).toHaveBeenCalledTimes(1);
-		expect(mockPlayer.play).toHaveBeenCalledTimes(1);
+		expect(getActualPlayer().play).toHaveBeenCalledTimes(1);
 	});
 
 	it('allows a new invocation after the previous cue completes', () => {
 		playCallEndedSound();
 
 		// Simulate completion
-		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+		const actualPlayer = getActualPlayer();
 		const addListenerCalls = actualPlayer.addListener.mock.calls;
 		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: true });
 
 		// Reset mocks to count fresh calls
 		mockCreateAudioPlayer.mockClear();
-		mockPlayer.play.mockClear();
-		mockPlayer.addListener.mockClear();
 
 		playCallEndedSound();
 
 		expect(mockCreateAudioPlayer).toHaveBeenCalledTimes(1);
-		expect(mockPlayer.play).toHaveBeenCalledTimes(1);
+		expect(getActualPlayer().play).toHaveBeenCalledTimes(1);
 	});
 
 	it('watchdog releases the lock if didJustFinish never fires', () => {
@@ -97,7 +95,7 @@ describe('playCallEndedSound', () => {
 		try {
 			playCallEndedSound();
 
-			const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+			const actualPlayer = getActualPlayer();
 			// didJustFinish never fires; lock would be permanent without the watchdog.
 			expect(actualPlayer.release).not.toHaveBeenCalled();
 
@@ -108,10 +106,9 @@ describe('playCallEndedSound', () => {
 
 			// Subsequent invocation is allowed (lock cleared).
 			mockCreateAudioPlayer.mockClear();
-			mockPlayer.play.mockClear();
 			playCallEndedSound();
 			expect(mockCreateAudioPlayer).toHaveBeenCalledTimes(1);
-			expect(mockPlayer.play).toHaveBeenCalledTimes(1);
+			expect(getActualPlayer().play).toHaveBeenCalledTimes(1);
 		} finally {
 			jest.useRealTimers();
 		}
@@ -122,7 +119,7 @@ describe('playCallEndedSound', () => {
 		try {
 			playCallEndedSound();
 
-			const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+			const actualPlayer = getActualPlayer();
 			const addListenerCalls = actualPlayer.addListener.mock.calls;
 			const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 			statusCallback?.({ isLoaded: true, didJustFinish: true });

@@ -16,6 +16,7 @@ function createAudioManager() {
 	const audioRates: { [audioKey: string]: number } = {};
 	const audioSubscriptions: { [audioKey: string]: () => void } = {};
 	const audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void } = {};
+	const audioMeta: { [audioKey: string]: { msgId?: string; rid: string } } = {};
 	let audioPlaying = '';
 	const audiosRendered = new Set<string>();
 
@@ -35,6 +36,7 @@ function createAudioManager() {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		addAudioRendered(audioKey);
 		audioUris[audioKey] = uri;
+		audioMeta[audioKey] = { msgId, rid };
 		if (audioQueue[audioKey]) return audioKey;
 
 		const sound = createAudioPlayer({ uri });
@@ -129,10 +131,6 @@ function createAudioManager() {
 		}
 
 		if (status.isLoaded && status.didJustFinish) {
-			// Guard against false didJustFinish during seek operations
-			if (status.currentTime < status.duration - 0.5) {
-				return;
-			}
 			try {
 				audioSubscriptions[audioKey]?.();
 				delete audioSubscriptions[audioKey];
@@ -179,7 +177,14 @@ function createAudioManager() {
 	}
 
 	async function playNextAudioInSequence(previousAudioKey: string) {
-		const [msgId, rid] = previousAudioKey.split('-');
+		const meta = audioMeta[previousAudioKey];
+		if (!meta) {
+			return;
+		}
+		const { msgId, rid } = meta;
+		if (!msgId) {
+			return;
+		}
 		const nextMessage = await getNextAudioMessage(msgId, rid);
 		if (nextMessage && nextMessage.attachments) {
 			const nextAudioInSeqKey = getNextAudioKey({ message: nextMessage, rid });
@@ -191,8 +196,7 @@ function createAudioManager() {
 
 	async function unloadRoomAudios(rid?: string) {
 		if (!rid) return;
-		const regExp = new RegExp(rid);
-		const roomAudioKeysLoaded = Object.keys(audioQueue).filter(audioKey => regExp.test(audioKey));
+		const roomAudioKeysLoaded = Object.keys(audioQueue).filter(audioKey => audioMeta[audioKey]?.rid === rid);
 		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => audioQueue[key]);
 		try {
 			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
@@ -207,6 +211,7 @@ function createAudioManager() {
 			delete audioUris[key];
 			delete audioPositions[key];
 			delete audioRates[key];
+			delete audioMeta[key];
 		});
 		audioPlaying = '';
 	}

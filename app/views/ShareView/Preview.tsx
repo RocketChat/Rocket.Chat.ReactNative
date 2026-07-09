@@ -1,5 +1,6 @@
-import { memo, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
@@ -20,8 +21,23 @@ const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number
 	const player = useVideoPlayer(uri, player => {
 		player.play();
 	});
+	const hasHandledErrorRef = useRef(false);
 
-	return <VideoView player={player} style={{ width, height }} contentFit='contain' nativeControls allowsFullscreen />;
+	useEventListener(player, 'statusChange', ({ status }) => {
+		if (status === 'error' && !hasHandledErrorRef.current) {
+			hasHandledErrorRef.current = true;
+		}
+	});
+
+	return (
+		<VideoView
+			player={player}
+			style={{ width: width || '100%', height: height || '100%' }}
+			contentFit='contain'
+			nativeControls
+			allowsFullscreen
+		/>
+	);
 });
 
 const styles = StyleSheet.create({

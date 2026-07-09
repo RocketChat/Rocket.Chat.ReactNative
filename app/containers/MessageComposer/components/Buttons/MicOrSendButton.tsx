@@ -1,7 +1,6 @@
 import { requestRecordingPermissionsAsync, getRecordingPermissionsAsync } from 'expo-audio';
 import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
-import { PermissionStatus } from 'expo-camera';
 
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
@@ -32,7 +31,7 @@ export const MicOrSendButton = (): ReactElement | null => {
 	const startRecording = async () => {
 		const { status, granted, canAskAgain } = await getRecordingPermissionsAsync();
 		if (granted) return setRecordingAudio(true);
-		if (status === PermissionStatus.UNDETERMINED) return requestPermissionAndStartToRecordAudio();
+		if (status === 'undetermined') return requestPermissionAndStartToRecordAudio();
 		if (canAskAgain) return requestPermissionAndStartToRecordAudio();
 
 		Alert.alert(

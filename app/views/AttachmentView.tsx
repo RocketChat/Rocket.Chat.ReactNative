@@ -1,18 +1,17 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { useVideoPlayer, VideoView } from 'expo-video';
-import { useCallback, useLayoutEffect, useState, type Dispatch, type SetStateAction, type ReactElement, useEffect } from 'react';
-import { Alert, PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { useCallback, useLayoutEffect, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
+import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system/legacy';
-import { useEventListener } from 'expo';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import AltTextLabel from '../containers/AltTextLabel';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
+import VideoPlayer from '../containers/VideoPlayer';
 import { LISTENER } from '../containers/Toast';
 import { type IAttachment } from '../definitions';
 import I18n from '../i18n';
@@ -25,51 +24,6 @@ import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
-
-const VideoContent = ({
-	attachment,
-	user,
-	baseUrl,
-	setLoading
-}: {
-	attachment: IAttachment;
-	user: { id: string; token: string };
-	baseUrl: string;
-	setLoading: Dispatch<SetStateAction<boolean>>;
-}) => {
-	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
-
-	const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-	const uri = encodeURI(url);
-
-	const player = useVideoPlayer(uri, player => {
-		player.play();
-	});
-
-	useEventListener(player, 'statusChange', ({ status }) => {
-		if (status === 'readyToPlay') {
-			setLoading(false);
-		} else if (status === 'error') {
-			setLoading(false);
-			// surface the error to the user, similar to the previous expo-av behavior
-			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_action', { action: I18n.t('playing_video') }));
-			navigation.goBack();
-		}
-	});
-
-	useEffect(() => {
-		const blurSub = navigation.addListener('blur', () => {
-			player.pause();
-		});
-		return () => {
-			blurSub();
-		};
-	}, [navigation, player]);
-
-	return (
-		<VideoView player={player} style={{ flex: 1 }} contentFit='contain' nativeControls allowsFullscreen allowsPictureInPicture />
-	);
-};
 
 const RenderContent = ({
 	setLoading,
@@ -107,7 +61,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		return <VideoContent attachment={attachment} user={user} baseUrl={baseUrl} setLoading={setLoading} />;
+		return <VideoPlayer attachment={attachment} user={user} baseUrl={baseUrl} setLoading={setLoading} />;
 	}
 	return null;
 };

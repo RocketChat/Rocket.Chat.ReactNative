@@ -65,9 +65,9 @@ const AudioPlayer = ({
 
 	const handlePlaybackStatusUpdate = (data: AudioStatus) => {
 		if (!data.isLoaded) return;
-		const durationSeconds = data.duration ?? 0;
+		const durationSeconds = data.duration || 0;
 		duration.value = durationSeconds > 0 ? durationSeconds : 0;
-		const currentSecond = data.currentTime ?? 0;
+		const currentSecond = data.currentTime || 0;
 		if (currentSecond <= durationSeconds) {
 			currentTime.value = currentSecond;
 		}

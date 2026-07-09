@@ -79,13 +79,12 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			const newX = contextX.value + event.translationX;
 			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
-		.onEnd(() => {
-			scheduleOnRN(onChangeTime, currentTime.value);
-		})
-		.onFinalize(didSucceed => {
+		.onFinalize((_, didSucceed) => {
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
-			if (!didSucceed) {
+			if (didSucceed) {
+				scheduleOnRN(onChangeTime, currentTime.value);
+			} else {
 				translateX.value = savedTranslateX.value;
 				currentTime.value = savedCurrentTime.value;
 			}

@@ -35,6 +35,7 @@ export const RecordAudio = (): ReactElement | null => {
 	const recorderState = useAudioRecorderState(audioRecorder);
 
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
+	const preparedRef = useRef(false);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -57,6 +58,7 @@ export const RecordAudio = (): ReactElement | null => {
 
 		await audioRecorder.prepareToRecordAsync();
 		await audioRecorder.record();
+		preparedRef.current = true;
 	}
 
 	useEffect(() => {
@@ -66,16 +68,17 @@ export const RecordAudio = (): ReactElement | null => {
 		});
 
 		return () => {
-			audioRecorder.stop().catch(() => {
-				// Do nothing
-			});
+			if (preparedRef.current) {
+				audioRecorder.stop().catch(() => {
+					// Do nothing
+				});
+				preparedRef.current = false;
+			}
 		};
 	}, []);
 
 	useEffect(() => {
-		if (!durationRef.current) return;
-
-		durationRef.current.onRecordingStatusUpdate?.(recorderState);
+		durationRef.current?.onRecordingStatusUpdate?.(recorderState);
 	}, [recorderState]);
 
 	const cancelRecording = async () => {

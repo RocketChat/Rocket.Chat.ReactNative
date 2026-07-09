@@ -107,7 +107,7 @@ jest.mock('expo-audio', () => {
 		MPEG4AAC: 'mpeg4aac'
 	};
 
-	const mockAudioPlayer = {
+	const createMockAudioPlayer = () => ({
 		play: jest.fn(),
 		pause: jest.fn(),
 		stop: jest.fn(),
@@ -120,7 +120,7 @@ jest.mock('expo-audio', () => {
 		seekTo: jest.fn(),
 		release: jest.fn(),
 		remove: jest.fn(),
-		addListener: jest.fn(() => jest.fn()),
+		addListener: jest.fn(() => ({ remove: jest.fn() })),
 		removeListener: jest.fn(),
 		getStatusAsync: jest.fn(() => Promise.resolve()),
 		playing: false,
@@ -134,11 +134,11 @@ jest.mock('expo-audio', () => {
 		progress: 0,
 		buffering: false,
 		keepAlive: false
-	};
+	});
 
 	return {
-		createAudioPlayer: jest.fn(() => mockAudioPlayer),
-		AudioPlayer: jest.fn(() => mockAudioPlayer),
+		createAudioPlayer: jest.fn(() => createMockAudioPlayer()),
+		AudioPlayer: jest.fn(() => createMockAudioPlayer()),
 		Audio: {
 			setAudioModeAsync: jest.fn(() => Promise.resolve()),
 			getAudioModeAsync: jest.fn(() => Promise.resolve({})),
@@ -149,7 +149,7 @@ jest.mock('expo-audio', () => {
 		getAudioModeAsync: jest.fn(() => Promise.resolve({})),
 		requestRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
 		getRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
-		useAudioPlayer: jest.fn(() => mockAudioPlayer),
+		useAudioPlayer: jest.fn(() => createMockAudioPlayer()),
 		useAudioRecorder: jest.fn(() => ({
 			isRecording: false,
 			permission: { granted: true },
@@ -220,7 +220,7 @@ jest.mock('expo-audio', () => {
 });
 
 jest.mock('expo-video', () => {
-	const mockVideoPlayer = {
+	const createMockVideoPlayer = () => ({
 		play: jest.fn(),
 		pause: jest.fn(),
 		stop: jest.fn(),
@@ -233,7 +233,7 @@ jest.mock('expo-video', () => {
 		seekTo: jest.fn(),
 		replace: jest.fn(),
 		release: jest.fn(),
-		addListener: jest.fn(() => jest.fn()),
+		addListener: jest.fn(() => ({ remove: jest.fn() })),
 		removeListener: jest.fn(),
 		playing: false,
 		looping: false,
@@ -245,12 +245,12 @@ jest.mock('expo-video', () => {
 		loaded: false,
 		progress: 0,
 		buffering: false
-	};
+	});
 
 	return {
-		useVideoPlayer: jest.fn(() => mockVideoPlayer),
+		useVideoPlayer: jest.fn(() => createMockVideoPlayer()),
 		VideoView: jest.fn(() => null),
-		VideoPlayer: jest.fn(() => mockVideoPlayer)
+		VideoPlayer: jest.fn(() => createMockVideoPlayer())
 	};
 });
 
