@@ -6,10 +6,11 @@ import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../../lib/methods/readMessages';
 import { getUserInfo } from '../../../lib/services/restApi';
 import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '../../../lib/methods/helpers';
+import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
-import { type RoomType } from '../../../definitions';
+import { type RoomType, type TSubscriptionModel } from '../../../definitions';
 import { type IRoomViewState } from '../definitions';
-import { roomAttrsUpdateColumns } from '../constants';
+import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import RoomServices from '../services';
 
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
@@ -27,6 +28,7 @@ export interface IUseRoomSubscriptionParams {
 
 export interface IUseRoomSubscriptionResult {
 	room: IRoomViewState['room'];
+	roomUpdate: IRoomViewState['roomUpdate'];
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];
@@ -47,6 +49,7 @@ export function useRoomSubscription({
 	onThreadMessagesLoaded
 }: IUseRoomSubscriptionParams): IUseRoomSubscriptionResult {
 	const [room, setRoom] = useState(initialRoom);
+	const [roomUpdate, setRoomUpdate] = useState<IRoomViewState['roomUpdate']>({});
 	const [joined, setJoined] = useState(true);
 	const [subscribed, setSubscribed] = useState(() => 'id' in initialRoom);
 	const [member, setMember] = useState<IRoomViewState['member']>({});
@@ -85,8 +88,17 @@ export function useRoomSubscription({
 		}
 		const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observeWithColumns(OBSERVED_COLUMNS);
 		const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
-			if (rows[0]) {
-				setRoom(rows[0]);
+			const next = rows[0];
+			if (next) {
+				setRoom(next);
+				// observeWithColumns re-emits the same cached model instance mutated in place, so a fresh
+				// snapshot object is what re-renders consumers on a tracked-column change.
+				setRoomUpdate(
+					roomAttrsUpdate.reduce((ret: IRoomViewState['roomUpdate'], attr) => {
+						ret[attr] = (next as TSubscriptionModel)[attr];
+						return ret;
+					}, {})
+				);
 				setSubscribed(true);
 				setJoined(true);
 				return;
@@ -111,8 +123,8 @@ export function useRoomSubscription({
 				if (result.success) {
 					return result.user;
 				}
-			} catch {
-				// fall through — member stays {}
+			} catch (e) {
+				log(e);
 			}
 		}
 		return {};
@@ -164,10 +176,10 @@ export function useRoomSubscription({
 		} catch {
 			if (mountedRef.current) {
 				setLoading(false);
+				retryTimeoutRef.current = setTimeout(() => {
+					initRef.current();
+				}, RETRY_DELAY);
 			}
-			retryTimeoutRef.current = setTimeout(() => {
-				initRef.current();
-			}, RETRY_DELAY);
 		}
 	}, [rid, tmid, onThreadMessagesLoaded, getRoomMember]);
 
@@ -181,5 +193,5 @@ export function useRoomSubscription({
 		}
 	}, [rid, isAuthenticated, init]);
 
-	return { room, joined, subscribed, member, roomUserId, loading, lastOpen, canAutoTranslate, init };
+	return { room, roomUpdate, joined, subscribed, member, roomUserId, loading, lastOpen, canAutoTranslate, init };
 }

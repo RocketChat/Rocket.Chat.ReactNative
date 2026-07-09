@@ -149,6 +149,30 @@ describe('useRoomSubscription', () => {
 		expect(result.current.subscribed).toBe(true);
 	});
 
+	it('rebuilds a fresh roomUpdate snapshot when the same model instance re-emits a mutated column', () => {
+		const { emit } = setupObserve();
+		const mutable = { ...subRoom, topic: 'old' };
+		const { result } = renderHook(() =>
+			useRoomSubscription({ rid: 'rid-1', t: 'c', initialRoom: stubRoom, isAuthenticated: false })
+		);
+
+		act(() => {
+			emit([mutable]);
+		});
+		const first = result.current.roomUpdate;
+		expect(first.topic).toBe('old');
+
+		// observeWithColumns re-emits the same cached instance, mutated in place
+		mutable.topic = 'new';
+		act(() => {
+			emit([mutable]);
+		});
+
+		expect(result.current.room).toBe(mutable);
+		expect(result.current.roomUpdate.topic).toBe('new');
+		expect(result.current.roomUpdate).not.toBe(first);
+	});
+
 	it('observes with exactly the roomAttrsUpdateColumns values', () => {
 		const { observeWithColumns } = setupObserve();
 		renderHook(() => useRoomSubscription({ rid: 'rid-1', initialRoom: stubRoom, isAuthenticated: false }));
