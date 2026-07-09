@@ -4,7 +4,6 @@ import Quote from '../Attachments/Quote';
 import Urls from '../Urls';
 import { useAttachments, useMessageField } from '../../stores/MessageStore';
 
-// Main-path Content orchestration for StandardLayout and PreviewLayout
 export const ContentLayout = () => {
 	'use memo';
 

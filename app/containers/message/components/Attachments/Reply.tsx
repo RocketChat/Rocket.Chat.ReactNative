@@ -236,6 +236,4 @@ const Reply = ({ attachment, msg }: IMessageReply) => {
 	);
 };
 
-Fields.displayName = 'MessageReplyFields';
-
 export default Reply;

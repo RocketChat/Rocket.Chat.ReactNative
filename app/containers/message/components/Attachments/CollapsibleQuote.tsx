@@ -166,6 +166,4 @@ const CollapsibleQuote = ({ attachment }: IMessageReply) => {
 	);
 };
 
-Fields.displayName = 'CollapsibleQuoteFields';
-
 export default CollapsibleQuote;
