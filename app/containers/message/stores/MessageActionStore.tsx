@@ -74,7 +74,7 @@ export const inertStore = createStore<MessageActionState>()(() => ({ action: nul
 const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): T => {
 	const store = useContext(MessageActionStoreContext);
 	if (!store) {
-		throw new Error('Interaction hooks must be used within a MessageActionProvider');
+		throw new Error('Message action hooks must be used within a MessageActionProvider');
 	}
 	return useStore(store, selector);
 };

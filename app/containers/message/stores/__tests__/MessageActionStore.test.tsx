@@ -111,7 +111,7 @@ describe('MessageActionStore', () => {
 				useMessageAction();
 				return null;
 			};
-			expect(() => render(<Probe />)).toThrow('Interaction hooks must be used within a MessageActionProvider');
+			expect(() => render(<Probe />)).toThrow('Message action hooks must be used within a MessageActionProvider');
 		});
 	});
 
