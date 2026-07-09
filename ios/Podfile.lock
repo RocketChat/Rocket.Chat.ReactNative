@@ -33,9 +33,6 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXApplication (55.0.16):
     - ExpoModulesCore
-  - EXAV (16.0.8):
-    - ExpoModulesCore
-    - ReactCommon/turbomodule/core
   - EXConstants (55.0.16):
     - ExpoModulesCore
   - Expo (55.0.27):
@@ -3835,7 +3832,6 @@ DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXApplication (from `../node_modules/expo-application/ios`)
-  - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
@@ -4019,8 +4015,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
     :path: "../node_modules/expo-application/ios"
-  EXAV:
-    :path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
   Expo:
@@ -4301,7 +4295,6 @@ SPEC CHECKSUMS:
   BVLinearGradient: 7815a70ab485b7b155186dd0cc836363e0288cad
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EXApplication: a1413100c36551bef1d775fc6c64147286962bf8
-  EXAV: b60fcf142fae6684d295bc28cd7cfcb3335570ea
   EXConstants: dadbeba983acc30f855a919658a2b34fbd86615d
   Expo: 51382a688834720d1625afd48a5deffc399b35ec
   ExpoAppleAuthentication: 3b97261aceb8528d9f4cb55b6cb687058ee467b6
