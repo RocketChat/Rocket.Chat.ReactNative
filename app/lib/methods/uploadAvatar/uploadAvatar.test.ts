@@ -23,7 +23,7 @@ jest.mock('../sendFileMessage/utils', () => ({
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		getHeaders: () => ({ 'X-Custom': 'custom' })
+		getHeaders: () => ({ 'X-Custom': 'custom', 'X-Auth-Token': 'tok1', 'X-User-Id': 'uid1' })
 	}
 }));
 
