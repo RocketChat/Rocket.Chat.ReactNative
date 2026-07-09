@@ -9,87 +9,77 @@ import { type TMessageModel } from '../../definitions';
 import { emitter } from './helpers';
 import log from './helpers/log';
 
-function createAudioManager() {
-	const audioQueue: { [audioKey: string]: AudioPlayer } = {};
-	const audioUris: { [audioKey: string]: string } = {};
-	const audioPositions: { [audioKey: string]: number } = {};
-	const audioRates: { [audioKey: string]: number } = {};
-	const audioSubscriptions: { [audioKey: string]: () => void } = {};
-	const audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void } = {};
-	const audioMeta: { [audioKey: string]: { msgId?: string; rid: string } } = {};
-	let audioPlaying = '';
-	const audiosRendered = new Set<string>();
+const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
-	function getAudioKey({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) {
-		return `${msgId}-${rid}-${uri}`;
-	}
+class AudioManagerClass {
+	private audioQueue: { [audioKey: string]: AudioPlayer } = {};
+	private audioUris: { [audioKey: string]: string } = {};
+	private audioPositions: { [audioKey: string]: number } = {};
+	private audioRates: { [audioKey: string]: number } = {};
+	private audioSubscriptions: { [audioKey: string]: () => void } = {};
+	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void } = {};
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } } = {};
+	private audioPlaying = '';
+	private audiosRendered = new Set<string>();
 
-	function addAudioRendered(audioKey: string) {
-		audiosRendered.add(audioKey);
-	}
-
-	function removeAudioRendered(audioKey: string) {
-		audiosRendered.delete(audioKey);
-	}
-
-	function loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
+	loadAudio = ({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string => {
 		const audioKey = getAudioKey({ msgId, rid, uri });
-		addAudioRendered(audioKey);
-		audioUris[audioKey] = uri;
-		audioMeta[audioKey] = { msgId, rid };
-		if (audioQueue[audioKey]) return audioKey;
+		this.audiosRendered.add(audioKey);
+		this.audioUris[audioKey] = uri;
+		this.audioMeta[audioKey] = { msgId, rid };
+		if (this.audioQueue[audioKey]) return audioKey;
 
 		const sound = createAudioPlayer({ uri });
-		audioQueue[audioKey] = sound;
+		this.audioQueue[audioKey] = sound;
 		return audioKey;
-	}
+	};
 
-	async function playAudio(audioKey: string) {
-		if (audioPlaying && audioPlaying !== audioKey) {
-			pauseAudio();
+	playAudio = async (audioKey: string) => {
+		if (this.audioPlaying && this.audioPlaying !== audioKey) {
+			this.pauseAudio();
 		}
 
 		// If player was released, recreate it
-		if (!audioQueue[audioKey] && audioUris[audioKey]) {
-			const sound = createAudioPlayer({ uri: audioUris[audioKey] });
-			audioQueue[audioKey] = sound;
+		if (!this.audioQueue[audioKey] && this.audioUris[audioKey]) {
+			const sound = createAudioPlayer({ uri: this.audioUris[audioKey] });
+			this.audioQueue[audioKey] = sound;
 
-			if (audioRates[audioKey] !== undefined) {
-				sound.setPlaybackRate(audioRates[audioKey]);
+			if (this.audioRates[audioKey] !== undefined) {
+				sound.setPlaybackRate(this.audioRates[audioKey]);
 			}
 
-			if (audioPositions[audioKey] !== undefined) {
-				await sound.seekTo(audioPositions[audioKey]);
+			if (this.audioPositions[audioKey] !== undefined) {
+				await sound.seekTo(this.audioPositions[audioKey]);
 			}
 
 			// Re-register the callback if it exists
-			if (audioCallbacks[audioKey]) {
+			if (this.audioCallbacks[audioKey]) {
 				const sub = sound.addListener('playbackStatusUpdate', status => {
-					onPlaybackStatusUpdate(audioKey, status, audioCallbacks[audioKey]);
+					this.onPlaybackStatusUpdate(audioKey, status, this.audioCallbacks[audioKey]);
 				});
-				if (sub) audioSubscriptions[audioKey] = () => sub.remove?.();
+				if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
 			}
 		}
 
 		try {
-			audioQueue[audioKey]?.play();
-			audioPlaying = audioKey;
+			this.audioQueue[audioKey]?.play();
+			this.audioPlaying = audioKey;
 			emitter.emit('audioFocused', audioKey);
 		} catch {
 			// Ignore playback start errors
 		}
-	}
+	};
 
-	function pauseAudio() {
-		if (audioPlaying) {
-			audioQueue[audioPlaying]?.pause();
-			audioPlaying = '';
+	pauseAudio = () => {
+		if (this.audioPlaying) {
+			this.audioQueue[this.audioPlaying]?.pause();
+			this.audioPlaying = '';
 		}
-	}
+	};
 
-	async function setPositionAsync(audioKey: string, time: number) {
-		audioPositions[audioKey] = time;
-		const player = audioQueue[audioKey];
+	setPositionAsync = async (audioKey: string, time: number) => {
+		this.audioPositions[audioKey] = time;
+		const player = this.audioQueue[audioKey];
 		if (!player) {
 			return;
 		}
@@ -98,65 +88,65 @@ function createAudioManager() {
 		} catch {
 			// Ignore seek errors
 		}
-	}
+	};
 
-	function setRateAsync(audioKey: string, value = 1.0) {
-		audioRates[audioKey] = value;
+	setRateAsync = (audioKey: string, value = 1.0) => {
+		this.audioRates[audioKey] = value;
 		try {
-			audioQueue[audioKey]?.setPlaybackRate(value);
+			this.audioQueue[audioKey]?.setPlaybackRate(value);
 		} catch {
 			// Ignore errors when setting playback rate
 		}
-	}
+	};
 
-	function onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
+	onPlaybackStatusUpdate = (audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) => {
 		if (status) {
 			callback(status);
-			onEnd(audioKey, status);
+			this.onEnd(audioKey, status);
 		}
-	}
+	};
 
-	function setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void): void {
-		audioCallbacks[audioKey] = callback;
-		audioSubscriptions[audioKey]?.();
-		const sub = audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
-			onPlaybackStatusUpdate(audioKey, status, callback);
+	setOnPlaybackStatusUpdate = (audioKey: string, callback: (status: AudioStatus) => void): void => {
+		this.audioCallbacks[audioKey] = callback;
+		this.audioSubscriptions[audioKey]?.();
+		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
+			this.onPlaybackStatusUpdate(audioKey, status, callback);
 		});
-		if (sub) audioSubscriptions[audioKey] = () => sub.remove?.();
-	}
+		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
+	};
 
-	async function onEnd(audioKey: string, status: AudioStatus) {
-		if (!audioQueue[audioKey]) {
+	onEnd = async (audioKey: string, status: AudioStatus) => {
+		if (!this.audioQueue[audioKey]) {
 			return;
 		}
 
 		if (status.isLoaded && status.didJustFinish) {
 			try {
-				audioSubscriptions[audioKey]?.();
-				delete audioSubscriptions[audioKey];
+				this.audioSubscriptions[audioKey]?.();
+				delete this.audioSubscriptions[audioKey];
 				// Don't delete the callback - keep it for replay
-				audioQueue[audioKey].release();
-				delete audioQueue[audioKey];
+				this.audioQueue[audioKey].release();
+				delete this.audioQueue[audioKey];
 				// Reset position to beginning so audio can be played again
-				audioPositions[audioKey] = 0;
-				audioPlaying = '';
+				this.audioPositions[audioKey] = 0;
+				this.audioPlaying = '';
 				emitter.emit('audioFocused', '');
-				await playNextAudioInSequence(audioKey);
+				await this.playNextAudioInSequence(audioKey);
 			} catch {
 				// Ignore errors during cleanup
 			}
 		}
-	}
+	};
 
-	function getNextAudioKey({ message, rid }: { message: TMessageModel; rid: string }) {
+	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
 		if (!message.attachments) return;
 		const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
 		const uri = getFilePathAudio({ audioUrl, audioType });
 		if (!uri) return;
 		return getAudioKey({ msgId: message.id, rid, uri });
-	}
+	};
 
-	async function getNextAudioMessage(msgId: string, rid: string) {
+	getNextAudioMessage = async (msgId: string, rid: string) => {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
@@ -174,10 +164,10 @@ function createAudioManager() {
 			return message;
 		}
 		return null;
-	}
+	};
 
-	async function playNextAudioInSequence(previousAudioKey: string) {
-		const meta = audioMeta[previousAudioKey];
+	playNextAudioInSequence = async (previousAudioKey: string) => {
+		const meta = this.audioMeta[previousAudioKey];
 		if (!meta) {
 			return;
 		}
@@ -185,53 +175,44 @@ function createAudioManager() {
 		if (!msgId) {
 			return;
 		}
-		const nextMessage = await getNextAudioMessage(msgId, rid);
+		const nextMessage = await this.getNextAudioMessage(msgId, rid);
 		if (nextMessage && nextMessage.attachments) {
-			const nextAudioInSeqKey = getNextAudioKey({ message: nextMessage, rid });
-			if (nextAudioInSeqKey && audioQueue[nextAudioInSeqKey] && audiosRendered.has(nextAudioInSeqKey)) {
-				await playAudio(nextAudioInSeqKey);
+			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
+			if (nextAudioInSeqKey && this.audioQueue[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
+				await this.playAudio(nextAudioInSeqKey);
 			}
 		}
-	}
+	};
 
-	async function unloadRoomAudios(rid?: string) {
+	unloadRoomAudios = async (rid?: string) => {
 		if (!rid) return;
-		const roomAudioKeysLoaded = Object.keys(audioQueue).filter(audioKey => audioMeta[audioKey]?.rid === rid);
-		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => audioQueue[key]);
+		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => this.audioMeta[audioKey]?.rid === rid);
+		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
 		try {
 			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
 		} catch (error) {
 			log(error);
 		}
 		roomAudioKeysLoaded.forEach(key => {
-			audioSubscriptions[key]?.();
-			delete audioSubscriptions[key];
-			delete audioCallbacks[key];
-			delete audioQueue[key];
-			delete audioUris[key];
-			delete audioPositions[key];
-			delete audioRates[key];
-			delete audioMeta[key];
+			this.audioSubscriptions[key]?.();
+			delete this.audioSubscriptions[key];
+			delete this.audioCallbacks[key];
+			delete this.audioQueue[key];
+			delete this.audioUris[key];
+			delete this.audioPositions[key];
+			delete this.audioRates[key];
+			delete this.audioMeta[key];
 		});
-		audioPlaying = '';
-	}
+		this.audioPlaying = '';
+	};
 
-	return {
-		playAudio,
-		pauseAudio,
-		setPositionAsync,
-		setRateAsync,
-		onEnd,
-		unloadRoomAudios,
-		playNextAudioInSequence,
-		getNextAudioKey,
-		getNextAudioMessage,
-		addAudioRendered,
-		removeAudioRendered,
-		loadAudio,
-		onPlaybackStatusUpdate,
-		setOnPlaybackStatusUpdate
+	addAudioRendered = (audioKey: string) => {
+		this.audiosRendered.add(audioKey);
+	};
+
+	removeAudioRendered = (audioKey: string) => {
+		this.audiosRendered.delete(audioKey);
 	};
 }
 
-export default createAudioManager();
+export default new AudioManagerClass();
