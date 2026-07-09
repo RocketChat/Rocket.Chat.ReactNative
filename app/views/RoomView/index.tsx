@@ -1,3 +1,4 @@
+// e2e-selection evidence check — throwaway, do not merge
 import { Component, createRef, type RefObject } from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
