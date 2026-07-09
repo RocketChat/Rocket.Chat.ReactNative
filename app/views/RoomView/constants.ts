@@ -43,4 +43,37 @@ export const roomAttrsUpdate = [
 	'E2EKey',
 	'encrypted',
 	'inviter'
-] as TRoomUpdate[];
+] as const satisfies readonly TRoomUpdate[];
+
+export const roomAttrsUpdateColumns: Record<(typeof roomAttrsUpdate)[number], string> = {
+	f: 'f',
+	ro: 'ro',
+	blocked: 'blocked',
+	blocker: 'blocker',
+	archived: 'archived',
+	tunread: 'tunread',
+	muted: 'muted',
+	ignored: 'ignored',
+	jitsiTimeout: 'jitsi_timeout',
+	announcement: 'announcement',
+	sysMes: 'sys_mes',
+	topic: 'topic',
+	name: 'name',
+	fname: 'fname',
+	roles: 'roles',
+	bannerClosed: 'banner_closed',
+	visitor: 'visitor',
+	joinCodeRequired: 'join_code_required',
+	teamMain: 'team_main',
+	teamId: 'team_id',
+	status: 'status',
+	lastMessage: 'last_message',
+	onHold: 'on_hold',
+	t: 't',
+	autoTranslate: 'auto_translate',
+	autoTranslateLanguage: 'auto_translate_language',
+	unmuted: 'unmuted',
+	E2EKey: 'e2e_key',
+	encrypted: 'encrypted',
+	inviter: 'inviter'
+};
