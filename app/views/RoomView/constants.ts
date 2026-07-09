@@ -42,6 +42,5 @@ export const roomAttrsUpdate = [
 	'unmuted',
 	'E2EKey',
 	'encrypted',
-	'status',
 	'inviter'
 ] as TRoomUpdate[];
