@@ -37,3 +37,5 @@ const root = function* root() {
 };
 
 export default root;
+
+// e2e-obs C7 scratch — reverted after observation
