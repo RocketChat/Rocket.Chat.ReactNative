@@ -5,7 +5,7 @@ import Thread from '../Thread';
 import Reactions from '../Reactions';
 import Broadcast from '../Broadcast';
 import MessageTime from '../Time';
-import { AttachmentLayout } from './AttachmentLayout';
+import { ContentLayout } from './ContentLayout';
 
 const StandardLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
@@ -15,7 +15,7 @@ const StandardLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 			<User />
 			{showTimeLarge ? <MessageTime /> : null}
 			<View style={{ gap: 4 }}>
-				<AttachmentLayout />
+				<ContentLayout />
 				<Thread />
 				<Reactions />
 				<Broadcast />

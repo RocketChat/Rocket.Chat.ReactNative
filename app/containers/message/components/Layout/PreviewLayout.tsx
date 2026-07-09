@@ -1,6 +1,6 @@
 import User from '../User';
 import MessageTime from '../Time';
-import { AttachmentLayout } from './AttachmentLayout';
+import { ContentLayout } from './ContentLayout';
 
 const PreviewLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 	'use memo';
@@ -9,7 +9,7 @@ const PreviewLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
 		<>
 			<User />
 			{showTimeLarge ? <MessageTime /> : null}
-			<AttachmentLayout />
+			<ContentLayout />
 		</>
 	);
 };
