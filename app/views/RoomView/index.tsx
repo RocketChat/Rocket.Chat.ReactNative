@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import { AccessibilityInfo, InteractionManager, Text, View } from 'react-native';
+import { AccessibilityInfo, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
@@ -12,28 +11,23 @@ import { useStore } from 'zustand';
 import { type TNavigation } from 'stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
-import { getRoutingConfig, joinRoom as joinRoomService, toggleFollowMessage } from '../../lib/services/restApi';
+import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
-import { Review } from '../../lib/methods/helpers/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../lib/hooks/withDimensions';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import { sendLoadingEvent } from '../../containers/Loading';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
@@ -59,21 +53,19 @@ import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications
 import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
 import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
-import { sendMessage } from '../../lib/methods/sendMessage';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
-import { getUidDirectMessage, getRoomTitle, debounce, isIOS, hasPermission } from '../../lib/methods/helpers';
+import { getUidDirectMessage, getRoomTitle, debounce, hasPermission } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
-import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { type TGetMessageInfoResult } from './services/getMessageInfo';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
-import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
+import { removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
@@ -86,10 +78,11 @@ import { RoomStoreContext } from './stores/RoomStoreContext';
 import { useJumpToMessage } from './hooks/useJumpToMessage';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
+import { useRoomLifecycle } from './hooks/useRoomLifecycle';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
-type TRoomViewReducerState = Pick<
+export type TRoomViewReducerState = Pick<
 	IRoomViewState,
 	| 'readOnly'
 	| 'unreadsCount'
@@ -312,26 +305,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const lastOpen = useStore(roomStore, s => s.lastOpen);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
 
-	// onThreadMessagesLoaded is recreated every render; a ref keeps the trigger effect's deps at
-	// [rid, isAuthenticated] so it doesn't re-fire on identity change alone (see ticket NATIVE-1356).
-	const onThreadMessagesLoadedRef = useRef(onThreadMessagesLoaded);
-	useEffect(() => {
-		onThreadMessagesLoadedRef.current = onThreadMessagesLoaded;
-	});
-
-	const runInit = () => roomStore.getState().init({ tmid, onThreadMessagesLoaded: () => onThreadMessagesLoadedRef.current?.() });
-
-	useEffect(() => {
-		if (!rid || !isAuthenticated) {
-			return;
-		}
-		const task = InteractionManager.runAfterInteractions(() => {
-			runInit();
-		});
-		return () => task.cancel();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [rid, isAuthenticated]);
-
 	const isOmnichannel = room.t === 'l';
 
 	const hideSystemMessages = (() => {
@@ -422,26 +395,36 @@ const RoomView = (props: IRoomViewProps) => {
 		messageErrorActionsRef
 	});
 
-	const updateUnreadCount = useCallback(async () => {
-		if (!rid) {
-			return;
-		}
-		const db = database.active;
-		const observable = await db
-			.get('subscriptions')
-			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(rid)))
-			.observeWithColumns(['unread']);
-
-		queryUnreadsRef.current = observable.subscribe(rooms => {
-			const unreadsCount = rooms.reduce(
-				(unreadCount, item) => (item.unread > 0 && !item.hideUnreadStatus ? unreadCount + item.unread : unreadCount),
-				0
-			);
-			if (unreadsCountRef.current !== unreadsCount) {
-				setState({ unreadsCount });
-			}
-		});
-	}, [rid]);
+	const { joinRoom, resumeRoom, onJoin, handleSendMessage, toggleFollowThread, fetchThreadName } = useRoomLifecycle({
+		rid,
+		tmid,
+		t,
+		isAuthenticated,
+		isMasterDetail,
+		isOmnichannel,
+		room,
+		roomUpdate,
+		serverVersion,
+		roomStore,
+		navigation,
+		route,
+		dispatch,
+		messageActionStore,
+		sub,
+		queryUnreadsRef,
+		pendingJumpRef,
+		jumpToThreadIdRef,
+		unreadsCountRef,
+		roomRef,
+		userRef,
+		joinCodeRef,
+		consumeJumpParam,
+		navToThread,
+		onQuoteInit,
+		resetAction,
+		onThreadMessagesLoaded,
+		setState
+	});
 
 	const jumpToMessageByUrl = useCallback(
 		async (messageUrl?: string, isFromReply?: boolean) => {
@@ -459,97 +442,6 @@ const RoomView = (props: IRoomViewProps) => {
 			}
 		},
 		[jumpToMessage]
-	);
-
-	const handleRoomRemoved = useCallback(
-		({ rid: removedRid }: { rid: string }) => {
-			if (removedRid === rid) {
-				Navigation.popToTop(isMasterDetail);
-				const currentRoom = roomRef.current;
-				currentRoom.t !== 'l' &&
-					showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(currentRoom) }), I18n.t('Oops'));
-			}
-		},
-		[rid, isMasterDetail]
-	);
-
-	const handleSendMessage = useCallback(
-		(message: string, tshow?: boolean) => {
-			logEvent(events.ROOM_SEND_MESSAGE);
-			sendMessage(rid as string, message, tmid, userRef.current, tshow).then(() => {
-				roomStore.getState().markMessageSent();
-				Review.pushPositiveEvent();
-			});
-			resetAction();
-		},
-		[rid, tmid, roomStore, resetAction]
-	);
-
-	const onJoin = useCallback(() => {
-		roomStore.getState().join();
-	}, [roomStore]);
-
-	const joinRoom = useCallback(async () => {
-		logEvent(events.ROOM_JOIN);
-		try {
-			if (isOmnichannel) {
-				if ('_id' in room) {
-					await takeInquiry(room._id, serverVersion as string);
-				}
-				onJoin();
-			} else {
-				const { joinCodeRequired, rid: roomRid } = room;
-				if (joinCodeRequired) {
-					joinCodeRef.current?.show();
-				} else {
-					await joinRoomService(roomRid, null, t as any);
-					onJoin();
-				}
-			}
-		} catch (e) {
-			log(e);
-		}
-	}, [isOmnichannel, room, serverVersion, onJoin, t]);
-
-	const resumeRoom = useCallback(async () => {
-		logEvent(events.ROOM_RESUME);
-		try {
-			if (isOmnichannel) {
-				if ('rid' in room) {
-					await takeResume(room.rid);
-				}
-				onJoin();
-			}
-		} catch (e) {
-			log(e);
-		}
-	}, [isOmnichannel, room, onJoin]);
-
-	const fetchThreadName = useCallback(
-		async (threadId: string, messageId: string) => {
-			const threadRecord = await getThreadById(threadId);
-			if (threadRecord?.t === 'rm') {
-				return I18n.t('Message_removed');
-			}
-			return getThreadName(rid as string, threadId, messageId);
-		},
-		[rid]
-	);
-
-	const toggleFollowThread = useCallback(
-		async (isFollowingThread: boolean, threadId?: string) => {
-			try {
-				const threadMessageId = threadId ?? tmid;
-				if (!threadMessageId) {
-					return;
-				}
-				await toggleFollowMessage(threadMessageId, !isFollowingThread);
-				EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-			} catch (e) {
-				log(e);
-			}
-		},
-		[tmid]
 	);
 
 	const navToRoomInfo = useCallback(
@@ -764,84 +656,6 @@ const RoomView = (props: IRoomViewProps) => {
 		setState({ showMissingE2EEKey, showE2EEDisabledRoom });
 	}, [room, encryptionEnabled]);
 
-	useEffect(() => {
-		const { action } = messageActionStore.getState();
-		const didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			if (rid) {
-				try {
-					sub?.subscribe?.();
-				} catch (e) {
-					log(e);
-				}
-			}
-			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
-			// rows and is fired from the subscription hook's success path instead.
-			if (pendingJumpRef.current && !tmid) {
-				consumeJumpParam(pendingJumpRef.current);
-			}
-			if (jumpToThreadIdRef.current && !pendingJumpRef.current) {
-				navToThread({ tmid: jumpToThreadIdRef.current });
-			}
-			if (isIOS && rid) {
-				updateUnreadCount();
-			}
-			if (action?.kind === 'quote' && action.messageIds.length === 1) {
-				onQuoteInit(action.messageIds[0]);
-			}
-		});
-		const unsubscribeBlur = navigation.addListener('blur', () => {
-			AudioManager.pauseAudio();
-		});
-		return () => {
-			if (didMountInteraction?.cancel) {
-				didMountInteraction.cancel();
-			}
-			if (queryUnreadsRef.current?.unsubscribe) {
-				queryUnreadsRef.current.unsubscribe();
-			}
-			unsubscribeBlur();
-			if (sub?.unsubscribe) {
-				sub.unsubscribe();
-			}
-			if (!tmid) {
-				AudioManager.unloadRoomAudios(rid);
-			}
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useEffect(() => {
-		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
-		return () => {
-			EventEmitter.removeListener('ROOM_REMOVED', handleRoomRemoved);
-		};
-	}, [handleRoomRemoved]);
-
-	useEffect(() => {
-		dispatch(clearInAppFeedback());
-		return () => {
-			dispatch(clearInAppFeedback());
-		};
-	}, [dispatch]);
-
-	const prevJumpToMessageIdRef = useRef(route.params?.jumpToMessageId);
-	useEffect(() => {
-		const next = route.params?.jumpToMessageId;
-		if (next && next !== prevJumpToMessageIdRef.current) {
-			consumeJumpParam(next);
-		}
-		prevJumpToMessageIdRef.current = next;
-	}, [route.params?.jumpToMessageId, consumeJumpParam]);
-
-	const prevJumpToThreadIdRef = useRef(route.params?.jumpToThreadId);
-	useEffect(() => {
-		const next = route.params?.jumpToThreadId;
-		if (next && next !== prevJumpToThreadIdRef.current) {
-			navToThread({ tmid: next });
-		}
-		prevJumpToThreadIdRef.current = next;
-	}, [route.params?.jumpToThreadId, navToThread]);
-
 	// If it's a livechat room
 	useEffect(() => {
 		if (t === 'l') {
@@ -859,16 +673,6 @@ const RoomView = (props: IRoomViewProps) => {
 		updateE2EEState();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [encryptionEnabled, roomUpdate.encrypted, roomUpdate.E2EKey]);
-
-	// init() is skipped for invite subscriptions. Initialize when invite has been accepted
-	const prevStatusRef = useRef(roomUpdate.status);
-	useEffect(() => {
-		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			runInit();
-		}
-		prevStatusRef.current = roomUpdate.status;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [roomUpdate.status]);
 
 	useHeader({
 		rid,

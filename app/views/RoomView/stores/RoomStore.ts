@@ -33,6 +33,8 @@ export interface RoomState {
 	init: (params?: IRoomStoreInitParams) => Promise<void>;
 	join: () => void;
 	markMessageSent: () => void;
+	joinRoom?: () => Promise<void>;
+	resumeRoom?: () => Promise<void>;
 }
 
 export type RoomStore = StoreApi<RoomState>;
