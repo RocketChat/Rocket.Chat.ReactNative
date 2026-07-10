@@ -96,12 +96,7 @@ export const useChooseMedia = ({
 
 	const startShareView = () => {
 		const text = getText?.() || '';
-		let selectedMessages: string[] = [];
-		if (action?.kind === 'quote') {
-			selectedMessages = action.messageIds;
-		} else if (action) {
-			selectedMessages = [action.messageId];
-		}
+		const selectedMessages = action?.kind === 'quote' ? action.messageIds : [];
 		return {
 			selectedMessages,
 			text
