@@ -20,9 +20,9 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { type ChatsStackParamList } from '../../stacks/types';
-import { type IRoomInfoParam } from '../SearchMessagesView';
 import {
 	type IApplicationState,
+	type IRoomInfoParam,
 	type TMessageModel,
 	type ISubscription,
 	SubscriptionType,
