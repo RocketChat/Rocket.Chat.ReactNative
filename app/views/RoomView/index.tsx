@@ -7,6 +7,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 import { type NavigatorScreenParams } from '@react-navigation/native';
+import { useStore } from 'zustand';
 
 import { type TNavigation } from 'stacks/stackType';
 
@@ -94,7 +95,8 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { useRoomSubscription } from './hooks/useRoomSubscription';
+import { getOrCreateRoomStore, releaseRoomStore } from './stores/RoomStore';
+import { RoomStoreContext } from './stores/RoomStoreContext';
 import { useJumpToMessage } from './hooks/useJumpToMessage';
 import { useHeader } from './hooks/useHeader';
 
@@ -309,16 +311,39 @@ const RoomView = (props: IRoomViewProps) => {
 		}
 	}, [consumeJumpParam]);
 
-	const { room, roomUpdate, joined, member, roomUserId, loading, lastOpen, canAutoTranslate, init, setLastOpen, setJoined } =
-		useRoomSubscription({
-			rid,
-			tmid,
-			t,
-			initialRoom,
-			roomUserId: initialRoomUserId,
-			isAuthenticated,
-			onThreadMessagesLoaded
+	const [roomStore] = useState(() => getOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
+	// rid is stable for this RoomView instance (it's what roomStore was acquired for); release once on unmount.
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	useEffect(() => () => releaseRoomStore(rid ?? ''), []);
+
+	const room = useStore(roomStore, s => s.room);
+	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
+	const joined = useStore(roomStore, s => s.joined);
+	const member = useStore(roomStore, s => s.member);
+	const roomUserId = useStore(roomStore, s => s.roomUserId);
+	const loading = useStore(roomStore, s => s.loading);
+	const lastOpen = useStore(roomStore, s => s.lastOpen);
+	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
+
+	// onThreadMessagesLoaded is recreated every render; a ref keeps the trigger effect's deps at
+	// [rid, isAuthenticated] so it doesn't re-fire on identity change alone (see ticket NATIVE-1356).
+	const onThreadMessagesLoadedRef = useRef(onThreadMessagesLoaded);
+	useEffect(() => {
+		onThreadMessagesLoadedRef.current = onThreadMessagesLoaded;
+	});
+
+	const runInit = () => roomStore.getState().init({ tmid, onThreadMessagesLoaded: () => onThreadMessagesLoadedRef.current?.() });
+
+	useEffect(() => {
+		if (!rid || !isAuthenticated) {
+			return;
+		}
+		const task = InteractionManager.runAfterInteractions(() => {
+			runInit();
 		});
+		return () => task.cancel();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [rid, isAuthenticated]);
 
 	const isOmnichannel = room.t === 'l';
 
@@ -627,17 +652,17 @@ const RoomView = (props: IRoomViewProps) => {
 		(message: string, tshow?: boolean) => {
 			logEvent(events.ROOM_SEND_MESSAGE);
 			sendMessage(rid as string, message, tmid, userRef.current, tshow).then(() => {
-				setLastOpen(null);
+				roomStore.getState().markMessageSent();
 				Review.pushPositiveEvent();
 			});
 			resetAction();
 		},
-		[rid, tmid, setLastOpen, resetAction]
+		[rid, tmid, roomStore, resetAction]
 	);
 
 	const onJoin = useCallback(() => {
-		setJoined(true);
-	}, [setJoined]);
+		roomStore.getState().join();
+	}, [roomStore]);
 
 	const joinRoom = useCallback(async () => {
 		logEvent(events.ROOM_JOIN);
@@ -1024,7 +1049,7 @@ const RoomView = (props: IRoomViewProps) => {
 	const prevStatusRef = useRef(roomUpdate.status);
 	useEffect(() => {
 		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			init();
+			runInit();
 		}
 		prevStatusRef.current = roomUpdate.status;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1277,71 +1302,73 @@ const RoomView = (props: IRoomViewProps) => {
 	const federated = 'id' in room && isRoomFederated(room);
 
 	return (
-		<RoomProviders
-			store={messageActionStore}
-			rid={room.rid}
-			t={room.t}
-			room={room}
-			tmid={tmid}
-			sharing={false}
-			isAutocompleteVisible={state.isAutocompleteVisible}
-			updateAutocompleteVisible={updateAutocompleteVisible}
-			onRemoveQuoteMessage={onRemoveQuoteMessage}
-			editCancel={onEditCancel}
-			editRequest={onEditRequest}
-			onSendMessage={handleSendMessage}
-			setQuotesAndText={setQuotesAndText}
-			getText={getText}>
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-				{!tmid ? (
-					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
-				) : null}
-				<MessageRoomProvider
-					navToRoomInfo={navToRoomInfo}
-					showAttachment={showAttachment}
-					blockAction={blockAction}
-					handleEnterCall={handleEnterCall}
-					fetchThreadName={fetchThreadName}
-					toggleFollowThread={toggleFollowThread}
-					jumpToMessage={jumpToMessageByUrl}
-					closeEmojiAndAction={handleCloseEmoji}
-					onReactionPress={onReactionPress}
-					onReactionLongPress={onReactionLongPress}
-					reactionInit={onReactionInit}
-					onDiscussionPress={onDiscussionPress}
-					onThreadPress={onThreadPress}
-					replyBroadcast={replyBroadcast}
-					errorActionsShow={errorActionsShow}
-					onAnswerButtonPress={handleSendMessage}
-					onEncryptedPress={onEncryptedPress}
-					archived={'id' in room && room.archived}
-					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-					rid={room.rid}
-					user={user as any}
-					baseUrl={baseUrl}
-					broadcast={'id' in room && room.broadcast}
-					isThreadRoom={!!tmid}
-					Message_GroupingPeriod={Message_GroupingPeriod}
-					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-					<List
-						ref={listRef}
-						listRef={flatListRef}
+		<RoomStoreContext.Provider value={roomStore}>
+			<RoomProviders
+				store={messageActionStore}
+				rid={room.rid}
+				t={room.t}
+				room={room}
+				tmid={tmid}
+				sharing={false}
+				isAutocompleteVisible={state.isAutocompleteVisible}
+				updateAutocompleteVisible={updateAutocompleteVisible}
+				onRemoveQuoteMessage={onRemoveQuoteMessage}
+				editCancel={onEditCancel}
+				editRequest={onEditRequest}
+				onSendMessage={handleSendMessage}
+				setQuotesAndText={setQuotesAndText}
+				getText={getText}>
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+					{!tmid ? (
+						<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
+					) : null}
+					<MessageRoomProvider
+						navToRoomInfo={navToRoomInfo}
+						showAttachment={showAttachment}
+						blockAction={blockAction}
+						handleEnterCall={handleEnterCall}
+						fetchThreadName={fetchThreadName}
+						toggleFollowThread={toggleFollowThread}
+						jumpToMessage={jumpToMessageByUrl}
+						closeEmojiAndAction={handleCloseEmoji}
+						onReactionPress={onReactionPress}
+						onReactionLongPress={onReactionLongPress}
+						reactionInit={onReactionInit}
+						onDiscussionPress={onDiscussionPress}
+						onThreadPress={onThreadPress}
+						replyBroadcast={replyBroadcast}
+						errorActionsShow={errorActionsShow}
+						onAnswerButtonPress={handleSendMessage}
+						onEncryptedPress={onEncryptedPress}
+						archived={'id' in room && room.archived}
+						isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 						rid={room.rid}
-						t={room.t as RoomType}
-						tmid={tmid}
-						renderRow={renderItem}
-						hideSystemMessages={hideSystemMessages}
-						showMessageInMainThread={user.showMessageInMainThread ?? false}
-						serverVersion={serverVersion}
-					/>
-				</MessageRoomProvider>
-				{renderFooter()}
-				{renderActions()}
-				<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
-				<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} theme={theme} />
-			</SafeAreaView>
-		</RoomProviders>
+						user={user as any}
+						baseUrl={baseUrl}
+						broadcast={'id' in room && room.broadcast}
+						isThreadRoom={!!tmid}
+						Message_GroupingPeriod={Message_GroupingPeriod}
+						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
+						<List
+							ref={listRef}
+							listRef={flatListRef}
+							rid={room.rid}
+							t={room.t as RoomType}
+							tmid={tmid}
+							renderRow={renderItem}
+							hideSystemMessages={hideSystemMessages}
+							showMessageInMainThread={user.showMessageInMainThread ?? false}
+							serverVersion={serverVersion}
+						/>
+					</MessageRoomProvider>
+					{renderFooter()}
+					{renderActions()}
+					<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
+					<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} theme={theme} />
+				</SafeAreaView>
+			</RoomProviders>
+		</RoomStoreContext.Provider>
 	);
 };
 
