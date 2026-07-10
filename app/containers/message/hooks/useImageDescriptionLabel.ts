@@ -3,6 +3,8 @@ import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 import { type IAttachment } from '../../../definitions';
 
 export const useImageDescriptionLabel = (attachments: IAttachment[] | undefined, msg: string | undefined): string => {
+	'use memo';
+
 	const isAltTextSupported = useAltTextSupported();
 	if (isAltTextSupported) {
 		return '';

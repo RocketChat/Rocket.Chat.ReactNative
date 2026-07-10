@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
@@ -51,6 +51,8 @@ export function useRoomSubscription({
 	isAuthenticated,
 	onThreadMessagesLoaded
 }: IUseRoomSubscriptionParams): IUseRoomSubscriptionResult {
+	'use memo';
+
 	const [room, setRoom] = useState(initialRoom);
 	const [roomUpdate, setRoomUpdate] = useState<IRoomViewState['roomUpdate']>({});
 	const [joined, setJoined] = useState(true);
@@ -114,7 +116,7 @@ export function useRoomSubscription({
 		return () => subscription.unsubscribe();
 	}, [rid, t]);
 
-	const getRoomMember = useCallback(async () => {
+	const getRoomMember = async () => {
 		const currentRoom = roomRef.current;
 		if ('id' in currentRoom && currentRoom.t === 'd' && !isGroupChat(currentRoom)) {
 			try {
@@ -131,9 +133,9 @@ export function useRoomSubscription({
 			}
 		}
 		return {};
-	}, []);
+	};
 
-	const init = useCallback(async () => {
+	const init = async () => {
 		if (mountedRef.current) {
 			setLoading(true);
 		}
@@ -184,7 +186,7 @@ export function useRoomSubscription({
 				}, RETRY_DELAY);
 			}
 		}
-	}, [rid, tmid, onThreadMessagesLoaded, getRoomMember]);
+	};
 
 	useEffect(() => {
 		initRef.current = init;

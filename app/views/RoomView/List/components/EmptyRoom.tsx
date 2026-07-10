@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 
 import { useTheme } from '../../../../theme';
@@ -11,12 +10,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = memo(({ length, rid }: { length: number; rid: string }) => {
+const EmptyRoom = ({ length, rid }: { length: number; rid: string }) => {
+	'use memo';
+
 	const { theme } = useTheme();
 	if (length === 0 || !rid) {
 		return <ImageBackground source={{ uri: `message_empty_${theme === 'dark' ? 'black' : theme}` }} style={styles.image} />;
 	}
 	return null;
-});
+};
 
 export default EmptyRoom;

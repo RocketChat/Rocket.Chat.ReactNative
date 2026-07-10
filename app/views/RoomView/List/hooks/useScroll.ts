@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
 import { type TAnyMessageModel } from '../../../../definitions';
@@ -47,6 +47,8 @@ export const useScroll = ({
 	setHighTs: (next: number | null) => void;
 	fetchMessages: () => Promise<void>;
 }) => {
+	'use memo';
+
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const pendingJump = useRef<IPendingJump | null>(null);
@@ -82,7 +84,7 @@ export const useScroll = ({
 	// so the shorter tail cannot strand it, and scrolling the already-settled anchored content sidesteps
 	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
 	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
-	const jumpToBottom = useCallback(() => {
+	const jumpToBottom = () => {
 		if (highTs != null) {
 			listRef.current?.scrollToOffset({ offset: 0, animated: false });
 			pendingBottom.current = true;
@@ -91,90 +93,75 @@ export const useScroll = ({
 			return;
 		}
 		listRef.current?.scrollToOffset({ offset: -100 });
-	}, [listRef, highTs, setHighTs]);
+	};
 
-	const setHighlightTimeout = useCallback(() => {
+	const setHighlightTimeout = () => {
 		if (highlightTimeout.current) {
 			clearTimeout(highlightTimeout.current);
 		}
 		highlightTimeout.current = setTimeout(() => {
 			setHighlightedMessageId(null);
 		}, HIGHLIGHT_TIMEOUT);
-	}, []);
+	};
 
 	// Finish a jump: highlight the target, resolve. The Anchored Window stays put.
-	const completeJump = useCallback(
-		(jump: IPendingJump) => {
-			if (jump.safety) {
-				clearTimeout(jump.safety);
-			}
-			pendingJump.current = null;
-			setHighlightedMessageId(jump.messageId);
-			setHighlightTimeout();
-			jump.resolve();
-		},
-		[setHighlightTimeout]
-	);
+	const completeJump = (jump: IPendingJump) => {
+		if (jump.safety) {
+			clearTimeout(jump.safety);
+		}
+		pendingJump.current = null;
+		setHighlightedMessageId(jump.messageId);
+		setHighlightTimeout();
+		jump.resolve();
+	};
 
 	// Abort a jump that never resolved (target deleted / filtered / never re-observed): release any
 	// Anchored Window and resolve so the caller is never stuck.
-	const abortJump = useCallback(
-		(jump: IPendingJump) => {
-			if (jump.safety) {
-				clearTimeout(jump.safety);
-			}
-			pendingJump.current = null;
-			if (jump.anchored) {
-				setHighTs(null);
-			}
-			jump.resolve();
-		},
-		[setHighTs]
-	);
+	const abortJump = (jump: IPendingJump) => {
+		if (jump.safety) {
+			clearTimeout(jump.safety);
+		}
+		pendingJump.current = null;
+		if (jump.anchored) {
+			setHighTs(null);
+		}
+		jump.resolve();
+	};
 
 	// Arm/refresh the abort safety net. Refreshed on each productive growth so a deep, still-loading
 	// target is not aborted mid-load; MAX_JUMP_GROWTH_RETRIES still guarantees termination.
-	const armJumpSafety = useCallback(
-		(jump: IPendingJump) => {
-			if (jump.safety) {
-				clearTimeout(jump.safety);
+	const armJumpSafety = (jump: IPendingJump) => {
+		if (jump.safety) {
+			clearTimeout(jump.safety);
+		}
+		jump.safety = setTimeout(() => {
+			if (pendingJump.current === jump && !jump.scrolled) {
+				abortJump(jump);
 			}
-			jump.safety = setTimeout(() => {
-				if (pendingJump.current === jump && !jump.scrolled) {
-					abortJump(jump);
-				}
-			}, JUMP_SAFETY_TIMEOUT);
-		},
-		[abortJump]
-	);
+		}, JUMP_SAFETY_TIMEOUT);
+	};
 
 	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
-	const reScrollWhenSettled = useCallback(
-		(targetId: string | null | undefined) => {
-			const settled = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
-			if (settled !== -1) {
-				listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
-			}
-		},
-		[listRef, messagesIds]
-	);
+	const reScrollWhenSettled = (targetId: string | null | undefined) => {
+		const settled = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
+		if (settled !== -1) {
+			listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
+		}
+	};
 
 	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
 	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
 	// Re-read the index in case the window shifted a row between.
-	const scrollToTarget = useCallback(
-		(messageId: string, index: number) => {
-			listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
-			setTimeout(() => {
-				// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
-				if (lastJumpTargetId.current !== messageId) {
-					return;
-				}
-				reScrollWhenSettled(messageId);
-			}, SCROLL_TO_INDEX_RETRY_DELAY);
-		},
-		[listRef, reScrollWhenSettled]
-	);
+	const scrollToTarget = (messageId: string, index: number) => {
+		listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
+		setTimeout(() => {
+			// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
+			if (lastJumpTargetId.current !== messageId) {
+				return;
+			}
+			reScrollWhenSettled(messageId);
+		}, SCROLL_TO_INDEX_RETRY_DELAY);
+	};
 
 	// Release settled: the live tail has emitted and the viewport is already pinned at offset 0 from the
 	// pre-swap scroll. Re-pin in case the swap nudged it, then restore maintainVisibleContentPosition for

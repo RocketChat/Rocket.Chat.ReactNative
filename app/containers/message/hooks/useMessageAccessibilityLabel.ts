@@ -32,6 +32,8 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 };
 
 export const useMessageAccessibilityLabel = (): string => {
+	'use memo';
+
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const { autoTranslateLanguage } = useAutoTranslate();
 	const { attachments, mentions, channels, comment, t: type } = useContentData();
