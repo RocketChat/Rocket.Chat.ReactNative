@@ -1,4 +1,4 @@
-import { createAudioPlayer, type AudioPlayer, type AudioStatus } from 'expo-audio';
+import { createAudioPlayer, setAudioModeAsync, type AudioPlayer, type AudioStatus } from 'expo-audio';
 import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';
@@ -8,6 +8,17 @@ import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '../../definitions';
 import { emitter } from './helpers';
 import log from './helpers/log';
+
+// Mirrors the previous expo-av AUDIO_MODE: audio plays even when the device is
+// in silent mode, stays active in the background, and does not mix with other sessions.
+const PLAYBACK_MODE = {
+	playsInSilentMode: true,
+	shouldPlayInBackground: true,
+	allowsRecording: false,
+	shouldRouteThroughEarpiece: false,
+	interruptionMode: 'doNotMix',
+	interruptionModeAndroid: 'doNotMix'
+} as const;
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
@@ -24,7 +35,6 @@ class AudioManagerClass {
 
 	loadAudio = async ({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> => {
 		const audioKey = getAudioKey({ msgId, rid, uri });
-		this.audiosRendered.add(audioKey);
 		this.audioUris[audioKey] = uri;
 		this.audioMeta[audioKey] = { msgId, rid };
 		if (this.audioQueue[audioKey]) return audioKey;
@@ -37,6 +47,12 @@ class AudioManagerClass {
 	async playAudio(audioKey: string) {
 		if (this.audioPlaying && this.audioPlaying !== audioKey) {
 			this.pauseAudio();
+		}
+
+		try {
+			await setAudioModeAsync(PLAYBACK_MODE);
+		} catch {
+			// Ignore audio mode errors — playback still attempted below
 		}
 
 		// If player was released, recreate it
@@ -68,7 +84,7 @@ class AudioManagerClass {
 		} catch {
 			// Ignore playback start errors
 		}
-	};
+	}
 
 	async pauseAudio() {
 		if (this.audioPlaying) {
@@ -77,7 +93,7 @@ class AudioManagerClass {
 		}
 	};
 
-	async setPositionAsync(audioKey: string, time: number){
+	async setPositionAsync(audioKey: string, time: number) {
 		this.audioPositions[audioKey] = time;
 		const player = this.audioQueue[audioKey];
 		if (!player) {
@@ -88,7 +104,7 @@ class AudioManagerClass {
 		} catch {
 			// Ignore seek errors
 		}
-	};
+	}
 
 	async setRateAsync(audioKey: string, value = 1.0) {
 		this.audioRates[audioKey] = value;
@@ -99,21 +115,21 @@ class AudioManagerClass {
 		}
 	};
 
-	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void){
+	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
 		if (status) {
 			callback(status);
 			this.onEnd(audioKey, status);
 		}
-	};
+	}
 
-	setOnPlaybackStatusUpdate (audioKey: string, callback: (status: AudioStatus) => void){
+	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void) {
 		this.audioCallbacks[audioKey] = callback;
 		this.audioSubscriptions[audioKey]?.();
 		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
 			this.onPlaybackStatusUpdate(audioKey, status, callback);
 		});
 		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
-	};
+	}
 
 	async onEnd(audioKey: string, status: AudioStatus) {
 		if (!this.audioQueue[audioKey]) {
@@ -136,7 +152,7 @@ class AudioManagerClass {
 				// Ignore errors during cleanup
 			}
 		}
-	};
+	}
 
 	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
 		if (!message.attachments) return;
@@ -164,7 +180,7 @@ class AudioManagerClass {
 			return message;
 		}
 		return null;
-	};
+	}
 
 	async playNextAudioInSequence(previousAudioKey: string) {
 		const meta = this.audioMeta[previousAudioKey];
@@ -182,7 +198,7 @@ class AudioManagerClass {
 				await this.playAudio(nextAudioInSeqKey);
 			}
 		}
-	};
+	}
 
 	async unloadRoomAudios(rid?: string) {
 		if (!rid) return;
@@ -204,7 +220,7 @@ class AudioManagerClass {
 			delete this.audioMeta[key];
 		});
 		this.audioPlaying = '';
-	};
+	}
 
 	addAudioRendered = (audioKey: string) => {
 		this.audiosRendered.add(audioKey);
@@ -215,4 +231,5 @@ class AudioManagerClass {
 	};
 }
 
-export default new AudioManagerClass();
+const AudioManager = new AudioManagerClass();
+export default AudioManager;

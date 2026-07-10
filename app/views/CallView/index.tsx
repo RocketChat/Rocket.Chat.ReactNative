@@ -49,7 +49,7 @@ const CallView = (): ReactElement | null => {
 	const showRingback = callState === 'ringing' && direction === 'outgoing';
 
 	// Android plays ringback natively (USAGE_VOICE_COMMUNICATION) so it follows the active comm
-	// device and toggleSpeaker actually reroutes it. iOS keeps expo-av Ringer (CallKit-managed).
+	// device and toggleSpeaker actually reroutes it. iOS keeps expo-audio Ringer (CallKit-managed).
 	useEffect(() => {
 		if (isIOS || !showRingback) return;
 		NativeVoipModule.startRingback().catch(error => {

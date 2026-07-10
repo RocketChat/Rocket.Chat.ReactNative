@@ -1,6 +1,8 @@
 import { useAudioPlayer } from 'expo-audio';
 import { useEffect, memo } from 'react';
 
+import log from '../../lib/methods/helpers/log';
+
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',
 	RINGTONE = 'ringtone'
@@ -19,7 +21,7 @@ const Ringer = memo(({ ringer }: { ringer: ERingerSounds }) => {
 			player.loop = true;
 			player.play();
 		} catch (error) {
-			console.error('Error loading sound:', error);
+			log(error);
 		}
 	}, [player]);
 

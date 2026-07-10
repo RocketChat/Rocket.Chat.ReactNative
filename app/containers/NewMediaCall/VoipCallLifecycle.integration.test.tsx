@@ -157,7 +157,7 @@ jest.mock('../../lib/services/voip/getPeerAutocompleteOptions', () => ({
 jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
-// playCallEndedSound → expo-av → Audio.Sound constructor not present in this test boundary.
+// playCallEndedSound → expo-audio → createAudioPlayer not present in this test boundary.
 jest.mock('../../lib/services/voip/playCallEndedSound', () => ({
 	playCallEndedSound: jest.fn()
 }));

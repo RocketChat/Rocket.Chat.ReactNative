@@ -2,7 +2,7 @@ import { memo, useRef, useState } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
@@ -26,6 +26,7 @@ const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number
 	useEventListener(player, 'statusChange', ({ status }) => {
 		if (status === 'error' && !hasHandledErrorRef.current) {
 			hasHandledErrorRef.current = true;
+			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_action', { action: I18n.t('playing_video') }));
 		}
 	});
 
