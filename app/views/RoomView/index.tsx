@@ -12,15 +12,8 @@ import { useStore } from 'zustand';
 import { type TNavigation } from 'stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
-import {
-	getRoutingConfig,
-	editMessage,
-	setReaction,
-	joinRoom as joinRoomService,
-	toggleFollowMessage
-} from '../../lib/services/restApi';
+import { getRoutingConfig, joinRoom as joinRoomService, toggleFollowMessage } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
-import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
@@ -28,7 +21,6 @@ import MessageErrorActions, { type IMessageErrorActions } from '../../containers
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
@@ -51,18 +43,13 @@ import Banner from './Banner';
 import styles from './styles';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
-import ReactionPicker from './ReactionPicker';
 import List from './List';
 import {
 	type IApplicationState,
-	type IAttachment,
-	type IMessage,
-	type IMessageEditAttachment,
 	type ISubscription,
 	SubscriptionType,
 	type TAnyMessageModel,
 	type TSubscriptionModel,
-	type IEmoji,
 	type RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
@@ -84,7 +71,6 @@ import { MessageRoomProvider } from '../../containers/message/stores/MessageRoom
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { type TGetMessageInfoResult } from './services/getMessageInfo';
-import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
@@ -99,6 +85,7 @@ import { getOrCreateRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
 import { useJumpToMessage } from './hooks/useJumpToMessage';
 import { useHeader } from './hooks/useHeader';
+import { useMessageActions } from './hooks/useMessageActions';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
@@ -369,174 +356,6 @@ const RoomView = (props: IRoomViewProps) => {
 		cancelJumpToMessageRef.current = cancelJumpToMessage;
 	});
 
-	const resetAction = useCallback(() => {
-		messageActionStore.getState().actions.clear();
-	}, [messageActionStore]);
-
-	const handleCloseEmoji = useCallback((action?: Function, params?: any) => {
-		if (messageComposerRef?.current) {
-			return messageComposerRef.current.closeEmojiKeyboardAndAction(action, params);
-		}
-		if (action) {
-			return action(params);
-		}
-	}, []);
-
-	const handleShowActionSheet = useCallback(
-		(options: any) => {
-			handleCloseEmoji(showActionSheet, options);
-		},
-		[handleCloseEmoji, showActionSheet]
-	);
-
-	const errorActionsShow = useCallback(
-		(message: TAnyMessageModel) => {
-			handleCloseEmoji(messageErrorActionsRef.current?.showMessageErrorActions, message);
-		},
-		[handleCloseEmoji]
-	);
-
-	const onEditInit = useCallback(
-		(messageId: string) => {
-			const { action, actions } = messageActionStore.getState();
-			if (action) {
-				return;
-			}
-			actions.startEditing(messageId);
-		},
-		[messageActionStore]
-	);
-
-	const onEditCancel = useCallback(() => {
-		resetAction();
-	}, [resetAction]);
-
-	const onEditRequest = useCallback(
-		async (
-			message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
-				attachments?: IMessageEditAttachment[];
-			}
-		) => {
-			try {
-				resetAction();
-				await editMessage(message);
-			} catch (e) {
-				log(e);
-			}
-		},
-		[resetAction]
-	);
-
-	const onQuoteInit = useCallback(
-		(messageId: string) => {
-			const { action, actions } = messageActionStore.getState();
-			if (action?.kind === 'quote') {
-				if (!action.messageIds.includes(messageId)) {
-					actions.addQuote(messageId);
-				}
-				return;
-			}
-			if (action) {
-				return;
-			}
-			actions.startQuote(messageId);
-		},
-		[messageActionStore]
-	);
-
-	const onRemoveQuoteMessage = useCallback(
-		(messageId: string) => {
-			messageActionStore.getState().actions.removeQuote(messageId);
-		},
-		[messageActionStore]
-	);
-
-	const onReactionClose = useCallback(() => {
-		resetAction();
-		hideActionSheet();
-	}, [resetAction, hideActionSheet]);
-
-	const onReactionPress = useCallback(
-		async (emoji: IEmoji, messageId: string) => {
-			try {
-				let shortname = '';
-				if (typeof emoji === 'string') {
-					shortname = emoji;
-				} else {
-					shortname = emoji.name;
-				}
-				await setReaction(shortname, messageId);
-				onReactionClose();
-				Review.pushPositiveEvent();
-			} catch (e) {
-				log(e);
-			}
-		},
-		[onReactionClose]
-	);
-
-	const showReactionPicker = useCallback(() => {
-		const { action } = messageActionStore.getState();
-		const messageId = action?.kind === 'react' ? action.messageId : undefined;
-		setTimeout(() => {
-			showActionSheet({
-				children: <ReactionPicker messageId={messageId} onEmojiSelected={onReactionPress} reactionClose={onReactionClose} />,
-				snaps: ['50%'],
-				enableContentPanningGesture: false,
-				onClose: resetAction,
-				fullContainer: true
-			});
-		}, 300);
-	}, [messageActionStore, showActionSheet, onReactionPress, onReactionClose, resetAction]);
-
-	const onReactionInit = useCallback(
-		(messageId: string) => {
-			if (messageActionStore.getState().action) {
-				return;
-			}
-			handleCloseEmoji(() => {
-				messageActionStore.getState().actions.startReacting(messageId);
-				showReactionPicker();
-			});
-		},
-		[messageActionStore, handleCloseEmoji, showReactionPicker]
-	);
-
-	const onReactionLongPress = useCallback(
-		(message: TAnyMessageModel) => {
-			handleCloseEmoji(showActionSheet, {
-				children: <ReactionsList reactions={message?.reactions} />,
-				snaps: ['50%'],
-				enableContentPanningGesture: false,
-				fullContainer: true
-			});
-		},
-		[handleCloseEmoji, showActionSheet]
-	);
-
-	const onMessageLongPress = useCallback(
-		(message: TAnyMessageModel) => {
-			const { action } = messageActionStore.getState();
-			if (action && action.kind !== 'quote') {
-				return;
-			}
-			// if it's a thread message on main room, we disable the long press
-			if (message.tmid && !tmid) {
-				return;
-			}
-			handleCloseEmoji(messageActionsRef.current?.showMessageActions, message);
-		},
-		[messageActionStore, tmid, handleCloseEmoji]
-	);
-
-	const showAttachment = useCallback(
-		(attachment: IAttachment) => {
-			// @ts-ignore
-			navigation.navigate('AttachmentView', { attachment });
-		},
-		[navigation]
-	);
-
 	const onEncryptedPress = useCallback(() => {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);
 		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
@@ -569,26 +388,39 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const onThreadPress = useMemo(() => debounce((item: TAnyMessageModel) => navToThread(item), 1000, true), [navToThread]);
 
-	const onReplyInit = useCallback(
-		async (messageId: string) => {
-			const message = await getMessageById(messageId);
-			if (!message || !rid) {
-				return;
-			}
-			// If there's a thread already, we redirect to it
-			if (message.tlm) {
-				return onThreadPress(message);
-			}
-			navigation.push('RoomView', {
-				rid,
-				tmid: messageId,
-				name: makeThreadName(message),
-				t: SubscriptionType.THREAD,
-				roomUserId
-			});
-		},
-		[rid, navigation, roomUserId, onThreadPress]
-	);
+	const {
+		resetAction,
+		handleCloseEmoji,
+		handleShowActionSheet,
+		errorActionsShow,
+		onEditInit,
+		onEditCancel,
+		onEditRequest,
+		onQuoteInit,
+		onRemoveQuoteMessage,
+		onReactionPress,
+		onReactionInit,
+		onReactionLongPress,
+		onMessageLongPress,
+		showAttachment,
+		onReplyInit,
+		replyBroadcast,
+		setQuotesAndText,
+		getText
+	} = useMessageActions({
+		messageActionStore,
+		showActionSheet,
+		hideActionSheet,
+		navigation,
+		dispatch,
+		rid,
+		tmid,
+		roomUserId,
+		onThreadPress,
+		messageComposerRef,
+		messageActionsRef,
+		messageErrorActionsRef
+	});
 
 	const updateUnreadCount = useCallback(async () => {
 		if (!rid) {
@@ -627,13 +459,6 @@ const RoomView = (props: IRoomViewProps) => {
 			}
 		},
 		[jumpToMessage]
-	);
-
-	const replyBroadcast = useCallback(
-		(message: IMessage) => {
-			dispatch(replyBroadcastAction(message));
-		},
-		[dispatch]
 	);
 
 	const handleRoomRemoved = useCallback(
@@ -816,16 +641,6 @@ const RoomView = (props: IRoomViewProps) => {
 		},
 		[dispatch]
 	);
-
-	const setQuotesAndText = useCallback(
-		(text: string, quotes: string[]) => {
-			messageActionStore.getState().actions.setQuoteMessageIds(quotes);
-			messageComposerRef.current?.setInput(text || '');
-		},
-		[messageActionStore]
-	);
-
-	const getText = useCallback(() => messageComposerRef.current?.getText(), []);
 
 	const goRoomActionsView = useCallback(
 		(screen?: keyof ModalStackParamList) => {
