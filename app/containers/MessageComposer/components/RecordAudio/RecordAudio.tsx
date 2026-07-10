@@ -16,7 +16,7 @@ import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../.
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
 import { type IUpload } from '../../../../definitions';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerRid, useComposerTmid } from '../../../../views/RoomView/stores/ComposerStore';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, type IDurationRef } from './Duration';
 import AudioPlayer from '../../../AudioPlayer';
@@ -30,7 +30,8 @@ export const RecordAudio = (): ReactElement | null => {
 	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
-	const { rid, tmid } = useRoomContext();
+	const rid = useComposerRid();
+	const tmid = useComposerTmid();
 	const server = useAppSelector(state => state.server.server);
 	const user = useAppSelector(state => ({ id: state.login.user.id, token: state.login.user.token }), shallowEqual);
 	const permissionToUpload = useCanUploadFile(rid);

@@ -12,7 +12,7 @@ import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
-import { useRoomContext } from '../../context';
+import { useIsAutocompleteVisible } from '../../stores/ComposerStore';
 
 const styles = StyleSheet.create({
 	list: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
 const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
-	const { isAutocompleteVisible } = useRoomContext();
+	const isAutocompleteVisible = useIsAutocompleteVisible();
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {

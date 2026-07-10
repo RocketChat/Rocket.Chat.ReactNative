@@ -1,54 +1,53 @@
 import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
-import { useRoomContext, type IRoomContext } from './context';
+import { useComposerRid, useComposerSharing } from './stores/ComposerStore';
 import { createMessageActionStore, useIsBeingEdited, useMessageAction } from '../../containers/message/stores/MessageActionStore';
 
 describe('RoomProviders', () => {
-	it('keeps the same RoomContext value reference across re-renders with unchanged props', () => {
+	it('exposes the provided composer values to consumers via named hooks', () => {
 		const store = createMessageActionStore();
 		const room = { rid: 'rid-1' };
-		const values: IRoomContext[] = [];
+		const ridSpy = jest.fn();
 
 		const Probe = () => {
-			values.push(useRoomContext());
+			ridSpy(useComposerRid());
 			return null;
 		};
 
-		const Parent = () => (
+		render(
 			<RoomProviders store={store} rid='rid-1' t='c' room={room}>
 				<Probe />
 			</RoomProviders>
 		);
 
-		const { rerender } = render(<Parent />);
-		rerender(<Parent />);
-
-		expect(values).toHaveLength(2);
-		expect(values[1]).toBe(values[0]);
+		expect(ridSpy).toHaveBeenLastCalledWith('rid-1');
 	});
 
-	it('produces a new RoomContext value reference when a prop changes', () => {
+	it('does not re-render a consumer selecting a different slice when an unselected prop changes', () => {
 		const store = createMessageActionStore();
-		const values: IRoomContext[] = [];
+		const sharingRenderSpy = jest.fn();
 
-		const Probe = () => {
-			values.push(useRoomContext());
+		const SharingProbe = () => {
+			sharingRenderSpy(useComposerSharing());
 			return null;
 		};
 
+		// Kept as a single stable element reference so React can bail out of re-rendering it
+		// when only a sibling slice (room) changes — recreating it per render would force a
+		// re-render regardless of zustand's selector isolation, defeating the point of this test.
+		const children = <SharingProbe />;
 		const rooms = [{ rid: 'rid-1' }, { rid: 'rid-2' }];
 		const Parent = ({ roomIndex }: { roomIndex: number }) => (
-			<RoomProviders store={store} rid='rid-1' t='c' room={rooms[roomIndex]}>
-				<Probe />
+			<RoomProviders store={store} rid='rid-1' t='c' room={rooms[roomIndex]} sharing={false}>
+				{children}
 			</RoomProviders>
 		);
 
 		const { rerender } = render(<Parent roomIndex={0} />);
 		rerender(<Parent roomIndex={1} />);
 
-		expect(values).toHaveLength(2);
-		expect(values[1]).not.toBe(values[0]);
+		expect(sharingRenderSpy).toHaveBeenCalledTimes(1);
 	});
 
 	it('resolves useMessageAction/useIsBeingEdited to the store passed in props, not some other store', () => {

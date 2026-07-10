@@ -9,7 +9,7 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useRoomContext } from '../../../views/RoomView/context';
+import { useGetText, useSetQuotesAndText } from '../../../views/RoomView/stores/ComposerStore';
 import { useMessageAction } from '../../message/stores/MessageActionStore';
 import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
@@ -32,7 +32,8 @@ export const useChooseMedia = ({
 
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { addAttachments } = useMessageComposerApi();
-	const { setQuotesAndText, getText } = useRoomContext();
+	const setQuotesAndText = useSetQuotesAndText();
+	const getText = useGetText();
 	const action = useMessageAction();
 	const altTextSupported = useAltTextSupported();
 	const allowList = FileUpload_MediaTypeWhiteList as string;

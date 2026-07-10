@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 
-import { RoomContext, type IRoomContext } from './context';
+import { ComposerProvider, type ComposerState } from './stores/ComposerStore';
 import { type TMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
 
-type IRoomProvidersProps = IRoomContext & {
+type IRoomProvidersProps = ComposerState & {
 	store: TMessageActionStore;
 	children: ReactElement;
 };
@@ -29,24 +29,22 @@ export const RoomProviders = ({
 
 	return (
 		<MessageActionProvider store={store}>
-			<RoomContext.Provider
-				value={{
-					rid,
-					t,
-					tmid,
-					room,
-					sharing,
-					isAutocompleteVisible,
-					editCancel,
-					editRequest,
-					onRemoveQuoteMessage,
-					onSendMessage,
-					setQuotesAndText,
-					getText,
-					updateAutocompleteVisible
-				}}>
+			<ComposerProvider
+				rid={rid}
+				t={t}
+				tmid={tmid}
+				room={room}
+				sharing={sharing}
+				isAutocompleteVisible={isAutocompleteVisible}
+				editCancel={editCancel}
+				editRequest={editRequest}
+				onRemoveQuoteMessage={onRemoveQuoteMessage}
+				onSendMessage={onSendMessage}
+				setQuotesAndText={setQuotesAndText}
+				getText={getText}
+				updateAutocompleteVisible={updateAutocompleteVisible}>
 				{children}
-			</RoomContext.Provider>
+			</ComposerProvider>
 		</MessageActionProvider>
 	);
 };

@@ -14,8 +14,9 @@ jest.mock('../context', () => ({
 	useMessageComposerApi: jest.fn()
 }));
 
-jest.mock('../../../views/RoomView/context', () => ({
-	useRoomContext: jest.fn()
+jest.mock('../../../views/RoomView/stores/ComposerStore', () => ({
+	useSetQuotesAndText: jest.fn(),
+	useGetText: jest.fn()
 }));
 
 jest.mock('../../message/stores/MessageActionStore', () => ({
@@ -49,7 +50,8 @@ jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 const mockGetDocumentAsync = require('expo-document-picker').getDocumentAsync as jest.Mock;
 const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSelector as jest.Mock;
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
-const mockUseRoomContext = require('../../../views/RoomView/context').useRoomContext as jest.Mock;
+const mockUseSetQuotesAndText = require('../../../views/RoomView/stores/ComposerStore').useSetQuotesAndText as jest.Mock;
+const mockUseGetText = require('../../../views/RoomView/stores/ComposerStore').useGetText as jest.Mock;
 const mockUseMessageAction = require('../../message/stores/MessageActionStore').useMessageAction as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
@@ -71,10 +73,8 @@ describe('useChooseMedia', () => {
 			})
 		);
 		mockUseMessageComposerApi.mockReturnValue({ addAttachments });
-		mockUseRoomContext.mockReturnValue({
-			setQuotesAndText: jest.fn(),
-			getText: jest.fn(() => 'draft')
-		});
+		mockUseSetQuotesAndText.mockReturnValue(jest.fn());
+		mockUseGetText.mockReturnValue(jest.fn(() => 'draft'));
 		mockUseMessageAction.mockReturnValue(null);
 		mockGetSubscriptionByRoomId.mockResolvedValue({ rid: 'room-id', t: 'c' });
 		mockGetThreadById.mockResolvedValue({ id: 'thread-id' });

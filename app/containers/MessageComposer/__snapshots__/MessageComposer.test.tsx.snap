@@ -9488,7 +9488,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={11}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {

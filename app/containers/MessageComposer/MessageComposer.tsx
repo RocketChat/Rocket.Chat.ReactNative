@@ -4,7 +4,14 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import { useRoomContext } from '../../views/RoomView/context';
+import {
+	useComposerRid,
+	useComposerSharing,
+	useComposerTmid,
+	useEditRequest,
+	useOnSendMessage,
+	useSetQuotesAndText
+} from '../../views/RoomView/stores/ComposerStore';
 import { useMessageAction } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
@@ -55,7 +62,12 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 	useCloseKeyboardWhenOrientationChanges();
-	const { rid, tmid, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
+	const rid = useComposerRid();
+	const tmid = useComposerTmid();
+	const sharing = useComposerSharing();
+	const editRequest = useEditRequest();
+	const onSendMessage = useOnSendMessage();
+	const setQuotesAndText = useSetQuotesAndText();
 	const action = useMessageAction();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();

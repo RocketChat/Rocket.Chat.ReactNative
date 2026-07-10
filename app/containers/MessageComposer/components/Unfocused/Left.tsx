@@ -5,12 +5,12 @@ import { useFocused } from '../../context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
 
 export const Left = (): ReactElement | null => {
 	'use memo';
 
-	const { sharing } = useRoomContext();
+	const sharing = useComposerSharing();
 	const focused = useFocused();
 	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
 	if (focused || showEmojiKeyboard || showEmojiSearchbar || sharing) {

@@ -8,7 +8,7 @@ import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { type IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerRid, useUpdateAutocompleteVisible } from '../../../../views/RoomView/stores/ComposerStore';
 import { useStyle } from './styles';
 
 export const Autocomplete = ({
@@ -22,7 +22,8 @@ export const Autocomplete = ({
 }): ReactElement | null => {
 	'use memo';
 
-	const { rid, updateAutocompleteVisible } = useRoomContext();
+	const rid = useComposerRid();
+	const updateAutocompleteVisible = useUpdateAutocompleteVisible();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
