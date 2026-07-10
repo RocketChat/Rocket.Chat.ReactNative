@@ -3,18 +3,15 @@ import { AccessibilityInfo, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
-import * as Haptics from 'expo-haptics';
 import { useStore } from 'zustand';
 
-import dayjs from '../../lib/dayjs';
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import database from '../../lib/database';
-import Message from '../../containers/message';
 import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import I18n from '../../i18n';
-import { getBadgeColor, isBlocked } from '../../lib/methods/helpers/room';
+import { isBlocked } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { withTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
@@ -23,16 +20,19 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../lib/hooks/withDimensions';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
-import LoadMore from './LoadMore';
 import Banner from './Banner';
 import styles from './styles';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
-import type { IApplicationState, ISubscription, SubscriptionType, TAnyMessageModel, RoomType } from '../../definitions';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
+import {
+	type IApplicationState,
+	type ISubscription,
+	type SubscriptionType,
+	type TAnyMessageModel,
+	type RoomType
+} from '../../definitions';
 import { themes } from '../../lib/constants/colors';
-import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import { getUidDirectMessage, getRoomTitle, hasPermission } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
@@ -42,10 +42,8 @@ import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
-import { removeInAppFeedback } from '../../actions/inAppFeedback';
-import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
-import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { EncryptedRoom, MessageRow, MissingRoomE2EEKey } from './components';
 import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
@@ -108,7 +106,6 @@ const RoomView = (props: IRoomViewProps) => {
 		transferLivechatGuestPermission,
 		viewCannedResponsesPermission,
 		livechatAllowManualOnHold,
-		inAppFeedback,
 		encryptionEnabled,
 		airGappedRestrictionRemainingDays,
 		isFederationEnabled,
@@ -177,7 +174,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const member = useStore(roomStore, s => s.member);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const loading = useStore(roomStore, s => s.loading);
-	const lastOpen = useStore(roomStore, s => s.lastOpen);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
 
 	const isOmnichannel = room.t === 'l';
@@ -346,21 +342,6 @@ const RoomView = (props: IRoomViewProps) => {
 		}
 	}, [room]);
 
-	const hapticFeedback = useCallback(
-		(msgId: string) => {
-			dispatch(removeInAppFeedback(msgId));
-			const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
-			if (notificationInAppVibration || notificationInAppVibration === null) {
-				try {
-					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-				} catch {
-					// Do nothing: Haptic is unavailable
-				}
-			}
-		},
-		[dispatch]
-	);
-
 	const updateAutocompleteVisible = useCallback(
 		(updatedAutocompleteVisible: boolean) => {
 			if (updatedAutocompleteVisible && !state.isAutocompleteVisible) {
@@ -472,13 +453,6 @@ const RoomView = (props: IRoomViewProps) => {
 		showActionSheet: handleShowActionSheet
 	});
 
-	const isIgnored = (message: TAnyMessageModel): boolean => {
-		if ('id' in room) {
-			return room?.ignored?.includes?.(message?.u?._id) ?? false;
-		}
-		return false;
-	};
-
 	const getFederatedFooterDescription = (federatedRoom: IRoomFederated) => {
 		if (!isRoomNativeFederated(federatedRoom)) {
 			return I18n.t('Federation_Matrix_room_description_invalid_version');
@@ -492,64 +466,14 @@ const RoomView = (props: IRoomViewProps) => {
 		return undefined;
 	};
 
-	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		let dateSeparator = null;
-		let showUnreadSeparator = false;
-
-		if (!previousItem) {
-			dateSeparator = item.ts;
-			showUnreadSeparator = lastOpen ? dayjs(item.ts).isAfter(lastOpen) : false;
-		} else {
-			showUnreadSeparator =
-				(lastOpen &&
-					(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
-					dayjs(previousItem.ts).isBefore(lastOpen)) ??
-				false;
-			if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
-				dateSeparator = item.ts;
-			}
-		}
-
-		let content = null;
-		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
-			const runOnRender = () => {
-				if (item.t === MessageTypeLoad.MORE) {
-					if (!previousItem) return true;
-					if (previousItem?.tmid) return true;
-				}
-				return false;
-			};
-			content = (
-				<LoadMore
-					rid={room.rid}
-					t={room.t as RoomType}
-					loaderId={item.id}
-					type={item.t}
-					runOnRender={runOnRender()}
-					dateSeparator={dateSeparator}
-					showUnreadSeparator={showUnreadSeparator}
-				/>
-			);
-		} else {
-			if (inAppFeedback?.[item.id]) {
-				hapticFeedback(item.id);
-			}
-			content = (
-				<Message
-					item={item}
-					isIgnored={isIgnored(item)}
-					previousItem={previousItem}
-					onLongPress={onMessageLongPress}
-					threadBadgeColor={getBadgeColor({ subscription: room, theme, messageId: item?.id })}
-					highlighted={highlightedMessage === item.id}
-					dateSeparator={dateSeparator}
-					showUnreadSeparator={showUnreadSeparator}
-				/>
-			);
-		}
-
-		return content;
-	};
+	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => (
+		<MessageRow
+			item={item}
+			previousItem={previousItem}
+			highlightedMessage={highlightedMessage}
+			onLongPress={onMessageLongPress}
+		/>
+	);
 
 	const renderFooter = () => {
 		const footerBottomInset = { paddingBottom: insets.bottom };
@@ -777,7 +701,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
-	inAppFeedback: state.inAppFeedback,
 	encryptionEnabled: state.encryption.enabled,
 	isFederationEnabled: (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean,
 	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
