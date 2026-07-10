@@ -7,7 +7,6 @@ import * as Haptics from 'expo-haptics';
 import { useStore } from 'zustand';
 
 import dayjs from '../../lib/dayjs';
-import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import database from '../../lib/database';
 import Message from '../../containers/message';
@@ -34,7 +33,7 @@ import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/mess
 import { themes } from '../../lib/constants/colors';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
-import { getUidDirectMessage, getRoomTitle, hasPermission } from '../../lib/methods/helpers';
+import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
@@ -56,20 +55,13 @@ import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
 import { useRoomLifecycle } from './hooks/useRoomLifecycle';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
+import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
 export type TRoomViewReducerState = Pick<
 	IRoomViewState,
-	| 'readOnly'
-	| 'unreadsCount'
-	| 'isAutocompleteVisible'
-	| 'showMissingE2EEKey'
-	| 'showE2EEDisabledRoom'
-	| 'canForwardGuest'
-	| 'canReturnQueue'
-	| 'canViewCannedResponse'
-	| 'canPlaceLivechatOnHold'
+	'readOnly' | 'unreadsCount' | 'isAutocompleteVisible' | 'showMissingE2EEKey' | 'showE2EEDisabledRoom'
 >;
 
 const initialReducerState: TRoomViewReducerState = {
@@ -77,11 +69,7 @@ const initialReducerState: TRoomViewReducerState = {
 	unreadsCount: null,
 	isAutocompleteVisible: false,
 	showMissingE2EEKey: false,
-	showE2EEDisabledRoom: false,
-	canForwardGuest: false,
-	canReturnQueue: false,
-	canViewCannedResponse: false,
-	canPlaceLivechatOnHold: false
+	showE2EEDisabledRoom: false
 };
 
 const roomViewStateReducer = (state: TRoomViewReducerState, partial: Partial<TRoomViewReducerState>): TRoomViewReducerState => ({
@@ -179,6 +167,10 @@ const RoomView = (props: IRoomViewProps) => {
 	const loading = useStore(roomStore, s => s.loading);
 	const lastOpen = useStore(roomStore, s => s.lastOpen);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
+	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
+	const canReturnQueue = useStore(roomStore, s => s.canReturnQueue);
+	const canViewCannedResponse = useStore(roomStore, s => s.canViewCannedResponse);
+	const canPlaceLivechatOnHold = useStore(roomStore, s => s.canPlaceLivechatOnHold);
 
 	const isOmnichannel = room.t === 'l';
 
@@ -217,10 +209,10 @@ const RoomView = (props: IRoomViewProps) => {
 		listRef,
 		member,
 		joined,
-		canForwardGuest: state.canForwardGuest,
-		canReturnQueue: state.canReturnQueue,
-		canViewCannedResponse: state.canViewCannedResponse,
-		canPlaceLivechatOnHold: state.canPlaceLivechatOnHold,
+		canForwardGuest,
+		canReturnQueue,
+		canViewCannedResponse,
+		canPlaceLivechatOnHold,
 		roomRef,
 		roomUserIdRef,
 		cancelJumpToMessageRef,
@@ -376,37 +368,17 @@ const RoomView = (props: IRoomViewProps) => {
 		[state.isAutocompleteVisible]
 	);
 
-	const getCanForwardGuest = async () => {
-		const permissions = await hasPermission([transferLivechatGuestPermission], rid);
-		return permissions[0] as boolean;
-	};
-
-	const getCanReturnQueue = async () => {
-		try {
-			const { returnQueue } = await getRoutingConfig();
-			return returnQueue;
-		} catch {
-			return false;
-		}
-	};
-
-	const getCanViewCannedResponse = async () => {
-		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
-		return permissions[0] as boolean;
-	};
-
-	const getCanPlaceLivechatOnHold = () =>
-		!!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
-
-	const updateOmnichannel = async () => {
-		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
-			getCanForwardGuest(),
-			getCanReturnQueue(),
-			getCanViewCannedResponse()
-		]);
-		const canPlaceLivechatOnHold = getCanPlaceLivechatOnHold();
-		setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
-	};
+	useOmnichannelPermissions({
+		rid,
+		t,
+		room,
+		roomUpdate,
+		joined,
+		transferLivechatGuestPermission,
+		viewCannedResponsesPermission,
+		livechatAllowManualOnHold,
+		roomStore
+	});
 
 	const setReadOnly = useCallback(async () => {
 		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
@@ -430,14 +402,6 @@ const RoomView = (props: IRoomViewProps) => {
 		setState({ showMissingE2EEKey, showE2EEDisabledRoom });
 	}, [room, encryptionEnabled]);
 
-	// If it's a livechat room
-	useEffect(() => {
-		if (t === 'l') {
-			updateOmnichannel();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [roomUpdate.lastMessage?.token, roomUpdate.visitor, roomUpdate.status, joined]);
-
 	useEffect(() => {
 		setReadOnly();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -458,9 +422,9 @@ const RoomView = (props: IRoomViewProps) => {
 		unreadsCount: state.unreadsCount,
 		roomUserId,
 		joined,
-		canForwardGuest: state.canForwardGuest,
-		canReturnQueue: state.canReturnQueue,
-		canPlaceLivechatOnHold: state.canPlaceLivechatOnHold,
+		canForwardGuest,
+		canReturnQueue,
+		canPlaceLivechatOnHold,
 		showMissingE2EEKey: state.showMissingE2EEKey,
 		showE2EEDisabledRoom: state.showE2EEDisabledRoom,
 		navigation,
