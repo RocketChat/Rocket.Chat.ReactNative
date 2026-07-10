@@ -30,6 +30,10 @@ export interface RoomState {
 	loading: boolean;
 	lastOpen: Date | null;
 	canAutoTranslate: boolean;
+	canForwardGuest: boolean;
+	canReturnQueue: boolean;
+	canViewCannedResponse: boolean;
+	canPlaceLivechatOnHold: boolean;
 	init: (params?: IRoomStoreInitParams) => Promise<void>;
 	join: () => void;
 	markMessageSent: () => void;
@@ -72,6 +76,10 @@ const createRoomState =
 		loading: true,
 		lastOpen: null,
 		canAutoTranslate: false,
+		canForwardGuest: false,
+		canReturnQueue: false,
+		canViewCannedResponse: false,
+		canPlaceLivechatOnHold: false,
 
 		init: async ({ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams = {}) => {
 			set({ loading: true });
