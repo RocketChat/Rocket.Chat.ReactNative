@@ -949,7 +949,6 @@ const RoomView = (props: IRoomViewProps) => {
 				onQuoteInit(action.messageIds[0]);
 			}
 		});
-		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
 		const unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
 		});
@@ -961,7 +960,6 @@ const RoomView = (props: IRoomViewProps) => {
 				queryUnreadsRef.current.unsubscribe();
 			}
 			unsubscribeBlur();
-			EventEmitter.removeListener('ROOM_REMOVED', handleRoomRemoved);
 			if (sub?.unsubscribe) {
 				sub.unsubscribe();
 			}
@@ -971,6 +969,13 @@ const RoomView = (props: IRoomViewProps) => {
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
+		return () => {
+			EventEmitter.removeListener('ROOM_REMOVED', handleRoomRemoved);
+		};
+	}, [handleRoomRemoved]);
 
 	useEffect(() => {
 		dispatch(clearInAppFeedback());
