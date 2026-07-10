@@ -14,7 +14,15 @@ interface IKaTeXProps {
 
 const INITIAL_HEIGHT = 20;
 
-const injectedJavaScript = `window.ReactNativeWebView.postMessage(String(document.body.scrollHeight)); true;`;
+// Re-post height after layout settles: an initial read misses late glyph/webfont
+// metrics (e.g. \Huge), leaving the container too short and clipping the expression.
+const injectedJavaScript = `
+	function postHeight() { window.ReactNativeWebView.postMessage(String(document.body.scrollHeight)); }
+	postHeight();
+	new ResizeObserver(postHeight).observe(document.body);
+	if (document.fonts && document.fonts.ready) document.fonts.ready.then(postHeight);
+	true;
+`;
 
 // Center horizontally and reset margins, but omit the fork default's height:100%:
 // with a full-height body scrollHeight reflects the container, breaking the height handshake.
