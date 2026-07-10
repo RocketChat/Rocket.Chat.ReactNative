@@ -1,4 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
+import { InteractionManager } from 'react-native';
 
 import database from '../../../lib/database';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
@@ -69,6 +70,10 @@ const setupObserve = () => {
 describe('useRoomSubscription', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((cb: any) => {
+			cb();
+			return { cancel: jest.fn(), then: jest.fn(), done: jest.fn() };
+		});
 		mockIsGroupChat.mockReturnValue(false);
 		mockIsInviteSubscription.mockReturnValue(false);
 		mockGetMessages.mockResolvedValue(undefined);
@@ -265,6 +270,41 @@ describe('useRoomSubscription', () => {
 
 	it('roomAttrsUpdateColumns has exactly one entry per roomAttrsUpdate key', () => {
 		expect(Object.keys(roomAttrsUpdateColumns).sort()).toEqual([...roomAttrsUpdate].sort());
+	});
+
+	it('does not re-run init when onThreadMessagesLoaded changes identity', async () => {
+		setupObserve();
+		const { result, rerender } = renderHook(
+			({ cb }: { cb: () => void }) =>
+				useRoomSubscription({ rid: 'rid-1', t: 'c', initialRoom: subRoom, isAuthenticated: true, onThreadMessagesLoaded: cb }),
+			{ initialProps: { cb: () => {} } }
+		);
+
+		await waitFor(() => expect(result.current.loading).toBe(false));
+		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+
+		rerender({ cb: () => {} });
+		await act(async () => {});
+
+		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+	});
+
+	it('cancels the pending init interaction on unmount', () => {
+		setupObserve();
+		const cancel = jest.fn();
+		(InteractionManager.runAfterInteractions as jest.Mock).mockImplementation(() => ({
+			cancel,
+			then: jest.fn(),
+			done: jest.fn()
+		}));
+
+		const { unmount } = renderHook(() =>
+			useRoomSubscription({ rid: 'rid-1', t: 'c', initialRoom: subRoom, isAuthenticated: true })
+		);
+		unmount();
+
+		expect(cancel).toHaveBeenCalled();
+		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
 
 	it('exposes setLastOpen and setJoined and updates the respective state', () => {

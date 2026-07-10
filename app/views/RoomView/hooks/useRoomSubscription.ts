@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../../lib/database';
@@ -190,11 +191,14 @@ export function useRoomSubscription({
 	}, [init]);
 
 	useEffect(() => {
-		if (rid && isAuthenticated) {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
-			init();
+		if (!rid || !isAuthenticated) {
+			return;
 		}
-	}, [rid, isAuthenticated, init]);
+		const task = InteractionManager.runAfterInteractions(() => {
+			initRef.current();
+		});
+		return () => task.cancel();
+	}, [rid, isAuthenticated]);
 
 	return {
 		room,
