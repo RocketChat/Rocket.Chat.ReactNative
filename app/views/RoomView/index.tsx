@@ -1,14 +1,10 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import parse from 'url-parse';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
-import { type NavigatorScreenParams } from '@react-navigation/native';
 import { useStore } from 'zustand';
-
-import { type TNavigation } from 'stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
 import { getRoutingConfig } from '../../lib/services/restApi';
@@ -17,20 +13,15 @@ import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
-import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
+import { getBadgeColor, isBlocked } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../lib/hooks/withDimensions';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { sendLoadingEvent } from '../../containers/Loading';
-import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -38,32 +29,18 @@ import styles from './styles';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
-import {
-	type IApplicationState,
-	type ISubscription,
-	SubscriptionType,
-	type TAnyMessageModel,
-	type TSubscriptionModel,
-	type RoomType
-} from '../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
+import type { IApplicationState, ISubscription, SubscriptionType, TAnyMessageModel, RoomType } from '../../definitions';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
 import { themes } from '../../lib/constants/colors';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { callJitsi } from '../../lib/methods/callJitsi';
-import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
-import { getUidDirectMessage, getRoomTitle, debounce, hasPermission } from '../../lib/methods/helpers';
+import { getUidDirectMessage, getRoomTitle, hasPermission } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import { type IListContainerRef, type TListRef } from './List/definitions';
-import { type TGetMessageInfoResult } from './services/getMessageInfo';
-import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 import { removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
@@ -75,10 +52,10 @@ import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 import { getOrCreateRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
-import { useJumpToMessage } from './hooks/useJumpToMessage';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
 import { useRoomLifecycle } from './hooks/useRoomLifecycle';
+import { useRoomNavigation } from './hooks/useRoomNavigation';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
@@ -189,108 +166,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const cancelJumpToMessageRef = useRef<() => void>(() => {});
 	const userRef = useRef(user);
 
-	const navToRoom = useCallback(
-		async (message: TGetMessageInfoResult) => {
-			if (!message.rid) return;
-			const roomInfo = await getRoomInfo(message.rid);
-			return goRoom({
-				item: roomInfo as TGoRoomItem,
-				isMasterDetail,
-				jumpToMessageId: message.id
-			});
-		},
-		[isMasterDetail]
-	);
-
-	const navToThread = useCallback(
-		async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
-			if (!rid) {
-				return;
-			}
-
-			if (item.tmid) {
-				let name = '';
-				let jumpToMessageId = '';
-				if ('id' in item) {
-					name = 'tmsg' in item ? item.tmsg ?? '' : '';
-					jumpToMessageId = item.id;
-				}
-				sendLoadingEvent({ visible: true, onCancel: cancelJumpToMessageRef.current });
-				const threadRecord = await getThreadById(item.tmid);
-				if (threadRecord?.t === 'rm') {
-					name = I18n.t('Thread');
-				}
-				if (!name) {
-					const result = await getThreadName(rid, item.tmid, jumpToMessageId);
-					// test if there isn't a thread
-					if (!result) {
-						sendLoadingEvent({ visible: false });
-						return;
-					}
-					name = result;
-				}
-				if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
-					name = I18n.t('Encrypted_message');
-				}
-				if (!jumpToMessageId) {
-					setTimeout(() => {
-						sendLoadingEvent({ visible: false });
-					}, 300);
-				}
-				return navigation.push('RoomView', {
-					rid,
-					tmid: item.tmid,
-					name,
-					t: SubscriptionType.THREAD,
-					roomUserId: roomUserIdRef.current,
-					jumpToMessageId
-				});
-			}
-
-			if ('tlm' in item) {
-				return navigation.push('RoomView', {
-					rid,
-					tmid: item.id,
-					name: makeThreadName(item),
-					t: SubscriptionType.THREAD,
-					roomUserId: roomUserIdRef.current
-				});
-			}
-		},
-		[rid, navigation]
-	);
-
-	const { jumpToMessage, cancelJumpToMessage } = useJumpToMessage({
-		rid,
-		tmid,
-		t,
-		listRef,
-		navToRoom,
-		navToThread
-	});
-
-	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
-	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
-	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
-	const consumeJumpParam = useCallback(
-		(messageId: string) => {
-			pendingJumpRef.current = undefined;
-			jumpToMessage(messageId);
-			navigation.setParams({ jumpToMessageId: undefined });
-		},
-		[jumpToMessage, navigation]
-	);
-
-	// Thread jump: fired from the subscription hook's success path — the thread window is populated by
-	// then, so the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
-	const onThreadMessagesLoaded = useCallback(() => {
-		if (pendingJumpRef.current) {
-			const messageId = pendingJumpRef.current;
-			pendingJumpRef.current = undefined;
-			consumeJumpParam(messageId);
-		}
-	}, [consumeJumpParam]);
-
 	const [roomStore] = useState(() => getOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
 	// rid is stable for this RoomView instance (it's what roomStore was acquired for); release once on unmount.
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -321,6 +196,37 @@ const RoomView = (props: IRoomViewProps) => {
 		return EMPTY_HIDE_SYSTEM_MESSAGES;
 	})();
 
+	const {
+		navToThread,
+		cancelJumpToMessage,
+		consumeJumpParam,
+		onThreadMessagesLoaded,
+		onDiscussionPress,
+		onThreadPress,
+		jumpToMessageByUrl,
+		onEncryptedPress,
+		navToRoomInfo,
+		handleEnterCall,
+		goRoomActionsView
+	} = useRoomNavigation({
+		rid,
+		tmid,
+		t,
+		navigation,
+		isMasterDetail,
+		listRef,
+		member,
+		joined,
+		canForwardGuest: state.canForwardGuest,
+		canReturnQueue: state.canReturnQueue,
+		canViewCannedResponse: state.canViewCannedResponse,
+		canPlaceLivechatOnHold: state.canPlaceLivechatOnHold,
+		roomRef,
+		roomUserIdRef,
+		cancelJumpToMessageRef,
+		pendingJumpRef
+	});
+
 	useEffect(() => {
 		roomRef.current = room;
 		roomUserIdRef.current = roomUserId;
@@ -328,38 +234,6 @@ const RoomView = (props: IRoomViewProps) => {
 		unreadsCountRef.current = state.unreadsCount;
 		cancelJumpToMessageRef.current = cancelJumpToMessage;
 	});
-
-	const onEncryptedPress = useCallback(() => {
-		logEvent(events.ROOM_ENCRYPTED_PRESS);
-		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
-		if (isMasterDetail) {
-			// @ts-ignore
-			return navigation.navigate('ModalStackNavigator', screen);
-		}
-		// @ts-ignore
-		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
-	}, [navigation, isMasterDetail]);
-
-	const onDiscussionPress = useMemo(
-		() =>
-			debounce(
-				async (drid: TAnyMessageModel['drid']) => {
-					if (!drid) return;
-					const discussion = await getRoomInfo(drid);
-					if (discussion) {
-						goRoom({
-							item: discussion as TGoRoomItem,
-							isMasterDetail
-						});
-					}
-				},
-				1000,
-				true
-			),
-		[isMasterDetail]
-	);
-
-	const onThreadPress = useMemo(() => debounce((item: TAnyMessageModel) => navToThread(item), 1000, true), [navToThread]);
 
 	const {
 		resetAction,
@@ -426,53 +300,6 @@ const RoomView = (props: IRoomViewProps) => {
 		setState
 	});
 
-	const jumpToMessageByUrl = useCallback(
-		async (messageUrl?: string, isFromReply?: boolean) => {
-			if (!messageUrl) {
-				return;
-			}
-			try {
-				const parsedUrl = parse(messageUrl, true);
-				const messageId = parsedUrl.query.msg;
-				if (messageId) {
-					await jumpToMessage(messageId, isFromReply);
-				}
-			} catch (e) {
-				log(e);
-			}
-		},
-		[jumpToMessage]
-	);
-
-	const navToRoomInfo = useCallback(
-		(navParam: any) => {
-			logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
-			navParam.fromRid = rid;
-			if (isMasterDetail) {
-				navParam.showCloseModal = true;
-				// @ts-ignore
-				navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
-			} else {
-				navigation.navigate('RoomInfoView', navParam);
-			}
-		},
-		[rid, navigation, isMasterDetail]
-	);
-
-	// OLD METHOD - support versions before 5.0.0
-	const handleEnterCall = useCallback(() => {
-		if (isInActiveVoipCall()) return;
-		const currentRoom = roomRef.current;
-		if ('id' in currentRoom) {
-			const { jitsiTimeout } = currentRoom;
-			if (jitsiTimeout && jitsiTimeout < new Date()) {
-				showErrorAlert(I18n.t('Call_already_ended'));
-			} else {
-				callJitsi({ room: currentRoom });
-			}
-		}
-	}, []);
-
 	const blockAction = useCallback(
 		({
 			actionId,
@@ -532,59 +359,6 @@ const RoomView = (props: IRoomViewProps) => {
 			}
 		},
 		[dispatch]
-	);
-
-	const goRoomActionsView = useCallback(
-		(screen?: keyof ModalStackParamList) => {
-			logEvent(events.ROOM_GO_RA);
-			if (isMasterDetail) {
-				// @ts-ignore — navigation types expect a literal screen name
-				navigation.navigate('ModalStackNavigator', {
-					screen: screen ?? 'RoomActionsView',
-					params: {
-						rid: rid as string,
-						t: t as SubscriptionType,
-						room: roomRef.current as ISubscription,
-						member,
-						showCloseModal: !!screen,
-						// @ts-ignore
-						joined,
-						omnichannelPermissions: {
-							canForwardGuest: state.canForwardGuest,
-							canReturnQueue: state.canReturnQueue,
-							canViewCannedResponse: state.canViewCannedResponse,
-							canPlaceLivechatOnHold: state.canPlaceLivechatOnHold
-						}
-					}
-				} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
-			} else if (rid && t) {
-				navigation.push('RoomActionsView', {
-					rid,
-					t: t as SubscriptionType,
-					room: roomRef.current as TSubscriptionModel,
-					member,
-					joined,
-					omnichannelPermissions: {
-						canForwardGuest: state.canForwardGuest,
-						canReturnQueue: state.canReturnQueue,
-						canViewCannedResponse: state.canViewCannedResponse,
-						canPlaceLivechatOnHold: state.canPlaceLivechatOnHold
-					}
-				});
-			}
-		},
-		[
-			rid,
-			t,
-			navigation,
-			isMasterDetail,
-			member,
-			joined,
-			state.canForwardGuest,
-			state.canReturnQueue,
-			state.canViewCannedResponse,
-			state.canPlaceLivechatOnHold
-		]
 	);
 
 	const updateAutocompleteVisible = useCallback(
