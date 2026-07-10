@@ -307,6 +307,39 @@ describe('useRoomSubscription', () => {
 		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
 
+	it('unsubscribes the room observable on unmount', () => {
+		const { unsubscribe } = setupObserve();
+		const { unmount } = renderHook(() =>
+			useRoomSubscription({ rid: 'rid-1', t: 'c', initialRoom: stubRoom, isAuthenticated: false })
+		);
+
+		expect(unsubscribe).not.toHaveBeenCalled();
+		unmount();
+		expect(unsubscribe).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not fire a pending init retry after unmount', async () => {
+		jest.useFakeTimers();
+		setupObserve();
+		mockGetMessages.mockRejectedValueOnce(new Error('boom')).mockResolvedValueOnce(undefined);
+
+		const { result, unmount } = renderHook(() =>
+			useRoomSubscription({ rid: 'rid-1', t: 'c', initialRoom: subRoom, isAuthenticated: true })
+		);
+
+		await waitFor(() => expect(result.current.loading).toBe(false));
+		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+
+		unmount();
+		await act(async () => {
+			jest.advanceTimersByTime(300);
+			await Promise.resolve();
+		});
+
+		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+		jest.useRealTimers();
+	});
+
 	it('exposes setLastOpen and setJoined and updates the respective state', () => {
 		setupObserve();
 		const { result } = renderHook(() => useRoomSubscription({ rid: 'rid-1', initialRoom: stubRoom, isAuthenticated: false }));
