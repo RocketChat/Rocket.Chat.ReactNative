@@ -253,8 +253,8 @@ importers:
         specifier: 2.6.2
         version: 2.6.2(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       react-native-localize:
-        specifier: 2.1.1
-        version: 2.1.1(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))
+        specifier: 3.7.0
+        version: 3.7.0(@expo/config-plugins@55.0.10)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       react-native-mime-types:
         specifier: 2.3.0
         version: 2.3.0
@@ -6607,10 +6607,18 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-localize@2.1.1:
-    resolution: {integrity: sha512-+uyz2/b0vyLq19fcb7r1qU1gqmzbp3aC6EMTvOVXwfBuiN+aJXR/fDdFOJJ8D7+bLccKeuS2zBDrazh+ZayX/g==}
+  react-native-localize@3.7.0:
+    resolution: {integrity: sha512-6Ohx+zZzycC6zhNVBGM/u1U+O6Ww29YIFseeyXqsKcO/pTfjLcdE40IUJF4SVVwrdh00IMJwy90HjLGUaeqK7Q==}
     peerDependencies:
-      react-native: '>=0.60.0'
+      '@expo/config-plugins': '*'
+      react: '*'
+      react-native: '*'
+      react-native-macos: '*'
+    peerDependenciesMeta:
+      '@expo/config-plugins':
+        optional: true
+      react-native-macos:
+        optional: true
 
   react-native-mime-types@2.3.0:
     resolution: {integrity: sha512-9l/kkT1QM0i0xAKkOADkP6jIMhqiS+R/eSKBS/lsUmuMYMqboClyrwTFFZwUcaVIN0SpeH4wOKhYTqCnFgRsEw==}
@@ -15674,9 +15682,12 @@ snapshots:
       react: 19.2.7
       react-native: 0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7)
 
-  react-native-localize@2.1.1(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7)):
+  react-native-localize@3.7.0(@expo/config-plugins@55.0.10)(react-native@0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7))(react@19.2.7):
     dependencies:
+      react: 19.2.7
       react-native: 0.83.10(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.83.10(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.7)
+    optionalDependencies:
+      '@expo/config-plugins': 55.0.10
 
   react-native-mime-types@2.3.0:
     dependencies:
