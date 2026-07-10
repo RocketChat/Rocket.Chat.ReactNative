@@ -50,8 +50,8 @@ jest.mock('react-native-reanimated', () => {
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
-jest.mock('react-native-file-viewer', () => ({
-	open: jest.fn(() => null)
+jest.mock('@magrinj/expo-quick-look', () => ({
+	previewFile: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('react-native-incall-manager', () => ({
