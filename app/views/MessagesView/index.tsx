@@ -24,7 +24,6 @@ import { type IRoomInfoParam } from '../SearchMessagesView';
 import {
 	type IApplicationState,
 	type TMessageModel,
-	type ISubscription,
 	SubscriptionType,
 	type IAttachment,
 	type IMessage,
@@ -72,7 +71,6 @@ interface IParams {
 	name?: string;
 	fname?: string;
 	prid?: string;
-	room?: ISubscription;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
 	roomUserId?: string;
@@ -82,7 +80,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;
-	private room?: ISubscription;
 
 	constructor(props: IMessagesViewProps) {
 		super(props);
@@ -141,8 +138,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		let params: IParams = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
-			t: this.t,
-			room: this.room
+			t: this.t
 		};
 		if (item.tmid) {
 			Navigation.popToRoom(isMasterDetail);

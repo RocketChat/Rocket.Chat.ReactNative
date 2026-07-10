@@ -26,7 +26,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import styles from './styles';
 import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
 import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
@@ -37,8 +36,7 @@ import {
 	type IUrl,
 	type IAttachment,
 	type ISubscription,
-	SubscriptionType,
-	type TSubscriptionModel
+	SubscriptionType
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -87,8 +85,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	private encrypted: boolean | undefined;
 
-	private room?: IRoomInfoResult;
-
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Search')
@@ -111,10 +107,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		this.rid = props.route.params.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
-	}
-
-	async componentDidMount() {
-		this.room = (await getRoomInfo(this.rid)) ?? undefined;
 	}
 
 	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: ISearchMessagesViewState) {
@@ -225,14 +217,12 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			rid: string;
 			jumpToMessageId: string;
 			t: SubscriptionType;
-			room: TSubscriptionModel | undefined;
 			tmid?: string;
 			name?: string;
 		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
-			t: this.t,
-			room: this.room as TSubscriptionModel
+			t: this.t
 		};
 		if ('tmid' in item && item.tmid) {
 			Navigation.popToRoom(isMasterDetail);
@@ -260,8 +250,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			Navigation.setParams({
 				rid: this.rid,
 				jumpToMessageId: messageId,
-				t: this.t,
-				room: this.room as TSubscriptionModel
+				t: this.t
 			});
 		} catch (e) {
 			log(e);

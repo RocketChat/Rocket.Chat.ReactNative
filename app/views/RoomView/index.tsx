@@ -113,16 +113,14 @@ const RoomView = (props: IRoomViewProps) => {
 		return createMessageActionStore(quoteMessageId ? { kind: 'quote', messageIds: [quoteMessageId] } : null);
 	});
 
-	const [initialRoom] = useState<IRoomViewState['room']>(
-		() =>
-			route.params?.room ?? {
-				rid: rid as string,
-				t: t as string,
-				name: route.params?.name,
-				fname: route.params?.fname,
-				prid: route.params?.prid
-			}
-	);
+	const [initialRoom] = useState<IRoomViewState['room']>(() => ({
+		rid: rid as string,
+		t: t as string,
+		name: route.params?.name,
+		fname: route.params?.fname,
+		prid: route.params?.prid,
+		visitor: route.params?.visitor
+	}));
 	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
 	// we don't need to subscribe to threads
 	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
