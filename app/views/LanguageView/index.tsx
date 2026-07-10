@@ -1,6 +1,6 @@
+import { reloadAppAsync } from 'expo';
 import { useLayoutEffect } from 'react';
 import { FlatList } from 'react-native';
-import RNRestart from 'react-native-restart';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -55,7 +55,7 @@ const LanguageView = () => {
 		await Promise.all([changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
 
 		if (shouldRestart) {
-			await RNRestart.Restart();
+			await reloadAppAsync('Language RTL change');
 		} else {
 			dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		}
