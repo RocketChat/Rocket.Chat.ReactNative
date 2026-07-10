@@ -139,9 +139,9 @@ describe('RoomSubscription', () => {
 		});
 	});
 
-	describe('handleConnected', () => {
+	describe('handleLogin', () => {
 		it('calls subscribeRoom, dispatches clearUserTyping, loads missed messages, and reads', async () => {
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
@@ -151,7 +151,7 @@ describe('RoomSubscription', () => {
 		it('handles subscribeRoom rejection gracefully', async () => {
 			mockSubscribeRoom.mockRejectedValueOnce(new Error('boom'));
 
-			await expect(sub.handleConnected()).resolves.toBeUndefined();
+			await expect(sub.handleLogin()).resolves.toBeUndefined();
 		});
 	});
 
@@ -166,11 +166,11 @@ describe('RoomSubscription', () => {
 	});
 
 	describe('DDP subscription recovery after forceReopen', () => {
-		it('handleConnected re-subscribes the room to restore lost DDP subscriptions', async () => {
+		it('handleLogin re-subscribes the room to restore lost DDP subscriptions', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
@@ -191,14 +191,14 @@ describe('RoomSubscription', () => {
 			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
 
 			await sub.subscribe();
-			await sub.handleConnected();
+			await sub.handleLogin();
 			await sub.unsubscribe();
 
 			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('does not accumulate subscriptions across repeated handleConnected calls (simulates sequential reopen)', async () => {
+		it('does not accumulate subscriptions across repeated handleLogin calls (simulates sequential reopen)', async () => {
 			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
@@ -207,13 +207,13 @@ describe('RoomSubscription', () => {
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 
 			// First reopen → tears down [first], creates [second]
-			await sub.handleConnected();
+			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
 			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(second.unsubscribe).not.toHaveBeenCalled();
 
 			// Second reopen → tears down [second], creates []
-			await sub.handleConnected();
+			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
 			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
 
@@ -223,11 +223,11 @@ describe('RoomSubscription', () => {
 			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('does not call onStreamData inside handleConnected (listeners persist across reopen)', async () => {
+		it('does not call onStreamData inside handleLogin (listeners persist across reopen)', async () => {
 			await sub.subscribe();
 			mockOnStreamData.mockClear();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockOnStreamData).not.toHaveBeenCalled();
 		});
@@ -235,7 +235,7 @@ describe('RoomSubscription', () => {
 		it('re-subscribes on the authenticated "login" event, not the pre-auth "connected" event', async () => {
 			await sub.subscribe();
 
-			expect(mockOnStreamData).toHaveBeenCalledWith('login', sub.handleConnected);
+			expect(mockOnStreamData).toHaveBeenCalledWith('login', sub.handleLogin);
 			expect(mockOnStreamData).not.toHaveBeenCalledWith('connected', expect.anything());
 		});
 
@@ -247,30 +247,30 @@ describe('RoomSubscription', () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await expect(sub.handleConnected()).resolves.toBeUndefined();
+			await expect(sub.handleLogin()).resolves.toBeUndefined();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
 	});
 
 	describe('isAlive guard', () => {
-		it('handleConnected does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
+		it('handleLogin does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
 			await sub.subscribe();
 			await sub.unsubscribe();
 			jest.clearAllMocks();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).not.toHaveBeenCalled();
 			expect(loadMissedMessages).not.toHaveBeenCalled();
 			expect(mockStoreDispatch).not.toHaveBeenCalled();
 		});
 
-		it('handleConnected re-subscribes while the subscription is still alive', async () => {
+		it('handleLogin re-subscribes while the subscription is still alive', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
