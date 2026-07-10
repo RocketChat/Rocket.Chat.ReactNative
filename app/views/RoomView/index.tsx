@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { AccessibilityInfo, Text, View } from 'react-native';
+import { AccessibilityInfo } from 'react-native';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
@@ -8,13 +8,12 @@ import { useStore } from 'zustand';
 
 import dayjs from '../../lib/dayjs';
 import { getRoutingConfig } from '../../lib/services/restApi';
-import Touch from '../../containers/Touch';
 import database from '../../lib/database';
 import Message from '../../containers/message';
-import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
+import { type IMessageActions } from '../../containers/MessageActions';
+import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import I18n from '../../i18n';
-import { getBadgeColor, isBlocked } from '../../lib/methods/helpers/room';
+import { getBadgeColor } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { withTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
@@ -25,7 +24,6 @@ import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
-import styles from './styles';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
@@ -36,7 +34,7 @@ import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import { getUidDirectMessage, getRoomTitle, hasPermission } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { type IMessageComposerRef } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
@@ -45,8 +43,8 @@ import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/enc
 import { removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
-import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
+import { EncryptedRoom, MissingRoomE2EEKey, RoomFooter, RoomMessageActions } from './components';
+import { isRoomFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
@@ -176,7 +174,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const joined = useStore(roomStore, s => s.joined);
 	const member = useStore(roomStore, s => s.member);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
-	const loading = useStore(roomStore, s => s.loading);
 	const lastOpen = useStore(roomStore, s => s.lastOpen);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
 
@@ -269,7 +266,7 @@ const RoomView = (props: IRoomViewProps) => {
 		messageErrorActionsRef
 	});
 
-	const { joinRoom, resumeRoom, onJoin, handleSendMessage, toggleFollowThread, fetchThreadName } = useRoomLifecycle({
+	const { onJoin, handleSendMessage, toggleFollowThread, fetchThreadName } = useRoomLifecycle({
 		rid,
 		tmid,
 		t,
@@ -479,19 +476,6 @@ const RoomView = (props: IRoomViewProps) => {
 		return false;
 	};
 
-	const getFederatedFooterDescription = (federatedRoom: IRoomFederated) => {
-		if (!isRoomNativeFederated(federatedRoom)) {
-			return I18n.t('Federation_Matrix_room_description_invalid_version');
-		}
-		if (!isFederationEnabled) {
-			return I18n.t('Federation_Matrix_room_description_disabled');
-		}
-		if (!isFederationModuleEnabled) {
-			return I18n.t('Federation_Matrix_room_description_missing_module');
-		}
-		return undefined;
-	};
-
 	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -549,119 +533,6 @@ const RoomView = (props: IRoomViewProps) => {
 		}
 
 		return content;
-	};
-
-	const renderFooter = () => {
-		const footerBottomInset = { paddingBottom: insets.bottom };
-
-		if (!rid) {
-			return null;
-		}
-		if ('onHold' in room && room.onHold) {
-			return (
-				<View style={[styles.joinRoomContainer, footerBottomInset]} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
-					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Chat_is_on_hold')}</Text>
-					<Touch
-						onPress={resumeRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
-						enabled={!loading}>
-						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-chat-on-hold-button'>
-							{I18n.t('Resume')}
-						</Text>
-					</Touch>
-				</View>
-			);
-		}
-		if (!joined) {
-			return (
-				<View style={[styles.joinRoomContainer, footerBottomInset]} key='room-view-join' testID='room-view-join'>
-					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('You_are_in_preview_mode')}</Text>
-					<Touch
-						onPress={joinRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
-						enabled={!loading}>
-						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-join-button'>
-							{I18n.t(isOmnichannel ? 'Take_it' : 'Join')}
-						</Text>
-					</Touch>
-				</View>
-			);
-		}
-		if (airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === 0) {
-			return (
-				<View style={[styles.readOnly, footerBottomInset]}>
-					<Text style={[styles.previewMode, { color: themes[theme].fontDefault }]}>
-						{I18n.t('AirGapped_workspace_read_only_title')}
-					</Text>
-					<Text style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
-						{I18n.t('AirGapped_workspace_read_only_description')}
-					</Text>
-				</View>
-			);
-		}
-		if (state.readOnly) {
-			return (
-				<View style={[styles.readOnly, footerBottomInset]}>
-					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_read_only')}</Text>
-				</View>
-			);
-		}
-		if ('id' in room && isBlocked(room)) {
-			return (
-				<View style={[styles.readOnly, footerBottomInset]}>
-					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_blocked')}</Text>
-				</View>
-			);
-		}
-
-		if ('id' in room && isRoomFederated(room)) {
-			const description = getFederatedFooterDescription(room);
-
-			if (description) {
-				return (
-					<View style={[styles.readOnly, footerBottomInset]}>
-						<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{description}</Text>
-					</View>
-				);
-			}
-		}
-
-		return (
-			<MessageComposerContainer ref={messageComposerRef}>
-				<ComposerAttachments />
-			</MessageComposerContainer>
-		);
-	};
-
-	const renderActions = () => {
-		if (!('id' in room)) {
-			return null;
-		}
-		return (
-			<>
-				<MessageActions
-					ref={(ref: IMessageActions | null) => {
-						messageActionsRef.current = ref;
-					}}
-					tmid={tmid}
-					room={room}
-					user={user}
-					editInit={onEditInit}
-					replyInit={onReplyInit}
-					quoteInit={onQuoteInit}
-					reactionInit={onReactionInit}
-					onReactionPress={onReactionPress}
-					jumpToMessage={jumpToMessageByUrl}
-					isReadOnly={state.readOnly}
-				/>
-				<MessageErrorActions
-					ref={(ref: IMessageErrorActions | null) => {
-						messageErrorActionsRef.current = ref;
-					}}
-					tmid={tmid}
-				/>
-			</>
-		);
 	};
 
 	if ('id' in room && isInviteSubscription(room)) {
@@ -755,8 +626,28 @@ const RoomView = (props: IRoomViewProps) => {
 							serverVersion={serverVersion}
 						/>
 					</MessageRoomProvider>
-					{renderFooter()}
-					{renderActions()}
+					<RoomFooter
+						rid={rid}
+						paddingBottom={insets.bottom}
+						readOnly={state.readOnly}
+						airGappedRestrictionRemainingDays={airGappedRestrictionRemainingDays}
+						isFederationEnabled={isFederationEnabled}
+						isFederationModuleEnabled={isFederationModuleEnabled}
+						messageComposerRef={messageComposerRef}
+					/>
+					<RoomMessageActions
+						tmid={tmid}
+						user={user}
+						readOnly={state.readOnly}
+						messageActionsRef={messageActionsRef}
+						messageErrorActionsRef={messageErrorActionsRef}
+						editInit={onEditInit}
+						replyInit={onReplyInit}
+						quoteInit={onQuoteInit}
+						reactionInit={onReactionInit}
+						onReactionPress={onReactionPress}
+						jumpToMessage={jumpToMessageByUrl}
+					/>
 					<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
 					<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} theme={theme} />
 				</SafeAreaView>
