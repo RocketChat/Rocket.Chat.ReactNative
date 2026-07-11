@@ -7,7 +7,7 @@ import { createMessageActionStore, useIsBeingEdited, useMessageAction } from '..
 describe('RoomProviders', () => {
 	it('exposes the provided composer values to consumers via named hooks', () => {
 		const store = createMessageActionStore();
-		const room = { rid: 'rid-1' };
+		const room = { rid: 'rid-1', t: 'c' };
 		const ridSpy = jest.fn();
 
 		const Probe = () => {
@@ -37,7 +37,10 @@ describe('RoomProviders', () => {
 		// when only a sibling slice (room) changes — recreating it per render would force a
 		// re-render regardless of zustand's selector isolation, defeating the point of this test.
 		const children = <SharingProbe />;
-		const rooms = [{ rid: 'rid-1' }, { rid: 'rid-2' }];
+		const rooms = [
+			{ rid: 'rid-1', t: 'c' },
+			{ rid: 'rid-2', t: 'c' }
+		];
 		const Parent = ({ roomIndex }: { roomIndex: number }) => (
 			<RoomProviders store={store} rid='rid-1' t='c' room={rooms[roomIndex]} sharing={false}>
 				{children}
@@ -62,7 +65,7 @@ describe('RoomProviders', () => {
 		};
 
 		render(
-			<RoomProviders store={store} rid='rid-1' t='c' room={{ rid: 'rid-1' }}>
+			<RoomProviders store={store} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
 				<Probe />
 			</RoomProviders>
 		);

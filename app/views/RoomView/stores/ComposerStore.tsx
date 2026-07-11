@@ -1,17 +1,20 @@
 import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 
+import { type IMessage, type IMessageEditAttachment } from '../../../definitions';
+import { type IRoomViewState } from '../definitions';
+
 export type ComposerState = {
 	rid?: string;
 	t?: string;
 	tmid?: string;
-	room: any; // FIXME: type it properly after we migrate RoomView to hooks
+	room: IRoomViewState['room'];
 	sharing?: boolean;
 	isAutocompleteVisible?: boolean;
 	editCancel?: () => void;
-	editRequest?: (message: any) => void;
+	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
 	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage?: Function;
+	onSendMessage?: (message?: string, tshow?: boolean) => void;
 	setQuotesAndText?: (text: string, quotes: string[]) => void;
 	getText?: () => string | undefined;
 	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;

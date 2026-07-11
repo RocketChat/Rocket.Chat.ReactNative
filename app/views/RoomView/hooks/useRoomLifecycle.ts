@@ -62,7 +62,7 @@ export interface IUseRoomLifecycleResult {
 	joinRoom: () => Promise<void>;
 	resumeRoom: () => Promise<void>;
 	onJoin: () => void;
-	handleSendMessage: (message: string, tshow?: boolean) => void;
+	handleSendMessage: (message?: string, tshow?: boolean) => void;
 	toggleFollowThread: (isFollowingThread: boolean, threadId?: string) => Promise<void>;
 	fetchThreadName: (threadId: string, messageId: string) => Promise<string | undefined>;
 }
@@ -149,7 +149,10 @@ export function useRoomLifecycle({
 		}
 	};
 
-	const handleSendMessage = (message: string, tshow?: boolean) => {
+	const handleSendMessage = (message?: string, tshow?: boolean) => {
+		if (message === undefined) {
+			return;
+		}
 		logEvent(events.ROOM_SEND_MESSAGE);
 		sendMessage(rid as string, message, tmid, userRef.current, tshow).then(() => {
 			roomStore.getState().markMessageSent();
