@@ -11,7 +11,7 @@ import sharedStyles from '../../../../views/Styles';
 import { type TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
-import MessageActionTouchable from '../MessageActionTouchable';
+import MessageActionTouchable from '../Touchable/MessageActionTouchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import { useMessageUser } from '../../stores/MessageRoomStore';
 import BlurComponent from '../OverlayComponent';

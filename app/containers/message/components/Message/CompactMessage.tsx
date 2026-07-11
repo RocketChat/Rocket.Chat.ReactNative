@@ -1,9 +1,9 @@
 import { View, type ViewStyle } from 'react-native';
-import { A11y } from 'react-native-a11y-order';
 
 import styles from '../../styles';
 import RepliedThread from '../RepliedThread';
 import MessageAvatar from '../MessageAvatar';
+import MessageAccessibleIndex from '../MessageAccessibleIndex';
 import Content from '../Content';
 import Attachments from '../Attachments';
 import {
@@ -11,10 +11,8 @@ import {
 	useIsInfoMessage,
 	useMessageField,
 	useMessageGrouping,
-	useMessageText,
 	useThreadPosition
 } from '../../stores/MessageStore';
-import { useAutoTranslate } from '../../stores/MessageRoomStore';
 
 const CompactMessage = () => {
 	'use memo';
@@ -22,10 +20,8 @@ const CompactMessage = () => {
 	const isHeader = useMessageGrouping();
 	const { isThreadReply } = useThreadPosition();
 	const isInfo = useIsInfoMessage();
-	const { messageText, isTranslated } = useMessageText();
 	const { t: type, attachments } = useContentData();
 	const author = useMessageField(item => item.u);
-	const { autoTranslateLanguage } = useAutoTranslate();
 
 	const thread = isThreadReply ? <RepliedThread isHeader={isHeader} /> : null;
 	const infoStyle: ViewStyle = isInfo ? { alignItems: 'center' } : {};
@@ -35,12 +31,7 @@ const CompactMessage = () => {
 			{thread}
 			<View style={[styles.flex, infoStyle]}>
 				<MessageAvatar small />
-				<A11y.Index
-					accessible={isTranslated}
-					accessibilityLabel={messageText || ''}
-					accessibilityLanguage={autoTranslateLanguage}
-					index={2}
-					style={{ flex: 1 }}>
+				<MessageAccessibleIndex style={{ flex: 1 }}>
 					<View style={styles.messageContent}>
 						<Content />
 						{isInfo && type === 'message_pinned' ? (
@@ -49,7 +40,7 @@ const CompactMessage = () => {
 							</View>
 						) : null}
 					</View>
-				</A11y.Index>
+				</MessageAccessibleIndex>
 			</View>
 		</View>
 	);

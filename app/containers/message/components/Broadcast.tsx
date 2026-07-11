@@ -1,24 +1,22 @@
 import { Text, View } from 'react-native';
 
-import MessageActionTouchable from './MessageActionTouchable';
+import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import { BUTTON_HIT_SLOP } from '../utils';
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
-import { useMessageAuthor, useMessageItem } from '../stores/MessageStore';
-import { useBroadcast, useMessageUser, useReplyBroadcast } from '../stores/MessageRoomStore';
+import { useIsOwnMessage, useMessageItem } from '../stores/MessageStore';
+import { useBroadcast, useReplyBroadcast } from '../stores/MessageRoomStore';
 
 const Broadcast = () => {
 	'use memo';
 
 	const item = useMessageItem();
-	const user = useMessageUser();
 	const replyBroadcast = useReplyBroadcast();
 	const broadcast = useBroadcast();
 	const { colors } = useTheme();
-	const { u: author } = useMessageAuthor();
-	const isOwn = author?._id === user?.id;
+	const isOwn = useIsOwnMessage();
 
 	if (broadcast && !isOwn) {
 		return (

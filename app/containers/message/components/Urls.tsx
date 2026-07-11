@@ -4,7 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import axios from 'axios';
 
-import MessageActionTouchable from './MessageActionTouchable';
+import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import openLink from '../../../lib/methods/helpers/openLink';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';

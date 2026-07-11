@@ -35,7 +35,7 @@ import {
 	type TMessageModel,
 	type IUrl,
 	type IAttachment,
-	type ISubscription,
+	type IRoomInfoParam,
 	SubscriptionType
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
@@ -49,15 +49,6 @@ interface ISearchMessagesViewState {
 	loading: boolean;
 	messages: (IMessageFromServer | TMessageModel)[];
 	searchText: string;
-}
-
-export interface IRoomInfoParam {
-	room?: ISubscription;
-	member?: any;
-	rid: string;
-	t: SubscriptionType;
-	joined?: boolean;
-	itsMe?: boolean;
 }
 
 interface INavigationOption {

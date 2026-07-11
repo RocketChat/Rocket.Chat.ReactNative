@@ -131,4 +131,40 @@ describe('useChooseMedia', () => {
 		});
 		expect(mockNavigate).not.toHaveBeenCalled();
 	});
+
+	it('forwards quoted message ids to ShareView as selectedMessages', async () => {
+		mockUseAltTextSupported.mockReturnValue(false);
+		mockUseMessageAction.mockReturnValue({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+		const { action, startShareView } = mockNavigate.mock.calls[0][1];
+		expect(action).toBe('quote');
+		expect(startShareView().selectedMessages).toEqual(['msg-1', 'msg-2']);
+	});
+
+	it('does not quote the message when the action is edit', async () => {
+		mockUseAltTextSupported.mockReturnValue(false);
+		mockUseMessageAction.mockReturnValue({ kind: 'edit', messageId: 'msg-1' });
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+		const { action, startShareView } = mockNavigate.mock.calls[0][1];
+		expect(action).toBe('edit');
+		expect(startShareView().selectedMessages).toEqual([]);
+	});
 });

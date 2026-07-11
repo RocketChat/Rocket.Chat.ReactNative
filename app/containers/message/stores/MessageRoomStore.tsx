@@ -2,8 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactElement, type
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
-import { type IRoomInfoParam } from '../../../views/SearchMessagesView';
+import { type IAttachment, type IRoomInfoParam, type TAnyMessageModel } from '../../../definitions';
 import { useSetting } from '../../../lib/hooks/useSetting';
 
 export type MessageRoomState = {

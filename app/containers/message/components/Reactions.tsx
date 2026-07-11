@@ -1,7 +1,7 @@
 import { Text, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../../i18n';
-import MessageActionTouchable from './MessageActionTouchable';
+import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import Emoji from './Emoji';

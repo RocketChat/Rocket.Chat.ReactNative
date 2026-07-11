@@ -1,4 +1,4 @@
-import MessageActionTouchable from '../MessageActionTouchable';
+import MessageActionTouchable from '../Touchable/MessageActionTouchable';
 import { CustomIcon } from '../../../CustomIcon';
 import { BUTTON_HIT_SLOP } from '../../utils';
 import styles from '../../styles';

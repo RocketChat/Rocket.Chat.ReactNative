@@ -5,7 +5,7 @@ import MessagePreview from '../Preview';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../definitions';
 
-jest.mock('../Touch', () => {
+jest.mock('../Touchable/Touch', () => {
 	const { forwardRef } = require('react');
 	const { TouchableOpacity } = require('react-native');
 	return forwardRef(({ children, onPress, onLongPress, ...props }: any, ref: any) => (

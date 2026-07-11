@@ -11,7 +11,7 @@ import { useShowAttachment } from '../../stores/MessageRoomStore';
 import { useTranslateLanguage } from '../../stores/MessageStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
-import { isContentAttachment } from './utils';
+import { getAttachmentKey, isContentAttachment } from './utils';
 
 const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageAttachments) => {
 	'use memo';
@@ -51,14 +51,14 @@ const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageA
 		}
 
 		if (file.actions && file.actions.length > 0) {
-			return <AttachedActions key={file.title_link || file.message_link || `actions-${index}`} attachment={file} />;
+			return <AttachedActions key={getAttachmentKey(file, 'actions', index)} attachment={file} />;
 		}
 		if (typeof file.collapsed === 'boolean') {
-			return <CollapsibleQuote key={file.title_link || file.message_link || `collapsible-${index}`} attachment={file} />;
+			return <CollapsibleQuote key={getAttachmentKey(file, 'collapsible', index)} attachment={file} />;
 		}
 
 		if (file.attachments?.length) {
-			return <Reply key={file.title_link || file.message_link || `reply-${index}`} attachment={file} msg={msg} />;
+			return <Reply key={getAttachmentKey(file, 'reply', index)} attachment={file} msg={msg} />;
 		}
 
 		return null;

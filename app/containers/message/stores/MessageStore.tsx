@@ -183,6 +183,12 @@ export const useRepliedThreadData = (): Pick<TAnyMessageModel, 'tmid' | 'tmsg' |
 export const useMessageAuthor = (): Pick<TAnyMessageModel, 'u' | 'alias' | 'role'> =>
 	useMessageStore(useShallow(s => ({ u: s.item.u, alias: s.item.alias, role: s.item.role })));
 
+export const useIsOwnMessage = (): boolean => {
+	const author = useMessageStore(s => s.item.u);
+	const user = useMessageUser();
+	return author?._id === user?.id;
+};
+
 export const useAvatar = (): Pick<TAnyMessageModel, 'avatar' | 'emoji'> =>
 	useMessageStore(useShallow(s => ({ avatar: s.item.avatar, emoji: s.item.emoji })));
 

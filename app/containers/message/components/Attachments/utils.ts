@@ -1,5 +1,9 @@
 import { type IAttachment } from '../../../../definitions';
 
+// Prefer a stable server-provided link as the React key; fall back to a prefixed index.
+export const getAttachmentKey = (file: IAttachment, prefix: string, index: number): string =>
+	file.title_link || file.message_link || `${prefix}-${index}`;
+
 // Webhook/integration attachments can carry their own media alongside text/color (e.g. embeds).
 const hasOwnMedia = (file: IAttachment): boolean => !!(file.image_url || file.audio_url || file.video_url);
 
