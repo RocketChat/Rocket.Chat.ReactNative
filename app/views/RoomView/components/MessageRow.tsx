@@ -24,6 +24,9 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 	'use memo';
 
 	const room = useRoomStore(s => s.room);
+	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
+	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders this component.
+	useRoomStore(s => s.roomUpdate);
 	const lastOpen = useRoomStore(s => s.lastOpen);
 	const { theme } = useTheme();
 	const inAppFeedbackForItem = useSelector((state: IApplicationState) => state.inAppFeedback?.[item.id]);

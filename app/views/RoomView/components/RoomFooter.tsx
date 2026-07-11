@@ -34,6 +34,9 @@ export const RoomFooter = ({
 
 	const { theme } = useTheme();
 	const room = useRoomStore(s => s.room);
+	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
+	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders this component.
+	useRoomStore(s => s.roomUpdate);
 	const joined = useRoomStore(s => s.joined);
 	const loading = useRoomStore(s => s.loading);
 	const joinRoom = useRoomStore(s => s.joinRoom);
