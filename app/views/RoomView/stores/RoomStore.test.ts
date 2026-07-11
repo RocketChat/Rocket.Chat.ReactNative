@@ -3,6 +3,7 @@ import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 import { getUserInfo } from '../../../lib/services/restApi';
 import { isGroupChat } from '../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
+import log from '../../../lib/methods/helpers/log';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import RoomServices from '../services';
 import { getOrCreateRoomStore, releaseRoomStore, __resetRoomStoreRegistryForTests } from './RoomStore';
@@ -32,6 +33,7 @@ jest.mock('../../../lib/methods/helpers', () => ({
 jest.mock('../../../lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
+jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetMessages = RoomServices.getMessages as jest.Mock;
@@ -39,6 +41,7 @@ const mockLoadThreadMessages = loadThreadMessages as jest.Mock;
 const mockGetUserInfo = getUserInfo as jest.Mock;
 const mockIsGroupChat = isGroupChat as jest.Mock;
 const mockIsInviteSubscription = isInviteSubscription as unknown as jest.Mock;
+const mockLog = log as jest.Mock;
 
 const stubRoom = { rid: 'rid-1', t: 'c' };
 const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' };
@@ -219,6 +222,26 @@ describe('RoomStore', () => {
 		jest.useRealTimers();
 	});
 
+	it('logs the error when init throws', async () => {
+		setupObserve();
+		const error = new Error('boom');
+		mockGetMessages.mockRejectedValueOnce(error);
+		const store = getOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+		await store.getState().init();
+
+		expect(store.getState().loading).toBe(false);
+		expect(mockLog).toHaveBeenCalledWith(error);
+	});
+
+	it('resolves without throwing or changing loading when init runs on a rid-less store', async () => {
+		const store = getOrCreateRoomStore({ initialRoom: stubRoom });
+
+		await expect(store.getState().init()).resolves.toBeUndefined();
+
+		expect(store.getState().loading).toBe(true);
+	});
+
 	it('join() sets joined true', () => {
 		const { emit } = setupObserve();
 		const store = getOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
@@ -278,6 +301,14 @@ describe('RoomStore', () => {
 
 			expect(second).not.toBe(first);
 			expect(observeWithColumns).toHaveBeenCalledTimes(2);
+		});
+
+		it('never shares state across rid-less stores and leaves release a no-op', () => {
+			const first = getOrCreateRoomStore({ initialRoom: stubRoom });
+			const second = getOrCreateRoomStore({ initialRoom: stubRoom });
+
+			expect(second).not.toBe(first);
+			expect(() => releaseRoomStore(undefined)).not.toThrow();
 		});
 	});
 });

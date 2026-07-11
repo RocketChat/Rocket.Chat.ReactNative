@@ -82,10 +82,10 @@ const createRoomState =
 		canPlaceLivechatOnHold: false,
 
 		init: async ({ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams = {}) => {
-			set({ loading: true });
 			if (!rid) {
 				return;
 			}
+			set({ loading: true });
 			try {
 				const currentRoom = get().room;
 				if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
@@ -114,7 +114,8 @@ const createRoomState =
 				const nextMember = await getRoomMember(get, set);
 
 				set({ canAutoTranslate: nextCanAutoTranslate, member: nextMember, loading: false });
-			} catch {
+			} catch (e) {
+				log(e);
 				set({ loading: false });
 			}
 		},
@@ -165,28 +166,32 @@ export interface IGetOrCreateRoomStoreParams {
 }
 
 export const getOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
-	const key = rid ?? '';
-	const existing = registry.get(key);
+	if (!rid) {
+		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
+	}
+	const existing = registry.get(rid);
 	if (existing) {
 		existing.refCount += 1;
 		return existing.store;
 	}
 	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	const unsubscribe = observeRoom(rid, t, store);
-	registry.set(key, { store, unsubscribe, refCount: 1 });
+	registry.set(rid, { store, unsubscribe, refCount: 1 });
 	return store;
 };
 
 export const releaseRoomStore = (rid?: string): void => {
-	const key = rid ?? '';
-	const entry = registry.get(key);
+	if (!rid) {
+		return;
+	}
+	const entry = registry.get(rid);
 	if (!entry) {
 		return;
 	}
 	entry.refCount -= 1;
 	if (entry.refCount <= 0) {
 		entry.unsubscribe();
-		registry.delete(key);
+		registry.delete(rid);
 	}
 };
 
