@@ -66,7 +66,6 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 				rid: routeParams.rid,
 				t: routeParams.t as string,
 				name: routeParams.name,
-				fname: (routeParams as { fname?: string }).fname,
 				prid: routeParams.prid,
 				visitor: routeParams.visitor
 			},
