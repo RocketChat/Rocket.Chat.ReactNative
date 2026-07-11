@@ -24,7 +24,7 @@ jest.mock('../lib/hooks/useAppSelector', () => ({
 }));
 
 const update = jest.fn(cb => cb({ autoLock: false, autoLockTime: null }));
-const fakeRecord = { autoLock: false, autoLockTime: null, update };
+const fakeRecord = { autoLock: false, autoLockTime: null as number | null, update };
 
 const mockWrite = jest.fn(fn => fn());
 const mockFind = jest.fn(() => Promise.resolve(fakeRecord));

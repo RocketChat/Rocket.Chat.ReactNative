@@ -75,9 +75,8 @@ const ScreenLockConfigView = (): ReactElement => {
 		});
 	};
 
-	const toggleAutoLock = async () => {
+	const toggleAutoLock = async (nextAutoLock: boolean) => {
 		logEvent(events.SLC_TOGGLE_AUTOLOCK);
-		const nextAutoLock = !autoLock;
 		setAutoLock(nextAutoLock);
 		setAutoLockTime(DEFAULT_AUTO_LOCK);
 		if (nextAutoLock) {
@@ -94,9 +93,8 @@ const ScreenLockConfigView = (): ReactElement => {
 		await save(nextAutoLock, DEFAULT_AUTO_LOCK);
 	};
 
-	const toggleBiometry = () => {
+	const toggleBiometry = (nextBiometry: boolean) => {
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
-		const nextBiometry = !biometry;
 		setBiometry(nextBiometry);
 		userPreferences.setBool(BIOMETRY_ENABLED_KEY, nextBiometry);
 	};
