@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -67,6 +67,8 @@ const roomViewStateReducer = (state: TRoomViewReducerState, partial: Partial<TRo
 });
 
 const RoomView = (props: IRoomViewProps) => {
+	'use memo';
+
 	const {
 		route,
 		navigation,
@@ -276,38 +278,35 @@ const RoomView = (props: IRoomViewProps) => {
 		setState
 	});
 
-	const blockAction = useCallback(
-		({
-			actionId,
-			appId,
-			value,
+	const blockAction = ({
+		actionId,
+		appId,
+		value,
+		blockId,
+		rid: blockRid,
+		mid
+	}: {
+		actionId: string;
+		appId: string;
+		value: any;
+		blockId: string;
+		rid: string;
+		mid: string;
+	}) =>
+		triggerBlockAction({
 			blockId,
+			actionId,
+			value,
+			mid,
 			rid: blockRid,
-			mid
-		}: {
-			actionId: string;
-			appId: string;
-			value: any;
-			blockId: string;
-			rid: string;
-			mid: string;
-		}) =>
-			triggerBlockAction({
-				blockId,
-				actionId,
-				value,
-				mid,
-				rid: blockRid,
-				appId,
-				container: {
-					type: ContainerTypes.MESSAGE,
-					id: mid
-				}
-			}),
-		[]
-	);
+			appId,
+			container: {
+				type: ContainerTypes.MESSAGE,
+				id: mid
+			}
+		});
 
-	const closeBanner = useCallback(async () => {
+	const closeBanner = async () => {
 		if ('id' in room) {
 			try {
 				const db = database.active;
@@ -320,22 +319,19 @@ const RoomView = (props: IRoomViewProps) => {
 				// do nothing
 			}
 		}
-	}, [room]);
+	};
 
-	const updateAutocompleteVisible = useCallback(
-		(updatedAutocompleteVisible: boolean) => {
-			if (updatedAutocompleteVisible && !state.isAutocompleteVisible) {
-				// timeout to prevent conflict with default keyboard announcement.
-				setTimeout(() => {
-					AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
-				}, 800);
-			}
-			if (updatedAutocompleteVisible !== state.isAutocompleteVisible) {
-				setState({ isAutocompleteVisible: updatedAutocompleteVisible });
-			}
-		},
-		[state.isAutocompleteVisible]
-	);
+	const updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
+		if (updatedAutocompleteVisible && !state.isAutocompleteVisible) {
+			// timeout to prevent conflict with default keyboard announcement.
+			setTimeout(() => {
+				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
+			}, 800);
+		}
+		if (updatedAutocompleteVisible !== state.isAutocompleteVisible) {
+			setState({ isAutocompleteVisible: updatedAutocompleteVisible });
+		}
+	};
 
 	useOmnichannelPermissions({
 		rid,
@@ -349,12 +345,12 @@ const RoomView = (props: IRoomViewProps) => {
 		roomStore
 	});
 
-	const setReadOnly = useCallback(async () => {
+	const setReadOnly = async () => {
 		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
 		setState({ readOnly });
-	}, [room, user]);
+	};
 
-	const updateE2EEState = useCallback(() => {
+	const updateE2EEState = () => {
 		if (!('encrypted' in room)) {
 			setState({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
 			return;
@@ -369,7 +365,7 @@ const RoomView = (props: IRoomViewProps) => {
 			roomEncrypted: room.encrypted
 		});
 		setState({ showMissingE2EEKey, showE2EEDisabledRoom });
-	}, [room, encryptionEnabled]);
+	};
 
 	useEffect(() => {
 		setReadOnly();
