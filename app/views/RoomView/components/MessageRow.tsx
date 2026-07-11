@@ -1,7 +1,7 @@
 import * as Haptics from 'expo-haptics';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore, useRoomWithUpdate } from '../stores/RoomStoreContext';
 import { useTheme } from '../../../theme';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';
@@ -23,10 +23,7 @@ export type TMessageRowProps = {
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
 	'use memo';
 
-	const room = useRoomStore(s => s.room);
-	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
-	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders this component.
-	useRoomStore(s => s.roomUpdate);
+	const room = useRoomWithUpdate();
 	const lastOpen = useRoomStore(s => s.lastOpen);
 	const { theme } = useTheme();
 	const inAppFeedbackForItem = useSelector((state: IApplicationState) => state.inAppFeedback?.[item.id]);

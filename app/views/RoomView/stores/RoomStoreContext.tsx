@@ -12,3 +12,11 @@ export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => {
 	}
 	return useStore(store, selector);
 };
+
+export const useRoomWithUpdate = (): RoomState['room'] => {
+	const room = useRoomStore(s => s.room);
+	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
+	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders the caller.
+	useRoomStore(s => s.roomUpdate);
+	return room;
+};

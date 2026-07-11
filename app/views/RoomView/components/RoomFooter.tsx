@@ -9,7 +9,7 @@ import { isBlocked } from '../../../lib/methods/helpers/room';
 import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../../lib/methods/isRoomFederated';
 import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../../containers/MessageComposer';
 import styles from '../styles';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore, useRoomWithUpdate } from '../stores/RoomStoreContext';
 
 interface IRoomFooterProps {
 	rid?: string;
@@ -33,10 +33,7 @@ export const RoomFooter = ({
 	'use memo';
 
 	const { theme } = useTheme();
-	const room = useRoomStore(s => s.room);
-	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
-	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders this component.
-	useRoomStore(s => s.roomUpdate);
+	const room = useRoomWithUpdate();
 	const joined = useRoomStore(s => s.joined);
 	const loading = useRoomStore(s => s.loading);
 	const joinRoom = useRoomStore(s => s.joinRoom);
