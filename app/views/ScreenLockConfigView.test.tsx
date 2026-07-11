@@ -13,11 +13,13 @@ jest.mock('../theme', () => ({
 	useTheme: () => ({ theme: 'light', colors: {} })
 }));
 
+let mockSettings = { Force_Screen_Lock: false, Force_Screen_Lock_After: 0 };
+
 jest.mock('../lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: any) => unknown) =>
 		selector({
 			server: { server: 'srv' },
-			settings: { Force_Screen_Lock: false, Force_Screen_Lock_After: 0 }
+			settings: mockSettings
 		})
 }));
 
@@ -77,6 +79,7 @@ jest.mock('../containers/SafeAreaView', () => {
 describe('ScreenLockConfigView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockSettings = { Force_Screen_Lock: false, Force_Screen_Lock_After: 0 };
 		mockFind.mockResolvedValue(fakeRecord);
 		mockSupportedBiometryLabel.mockResolvedValue('Face ID');
 		mockGetBool.mockReturnValue(false);
@@ -159,5 +162,18 @@ describe('ScreenLockConfigView', () => {
 		const cb = update.mock.calls[update.mock.calls.length - 1][0];
 		cb(recordArg);
 		expect(recordArg.autoLockTime).toBe(60);
+	});
+
+	it('admin-forced auto-lock renders only the forced option and disables the switch', async () => {
+		mockSettings = { Force_Screen_Lock: true, Force_Screen_Lock_After: 120 };
+		mockFind.mockResolvedValue({ ...fakeRecord, autoLock: true, autoLockTime: 120 });
+
+		const { findByText, findByTestId, queryByText } = render(<ScreenLockConfigView />);
+
+		await findByText('After 120 seconds (set by admin)');
+		expect(queryByText('After 1 minute')).toBeNull();
+
+		const autoLockSwitch = await findByTestId('screen-lock-config-auto-lock-switch');
+		expect(autoLockSwitch.props.disabled).toBe(true);
 	});
 });

@@ -214,7 +214,11 @@ const ScreenLockConfigView = (): ReactElement => {
 					{autoLock ? (
 						<>
 							<List.Separator />
-							<List.Item title='Local_authentication_change_passcode' onPress={handleChangePasscode} showActionIndicator />
+							<List.Item
+								title='Local_authentication_change_passcode'
+								onPress={() => handleChangePasscode({ force: false })}
+								showActionIndicator
+							/>
 						</>
 					) : null}
 					<List.Separator />
