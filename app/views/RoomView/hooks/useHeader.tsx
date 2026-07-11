@@ -1,34 +1,26 @@
 import { useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useStore } from 'zustand';
 
 import RoomHeader from '../../../containers/RoomHeader';
 import { getRoomTitle, isGroupChat } from '../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { getUserSelector } from '../../../selectors/login';
 import { type IOmnichannelSource, type ISubscription, type IVisitor, type SubscriptionType } from '../../../definitions';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import LeftButtons from '../LeftButtons';
 import RightButtons from '../RightButtons';
 import { type IRoomViewProps, type IRoomViewState } from '../definitions';
+import { type RoomStore } from '../stores/RoomStore';
 
 interface IUseHeaderParams {
-	rid?: string;
-	tmid?: string;
-	roomType?: SubscriptionType;
-	roomName?: string;
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
+	roomStore: RoomStore;
 	unreadsCount: IRoomViewState['unreadsCount'];
-	roomUserId: IRoomViewState['roomUserId'];
-	joined: IRoomViewState['joined'];
-	canForwardGuest: IRoomViewState['canForwardGuest'];
-	canReturnQueue: IRoomViewState['canReturnQueue'];
-	canPlaceLivechatOnHold: IRoomViewState['canPlaceLivechatOnHold'];
 	showMissingE2EEKey: IRoomViewState['showMissingE2EEKey'];
 	showE2EEDisabledRoom: IRoomViewState['showE2EEDisabledRoom'];
-	navigation: IRoomViewProps['navigation'];
-	isMasterDetail: boolean;
-	baseUrl: string;
-	user: IRoomViewProps['user'];
 	goRoomActionsView: (screen?: keyof ModalStackParamList) => void;
 	toggleFollowThread: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	showActionSheet: (options: any) => void;
@@ -38,28 +30,32 @@ export const useHeader = (params: IUseHeaderParams): void => {
 	'use memo';
 
 	const {
-		rid,
-		tmid,
-		roomType,
-		roomName,
-		room,
-		roomUpdate,
+		roomStore,
 		unreadsCount,
-		roomUserId,
-		joined,
-		canForwardGuest,
-		canReturnQueue,
-		canPlaceLivechatOnHold,
 		showMissingE2EEKey,
 		showE2EEDisabledRoom,
-		navigation,
-		isMasterDetail,
-		baseUrl,
-		user,
 		goRoomActionsView,
 		toggleFollowThread,
 		showActionSheet
 	} = params;
+
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
+	const route = useRoute<IRoomViewProps['route']>();
+	const rid = route.params?.rid;
+	const tmid = route.params?.tmid;
+	const roomType = route.params?.t as SubscriptionType;
+	const roomName = route.params?.name;
+	const isMasterDetail = useMasterDetail();
+	const baseUrl = useAppSelector(state => state.server.server);
+	const user = useAppSelector(getUserSelector);
+
+	const room = useStore(roomStore, s => s.room);
+	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
+	const joined = useStore(roomStore, s => s.joined);
+	const roomUserId = useStore(roomStore, s => s.roomUserId);
+	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
+	const canReturnQueue = useStore(roomStore, s => s.canReturnQueue);
+	const canPlaceLivechatOnHold = useStore(roomStore, s => s.canPlaceLivechatOnHold);
 
 	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
 	// `roomUpdate` is a fresh snapshot per emit and is the dependency that re-fires the header.

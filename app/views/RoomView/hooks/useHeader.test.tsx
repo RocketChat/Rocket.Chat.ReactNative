@@ -1,6 +1,9 @@
-import { renderHook } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react-native';
+import { createStore } from 'zustand';
 
 import { SubscriptionType } from '../../../definitions/ISubscription';
+import { getUserSelector } from '../../../selectors/login';
+import { type RoomState, type RoomStore } from '../stores/RoomStore';
 import { useHeader } from './useHeader';
 
 jest.mock('../LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
@@ -14,28 +17,53 @@ jest.mock('../../../lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
 
-const setOptions = jest.fn();
-const navigation = { setOptions } as unknown as Parameters<typeof useHeader>[0]['navigation'];
+const mockSetOptions = jest.fn();
+const defaultRouteParams = { rid: 'rid-1', tmid: undefined, t: SubscriptionType.CHANNEL, name: 'general' };
+let mockRouteParams: typeof defaultRouteParams = { ...defaultRouteParams };
+
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => ({ setOptions: mockSetOptions }),
+	useRoute: () => ({ params: mockRouteParams })
+}));
+
+const mockUser = { id: 'u1', username: 'user', token: 'tok', showMessageInMainThread: false };
+const mockBaseUrl = 'https://open.rocket.chat';
+
+jest.mock('../../../lib/hooks/useAppSelector', () => ({
+	useAppSelector: jest.fn()
+}));
+jest.mock('../../../lib/hooks/useMasterDetail', () => ({
+	useMasterDetail: jest.fn(() => false)
+}));
+
+const { useAppSelector } = jest.requireMock('../../../lib/hooks/useAppSelector');
+
+const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
+	createStore<RoomState>(() => ({
+		room: { rid: 'rid-1', t: 'c', name: 'general' },
+		roomUpdate: {},
+		joined: true,
+		subscribed: true,
+		member: {},
+		roomUserId: null,
+		loading: false,
+		lastOpen: null,
+		canAutoTranslate: false,
+		canForwardGuest: false,
+		canReturnQueue: false,
+		canViewCannedResponse: false,
+		canPlaceLivechatOnHold: false,
+		init: jest.fn(),
+		join: jest.fn(),
+		markMessageSent: jest.fn(),
+		...overrides
+	}));
 
 const makeParams = (overrides: Partial<Parameters<typeof useHeader>[0]> = {}): Parameters<typeof useHeader>[0] => ({
-	rid: 'rid-1',
-	tmid: undefined,
-	roomType: SubscriptionType.CHANNEL,
-	roomName: 'general',
-	room: { rid: 'rid-1', t: 'c', name: 'general' },
-	roomUpdate: {},
+	roomStore: makeRoomStore(),
 	unreadsCount: null,
-	roomUserId: null,
-	joined: true,
-	canForwardGuest: false,
-	canReturnQueue: false,
-	canPlaceLivechatOnHold: false,
 	showMissingE2EEKey: false,
 	showE2EEDisabledRoom: false,
-	navigation,
-	isMasterDetail: false,
-	baseUrl: 'https://open.rocket.chat',
-	user: { id: 'u1', username: 'user', token: 'tok', showMessageInMainThread: false },
 	goRoomActionsView: jest.fn(),
 	toggleFollowThread: jest.fn(() => Promise.resolve()),
 	showActionSheet: jest.fn(),
@@ -45,50 +73,56 @@ const makeParams = (overrides: Partial<Parameters<typeof useHeader>[0]> = {}): P
 describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockRouteParams = { ...defaultRouteParams };
+		useAppSelector.mockImplementation((selector: any) => (selector === getUserSelector ? mockUser : mockBaseUrl));
 	});
 
 	it('sets headerLeft, headerTitle and headerRight when rid and room.rid are present', () => {
 		renderHook(() => useHeader(makeParams()));
 
-		expect(setOptions).toHaveBeenCalledTimes(1);
-		const options = setOptions.mock.calls[0][0];
+		expect(mockSetOptions).toHaveBeenCalledTimes(1);
+		const options = mockSetOptions.mock.calls[0][0];
 		expect(typeof options.headerLeft).toBe('function');
 		expect(typeof options.headerTitle).toBe('function');
 		expect(typeof options.headerRight).toBe('function');
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
-		renderHook(() => useHeader(makeParams({ rid: undefined })));
+		mockRouteParams = { ...defaultRouteParams, rid: undefined as unknown as string };
 
-		expect(setOptions).toHaveBeenCalledTimes(1);
-		const options = setOptions.mock.calls[0][0];
+		renderHook(() => useHeader(makeParams()));
+
+		expect(mockSetOptions).toHaveBeenCalledTimes(1);
+		const options = mockSetOptions.mock.calls[0][0];
 		expect(typeof options.headerLeft).toBe('function');
 		expect(options).not.toHaveProperty('headerTitle');
 		expect(options).not.toHaveProperty('headerRight');
 	});
 
 	it('does not call setOptions when room has no rid', () => {
-		renderHook(() => useHeader(makeParams({ room: { rid: '', t: 'c' } })));
+		const roomStore = makeRoomStore({ room: { rid: '', t: 'c' } });
 
-		expect(setOptions).not.toHaveBeenCalled();
+		renderHook(() => useHeader(makeParams({ roomStore })));
+
+		expect(mockSetOptions).not.toHaveBeenCalled();
 	});
 
 	it('re-fires setOptions when roomUpdate changes even though the room reference is stable', () => {
-		const base = makeParams();
-		const { rerender } = renderHook(
-			({ roomUpdate }: { roomUpdate: Parameters<typeof useHeader>[0]['roomUpdate'] }) => useHeader({ ...base, roomUpdate }),
-			{ initialProps: { roomUpdate: { topic: 'old' } } }
-		);
-		expect(setOptions).toHaveBeenCalledTimes(1);
+		const roomStore = makeRoomStore({ roomUpdate: { topic: 'old' } });
 
-		rerender({ roomUpdate: { topic: 'new' } });
-		expect(setOptions).toHaveBeenCalledTimes(2);
+		renderHook(() => useHeader(makeParams({ roomStore })));
+		expect(mockSetOptions).toHaveBeenCalledTimes(1);
+
+		act(() => {
+			roomStore.setState({ roomUpdate: { topic: 'new' } });
+		});
+		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 	});
 
 	it('renders each header callback without throwing', () => {
 		renderHook(() => useHeader(makeParams()));
 
-		const options = setOptions.mock.calls[0][0];
+		const options = mockSetOptions.mock.calls[0][0];
 		expect(() => options.headerLeft()).not.toThrow();
 		expect(() => options.headerTitle()).not.toThrow();
 		expect(() => options.headerRight()).not.toThrow();

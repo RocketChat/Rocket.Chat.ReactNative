@@ -21,13 +21,7 @@ import Banner from './Banner';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
-import {
-	type IApplicationState,
-	type ISubscription,
-	type SubscriptionType,
-	type TAnyMessageModel,
-	type RoomType
-} from '../../definitions';
+import { type IApplicationState, type ISubscription, type TAnyMessageModel, type RoomType } from '../../definitions';
 import { themes } from '../../lib/constants/colors';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
@@ -388,24 +382,10 @@ const RoomView = (props: IRoomViewProps) => {
 	}, [encryptionEnabled, roomUpdate.encrypted, roomUpdate.E2EKey]);
 
 	useHeader({
-		rid,
-		tmid,
-		roomType: t as SubscriptionType,
-		roomName: route.params?.name,
-		room,
-		roomUpdate,
+		roomStore,
 		unreadsCount: state.unreadsCount,
-		roomUserId,
-		joined,
-		canForwardGuest,
-		canReturnQueue,
-		canPlaceLivechatOnHold,
 		showMissingE2EEKey: state.showMissingE2EEKey,
 		showE2EEDisabledRoom: state.showE2EEDisabledRoom,
-		navigation,
-		isMasterDetail,
-		baseUrl,
-		user,
 		goRoomActionsView,
 		toggleFollowThread,
 		showActionSheet: handleShowActionSheet
