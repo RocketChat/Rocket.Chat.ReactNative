@@ -4,6 +4,7 @@ import { render, renderHook } from '@testing-library/react-native';
 import {
 	ComposerProvider,
 	ComposerStoreContext,
+	type ComposerState,
 	useComposerRid,
 	useComposerType,
 	useComposerTmid,
@@ -82,6 +83,29 @@ describe('ComposerStore', () => {
 
 		rerender(<Parent isAutocompleteVisible />);
 		expect(spy).toHaveBeenLastCalledWith(true);
+	});
+
+	it('re-renders useComposerRoom when roomUpdate changes, even with the same room reference', () => {
+		const mutableRoom = { rid: 'rid-1', t: 'c', name: 'old' };
+		const spy = jest.fn();
+
+		const Probe = () => {
+			const room = useComposerRoom();
+			spy(room && 'name' in room ? room.name : undefined);
+			return null;
+		};
+		const Parent = ({ roomUpdate }: { roomUpdate: ComposerState['roomUpdate'] }) => (
+			<ComposerProvider {...fullProps()} room={mutableRoom} roomUpdate={roomUpdate}>
+				<Probe />
+			</ComposerProvider>
+		);
+
+		const { rerender } = render(<Parent roomUpdate={{}} />);
+		expect(spy).toHaveBeenLastCalledWith('old');
+
+		mutableRoom.name = 'new';
+		rerender(<Parent roomUpdate={{ name: 'new' }} />);
+		expect(spy).toHaveBeenLastCalledWith('new');
 	});
 
 	it('throws when a composer hook is used outside a ComposerProvider', () => {

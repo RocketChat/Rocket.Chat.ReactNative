@@ -433,6 +433,7 @@ const RoomView = (props: IRoomViewProps) => {
 				rid={room.rid}
 				t={room.t}
 				room={room}
+				roomUpdate={roomUpdate}
 				tmid={tmid}
 				sharing={false}
 				isAutocompleteVisible={state.isAutocompleteVisible}

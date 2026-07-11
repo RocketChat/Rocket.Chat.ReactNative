@@ -9,6 +9,7 @@ export type ComposerState = {
 	t?: string;
 	tmid?: string;
 	room: IRoomViewState['room'];
+	roomUpdate?: IRoomViewState['roomUpdate'];
 	sharing?: boolean;
 	isAutocompleteVisible?: boolean;
 	editCancel?: () => void;
@@ -45,6 +46,7 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 			t: state.t,
 			tmid: state.tmid,
 			room: state.room,
+			roomUpdate: state.roomUpdate,
 			sharing: state.sharing,
 			isAutocompleteVisible: state.isAutocompleteVisible,
 			editCancel: state.editCancel,
@@ -60,6 +62,7 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 		state.t,
 		state.tmid,
 		state.room,
+		state.roomUpdate,
 		state.sharing,
 		state.isAutocompleteVisible,
 		state.editCancel,
@@ -78,7 +81,12 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 export const useComposerRid = (): ComposerState['rid'] => useComposerStore(s => s.rid);
 export const useComposerType = (): ComposerState['t'] => useComposerStore(s => s.t);
 export const useComposerTmid = (): ComposerState['tmid'] => useComposerStore(s => s.tmid);
-export const useComposerRoom = (): ComposerState['room'] => useComposerStore(s => s.room);
+export const useComposerRoom = (): ComposerState['room'] => {
+	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
+	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders the caller.
+	useComposerStore(s => s.roomUpdate);
+	return useComposerStore(s => s.room);
+};
 export const useComposerSharing = (): ComposerState['sharing'] => useComposerStore(s => s.sharing);
 export const useIsAutocompleteVisible = (): ComposerState['isAutocompleteVisible'] =>
 	useComposerStore(s => s.isAutocompleteVisible);

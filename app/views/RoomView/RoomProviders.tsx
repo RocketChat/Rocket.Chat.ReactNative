@@ -15,6 +15,7 @@ export const RoomProviders = ({
 	t,
 	tmid,
 	room,
+	roomUpdate,
 	sharing,
 	isAutocompleteVisible,
 	editCancel,
@@ -34,6 +35,7 @@ export const RoomProviders = ({
 				t={t}
 				tmid={tmid}
 				room={room}
+				roomUpdate={roomUpdate}
 				sharing={sharing}
 				isAutocompleteVisible={isAutocompleteVisible}
 				editCancel={editCancel}
