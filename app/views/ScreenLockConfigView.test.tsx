@@ -85,10 +85,11 @@ describe('ScreenLockConfigView', () => {
 		mockGetBool.mockReturnValue(false);
 	});
 
-	it('renders the auto-lock list item after init', async () => {
+	it('renders the auto-lock list item after init and sets the header title', async () => {
 		const { findByText } = render(<ScreenLockConfigView />);
 
-		await findByText('Unlock with passcode');
+		expect(await findByText('Unlock with passcode')).toBeTruthy();
+		expect(mockSetOptions).toHaveBeenCalledWith({ title: 'Screen lock' });
 	});
 
 	it('enable auto-lock persists true — stale-state guard', async () => {
