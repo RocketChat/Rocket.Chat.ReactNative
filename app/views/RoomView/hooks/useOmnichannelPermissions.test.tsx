@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
@@ -89,5 +89,50 @@ describe('useOmnichannelPermissions', () => {
 		expect(roomStore.getState().canReturnQueue).toBe(false);
 		expect(roomStore.getState().canViewCannedResponse).toBe(false);
 		expect(roomStore.getState().canPlaceLivechatOnHold).toBe(false);
+	});
+
+	it('discards a superseded batch that resolves after a fresher one', async () => {
+		const roomStore = makeRoomStore();
+		let resolveFirstRoutingConfig: (value: { returnQueue: boolean }) => void = () => {};
+
+		mockHasPermission.mockResolvedValue([false]);
+		mockGetRoutingConfig.mockImplementationOnce(
+			() =>
+				new Promise(resolve => {
+					resolveFirstRoutingConfig = resolve;
+				})
+		);
+
+		const baseProps: IUseOmnichannelPermissionsParams = {
+			rid: 'rid-1',
+			t: 'l',
+			room: { rid: 'rid-1', t: 'l' } as any,
+			roomUpdate: {},
+			joined: false,
+			transferLivechatGuestPermission: ['transfer-livechat-guest'],
+			viewCannedResponsesPermission: ['view-canned-responses'],
+			livechatAllowManualOnHold: true,
+			roomStore
+		};
+
+		const { rerender } = renderHook((props: IUseOmnichannelPermissionsParams) => useOmnichannelPermissions(props), {
+			initialProps: baseProps
+		});
+
+		mockHasPermission.mockResolvedValue([true]);
+		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
+
+		rerender({ ...baseProps, joined: true });
+
+		await waitFor(() => {
+			expect(roomStore.getState().canForwardGuest).toBe(true);
+		});
+
+		resolveFirstRoutingConfig({ returnQueue: false });
+		await act(async () => {});
+
+		expect(roomStore.getState().canForwardGuest).toBe(true);
+		expect(roomStore.getState().canReturnQueue).toBe(true);
+		expect(roomStore.getState().canViewCannedResponse).toBe(true);
 	});
 });

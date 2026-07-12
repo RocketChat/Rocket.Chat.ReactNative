@@ -52,21 +52,29 @@ export function useOmnichannelPermissions({
 	const getCanPlaceLivechatOnHold = () =>
 		!!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
 
-	const updateOmnichannel = async () => {
+	const updateOmnichannel = async (isCancelled: () => boolean) => {
 		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
 			getCanForwardGuest(),
 			getCanReturnQueue(),
 			getCanViewCannedResponse()
 		]);
+		if (isCancelled()) {
+			return;
+		}
 		const canPlaceLivechatOnHold = getCanPlaceLivechatOnHold();
 		roomStore.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 	};
 
 	// If it's a livechat room
 	useEffect(() => {
-		if (t === 'l') {
-			updateOmnichannel();
+		if (t !== 'l') {
+			return;
 		}
+		let cancelled = false;
+		updateOmnichannel(() => cancelled);
+		return () => {
+			cancelled = true;
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [roomUpdate.lastMessage?.token, roomUpdate.visitor, roomUpdate.status, joined]);
 }
