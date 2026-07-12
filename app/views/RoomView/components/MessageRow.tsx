@@ -1,7 +1,7 @@
 import * as Haptics from 'expo-haptics';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useRoomStore, useRoomWithUpdate } from '../stores/RoomStoreContext';
+import { useRoomStore } from '../stores/RoomStoreContext';
 import { useTheme } from '../../../theme';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';
@@ -23,18 +23,16 @@ export type TMessageRowProps = {
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
 	'use memo';
 
-	const room = useRoomWithUpdate();
-	const lastOpen = useRoomStore(s => s.lastOpen);
 	const { theme } = useTheme();
+	const room = useRoomStore(s => s.room);
+	const lastOpen = useRoomStore(s => s.lastOpen);
+	// The room model mutates in place (same ref per emit), and the React Compiler caches derived
+	// values on that stable ref. Deriving primitives inside selectors keeps them fresh per emit
+	// and only re-renders the row when the derived value actually changes.
+	const isIgnored = useRoomStore(s => ('id' in s.room ? s.room.ignored?.includes?.(item?.u?._id) ?? false : false));
+	const threadBadgeColor = useRoomStore(s => getBadgeColor({ subscription: s.room, theme, messageId: item.id }));
 	const inAppFeedbackForItem = useSelector((state: IApplicationState) => state.inAppFeedback?.[item.id]);
 	const dispatch = useDispatch();
-
-	const isIgnored = (message: TAnyMessageModel): boolean => {
-		if ('id' in room) {
-			return room?.ignored?.includes?.(message?.u?._id) ?? false;
-		}
-		return false;
-	};
 
 	const hapticFeedback = (msgId: string) => {
 		dispatch(removeInAppFeedback(msgId));
@@ -92,10 +90,10 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 		content = (
 			<Message
 				item={item}
-				isIgnored={isIgnored(item)}
+				isIgnored={isIgnored}
 				previousItem={previousItem}
 				onLongPress={onLongPress}
-				threadBadgeColor={getBadgeColor({ subscription: room, theme, messageId: item?.id })}
+				threadBadgeColor={threadBadgeColor}
 				highlighted={highlightedMessage === item.id}
 				dateSeparator={dateSeparator}
 				showUnreadSeparator={showUnreadSeparator}
