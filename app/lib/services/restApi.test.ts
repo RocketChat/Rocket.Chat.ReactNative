@@ -5,15 +5,15 @@ import { findOrCreateInvite, mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
+const mockSdkDelete = jest.fn();
 let mockSdkCurrent: unknown = {};
 
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
-		server: 'https://example.com',
-		getHeaders: () => ({}),
 		get: (...args: unknown[]) => mockSdkGet(...args),
 		post: (...args: unknown[]) => mockSdkPost(...args),
+		delete: (...args: unknown[]) => mockSdkDelete(...args),
 		get current() {
 			return mockSdkCurrent;
 		}
@@ -306,35 +306,22 @@ describe('usersAutoComplete', () => {
 });
 
 describe('removePushToken', () => {
-	let fetchMock: jest.Mock;
-
 	beforeEach(() => {
-		fetchMock = jest.fn().mockResolvedValue({ ok: true } as Response);
-		// @ts-ignore
-		global.fetch = fetchMock;
+		mockSdkDelete.mockResolvedValue({ success: true });
 		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue('device-token');
 	});
 
-	afterEach(() => {
-		// @ts-ignore
-		delete global.fetch;
-	});
-
-	it('sends a DELETE with the token in the request body', async () => {
+	it('sends a DELETE to /v1/push.token with the token in the body', async () => {
 		const { removePushToken } = require('./restApi');
 		const result = await removePushToken();
 		expect(result).toBe(true);
-		expect(fetchMock).toHaveBeenCalledWith('https://example.com/api/v1/push.token', {
-			method: 'DELETE',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ token: 'device-token' })
-		});
+		expect(mockSdkDelete).toHaveBeenCalledWith('/v1/push.token', { token: 'device-token' });
 	});
 
-	it('returns undefined and does not fetch when there is no device token', async () => {
+	it('returns undefined and does not call delete when there is no device token', async () => {
 		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue(undefined);
 		const { removePushToken } = require('./restApi');
 		expect(await removePushToken()).toBeUndefined();
-		expect(fetchMock).not.toHaveBeenCalled();
+		expect(mockSdkDelete).not.toHaveBeenCalled();
 	});
 });

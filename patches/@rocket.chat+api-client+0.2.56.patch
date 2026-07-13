@@ -1,0 +1,20 @@
+--- a/node_modules/@rocket.chat/api-client/dist/index.js
++++ b/node_modules/@rocket.chat/api-client/dist/index.js
+@@ -128,9 +128,14 @@
+             return response.json();
+         });
+     }
+-    delete(endpoint_1, _params_1) {
+-        return __awaiter(this, arguments, void 0, function* (endpoint, _params, options = {}) {
+-            const response = yield this.send(endpoint, 'DELETE', options !== null && options !== void 0 ? options : {});
++    delete(endpoint_1, params_1) {
++        return __awaiter(this, arguments, void 0, function* (endpoint, params, _a = {}) {
++            var { headers } = _a, options = __rest(_a, ["headers"]);
++            const isFormData = checkIfIsFormData(params);
++            const response = yield this.send(endpoint, 'DELETE', Object.assign({ body: isFormData ? buildFormData(params) : JSON.stringify(params), headers: Object.assign(Object.assign({ Accept: 'application/json' }, (!isFormData && { 'Content-Type': 'application/json' })), headers) }, options));
++            if (response.status === 204) {
++                return {};
++            }
+             return response.json();
+         });
+     }

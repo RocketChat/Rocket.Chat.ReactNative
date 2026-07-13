@@ -1160,19 +1160,10 @@ export const removePushToken = async (): Promise<boolean | void> => {
 	if (token) {
 		lastToken = '';
 		lastVoipToken = '';
-		const serverUrl = sdk.server;
-		if (!serverUrl) {
-			return false;
-		}
 		try {
-			// RC 0.60.0 — api-client's `delete` drops the request body, but the server
-			// requires `token` in the body, so send it via the local fetch helper (cf. editMediaMessage).
-			const response = await fetch(`${serverUrl}/api/v1/push.token`, {
-				method: 'DELETE',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ token })
-			});
-			return response.ok;
+			// RC 0.60.0
+			const response = await sdk.delete('/v1/push.token', { token });
+			return response?.success === true;
 		} catch (e) {
 			log(e);
 			return false;
