@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system/legacy';
-import FileViewer from 'react-native-file-viewer';
+import ExpoQuickLook from '@magrinj/expo-quick-look';
 
 import { LISTENER } from '../../../containers/Toast';
 import { type IAttachment } from '../../../definitions';
@@ -38,10 +38,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			}
 		}
 
-		await FileViewer.open(file, {
-			showOpenWithDialog: true,
-			showAppsSuggestions: true
-		});
+		await ExpoQuickLook.previewFile({ uri: file });
 	} catch (e) {
 		EventEmitter.emit(LISTENER, { message: i18n.t('Error_Download_file') });
 	}
