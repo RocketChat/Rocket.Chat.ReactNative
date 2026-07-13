@@ -81,7 +81,7 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
             }
         });
 
-        const userId = json(result.body)?.user?._id;
+        const userId = json(result.body)?.data?.user?._id;
         postWithRetry(`${data.server}/api/v1/users.delete`, {
             headers: {
                 'Content-Type': 'application/json',
