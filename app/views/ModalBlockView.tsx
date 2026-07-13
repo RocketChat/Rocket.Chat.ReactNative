@@ -14,8 +14,11 @@ import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
-import { type IApplicationState } from '../definitions';
+import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
+import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '../containers/message/stores/MessageStore';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	content: {
@@ -51,10 +54,8 @@ interface IModalBlockViewProps {
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	theme: TSupportedThemes;
 	language: string;
-	user: {
-		id: string;
-		token: string;
-	};
+	user: ReturnType<typeof getUserSelector>;
+	baseUrl: string;
 }
 
 // eslint-disable-next-line no-sequences
@@ -92,6 +93,13 @@ const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 	}
 	return null;
 };
+
+// A UIKit modal is not a message, but the shared media components it can render
+// (ImageContainer -> Button -> Touchable) assume a per-message context. Provide an
+// empty one: no long-press target, no id-scoped cache. Images still load via the
+// room provider's user/baseUrl. Routed through `unknown` (the repo's convention for
+// fake TAnyMessageModel fixtures) so the cast reads as intentional, not a real message.
+const EMPTY_MESSAGE = {} as unknown as TAnyMessageModel;
 
 class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
@@ -252,7 +260,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { language } = this.props;
+		const { language, user, baseUrl } = this.props;
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
@@ -265,15 +273,19 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			<KeyboardView>
 				<ScrollView style={styles.content}>
 					<Fragment key={modalKey}>
-						<ModalBlockWithContext
-							action={this.action}
-							state={this.changeState}
-							{...data}
-							blocks={blocks}
-							errors={errors}
-							language={language}
-							values={values}
-						/>
+						<MessageRoomProvider user={user} baseUrl={baseUrl}>
+							<MessageProvider item={EMPTY_MESSAGE}>
+								<ModalBlockWithContext
+									action={this.action}
+									state={this.changeState}
+									{...data}
+									blocks={blocks}
+									errors={errors}
+									language={language}
+									values={values}
+								/>
+							</MessageProvider>
+						</MessageRoomProvider>
 					</Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
@@ -283,7 +295,9 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	language: state.login.user.language as string
+	language: state.login.user.language as string,
+	baseUrl: state.server.server,
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(ModalBlockView);
