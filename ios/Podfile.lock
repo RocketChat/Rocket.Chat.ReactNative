@@ -2318,8 +2318,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-background-timer (2.4.1):
-    - React-Core
   - react-native-cameraroll (7.10.2):
     - boost
     - DoubleConversion
@@ -3929,7 +3927,6 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - React-mutationobservernativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/mutationobserver`)
   - react-native-a11y-order (from `../node_modules/react-native-a11y-order`)
-  - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-external-keyboard (from `../node_modules/react-native-external-keyboard`)
@@ -4178,8 +4175,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/mutationobserver"
   react-native-a11y-order:
     :path: "../node_modules/react-native-a11y-order"
-  react-native-background-timer:
-    :path: "../node_modules/react-native-background-timer"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
@@ -4410,7 +4405,6 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: a2ff1eb11061ca170faac36c8a77089ab1f2f053
   React-mutationobservernativemodule: 7e78b1a0aa0b6219f785cf1db3a53f98498b08d2
   react-native-a11y-order: 20b33ff538af60d8b8a7f7284115a7febc9034d4
-  react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
   react-native-cameraroll: ae31ba7ee17d31c5ee05d7bb248742e3af482783
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
   react-native-external-keyboard: db51d3a78d68c1f87fef41c67353a7c0ddbe51dd
@@ -4452,7 +4446,7 @@ SPEC CHECKSUMS:
   React-utils: 2bc263749b7ce4cbcea7e919d13762c5290ac196
   React-webperformancenativemodule: 715775339b1cf5444cedfacae22e8d8976adffc1
   ReactAppDependencyProvider: 5cc0b8b95a5be99ad92aee2d59bc59987df97753
-  ReactCodegen: 119593d1ec01c4f7bc204d9916cacf53be4b8ed2
+  ReactCodegen: e6335a5069153978e70168a1e948418971997379
   ReactCommon: 1e53be0fda7e5fb3074762ba18c55e95548a6434
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 7fcc9a58ae343aeb1a1dd49f9030832fe432c544
