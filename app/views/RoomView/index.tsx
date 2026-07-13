@@ -1674,7 +1674,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 						archived={'id' in room && room.archived}
 						isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 						rid={rid}
-						user={user as any}
+						user={user}
 						baseUrl={baseUrl}
 						broadcast={'id' in room && room.broadcast}
 						isThreadRoom={!!this.tmid}
