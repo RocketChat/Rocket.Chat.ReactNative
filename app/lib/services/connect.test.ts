@@ -80,6 +80,11 @@ jest.mock('./sdk', () => {
 	};
 });
 
+const mockCreateAndConnect = jest.fn();
+jest.mock('@rocket.chat/ddp-client', () => ({
+	DDPSDK: { createAndConnect: (...args: unknown[]) => mockCreateAndConnect(...args) }
+}));
+
 const mockTwoFactor = jest.fn();
 jest.mock('./twoFactor', () => ({
 	twoFactor: (...args: any[]) => mockTwoFactor(...args)
@@ -1043,5 +1048,41 @@ describe('connect — collection handlers guard against fieldless payloads', () 
 		const [handler] = getHandlersByEvent('stream-notify-logged');
 
 		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
+	});
+});
+
+describe('getWebsocketInfo', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('returns success when the probe socket connects', async () => {
+		const { getWebsocketInfo } = require('./connect');
+		mockCreateAndConnect.mockResolvedValue({ connection: { close: jest.fn() } });
+
+		const result = await getWebsocketInfo({ server: 'https://example.com' });
+
+		expect(result).toEqual({ success: true });
+		expect(mockCreateAndConnect).toHaveBeenCalledWith('https://example.com');
+	});
+
+	it('returns a disabled message when the server rejects with 400', async () => {
+		const { getWebsocketInfo } = require('./connect');
+		mockCreateAndConnect.mockRejectedValue(new Error('Error: 400 bad request'));
+
+		const result = await getWebsocketInfo({ server: 'https://example.com' });
+
+		expect(result.success).toBe(false);
+		expect(result.message).toMatch(/disabled/i);
+	});
+
+	it('falls back to the error message for non-400 failures', async () => {
+		const { getWebsocketInfo } = require('./connect');
+		mockCreateAndConnect.mockRejectedValue(new Error('boom'));
+
+		const result = await getWebsocketInfo({ server: 'https://example.com' });
+
+		expect(result.success).toBe(false);
+		expect(result.message).toBe('boom');
 	});
 });

@@ -156,6 +156,16 @@ describe('Sdk.subscribeNotifyUser', () => {
 		expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-user', 'override-user/message');
 		expect(fake.__subscribe).not.toHaveBeenCalledWith('stream-notify-user', 'logged-in-user/message');
 	});
+
+	it('uses the explicit userId even when no user is logged in', () => {
+		// Guards the reconnect/forceReopen timing gap: callers pass userId explicitly
+		// so subscriptions are established even before account.user is re-populated.
+		const fake = buildFakeSdkWithSubscribe(undefined);
+		setInternalSdk(fake);
+		const handles = sdk.subscribeNotifyUser('explicit-user');
+		expect(handles).toHaveLength(NOTIFY_USER_EVENTS.length);
+		expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-user', 'explicit-user/message');
+	});
 });
 
 describe('Sdk.login', () => {
@@ -227,8 +237,8 @@ describe('Sdk.login', () => {
 		await sdk.login({ user: 'john', password: 'secret' });
 		await sdk.logout();
 		const headers = sdk.getHeaders();
-		expect(headers['X-Auth-Token']).toBe('');
-		expect(headers['X-User-Id']).toBe('');
+		expect(headers).not.toHaveProperty('X-Auth-Token');
+		expect(headers).not.toHaveProperty('X-User-Id');
 	});
 
 	it('sets the auth headers from a resume-token (deep link) login response', async () => {

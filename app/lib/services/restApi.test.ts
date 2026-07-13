@@ -10,6 +10,8 @@ let mockSdkCurrent: unknown = {};
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
+		server: 'https://example.com',
+		getHeaders: () => ({}),
 		get: (...args: unknown[]) => mockSdkGet(...args),
 		post: (...args: unknown[]) => mockSdkPost(...args),
 		get current() {
@@ -286,5 +288,53 @@ describe('registerPushToken', () => {
 		);
 		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
 		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
+	});
+});
+
+describe('usersAutoComplete', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('JSON-stringifies the selector before sending it', () => {
+		const { usersAutoComplete } = require('./restApi');
+		usersAutoComplete({ term: 'abc', exceptions: [] });
+		expect(mockSdkGet).toHaveBeenCalledWith('/v1/users.autocomplete', {
+			selector: JSON.stringify({ term: 'abc', exceptions: [] })
+		});
+	});
+});
+
+describe('removePushToken', () => {
+	let fetchMock: jest.Mock;
+
+	beforeEach(() => {
+		fetchMock = jest.fn().mockResolvedValue({ ok: true } as Response);
+		// @ts-ignore
+		global.fetch = fetchMock;
+		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue('device-token');
+	});
+
+	afterEach(() => {
+		// @ts-ignore
+		delete global.fetch;
+	});
+
+	it('sends a DELETE with the token in the request body', async () => {
+		const { removePushToken } = require('./restApi');
+		const result = await removePushToken();
+		expect(result).toBe(true);
+		expect(fetchMock).toHaveBeenCalledWith('https://example.com/api/v1/push.token', {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ token: 'device-token' })
+		});
+	});
+
+	it('returns undefined and does not fetch when there is no device token', async () => {
+		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue(undefined);
+		const { removePushToken } = require('./restApi');
+		expect(await removePushToken()).toBeUndefined();
+		expect(fetchMock).not.toHaveBeenCalled();
 	});
 });

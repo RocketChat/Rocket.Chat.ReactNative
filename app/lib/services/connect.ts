@@ -273,10 +273,6 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 	}
 }
 
-function stopListener(listener: any): boolean {
-	return listener && listener.stop();
-}
-
 async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	const result = await sdk.login(credentials);
 	const { me } = result;
@@ -530,7 +526,6 @@ export {
 	connect,
 	disconnect,
 	getWebsocketInfo,
-	stopListener,
 	getLoginServices,
 	determineAuthType
 };

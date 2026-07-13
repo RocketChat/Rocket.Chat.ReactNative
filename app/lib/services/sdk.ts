@@ -458,10 +458,10 @@ class Sdk {
 				log(new Error('Sdk.logout(): account.logout() timed out after 5s; server session may still be valid'));
 			}
 		}
-		this.setHeaders({
-			'X-Auth-Token': '',
-			'X-User-Id': ''
-		});
+		const next = { ...this.headers };
+		delete next['X-Auth-Token'];
+		delete next['X-User-Id'];
+		this.headers = next;
 	}
 }
 
