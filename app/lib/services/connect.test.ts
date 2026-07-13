@@ -29,31 +29,44 @@ const mockSdkLogin = jest.fn();
 const mockAccountUser: { value: any } = { value: undefined };
 
 jest.mock('./sdk', () => {
-	const state: { server: string | undefined; currentEnabled: boolean } = { server: undefined, currentEnabled: true };
+	const state: {
+		server: string | undefined;
+		currentEnabled: boolean;
+		connection: { on: any; connect: any; checkAndReopen: any } | undefined;
+	} = {
+		server: undefined,
+		currentEnabled: true,
+		connection: undefined
+	};
+	const makeConnection = () => ({
+		on: (event: string, cb: any) => mockConnectionOn(event, cb),
+		connect: () => mockConnectionConnect(),
+		checkAndReopen: () => mockConnectionCheckAndReopen()
+	});
 	return {
 		__esModule: true,
 		default: {
 			get server() {
 				return state.server;
 			},
-			disconnect: (...args: any[]) => mockSdkDisconnect(...args),
-			// Mirrors the real sdk.ts: initialize() synchronously assigns the server before
-			// resolving, so `sdk.server` reflects the in-flight connect() call's target.
+			disconnect: (...args: any[]) => {
+				state.connection = undefined;
+				return mockSdkDisconnect(...args);
+			},
+			// Mirrors the real sdk.ts: initialize() yields a brand-new connection instance each
+			// call, so handlers attached by a previous connect() are discarded with the old instance.
 			initialize: (s: string) => {
 				state.server = s;
+				state.connection = makeConnection();
 				return mockSdkInitialize(s);
 			},
 			onCollection: (...args: any[]) => mockSdkOnCollection(...args),
 			login: (...args: any[]) => mockSdkLogin(...args),
 			get current() {
-				if (!state.currentEnabled) return undefined;
+				if (!state.currentEnabled || !state.connection) return undefined;
 				return {
 					account: { user: mockAccountUser.value },
-					connection: {
-						on: (event: string, cb: any) => mockConnectionOn(event, cb),
-						connect: () => mockConnectionConnect(),
-						checkAndReopen: () => mockConnectionCheckAndReopen()
-					}
+					connection: state.connection
 				};
 			}
 		},
@@ -62,7 +75,8 @@ jest.mock('./sdk', () => {
 		},
 		__setCurrentEnabled: (v: boolean) => {
 			state.currentEnabled = v;
-		}
+		},
+		__getCurrentConnection: () => state.connection
 	};
 });
 
@@ -78,6 +92,7 @@ jest.mock('../../ee/omnichannel/actions/inquiry', () => ({
 const sdkMock = jest.requireMock('./sdk') as {
 	__setServer: (v: string | undefined) => void;
 	__setCurrentEnabled: (v: boolean) => void;
+	__getCurrentConnection: () => { on: any; connect: any; checkAndReopen: any } | undefined;
 };
 
 // --- Store mock ---
@@ -633,6 +648,27 @@ describe('connect — pendingHangups drain on reconnect', () => {
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+});
+
+describe('connect — listener lifecycle across reconnects', () => {
+	it('attaches handlers to a fresh connection instance each connect, so old handlers are dropped (no leak)', async () => {
+		sdkMock.__setServer(undefined);
+		await connect({ server: 'https://a.example.com' });
+		const connectionA = sdkMock.__getCurrentConnection();
+
+		sdkMock.__setServer(undefined);
+		await connect({ server: 'https://b.example.com' });
+		const connectionB = sdkMock.__getCurrentConnection();
+
+		// Each connect() renders its connection.on('connection', …) on its own instance.
+		// Because the new SDK creates a fresh connection per connect() and disconnect() drops
+		// the previous one, connectionA (and the handlers attached to it) is unreachable after
+		// the second connect — exactly why the old `*.then(stopListener)` teardown is unnecessary.
+		expect(connectionA).toBeDefined();
+		expect(connectionB).toBeDefined();
+		expect(connectionA).not.toBe(connectionB);
+		expect(sdkMock.__getCurrentConnection()).toBe(connectionB);
 	});
 });
 

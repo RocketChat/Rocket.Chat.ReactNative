@@ -117,7 +117,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 					const settingsCollection = db.get('settings');
 
 					// Check if the _id exists in defaultSettings
-					if (Object.hasOwn(defaultSettings, _id)) {
+					if (defaultSettings.hasOwnProperty(_id)) {
 						try {
 							const settingsRecord = await settingsCollection.find(_id);
 							// @ts-ignore
