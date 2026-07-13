@@ -9,7 +9,6 @@ const REPO_ROOT = path.resolve(__dirname, '../../..');
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.
 const KNOWN_SKIPPED = [
 	'app/views/RoomView/hooks/useRoomLifecycle.ts', // react-hooks/exhaustive-deps suppressions
-	'app/views/RoomView/hooks/useOmnichannelPermissions.ts', // react-hooks/exhaustive-deps suppressions
 	'app/views/RoomView/List/hooks/useScroll.ts', // react-hooks/exhaustive-deps suppressions
 	'app/views/RoomView/hooks/useJumpToMessage.ts', // compiler limitation: value blocks within try/catch (Todo)
 	'app/views/RoomView/hooks/useRoomNavigation.ts' // cannot access refs during render (debounce factory in useMemo closes over a ref)

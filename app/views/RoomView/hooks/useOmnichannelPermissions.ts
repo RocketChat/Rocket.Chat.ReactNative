@@ -17,6 +17,23 @@ export interface IUseOmnichannelPermissionsParams {
 	roomStore: RoomStore;
 }
 
+const getPermissionFlag = async (permission: string[] | undefined, rid?: string) => {
+	const permissions = await hasPermission([permission], rid);
+	return permissions[0] as boolean;
+};
+
+const getCanReturnQueue = async () => {
+	try {
+		const { returnQueue } = await getRoutingConfig();
+		return returnQueue;
+	} catch {
+		return false;
+	}
+};
+
+const getCanPlaceLivechatOnHold = (livechatAllowManualOnHold: boolean | undefined, room: IRoomViewState['room']) =>
+	!!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
+
 export function useOmnichannelPermissions({
 	rid,
 	t,
@@ -30,51 +47,39 @@ export function useOmnichannelPermissions({
 }: IUseOmnichannelPermissionsParams): void {
 	'use memo';
 
-	const getCanForwardGuest = async () => {
-		const permissions = await hasPermission([transferLivechatGuestPermission], rid);
-		return permissions[0] as boolean;
-	};
-
-	const getCanReturnQueue = async () => {
-		try {
-			const { returnQueue } = await getRoutingConfig();
-			return returnQueue;
-		} catch {
-			return false;
-		}
-	};
-
-	const getCanViewCannedResponse = async () => {
-		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
-		return permissions[0] as boolean;
-	};
-
-	const getCanPlaceLivechatOnHold = () =>
-		!!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
-
-	const updateOmnichannel = async (isCancelled: () => boolean) => {
-		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
-			getCanForwardGuest(),
-			getCanReturnQueue(),
-			getCanViewCannedResponse()
-		]);
-		if (isCancelled()) {
-			return;
-		}
-		const canPlaceLivechatOnHold = getCanPlaceLivechatOnHold();
-		roomStore.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
-	};
-
 	// If it's a livechat room
 	useEffect(() => {
 		if (t !== 'l') {
 			return;
 		}
 		let cancelled = false;
-		updateOmnichannel(() => cancelled);
+		const updateOmnichannel = async () => {
+			const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+				getPermissionFlag(transferLivechatGuestPermission, rid),
+				getCanReturnQueue(),
+				getPermissionFlag(viewCannedResponsesPermission, rid)
+			]);
+			if (cancelled) {
+				return;
+			}
+			const canPlaceLivechatOnHold = getCanPlaceLivechatOnHold(livechatAllowManualOnHold, room);
+			roomStore.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
+		};
+		updateOmnichannel();
 		return () => {
 			cancelled = true;
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [roomUpdate.lastMessage?.token, roomUpdate.visitor, roomUpdate.status, joined]);
+	}, [
+		t,
+		rid,
+		room,
+		roomStore,
+		transferLivechatGuestPermission,
+		viewCannedResponsesPermission,
+		livechatAllowManualOnHold,
+		roomUpdate.lastMessage?.token,
+		roomUpdate.visitor,
+		roomUpdate.status,
+		joined
+	]);
 }
