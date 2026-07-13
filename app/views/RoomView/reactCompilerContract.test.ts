@@ -8,8 +8,7 @@ const REPO_ROOT = path.resolve(__dirname, '../../..');
 
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.
 const KNOWN_SKIPPED = [
-	'app/views/RoomView/hooks/useRoomLifecycle.ts', // react-hooks/exhaustive-deps suppressions
-	'app/views/RoomView/List/hooks/useScroll.ts' // react-hooks/exhaustive-deps suppressions
+	'app/views/RoomView/hooks/useRoomLifecycle.ts' // react-hooks/exhaustive-deps suppressions
 ];
 
 const collectUseMemoFiles = (dir: string): string[] => {

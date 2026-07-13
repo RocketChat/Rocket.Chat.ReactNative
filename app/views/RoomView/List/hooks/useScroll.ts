@@ -21,7 +21,11 @@ const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
-const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100, animated: false } as const;
+const JUMP_SCROLL_POSITION = {
+	viewPosition: 0.5,
+	viewOffset: 100,
+	animated: false
+} as const;
 
 // A Jump to Message in flight: re-anchor the window, wait for the target to re-emit, scroll once.
 interface IPendingJump {
@@ -145,7 +149,10 @@ export const useScroll = ({
 	const reScrollWhenSettled = (targetId: string | null | undefined) => {
 		const settled = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
 		if (settled !== -1) {
-			listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
+			listRef.current?.scrollToIndex({
+				index: settled,
+				...JUMP_SCROLL_POSITION
+			});
 		}
 	};
 
@@ -163,22 +170,23 @@ export const useScroll = ({
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
-	// Release settled: the live tail has emitted and the viewport is already pinned at offset 0 from the
-	// pre-swap scroll. Re-pin in case the swap nudged it, then restore maintainVisibleContentPosition for
-	// normal live-tail following (safe at offset 0 — minIndexForVisible:0 keeps the newest row stable).
+	// Release settled: the live tail has emitted (keyed on messages so this runs on the first live emit)
+	// and the viewport is already pinned at offset 0 from the pre-swap scroll. Re-pin in case the swap
+	// nudged it, then restore maintainVisibleContentPosition for normal live-tail following (safe at
+	// offset 0 — minIndexForVisible:0 keeps the newest row stable).
 	useLayoutEffect(() => {
 		if (!pendingBottom.current) {
 			return;
 		}
 		pendingBottom.current = false;
 		listRef.current?.scrollToOffset({ offset: 0, animated: false });
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- the cascade is the fix: the swap render must paint with MVCP suppressed, the follow-up render restores it
 		setIsReleasing(false);
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it runs on the first live emit; listRef is a stable ref
-	}, [messages]);
+	}, [messages, listRef]);
 
 	// On every re-observe, check whether the pending target has appeared; the first time it has, scroll
 	// once and complete.
-	useLayoutEffect(() => {
+	const onReObserve = () => {
 		const jump = pendingJump.current;
 		if (!jump || jump.scrolled) {
 			return;
@@ -198,7 +206,18 @@ export const useScroll = ({
 		jump.scrolled = true;
 		scrollToTarget(jump.messageId, index);
 		completeJump(jump);
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time; fetchMessages is a stable trigger, not a dependency
+	};
+
+	// Latest-closure ref so the trigger effect can key on messages alone (one run per re-observe) with
+	// honest deps: fetchMessages re-keys on highTs, so listing the handler would also fire this mid-jump.
+	const onReObserveRef = useRef(onReObserve);
+	// Refreshed in a layout effect declared first — layout effects run in declaration order, so the
+	// trigger below always reads this commit's closure.
+	useLayoutEffect(() => {
+		onReObserveRef.current = onReObserve;
+	});
+	useLayoutEffect(() => {
+		onReObserveRef.current();
 	}, [messages]);
 
 	// The list could not measure the target's frame yet. VirtualizedList re-fires this synchronously with
@@ -221,13 +240,19 @@ export const useScroll = ({
 			// short. Step to the measured frontier first (that renders the next batch, advancing
 			// highestMeasuredFrameIndex), then re-attempt — it lands once measured, or re-fires to climb on.
 			if (targetIndex > params.highestMeasuredFrameIndex) {
-				listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+				listRef.current?.scrollToIndex({
+					index: params.highestMeasuredFrameIndex,
+					animated: false
+				});
 				setTimeout(() => {
 					reScrollWhenSettled(pendingJump.current?.messageId ?? lastJumpTargetId.current);
 				}, SCROLL_TO_INDEX_RETRY_DELAY);
 				return;
 			}
-			listRef.current?.scrollToIndex({ index: targetIndex, ...JUMP_SCROLL_POSITION });
+			listRef.current?.scrollToIndex({
+				index: targetIndex,
+				...JUMP_SCROLL_POSITION
+			});
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
