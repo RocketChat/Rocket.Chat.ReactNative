@@ -57,9 +57,11 @@ describe('createUploadRecord', () => {
 	it('reuses the existing record when force-retry', async () => {
 		const existing: any = { id: uploadPath, update: jest.fn((cb: (u: any) => void) => cb(existing)) };
 		mockFind.mockResolvedValue(existing);
+		uploadQueue[uploadPath] = {} as any;
 
 		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined, isForceTryAgain: true });
 
+		expect(Alert.alert).not.toHaveBeenCalled();
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(existing);
 	});
