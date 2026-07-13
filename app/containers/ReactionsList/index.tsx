@@ -6,7 +6,7 @@ import styles from './styles';
 import AllTab from './AllTab';
 import UsersList from './UsersList';
 import { TabView } from '../TabView';
-import Emoji from '../message/Emoji';
+import Emoji from '../message/components/Emoji';
 
 interface IReactionsListProps {
 	reactions?: IReaction[];
@@ -28,7 +28,7 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 		};
 	}
 
-	const sortedReactions = reactions?.sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
+	const sortedReactions = [...reactions].sort((reaction1, reaction2) => reaction2.usernames.length - reaction1.usernames.length);
 	const routes: IRoute[] = sortedReactions.map(reaction => ({
 		key: reaction.emoji,
 		title: reaction.emoji,

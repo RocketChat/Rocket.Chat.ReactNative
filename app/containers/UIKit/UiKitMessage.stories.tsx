@@ -1,9 +1,8 @@
 import { ScrollView, View } from 'react-native';
 import { type ReactElement } from 'react';
 
-import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
-import { themes, colors } from '../../lib/constants/colors';
+import { colors } from '../../lib/constants/colors';
 import { longText } from '../../../.rnstorybook/utils';
 import {
 	BASE_ROW_HEIGHT,
@@ -11,14 +10,6 @@ import {
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { ThemeContext, type TSupportedThemes } from '../../theme';
-
-const user = {
-	id: 'y8bd77ptZswPj3EW8',
-	username: 'diego.mello',
-	token: 'abc'
-};
-
-const baseUrl = 'https://open.rocket.chat';
 
 export default {
 	title: 'UIKit/UiKitMessage',
@@ -34,22 +25,7 @@ export default {
 					width: 350,
 					height: 800
 				}}>
-				<MessageContext.Provider
-					value={{
-						user,
-						baseUrl,
-						onPress: () => {},
-						onLongPress: () => {},
-						reactionInit: () => {},
-						onErrorPress: () => {},
-						replyBroadcast: () => {},
-						onReactionPress: () => {},
-						onDiscussionPress: () => {},
-						onReactionLongPress: () => {},
-						threadBadgeColor: themes.light.fontInfo
-					}}>
-					<Story />
-				</MessageContext.Provider>
+				<Story />
 			</ResponsiveLayoutContext.Provider>
 		)
 	]

@@ -629,10 +629,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-1"
               >
                 <A11yIndexView
                   accessibilityLabel="Hey!"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -897,7 +898,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -920,6 +920,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Hey!"
                           >
                             <View
@@ -1089,10 +1090,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-2"
               >
                 <A11yIndexView
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -1137,6 +1139,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                           >
                             <View
@@ -1313,10 +1316,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-4"
               >
                 <A11yIndexView
                   accessibilityLabel="Older message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -1361,6 +1365,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Older message"
                           >
                             <View
@@ -1749,10 +1754,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-6"
               >
                 <A11yIndexView
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -2017,7 +2023,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -2040,6 +2045,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                           >
                             <View
@@ -2209,10 +2215,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-7"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the third message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -2257,6 +2264,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the third message"
                           >
                             <View
@@ -2433,10 +2441,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-9"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the second message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -2481,6 +2490,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the second message"
                           >
                             <View
@@ -2657,10 +2667,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-11"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the first message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -2925,7 +2936,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -2948,6 +2958,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the first message"
                           >
                             <View
@@ -3236,10 +3247,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-12"
               >
                 <A11yIndexView
                   accessibilityLabel="Hey!"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -3504,7 +3516,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -3527,6 +3538,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Hey!"
                           >
                             <View
@@ -3696,10 +3708,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-13"
               >
                 <A11yIndexView
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -3744,6 +3757,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                           >
                             <View
@@ -3920,10 +3934,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-15"
               >
                 <A11yIndexView
                   accessibilityLabel="Older message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -3968,6 +3983,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Older message"
                           >
                             <View
@@ -4356,10 +4372,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-17"
               >
                 <A11yIndexView
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -4624,7 +4641,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -4647,6 +4663,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                           >
                             <View
@@ -4816,10 +4833,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-18"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the third message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -4864,6 +4882,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the third message"
                           >
                             <View
@@ -5040,10 +5059,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-20"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the second message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -5088,6 +5108,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the second message"
                           >
                             <View
@@ -5264,10 +5285,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-22"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the first message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -5532,7 +5554,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                   {
                                     "color": "#9EA2A8",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -5555,6 +5576,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the first message"
                           >
                             <View
@@ -5843,10 +5865,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-23"
               >
                 <A11yIndexView
                   accessibilityLabel="Hey!"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -6111,7 +6134,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                   {
                                     "color": "#6C727A",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -6134,6 +6156,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Hey!"
                           >
                             <View
@@ -6303,10 +6326,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-24"
               >
                 <A11yIndexView
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -6351,6 +6375,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                           >
                             <View
@@ -6527,10 +6552,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-26"
               >
                 <A11yIndexView
                   accessibilityLabel="Older message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -6575,6 +6601,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Older message"
                           >
                             <View
@@ -6963,10 +6990,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-28"
               >
                 <A11yIndexView
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -7231,7 +7259,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                   {
                                     "color": "#6C727A",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -7254,6 +7281,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                           >
                             <View
@@ -7423,10 +7451,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-29"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the third message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -7471,6 +7500,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the third message"
                           >
                             <View
@@ -7647,10 +7677,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-31"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the second message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -7695,6 +7726,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the second message"
                           >
                             <View
@@ -7871,10 +7903,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "width": "100%",
                   }
                 }
-                testID="message-undefined"
+                testID="message-story-message-33"
               >
                 <A11yIndexView
                   accessibilityLabel="This is the first message"
+                  accessible={false}
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
@@ -8139,7 +8172,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                   {
                                     "color": "#6C727A",
                                   },
-                                  undefined,
                                 ]
                               }
                             >
@@ -8162,6 +8194,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         >
                           <View
+                            style={false}
                             testID="message-content-This is the first message"
                           >
                             <View

@@ -20,7 +20,7 @@ export default class User extends Model {
 
 	@field('statusText') statusText;
 
-	@json('roles', sanitizer) roles;
+	@json('roles', sanitizer, { memo: true }) roles;
 
 	@field('avatar_etag') avatarETag;
 

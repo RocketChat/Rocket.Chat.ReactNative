@@ -1,7 +1,5 @@
-import { type ICustomEmojis, type TGetCustomEmoji } from '../../definitions';
+import { type TGetCustomEmoji, resolveCustomEmoji } from '../../definitions';
 import { useAppSelector } from './useAppSelector';
-
-export const resolveCustomEmoji = (customEmojis: ICustomEmojis, name: string) => customEmojis[name] ?? null;
 
 export const useCustomEmoji = (): TGetCustomEmoji => {
 	'use memo';
