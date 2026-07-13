@@ -31,11 +31,13 @@ export interface ILoginDataResponse {
 	me: ILoginMeResponse;
 }
 
+export interface ILoginResponse {
+	status: string;
+	data: ILoginDataResponse;
+}
+
 export type AuthEndpoints = {
 	login: {
-		POST: (params: { user?: string; password?: string; resume?: string; code?: string }) => {
-			status: string;
-			data: ILoginDataResponse;
-		};
+		POST: (params: { user?: string; password?: string; resume?: string; code?: string }) => ILoginResponse;
 	};
 };

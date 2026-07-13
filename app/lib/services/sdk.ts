@@ -16,7 +16,7 @@ import {
 	type PathFor,
 	type ResultFor
 } from '../../definitions/rest/helpers';
-import { type ILoginDataResponse } from '../../definitions/rest/v1/auth';
+import { type ILoginDataResponse, type ILoginResponse } from '../../definitions/rest/v1/auth';
 
 export async function normalizeResponseError(response: Response): Promise<{ status: number; data: any }> {
 	try {
@@ -26,6 +26,10 @@ export async function normalizeResponseError(response: Response): Promise<{ stat
 		return { status: response.status, data: {} };
 	}
 }
+
+// Mirrors @rocket.chat/ddp-client's internal `ConnectionStatus`. It isn't exported by the package yet,
+// so we keep a single source of truth here instead of repeating the union inline.
+export type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'failed' | 'closed' | 'disconnected' | 'reconnecting';
 
 export const NOTIFY_USER_EVENTS = [
 	'message',
@@ -155,7 +159,7 @@ class Sdk {
 		}
 	}
 
-	post<TPath extends PathFor<'POST'>>(
+	async post<TPath extends PathFor<'POST'>>(
 		endpoint: TPath,
 		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
 			? void
@@ -164,20 +168,8 @@ class Sdk {
 			MatchPathPattern<TPath>
 		>
 			? void
-			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
-	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
-		return this.postWithHeaders(endpoint, params, {});
-	}
-
-	/**
-	 * Same as `post`, but merges `extraHeaders` into a per-call headers object instead of mutating the shared
-	 * `this.headers`. Used for the 2FA retry so the transient `x-2fa-code`/`x-2fa-method` headers never become
-	 * visible to any other `get`/`post`/`delete` call that might be in flight at the same time.
-	 */
-	private async postWithHeaders<TPath extends PathFor<'POST'>>(
-		endpoint: TPath,
-		params: any,
-		extraHeaders: Record<string, string>
+			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>,
+		extraHeaders: Record<string, string> = {}
 	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
 		const isMethodCall = !!endpoint?.includes('/v1/method.call');
 		try {
@@ -209,9 +201,9 @@ class Sdk {
 				const { details } = isMethodCall ? normalized : normalized?.data;
 				try {
 					const totpResult = await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-					// Recurse (not into `post`) so a retry that itself gets challenged again keeps using
-					// per-call headers, without ever touching the shared `this.headers`.
-					return await this.postWithHeaders(endpoint, params, {
+					// Recurse so a retry that itself gets challenged again keeps using per-call headers,
+					// without ever touching the shared `this.headers`.
+					return await this.post(endpoint, params, {
 						'x-2fa-code': totpResult.twoFactorCode,
 						'x-2fa-method': totpResult.twoFactorMethod
 					});
@@ -260,13 +252,7 @@ class Sdk {
 
 	async login(credentials: any): Promise<ILoginDataResponse> {
 		try {
-			// /v1/login is a special-cased Rocket.Chat endpoint: it replies with { status, data }
-			// instead of the { success, data } convention the generic REST types assume, so the
-			// inferred result type doesn't match the real shape here — cast to the documented one.
-			const loginResult = (await this.post('/v1/login', credentials)) as unknown as {
-				status: string;
-				data: ILoginDataResponse;
-			};
+			const loginResult = (await this.post('/v1/login', credentials)) as unknown as ILoginResponse;
 			if (loginResult?.status !== 'success' || !loginResult.data) {
 				return Promise.reject(new Error('Invalid response from server'));
 			}
@@ -383,9 +369,7 @@ class Sdk {
 		});
 	}
 
-	onConnectionStatus(
-		callback: (status: 'idle' | 'connecting' | 'connected' | 'failed' | 'closed' | 'disconnected' | 'reconnecting') => void
-	): () => void {
+	onConnectionStatus(callback: (status: ConnectionStatus) => void): () => void {
 		if (!this.current) {
 			return () => {};
 		}
@@ -447,21 +431,27 @@ class Sdk {
 	}
 
 	async logout(): Promise<void> {
-		if (this.current?.account) {
-			const TIMEOUT = Symbol('logout-timeout');
-			// account.logout() can hang indefinitely on a dead socket; cap it so app-level logout always completes.
-			const result = await Promise.race([
-				this.current.account.logout(),
-				new Promise<typeof TIMEOUT>(resolve => setTimeout(() => resolve(TIMEOUT), 5000))
-			]);
-			if (result === TIMEOUT) {
-				log(new Error('Sdk.logout(): account.logout() timed out after 5s; server session may still be valid'));
-			}
-		}
 		const next = { ...this.headers };
 		delete next['X-Auth-Token'];
 		delete next['X-User-Id'];
-		this.headers = next;
+		try {
+			if (this.current?.account) {
+				const TIMEOUT = Symbol('logout-timeout');
+				// account.logout() can hang indefinitely on a dead socket; cap it so app-level logout always completes.
+				const result = await Promise.race([
+					this.current.account.logout(),
+					new Promise<typeof TIMEOUT>(resolve => setTimeout(() => resolve(TIMEOUT), 5000))
+				]);
+				if (result === TIMEOUT) {
+					log(new Error('Sdk.logout(): account.logout() timed out after 5s; server session may still be valid'));
+				}
+			}
+		} catch (e) {
+			log(e);
+		} finally {
+			// Always clear auth headers, even if logout throws — otherwise stale X-Auth-Token/X-User-Id leak into later calls.
+			this.headers = next;
+		}
 	}
 }
 

@@ -221,7 +221,7 @@ describe('patched ConnectionImpl (patches/@rocket.chat+ddp-client+0.3.51.patch)'
 		});
 
 		it('returns true when the probe reports the socket alive', async () => {
-			const { client, connection } = buildConnection();
+			const { connection } = buildConnection();
 			const connectPromise = connection.connect();
 			const ws = FakeWebSocket.instances[0];
 			ws.open();
@@ -235,7 +235,7 @@ describe('patched ConnectionImpl (patches/@rocket.chat+ddp-client+0.3.51.patch)'
 		});
 
 		it('forces a reopen when the probe reports the socket dead', async () => {
-			const { client, connection } = buildConnection();
+			const { connection } = buildConnection();
 			const connectPromise = connection.connect();
 			const ws = FakeWebSocket.instances[0];
 			ws.open();

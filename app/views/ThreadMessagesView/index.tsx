@@ -351,6 +351,8 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 					end: result.count < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
+			} else {
+				this.setState({ loading: false });
 			}
 		} catch (e) {
 			log(e);
