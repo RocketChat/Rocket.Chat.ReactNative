@@ -10,8 +10,7 @@ const REPO_ROOT = path.resolve(__dirname, '../../..');
 const KNOWN_SKIPPED = [
 	'app/views/RoomView/hooks/useRoomLifecycle.ts', // react-hooks/exhaustive-deps suppressions
 	'app/views/RoomView/List/hooks/useScroll.ts', // react-hooks/exhaustive-deps suppressions
-	'app/views/RoomView/hooks/useJumpToMessage.ts', // compiler limitation: value blocks within try/catch (Todo)
-	'app/views/RoomView/hooks/useRoomNavigation.ts' // cannot access refs during render (debounce factory in useMemo closes over a ref)
+	'app/views/RoomView/hooks/useJumpToMessage.ts' // compiler limitation: value blocks within try/catch (Todo)
 ];
 
 const collectUseMemoFiles = (dir: string): string[] => {

@@ -18,7 +18,7 @@ jest.mock('./useJumpToMessage', () => ({
 	useJumpToMessage: jest.fn(() => ({ jumpToMessage: jest.fn(), cancelJumpToMessage: jest.fn() }))
 }));
 jest.mock('../../../lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Thread Name') }));
-jest.mock('../../../lib/methods/helpers', () => ({ debounce: (fn: (...args: any[]) => any) => fn }));
+jest.mock('../../../lib/methods/helpers', () => ({ useDebounce: (fn: (...args: any[]) => any) => fn }));
 jest.mock('../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
 	...jest.requireActual('../../../lib/methods/helpers/log'),
