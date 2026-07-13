@@ -265,20 +265,23 @@ export default class RoomSubscription {
 		readMessages(this.rid, new Date());
 	}, 300);
 
-	updateMessage = (message: IMessage): Promise<void> =>
-		new Promise(async resolve => {
-			if (this.rid !== message.rid) {
-				return resolve();
-			}
+	updateMessage = async (message: IMessage): Promise<void> => {
+		if (this.rid !== message.rid) {
+			return;
+		}
 
+		const db = database.active;
+		const msgCollection = db.get('messages');
+		const threadsCollection = db.get('threads');
+		const threadMessagesCollection = db.get('thread_messages');
+
+		// Decrypt the message if necessary
+		message = (await Encryption.decryptMessage(message)) as IMessage;
+
+		// Serialize reads, prepares and the batch under the writer lock so concurrent stream
+		// events for the same id can't call prepareUpdate on a record with pending changes.
+		await db.write(async () => {
 			const batch: TMessageModel[] | TThreadModel[] | TThreadMessageModel[] = [];
-			const db = database.active;
-			const msgCollection = db.get('messages');
-			const threadsCollection = db.get('threads');
-			const threadMessagesCollection = db.get('thread_messages');
-
-			// Decrypt the message if necessary
-			message = (await Encryption.decryptMessage(message)) as IMessage;
 
 			// Create or update message
 			try {
@@ -389,10 +392,9 @@ export default class RoomSubscription {
 				}
 			}
 
-			await db.write(async () => {
-				await db.batch(...batch);
-			});
+			await db.batch(...batch);
 		});
+	};
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
 		try {
