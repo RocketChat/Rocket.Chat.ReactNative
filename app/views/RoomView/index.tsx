@@ -144,8 +144,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const [roomStore] = useState(() => getOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
 	// rid is stable for this RoomView instance (it's what roomStore was acquired for); release once on unmount.
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(() => () => releaseRoomStore(rid ?? ''), []);
+	useEffect(() => () => releaseRoomStore(rid ?? ''), [rid]);
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
@@ -345,12 +344,16 @@ const RoomView = (props: IRoomViewProps) => {
 		roomStore
 	});
 
-	const setReadOnly = async () => {
-		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
-		setState({ readOnly });
-	};
+	// roomUpdate keys the re-checks below: the room model mutates in place, so effects must re-run per store emit.
+	useEffect(() => {
+		const setReadOnly = async () => {
+			const readOnly = await isReadOnly(room as ISubscription, user.username as string);
+			setState({ readOnly });
+		};
+		setReadOnly();
+	}, [room, user.username, roomUpdate]);
 
-	const updateE2EEState = () => {
+	useEffect(() => {
 		if (!('encrypted' in room)) {
 			setState({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
 			return;
@@ -365,17 +368,7 @@ const RoomView = (props: IRoomViewProps) => {
 			roomEncrypted: room.encrypted
 		});
 		setState({ showMissingE2EEKey, showE2EEDisabledRoom });
-	};
-
-	useEffect(() => {
-		setReadOnly();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [roomUpdate]);
-
-	useEffect(() => {
-		updateE2EEState();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [encryptionEnabled, roomUpdate.encrypted, roomUpdate.E2EKey]);
+	}, [room, encryptionEnabled, roomUpdate.encrypted, roomUpdate.E2EKey]);
 
 	useHeader({
 		roomStore,
