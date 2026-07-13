@@ -7,9 +7,7 @@ const ROOM_VIEW_DIR = path.resolve(__dirname);
 const REPO_ROOT = path.resolve(__dirname, '../../..');
 
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.
-const KNOWN_SKIPPED = [
-	'app/views/RoomView/hooks/useRoomLifecycle.ts' // react-hooks/exhaustive-deps suppressions
-];
+const KNOWN_SKIPPED: string[] = [];
 
 const collectUseMemoFiles = (dir: string): string[] => {
 	const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -60,8 +58,11 @@ describe('React Compiler contract for RoomView', () => {
 		expect(() => compile(absoluteFile)).not.toThrow();
 	});
 
-	test.each(KNOWN_SKIPPED)('%s is still silently skipped (remove from KNOWN_SKIPPED once fixed)', relativeFile => {
-		const absoluteFile = path.join(REPO_ROOT, relativeFile);
-		expect(() => compile(absoluteFile)).toThrow();
-	});
+	// test.each throws on an empty array; the guard keeps the ratchet dormant until a file regresses.
+	if (KNOWN_SKIPPED.length) {
+		test.each(KNOWN_SKIPPED)('%s is still silently skipped (remove from KNOWN_SKIPPED once fixed)', relativeFile => {
+			const absoluteFile = path.join(REPO_ROOT, relativeFile);
+			expect(() => compile(absoluteFile)).toThrow();
+		});
+	}
 });

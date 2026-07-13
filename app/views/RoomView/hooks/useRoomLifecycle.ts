@@ -67,6 +67,91 @@ export interface IUseRoomLifecycleResult {
 	fetchThreadName: (threadId: string, messageId: string) => Promise<string | undefined>;
 }
 
+const runInit = (roomStore: RoomStore, tmid: string | undefined, onThreadMessagesLoadedRef: RefObject<() => void>) =>
+	roomStore.getState().init({ tmid, onThreadMessagesLoaded: () => onThreadMessagesLoadedRef.current?.() });
+
+// try/catch bodies with optional chaining can't be compiled inside a 'use memo' function (compiler
+// Todo), so these live at module scope; being eslint-stable also keeps effect dep arrays honest.
+const safeSubscribe = (sub?: RoomClass) => {
+	try {
+		sub?.subscribe?.();
+	} catch (e) {
+		log(e);
+	}
+};
+
+interface IJoinRoomContext {
+	room: IRoomViewState['room'];
+	isOmnichannel: boolean;
+	serverVersion?: string | null;
+	t?: string;
+	joinCodeRef: RefObject<IJoinCode | null>;
+	onJoin: () => void;
+}
+
+const joinRoomImpl = async ({ room, isOmnichannel, serverVersion, t, joinCodeRef, onJoin }: IJoinRoomContext) => {
+	logEvent(events.ROOM_JOIN);
+	try {
+		if (isOmnichannel) {
+			if ('_id' in room) {
+				await takeInquiry(room._id, serverVersion as string);
+			}
+			onJoin();
+		} else {
+			const { joinCodeRequired, rid: roomRid } = room;
+			if (joinCodeRequired) {
+				joinCodeRef.current?.show();
+			} else {
+				await joinRoomService(roomRid, null, t as any);
+				onJoin();
+			}
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const resumeRoomImpl = async ({ room, isOmnichannel, onJoin }: Pick<IJoinRoomContext, 'room' | 'isOmnichannel' | 'onJoin'>) => {
+	logEvent(events.ROOM_RESUME);
+	try {
+		if (isOmnichannel) {
+			if ('rid' in room) {
+				await takeResume(room.rid);
+			}
+			onJoin();
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const toggleFollowThreadImpl = async (tmid: string | undefined, isFollowingThread: boolean, threadId?: string) => {
+	try {
+		const threadMessageId = threadId ?? tmid;
+		if (!threadMessageId) {
+			return;
+		}
+		await toggleFollowMessage(threadMessageId, !isFollowingThread);
+		EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+	} catch (e) {
+		log(e);
+	}
+};
+
+const handleRoomRemoved = (
+	removedRid: string,
+	rid: string | undefined,
+	isMasterDetail: boolean,
+	roomRef: RefObject<IRoomViewState['room']>
+) => {
+	if (removedRid === rid) {
+		Navigation.popToTop(isMasterDetail);
+		const currentRoom = roomRef.current;
+		currentRoom.t !== 'l' &&
+			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(currentRoom) }), I18n.t('Oops'));
+	}
+};
+
 export function useRoomLifecycle({
 	rid,
 	tmid,
@@ -99,25 +184,22 @@ export function useRoomLifecycle({
 }: IUseRoomLifecycleParams): IUseRoomLifecycleResult {
 	'use memo';
 
-	// onThreadMessagesLoaded is recreated every render; a ref keeps the trigger effect's deps at
-	// [rid, isAuthenticated] so it doesn't re-fire on identity change alone (see ticket NATIVE-1356).
+	// onThreadMessagesLoaded is recreated every render; a ref keeps it out of the init effects'
+	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onThreadMessagesLoadedRef = useRef(onThreadMessagesLoaded);
 	useEffect(() => {
 		onThreadMessagesLoadedRef.current = onThreadMessagesLoaded;
 	});
-
-	const runInit = () => roomStore.getState().init({ tmid, onThreadMessagesLoaded: () => onThreadMessagesLoadedRef.current?.() });
 
 	useEffect(() => {
 		if (!rid || !isAuthenticated) {
 			return;
 		}
 		const task = InteractionManager.runAfterInteractions(() => {
-			runInit();
+			runInit(roomStore, tmid, onThreadMessagesLoadedRef);
 		});
 		return () => task.cancel();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [rid, isAuthenticated]);
+	}, [rid, isAuthenticated, roomStore, tmid]);
 
 	const updateUnreadCount = async () => {
 		if (!rid) {
@@ -140,15 +222,6 @@ export function useRoomLifecycle({
 		});
 	};
 
-	const handleRoomRemoved = ({ rid: removedRid }: { rid: string }) => {
-		if (removedRid === rid) {
-			Navigation.popToTop(isMasterDetail);
-			const currentRoom = roomRef.current;
-			currentRoom.t !== 'l' &&
-				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(currentRoom) }), I18n.t('Oops'));
-		}
-	};
-
 	const handleSendMessage = (message?: string, tshow?: boolean) => {
 		if (message === undefined) {
 			return;
@@ -165,41 +238,9 @@ export function useRoomLifecycle({
 		roomStore.getState().join();
 	};
 
-	const joinRoom = async () => {
-		logEvent(events.ROOM_JOIN);
-		try {
-			if (isOmnichannel) {
-				if ('_id' in room) {
-					await takeInquiry(room._id, serverVersion as string);
-				}
-				onJoin();
-			} else {
-				const { joinCodeRequired, rid: roomRid } = room;
-				if (joinCodeRequired) {
-					joinCodeRef.current?.show();
-				} else {
-					await joinRoomService(roomRid, null, t as any);
-					onJoin();
-				}
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
+	const joinRoom = () => joinRoomImpl({ room, isOmnichannel, serverVersion, t, joinCodeRef, onJoin });
 
-	const resumeRoom = async () => {
-		logEvent(events.ROOM_RESUME);
-		try {
-			if (isOmnichannel) {
-				if ('rid' in room) {
-					await takeResume(room.rid);
-				}
-				onJoin();
-			}
-		} catch (e) {
-			log(e);
-		}
-	};
+	const resumeRoom = () => resumeRoomImpl({ room, isOmnichannel, onJoin });
 
 	const fetchThreadName = async (threadId: string, messageId: string) => {
 		const threadRecord = await getThreadById(threadId);
@@ -209,28 +250,14 @@ export function useRoomLifecycle({
 		return getThreadName(rid as string, threadId, messageId);
 	};
 
-	const toggleFollowThread = async (isFollowingThread: boolean, threadId?: string) => {
-		try {
-			const threadMessageId = threadId ?? tmid;
-			if (!threadMessageId) {
-				return;
-			}
-			await toggleFollowMessage(threadMessageId, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-		} catch (e) {
-			log(e);
-		}
-	};
+	const toggleFollowThread = (isFollowingThread: boolean, threadId?: string) =>
+		toggleFollowThreadImpl(tmid, isFollowingThread, threadId);
 
-	useEffect(() => {
+	const mountRoom = () => {
 		const { action } = messageActionStore.getState();
 		const didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			if (rid) {
-				try {
-					sub?.subscribe?.();
-				} catch (e) {
-					log(e);
-				}
+				safeSubscribe(sub);
 			}
 			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
 			// rows and is fired from the subscription hook's success path instead.
@@ -265,15 +292,20 @@ export function useRoomLifecycle({
 				AudioManager.unloadRoomAudios(rid);
 			}
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	};
+	// Subscribe/cleanup run once per screen by design: dep'd versions would tear down the room
+	// subscription (and unload audio) whenever `sub` or a handler identity changed mid-session.
+	// The ref freezes the first-render closure so the mount effect keeps [] with no reactive reads.
+	const mountRoomRef = useRef(mountRoom);
+	useEffect(() => mountRoomRef.current(), []);
 
 	useEffect(() => {
-		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
+		const onRoomRemoved = ({ rid: removedRid }: { rid: string }) => handleRoomRemoved(removedRid, rid, isMasterDetail, roomRef);
+		EventEmitter.addEventListener('ROOM_REMOVED', onRoomRemoved);
 		return () => {
-			EventEmitter.removeListener('ROOM_REMOVED', handleRoomRemoved);
+			EventEmitter.removeListener('ROOM_REMOVED', onRoomRemoved);
 		};
-	}, [handleRoomRemoved]);
+	}, [rid, isMasterDetail, roomRef]);
 
 	useEffect(() => {
 		dispatch(clearInAppFeedback());
@@ -304,15 +336,22 @@ export function useRoomLifecycle({
 	const prevStatusRef = useRef(roomUpdate.status);
 	useEffect(() => {
 		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			runInit();
+			runInit(roomStore, tmid, onThreadMessagesLoadedRef);
 		}
 		prevStatusRef.current = roomUpdate.status;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [roomUpdate.status]);
+	}, [roomUpdate.status, roomStore, tmid]);
 
+	// The published closures are rebuilt from the same module impls the returned handlers use; the
+	// inline onJoin keeps the dep array to values only (a component-scope fn would warn).
 	useEffect(() => {
-		roomStore.setState({ joinRoom, resumeRoom });
-	}, [roomStore, joinRoom, resumeRoom]);
+		const onStoreJoin = () => {
+			roomStore.getState().join();
+		};
+		roomStore.setState({
+			joinRoom: () => joinRoomImpl({ room, isOmnichannel, serverVersion, t, joinCodeRef, onJoin: onStoreJoin }),
+			resumeRoom: () => resumeRoomImpl({ room, isOmnichannel, onJoin: onStoreJoin })
+		});
+	}, [roomStore, room, isOmnichannel, serverVersion, t, joinCodeRef]);
 
 	return {
 		joinRoom,
