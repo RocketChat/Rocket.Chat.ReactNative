@@ -306,13 +306,17 @@ describe('usersAutoComplete', () => {
 });
 
 describe('removePushToken', () => {
+	let removePushToken: () => Promise<boolean | void>;
+
 	beforeEach(() => {
+		jest.resetModules();
+		mockSdkDelete.mockClear();
 		mockSdkDelete.mockResolvedValue({ success: true });
 		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue('device-token');
+		removePushToken = require('./restApi').removePushToken;
 	});
 
 	it('sends a DELETE to /v1/push.token with the token in the body', async () => {
-		const { removePushToken } = require('./restApi');
 		const result = await removePushToken();
 		expect(result).toBe(true);
 		expect(mockSdkDelete).toHaveBeenCalledWith('/v1/push.token', { token: 'device-token' });
@@ -320,7 +324,6 @@ describe('removePushToken', () => {
 
 	it('returns undefined and does not call delete when there is no device token', async () => {
 		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue(undefined);
-		const { removePushToken } = require('./restApi');
 		expect(await removePushToken()).toBeUndefined();
 		expect(mockSdkDelete).not.toHaveBeenCalled();
 	});
