@@ -1,11 +1,10 @@
 import { type StyleProp } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
-import { type IAttachment, type IUserMessage } from '../../definitions';
+import { type IAttachment } from '../../definitions';
 
 export interface IMessageAttachments {
 	attachments?: IAttachment[];
-	author?: IUserMessage;
 }
 
 export interface IMessageAvatar {

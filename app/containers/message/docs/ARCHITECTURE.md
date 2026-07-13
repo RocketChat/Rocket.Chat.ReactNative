@@ -34,16 +34,17 @@ This default export is consumed as `renderRow` from three list contexts — `Roo
 Each store changes at a different frequency and has a different audience, and collapsing them would force every row to re-render on changes it doesn't care about:
 
 - **MessageStore** changes per-row, on that row's own WatermelonDB record emitting (`experimentalSubscribe`) — a `tick` counter bumps and only that row's selectors re-run. `previousItem` doubles as the neighbor lookup used by grouping/thread-position logic.
-- **MessageRoomStore** is mostly static for the life of a Room: navigation callbacks, `rid`, `baseUrl`, and the logged user are captured once at provider mount and never resynced, because they're expected to be referentially stable for the Room's lifetime. A second, explicitly reactive tail (`timeFormat`, `autoTranslateRoom`, `autoTranslateLanguage`, `archived`, `broadcast`, `isReadReceiptEnabled`, `Message_GroupingPeriod`) is pushed on every render via a dependency-gated `useEffect`, because those _can_ change mid-session (e.g. a Room gets archived).
+- **MessageRoomStore** is mostly static for the life of a Room: navigation callbacks, `rid`, `baseUrl`, and the logged user are captured once (see `FROZEN_KEYS`) and never resynced, because they're expected to be referentially stable for the Room's lifetime. A second, explicitly reactive tail (`timeFormat`, `autoTranslateRoom`, `autoTranslateLanguage`, `archived`, `broadcast`, `isReadReceiptEnabled`, `Message_GroupingPeriod`) is pushed on every render via a dependency-gated `useEffect`, because those _can_ change mid-session (e.g. a Room gets archived).
 - **MessageActionStore** is shared Room-wide state that both the Message list (to highlight the row being edited) and `MessageComposer` (to know what's being quoted/edited) read — it has to live above both, not per-row.
 
 ### Granular selectors + `useShallow` + `'use memo'`
 
 Every store exposes narrow, single-purpose hooks (`useReactions`, `useBlocks`, `useMessageAuthor`, `useIsEncrypted`, …) instead of one broad "give me the message" hook — each leaf component subscribes to only the fields it renders, so a field it doesn't use changing elsewhere on the record never re-renders it. Hooks returning more than one field use Zustand's `useShallow` so a same-value re-tick doesn't produce a new object reference (`useBlocks`, `useThreadData`, `useMessageAuthor`, `useContentData`, etc.). Components use the `'use memo'` directive (React Compiler, `babel-plugin-react-compiler`) rather than hand-written `useMemo`/`useCallback` for their own memoization.
 
-A dev-only guard protects this pattern from silent regressions (no-op in production builds):
+Two dev-only guards protect this pattern from silent regressions (both no-op in production builds):
 
 - `useMessageFieldDev` (MessageStore) warns once if a `useMessageField` selector returns a fresh-but-shallow-equal object/array on an unchanged tick — a sign someone wrote an inline `item => ({ a: item.a })` instead of a `useShallow` domain hook. Field stability itself depends on the model's `@json(..., { memo: true })` decorators (`app/lib/database/model/Message.js`), guarded separately by `Message.memo.test.ts`.
+- `useFrozenHandlersGuardDev` (MessageRoomStore) warns once if any `FROZEN_KEYS` value's identity changes after mount, since the provider captures those once and never re-syncs them.
 
 ### Inert-store fallback vs. throwing
 

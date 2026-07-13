@@ -6,13 +6,7 @@ import MessageAvatar from '../MessageAvatar';
 import MessageAccessibleIndex from '../MessageAccessibleIndex';
 import Content from '../Content';
 import Attachments from '../Attachments';
-import {
-	useContentData,
-	useIsInfoMessage,
-	useMessageField,
-	useMessageGrouping,
-	useThreadPosition
-} from '../../stores/MessageStore';
+import { useContentData, useIsInfoMessage, useMessageGrouping, useThreadPosition } from '../../stores/MessageStore';
 
 const CompactMessage = () => {
 	'use memo';
@@ -21,7 +15,6 @@ const CompactMessage = () => {
 	const { isThreadReply } = useThreadPosition();
 	const isInfo = useIsInfoMessage();
 	const { t: type, attachments } = useContentData();
-	const author = useMessageField(item => item.u);
 
 	const thread = isThreadReply ? <RepliedThread isHeader={isHeader} /> : null;
 	const infoStyle: ViewStyle = isInfo ? { alignItems: 'center' } : {};
@@ -36,7 +29,7 @@ const CompactMessage = () => {
 						<Content />
 						{isInfo && type === 'message_pinned' ? (
 							<View pointerEvents='none'>
-								<Attachments attachments={attachments} author={author} />
+								<Attachments attachments={attachments} />
 							</View>
 						) : null}
 					</View>
