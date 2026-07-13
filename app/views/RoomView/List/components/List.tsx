@@ -60,7 +60,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 						: undefined
 				}
 				removeClippedSubviews={isIOS}
-				initialNumToRender={20}
+				initialNumToRender={isAnchored ? 20 : 7}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}
