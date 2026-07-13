@@ -7,7 +7,7 @@ import i18n from '../../../i18n';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
 import log from '../helpers/log';
-import { copyFileToCacheDirectoryIfNeeded, getUploadPath, persistUploadError, uploadQueue } from './utils';
+import { copyFileToCacheDirectoryIfNeeded, getUploadPath, isUploadActive, persistUploadError, uploadQueue } from './utils';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
@@ -30,8 +30,17 @@ export async function sendFileMessage(
 		let uploadRecord: TUploadModel;
 		try {
 			uploadRecord = await uploadsCollection.find(uploadPath);
-			if (uploadRecord.id && !isForceTryAgain) {
-				return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
+			if (uploadRecord.id) {
+				if (isUploadActive(fileInfo.path, rid) && !isForceTryAgain) {
+					return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
+				}
+				// Record left behind by a crashed or failed upload: reset and reuse it.
+				await db.write(async () => {
+					await uploadRecord?.update(u => {
+						u.error = false;
+						u.progress = 0;
+					});
+				});
 			}
 		} catch (error) {
 			try {
