@@ -61,7 +61,7 @@ export async function sendFileMessageV2(
 		if (getContent) {
 			content = await getContent(response.file._id, response.file.url);
 		}
-		const confirmResponse = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
+		await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
 			method: 'POST',
 			headers: {
 				...headers,
@@ -75,9 +75,6 @@ export async function sendFileMessageV2(
 				content
 			})
 		});
-		if (!confirmResponse.ok) {
-			throw new Error(`mediaConfirm failed with status ${confirmResponse.status}`);
-		}
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});

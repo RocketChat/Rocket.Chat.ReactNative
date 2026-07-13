@@ -236,7 +236,6 @@ const RoomInfoView = (): ReactElement => {
 			try {
 				const result = await createDirectMessage(roomUser.username);
 				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
-				return resolve();
 			} catch (e) {
 				reject(e);
 			}

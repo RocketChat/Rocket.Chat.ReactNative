@@ -44,12 +44,12 @@ const UserNotificationPreferencesView = () => {
 			try {
 				const result = await getUserPreferences();
 				if (result.success) {
+					setLoading(false);
 					setPreferences(result.preferences);
 				}
 			} catch (error) {
-				log(error);
-			} finally {
 				setLoading(false);
+				log(error);
 			}
 		}
 		getPreferences();

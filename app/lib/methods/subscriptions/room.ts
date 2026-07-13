@@ -52,7 +52,7 @@ export default class RoomSubscription {
 
 		this.connectionStatusListener = sdk.onConnectionStatus(status => {
 			if (status === 'connected') {
-				this.handleConnected();
+				this.handleLogin();
 			}
 			if (['disconnected', 'closed'].includes(status)) {
 				this.handleClose();

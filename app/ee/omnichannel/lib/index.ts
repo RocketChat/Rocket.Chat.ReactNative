@@ -56,12 +56,7 @@ class Omnichannel {
 
 	subscribeInquiry = async () => {
 		console.log('[RCRN] Subscribing to inquiry');
-		this.unsubscribeInquiry();
-		try {
-			this.inquirySub = await subscribeInquiry();
-		} catch (e) {
-			log(e);
-		}
+		this.inquirySub = await subscribeInquiry();
 	};
 
 	unsubscribeInquiry = () => {
