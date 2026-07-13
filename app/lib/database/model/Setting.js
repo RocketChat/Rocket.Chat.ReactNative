@@ -14,7 +14,7 @@ export default class Setting extends Model {
 
 	@field('value_as_number') valueAsNumber;
 
-	@json('value_as_array', sanitizer) valueAsArray;
+	@json('value_as_array', sanitizer, { memo: true }) valueAsArray;
 
 	@date('_updated_at') _updatedAt;
 }

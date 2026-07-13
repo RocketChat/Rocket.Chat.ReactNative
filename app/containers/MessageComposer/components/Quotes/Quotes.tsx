@@ -2,12 +2,13 @@ import { useEffect, useRef, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useMessageAction } from '../../../message/stores/MessageActionStore';
 
 export const Quotes = (): ReactElement | null => {
 	'use memo';
 
-	const { selectedMessages, action } = useRoomContext();
+	const action = useMessageAction();
+	const selectedMessages = action?.kind === 'quote' ? action.messageIds : [];
 	const nQuotesRef = useRef(0);
 	const listRef = useRef<FlatList>(null);
 
@@ -20,7 +21,7 @@ export const Quotes = (): ReactElement | null => {
 		nQuotesRef.current = selectedMessages.length;
 	}, [selectedMessages.length]);
 
-	if (action !== 'quote') {
+	if (action?.kind !== 'quote') {
 		return null;
 	}
 

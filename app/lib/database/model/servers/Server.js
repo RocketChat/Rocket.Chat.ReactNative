@@ -35,7 +35,7 @@ export default class Server extends Model {
 
 	@field('e2e_enable') E2E_Enable;
 
-	@json('supported_versions', sanitizer) supportedVersions;
+	@json('supported_versions', sanitizer, { memo: true }) supportedVersions;
 
 	@date('supported_versions_warning_at') supportedVersionsWarningAt;
 
