@@ -132,37 +132,35 @@ const CollapsibleQuote = ({ attachment }: IMessageReply) => {
 	}
 
 	return (
-		<>
-			<MessageActionTouchable
-				testID={`collapsibleQuoteTouchable-${attachment.title}`}
-				onPress={onPress}
-				style={[
-					styles.button,
-					attachment.description && styles.marginBottom,
-					{
-						backgroundColor,
-						borderLeftColor: strokeLight,
-						borderTopColor: strokeExtraLight,
-						borderRightColor: strokeExtraLight,
-						borderBottomColor: strokeExtraLight,
-						borderLeftWidth: 2
-					}
-				]}
-				hitSlop={BUTTON_HIT_SLOP}>
-				<View style={styles.touchableContainer}>
-					<View style={styles.attachmentContainer}>
-						<View style={styles.authorContainer}>
-							<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</Text>
-						</View>
-						{!collapsed && <AttText text={attachment.text} />}
-						{!collapsed && <Fields attachment={attachment} />}
+		<MessageActionTouchable
+			testID={`collapsibleQuoteTouchable-${attachment.title}`}
+			onPress={onPress}
+			style={[
+				styles.button,
+				attachment.description && styles.marginBottom,
+				{
+					backgroundColor,
+					borderLeftColor: strokeLight,
+					borderTopColor: strokeExtraLight,
+					borderRightColor: strokeExtraLight,
+					borderBottomColor: strokeExtraLight,
+					borderLeftWidth: 2
+				}
+			]}
+			hitSlop={BUTTON_HIT_SLOP}>
+			<View style={styles.touchableContainer}>
+				<View style={styles.attachmentContainer}>
+					<View style={styles.authorContainer}>
+						<Text style={[styles.title, { color: colors.fontSecondaryInfo }]}>{attachment.title}</Text>
 					</View>
-					<View style={styles.iconContainer}>
-						<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
-					</View>
+					{!collapsed && <AttText text={attachment.text} />}
+					{!collapsed && <Fields attachment={attachment} />}
 				</View>
-			</MessageActionTouchable>
-		</>
+				<View style={styles.iconContainer}>
+					<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
+				</View>
+			</View>
+		</MessageActionTouchable>
 	);
 };
 

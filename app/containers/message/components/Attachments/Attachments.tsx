@@ -8,16 +8,17 @@ import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
 import { useShowAttachment } from '../../stores/MessageRoomStore';
-import { useTranslateLanguage } from '../../stores/MessageStore';
+import { useMessageField, useTranslateLanguage } from '../../stores/MessageStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { getAttachmentKey, isContentAttachment } from './utils';
 
-const Attachments: FC<IMessageAttachments> = ({ attachments, author }: IMessageAttachments) => {
+const Attachments: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
 	const showAttachment = useShowAttachment();
+	const author = useMessageField(item => item.u);
 
 	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 
