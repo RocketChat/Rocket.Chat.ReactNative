@@ -787,6 +787,36 @@ describe('Sdk.onStreamData', () => {
 	});
 });
 
+describe('Sdk.onLogin', () => {
+	it('returns a noop unsubscribe when sdk.current is undefined', () => {
+		setInternalSdk(undefined);
+		const stop = sdk.onLogin(jest.fn());
+		expect(typeof stop).toBe('function');
+		expect(() => stop()).not.toThrow();
+	});
+
+	it('subscribes via account.on("uid", ...) and exposes the handle as stop', () => {
+		const stopHandle = jest.fn();
+		const on = jest.fn().mockReturnValue(stopHandle);
+		setInternalSdk({ account: { on } });
+		const stop = sdk.onLogin(jest.fn());
+		expect(on).toHaveBeenCalledWith('uid', expect.any(Function));
+		expect(stop).toBe(stopHandle);
+	});
+
+	it('invokes the callback only when uid is set (skips the logout emission)', () => {
+		const callback = jest.fn();
+		const on = jest.fn((_: string, handler: (uid?: string) => void) => {
+			handler(undefined);
+			handler('u1');
+			return jest.fn();
+		});
+		setInternalSdk({ account: { on } });
+		sdk.onLogin(callback);
+		expect(callback).toHaveBeenCalledTimes(1);
+	});
+});
+
 describe('Sdk.initialize', () => {
 	it('calls DDPSDK.create with the server URL and stores it', () => {
 		const handleTwoFactorChallenge = jest.fn();

@@ -35,6 +35,7 @@ export default class RoomSubscription {
 	private isAlive: boolean;
 	private promises?: Promise<TSubscriptionModel[]>;
 	private connectionStatusListener?: () => void;
+	private loginListener?: () => void;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
 
@@ -51,13 +52,11 @@ export default class RoomSubscription {
 		this.promises = sdk.subscribeRoom(this.rid);
 
 		this.connectionStatusListener = sdk.onConnectionStatus(status => {
-			if (status === 'connected') {
-				this.handleLogin();
-			}
 			if (['disconnected', 'closed'].includes(status)) {
 				this.handleClose();
 			}
 		});
+		this.loginListener = sdk.onLogin(this.handleLogin);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -82,6 +81,7 @@ export default class RoomSubscription {
 		}
 		reduxStore.dispatch(clearUserTyping());
 		this.connectionStatusListener?.();
+		this.loginListener?.();
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
 	};

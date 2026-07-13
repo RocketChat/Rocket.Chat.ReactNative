@@ -4,6 +4,7 @@ import { clearUserTyping } from '../../../actions/usersTyping';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
 const mockOnConnectionStatus = jest.fn<() => void, [(status: string) => void]>(() => jest.fn());
+const mockOnLogin = jest.fn<() => void, [() => void]>(() => jest.fn());
 const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
 	Promise.resolve({ stop: jest.fn() })
 );
@@ -12,6 +13,7 @@ jest.mock('../../services/sdk', () => ({
 	default: {
 		subscribeRoom: (rid: string) => mockSubscribeRoom(rid),
 		onConnectionStatus: (cb: (status: string) => void) => mockOnConnectionStatus(cb),
+		onLogin: (cb: () => void) => mockOnLogin(cb),
 		onStreamData: (event: string, cb: (...args: unknown[]) => void) => mockOnStreamData(event, cb)
 	}
 }));
@@ -140,19 +142,26 @@ describe('RoomSubscription', () => {
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
 
-		it('wires handleConnected/handleClose through onConnectionStatus, not onStreamData', async () => {
+		it('wires handleClose through onConnectionStatus, not onStreamData', async () => {
 			await sub.subscribe();
 
 			expect(mockOnConnectionStatus).toHaveBeenCalledTimes(1);
 			const statusCallback = mockOnConnectionStatus.mock.calls[0][0];
 
-			mockSubscribeRoom.mockClear();
-			statusCallback('connected');
-			await Promise.resolve();
-			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
-
 			statusCallback('closed');
 			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
+		});
+
+		it('wires handleLogin through onLogin, not the pre-auth onConnectionStatus "connected" status', async () => {
+			await sub.subscribe();
+
+			expect(mockOnLogin).toHaveBeenCalledWith(sub.handleLogin);
+
+			mockSubscribeRoom.mockClear();
+			const statusCallback = mockOnConnectionStatus.mock.calls[0][0];
+			statusCallback('connected');
+			await Promise.resolve();
+			expect(mockSubscribeRoom).not.toHaveBeenCalled();
 		});
 	});
 
@@ -247,13 +256,6 @@ describe('RoomSubscription', () => {
 			await sub.handleLogin();
 
 			expect(mockOnStreamData).not.toHaveBeenCalled();
-		});
-
-		it('re-subscribes on the authenticated "login" event, not the pre-auth "connected" event', async () => {
-			await sub.subscribe();
-
-			expect(mockOnStreamData).toHaveBeenCalledWith('login', sub.handleLogin);
-			expect(mockOnStreamData).not.toHaveBeenCalledWith('connected', expect.anything());
 		});
 
 		it('survives a poisoned subscription array (undefined entry from a rejected sub) and still re-subscribes', async () => {
