@@ -75,7 +75,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.unsubscribe?.().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}
@@ -97,14 +97,14 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleConnected = async () => {
+	handleLogin = async () => {
 		if (!this.isAlive) {
 			return;
 		}
 		try {
 			if (this.promises) {
 				const oldSubs = await this.promises;
-				oldSubs.forEach(sub => sub.unsubscribe().catch(() => {}));
+				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));
 			}
 			this.promises = sdk.subscribeRoom(this.rid);
 			await this.promises;
