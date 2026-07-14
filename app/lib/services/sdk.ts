@@ -191,9 +191,11 @@ class Sdk {
 			}
 			return result;
 		} catch (e: any) {
-			// @rocket.chat/api-client rejects with the raw fetch Response on REST errors.
-			// Normalize to { status, data } so callers can read e.data.*
-			const normalized = !isMethodCall && e instanceof Response ? await normalizeResponseError(e) : e;
+			// @rocket.chat/api-client rejects with the raw fetch Response on transport failures (network/5xx),
+			// for both REST and method calls. Normalize it so callers can read e.data.* (REST) or e.error/e.reason
+			// (method call, which is flat, matching the shape already thrown for method-call business errors above).
+			const normalizedResponse = e instanceof Response ? await normalizeResponseError(e) : null;
+			const normalized = isMethodCall ? normalizedResponse?.data ?? e : normalizedResponse ?? e;
 			const errorType = isMethodCall ? normalized?.error : normalized?.data?.errorType;
 			const totpInvalid = 'totp-invalid';
 			const totpRequired = 'totp-required';
