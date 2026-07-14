@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
 
-import { ComposerProvider, type ComposerState } from './stores/ComposerStore';
+import { type ComposerState } from './definitions';
+import { ComposerProvider } from './stores/ComposerStore';
 import { type TMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
 
 type IRoomProvidersProps = ComposerState & {

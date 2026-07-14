@@ -1,29 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
-import { createStore, useStore } from 'zustand';
+import { createStore, useStore, type StoreApi } from 'zustand';
 
-import { type IMessage, type IMessageEditAttachment } from '../../../definitions';
-import { type IRoomViewState } from '../definitions';
-
-export type ComposerState = {
-	rid?: string;
-	t?: string;
-	tmid?: string;
-	room: IRoomViewState['room'];
-	roomUpdate?: IRoomViewState['roomUpdate'];
-	sharing?: boolean;
-	isAutocompleteVisible?: boolean;
-	editCancel?: () => void;
-	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
-	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage?: (message?: string, tshow?: boolean) => void;
-	setQuotesAndText?: (text: string, quotes: string[]) => void;
-	getText?: () => string | undefined;
-	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
-};
+import { type ComposerState } from '../definitions';
 
 export const createComposerStore = (initial: ComposerState) => createStore<ComposerState>()(() => ({ ...initial }));
 
-export type ComposerStore = ReturnType<typeof createComposerStore>;
+export type ComposerStore = StoreApi<ComposerState>;
 
 export const ComposerStoreContext = createContext<ComposerStore | null>(null);
 

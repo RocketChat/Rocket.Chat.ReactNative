@@ -1,10 +1,10 @@
 import { useContext, type ReactNode } from 'react';
 import { render, renderHook } from '@testing-library/react-native';
 
+import { type ComposerState } from '../definitions';
 import {
 	ComposerProvider,
 	ComposerStoreContext,
-	type ComposerState,
 	useComposerRid,
 	useComposerType,
 	useComposerTmid,

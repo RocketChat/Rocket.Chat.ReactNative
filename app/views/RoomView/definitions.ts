@@ -1,7 +1,15 @@
 import { type EdgeInsets } from 'react-native-safe-area-context';
 
 import { type ChatsStackParamList } from '../../stacks/types';
-import { type IBaseScreen, type ILastMessage, type ILoggedUser, type IVisitor, type TSubscriptionModel } from '../../definitions';
+import {
+	type IBaseScreen,
+	type ILastMessage,
+	type ILoggedUser,
+	type IMessage,
+	type IMessageEditAttachment,
+	type IVisitor,
+	type TSubscriptionModel
+} from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -63,3 +71,20 @@ export interface IRoomViewState {
 	canViewCannedResponse: boolean;
 	canPlaceLivechatOnHold: boolean;
 }
+
+export type ComposerState = {
+	rid?: string;
+	t?: string;
+	tmid?: string;
+	room: IRoomViewState['room'];
+	roomUpdate?: IRoomViewState['roomUpdate'];
+	sharing?: boolean;
+	isAutocompleteVisible?: boolean;
+	editCancel?: () => void;
+	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
+	onRemoveQuoteMessage?: (messageId: string) => void;
+	onSendMessage?: (message?: string, tshow?: boolean) => void;
+	setQuotesAndText?: (text: string, quotes: string[]) => void;
+	getText?: () => string | undefined;
+	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
+};
