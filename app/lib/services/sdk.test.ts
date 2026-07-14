@@ -332,6 +332,20 @@ describe('Sdk.logout', () => {
 		expect(log).toHaveBeenCalledWith(expect.objectContaining({ message: expect.stringContaining('timed out') }));
 		jest.useRealTimers();
 	});
+
+	it('still clears auth headers when account.logout() throws', async () => {
+		const log = jest.requireMock('../methods/helpers/log').default;
+		const fake = { account: { logout: jest.fn().mockRejectedValue(new Error('socket closed')) } };
+		setInternalSdk(fake);
+		(sdk as any).headers = { ...(sdk as any).headers, 'X-Auth-Token': 'tok-abc', 'X-User-Id': 'uid-1' };
+
+		await sdk.logout();
+
+		expect(log).toHaveBeenCalledWith(expect.objectContaining({ message: 'socket closed' }));
+		const headers = sdk.getHeaders();
+		expect(headers).not.toHaveProperty('X-Auth-Token');
+		expect(headers).not.toHaveProperty('X-User-Id');
+	});
 });
 
 describe('normalizeResponseError', () => {
