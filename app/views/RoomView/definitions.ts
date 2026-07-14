@@ -1,5 +1,4 @@
 import { type RefObject } from 'react';
-
 import { type EdgeInsets } from 'react-native-safe-area-context';
 
 import { type ChatsStackParamList } from '../../stacks/types';
@@ -13,6 +12,7 @@ import {
 	type TSubscriptionModel
 } from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
+import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
 import { type IListContainerRef } from './List/definitions';
 import { type TGetMessageInfoResult } from './services/getMessageInfo';
 
@@ -31,9 +31,14 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
-	airGappedRestrictionRemainingDays: number | undefined;
-	isFederationEnabled: boolean;
-	isFederationModuleEnabled: boolean;
+}
+
+export interface IRoomFooterProps {
+	messageComposerRef: RefObject<IMessageComposerRef | null>;
+}
+
+export interface IFooterPreviewProps {
+	message: string;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;

@@ -36,7 +36,6 @@ import { getOrCreateRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
-import { useReadOnly } from './hooks/useReadOnly';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useRoomInit } from './hooks/useRoomInit';
 import { useRoomSubscription } from './hooks/useRoomSubscription';
@@ -63,16 +62,12 @@ const RoomView = (props: IRoomViewProps) => {
 		serverVersion,
 		isMasterDetail,
 		width,
-		insets,
 		Message_GroupingPeriod,
 		Message_Read_Receipt_Enabled,
 		Hide_System_Messages,
 		transferLivechatGuestPermission,
 		viewCannedResponsesPermission,
 		livechatAllowManualOnHold,
-		airGappedRestrictionRemainingDays,
-		isFederationEnabled,
-		isFederationModuleEnabled,
 		showActionSheet,
 		hideActionSheet
 	} = props;
@@ -233,7 +228,6 @@ const RoomView = (props: IRoomViewProps) => {
 		roomStore
 	});
 
-	const readOnly = useReadOnly(roomStore);
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
 
 	useHeader();
@@ -325,15 +319,7 @@ const RoomView = (props: IRoomViewProps) => {
 							serverVersion={serverVersion}
 						/>
 					</MessageRoomProvider>
-					<RoomFooter
-						rid={rid}
-						paddingBottom={insets.bottom}
-						readOnly={readOnly}
-						airGappedRestrictionRemainingDays={airGappedRestrictionRemainingDays}
-						isFederationEnabled={isFederationEnabled}
-						isFederationModuleEnabled={isFederationModuleEnabled}
-						messageComposerRef={messageComposerRef}
-					/>
+					<RoomFooter messageComposerRef={messageComposerRef} />
 					<RoomMessageActions
 						tmid={tmid}
 						user={user}
@@ -364,10 +350,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
-	isFederationEnabled: (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean,
-	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 
 export default connect(mapStateToProps)(
