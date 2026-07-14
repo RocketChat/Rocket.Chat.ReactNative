@@ -393,6 +393,7 @@ const RoomView = (props: IRoomViewProps) => {
 						baseUrl={baseUrl}
 						broadcast={'id' in room && room.broadcast}
 						isThreadRoom={!!tmid}
+						tmid={tmid}
 						Message_GroupingPeriod={Message_GroupingPeriod}
 						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>

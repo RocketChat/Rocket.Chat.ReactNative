@@ -33,6 +33,7 @@ export type MessageRoomState = {
 	baseUrl?: string;
 	broadcast?: boolean;
 	isThreadRoom?: boolean;
+	tmid?: string;
 	Message_GroupingPeriod?: number;
 	timeFormat?: string;
 	// reactive tail (provider keeps current)
@@ -77,7 +78,8 @@ const FROZEN_KEYS = [
 	'rid',
 	'user',
 	'baseUrl',
-	'isThreadRoom'
+	'isThreadRoom',
+	'tmid'
 ] as const satisfies readonly (keyof MessageRoomState)[];
 
 const useFrozenHandlersGuardProd = (_state: MessageRoomState): void => {};
@@ -188,6 +190,7 @@ export const useBaseUrl = (): string | undefined => useMessageRoomStore(s => s.b
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
 export const useTimeFormat = (): string | undefined => useMessageRoomStore(s => s.timeFormat);
 export const useIsThreadRoom = (): boolean | undefined => useMessageRoomStore(s => s.isThreadRoom);
+export const useRoomTmid = (): string | undefined => useMessageRoomStore(s => s.tmid);
 export const useMessageGroupingPeriod = (): number | undefined => useMessageRoomStore(s => s.Message_GroupingPeriod);
 
 export const useAutoTranslate = (): { autoTranslateRoom?: boolean; autoTranslateLanguage?: string } =>

@@ -6,6 +6,10 @@ import { transformFileSync } from '@babel/core';
 const ROOM_VIEW_DIR = path.resolve(__dirname);
 const REPO_ROOT = path.resolve(__dirname, '../../..');
 
+// Handlers self-sourced out of RoomView into app/containers/message/hooks stay under this contract too.
+// Named individually (not a directory scan) so pre-existing, unrelated files in that folder aren't pulled in.
+const EXTRA_FILES: string[] = [path.resolve(__dirname, '../../containers/message/hooks/useRoomMessageHandlers.tsx')];
+
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.
 const KNOWN_SKIPPED: string[] = [];
 
@@ -44,7 +48,7 @@ const compile = (file: string) =>
 	});
 
 describe('React Compiler contract for RoomView', () => {
-	const absoluteFiles = collectUseMemoFiles(ROOM_VIEW_DIR);
+	const absoluteFiles = [...collectUseMemoFiles(ROOM_VIEW_DIR), ...EXTRA_FILES];
 	const relativeFiles = absoluteFiles.map(file => path.relative(REPO_ROOT, file));
 
 	it("finds the expected set of 'use memo' files", () => {
