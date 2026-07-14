@@ -65,8 +65,6 @@ const RoomView = (props: IRoomViewProps) => {
 		Message_GroupingPeriod,
 		Message_Read_Receipt_Enabled,
 		Hide_System_Messages,
-		transferLivechatGuestPermission,
-		viewCannedResponsesPermission,
 		livechatAllowManualOnHold,
 		showActionSheet,
 		hideActionSheet
@@ -222,8 +220,6 @@ const RoomView = (props: IRoomViewProps) => {
 		room,
 		roomUpdate,
 		joined,
-		transferLivechatGuestPermission,
-		viewCannedResponsesPermission,
 		livechatAllowManualOnHold,
 		roomStore
 	});
@@ -348,8 +344,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
-	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 

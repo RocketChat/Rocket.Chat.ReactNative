@@ -28,8 +28,6 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	replyBroadcast: Function;
 	width: number;
 	insets: EdgeInsets;
-	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
-	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
 }
 
