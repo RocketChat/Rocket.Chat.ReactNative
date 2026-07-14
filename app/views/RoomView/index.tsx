@@ -4,7 +4,6 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStore } from 'zustand';
 
 import database from '../../lib/database';
-import { clearInAppFeedback } from '../../actions/inAppFeedback';
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import I18n from '../../i18n';
@@ -49,6 +48,7 @@ import { useRoomActions } from './hooks/useRoomActions';
 import { useJoinRoomPublisher } from './hooks/useJoinRoomPublisher';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
+import { useInAppFeedback } from './hooks/useInAppFeedback';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
@@ -235,12 +235,7 @@ const RoomView = (props: IRoomViewProps) => {
 		resetAction
 	});
 
-	useEffect(() => {
-		dispatch(clearInAppFeedback());
-		return () => {
-			dispatch(clearInAppFeedback());
-		};
-	}, [dispatch]);
+	useInAppFeedback();
 
 	const blockAction = ({
 		actionId,
