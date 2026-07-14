@@ -1,22 +1,17 @@
 import { act, renderHook } from '@testing-library/react-native';
 
 import { editMessage, setReaction } from '../../../lib/services/restApi';
-import { replyBroadcast as replyBroadcastAction } from '../../../actions/messages';
 import log from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { SubscriptionType } from '../../../definitions';
 import { createMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import ReactionPicker from '../ReactionPicker';
-import ReactionsList from '../../../containers/ReactionsList';
 import { useMessageActions, type IUseMessageActionsParams } from './useMessageActions';
 
 jest.mock('../../../lib/services/restApi', () => ({
 	editMessage: jest.fn(),
 	setReaction: jest.fn()
-}));
-jest.mock('../../../actions/messages', () => ({
-	replyBroadcast: jest.fn(message => ({ type: 'REPLY_BROADCAST', payload: message }))
 }));
 jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
 jest.mock('../../../lib/methods/helpers/review', () => ({
@@ -28,7 +23,6 @@ jest.mock('../../../lib/database/services/Message', () => ({
 
 const mockEditMessage = editMessage as jest.Mock;
 const mockSetReaction = setReaction as jest.Mock;
-const mockReplyBroadcastAction = replyBroadcastAction as jest.Mock;
 const mockLog = log as jest.Mock;
 const mockGetMessageById = getMessageById as jest.Mock;
 
@@ -55,7 +49,6 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 	const showActionSheet = jest.fn();
 	const hideActionSheet = jest.fn();
 	const navigation = { navigate: jest.fn(), push: jest.fn() };
-	const dispatch = jest.fn();
 	const onThreadPress = jest.fn();
 
 	const { result } = renderHook(() =>
@@ -64,7 +57,6 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 			showActionSheet,
 			hideActionSheet,
 			navigation: navigation as any,
-			dispatch: dispatch as any,
 			rid: RID,
 			tmid: undefined,
 			roomUserId: 'room-user-1',
@@ -76,7 +68,7 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 		})
 	);
 
-	return { result, messageActionStore, showActionSheet, hideActionSheet, navigation, dispatch, onThreadPress, refs };
+	return { result, messageActionStore, showActionSheet, hideActionSheet, navigation, onThreadPress, refs };
 };
 
 describe('useMessageActions', () => {
@@ -232,18 +224,6 @@ describe('useMessageActions', () => {
 			expect(options.children.props.messageId).toBe('msg-1');
 			jest.useRealTimers();
 		});
-
-		it('onReactionLongPress shows the reactions list for the message', () => {
-			const { result, showActionSheet } = renderMessageActions();
-			const message = { reactions: [{ emoji: ':smile:', usernames: ['a'] }] } as any;
-
-			act(() => result.current.onReactionLongPress(message));
-
-			expect(showActionSheet).toHaveBeenCalledTimes(1);
-			const options = showActionSheet.mock.calls[0][0];
-			expect(options.children.type).toBe(ReactionsList);
-			expect(options.children.props.reactions).toBe(message.reactions);
-		});
 	});
 
 	describe('onMessageLongPress', () => {
@@ -386,18 +366,6 @@ describe('useMessageActions', () => {
 		});
 	});
 
-	describe('replyBroadcast', () => {
-		it('dispatches the replyBroadcast action for the message', () => {
-			const message = { id: 'msg-1' } as any;
-			const { result, dispatch } = renderMessageActions();
-
-			act(() => result.current.replyBroadcast(message));
-
-			expect(mockReplyBroadcastAction).toHaveBeenCalledWith(message);
-			expect(dispatch).toHaveBeenCalledWith({ type: 'REPLY_BROADCAST', payload: message });
-		});
-	});
-
 	describe('composer bridge', () => {
 		it('setQuotesAndText stores the quote ids and forwards text to the composer', () => {
 			const { result, messageActionStore, refs } = renderMessageActions();
@@ -422,17 +390,6 @@ describe('useMessageActions', () => {
 
 			expect(result.current.getText()).toBe('composer-text');
 			expect(refs.messageComposerRef.current.getText).toHaveBeenCalledTimes(1);
-		});
-	});
-
-	describe('showAttachment', () => {
-		it('navigates to the AttachmentView with the given attachment', () => {
-			const attachment = { title: 'file.png' } as any;
-			const { result, navigation } = renderMessageActions();
-
-			act(() => result.current.showAttachment(attachment));
-
-			expect(navigation.navigate).toHaveBeenCalledWith('AttachmentView', { attachment });
 		});
 	});
 });

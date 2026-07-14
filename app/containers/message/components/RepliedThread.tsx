@@ -8,14 +8,14 @@ import { MarkdownPreview } from '../../markdown';
 import { type IMessageRepliedThread } from '../interfaces';
 import { useTheme } from '../../../theme';
 import { AvatarContainer } from './MessageAvatar';
-import { useFetchThreadName } from '../stores/MessageRoomStore';
+import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 import { useIsEncrypted, useRepliedThreadData } from '../stores/MessageStore';
 
 const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const fetchThreadName = useFetchThreadName();
+	const { fetchThreadName } = useRoomMessageHandlers({ optional: true }) ?? {};
 	const { tmid, tmsg, id } = useRepliedThreadData();
 	const isEncrypted = useIsEncrypted();
 	const displayMsg = isEncrypted ? I18n.t('Encrypted_message') : tmsg;

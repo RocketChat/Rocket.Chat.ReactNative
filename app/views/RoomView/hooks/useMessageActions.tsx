@@ -1,10 +1,7 @@
 import { type RefObject } from 'react';
-import { type Dispatch } from 'redux';
 
 import { editMessage, setReaction } from '../../../lib/services/restApi';
-import { replyBroadcast as replyBroadcastAction } from '../../../actions/messages';
 import log from '../../../lib/methods/helpers/log';
-import ReactionsList from '../../../containers/ReactionsList';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { Review } from '../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../lib/database/services/Message';
@@ -14,7 +11,6 @@ import { type IMessageErrorActions } from '../../../containers/MessageErrorActio
 import { type TActionSheetOptions } from '../../../containers/ActionSheet';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import {
-	type IAttachment,
 	type IEmoji,
 	type IMessage,
 	type IMessageEditAttachment,
@@ -29,7 +25,6 @@ export interface IUseMessageActionsParams {
 	showActionSheet: (options: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
 	navigation: IRoomViewProps['navigation'];
-	dispatch: Dispatch;
 	rid?: string;
 	tmid?: string;
 	roomUserId?: string | null;
@@ -55,11 +50,8 @@ export interface IUseMessageActionsResult {
 	onRemoveQuoteMessage: (messageId: string) => void;
 	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
 	onReactionInit: (messageId: string) => void;
-	onReactionLongPress: (message: TAnyMessageModel) => void;
 	onMessageLongPress: (message: TAnyMessageModel) => void;
-	showAttachment: (attachment: IAttachment) => void;
 	onReplyInit: (messageId: string) => Promise<void>;
-	replyBroadcast: (message: IMessage) => void;
 	setQuotesAndText: (text: string, quotes: string[]) => void;
 	getText: () => string | undefined;
 }
@@ -69,7 +61,6 @@ export function useMessageActions({
 	showActionSheet,
 	hideActionSheet,
 	navigation,
-	dispatch,
 	rid,
 	tmid,
 	roomUserId,
@@ -189,15 +180,6 @@ export function useMessageActions({
 		});
 	};
 
-	const onReactionLongPress = (message: TAnyMessageModel) => {
-		handleCloseEmoji(showActionSheet, {
-			children: <ReactionsList reactions={message?.reactions} />,
-			snaps: ['50%'],
-			enableContentPanningGesture: false,
-			fullContainer: true
-		});
-	};
-
 	const onMessageLongPress = (message: TAnyMessageModel) => {
 		const { action } = messageActionStore.getState();
 		if (action && action.kind !== 'quote') {
@@ -208,11 +190,6 @@ export function useMessageActions({
 			return;
 		}
 		handleCloseEmoji(messageActionsRef.current?.showMessageActions, message);
-	};
-
-	const showAttachment = (attachment: IAttachment) => {
-		// @ts-ignore
-		navigation.navigate('AttachmentView', { attachment });
 	};
 
 	const onReplyInit = async (messageId: string) => {
@@ -231,10 +208,6 @@ export function useMessageActions({
 			t: SubscriptionType.THREAD,
 			roomUserId
 		});
-	};
-
-	const replyBroadcast = (message: IMessage) => {
-		dispatch(replyBroadcastAction(message));
 	};
 
 	const setQuotesAndText = (text: string, quotes: string[]) => {
@@ -256,11 +229,8 @@ export function useMessageActions({
 		onRemoveQuoteMessage,
 		onReactionPress,
 		onReactionInit,
-		onReactionLongPress,
 		onMessageLongPress,
-		showAttachment,
 		onReplyInit,
-		replyBroadcast,
 		setQuotesAndText,
 		getText
 	};

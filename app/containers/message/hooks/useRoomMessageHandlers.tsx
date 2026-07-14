@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { useStore } from 'zustand';
+import { createStore, useStore } from 'zustand';
 
 import I18n from '../../../i18n';
 import { replyBroadcast as replyBroadcastAction } from '../../../actions/messages';
@@ -35,6 +35,29 @@ import ReactionsList from '../../ReactionsList';
 import { MessageActionStoreContext } from '../stores/MessageActionStore';
 import { useRoomTmid } from '../stores/MessageRoomStore';
 import { ContainerTypes } from '../../UIKit/interfaces';
+
+// Keeps the store hooks below unconditional when RoomStore/MessageActionStore contexts are absent (optional mode);
+// its values are never acted on since the hook returns undefined first. Optional mode still requires MessageRoomProvider.
+const noOpAsync = async () => undefined;
+const noOp = () => undefined;
+const FALLBACK_ROOM_STORE = createStore<RoomState>()(() => ({
+	room: { rid: '', t: '' },
+	roomUpdate: {},
+	joined: true,
+	subscribed: false,
+	member: {},
+	roomUserId: null,
+	loading: false,
+	lastOpen: null,
+	canAutoTranslate: false,
+	canForwardGuest: false,
+	canReturnQueue: false,
+	canViewCannedResponse: false,
+	canPlaceLivechatOnHold: false,
+	init: noOpAsync,
+	join: noOp,
+	markMessageSent: noOp
+}));
 
 const toggleFollowThreadImpl = async (tmid: string | undefined, isFollowingThread: boolean, threadId?: string) => {
 	try {
@@ -72,7 +95,9 @@ export interface IUseRoomMessageHandlersResult {
 	onAnswerButtonPress: (message?: string, tshow?: boolean) => void;
 }
 
-export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
+export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult;
+export function useRoomMessageHandlers(options: { optional: true }): IUseRoomMessageHandlersResult | undefined;
+export function useRoomMessageHandlers(options?: { optional?: boolean }): IUseRoomMessageHandlersResult | undefined {
 	'use memo';
 
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
@@ -82,74 +107,14 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
 	const roomStore = useContext(RoomStoreContext);
-	if (!roomStore) {
-		throw new Error('useRoomMessageHandlers must be used within a RoomStoreContext.Provider');
-	}
-	const rid = useStore(roomStore, (s: RoomState) => s.room.rid);
-	const room = useStore(roomStore, (s: RoomState) => s.room);
-	const roomUserId = useStore(roomStore, (s: RoomState) => s.roomUserId);
+	const messageActionStore = useContext(MessageActionStoreContext);
 	const tmid = useRoomTmid();
 
-	const messageActionStore = useContext(MessageActionStoreContext);
-	if (!messageActionStore) {
-		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
-	}
-	const resetAction = () => {
-		messageActionStore.getState().actions.clear();
-	};
-
-	const blockAction = ({
-		actionId,
-		appId,
-		value,
-		blockId,
-		rid: blockRid,
-		mid
-	}: {
-		actionId: string;
-		appId: string;
-		value: any;
-		blockId: string;
-		rid: string;
-		mid: string;
-	}) =>
-		triggerBlockAction({
-			blockId,
-			actionId,
-			value,
-			mid,
-			rid: blockRid,
-			appId,
-			container: {
-				type: ContainerTypes.MESSAGE,
-				id: mid
-			}
-		});
-
-	const navToRoomInfo = (navParam: any) => {
-		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
-		navParam.fromRid = rid;
-		if (isMasterDetail) {
-			navParam.showCloseModal = true;
-			// @ts-ignore
-			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
-		} else {
-			navigation.navigate('RoomInfoView', navParam);
-		}
-	};
-
-	// OLD METHOD - support versions before 5.0.0
-	const handleEnterCall = () => {
-		if (isInActiveVoipCall()) return;
-		if ('id' in room) {
-			const { jitsiTimeout } = room;
-			if (jitsiTimeout && jitsiTimeout < new Date()) {
-				showErrorAlert(I18n.t('Call_already_ended'));
-			} else {
-				callJitsi({ room });
-			}
-		}
-	};
+	// Reads a fallback store when a context is missing so every hook below runs unconditionally
+	// (Rules of Hooks); the two checks after them decide whether to actually use the result.
+	const rid = useStore(roomStore ?? FALLBACK_ROOM_STORE, (s: RoomState) => s.room.rid);
+	const room = useStore(roomStore ?? FALLBACK_ROOM_STORE, (s: RoomState) => s.room);
+	const roomUserId = useStore(roomStore ?? FALLBACK_ROOM_STORE, (s: RoomState) => s.roomUserId);
 
 	const onDiscussionPress = useDebounce(
 		async (drid: TAnyMessageModel['drid']) => {
@@ -222,6 +187,72 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	};
 
 	const onThreadPress = useDebounce((item: TAnyMessageModel) => navToThread(item), 1000, { leading: true, trailing: false });
+
+	if (!roomStore) {
+		if (options?.optional) return undefined;
+		throw new Error('useRoomMessageHandlers must be used within a RoomStoreContext.Provider');
+	}
+
+	if (!messageActionStore) {
+		if (options?.optional) return undefined;
+		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
+	}
+	const resetAction = () => {
+		messageActionStore.getState().actions.clear();
+	};
+
+	const blockAction = ({
+		actionId,
+		appId,
+		value,
+		blockId,
+		rid: blockRid,
+		mid
+	}: {
+		actionId: string;
+		appId: string;
+		value: any;
+		blockId: string;
+		rid: string;
+		mid: string;
+	}) =>
+		triggerBlockAction({
+			blockId,
+			actionId,
+			value,
+			mid,
+			rid: blockRid,
+			appId,
+			container: {
+				type: ContainerTypes.MESSAGE,
+				id: mid
+			}
+		});
+
+	const navToRoomInfo = (navParam: any) => {
+		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
+		navParam.fromRid = rid;
+		if (isMasterDetail) {
+			navParam.showCloseModal = true;
+			// @ts-ignore
+			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
+	};
+
+	// OLD METHOD - support versions before 5.0.0
+	const handleEnterCall = () => {
+		if (isInActiveVoipCall()) return;
+		if ('id' in room) {
+			const { jitsiTimeout } = room;
+			if (jitsiTimeout && jitsiTimeout < new Date()) {
+				showErrorAlert(I18n.t('Call_already_ended'));
+			} else {
+				callJitsi({ room });
+			}
+		}
+	};
 
 	const onEncryptedPress = () => {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);

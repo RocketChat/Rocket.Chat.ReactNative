@@ -84,19 +84,9 @@ const roomHandlers: Partial<MessageRoomState> = {
 	user,
 	baseUrl,
 	reactionInit: () => {},
-	replyBroadcast: () => {},
-	onReactionPress: () => {},
-	onEncryptedPress: () => {},
-	onDiscussionPress: () => {},
-	onThreadPress: () => {},
-	onReactionLongPress: () => {},
-	onAnswerButtonPress: () => {},
 	jumpToMessage: () => {},
 	navToRoomInfo: () => {},
-	showAttachment: undefined,
-	blockAction: undefined,
-	handleEnterCall: undefined,
-	fetchThreadName: undefined
+	showAttachment: undefined
 };
 
 export default {

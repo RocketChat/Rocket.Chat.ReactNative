@@ -7,13 +7,14 @@ import { BUTTON_HIT_SLOP } from '../utils';
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import { useIsOwnMessage, useMessageItem } from '../stores/MessageStore';
-import { useBroadcast, useReplyBroadcast } from '../stores/MessageRoomStore';
+import { useBroadcast } from '../stores/MessageRoomStore';
+import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 
 const Broadcast = () => {
 	'use memo';
 
 	const item = useMessageItem();
-	const replyBroadcast = useReplyBroadcast();
+	const { replyBroadcast } = useRoomMessageHandlers({ optional: true }) ?? {};
 	const broadcast = useBroadcast();
 	const { colors } = useTheme();
 	const isOwn = useIsOwnMessage();

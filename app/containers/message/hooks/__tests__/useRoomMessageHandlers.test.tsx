@@ -113,6 +113,12 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	return { result, roomStore, messageActionStore };
 };
 
+// MessageRoomProvider stays mounted (useRoomTmid throws without it); the store contexts are the ones left absent.
+const renderWithoutStores = (options?: { optional?: boolean }) =>
+	renderHook(() => useRoomMessageHandlers(options as { optional: true }), {
+		wrapper: ({ children }) => <MessageRoomProvider timeFormat='h:mm A'>{children}</MessageRoomProvider>
+	});
+
 describe('useRoomMessageHandlers', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -210,6 +216,18 @@ describe('useRoomMessageHandlers', () => {
 			act(() => result.current.onAnswerButtonPress(undefined));
 
 			expect(mockSendMessage).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('optional mode', () => {
+		it('returns undefined without throwing when the store contexts are absent', () => {
+			const { result } = renderWithoutStores({ optional: true });
+
+			expect(result.current).toBeUndefined();
+		});
+
+		it('throws when the store contexts are absent and optional is omitted', () => {
+			expect(() => renderWithoutStores()).toThrow('must be used within a RoomStoreContext.Provider');
 		});
 	});
 });

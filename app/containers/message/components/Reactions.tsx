@@ -8,7 +8,8 @@ import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from '../utils';
 import { useTheme } from '../../../theme';
 import { useMessageId, useMessageItem, useReactions } from '../stores/MessageStore';
-import { useMessageUser, useOnReactionLongPress, useOnReactionPress, useReactionInit } from '../stores/MessageRoomStore';
+import { useMessageUser, useReactionInit } from '../stores/MessageRoomStore';
+import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 
 interface IReaction {
 	_id: string;
@@ -51,8 +52,7 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 	const { colors } = useTheme();
 	const item = useMessageItem();
 	const id = useMessageId();
-	const onReactionPress = useOnReactionPress();
-	const onReactionLongPress = useOnReactionLongPress();
+	const { onReactionPress, onReactionLongPress } = useRoomMessageHandlers({ optional: true }) ?? {};
 	const user = useMessageUser();
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;

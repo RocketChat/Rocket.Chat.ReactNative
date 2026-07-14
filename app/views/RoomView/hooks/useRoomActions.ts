@@ -1,8 +1,6 @@
 import { type RefObject } from 'react';
 
 import I18n from '../../../i18n';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
@@ -37,7 +35,6 @@ interface IUseRoomActionsResult {
 	onJoin: () => void;
 	handleSendMessage: (message?: string, tshow?: boolean) => void;
 	toggleFollowThread: (isFollowingThread: boolean, threadId?: string) => Promise<void>;
-	fetchThreadName: (threadId: string, messageId: string) => Promise<string | undefined>;
 }
 
 export function useRoomActions({ rid, tmid, roomStore, userRef, resetAction }: IUseRoomActionsParams): IUseRoomActionsResult {
@@ -59,21 +56,12 @@ export function useRoomActions({ rid, tmid, roomStore, userRef, resetAction }: I
 		roomStore.getState().join();
 	};
 
-	const fetchThreadName = async (threadId: string, messageId: string) => {
-		const threadRecord = await getThreadById(threadId);
-		if (threadRecord?.t === 'rm') {
-			return I18n.t('Message_removed');
-		}
-		return getThreadName(rid as string, threadId, messageId);
-	};
-
 	const toggleFollowThread = (isFollowingThread: boolean, threadId?: string) =>
 		toggleFollowThreadImpl(tmid, isFollowingThread, threadId);
 
 	return {
 		onJoin,
 		handleSendMessage,
-		toggleFollowThread,
-		fetchThreadName
+		toggleFollowThread
 	};
 }

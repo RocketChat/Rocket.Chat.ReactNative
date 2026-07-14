@@ -5,8 +5,6 @@ import I18n from '../../../i18n';
 import { sendMessage } from '../../../lib/methods/sendMessage';
 import { Review } from '../../../lib/methods/helpers/review';
 import EventEmitterReal from '../../../lib/methods/helpers/events';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
 import { toggleFollowMessage } from '../../../lib/services/restApi';
 import { LISTENER } from '../../../containers/Toast';
 import { type RoomState, type RoomStore } from '../stores/RoomStore';
@@ -20,17 +18,10 @@ jest.mock('../../../lib/methods/helpers/log', () => ({
 	default: jest.fn(),
 	logEvent: jest.fn()
 }));
-jest.mock('../../../lib/database/services/Thread', () => ({ getThreadById: jest.fn(() => Promise.resolve(null)) }));
-jest.mock('../../../lib/methods/getThreadName', () => ({
-	__esModule: true,
-	default: jest.fn(() => Promise.resolve('Thread Name'))
-}));
 jest.mock('../../../lib/services/restApi', () => ({ toggleFollowMessage: jest.fn() }));
 
 const mockSendMessage = sendMessage as jest.Mock;
 const mockPushPositiveEvent = Review.pushPositiveEvent as jest.Mock;
-const mockGetThreadById = getThreadById as jest.Mock;
-const mockGetThreadName = getThreadName as jest.Mock;
 const mockToggleFollowMessage = toggleFollowMessage as jest.Mock;
 
 const makeRoomStore = (): RoomStore =>
@@ -131,26 +122,5 @@ describe('useRoomActions', () => {
 		await result.current.toggleFollowThread(false);
 
 		expect(mockToggleFollowMessage).not.toHaveBeenCalled();
-	});
-
-	it('fetchThreadName returns the removed-message copy when the thread was deleted', async () => {
-		mockGetThreadById.mockResolvedValueOnce({ t: 'rm' });
-		const { result } = renderRoomActions({});
-
-		const name = await result.current.fetchThreadName('thread-1', 'msg-1');
-
-		expect(name).toBe(I18n.t('Message_removed'));
-		expect(mockGetThreadName).not.toHaveBeenCalled();
-	});
-
-	it('fetchThreadName delegates to the thread-name service otherwise', async () => {
-		mockGetThreadById.mockResolvedValueOnce({ t: 'c' });
-		mockGetThreadName.mockResolvedValueOnce('Resolved Name');
-		const { result } = renderRoomActions({});
-
-		const name = await result.current.fetchThreadName('thread-1', 'msg-1');
-
-		expect(mockGetThreadName).toHaveBeenCalledWith('rid-1', 'thread-1', 'msg-1');
-		expect(name).toBe('Resolved Name');
 	});
 });

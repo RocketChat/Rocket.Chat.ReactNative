@@ -21,7 +21,6 @@ const item = {
 
 const room: Partial<MessageRoomState> = {
 	user: { id: 'reader-id', username: 'reader' },
-	onThreadPress: () => {},
 	isThreadRoom: false
 };
 

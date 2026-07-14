@@ -13,14 +13,12 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../lib/hooks/withDimensions';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import Banner from './Banner';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
 import { type IApplicationState, type TAnyMessageModel, type RoomType } from '../../definitions';
 import { themes } from '../../lib/constants/colors';
-import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer';
@@ -58,7 +56,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const {
 		route,
 		navigation,
-		dispatch,
 		theme,
 		user,
 		isAuthenticated,
@@ -153,33 +150,25 @@ const RoomView = (props: IRoomViewProps) => {
 		return EMPTY_HIDE_SYSTEM_MESSAGES;
 	})();
 
-	const {
-		cancelJumpToMessage,
-		onThreadMessagesLoaded,
-		onDiscussionPress,
-		onThreadPress,
-		jumpToMessageByUrl,
-		onEncryptedPress,
-		navToRoomInfo,
-		handleEnterCall,
-		goRoomActionsView
-	} = useRoomNavigation({
-		rid,
-		tmid,
-		t,
-		navigation,
-		isMasterDetail,
-		listRef,
-		member,
-		joined,
-		canForwardGuest,
-		canReturnQueue,
-		canViewCannedResponse,
-		canPlaceLivechatOnHold,
-		roomRef,
-		roomUserIdRef,
-		cancelJumpToMessageRef
-	});
+	const { cancelJumpToMessage, onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl, goRoomActionsView } = useRoomNavigation(
+		{
+			rid,
+			tmid,
+			t,
+			navigation,
+			isMasterDetail,
+			listRef,
+			member,
+			joined,
+			canForwardGuest,
+			canReturnQueue,
+			canViewCannedResponse,
+			canPlaceLivechatOnHold,
+			roomRef,
+			roomUserIdRef,
+			cancelJumpToMessageRef
+		}
+	);
 
 	useEffect(() => {
 		roomRef.current = room;
@@ -200,11 +189,8 @@ const RoomView = (props: IRoomViewProps) => {
 		onRemoveQuoteMessage,
 		onReactionPress,
 		onReactionInit,
-		onReactionLongPress,
 		onMessageLongPress,
-		showAttachment,
 		onReplyInit,
-		replyBroadcast,
 		setQuotesAndText,
 		getText
 	} = useMessageActions({
@@ -212,7 +198,6 @@ const RoomView = (props: IRoomViewProps) => {
 		showActionSheet,
 		hideActionSheet,
 		navigation,
-		dispatch,
 		rid,
 		tmid,
 		roomUserId,
@@ -227,7 +212,7 @@ const RoomView = (props: IRoomViewProps) => {
 	useRoomAudioLifecycle(rid, tmid, navigation);
 	useRoomRemoved(rid, isMasterDetail, roomRef);
 	useJoinRoomPublisher({ roomStore, room, isOmnichannel, serverVersion, t, joinCodeRef });
-	const { onJoin, handleSendMessage, toggleFollowThread, fetchThreadName } = useRoomActions({
+	const { onJoin, handleSendMessage, toggleFollowThread } = useRoomActions({
 		rid,
 		tmid,
 		roomStore,
@@ -236,34 +221,6 @@ const RoomView = (props: IRoomViewProps) => {
 	});
 
 	useInAppFeedback();
-
-	const blockAction = ({
-		actionId,
-		appId,
-		value,
-		blockId,
-		rid: blockRid,
-		mid
-	}: {
-		actionId: string;
-		appId: string;
-		value: any;
-		blockId: string;
-		rid: string;
-		mid: string;
-	}) =>
-		triggerBlockAction({
-			blockId,
-			actionId,
-			value,
-			mid,
-			rid: blockRid,
-			appId,
-			container: {
-				type: ContainerTypes.MESSAGE,
-				id: mid
-			}
-		});
 
 	const closeBanner = async () => {
 		if ('id' in room) {
@@ -364,23 +321,10 @@ const RoomView = (props: IRoomViewProps) => {
 						<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
 					) : null}
 					<MessageRoomProvider
-						navToRoomInfo={navToRoomInfo}
-						showAttachment={showAttachment}
-						blockAction={blockAction}
-						handleEnterCall={handleEnterCall}
-						fetchThreadName={fetchThreadName}
-						toggleFollowThread={toggleFollowThread}
 						jumpToMessage={jumpToMessageByUrl}
 						closeEmojiAndAction={handleCloseEmoji}
-						onReactionPress={onReactionPress}
-						onReactionLongPress={onReactionLongPress}
 						reactionInit={onReactionInit}
-						onDiscussionPress={onDiscussionPress}
-						onThreadPress={onThreadPress}
-						replyBroadcast={replyBroadcast}
 						errorActionsShow={errorActionsShow}
-						onAnswerButtonPress={handleSendMessage}
-						onEncryptedPress={onEncryptedPress}
 						archived={'id' in room && room.archived}
 						isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 						rid={room.rid}

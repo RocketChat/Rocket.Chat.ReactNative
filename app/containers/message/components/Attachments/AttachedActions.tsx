@@ -1,5 +1,5 @@
 import Button from '../../../Button';
-import { useOnAnswerButtonPress } from '../../stores/MessageRoomStore';
+import { useRoomMessageHandlers } from '../../hooks/useRoomMessageHandlers';
 import { type IAttachment } from '../../../../definitions';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import Markdown from '../../../markdown';
@@ -14,7 +14,7 @@ export type TElement = {
 const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	'use memo';
 
-	const onAnswerButtonPress = useOnAnswerButtonPress();
+	const { onAnswerButtonPress } = useRoomMessageHandlers({ optional: true }) ?? {};
 
 	if (!attachment.actions) {
 		return null;

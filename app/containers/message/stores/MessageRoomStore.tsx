@@ -2,29 +2,20 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactEleme
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type IAttachment, type IRoomInfoParam, type TAnyMessageModel } from '../../../definitions';
+import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
 import { useSetting } from '../../../lib/hooks/useSetting';
 
 export type MessageRoomState = {
 	// stable handlers
-	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
-	showAttachment?: (file: IAttachment) => void;
-	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	handleEnterCall?: () => void;
-	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
-	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	closeEmojiAndAction?: (action?: (params?: unknown) => void, params?: unknown) => void;
 	// row action handlers
-	onReactionPress?: (emoji: string, id: string) => void;
-	onReactionLongPress?: (item: TAnyMessageModel) => void;
 	reactionInit?: (messageId: string) => void;
-	onDiscussionPress?: (drid: TAnyMessageModel['drid']) => void;
-	onThreadPress?: (item: TAnyMessageModel) => void;
-	replyBroadcast?: (item: TAnyMessageModel) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
-	onAnswerButtonPress?: (message: string, tshow?: boolean) => void;
-	onEncryptedPress?: () => void;
+	// overrides for views (e.g. MessagesView, SearchMessagesView) that render message leaves
+	// outside a RoomStoreContext and so can't get these from useRoomMessageHandlers
+	navToRoomInfo?: (navParam: any) => void;
+	showAttachment?: (attachment: IAttachment) => void;
 	archived?: boolean;
 	isReadReceiptEnabled?: boolean;
 	// room constants
@@ -58,23 +49,12 @@ const useMessageRoomStore = <T,>(selector: (state: MessageRoomState) => T): T =>
 // Handlers and room constants captured once at mount by MessageRoomStoreProvider below (everything
 // outside the reactive-tail resync effect). Callers MUST pass referentially stable values for these.
 const FROZEN_KEYS = [
-	'navToRoomInfo',
-	'showAttachment',
-	'blockAction',
-	'handleEnterCall',
-	'fetchThreadName',
-	'toggleFollowThread',
 	'jumpToMessage',
 	'closeEmojiAndAction',
-	'onReactionPress',
-	'onReactionLongPress',
 	'reactionInit',
-	'onDiscussionPress',
-	'onThreadPress',
-	'replyBroadcast',
 	'errorActionsShow',
-	'onAnswerButtonPress',
-	'onEncryptedPress',
+	'navToRoomInfo',
+	'showAttachment',
 	'rid',
 	'user',
 	'baseUrl',
@@ -160,27 +140,16 @@ export const MessageRoomProvider = ({ children, ...state }: { children: ReactNod
 	);
 };
 
-export const useNavToRoomInfo = (): ((navParam: IRoomInfoParam) => void) | undefined => useMessageRoomStore(s => s.navToRoomInfo);
-export const useShowAttachment = (): ((file: IAttachment) => void) | undefined => useMessageRoomStore(s => s.showAttachment);
-export const useBlockAction = (): MessageRoomState['blockAction'] => useMessageRoomStore(s => s.blockAction);
-export const useHandleEnterCall = (): (() => void) | undefined => useMessageRoomStore(s => s.handleEnterCall);
-export const useFetchThreadName = (): MessageRoomState['fetchThreadName'] => useMessageRoomStore(s => s.fetchThreadName);
-export const useToggleFollowThread = (): MessageRoomState['toggleFollowThread'] => useMessageRoomStore(s => s.toggleFollowThread);
 export const useJumpToMessage = (): ((link: string) => void) | undefined => useMessageRoomStore(s => s.jumpToMessage);
 export const useCloseEmojiAndAction = (): MessageRoomState['closeEmojiAndAction'] =>
 	useMessageRoomStore(s => s.closeEmojiAndAction);
 
-export const useOnReactionPress = (): MessageRoomState['onReactionPress'] => useMessageRoomStore(s => s.onReactionPress);
-export const useOnReactionLongPress = (): MessageRoomState['onReactionLongPress'] =>
-	useMessageRoomStore(s => s.onReactionLongPress);
 export const useReactionInit = (): MessageRoomState['reactionInit'] => useMessageRoomStore(s => s.reactionInit);
-export const useOnDiscussionPress = (): MessageRoomState['onDiscussionPress'] => useMessageRoomStore(s => s.onDiscussionPress);
-export const useOnThreadPress = (): MessageRoomState['onThreadPress'] => useMessageRoomStore(s => s.onThreadPress);
-export const useReplyBroadcast = (): MessageRoomState['replyBroadcast'] => useMessageRoomStore(s => s.replyBroadcast);
 export const useErrorActionsShow = (): MessageRoomState['errorActionsShow'] => useMessageRoomStore(s => s.errorActionsShow);
-export const useOnAnswerButtonPress = (): MessageRoomState['onAnswerButtonPress'] =>
-	useMessageRoomStore(s => s.onAnswerButtonPress);
-export const useOnEncryptedPress = (): MessageRoomState['onEncryptedPress'] => useMessageRoomStore(s => s.onEncryptedPress);
+// Only set by views (MessagesView, SearchMessagesView) that render message leaves outside a
+// RoomStoreContext; leaves prefer this override, falling back to useRoomMessageHandlers.
+export const useNavToRoomInfoOverride = (): MessageRoomState['navToRoomInfo'] => useMessageRoomStore(s => s.navToRoomInfo);
+export const useShowAttachmentOverride = (): MessageRoomState['showAttachment'] => useMessageRoomStore(s => s.showAttachment);
 export const useIsArchived = (): boolean | undefined => useMessageRoomStore(s => s.archived);
 export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 

@@ -4,12 +4,12 @@ import { BUTTON_HIT_SLOP } from '../../utils';
 import styles from '../../styles';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
 import { useMessageField } from '../../stores/MessageStore';
-import { useOnEncryptedPress } from '../../stores/MessageRoomStore';
+import { useRoomMessageHandlers } from '../../hooks/useRoomMessageHandlers';
 
 const Encrypted = () => {
 	'use memo';
 
-	const onEncryptedPress = useOnEncryptedPress();
+	const { onEncryptedPress } = useRoomMessageHandlers({ optional: true }) ?? {};
 	const type = useMessageField(item => item.t);
 
 	if (type !== E2E_MESSAGE_TYPE) {

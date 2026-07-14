@@ -25,8 +25,7 @@ const ownAuthorItem = {
 
 const room: Partial<MessageRoomState> = {
 	broadcast: true,
-	user: { id: 'reader-id', username: 'rocket.cat' },
-	replyBroadcast: () => {}
+	user: { id: 'reader-id', username: 'rocket.cat' }
 };
 
 const StoryWrapper = ({ item, children }: { item: TAnyMessageModel; children: ReactNode }) => (

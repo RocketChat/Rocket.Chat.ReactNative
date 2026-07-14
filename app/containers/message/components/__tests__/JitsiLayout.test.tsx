@@ -3,10 +3,15 @@ import { render } from '@testing-library/react-native';
 
 import JitsiLayout from '../Layout/JitsiLayout';
 import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
+import { MessageRoomProvider } from '../../stores/MessageRoomStore';
+import { useRoomMessageHandlers, type IUseRoomMessageHandlersResult } from '../../hooks/useRoomMessageHandlers';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../definitions';
 import I18n from '../../../../i18n';
+
+jest.mock('../../hooks/useRoomMessageHandlers', () => ({
+	useRoomMessageHandlers: jest.fn(() => ({}))
+}));
 
 const item = {
 	id: 'msg-1',
@@ -16,10 +21,10 @@ const item = {
 } as unknown as TAnyMessageModel;
 
 const renderJitsiLayout = () => {
-	const room: Partial<MessageRoomState> = { handleEnterCall: jest.fn() };
+	jest.mocked(useRoomMessageHandlers).mockReturnValue({ handleEnterCall: jest.fn() } as unknown as IUseRoomMessageHandlersResult);
 	return render(
 		<Provider store={mockedStore}>
-			<MessageRoomProvider {...room}>
+			<MessageRoomProvider>
 				<MessageProvider item={item}>
 					<JitsiLayout showTimeLarge={false} />
 				</MessageProvider>

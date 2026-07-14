@@ -9,12 +9,9 @@ import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { useDebounce } from '../../../lib/methods/helpers';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import getThreadName from '../../../lib/methods/getThreadName';
 import { sendLoadingEvent } from '../../../containers/Loading';
-import { callJitsi } from '../../../lib/methods/callJitsi';
-import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
 import { type ISubscription, SubscriptionType, type TAnyMessageModel, type TSubscriptionModel } from '../../../definitions';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
@@ -48,12 +45,8 @@ export interface IUseRoomNavigationResult {
 	cancelJumpToMessage: () => void;
 	consumeJumpParam: (messageId: string) => void;
 	onThreadMessagesLoaded: () => void;
-	onDiscussionPress: (drid: TAnyMessageModel['drid']) => void;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
-	onEncryptedPress: () => void;
-	navToRoomInfo: (navParam: any) => void;
-	handleEnterCall: () => void;
 	goRoomActionsView: (screen?: keyof ModalStackParamList) => void;
 }
 
@@ -150,32 +143,6 @@ export function useRoomNavigation({
 		navToThread
 	});
 
-	const onEncryptedPress = () => {
-		logEvent(events.ROOM_ENCRYPTED_PRESS);
-		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
-		if (isMasterDetail) {
-			// @ts-ignore
-			return navigation.navigate('ModalStackNavigator', screen);
-		}
-		// @ts-ignore
-		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
-	};
-
-	const onDiscussionPress = useDebounce(
-		async (drid: TAnyMessageModel['drid']) => {
-			if (!drid) return;
-			const discussion = await getRoomInfo(drid);
-			if (discussion) {
-				goRoom({
-					item: discussion as TGoRoomItem,
-					isMasterDetail
-				});
-			}
-		},
-		1000,
-		{ leading: true, trailing: false }
-	);
-
 	const onThreadPress = useDebounce((item: TAnyMessageModel) => navToThread(item), 1000, { leading: true, trailing: false });
 
 	const jumpToMessageByUrl = async (messageUrl?: string, isFromReply?: boolean) => {
@@ -190,32 +157,6 @@ export function useRoomNavigation({
 			}
 		} catch (e) {
 			log(e);
-		}
-	};
-
-	const navToRoomInfo = (navParam: any) => {
-		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
-		navParam.fromRid = rid;
-		if (isMasterDetail) {
-			navParam.showCloseModal = true;
-			// @ts-ignore
-			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
-		} else {
-			navigation.navigate('RoomInfoView', navParam);
-		}
-	};
-
-	// OLD METHOD - support versions before 5.0.0
-	const handleEnterCall = () => {
-		if (isInActiveVoipCall()) return;
-		const currentRoom = roomRef.current;
-		if ('id' in currentRoom) {
-			const { jitsiTimeout } = currentRoom;
-			if (jitsiTimeout && jitsiTimeout < new Date()) {
-				showErrorAlert(I18n.t('Call_already_ended'));
-			} else {
-				callJitsi({ room: currentRoom });
-			}
 		}
 	};
 
@@ -265,12 +206,8 @@ export function useRoomNavigation({
 		cancelJumpToMessage,
 		consumeJumpParam,
 		onThreadMessagesLoaded,
-		onDiscussionPress,
 		onThreadPress,
 		jumpToMessageByUrl,
-		onEncryptedPress,
-		navToRoomInfo,
-		handleEnterCall,
 		goRoomActionsView
 	};
 }
