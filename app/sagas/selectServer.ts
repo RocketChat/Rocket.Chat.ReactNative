@@ -138,9 +138,12 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		if (sdk.server === server) {
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-			yield put(selectServerCancel());
-			return;
+			const isLoggedIn = yield* appSelector(state => state.login.isAuthenticated && state.meteor.connected);
+			if (isLoggedIn) {
+				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+				yield put(selectServerCancel());
+				return;
+			}
 		}
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
