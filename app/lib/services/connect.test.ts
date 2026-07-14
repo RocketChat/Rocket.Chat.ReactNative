@@ -5,6 +5,7 @@ import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { setUser } from '../../actions/login';
 import database from '../database';
 import { onRolesChanged } from '../methods/getRoles';
+import { STATUSES } from '../../definitions';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -1108,6 +1109,59 @@ describe('connect — collection handlers guard against fieldless payloads', () 
 		const [handler] = getHandlersByEvent('stream-notify-logged');
 
 		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
+	});
+});
+
+describe('connect — stream-user-presence updates active users', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	const fireUserPresence = async (uid: string, status: number, statusText: string) => {
+		const [handler] = getHandlersByEvent('stream-user-presence');
+		handler({
+			msg: 'changed',
+			fields: { uid, args: [[uid, status, statusText, undefined, undefined]] }
+		});
+	};
+
+	it('dispatches setActiveUsers with the presence for a user who is not the logged-in user', async () => {
+		await connect({ server: SERVER });
+		const setActiveUsersMock = jest.requireMock('../../actions/activeUsers').setActiveUsers;
+
+		await fireUserPresence('other-user-1', 1, 'online');
+
+		expect(setActiveUsersMock).toHaveBeenCalledWith({
+			'other-user-1': { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
+		});
+	});
+
+	it('still dispatches setActiveUsers for the logged-in user (in addition to setUser)', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { id: 'me' }, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		await connect({ server: SERVER });
+		const setActiveUsersMock = jest.requireMock('../../actions/activeUsers').setActiveUsers;
+		const setUserMock = jest.requireMock('../../actions/login').setUser;
+
+		await fireUserPresence('me', 1, 'online');
+
+		expect(setActiveUsersMock).toHaveBeenCalledWith({
+			me: { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
+		});
+		expect(setUserMock).toHaveBeenCalledWith({ status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined });
 	});
 });
 

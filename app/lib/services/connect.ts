@@ -170,6 +170,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
 				const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
 				const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
+				store.dispatch(setActiveUsers({ [uid]: newStatus }));
 
 				const { user: loggedUser } = store.getState().login;
 				if (loggedUser && loggedUser.id === uid) {
