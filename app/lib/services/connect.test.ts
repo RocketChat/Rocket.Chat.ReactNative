@@ -1126,7 +1126,7 @@ describe('connect — stream-user-presence updates active users', () => {
 		});
 	});
 
-	const fireUserPresence = async (uid: string, status: number, statusText: string) => {
+	const fireUserPresence = (uid: string, status: number, statusText: string) => {
 		const [handler] = getHandlersByEvent('stream-user-presence');
 		handler({
 			msg: 'changed',
@@ -1138,7 +1138,7 @@ describe('connect — stream-user-presence updates active users', () => {
 		await connect({ server: SERVER });
 		const setActiveUsersMock = jest.requireMock('../../actions/activeUsers').setActiveUsers;
 
-		await fireUserPresence('other-user-1', 1, 'online');
+		fireUserPresence('other-user-1', 1, 'online');
 
 		expect(setActiveUsersMock).toHaveBeenCalledWith({
 			'other-user-1': { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
@@ -1156,7 +1156,7 @@ describe('connect — stream-user-presence updates active users', () => {
 		const setActiveUsersMock = jest.requireMock('../../actions/activeUsers').setActiveUsers;
 		const setUserMock = jest.requireMock('../../actions/login').setUser;
 
-		await fireUserPresence('me', 1, 'online');
+		fireUserPresence('me', 1, 'online');
 
 		expect(setActiveUsersMock).toHaveBeenCalledWith({
 			me: { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
