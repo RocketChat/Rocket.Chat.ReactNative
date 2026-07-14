@@ -2,6 +2,7 @@
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
+		server: 'https://open.rocket.chat',
 		getHeaders: jest.fn(),
 		setBasicAuth: jest.fn()
 	}
@@ -64,6 +65,24 @@ describe('helpers/fetch', () => {
 		const expected = { ok: true, status: 200 };
 		fetchMock.mockResolvedValueOnce(expected);
 		await expect(customFetch('/api/v1/test')).resolves.toBe(expected);
+	});
+
+	it('attaches session headers (X-Auth-Token/X-User-Id) for same-origin requests', async () => {
+		(sdk.getHeaders as jest.Mock).mockReturnValue({ 'X-Auth-Token': 'tok', 'X-User-Id': 'uid' });
+		await customFetch('https://open.rocket.chat/api/v1/settings');
+		const call = fetchMock.mock.calls[0][1];
+		expect(call.headers['X-Auth-Token']).toBe('tok');
+		expect(call.headers['X-User-Id']).toBe('uid');
+	});
+
+	it('omits session headers but keeps default headers for cross-origin requests', async () => {
+		(sdk.getHeaders as jest.Mock).mockReturnValue({ 'User-Agent': 'RC Mobile', 'X-Auth-Token': 'tok', 'X-User-Id': 'uid' });
+		await customFetch('https://releases.rocket.chat/v2/server/supportedVersions');
+		const call = fetchMock.mock.calls[0][1];
+		expect(call.headers['X-Auth-Token']).toBeUndefined();
+		expect(call.headers['X-User-Id']).toBeUndefined();
+		expect(typeof call.headers['User-Agent']).toBe('string');
+		expect(call.headers['User-Agent']).toMatch(/RC Mobile/);
 	});
 });
 

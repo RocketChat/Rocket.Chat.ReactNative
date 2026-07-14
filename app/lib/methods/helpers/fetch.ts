@@ -1,5 +1,6 @@
 import sdk from '../../services/sdk';
 import { type DefaultHeaders, headers } from './defaultHeaders';
+import { getAuthHeaders } from './getAuthHeaders';
 
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
@@ -19,6 +20,7 @@ export const setBasicAuth = (basicAuth: string | null): void => {
 export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
 export default (url: string, options: IOptions = {}): Promise<Response> => {
-	const customOptions = { ...options, headers: { ...sdk.getHeaders(), ...(options.headers || {}) } };
+	const authHeaders = getAuthHeaders(url);
+	const customOptions = { ...options, headers: { ...authHeaders, ...(options.headers || {}) } };
 	return fetch(url, customOptions);
 };

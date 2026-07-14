@@ -4,11 +4,11 @@ import { Image } from 'expo-image';
 
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
+import { getAuthHeaders } from '../../lib/methods/helpers/getAuthHeaders';
 import { SubscriptionType } from '../../definitions';
 import { type IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import Touch from '../Touch';
-import sdk from '../../lib/services/sdk';
 
 const Avatar = memo(
 	({
@@ -81,7 +81,7 @@ const Avatar = memo(
 					style={avatarStyle}
 					source={{
 						uri,
-						headers: sdk.getHeaders()
+						headers: uri ? getAuthHeaders(uri) : undefined
 					}}
 					priority='high'
 				/>
