@@ -1,3 +1,5 @@
+import { type RefObject } from 'react';
+
 import { type EdgeInsets } from 'react-native-safe-area-context';
 
 import { type ChatsStackParamList } from '../../stacks/types';
@@ -11,6 +13,8 @@ import {
 	type TSubscriptionModel
 } from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
+import { type IListContainerRef } from './List/definitions';
+import { type TGetMessageInfoResult } from './services/getMessageInfo';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -96,4 +100,16 @@ export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible'
 export interface IUseE2EEStatusResult {
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;
+}
+
+export interface IJumpToMessageArgs {
+	messageId: string;
+	isFromReply?: boolean;
+	rid?: string;
+	tmid?: string;
+	t?: string;
+	listRef: RefObject<IListContainerRef | null>;
+	navToRoom: (message: TGetMessageInfoResult) => void;
+	navToThread: (message: TGetMessageInfoResult) => void;
+	cancel: () => void;
 }
