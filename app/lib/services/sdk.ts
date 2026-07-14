@@ -252,12 +252,18 @@ class Sdk {
 
 	async login(credentials: any): Promise<ILoginDataResponse> {
 		try {
+			const { server } = this;
 			const loginResult = (await this.post('/v1/login', credentials)) as unknown as ILoginResponse;
 			if (loginResult?.status !== 'success' || !loginResult.data) {
 				return Promise.reject(new Error('Invalid response from server'));
 			}
 			// Auth is tracked in two places, both required: loginWithToken() sets the DDP-level session used
 			// by methodCall()/subscribe(), while setHeaders() below sets the REST-level auth used by get/post/delete.
+			// Another server may have been selected while the REST login was in flight — applying this token
+			// to the wrong sdk instance would authenticate server A's credentials on server B's connection.
+			if (this.server !== server) {
+				return Promise.reject(new Error('Server switched during login'));
+			}
 			await this.current?.account.loginWithToken(loginResult.data.authToken);
 
 			this.setHeaders({
