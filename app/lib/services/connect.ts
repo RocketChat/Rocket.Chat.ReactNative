@@ -102,6 +102,12 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		});
 		await sdk.current?.connection.connect();
 
+		// A newer connect() may have switched servers while connect() was in flight —
+		// bail before wiring the collection listeners onto the wrong sdk instance.
+		if (sdk.server !== server) {
+			return;
+		}
+
 		sdk.onCollection('users', (ddpMessage: unknown) => _setUser(ddpMessage as IActiveUsers));
 
 		sdk.onCollection(
