@@ -23,7 +23,7 @@ import {
 	type IDeleteMessageBulkParams
 } from '../../../definitions';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
-import sdk from '../../services/sdk';
+import sdk, { type DDPSubscription } from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { updateLastOpen } from '../updateLastOpen';
@@ -32,7 +32,7 @@ import markMessagesRead from '../helpers/markMessagesRead';
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private promises?: Promise<any[]>;
+	private promises?: Promise<DDPSubscription[]>;
 	private connectionStatusListener?: () => void;
 	private loginListener?: () => void;
 	private notifyRoomListener?: Promise<any>;

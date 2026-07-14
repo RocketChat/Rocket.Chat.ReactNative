@@ -31,6 +31,8 @@ export async function normalizeResponseError(response: Response): Promise<{ stat
 // so we keep a single source of truth here instead of repeating the union inline.
 export type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'failed' | 'closed' | 'disconnected' | 'reconnecting';
 
+export type DDPSubscription = ReturnType<ClientStream['subscribe']>;
+
 export const NOTIFY_USER_EVENTS = [
 	'message',
 	'notification',
@@ -335,8 +337,8 @@ class Sdk {
 		return this.ensureInitialized().client.subscribe(...args);
 	}
 
-	subscribeRoom(rid: string): Promise<any[]> {
-		const subscriptions: any[] = [];
+	subscribeRoom(rid: string): Promise<DDPSubscription[]> {
+		const subscriptions: DDPSubscription[] = [];
 		if (!this.current) {
 			return Promise.resolve(subscriptions);
 		}
