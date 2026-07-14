@@ -101,7 +101,7 @@ const renderRoomLifecycle = (overrides: Partial<IUseRoomLifecycleParams> = {}, r
 		onQuoteInit: jest.fn(),
 		resetAction: jest.fn(),
 		onThreadMessagesLoaded: jest.fn(),
-		setState: jest.fn(),
+		setUnreadsCount: jest.fn(),
 		...overrides
 	};
 	const { result, unmount, rerender } = renderHook((props: IUseRoomLifecycleParams) => useRoomLifecycle(props), {

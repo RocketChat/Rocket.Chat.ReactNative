@@ -30,3 +30,26 @@ export const isReadOnly = async (room: Partial<ISubscription>, username: string)
 	}
 	return false;
 };
+
+// Synchronous counterpart to `isReadOnly` for callers that already hold a reactively-observed
+// room (with `.roles`) and the current user's roles, avoiding the async DB re-fetch in `hasPermission`.
+export const isReadOnlySync = (
+	room: Partial<ISubscription>,
+	username: string,
+	postReadOnlyPermission: string[] | undefined,
+	userRoles: string[]
+): boolean => {
+	if (room.archived) {
+		return true;
+	}
+	if (isMuted(room, username)) {
+		return true;
+	}
+	if (room?.ro) {
+		const isUnmuted = !!room?.unmuted?.find(m => m === username);
+		const mergedRoles = [...new Set([...(room.roles || []), ...userRoles])];
+		const allowPost = !!postReadOnlyPermission?.some(r => mergedRoles.includes(r));
+		return !(allowPost || isUnmuted);
+	}
+	return false;
+};

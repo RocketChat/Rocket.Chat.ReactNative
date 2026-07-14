@@ -79,12 +79,21 @@ export type ComposerState = {
 	room: IRoomViewState['room'];
 	roomUpdate?: IRoomViewState['roomUpdate'];
 	sharing?: boolean;
-	isAutocompleteVisible?: boolean;
+	isAutocompleteVisible: boolean;
 	editCancel?: () => void;
 	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
 	onRemoveQuoteMessage?: (messageId: string) => void;
 	onSendMessage?: (message?: string, tshow?: boolean) => void;
 	setQuotesAndText?: (text: string, quotes: string[]) => void;
 	getText?: () => string | undefined;
-	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
+	updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => void;
 };
+
+// The externally-suppliable slice of ComposerState — `isAutocompleteVisible`/`updateAutocompleteVisible`
+// are store-owned (seeded internally by `createComposerStore`), not passed in by callers.
+export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible' | 'updateAutocompleteVisible'>;
+
+export interface IUseE2EEStatusResult {
+	showMissingE2EEKey: boolean;
+	showE2EEDisabledRoom: boolean;
+}

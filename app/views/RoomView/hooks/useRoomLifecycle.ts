@@ -23,7 +23,6 @@ import { joinRoom as joinRoomService, toggleFollowMessage } from '../../../lib/s
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import { LISTENER } from '../../../containers/Toast';
 import { type IRoomViewProps, type IRoomViewState } from '../definitions';
-import { type TRoomViewReducerState } from '../index';
 import { type IJoinCode } from '../JoinCode';
 import { type RoomStore } from '../stores/RoomStore';
 
@@ -55,7 +54,7 @@ export interface IUseRoomLifecycleParams {
 	onQuoteInit: (messageId: string) => void;
 	resetAction: () => void;
 	onThreadMessagesLoaded: () => void;
-	setState: (partial: Partial<TRoomViewReducerState>) => void;
+	setUnreadsCount: (unreadsCount: number | null) => void;
 }
 
 export interface IUseRoomLifecycleResult {
@@ -180,7 +179,7 @@ export function useRoomLifecycle({
 	onQuoteInit,
 	resetAction,
 	onThreadMessagesLoaded,
-	setState
+	setUnreadsCount
 }: IUseRoomLifecycleParams): IUseRoomLifecycleResult {
 	'use memo';
 
@@ -217,7 +216,7 @@ export function useRoomLifecycle({
 				0
 			);
 			if (unreadsCountRef.current !== unreadsCount) {
-				setState({ unreadsCount });
+				setUnreadsCount(unreadsCount);
 			}
 		});
 	};

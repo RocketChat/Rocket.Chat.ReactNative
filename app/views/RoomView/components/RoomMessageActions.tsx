@@ -3,6 +3,7 @@ import { type RefObject } from 'react';
 import MessageActions, { type IMessageActions, type IMessageActionsProps } from '../../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
 import { type IRoomViewProps } from '../definitions';
+import { useReadOnly } from '../hooks/useReadOnly';
 import { useRoomStore } from '../stores/RoomStoreContext';
 
 type IRoomMessageActionsProps = Pick<
@@ -11,7 +12,6 @@ type IRoomMessageActionsProps = Pick<
 > & {
 	tmid?: string;
 	user: IRoomViewProps['user'];
-	readOnly: boolean;
 	messageActionsRef: RefObject<IMessageActions | null>;
 	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
 };
@@ -19,7 +19,6 @@ type IRoomMessageActionsProps = Pick<
 export const RoomMessageActions = ({
 	tmid,
 	user,
-	readOnly,
 	messageActionsRef,
 	messageErrorActionsRef,
 	editInit,
@@ -32,6 +31,7 @@ export const RoomMessageActions = ({
 	'use memo';
 
 	const room = useRoomStore(s => s.room);
+	const readOnly = useReadOnly();
 
 	if (!('id' in room)) {
 		return null;

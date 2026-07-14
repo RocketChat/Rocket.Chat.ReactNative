@@ -1,5 +1,6 @@
 import { useContext, type ReactNode } from 'react';
-import { render, renderHook } from '@testing-library/react-native';
+import { act, render, renderHook } from '@testing-library/react-native';
+import { AccessibilityInfo } from 'react-native';
 
 import { type ComposerState } from '../definitions';
 import {
@@ -28,14 +29,12 @@ const fullProps = () => ({
 	tmid: 'tmid-1',
 	room,
 	sharing: false,
-	isAutocompleteVisible: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),
 	onRemoveQuoteMessage: jest.fn(),
 	onSendMessage: jest.fn(),
 	setQuotesAndText: jest.fn(),
-	getText: jest.fn(() => 'text'),
-	updateAutocompleteVisible: jest.fn()
+	getText: jest.fn(() => 'text')
 });
 
 const useAllComposerHooks = () => ({
@@ -61,28 +60,37 @@ describe('ComposerStore', () => {
 
 		const { result } = renderHook(() => useAllComposerHooks(), { wrapper });
 
-		expect(result.current).toEqual(props);
+		// isAutocompleteVisible/updateAutocompleteVisible are store-owned, not seeded props.
+		expect(result.current).toEqual({ ...props, isAutocompleteVisible: false, updateAutocompleteVisible: expect.any(Function) });
 	});
 
-	it('updates a consumer hook when its slice changes on re-render', () => {
+	it('updates isAutocompleteVisible when updateAutocompleteVisible is called, and announces on first open', () => {
+		jest.useFakeTimers();
+		const announceSpy = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
 		const props = fullProps();
-		const spy = jest.fn();
+		const wrapper = ({ children }: { children: ReactNode }) => <ComposerProvider {...props}>{children}</ComposerProvider>;
 
-		const Probe = () => {
-			spy(useIsAutocompleteVisible());
-			return null;
-		};
-		const Parent = ({ isAutocompleteVisible }: { isAutocompleteVisible: boolean }) => (
-			<ComposerProvider {...props} isAutocompleteVisible={isAutocompleteVisible}>
-				<Probe />
-			</ComposerProvider>
+		const { result } = renderHook(
+			() => ({ isAutocompleteVisible: useIsAutocompleteVisible(), update: useUpdateAutocompleteVisible() }),
+			{ wrapper }
 		);
 
-		const { rerender } = render(<Parent isAutocompleteVisible={false} />);
-		expect(spy).toHaveBeenLastCalledWith(false);
+		expect(result.current.isAutocompleteVisible).toBe(false);
 
-		rerender(<Parent isAutocompleteVisible />);
-		expect(spy).toHaveBeenLastCalledWith(true);
+		act(() => result.current.update(true));
+		expect(result.current.isAutocompleteVisible).toBe(true);
+
+		act(() => jest.advanceTimersByTime(800));
+		expect(announceSpy).toHaveBeenCalledTimes(1);
+
+		act(() => result.current.update(true));
+		expect(announceSpy).toHaveBeenCalledTimes(1);
+
+		act(() => result.current.update(false));
+		expect(result.current.isAutocompleteVisible).toBe(false);
+
+		announceSpy.mockRestore();
+		jest.useRealTimers();
 	});
 
 	it('re-renders useComposerRoom when roomUpdate changes, even with the same room reference', () => {

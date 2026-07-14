@@ -1,9 +1,27 @@
 import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
+import { AccessibilityInfo } from 'react-native';
 import { createStore, useStore, type StoreApi } from 'zustand';
 
-import { type ComposerState } from '../definitions';
+import I18n from '../../../i18n';
+import { type ComposerState, type TComposerExternalState } from '../definitions';
 
-export const createComposerStore = (initial: ComposerState) => createStore<ComposerState>()(() => ({ ...initial }));
+export const createComposerStore = (initial: TComposerExternalState) =>
+	createStore<ComposerState>()((set, get) => ({
+		...initial,
+		isAutocompleteVisible: false,
+		updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => {
+			const { isAutocompleteVisible } = get();
+			if (updatedAutocompleteVisible && !isAutocompleteVisible) {
+				// timeout to prevent conflict with default keyboard announcement.
+				setTimeout(() => {
+					AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
+				}, 800);
+			}
+			if (updatedAutocompleteVisible !== isAutocompleteVisible) {
+				set({ isAutocompleteVisible: updatedAutocompleteVisible });
+			}
+		}
+	}));
 
 export type ComposerStore = StoreApi<ComposerState>;
 
@@ -17,11 +35,13 @@ const useComposerStore = <T,>(selector: (state: ComposerState) => T): T => {
 	return useStore(store, selector);
 };
 
-export const ComposerProvider = ({ children, ...state }: { children: ReactNode } & ComposerState): ReactElement => {
+export const ComposerProvider = ({ children, ...state }: { children: ReactNode } & TComposerExternalState): ReactElement => {
 	'use memo';
 
 	const [store] = useState(() => createComposerStore(state));
 
+	// isAutocompleteVisible/updateAutocompleteVisible are store-owned (seeded once above) and are not
+	// synced here — only the externally-suppliable fields are kept in sync with props.
 	useEffect(() => {
 		store.setState({
 			rid: state.rid,
@@ -30,14 +50,12 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 			room: state.room,
 			roomUpdate: state.roomUpdate,
 			sharing: state.sharing,
-			isAutocompleteVisible: state.isAutocompleteVisible,
 			editCancel: state.editCancel,
 			editRequest: state.editRequest,
 			onRemoveQuoteMessage: state.onRemoveQuoteMessage,
 			onSendMessage: state.onSendMessage,
 			setQuotesAndText: state.setQuotesAndText,
-			getText: state.getText,
-			updateAutocompleteVisible: state.updateAutocompleteVisible
+			getText: state.getText
 		});
 	}, [
 		state.rid,
@@ -46,14 +64,12 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 		state.room,
 		state.roomUpdate,
 		state.sharing,
-		state.isAutocompleteVisible,
 		state.editCancel,
 		state.editRequest,
 		state.onRemoveQuoteMessage,
 		state.onSendMessage,
 		state.setQuotesAndText,
 		state.getText,
-		state.updateAutocompleteVisible,
 		store
 	]);
 

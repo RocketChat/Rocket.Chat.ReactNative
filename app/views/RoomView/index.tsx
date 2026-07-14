@@ -1,5 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { AccessibilityInfo } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
@@ -9,7 +8,6 @@ import database from '../../lib/database';
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import I18n from '../../i18n';
-import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { withTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
@@ -21,7 +19,7 @@ import Banner from './Banner';
 import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
-import { type IApplicationState, type ISubscription, type TAnyMessageModel, type RoomType } from '../../definitions';
+import { type IApplicationState, type TAnyMessageModel, type RoomType } from '../../definitions';
 import { themes } from '../../lib/constants/colors';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
@@ -31,7 +29,6 @@ import { createMessageActionStore } from '../../containers/message/stores/Messag
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import { type IListContainerRef, type TListRef } from './List/definitions';
-import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { EncryptedRoom, MessageRow, MissingRoomE2EEKey, RoomFooter, RoomMessageActions } from './components';
 import { isRoomFederated } from '../../lib/methods/isRoomFederated';
@@ -42,29 +39,13 @@ import { getOrCreateRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
+import { useReadOnly } from './hooks/useReadOnly';
+import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useRoomLifecycle } from './hooks/useRoomLifecycle';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
-
-export type TRoomViewReducerState = Pick<
-	IRoomViewState,
-	'readOnly' | 'unreadsCount' | 'isAutocompleteVisible' | 'showMissingE2EEKey' | 'showE2EEDisabledRoom'
->;
-
-const initialReducerState: TRoomViewReducerState = {
-	readOnly: false,
-	unreadsCount: null,
-	isAutocompleteVisible: false,
-	showMissingE2EEKey: false,
-	showE2EEDisabledRoom: false
-};
-
-const roomViewStateReducer = (state: TRoomViewReducerState, partial: Partial<TRoomViewReducerState>): TRoomViewReducerState => ({
-	...state,
-	...partial
-});
 
 const RoomView = (props: IRoomViewProps) => {
 	'use memo';
@@ -121,7 +102,9 @@ const RoomView = (props: IRoomViewProps) => {
 	// we don't need to subscribe to threads
 	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
 
-	const [state, setState] = useReducer(roomViewStateReducer, initialReducerState);
+	// unreadsCount is untouched by this phase (see useRoomLifecycle.updateUnreadCount); it's a
+	// plain local useState now that the reducer is gone.
+	const [unreadsCount, setUnreadsCount] = useState<IRoomViewState['unreadsCount']>(null);
 
 	const messageComposerRef = useRef<IMessageComposerRef | null>(null);
 	const joinCodeRef = useRef<IJoinCode | null>(null);
@@ -208,7 +191,7 @@ const RoomView = (props: IRoomViewProps) => {
 		roomRef.current = room;
 		roomUserIdRef.current = roomUserId;
 		userRef.current = user;
-		unreadsCountRef.current = state.unreadsCount;
+		unreadsCountRef.current = unreadsCount;
 		cancelJumpToMessageRef.current = cancelJumpToMessage;
 	});
 
@@ -274,7 +257,7 @@ const RoomView = (props: IRoomViewProps) => {
 		onQuoteInit,
 		resetAction,
 		onThreadMessagesLoaded,
-		setState
+		setUnreadsCount
 	});
 
 	const blockAction = ({
@@ -320,18 +303,6 @@ const RoomView = (props: IRoomViewProps) => {
 		}
 	};
 
-	const updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
-		if (updatedAutocompleteVisible && !state.isAutocompleteVisible) {
-			// timeout to prevent conflict with default keyboard announcement.
-			setTimeout(() => {
-				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
-			}, 800);
-		}
-		if (updatedAutocompleteVisible !== state.isAutocompleteVisible) {
-			setState({ isAutocompleteVisible: updatedAutocompleteVisible });
-		}
-	};
-
 	useOmnichannelPermissions({
 		rid,
 		t,
@@ -344,37 +315,14 @@ const RoomView = (props: IRoomViewProps) => {
 		roomStore
 	});
 
-	// roomUpdate keys the re-checks below: the room model mutates in place, so effects must re-run per store emit.
-	useEffect(() => {
-		const setReadOnly = async () => {
-			const readOnly = await isReadOnly(room as ISubscription, user.username as string);
-			setState({ readOnly });
-		};
-		setReadOnly();
-	}, [room, user.username, roomUpdate]);
-
-	useEffect(() => {
-		if (!('encrypted' in room)) {
-			setState({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
-			return;
-		}
-		const showMissingE2EEKey = isMissingRoomE2EEKey({
-			encryptionEnabled,
-			roomEncrypted: room.encrypted,
-			E2EKey: room.E2EKey
-		});
-		const showE2EEDisabledRoom = isE2EEDisabledEncryptedRoom({
-			encryptionEnabled,
-			roomEncrypted: room.encrypted
-		});
-		setState({ showMissingE2EEKey, showE2EEDisabledRoom });
-	}, [room, encryptionEnabled, roomUpdate.encrypted, roomUpdate.E2EKey]);
+	const readOnly = useReadOnly(roomStore);
+	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore, encryptionEnabled);
 
 	useHeader({
 		roomStore,
-		unreadsCount: state.unreadsCount,
-		showMissingE2EEKey: state.showMissingE2EEKey,
-		showE2EEDisabledRoom: state.showE2EEDisabledRoom,
+		unreadsCount,
+		showMissingE2EEKey,
+		showE2EEDisabledRoom,
 		goRoomActionsView,
 		toggleFollowThread,
 		showActionSheet: handleShowActionSheet
@@ -401,12 +349,12 @@ const RoomView = (props: IRoomViewProps) => {
 
 	if ('encrypted' in room) {
 		// Missing room encryption key
-		if (state.showMissingE2EEKey) {
+		if (showMissingE2EEKey) {
 			return <MissingRoomE2EEKey />;
 		}
 
 		// Encrypted room, but user session is not encrypted
-		if (state.showE2EEDisabledRoom) {
+		if (showE2EEDisabledRoom) {
 			return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
 		}
 	}
@@ -429,8 +377,6 @@ const RoomView = (props: IRoomViewProps) => {
 				roomUpdate={roomUpdate}
 				tmid={tmid}
 				sharing={false}
-				isAutocompleteVisible={state.isAutocompleteVisible}
-				updateAutocompleteVisible={updateAutocompleteVisible}
 				onRemoveQuoteMessage={onRemoveQuoteMessage}
 				editCancel={onEditCancel}
 				editRequest={onEditRequest}
@@ -484,7 +430,7 @@ const RoomView = (props: IRoomViewProps) => {
 					<RoomFooter
 						rid={rid}
 						paddingBottom={insets.bottom}
-						readOnly={state.readOnly}
+						readOnly={readOnly}
 						airGappedRestrictionRemainingDays={airGappedRestrictionRemainingDays}
 						isFederationEnabled={isFederationEnabled}
 						isFederationModuleEnabled={isFederationModuleEnabled}
@@ -493,7 +439,6 @@ const RoomView = (props: IRoomViewProps) => {
 					<RoomMessageActions
 						tmid={tmid}
 						user={user}
-						readOnly={state.readOnly}
 						messageActionsRef={messageActionsRef}
 						messageErrorActionsRef={messageErrorActionsRef}
 						editInit={onEditInit}

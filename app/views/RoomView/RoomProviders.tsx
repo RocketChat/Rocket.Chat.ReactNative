@@ -1,10 +1,10 @@
 import { type ReactElement } from 'react';
 
-import { type ComposerState } from './definitions';
+import { type TComposerExternalState } from './definitions';
 import { ComposerProvider } from './stores/ComposerStore';
 import { type TMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
 
-type IRoomProvidersProps = ComposerState & {
+type IRoomProvidersProps = TComposerExternalState & {
 	store: TMessageActionStore;
 	children: ReactElement;
 };
@@ -18,14 +18,12 @@ export const RoomProviders = ({
 	room,
 	roomUpdate,
 	sharing,
-	isAutocompleteVisible,
 	editCancel,
 	editRequest,
 	onRemoveQuoteMessage,
 	onSendMessage,
 	setQuotesAndText,
-	getText,
-	updateAutocompleteVisible
+	getText
 }: IRoomProvidersProps): ReactElement => {
 	'use memo';
 
@@ -38,14 +36,12 @@ export const RoomProviders = ({
 				room={room}
 				roomUpdate={roomUpdate}
 				sharing={sharing}
-				isAutocompleteVisible={isAutocompleteVisible}
 				editCancel={editCancel}
 				editRequest={editRequest}
 				onRemoveQuoteMessage={onRemoveQuoteMessage}
 				onSendMessage={onSendMessage}
 				setQuotesAndText={setQuotesAndText}
-				getText={getText}
-				updateAutocompleteVisible={updateAutocompleteVisible}>
+				getText={getText}>
 				{children}
 			</ComposerProvider>
 		</MessageActionProvider>
