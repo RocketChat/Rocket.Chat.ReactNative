@@ -3724,6 +3724,7 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
         onLoadStart={[Function]}
         onProgress={[Function]}
         placeholder={[]}
+        sfEffect={null}
         source={
           [
             {
@@ -3738,6 +3739,8 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
             "width": 20,
           }
         }
+        symbolSize={null}
+        symbolWeight={null}
         transition={null}
         width={20}
       />

@@ -206,6 +206,16 @@ jest.mock('./app/lib/methods/helpers/expoAvShim', () => {
 	};
 });
 
+// Story snapshots render media attachments, whose auto-download effect runs the
+// real file-system I/O chain. Under react-test-renderer's act() that async chain
+// runs away and exhausts the heap. Stub the I/O entry points; keep the pure helpers.
+jest.mock('./app/lib/methods/handleMediaDownload', () => ({
+	...jest.requireActual('./app/lib/methods/handleMediaDownload'),
+	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),
+	downloadMediaFile: jest.fn(() => Promise.resolve('')),
+	isDownloadActive: jest.fn(() => false)
+}));
+
 jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
 }));

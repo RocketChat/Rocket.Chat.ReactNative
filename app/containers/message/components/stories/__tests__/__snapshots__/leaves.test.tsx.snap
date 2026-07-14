@@ -682,6 +682,7 @@ exports[`Story Snapshots: EmojiCustom should match snapshot 1`] = `
   onLoadStart={[Function]}
   onProgress={[Function]}
   placeholder={[]}
+  sfEffect={null}
   source={
     [
       {
@@ -695,6 +696,8 @@ exports[`Story Snapshots: EmojiCustom should match snapshot 1`] = `
       "width": 30,
     }
   }
+  symbolSize={null}
+  symbolWeight={null}
   transition={null}
   width={30}
 />
@@ -1307,6 +1310,7 @@ exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            sfEffect={null}
             source={
               [
                 {
@@ -1324,6 +1328,8 @@ exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
                 "width": 36,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={36}
           />
