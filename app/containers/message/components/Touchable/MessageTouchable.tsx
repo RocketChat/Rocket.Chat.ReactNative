@@ -1,6 +1,6 @@
-import { A11y } from 'react-native-a11y-order';
-
 import { useTheme } from '../../../../theme';
+import MessageA11yOrder from '../MessageA11yOrder';
+import MessageA11yIndex from '../MessageA11yIndex';
 import Touch from './Touch';
 import Message, { type TMessageProps } from '../Message/Message';
 import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
@@ -43,9 +43,9 @@ const MessageTouchable = (props: TMessageProps) => {
 
 	if (hasError || isInfo) {
 		return (
-			<A11y.Order>
+			<MessageA11yOrder>
 				<Message isPreview={props.isPreview} />
-			</A11y.Order>
+			</MessageA11yOrder>
 		);
 	}
 
@@ -55,8 +55,8 @@ const MessageTouchable = (props: TMessageProps) => {
 	};
 
 	return (
-		<A11y.Order>
-			<A11y.Index index={1}>
+		<MessageA11yOrder>
+			<MessageA11yIndex index={1}>
 				<Touch
 					componentRef={touchRef}
 					onLongPress={handleLongPress}
@@ -74,8 +74,8 @@ const MessageTouchable = (props: TMessageProps) => {
 					}}>
 					<Message isPreview={props.isPreview} />
 				</Touch>
-			</A11y.Index>
-		</A11y.Order>
+			</MessageA11yIndex>
+		</MessageA11yOrder>
 	);
 };
 

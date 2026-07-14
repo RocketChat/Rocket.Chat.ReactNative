@@ -9,6 +9,7 @@ import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-cont
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
@@ -338,24 +339,26 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<MessageRoomProvider
-					navToRoomInfo={this.navToRoomInfo}
-					showAttachment={this.showAttachment}
-					user={user}
-					baseUrl={baseUrl}
-					rid={this.rid}
-					isThreadRoom
-					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
-					<FlatList
-						data={messages}
-						renderItem={this.renderItem}
-						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-						keyExtractor={item => item._id}
-						onEndReached={this.load}
-						contentContainerStyle={{ paddingBottom: insets.bottom }}
-						ListFooterComponent={loading ? <ActivityIndicator /> : null}
-					/>
-				</MessageRoomProvider>
+				<A11yGateProvider>
+					<MessageRoomProvider
+						navToRoomInfo={this.navToRoomInfo}
+						showAttachment={this.showAttachment}
+						user={user}
+						baseUrl={baseUrl}
+						rid={this.rid}
+						isThreadRoom
+						timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+						<FlatList
+							data={messages}
+							renderItem={this.renderItem}
+							style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+							keyExtractor={item => item._id}
+							onEndReached={this.load}
+							contentContainerStyle={{ paddingBottom: insets.bottom }}
+							ListFooterComponent={loading ? <ActivityIndicator /> : null}
+						/>
+					</MessageRoomProvider>
+				</A11yGateProvider>
 			</SafeAreaView>
 		);
 	}

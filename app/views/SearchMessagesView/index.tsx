@@ -14,6 +14,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import log from '../../lib/methods/helpers/log';
@@ -286,28 +287,30 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		}
 
 		return (
-			<MessageRoomProvider
-				navToRoomInfo={this.navToRoomInfo}
-				showAttachment={this.showAttachment}
-				jumpToMessage={this.jumpToMessageByUrl}
-				user={user}
-				baseUrl={baseUrl}
-				rid={this.rid}
-				isThreadRoom
-				timeFormat={'MMM Do YYYY, h:mm:ss a'}>
-				<FlatList
-					data={messages}
-					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-					contentContainerStyle={{ paddingBottom: insets.bottom }}
-					keyExtractor={item => item._id}
-					onEndReached={this.onEndReached}
-					ListFooterComponent={loading ? <ActivityIndicator /> : null}
-					onEndReachedThreshold={0.5}
-					removeClippedSubviews={isIOS}
-					{...scrollPersistTaps}
-				/>
-			</MessageRoomProvider>
+			<A11yGateProvider>
+				<MessageRoomProvider
+					navToRoomInfo={this.navToRoomInfo}
+					showAttachment={this.showAttachment}
+					jumpToMessage={this.jumpToMessageByUrl}
+					user={user}
+					baseUrl={baseUrl}
+					rid={this.rid}
+					isThreadRoom
+					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+					<FlatList
+						data={messages}
+						renderItem={this.renderItem}
+						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+						contentContainerStyle={{ paddingBottom: insets.bottom }}
+						keyExtractor={item => item._id}
+						onEndReached={this.onEndReached}
+						ListFooterComponent={loading ? <ActivityIndicator /> : null}
+						onEndReachedThreshold={0.5}
+						removeClippedSubviews={isIOS}
+						{...scrollPersistTaps}
+					/>
+				</MessageRoomProvider>
+			</A11yGateProvider>
 		);
 	};
 

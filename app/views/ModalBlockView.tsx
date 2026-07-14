@@ -17,6 +17,7 @@ import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/met
 import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
 import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../containers/message/stores/A11yGate';
 import { MessageProvider } from '../containers/message/stores/MessageStore';
 import { getUserSelector } from '../selectors/login';
 
@@ -273,19 +274,21 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			<KeyboardView>
 				<ScrollView style={styles.content}>
 					<Fragment key={modalKey}>
-						<MessageRoomProvider user={user} baseUrl={baseUrl}>
-							<MessageProvider item={EMPTY_MESSAGE}>
-								<ModalBlockWithContext
-									action={this.action}
-									state={this.changeState}
-									{...data}
-									blocks={blocks}
-									errors={errors}
-									language={language}
-									values={values}
-								/>
-							</MessageProvider>
-						</MessageRoomProvider>
+						<A11yGateProvider>
+							<MessageRoomProvider user={user} baseUrl={baseUrl}>
+								<MessageProvider item={EMPTY_MESSAGE}>
+									<ModalBlockWithContext
+										action={this.action}
+										state={this.changeState}
+										{...data}
+										blocks={blocks}
+										errors={errors}
+										language={language}
+										values={values}
+									/>
+								</MessageProvider>
+							</MessageRoomProvider>
+						</A11yGateProvider>
 					</Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />

@@ -25,6 +25,7 @@ import { type IMessageComposerRef } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { EncryptedRoom, MessageRow, MissingRoomE2EEKey, RoomFooter, RoomMessageActions } from './components';
@@ -287,34 +288,36 @@ const RoomView = (props: IRoomViewProps) => {
 					{!tmid ? (
 						<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
 					) : null}
-					<MessageRoomProvider
-						jumpToMessage={jumpToMessageByUrl}
-						closeEmojiAndAction={handleCloseEmoji}
-						reactionInit={onReactionInit}
-						errorActionsShow={errorActionsShow}
-						archived={'id' in room && room.archived}
-						isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-						rid={room.rid}
-						user={user as any}
-						baseUrl={baseUrl}
-						broadcast={'id' in room && room.broadcast}
-						isThreadRoom={!!tmid}
-						tmid={tmid}
-						Message_GroupingPeriod={Message_GroupingPeriod}
-						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-						<List
-							ref={listRef}
-							listRef={flatListRef}
+					<A11yGateProvider>
+						<MessageRoomProvider
+							jumpToMessage={jumpToMessageByUrl}
+							closeEmojiAndAction={handleCloseEmoji}
+							reactionInit={onReactionInit}
+							errorActionsShow={errorActionsShow}
+							archived={'id' in room && room.archived}
+							isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 							rid={room.rid}
-							t={room.t as RoomType}
+							user={user as any}
+							baseUrl={baseUrl}
+							broadcast={'id' in room && room.broadcast}
+							isThreadRoom={!!tmid}
 							tmid={tmid}
-							renderRow={renderItem}
-							hideSystemMessages={hideSystemMessages}
-							showMessageInMainThread={user.showMessageInMainThread ?? false}
-							serverVersion={serverVersion}
-						/>
-					</MessageRoomProvider>
+							Message_GroupingPeriod={Message_GroupingPeriod}
+							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
+							<List
+								ref={listRef}
+								listRef={flatListRef}
+								rid={room.rid}
+								t={room.t as RoomType}
+								tmid={tmid}
+								renderRow={renderItem}
+								hideSystemMessages={hideSystemMessages}
+								showMessageInMainThread={user.showMessageInMainThread ?? false}
+								serverVersion={serverVersion}
+							/>
+						</MessageRoomProvider>
+					</A11yGateProvider>
 					<RoomFooter messageComposerRef={messageComposerRef} />
 					<RoomMessageActions
 						tmid={tmid}

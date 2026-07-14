@@ -1,9 +1,9 @@
 import { type ReactNode } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
-import { A11y } from 'react-native-a11y-order';
 
 import { useMessageText } from '../stores/MessageStore';
 import { useAutoTranslate } from '../stores/MessageRoomStore';
+import MessageA11yIndex from './MessageA11yIndex';
 
 const MessageAccessibleIndex = ({ style, children }: { style?: StyleProp<ViewStyle>; children: ReactNode }) => {
 	'use memo';
@@ -12,14 +12,14 @@ const MessageAccessibleIndex = ({ style, children }: { style?: StyleProp<ViewSty
 	const { autoTranslateLanguage } = useAutoTranslate();
 
 	return (
-		<A11y.Index
+		<MessageA11yIndex
 			accessible={isTranslated}
 			accessibilityLabel={messageText || ''}
 			accessibilityLanguage={autoTranslateLanguage}
 			index={2}
 			style={style}>
 			{children}
-		</A11y.Index>
+		</MessageA11yIndex>
 	);
 };
 
