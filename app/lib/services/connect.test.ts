@@ -656,6 +656,39 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	});
 });
 
+describe('connect — collection listeners register independently of connection.connect() outcome', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('registers collection listeners even when connection.connect() rejects', async () => {
+		mockConnectionConnect.mockRejectedValueOnce(new Error('socket error'));
+
+		await expect(connect({ server: SERVER })).rejects.toThrow('socket error');
+
+		expect(mockSdkOnCollection).toHaveBeenCalledWith('stream-force_logout', expect.any(Function));
+	});
+
+	it('registers collection listeners before a hung connection.connect() ever settles', async () => {
+		mockConnectionConnect.mockReturnValueOnce(new Promise(() => {}));
+
+		// Intentionally not awaited: connection.connect() never resolves/rejects.
+		connect({ server: SERVER });
+		await flushMicrotasks();
+
+		expect(mockSdkOnCollection).toHaveBeenCalledWith('stream-force_logout', expect.any(Function));
+	});
+});
+
 describe('connect — listener lifecycle across reconnects', () => {
 	it('attaches handlers to a fresh connection instance each connect, so old handlers are dropped (no leak)', async () => {
 		sdkMock.__setServer(undefined);

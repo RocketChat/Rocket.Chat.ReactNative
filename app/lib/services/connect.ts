@@ -100,14 +100,8 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				store.dispatch(disconnectAction());
 			}
 		});
-		await sdk.current?.connection.connect();
-
-		// A newer connect() may have switched servers while connect() was in flight —
-		// bail before wiring the collection listeners onto the wrong sdk instance.
-		if (sdk.server !== server) {
-			return;
-		}
-
+		// Registered before connect() resolves: a rejected or hung connect() must not leave the
+		// client without listeners once the underlying socket connects or recovers on its own.
 		sdk.onCollection('users', (ddpMessage: unknown) => _setUser(ddpMessage as IActiveUsers));
 
 		sdk.onCollection(
@@ -273,6 +267,8 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		);
 
 		sdk.onCollection('stream-force_logout', () => store.dispatch(logout(true)));
+
+		await sdk.current?.connection.connect();
 	} catch (e) {
 		log(e);
 		throw e;
