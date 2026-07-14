@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import { type Subscription } from 'rxjs';
 import { useStore } from 'zustand';
 
 import database from '../../lib/database';
+import { clearInAppFeedback } from '../../actions/inAppFeedback';
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import I18n from '../../i18n';
@@ -41,7 +41,12 @@ import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
 import { useReadOnly } from './hooks/useReadOnly';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
-import { useRoomLifecycle } from './hooks/useRoomLifecycle';
+import { useRoomInit } from './hooks/useRoomInit';
+import { useRoomSubscription } from './hooks/useRoomSubscription';
+import { useRoomAudioLifecycle } from './hooks/useRoomAudioLifecycle';
+import { useRoomRemoved } from './hooks/useRoomRemoved';
+import { useRoomActions } from './hooks/useRoomActions';
+import { useJoinRoomPublisher } from './hooks/useJoinRoomPublisher';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 
@@ -102,26 +107,18 @@ const RoomView = (props: IRoomViewProps) => {
 	// we don't need to subscribe to threads
 	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
 
-	// unreadsCount is untouched by this phase (see useRoomLifecycle.updateUnreadCount); it's a
-	// plain local useState now that the reducer is gone.
-	const [unreadsCount, setUnreadsCount] = useState<IRoomViewState['unreadsCount']>(null);
-
 	const messageComposerRef = useRef<IMessageComposerRef | null>(null);
 	const joinCodeRef = useRef<IJoinCode | null>(null);
 	// ListContainer component
 	const listRef = useRef<IListContainerRef | null>(null);
 	// FlatList inside ListContainer
 	const flatListRef: TListRef = useRef(null);
-	const queryUnreadsRef = useRef<Subscription | null>(null);
 	const messageActionsRef = useRef<IMessageActions | null>(null);
 	const messageErrorActionsRef = useRef<IMessageErrorActions | null>(null);
-	const pendingJumpRef = useRef<string | undefined>(route.params?.jumpToMessageId);
-	const jumpToThreadIdRef = useRef<string | undefined>(route.params?.jumpToThreadId);
 
 	// Live-mirror refs let frozen provider handlers stay referentially stable while reading fresh values.
 	const roomRef = useRef(initialRoom);
 	const roomUserIdRef = useRef(initialRoomUserId);
-	const unreadsCountRef = useRef<number | null>(null);
 	const cancelJumpToMessageRef = useRef<() => void>(() => {});
 	const userRef = useRef(user);
 
@@ -157,9 +154,7 @@ const RoomView = (props: IRoomViewProps) => {
 	})();
 
 	const {
-		navToThread,
 		cancelJumpToMessage,
-		consumeJumpParam,
 		onThreadMessagesLoaded,
 		onDiscussionPress,
 		onThreadPress,
@@ -183,15 +178,13 @@ const RoomView = (props: IRoomViewProps) => {
 		canPlaceLivechatOnHold,
 		roomRef,
 		roomUserIdRef,
-		cancelJumpToMessageRef,
-		pendingJumpRef
+		cancelJumpToMessageRef
 	});
 
 	useEffect(() => {
 		roomRef.current = room;
 		roomUserIdRef.current = roomUserId;
 		userRef.current = user;
-		unreadsCountRef.current = unreadsCount;
 		cancelJumpToMessageRef.current = cancelJumpToMessage;
 	});
 
@@ -229,36 +222,25 @@ const RoomView = (props: IRoomViewProps) => {
 		messageErrorActionsRef
 	});
 
-	const { onJoin, handleSendMessage, toggleFollowThread, fetchThreadName } = useRoomLifecycle({
+	useRoomInit({ rid, tmid, isAuthenticated, roomStore, roomUpdate, onThreadMessagesLoaded, messageActionStore, onQuoteInit });
+	useRoomSubscription(sub);
+	useRoomAudioLifecycle(rid, tmid, navigation);
+	useRoomRemoved(rid, isMasterDetail, roomRef);
+	useJoinRoomPublisher({ roomStore, room, isOmnichannel, serverVersion, t, joinCodeRef });
+	const { onJoin, handleSendMessage, toggleFollowThread, fetchThreadName } = useRoomActions({
 		rid,
 		tmid,
-		t,
-		isAuthenticated,
-		isMasterDetail,
-		isOmnichannel,
-		room,
-		roomUpdate,
-		serverVersion,
 		roomStore,
-		navigation,
-		route,
-		dispatch,
-		messageActionStore,
-		sub,
-		queryUnreadsRef,
-		pendingJumpRef,
-		jumpToThreadIdRef,
-		unreadsCountRef,
-		roomRef,
 		userRef,
-		joinCodeRef,
-		consumeJumpParam,
-		navToThread,
-		onQuoteInit,
-		resetAction,
-		onThreadMessagesLoaded,
-		setUnreadsCount
+		resetAction
 	});
+
+	useEffect(() => {
+		dispatch(clearInAppFeedback());
+		return () => {
+			dispatch(clearInAppFeedback());
+		};
+	}, [dispatch]);
 
 	const blockAction = ({
 		actionId,
@@ -320,7 +302,6 @@ const RoomView = (props: IRoomViewProps) => {
 
 	useHeader({
 		roomStore,
-		unreadsCount,
 		showMissingE2EEKey,
 		showE2EEDisabledRoom,
 		goRoomActionsView,

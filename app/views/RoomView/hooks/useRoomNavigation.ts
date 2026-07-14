@@ -39,7 +39,6 @@ export interface IUseRoomNavigationParams {
 	roomRef: RefObject<IRoomViewState['room']>;
 	roomUserIdRef: RefObject<string | null | undefined>;
 	cancelJumpToMessageRef: RefObject<() => void>;
-	pendingJumpRef: RefObject<string | undefined>;
 }
 
 export interface IUseRoomNavigationResult {
@@ -73,8 +72,7 @@ export function useRoomNavigation({
 	canPlaceLivechatOnHold,
 	roomRef,
 	roomUserIdRef,
-	cancelJumpToMessageRef,
-	pendingJumpRef
+	cancelJumpToMessageRef
 }: IUseRoomNavigationParams): IUseRoomNavigationResult {
 	'use memo';
 
@@ -143,7 +141,7 @@ export function useRoomNavigation({
 		}
 	};
 
-	const { jumpToMessage, cancelJumpToMessage } = useJumpToMessage({
+	const { jumpToMessage, cancelJumpToMessage, consumeJumpParam, onThreadMessagesLoaded } = useJumpToMessage({
 		rid,
 		tmid,
 		t,
@@ -151,25 +149,6 @@ export function useRoomNavigation({
 		navToRoom,
 		navToThread
 	});
-
-	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
-	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
-	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
-	const consumeJumpParam = (messageId: string) => {
-		pendingJumpRef.current = undefined;
-		jumpToMessage(messageId);
-		navigation.setParams({ jumpToMessageId: undefined });
-	};
-
-	// Thread jump: fired from the subscription hook's success path — the thread window is populated by
-	// then, so the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
-	const onThreadMessagesLoaded = () => {
-		if (pendingJumpRef.current) {
-			const messageId = pendingJumpRef.current;
-			pendingJumpRef.current = undefined;
-			consumeJumpParam(messageId);
-		}
-	};
 
 	const onEncryptedPress = () => {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);

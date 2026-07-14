@@ -61,7 +61,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 
 const makeParams = (overrides: Partial<Parameters<typeof useHeader>[0]> = {}): Parameters<typeof useHeader>[0] => ({
 	roomStore: makeRoomStore(),
-	unreadsCount: null,
 	showMissingE2EEKey: false,
 	showE2EEDisabledRoom: false,
 	goRoomActionsView: jest.fn(),

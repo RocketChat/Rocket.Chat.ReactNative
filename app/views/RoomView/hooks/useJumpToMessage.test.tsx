@@ -1,3 +1,4 @@
+import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
 import { sendLoadingEvent } from '../../../containers/Loading';
@@ -30,6 +31,15 @@ jest.mock('../../../i18n', () => ({
 	default: { t: jest.fn((key: string) => key) }
 }));
 
+const mockSetParams = jest.fn();
+const defaultRouteParams: { jumpToMessageId?: string; jumpToThreadId?: string } = {};
+let mockRouteParams = { ...defaultRouteParams };
+
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => ({ setParams: mockSetParams }),
+	useRoute: () => ({ params: mockRouteParams })
+}));
+
 const mockGetMessageInfo = RoomServices.getMessageInfo as jest.Mock;
 const mockResolveJumpAnchor = resolveJumpAnchor as jest.Mock;
 const mockSendLoadingEvent = sendLoadingEvent as jest.Mock;
@@ -46,20 +56,23 @@ const createListRef = () => ({
 	}
 });
 
-const renderJumpToMessage = (
-	listRef: ReturnType<typeof createListRef>,
-	params: Partial<Parameters<typeof useJumpToMessage>[0]> = {}
-) => {
+type TJumpToMessageOverrides = Partial<Parameters<typeof useJumpToMessage>[0]>;
+
+const renderJumpToMessage = (listRef: ReturnType<typeof createListRef>, params: TJumpToMessageOverrides = {}) => {
 	const navToRoom = jest.fn();
 	const navToThread = jest.fn();
-	const { result } = renderHook(() => useJumpToMessage({ rid: RID, listRef, navToRoom, navToThread, ...params }));
-	return { result, navToRoom, navToThread };
+	const { result, rerender } = renderHook(
+		(props: TJumpToMessageOverrides) => useJumpToMessage({ rid: RID, listRef, navToRoom, navToThread, ...props }),
+		{ initialProps: params }
+	);
+	return { result, rerender, navToRoom, navToThread };
 };
 
 describe('useJumpToMessage', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockResolveJumpAnchor.mockResolvedValue(null);
+		mockRouteParams = { ...defaultRouteParams };
 	});
 
 	it('jumps in-window: resolves anchor with inWindow=true and calls list.jumpToMessage', async () => {
@@ -202,5 +215,103 @@ describe('useJumpToMessage', () => {
 		expect(mockShowErrorAlert).toHaveBeenCalledWith('The_room_does_not_exist', 'Room_not_found');
 		expect(mockLog).not.toHaveBeenCalled();
 		expect(listRef.current.cancelJumpToMessage).toHaveBeenCalledTimes(1);
+	});
+
+	describe('navigation param handling', () => {
+		let runAfterInteractionsSpy: jest.SpyInstance;
+
+		beforeEach(() => {
+			runAfterInteractionsSpy = jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task: any) => {
+				task();
+				return { then: jest.fn(), done: jest.fn(), cancel: jest.fn() } as any;
+			});
+		});
+
+		afterEach(() => {
+			runAfterInteractionsSpy.mockRestore();
+		});
+
+		it('consumeJumpParam clears the pending jump, triggers the jump and resets the nav param', async () => {
+			const listRef = createListRef();
+			listRef.current.isMessageInWindow.mockReturnValue(true);
+			mockGetMessageInfo.mockResolvedValue({ id: 'm1', rid: RID, ts: 100 });
+			const { result } = renderJumpToMessage(listRef);
+
+			await act(async () => {
+				result.current.consumeJumpParam('m1');
+				await Promise.resolve();
+			});
+
+			expect(mockGetMessageInfo).toHaveBeenCalledWith('m1');
+			expect(mockSetParams).toHaveBeenCalledWith({ jumpToMessageId: undefined });
+		});
+
+		it('onThreadMessagesLoaded consumes a pending jump queued from the mount param', async () => {
+			mockRouteParams = { jumpToMessageId: 'msg-7' };
+			const listRef = createListRef();
+			listRef.current.isMessageInWindow.mockReturnValue(true);
+			mockGetMessageInfo.mockResolvedValue({ id: 'msg-7', rid: RID, ts: 100 });
+			const { result } = renderJumpToMessage(listRef, { tmid: 'tmid-1' });
+
+			await act(async () => {
+				result.current.onThreadMessagesLoaded();
+				await Promise.resolve();
+			});
+
+			expect(mockGetMessageInfo).toHaveBeenCalledWith('msg-7');
+			expect(mockSetParams).toHaveBeenCalledWith({ jumpToMessageId: undefined });
+		});
+
+		it('onThreadMessagesLoaded is a no-op without a pending jump', () => {
+			const listRef = createListRef();
+			const { result } = renderJumpToMessage(listRef, { tmid: 'tmid-1' });
+
+			result.current.onThreadMessagesLoaded();
+
+			expect(mockGetMessageInfo).not.toHaveBeenCalled();
+			expect(mockSetParams).not.toHaveBeenCalled();
+		});
+
+		it('fires the main-list jump on mount when a jumpToMessageId param is present and there is no tmid', () => {
+			mockRouteParams = { jumpToMessageId: 'msg-1' };
+			const listRef = createListRef();
+			listRef.current.isMessageInWindow.mockReturnValue(true);
+			mockGetMessageInfo.mockResolvedValue({ id: 'msg-1', rid: RID, ts: 100 });
+			renderJumpToMessage(listRef);
+
+			expect(mockGetMessageInfo).toHaveBeenCalledWith('msg-1');
+		});
+
+		it('navigates to the thread on mount when only a jumpToThreadId param is present', () => {
+			mockRouteParams = { jumpToThreadId: 'thread-1' };
+			const listRef = createListRef();
+			const { navToThread } = renderJumpToMessage(listRef);
+
+			expect(navToThread).toHaveBeenCalledWith({ tmid: 'thread-1' });
+		});
+
+		it('re-fires the jump when the jumpToMessageId route param changes to a new value', () => {
+			mockRouteParams = {};
+			const listRef = createListRef();
+			listRef.current.isMessageInWindow.mockReturnValue(true);
+			mockGetMessageInfo.mockResolvedValue({ id: 'msg-2', rid: RID, ts: 100 });
+			const { rerender } = renderJumpToMessage(listRef);
+
+			mockRouteParams = { jumpToMessageId: 'msg-2' };
+			rerender({});
+
+			expect(mockGetMessageInfo).toHaveBeenCalledWith('msg-2');
+		});
+
+		it('navigates to the thread when the jumpToThreadId route param changes to a new value', () => {
+			mockRouteParams = {};
+			const listRef = createListRef();
+			const { rerender, navToThread } = renderJumpToMessage(listRef);
+
+			mockRouteParams = { jumpToThreadId: 'thread-2' };
+			rerender({});
+
+			expect(navToThread).toHaveBeenCalledWith({ tmid: 'thread-2' });
+		});
 	});
 });

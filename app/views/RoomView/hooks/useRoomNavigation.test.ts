@@ -15,7 +15,12 @@ import { useJumpToMessage } from './useJumpToMessage';
 import { useRoomNavigation, type IUseRoomNavigationParams } from './useRoomNavigation';
 
 jest.mock('./useJumpToMessage', () => ({
-	useJumpToMessage: jest.fn(() => ({ jumpToMessage: jest.fn(), cancelJumpToMessage: jest.fn() }))
+	useJumpToMessage: jest.fn(() => ({
+		jumpToMessage: jest.fn(),
+		cancelJumpToMessage: jest.fn(),
+		consumeJumpParam: jest.fn(),
+		onThreadMessagesLoaded: jest.fn()
+	}))
 }));
 jest.mock('../../../lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Thread Name') }));
 jest.mock('../../../lib/methods/helpers', () => ({ useDebounce: (fn: (...args: any[]) => any) => fn }));
@@ -70,7 +75,6 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 			roomRef: { current: { rid: 'rid-1', t: 'c' } },
 			roomUserIdRef: { current: null },
 			cancelJumpToMessageRef: { current: jest.fn() },
-			pendingJumpRef: { current: undefined },
 			...overrides
 		})
 	);
@@ -300,38 +304,19 @@ describe('useRoomNavigation', () => {
 		expect(mockCallJitsi).not.toHaveBeenCalled();
 	});
 
-	it('consumeJumpParam clears the pending jump ref, triggers the jump and resets the nav param', () => {
-		const pendingJumpRef = { current: 'msg-1' };
-		const { result, navigation } = renderRoomNavigation({ pendingJumpRef });
-		const { jumpToMessage } = mockUseJumpToMessage.mock.results[0].value;
+	// consumeJumpParam/onThreadMessagesLoaded now live in useJumpToMessage (see useJumpToMessage.test.tsx
+	// for their real behavior) — here we only assert useRoomNavigation forwards that hook's result.
+	it('consumeJumpParam is forwarded from useJumpToMessage', () => {
+		const { result } = renderRoomNavigation();
+		const { consumeJumpParam } = mockUseJumpToMessage.mock.results[0].value;
 
-		result.current.consumeJumpParam('msg-1');
-
-		expect(pendingJumpRef.current).toBeUndefined();
-		expect(jumpToMessage).toHaveBeenCalledWith('msg-1');
-		expect(navigation.setParams).toHaveBeenCalledWith({ jumpToMessageId: undefined });
+		expect(result.current.consumeJumpParam).toBe(consumeJumpParam);
 	});
 
-	it('onThreadMessagesLoaded consumes a pending jump when one is queued', () => {
-		const pendingJumpRef = { current: 'msg-7' };
-		const { result, navigation } = renderRoomNavigation({ pendingJumpRef });
-		const { jumpToMessage } = mockUseJumpToMessage.mock.results[0].value;
+	it('onThreadMessagesLoaded is forwarded from useJumpToMessage', () => {
+		const { result } = renderRoomNavigation();
+		const { onThreadMessagesLoaded } = mockUseJumpToMessage.mock.results[0].value;
 
-		result.current.onThreadMessagesLoaded();
-
-		expect(pendingJumpRef.current).toBeUndefined();
-		expect(jumpToMessage).toHaveBeenCalledWith('msg-7');
-		expect(navigation.setParams).toHaveBeenCalledWith({ jumpToMessageId: undefined });
-	});
-
-	it('onThreadMessagesLoaded is a no-op without a pending jump', () => {
-		const pendingJumpRef = { current: undefined };
-		const { result, navigation } = renderRoomNavigation({ pendingJumpRef });
-		const { jumpToMessage } = mockUseJumpToMessage.mock.results[0].value;
-
-		result.current.onThreadMessagesLoaded();
-
-		expect(jumpToMessage).not.toHaveBeenCalled();
-		expect(navigation.setParams).not.toHaveBeenCalled();
+		expect(result.current.onThreadMessagesLoaded).toBe(onThreadMessagesLoaded);
 	});
 });

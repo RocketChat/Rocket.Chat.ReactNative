@@ -18,7 +18,6 @@ import { type RoomStore } from '../stores/RoomStore';
 
 interface IUseHeaderParams {
 	roomStore: RoomStore;
-	unreadsCount: IRoomViewState['unreadsCount'];
 	showMissingE2EEKey: IRoomViewState['showMissingE2EEKey'];
 	showE2EEDisabledRoom: IRoomViewState['showE2EEDisabledRoom'];
 	goRoomActionsView: (screen?: keyof ModalStackParamList) => void;
@@ -29,15 +28,7 @@ interface IUseHeaderParams {
 export const useHeader = (params: IUseHeaderParams): void => {
 	'use memo';
 
-	const {
-		roomStore,
-		unreadsCount,
-		showMissingE2EEKey,
-		showE2EEDisabledRoom,
-		goRoomActionsView,
-		toggleFollowThread,
-		showActionSheet
-	} = params;
+	const { roomStore, showMissingE2EEKey, showE2EEDisabledRoom, goRoomActionsView, toggleFollowThread, showActionSheet } = params;
 
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const route = useRoute<IRoomViewProps['route']>();
@@ -115,7 +106,6 @@ export const useHeader = (params: IUseHeaderParams): void => {
 				<LeftButtons
 					rid={rid}
 					tmid={tmid}
-					unreadsCount={unreadsCount}
 					baseUrl={baseUrl}
 					userId={userId}
 					token={token}
@@ -173,7 +163,6 @@ export const useHeader = (params: IUseHeaderParams): void => {
 		roomName,
 		room,
 		roomUpdate,
-		unreadsCount,
 		roomUserId,
 		joined,
 		canForwardGuest,

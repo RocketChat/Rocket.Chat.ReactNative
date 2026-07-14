@@ -4,6 +4,7 @@ import { type ReactElement } from 'react';
 import Avatar from '../../containers/Avatar';
 import { useAppNavigation } from '../../lib/hooks/navigation';
 import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
+import { useUnreadsCount } from './hooks/useUnreadsCount';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -14,7 +15,6 @@ const styles = StyleSheet.create({
 interface ILeftButtonsProps {
 	rid?: string;
 	tmid?: string;
-	unreadsCount: number | null;
 	baseUrl: string;
 	userId?: string;
 	token?: string;
@@ -27,7 +27,6 @@ interface ILeftButtonsProps {
 const LeftButtons = ({
 	rid,
 	tmid,
-	unreadsCount,
 	baseUrl,
 	userId,
 	token,
@@ -39,6 +38,7 @@ const LeftButtons = ({
 	const { goBack } = useAppNavigation();
 	const onPress = () => goRoomActionsView();
 	const { fontScale } = useWindowDimensions();
+	const unreadsCount = useUnreadsCount(rid);
 
 	if (!isMasterDetail || tmid) {
 		let label = ' ';
