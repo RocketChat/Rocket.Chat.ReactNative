@@ -1161,7 +1161,12 @@ describe('connect — stream-user-presence updates active users', () => {
 		expect(setActiveUsersMock).toHaveBeenCalledWith({
 			me: { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
 		});
-		expect(setUserMock).toHaveBeenCalledWith({ status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined });
+		expect(setUserMock).toHaveBeenCalledWith({
+			status: STATUSES[1],
+			statusText: 'online',
+			statusSource: undefined,
+			statusExpiresAt: undefined
+		});
 	});
 });
 
