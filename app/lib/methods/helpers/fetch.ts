@@ -13,8 +13,8 @@ interface IOptions {
 
 export { headers };
 
-export const setBasicAuth = (basicAuth: string | null): void => {
-	sdk.setBasicAuth(basicAuth);
+export const setBasicAuth = (basicAuth: string | null, server?: string): void => {
+	sdk.setBasicAuth(basicAuth, server);
 };
 
 export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';

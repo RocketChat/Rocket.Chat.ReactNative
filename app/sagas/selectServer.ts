@@ -182,7 +182,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
-		setBasicAuth(basicAuth);
+		setBasicAuth(basicAuth, server);
 
 		if (user) {
 			yield put(clearSettings());

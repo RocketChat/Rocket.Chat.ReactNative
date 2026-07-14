@@ -764,6 +764,20 @@ describe('Sdk header lifecycle', () => {
 		delete (headers as any).Authorization; // mutate the returned copy
 		expect(sdk.getHeaders().Authorization).toBe('Basic dXNlcjpwYXNz');
 	});
+
+	it('persists setBasicAuth under an explicitly passed server, not the stale this.serverUrl (switch-server regression)', () => {
+		(sdk as any).serverUrl = 'https://old.example.com';
+		sdk.setBasicAuth('dXNlcjpwYXNz', 'https://new.example.com');
+		expect(UserPreferences.setString).toHaveBeenCalledWith('BASIC_AUTH_KEY-https://new.example.com', 'dXNlcjpwYXNz');
+		expect(UserPreferences.setString).not.toHaveBeenCalledWith('BASIC_AUTH_KEY-https://old.example.com', expect.anything());
+	});
+
+	it('clears setBasicAuth(null) under an explicitly passed server, not the stale this.serverUrl', () => {
+		(sdk as any).serverUrl = 'https://old.example.com';
+		sdk.setBasicAuth(null, 'https://new.example.com');
+		expect(UserPreferences.removeItem).toHaveBeenCalledWith('BASIC_AUTH_KEY-https://new.example.com');
+		expect(UserPreferences.removeItem).not.toHaveBeenCalledWith('BASIC_AUTH_KEY-https://old.example.com');
+	});
 });
 
 describe('Sdk.onStreamData', () => {

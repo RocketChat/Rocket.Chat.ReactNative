@@ -10,7 +10,7 @@ const basicAuth = (server: string, text: string) => {
 		if (parsedUrl.auth.length) {
 			const credentials = Base64.encode(parsedUrl.auth);
 			UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
-			setBasicAuth(credentials);
+			setBasicAuth(credentials, server);
 		}
 	} catch {
 		// do nothing

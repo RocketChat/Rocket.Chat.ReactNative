@@ -120,16 +120,15 @@ class Sdk {
 		return { ...this.headers };
 	}
 
-	setBasicAuth(basicAuth: string | null): void {
-		const url = this.serverUrl;
+	setBasicAuth(basicAuth: string | null, server: string | undefined = this.serverUrl): void {
 		if (basicAuth) {
-			if (url) {
-				UserPreferences.setString(`${BASIC_AUTH_KEY}-${url}`, basicAuth);
+			if (server) {
+				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, basicAuth);
 			}
 			this.setHeaders({ Authorization: `Basic ${basicAuth}` });
 		} else {
-			if (url) {
-				UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${url}`);
+			if (server) {
+				UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 			}
 			const next = { ...this.headers };
 			delete next.Authorization;

@@ -89,11 +89,16 @@ describe('helpers/fetch', () => {
 describe('helpers/fetch setBasicAuth', () => {
 	it('delegates to sdk.setBasicAuth', () => {
 		setBasicAuth('dXNlcjpwYXNz');
-		expect(sdk.setBasicAuth).toHaveBeenCalledWith('dXNlcjpwYXNz');
+		expect(sdk.setBasicAuth).toHaveBeenCalledWith('dXNlcjpwYXNz', undefined);
 	});
 
 	it('forwards null to clear basic auth', () => {
 		setBasicAuth(null);
-		expect(sdk.setBasicAuth).toHaveBeenCalledWith(null);
+		expect(sdk.setBasicAuth).toHaveBeenCalledWith(null, undefined);
+	});
+
+	it('forwards an explicit server so the target-server key is used, not the sdk-tracked one', () => {
+		setBasicAuth('dXNlcjpwYXNz', 'https://new.example.com');
+		expect(sdk.setBasicAuth).toHaveBeenCalledWith('dXNlcjpwYXNz', 'https://new.example.com');
 	});
 });
