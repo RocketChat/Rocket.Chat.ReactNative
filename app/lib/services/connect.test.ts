@@ -547,7 +547,8 @@ describe('connect — connection status handler', () => {
 		await Promise.resolve(); // let connect(A) reach the getSettings() await
 
 		// connect(B) supersedes connect(A) while getSettings(A) is still in flight.
-		sdkMock.__setServer('https://b.example.com');
+		// sdk.server is still 'a.example.com' here (set by connect(A)'s own initialize()) —
+		// connect(B) is what flips it to 'b.example.com' via its own initialize() call below.
 		await connect({ server: 'https://b.example.com' });
 
 		// The previous call's REST request must have been signalled to abort so it
