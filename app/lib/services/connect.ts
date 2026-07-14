@@ -47,11 +47,10 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 	}
 
 	try {
-		connectAbortController?.abort();
+		disconnect();
 		connectAbortController = new AbortController();
 		const { signal } = connectAbortController;
 
-		disconnect();
 		database.setActiveDB(server);
 
 		unsubscribeRooms();
