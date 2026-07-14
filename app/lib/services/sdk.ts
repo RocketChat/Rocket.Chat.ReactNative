@@ -383,11 +383,6 @@ class Sdk {
 		return this.current.connection.on('connection', callback);
 	}
 
-	/**
-	 * Fires once re-authentication actually completes (uid set), not on raw socket 'connected' -
-	 * ddp-client's own reconnect handler calls account.loginWithToken() without awaiting it, so
-	 * subscribing on 'connected' races the login and gets rejected (nosub) by the server.
-	 */
 	onLogin(callback: () => void): () => void {
 		if (!this.current) {
 			return () => {};
