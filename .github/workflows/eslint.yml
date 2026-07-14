@@ -19,3 +19,5 @@ jobs:
 
       - name: Run Tests
         run: pnpm test --runInBand
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
