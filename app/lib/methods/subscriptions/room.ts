@@ -18,7 +18,6 @@ import { Encryption } from '../../encryption';
 import {
 	type IMessage,
 	type TMessageModel,
-	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel,
 	type IDeleteMessageBulkParams
@@ -33,7 +32,7 @@ import markMessagesRead from '../helpers/markMessagesRead';
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private promises?: Promise<TSubscriptionModel[]>;
+	private promises?: Promise<any[]>;
 	private connectionStatusListener?: () => void;
 	private loginListener?: () => void;
 	private notifyRoomListener?: Promise<any>;
@@ -74,7 +73,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub?.unsubscribe?.().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.stop?.());
 			} catch (e) {
 				// do nothing
 			}
@@ -104,7 +103,7 @@ export default class RoomSubscription {
 		try {
 			if (this.promises) {
 				const oldSubs = await this.promises;
-				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));
+				oldSubs?.forEach(sub => sub?.stop?.());
 			}
 			this.promises = sdk.subscribeRoom(this.rid);
 			await this.promises;

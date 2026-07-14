@@ -212,21 +212,21 @@ describe('RoomSubscription', () => {
 		});
 
 		it('tears down stale subscriptions on reconnect and tracks fresh ones for later cleanup', async () => {
-			const staleSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
-			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			const staleSub = { stop: jest.fn() };
+			const freshSub = { stop: jest.fn() };
 			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
 
 			await sub.subscribe();
 			await sub.handleLogin();
 			await sub.unsubscribe();
 
-			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
-			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(staleSub.stop).toHaveBeenCalledTimes(1);
+			expect(freshSub.stop).toHaveBeenCalledTimes(1);
 		});
 
 		it('does not accumulate subscriptions across repeated handleLogin calls (simulates sequential reopen)', async () => {
-			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
-			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			const first = { stop: jest.fn() };
+			const second = { stop: jest.fn() };
 			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
 
 			await sub.subscribe();
@@ -235,18 +235,18 @@ describe('RoomSubscription', () => {
 			// First reopen → tears down [first], creates [second]
 			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
-			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
-			expect(second.unsubscribe).not.toHaveBeenCalled();
+			expect(first.stop).toHaveBeenCalledTimes(1);
+			expect(second.stop).not.toHaveBeenCalled();
 
 			// Second reopen → tears down [second], creates []
 			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
-			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(second.stop).toHaveBeenCalledTimes(1);
 
 			// Final cleanup → empty batch, no more unsubscribes
 			await sub.unsubscribe();
-			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
-			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(first.stop).toHaveBeenCalledTimes(1);
+			expect(second.stop).toHaveBeenCalledTimes(1);
 		});
 
 		it('does not call onStreamData inside handleLogin (listeners persist across reopen)', async () => {
@@ -260,7 +260,7 @@ describe('RoomSubscription', () => {
 
 		it('survives a poisoned subscription array (undefined entry from a rejected sub) and still re-subscribes', async () => {
 			// A pre-auth subscribe rejected by the server (nosub) resolves to undefined inside Promise.all.
-			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			const freshSub = { stop: jest.fn() };
 			mockSubscribeRoom.mockResolvedValueOnce([undefined as any]).mockResolvedValueOnce([freshSub]);
 
 			await sub.subscribe();
