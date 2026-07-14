@@ -530,6 +530,33 @@ describe('connect — connection status handler', () => {
 		expect(mockConnectionOn).not.toHaveBeenCalled();
 	});
 
+	it('aborts the previous connect() in-flight getSettings when a newer call supersedes it', async () => {
+		const getSettingsMock = jest.requireMock('../methods/getSettings').getSettings as jest.Mock;
+		let resolveSettingsA: () => void;
+		let capturedSignal: AbortSignal | undefined;
+		getSettingsMock.mockImplementationOnce((signal?: AbortSignal) => {
+			capturedSignal = signal;
+			return new Promise<void>(resolve => {
+				resolveSettingsA = resolve;
+			});
+		});
+
+		sdkMock.__setServer(undefined);
+		const connectAPromise = connect({ server: 'https://a.example.com' });
+		await Promise.resolve(); // let connect(A) reach the getSettings() await
+
+		// connect(B) supersedes connect(A) while getSettings(A) is still in flight.
+		sdkMock.__setServer('https://b.example.com');
+		await connect({ server: 'https://b.example.com' });
+
+		// The previous call's REST request must have been signalled to abort so it
+		// can't write server A's data into the now-active database B.
+		expect(capturedSignal?.aborted).toBe(true);
+
+		resolveSettingsA!();
+		await connectAPromise;
+	});
+
 	it('dispatches connectSuccess and loginRequest(resume) on reconnect when user has a token', async () => {
 		await connect({ server: SERVER });
 		const listener = getCapturedConnectionListener();

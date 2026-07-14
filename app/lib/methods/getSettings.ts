@@ -149,7 +149,7 @@ export function subscribeSettings() {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
-export async function getSettings(): Promise<void> {
+export async function getSettings(signal?: AbortSignal): Promise<void> {
 	try {
 		const db = database.active;
 		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
@@ -165,7 +165,7 @@ export async function getSettings(): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(`${url}&offset=${offset}`);
+			const response = await fetch(`${url}&offset=${offset}`, { signal });
 
 			const result = await response.json();
 			if (!result.success) {

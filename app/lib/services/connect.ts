@@ -39,12 +39,18 @@ interface IServices {
 	service: string;
 }
 
+let connectAbortController: AbortController | null = null;
+
 async function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	if (sdk.server === server) {
 		return;
 	}
 
 	try {
+		connectAbortController?.abort();
+		connectAbortController = new AbortController();
+		const { signal } = connectAbortController;
+
 		disconnect();
 		database.setActiveDB(server);
 
@@ -53,7 +59,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		await sdk.initialize(server);
-		await getSettings();
+		await getSettings(signal);
 
 		// A newer connect() call may have switched servers while getSettings() was in flight —
 		// bail out rather than wiring up listeners/dispatching against the wrong sdk instance.
@@ -430,6 +436,7 @@ async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
 }
 
 function disconnect() {
+	connectAbortController?.abort();
 	const result = sdk.disconnect();
 	mediaSessionInstance.reset();
 	return result;

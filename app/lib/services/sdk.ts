@@ -331,7 +331,7 @@ class Sdk {
 	}
 
 	subscribe(...args: Parameters<ClientStream['subscribe']>) {
-		return this.current?.client.subscribe(...args);
+		return this.ensureInitialized().client.subscribe(...args);
 	}
 
 	subscribeRoom(rid: string): Promise<any[]> {
