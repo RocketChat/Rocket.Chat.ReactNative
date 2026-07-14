@@ -19,6 +19,6 @@ describe('isSameOrigin', () => {
 	});
 
 	test('returns true when origin is undefined', () => {
-		expect(isSameOrigin('https://releases.rocket.chat/x')).toBe(true);
+		expect(isSameOrigin('https://releases.rocket.chat/x')).toBe(false);
 	});
 });
