@@ -70,7 +70,6 @@ const RoomView = (props: IRoomViewProps) => {
 		transferLivechatGuestPermission,
 		viewCannedResponsesPermission,
 		livechatAllowManualOnHold,
-		encryptionEnabled,
 		airGappedRestrictionRemainingDays,
 		isFederationEnabled,
 		isFederationModuleEnabled,
@@ -126,13 +125,8 @@ const RoomView = (props: IRoomViewProps) => {
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
 	const joined = useStore(roomStore, s => s.joined);
-	const member = useStore(roomStore, s => s.member);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
-	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
-	const canReturnQueue = useStore(roomStore, s => s.canReturnQueue);
-	const canViewCannedResponse = useStore(roomStore, s => s.canViewCannedResponse);
-	const canPlaceLivechatOnHold = useStore(roomStore, s => s.canPlaceLivechatOnHold);
 
 	const isOmnichannel = room.t === 'l';
 
@@ -150,25 +144,16 @@ const RoomView = (props: IRoomViewProps) => {
 		return EMPTY_HIDE_SYSTEM_MESSAGES;
 	})();
 
-	const { cancelJumpToMessage, onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl, goRoomActionsView } = useRoomNavigation(
-		{
-			rid,
-			tmid,
-			t,
-			navigation,
-			isMasterDetail,
-			listRef,
-			member,
-			joined,
-			canForwardGuest,
-			canReturnQueue,
-			canViewCannedResponse,
-			canPlaceLivechatOnHold,
-			roomRef,
-			roomUserIdRef,
-			cancelJumpToMessageRef
-		}
-	);
+	const { cancelJumpToMessage, onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl } = useRoomNavigation({
+		rid,
+		tmid,
+		t,
+		navigation,
+		isMasterDetail,
+		listRef,
+		roomUserIdRef,
+		cancelJumpToMessageRef
+	});
 
 	useEffect(() => {
 		roomRef.current = room;
@@ -180,7 +165,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const {
 		resetAction,
 		handleCloseEmoji,
-		handleShowActionSheet,
 		errorActionsShow,
 		onEditInit,
 		onEditCancel,
@@ -212,7 +196,7 @@ const RoomView = (props: IRoomViewProps) => {
 	useRoomAudioLifecycle(rid, tmid, navigation);
 	useRoomRemoved(rid, isMasterDetail, roomRef);
 	useJoinRoomPublisher({ roomStore, room, isOmnichannel, serverVersion, t, joinCodeRef });
-	const { onJoin, handleSendMessage, toggleFollowThread } = useRoomActions({
+	const { onJoin, handleSendMessage } = useRoomActions({
 		rid,
 		tmid,
 		roomStore,
@@ -250,16 +234,9 @@ const RoomView = (props: IRoomViewProps) => {
 	});
 
 	const readOnly = useReadOnly(roomStore);
-	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore, encryptionEnabled);
+	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
 
-	useHeader({
-		roomStore,
-		showMissingE2EEKey,
-		showE2EEDisabledRoom,
-		goRoomActionsView,
-		toggleFollowThread,
-		showActionSheet: handleShowActionSheet
-	});
+	useHeader();
 
 	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => (
 		<MessageRow
@@ -389,7 +366,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
-	encryptionEnabled: state.encryption.enabled,
 	isFederationEnabled: (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean,
 	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
 });

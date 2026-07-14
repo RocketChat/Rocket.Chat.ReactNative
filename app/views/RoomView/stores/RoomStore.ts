@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { createStore, type StateCreator, type StoreApi } from 'zustand';
+import { createStore, useStore, type StateCreator, type StoreApi } from 'zustand';
 
 import database from '../../../lib/database';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
@@ -194,6 +194,23 @@ export const releaseRoomStore = (rid?: string): void => {
 		registry.delete(rid);
 	}
 };
+
+let fallbackRoomStore: RoomStore | undefined;
+const getFallbackRoomStore = (): RoomStore => {
+	if (!fallbackRoomStore) {
+		fallbackRoomStore = createStore<RoomState>(createRoomState(undefined, { rid: '', t: '' }, null));
+	}
+	return fallbackRoomStore;
+};
+
+// Non-owning peek hook: the native-stack header renders outside RoomView's provider tree, so its
+// children read the rid-keyed store from the module registry instead of context.
+export function useRoomStoreByRid<T>(rid: string | undefined, selector: (state: RoomState) => T): T {
+	'use memo';
+
+	const store = (rid ? registry.get(rid)?.store : undefined) ?? getFallbackRoomStore();
+	return useStore(store, selector);
+}
 
 // Test-only: clears the module-level registry between test cases (no unsubscribe side effects run).
 export const __resetRoomStoreRegistryForTests = (): void => {

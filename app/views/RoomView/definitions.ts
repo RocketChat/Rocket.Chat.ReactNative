@@ -31,7 +31,6 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
-	encryptionEnabled: boolean;
 	airGappedRestrictionRemainingDays: number | undefined;
 	isFederationEnabled: boolean;
 	isFederationModuleEnabled: boolean;

@@ -54,13 +54,6 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 			navigation: navigation as any,
 			isMasterDetail: false,
 			listRef: { current: null },
-			member: {},
-			joined: true,
-			canForwardGuest: false,
-			canReturnQueue: false,
-			canViewCannedResponse: false,
-			canPlaceLivechatOnHold: false,
-			roomRef: { current: { rid: 'rid-1', t: 'c' } },
 			roomUserIdRef: { current: null },
 			cancelJumpToMessageRef: { current: jest.fn() },
 			...overrides
@@ -106,43 +99,6 @@ describe('useRoomNavigation', () => {
 			t: 'thread',
 			roomUserId: null
 		});
-	});
-
-	it('goRoomActionsView pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
-		const { result, navigation } = renderRoomNavigation({
-			t: 'l',
-			canForwardGuest: true,
-			canReturnQueue: true,
-			canViewCannedResponse: true,
-			canPlaceLivechatOnHold: true
-		});
-
-		result.current.goRoomActionsView();
-
-		expect(navigation.push).toHaveBeenCalledWith('RoomActionsView', {
-			rid: 'rid-1',
-			t: 'l',
-			room: { rid: 'rid-1', t: 'c' },
-			member: {},
-			joined: true,
-			omnichannelPermissions: {
-				canForwardGuest: true,
-				canReturnQueue: true,
-				canViewCannedResponse: true,
-				canPlaceLivechatOnHold: true
-			}
-		});
-	});
-
-	it('goRoomActionsView navigates through ModalStackNavigator on master-detail', () => {
-		const { result, navigation } = renderRoomNavigation({ isMasterDetail: true });
-
-		result.current.goRoomActionsView();
-
-		expect(navigation.navigate).toHaveBeenCalledWith(
-			'ModalStackNavigator',
-			expect.objectContaining({ screen: 'RoomActionsView' })
-		);
 	});
 
 	it('navToRoom fetches the target room info and opens it, forwarding the jump target', async () => {

@@ -1,23 +1,20 @@
 import { type RefObject } from 'react';
 import parse from 'url-parse';
-import { type NavigatorScreenParams } from '@react-navigation/native';
 
-import { type TNavigation } from '../../../stacks/stackType';
 import I18n from '../../../i18n';
 import getRoomInfo from '../../../lib/methods/getRoomInfo';
 import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { useDebounce } from '../../../lib/methods/helpers';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
+import log from '../../../lib/methods/helpers/log';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import getThreadName from '../../../lib/methods/getThreadName';
 import { sendLoadingEvent } from '../../../containers/Loading';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
-import { type ISubscription, SubscriptionType, type TAnyMessageModel, type TSubscriptionModel } from '../../../definitions';
-import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { SubscriptionType, type TAnyMessageModel } from '../../../definitions';
 import { type IListContainerRef } from '../List/definitions';
 import { type TGetMessageInfoResult } from '../services/getMessageInfo';
-import { type IRoomViewProps, type IRoomViewState } from '../definitions';
+import { type IRoomViewProps } from '../definitions';
 import { useJumpToMessage } from './useJumpToMessage';
 
 export interface IUseRoomNavigationParams {
@@ -27,13 +24,6 @@ export interface IUseRoomNavigationParams {
 	navigation: IRoomViewProps['navigation'];
 	isMasterDetail: boolean;
 	listRef: RefObject<IListContainerRef | null>;
-	member: IRoomViewState['member'];
-	joined: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
-	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
-	roomRef: RefObject<IRoomViewState['room']>;
 	roomUserIdRef: RefObject<string | null | undefined>;
 	cancelJumpToMessageRef: RefObject<() => void>;
 }
@@ -47,7 +37,6 @@ export interface IUseRoomNavigationResult {
 	onThreadMessagesLoaded: () => void;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
-	goRoomActionsView: (screen?: keyof ModalStackParamList) => void;
 }
 
 export function useRoomNavigation({
@@ -57,13 +46,6 @@ export function useRoomNavigation({
 	navigation,
 	isMasterDetail,
 	listRef,
-	member,
-	joined,
-	canForwardGuest,
-	canReturnQueue,
-	canViewCannedResponse,
-	canPlaceLivechatOnHold,
-	roomRef,
 	roomUserIdRef,
 	cancelJumpToMessageRef
 }: IUseRoomNavigationParams): IUseRoomNavigationResult {
@@ -160,45 +142,6 @@ export function useRoomNavigation({
 		}
 	};
 
-	const goRoomActionsView = (screen?: keyof ModalStackParamList) => {
-		logEvent(events.ROOM_GO_RA);
-		if (isMasterDetail) {
-			// @ts-ignore — navigation types expect a literal screen name
-			navigation.navigate('ModalStackNavigator', {
-				screen: screen ?? 'RoomActionsView',
-				params: {
-					rid: rid as string,
-					t: t as SubscriptionType,
-					room: roomRef.current as ISubscription,
-					member,
-					showCloseModal: !!screen,
-					// @ts-ignore
-					joined,
-					omnichannelPermissions: {
-						canForwardGuest,
-						canReturnQueue,
-						canViewCannedResponse,
-						canPlaceLivechatOnHold
-					}
-				}
-			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
-		} else if (rid && t) {
-			navigation.push('RoomActionsView', {
-				rid,
-				t: t as SubscriptionType,
-				room: roomRef.current as TSubscriptionModel,
-				member,
-				joined,
-				omnichannelPermissions: {
-					canForwardGuest,
-					canReturnQueue,
-					canViewCannedResponse,
-					canPlaceLivechatOnHold
-				}
-			});
-		}
-	};
-
 	return {
 		navToRoom,
 		navToThread,
@@ -207,7 +150,6 @@ export function useRoomNavigation({
 		consumeJumpParam,
 		onThreadMessagesLoaded,
 		onThreadPress,
-		jumpToMessageByUrl,
-		goRoomActionsView
+		jumpToMessageByUrl
 	};
 }

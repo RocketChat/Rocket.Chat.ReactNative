@@ -1,27 +1,10 @@
 import { type RefObject } from 'react';
 
-import I18n from '../../../i18n';
-import EventEmitter from '../../../lib/methods/helpers/events';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
 import { sendMessage } from '../../../lib/methods/sendMessage';
-import { toggleFollowMessage } from '../../../lib/services/restApi';
-import { LISTENER } from '../../../containers/Toast';
 import { type IRoomViewProps } from '../definitions';
 import { type RoomStore } from '../stores/RoomStore';
-
-const toggleFollowThreadImpl = async (tmid: string | undefined, isFollowingThread: boolean, threadId?: string) => {
-	try {
-		const threadMessageId = threadId ?? tmid;
-		if (!threadMessageId) {
-			return;
-		}
-		await toggleFollowMessage(threadMessageId, !isFollowingThread);
-		EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-	} catch (e) {
-		log(e);
-	}
-};
 
 export interface IUseRoomActionsParams {
 	rid?: string;
@@ -34,7 +17,6 @@ export interface IUseRoomActionsParams {
 interface IUseRoomActionsResult {
 	onJoin: () => void;
 	handleSendMessage: (message?: string, tshow?: boolean) => void;
-	toggleFollowThread: (isFollowingThread: boolean, threadId?: string) => Promise<void>;
 }
 
 export function useRoomActions({ rid, tmid, roomStore, userRef, resetAction }: IUseRoomActionsParams): IUseRoomActionsResult {
@@ -56,12 +38,8 @@ export function useRoomActions({ rid, tmid, roomStore, userRef, resetAction }: I
 		roomStore.getState().join();
 	};
 
-	const toggleFollowThread = (isFollowingThread: boolean, threadId?: string) =>
-		toggleFollowThreadImpl(tmid, isFollowingThread, threadId);
-
 	return {
 		onJoin,
-		handleSendMessage,
-		toggleFollowThread
+		handleSendMessage
 	};
 }
