@@ -24,12 +24,14 @@ const removeListener = (listener: any) => listener.stop();
 
 let queueListener: any;
 let departmentListeners: any[] = [];
-let stopped = false;
+let activeGeneration = 0;
 
 const streamTopic = 'stream-livechat-inquiry-queue-observer';
 
 export default function subscribeInquiry() {
-	stopped = false;
+	const generation = ++activeGeneration;
+	let stopped = false;
+	const isStale = () => stopped || generation !== activeGeneration;
 
 	const handleQueueMessageReceived = (ddpMessage: IDdpMessage) => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
@@ -87,7 +89,7 @@ export default function subscribeInquiry() {
 
 		getAgentDepartments(user.id)
 			.then(result => {
-				if (stopped) return;
+				if (isStale()) return;
 				if (result.success) {
 					const { departments } = result;
 

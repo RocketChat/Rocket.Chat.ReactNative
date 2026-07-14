@@ -127,6 +127,31 @@ describe('subscribeInquiry', () => {
 		expect(sdk.subscribe).not.toHaveBeenCalled();
 	});
 
+	it('does not let a stale invocation push department subscriptions after being superseded by a newer one', async () => {
+		let resolveFirstDepts: (v: any) => void;
+		(getAgentDepartments as jest.Mock)
+			.mockReturnValueOnce(
+				new Promise(resolve => {
+					resolveFirstDepts = resolve;
+				})
+			)
+			.mockResolvedValueOnce({ success: true, departments: [] });
+
+		// first invocation: getAgentDepartments left pending
+		subscribeInquiry();
+
+		// second invocation supersedes the first (its own getAgentDepartments resolves immediately)
+		subscribeInquiry();
+		await flushPromises();
+		(sdk.subscribe as jest.Mock).mockClear();
+
+		// the first (stale) invocation's promise resolves late - it must be ignored
+		resolveFirstDepts!({ success: true, departments: [{ departmentId: 'stale-dept' }] });
+		await flushPromises();
+
+		expect(sdk.subscribe).not.toHaveBeenCalledWith('stream-livechat-inquiry-queue-observer', 'department/stale-dept');
+	});
+
 	it('rejects when the logged-in user has no id', async () => {
 		(store.getState as jest.Mock).mockReturnValue({
 			login: { user: {} },
