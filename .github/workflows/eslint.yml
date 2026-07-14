@@ -18,4 +18,6 @@ jobs:
         run: pnpm lint
 
       - name: Run Tests
-        run: pnpm test --maxWorkers=3 --workerIdleMemoryLimit=1024MB
+        run: pnpm test --maxWorkers=2 --workerIdleMemoryLimit=1536MB
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
