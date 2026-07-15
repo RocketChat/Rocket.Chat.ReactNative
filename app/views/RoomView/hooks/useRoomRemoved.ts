@@ -27,6 +27,7 @@ export function useRoomRemoved(
 	roomRef: RefObject<IRoomViewState['room']>
 ): void {
 	'use memo';
+
 	useEffect(() => {
 		const onRoomRemoved = ({ rid: removedRid }: { rid: string }) => handleRoomRemoved(removedRid, rid, isMasterDetail, roomRef);
 		EventEmitter.addEventListener('ROOM_REMOVED', onRoomRemoved);

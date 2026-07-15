@@ -31,7 +31,7 @@ const LeftButtons = ({ rid, tmid }: ILeftButtonsProps): ReactElement | null => {
 	const baseUrl = useAppSelector(state => state.server.server);
 	const { id: userId, token } = useAppSelector(getUserSelector);
 	const room = useRoomStoreByRid(rid, s => s.room);
-	const t = room.t;
+	const { t } = room;
 	const title = 'id' in room ? room.name : undefined;
 
 	const onPress = () => goRoomActionsView();

@@ -137,7 +137,7 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 	});
 
 	const t = room.t as SubscriptionType;
-	const status = room.status;
+	const { status } = room;
 	const roomName = getRoomTitle(room);
 	const isGroupChatValue = isGroupChat(room as ISubscription);
 	const teamMain = 'teamMain' in room ? room.teamMain : false;

@@ -9,6 +9,7 @@ export function useRoomAudioLifecycle(
 	navigation: IRoomViewProps['navigation']
 ): void {
 	'use memo';
+
 	useEffect(() => {
 		const unsubscribeBlur = navigation.addListener('blur', () => AudioManager.pauseAudio());
 		return unsubscribeBlur;

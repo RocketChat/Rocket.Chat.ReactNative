@@ -2,7 +2,7 @@ import { type NavigatorScreenParams, useNavigation, useRoute } from '@react-navi
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { type ISubscription, SubscriptionType, type TSubscriptionModel } from '../../../definitions';
+import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../../definitions';
 import { type TNavigation } from '../../../stacks/stackType';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { type IRoomViewProps } from '../definitions';

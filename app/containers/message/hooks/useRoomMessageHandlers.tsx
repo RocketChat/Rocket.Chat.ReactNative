@@ -37,7 +37,7 @@ import { ContainerTypes } from '../../UIKit/interfaces';
 
 // Keeps the store hooks below unconditional when RoomStore/MessageActionStore contexts are absent (optional mode);
 // its values are never acted on since the hook returns undefined first. Optional mode still requires MessageRoomProvider.
-const noOpAsync = async () => undefined;
+const noOpAsync = () => Promise.resolve();
 const noOp = () => undefined;
 const FALLBACK_ROOM_STORE = createStore<RoomState>()(() => ({
 	room: { rid: '', t: '' },
@@ -94,8 +94,11 @@ export interface IUseRoomMessageHandlersResult {
 	onAnswerButtonPress: (message?: string, tshow?: boolean) => void;
 }
 
+// eslint-disable-next-line no-redeclare
 export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult;
+// eslint-disable-next-line no-redeclare
 export function useRoomMessageHandlers(options: { optional: true }): IUseRoomMessageHandlersResult | undefined;
+// eslint-disable-next-line no-redeclare
 export function useRoomMessageHandlers(options?: { optional?: boolean }): IUseRoomMessageHandlersResult | undefined {
 	'use memo';
 

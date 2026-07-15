@@ -56,7 +56,7 @@ const setupObservables = () => {
 	};
 };
 
-const flush = () => act(async () => Promise.resolve());
+const flush = () => act(() => Promise.resolve());
 
 const renderRightButtons = (overrides: Partial<IUseRightButtonsParams> = {}) => {
 	const initialProps: IUseRightButtonsParams = {
