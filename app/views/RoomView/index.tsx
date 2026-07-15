@@ -36,7 +36,7 @@ import { isRoomFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { getOrCreateRoomStore, releaseRoomStore } from './stores/RoomStore';
+import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
@@ -119,9 +119,13 @@ const RoomView = (props: IRoomViewProps) => {
 	const cancelJumpToMessageRef = useRef<() => void>(() => {});
 	const userRef = useRef(user);
 
-	const [roomStore] = useState(() => getOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
-	// rid is stable for this RoomView instance (it's what roomStore was acquired for); release once on unmount.
-	useEffect(() => () => releaseRoomStore(rid ?? ''), [rid]);
+	const [roomStore] = useState(() => peekOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
+	// rid is stable for this RoomView instance; render peeks the store, this effect owns its lifetime.
+	// Symmetric acquire/release, so a StrictMode/concurrent double-invoke can't leak the registry entry.
+	useEffect(() => {
+		acquireRoomStore(rid);
+		return () => releaseRoomStore(rid);
+	}, [rid]);
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);

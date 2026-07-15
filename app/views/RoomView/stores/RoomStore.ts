@@ -1,4 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
+import { InteractionManager } from 'react-native';
 import { createStore, useStore, type StateCreator, type StoreApi } from 'zustand';
 
 import database from '../../../lib/database';
@@ -132,23 +133,59 @@ interface IRoomStoreRegistryEntry {
 	store: RoomStore;
 	unsubscribe: () => void;
 	refCount: number;
+	pendingSweep: boolean;
 }
 
 const registry = new Map<string, IRoomStoreRegistryEntry>();
 
-export const getOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
+// Tear down a still-unclaimed entry after the current interaction settles. Warm-up (goRoom) and
+// render (peekOrCreate) create entries at refCount 0; the sweep reclaims them if no mount acquired
+// them by the time the nav transition finishes. One sweep pending per entry keeps it idempotent.
+const scheduleGraceSweep = (rid: string): void => {
+	const entry = registry.get(rid);
+	if (!entry || entry.pendingSweep) {
+		return;
+	}
+	entry.pendingSweep = true;
+	InteractionManager.runAfterInteractions(() => {
+		const current = registry.get(rid);
+		if (!current) {
+			return;
+		}
+		current.pendingSweep = false;
+		if (current.refCount === 0) {
+			current.unsubscribe();
+			registry.delete(rid);
+		}
+	});
+};
+
+// Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
+// without touching refCount. Safe to call from a useState initializer, which may run twice under
+// StrictMode/concurrent render. Acquire/release own the lifetime.
+export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
 		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	}
 	const existing = registry.get(rid);
 	if (existing) {
-		existing.refCount += 1;
 		return existing.store;
 	}
 	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	const unsubscribe = observeRoom(rid, t, store);
-	registry.set(rid, { store, unsubscribe, refCount: 1 });
+	registry.set(rid, { store, unsubscribe, refCount: 0, pendingSweep: false });
+	scheduleGraceSweep(rid);
 	return store;
+};
+
+export const acquireRoomStore = (rid?: string): void => {
+	if (!rid) {
+		return;
+	}
+	const entry = registry.get(rid);
+	if (entry) {
+		entry.refCount += 1;
+	}
 };
 
 export const releaseRoomStore = (rid?: string): void => {

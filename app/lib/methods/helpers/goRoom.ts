@@ -1,5 +1,4 @@
 import { CommonActions } from '@react-navigation/native';
-import { InteractionManager } from 'react-native';
 
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import Navigation from '../../navigation/appNavigation';
@@ -13,10 +12,7 @@ import {
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
-import type {
-	getOrCreateRoomStore as TGetOrCreateRoomStore,
-	releaseRoomStore as TReleaseRoomStore
-} from '../../../views/RoomView/stores/RoomStore';
+import type { peekOrCreateRoomStore as TPeekOrCreateRoomStore } from '../../../views/RoomView/stores/RoomStore';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -31,8 +27,18 @@ interface IGoRoomItem {
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
+interface RoomRouteParams {
+	rid?: string;
+	name: string;
+	t?: SubscriptionType;
+	prid?: string;
+	visitor?: IVisitor;
+	joinCodeRequired?: boolean;
+	roomUserId?: string;
+}
+
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
-	const routeParams = {
+	const routeParams: RoomRouteParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
 		t: item.t,
@@ -50,18 +56,17 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	}
 
 	// Warm the RoomStore at press time so its DB observer runs during the nav transition and
-	// RoomView mounts against a hydrated store. The mount acquisition reuses this entry (refcount++);
-	// the grace release below fires after the transition: if RoomView claimed the store it stays alive,
-	// otherwise (cancelled/failed navigation) refcount returns to zero and the observer is torn down.
+	// RoomView mounts against a hydrated store. peekOrCreate leaves the entry at refCount 0 and
+	// schedules its own grace sweep: if RoomView acquires it, it stays alive; otherwise (cancelled/
+	// failed navigation) the sweep reclaims it after the transition. No explicit release needed.
 	if (routeParams.rid) {
 		// Lazy require: goRoom is a low-level helper imported across the app, RoomStore lives in the
 		// view layer and pulls the encryption/native graph. Loading it only when a warm-up actually
 		// runs keeps that graph out of every goRoom importer.
-		const { getOrCreateRoomStore, releaseRoomStore } = require('../../../views/RoomView/stores/RoomStore') as {
-			getOrCreateRoomStore: typeof TGetOrCreateRoomStore;
-			releaseRoomStore: typeof TReleaseRoomStore;
+		const { peekOrCreateRoomStore } = require('../../../views/RoomView/stores/RoomStore') as {
+			peekOrCreateRoomStore: typeof TPeekOrCreateRoomStore;
 		};
-		getOrCreateRoomStore({
+		peekOrCreateRoomStore({
 			rid: routeParams.rid,
 			t: routeParams.t,
 			initialRoom: {
@@ -74,7 +79,6 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 			},
 			roomUserId: routeParams.roomUserId
 		});
-		InteractionManager.runAfterInteractions(() => releaseRoomStore(routeParams.rid));
 	}
 
 	Navigation.popTo('DrawerNavigator');

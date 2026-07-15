@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 
 import { goRoom } from './goRoom';
-import { getOrCreateRoomStore, releaseRoomStore } from '../../../views/RoomView/stores/RoomStore';
+import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from '../../../views/RoomView/stores/RoomStore';
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
@@ -61,41 +61,38 @@ describe('goRoom RoomStore warm-up', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('releases the warmed store when navigation is effectively cancelled (no mount)', async () => {
+	it('tears down the warmed store via its grace sweep when navigation is effectively cancelled (no mount)', async () => {
 		await goRoom({ item: { rid: 'r1', t: 'c' as any }, isMasterDetail: false } as any);
-		// warm-up left refCount at 1
+		// warm-up left the entry at refCount 0 and scheduled its own grace sweep
 
 		expect(graceCb).toBeDefined();
 
-		// Probe the warmed entry to capture its instance; this bumps refCount to 2, so
-		// immediately undo the bump to keep the net count matching "no RoomView mounted".
-		const s1 = getOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any }); // refCount 2
-		releaseRoomStore('r1'); // refCount 1 (undo probe bump)
+		// Peek the warmed entry to capture its instance (peek does not touch refCount).
+		const warmed = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
 
-		graceCb!(); // grace release: refCount 1 -> 0, entry torn down
+		graceCb!(); // grace sweep: refCount 0 -> entry torn down
 
-		const newStore = getOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any }); // refCount 1, fresh instance
-
-		expect(newStore).not.toBe(s1);
+		const fresh = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any }); // brand-new instance
+		expect(fresh).not.toBe(warmed);
 
 		releaseRoomStore('r1');
 	});
 
-	it('keeps the store alive when RoomView mounts before the grace release fires', async () => {
+	it('keeps the store alive when RoomView mounts before the grace sweep fires', async () => {
 		await goRoom({ item: { rid: 'r1', t: 'c' as any }, isMasterDetail: false } as any);
 
 		expect(graceCb).toBeDefined();
 
-		// Simulate RoomView mounting and acquiring the same rid: refCount goes 1 -> 2.
-		const mounted = getOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
+		// Simulate RoomView mounting against the warmed entry and acquiring it: refCount 0 -> 1.
+		const mounted = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
+		acquireRoomStore('r1');
 
-		// Grace release fires after the transition: refCount goes 2 -> 1, still alive.
+		// Grace sweep fires after the transition: refCount is 1, so the entry stays alive.
 		graceCb!();
 
-		const stillAlive = getOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
+		const stillAlive = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
 		expect(stillAlive).toBe(mounted);
 
-		releaseRoomStore('r1');
 		releaseRoomStore('r1');
 	});
 
