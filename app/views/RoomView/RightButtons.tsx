@@ -10,20 +10,19 @@ import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import { getRoomTitle, isGroupChat, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
-import EventEmitter from '../../lib/methods/helpers/events';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat, toggleFollowMessage } from '../../lib/services/restApi';
+import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { type TNavigation } from '../../stacks/stackType';
 import { type ChatsStackParamList } from '../../stacks/types';
-import { LISTENER } from '../../containers/Toast';
 import { useTheme } from '../../theme';
 import { HeaderCallButton } from './components/HeaderCallButton';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useRightButtons } from './hooks/useRightButtons';
+import { toggleFollowThread } from './services/toggleFollowThread';
 import { useRoomStoreByRid } from './stores/RoomStore';
 
 interface IRightButtonsProps {
@@ -32,15 +31,6 @@ interface IRightButtonsProps {
 }
 
 type RightButtonsNavigation = NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
-
-const toggleFollowThread = async (tmid: string, isFollowingThread: boolean) => {
-	try {
-		await toggleFollowMessage(tmid, !isFollowingThread);
-		EventEmitter.emit(LISTENER, { message: isFollowingThread ? i18n.t('Unfollowed_thread') : i18n.t('Following_thread') });
-	} catch (e) {
-		log(e);
-	}
-};
 
 const placeOnHoldLivechat = (rid: string, navigation: RightButtonsNavigation) => {
 	showConfirmationAlert({
@@ -118,7 +108,6 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 		state => state.settings.Livechat_request_comment_when_closing_conversation as boolean
 	);
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
-	const toggleRoomE2EEncryptionPermission = useAppSelector(state => state.permissions['toggle-room-e2e-encryption']);
 
 	const room = useRoomStoreByRid(rid, s => s.room);
 	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);
@@ -131,9 +120,7 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 	const { isFollowingThread, tunread, tunreadUser, tunreadGroup, isSelfDm, canToggleEncryption, subscription } = useRightButtons({
 		rid,
 		tmid,
-		userId,
-		hasE2EEWarning,
-		toggleRoomE2EEncryptionPermission
+		userId
 	});
 
 	const t = room.t as SubscriptionType;

@@ -297,8 +297,6 @@ export interface IUseRightButtonsParams {
 	rid?: string;
 	tmid?: string;
 	userId?: string;
-	hasE2EEWarning: boolean;
-	toggleRoomE2EEncryptionPermission?: string[];
 }
 
 export interface IUseRightButtonsResult {
@@ -308,6 +306,14 @@ export interface IUseRightButtonsResult {
 	tunreadGroup: string[];
 	isSelfDm: boolean;
 	canToggleEncryption: boolean;
+	subscription?: TSubscriptionModel;
+}
+
+export interface IUseSubscriptionUnreadsResult {
+	tunread: string[];
+	tunreadUser: string[];
+	tunreadGroup: string[];
+	isSelfDm: boolean;
 	subscription?: TSubscriptionModel;
 }
 

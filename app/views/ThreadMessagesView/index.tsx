@@ -25,8 +25,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
 import { type ChatsStackParamList } from '../../stacks/types';
 import { Filter } from './filters';
@@ -41,7 +39,8 @@ import {
 	type TThreadModel
 } from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
-import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
+import { getSyncThreadsList, getThreadsList } from '../../lib/services/restApi';
+import { toggleFollowThread as toggleFollowThreadService } from '../RoomView/services/toggleFollowThread';
 import UserPreferences from '../../lib/methods/userPreferences';
 import Navigation from '../../lib/navigation/appNavigation';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
@@ -464,14 +463,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 		UserPreferences.setString(THREADS_FILTER, filter);
 	};
 
-	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
-		try {
-			await toggleFollowMessage(tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-		} catch (e) {
-			log(e);
-		}
-	};
+	toggleFollowThread = (isFollowingThread: boolean, tmid: string) => toggleFollowThreadService(tmid, isFollowingThread);
 
 	renderItem = ({ item }: { item: TThreadModel }) => {
 		const { user, navigation, useRealName } = this.props;
