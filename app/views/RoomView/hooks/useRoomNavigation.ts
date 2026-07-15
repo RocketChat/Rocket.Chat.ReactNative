@@ -1,4 +1,3 @@
-import { type RefObject } from 'react';
 import parse from 'url-parse';
 
 import I18n from '../../../i18n';
@@ -12,32 +11,8 @@ import getThreadName from '../../../lib/methods/getThreadName';
 import { sendLoadingEvent } from '../../../containers/Loading';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
 import { SubscriptionType, type TAnyMessageModel } from '../../../definitions';
-import { type IListContainerRef } from '../List/definitions';
-import { type TGetMessageInfoResult } from '../services/getMessageInfo';
-import { type IRoomViewProps } from '../definitions';
+import { type IUseRoomNavigationParams, type IUseRoomNavigationResult, type TGetMessageInfoResult } from '../definitions';
 import { useJumpToMessage } from './useJumpToMessage';
-
-export interface IUseRoomNavigationParams {
-	rid?: string;
-	tmid?: string;
-	t?: string;
-	navigation: IRoomViewProps['navigation'];
-	isMasterDetail: boolean;
-	listRef: RefObject<IListContainerRef | null>;
-	roomUserIdRef: RefObject<string | null | undefined>;
-	cancelJumpToMessageRef: RefObject<() => void>;
-}
-
-export interface IUseRoomNavigationResult {
-	navToRoom: (message: TGetMessageInfoResult) => Promise<void | undefined>;
-	navToThread: (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => Promise<void | undefined>;
-	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
-	cancelJumpToMessage: () => void;
-	consumeJumpParam: (messageId: string) => void;
-	onThreadMessagesLoaded: () => void;
-	onThreadPress: (item: TAnyMessageModel) => void;
-	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
-}
 
 export function useRoomNavigation({
 	rid,

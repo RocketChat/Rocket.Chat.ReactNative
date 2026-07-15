@@ -4,7 +4,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { createStore as createZustandStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../stores/RoomStore';
+import { type RoomState, type RoomStore } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { RoomFooter } from './RoomFooter';
 

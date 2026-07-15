@@ -7,7 +7,7 @@ import log from '../../../../lib/methods/helpers/log';
 import { Review } from '../../../../lib/methods/helpers/review';
 import { sendMessage } from '../../../../lib/methods/sendMessage';
 import { getUserSelector } from '../../../../selectors/login';
-import { type RoomState, type RoomStore } from '../../../../views/RoomView/stores/RoomStore';
+import { type RoomState, type RoomStore } from '../../../../views/RoomView/definitions';
 import { RoomStoreContext } from '../../../../views/RoomView/stores/RoomStoreContext';
 import { createMessageActionStore, MessageActionStoreContext } from '../../stores/MessageActionStore';
 import { MessageRoomProvider } from '../../stores/MessageRoomStore';

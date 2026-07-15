@@ -3,9 +3,7 @@ import { type RefObject, useEffect } from 'react';
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
-import { type IRoomViewState } from '../definitions';
-import { type IJoinCode } from '../JoinCode';
-import { type RoomStore } from '../stores/RoomStore';
+import { type IJoinCode, type IRoomViewState, type IUseJoinRoomPublisherParams } from '../definitions';
 
 interface IJoinRoomContext {
 	room: IRoomViewState['room'];
@@ -51,15 +49,6 @@ const resumeRoomImpl = async ({ room, isOmnichannel, onJoin }: Pick<IJoinRoomCon
 		log(e);
 	}
 };
-
-export interface IUseJoinRoomPublisherParams {
-	roomStore: RoomStore;
-	room: IRoomViewState['room'];
-	isOmnichannel: boolean;
-	serverVersion?: string | null;
-	t?: string;
-	joinCodeRef: RefObject<IJoinCode | null>;
-}
 
 export function useJoinRoomPublisher({
 	roomStore,

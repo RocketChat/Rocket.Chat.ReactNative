@@ -1,16 +1,16 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
-import { getOrCreateRoomStore, __resetRoomStoreRegistryForTests } from './RoomStore';
+import { getOrCreateRoomStore, releaseRoomStore } from './RoomStore';
 import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from './RoomStoreContext';
 
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services', () => ({
+jest.mock('../services/getMessages', () => ({
 	__esModule: true,
-	default: { getMessages: jest.fn(() => Promise.resolve()) }
+	default: jest.fn(() => Promise.resolve())
 }));
 jest.mock('../../../lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
@@ -52,7 +52,11 @@ const setupObserve = () => {
 describe('useRoomWithUpdate', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		__resetRoomStoreRegistryForTests();
+	});
+
+	// Release the 'rid-1' store each case acquires, isolating via the public API (no test-only reset).
+	afterEach(() => {
+		releaseRoomStore('rid-1');
 	});
 
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {

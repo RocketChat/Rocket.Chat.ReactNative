@@ -2,18 +2,7 @@ import { useEffect } from 'react';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { type IRoomViewState } from '../definitions';
-import { type RoomStore } from '../stores/RoomStore';
-
-export interface IUseOmnichannelPermissionsParams {
-	rid?: string;
-	t?: string;
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	livechatAllowManualOnHold?: boolean;
-	roomStore: RoomStore;
-}
+import { type IRoomViewState, type IUseOmnichannelPermissionsParams } from '../definitions';
 
 const getCanReturnQueue = async () => {
 	try {

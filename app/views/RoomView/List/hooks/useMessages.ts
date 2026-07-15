@@ -14,7 +14,8 @@ import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constant
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
-import { isNewerLoader, raiseOrRelease, type AnchorMessage } from '../../services/anchorResolver';
+import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
+import { type AnchorMessage } from '../../definitions';
 
 const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
 	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;

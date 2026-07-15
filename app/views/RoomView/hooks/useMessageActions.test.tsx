@@ -7,7 +7,8 @@ import { getMessageById } from '../../../lib/database/services/Message';
 import { SubscriptionType } from '../../../definitions';
 import { createMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import ReactionPicker from '../ReactionPicker';
-import { useMessageActions, type IUseMessageActionsParams } from './useMessageActions';
+import { useMessageActions } from './useMessageActions';
+import { type IUseMessageActionsParams } from '../definitions';
 
 jest.mock('../../../lib/services/restApi', () => ({
 	editMessage: jest.fn(),

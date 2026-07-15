@@ -21,7 +21,7 @@ import { type TNavigation } from '../../stacks/stackType';
 import { type ChatsStackParamList } from '../../stacks/types';
 import { LISTENER } from '../../containers/Toast';
 import { useTheme } from '../../theme';
-import { HeaderCallButton } from './components';
+import { HeaderCallButton } from './components/HeaderCallButton';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useRightButtons } from './hooks/useRightButtons';
 import { useRoomStoreByRid } from './stores/RoomStore';

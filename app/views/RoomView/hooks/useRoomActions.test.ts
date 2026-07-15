@@ -3,8 +3,8 @@ import { renderHook } from '@testing-library/react-native';
 
 import { sendMessage } from '../../../lib/methods/sendMessage';
 import { Review } from '../../../lib/methods/helpers/review';
-import { type RoomState, type RoomStore } from '../stores/RoomStore';
-import { useRoomActions, type IUseRoomActionsParams } from './useRoomActions';
+import { type IUseRoomActionsParams, type RoomState, type RoomStore } from '../definitions';
+import { useRoomActions } from './useRoomActions';
 
 jest.mock('../../../lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
 jest.mock('../../../lib/methods/helpers/review', () => ({ Review: { pushPositiveEvent: jest.fn() } }));

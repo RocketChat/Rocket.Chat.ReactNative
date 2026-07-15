@@ -10,7 +10,7 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { type IListProps } from '../definitions';
+import { type IListProps } from '../../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useIsAutocompleteVisible } from '../../stores/ComposerStore';
 

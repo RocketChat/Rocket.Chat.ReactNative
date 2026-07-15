@@ -7,7 +7,8 @@ import getRoomInfo from '../../../lib/methods/getRoomInfo';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import { sendLoadingEvent } from '../../../containers/Loading';
 import { useJumpToMessage } from './useJumpToMessage';
-import { useRoomNavigation, type IUseRoomNavigationParams } from './useRoomNavigation';
+import { useRoomNavigation } from './useRoomNavigation';
+import { type IUseRoomNavigationParams } from '../definitions';
 
 jest.mock('./useJumpToMessage', () => ({
 	useJumpToMessage: jest.fn(() => ({

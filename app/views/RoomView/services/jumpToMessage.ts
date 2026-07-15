@@ -3,10 +3,10 @@ import { sendLoadingEvent } from '../../../containers/Loading';
 import log from '../../../lib/methods/helpers/log';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMessages';
-import RoomServices from './index';
 import { resolveJumpAnchor } from './resolveJumpAnchor';
-import { type TGetMessageInfoResult } from './getMessageInfo';
-import { type IJumpToMessageArgs } from '../definitions';
+import getMessageInfo from './getMessageInfo';
+import getLocalAnchorTs from './getLocalAnchor';
+import { type IJumpToMessageArgs, type TGetMessageInfoResult } from '../definitions';
 
 export const jumpToMessage = async ({
 	messageId,
@@ -31,7 +31,7 @@ export const jumpToMessage = async ({
 
 	try {
 		sendLoadingEvent({ visible: true, onCancel: cancel });
-		const message = await RoomServices.getMessageInfo(messageId);
+		const message = await getMessageInfo(messageId);
 
 		if (!message) {
 			cancel();
@@ -65,7 +65,7 @@ export const jumpToMessage = async ({
 				rid,
 				{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
 				inWindow,
-				{ loadSurroundingMessages, getLocalAnchorTs: RoomServices.getLocalAnchorTs }
+				{ loadSurroundingMessages, getLocalAnchorTs }
 			);
 			// Synchronization needed for Fabric to work
 			await new Promise(res => setTimeout(res, 100));

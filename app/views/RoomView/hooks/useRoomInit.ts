@@ -2,8 +2,7 @@ import { type RefObject, useEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
-import { type IRoomViewState } from '../definitions';
-import { type RoomStore } from '../stores/RoomStore';
+import { type IRoomViewState, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
 	rid?: string;

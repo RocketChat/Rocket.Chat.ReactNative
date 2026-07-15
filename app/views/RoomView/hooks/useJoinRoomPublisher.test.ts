@@ -3,8 +3,8 @@ import { renderHook } from '@testing-library/react-native';
 
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
-import { type RoomState, type RoomStore } from '../stores/RoomStore';
-import { useJoinRoomPublisher, type IUseJoinRoomPublisherParams } from './useJoinRoomPublisher';
+import { type IUseJoinRoomPublisherParams, type RoomState, type RoomStore } from '../definitions';
+import { useJoinRoomPublisher } from './useJoinRoomPublisher';
 
 jest.mock('../../../lib/methods/helpers/log', () => ({
 	__esModule: true,

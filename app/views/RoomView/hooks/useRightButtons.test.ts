@@ -3,7 +3,8 @@ import { act, renderHook } from '@testing-library/react-native';
 import database from '../../../lib/database';
 import { hasPermission } from '../../../lib/methods/helpers';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
-import { useRightButtons, type IUseRightButtonsParams } from './useRightButtons';
+import { useRightButtons } from './useRightButtons';
+import { type IUseRightButtonsParams } from '../definitions';
 
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,

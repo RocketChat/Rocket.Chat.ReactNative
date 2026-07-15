@@ -1,15 +1,8 @@
-import { type RefObject } from 'react';
-
 import { editMessage, setReaction } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { Review } from '../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../lib/database/services/Message';
-import { type IMessageComposerRef } from '../../../containers/MessageComposer';
-import { type IMessageActions } from '../../../containers/MessageActions';
-import { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
-import { type TActionSheetOptions } from '../../../containers/ActionSheet';
-import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import {
 	type IEmoji,
 	type IMessage,
@@ -17,44 +10,8 @@ import {
 	SubscriptionType,
 	type TAnyMessageModel
 } from '../../../definitions';
-import { type IRoomViewProps } from '../definitions';
+import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../ReactionPicker';
-
-export interface IUseMessageActionsParams {
-	messageActionStore: TMessageActionStore;
-	showActionSheet: (options: TActionSheetOptions) => void;
-	hideActionSheet: () => void;
-	navigation: IRoomViewProps['navigation'];
-	rid?: string;
-	tmid?: string;
-	roomUserId?: string | null;
-	onThreadPress: (item: TAnyMessageModel) => void;
-	messageComposerRef: RefObject<IMessageComposerRef | null>;
-	messageActionsRef: RefObject<IMessageActions | null>;
-	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
-}
-
-export interface IUseMessageActionsResult {
-	resetAction: () => void;
-	handleCloseEmoji: (action?: Function, params?: any) => any;
-	handleShowActionSheet: (options: any) => void;
-	errorActionsShow: (message: TAnyMessageModel) => void;
-	onEditInit: (messageId: string) => void;
-	onEditCancel: () => void;
-	onEditRequest: (
-		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
-			attachments?: IMessageEditAttachment[];
-		}
-	) => Promise<void>;
-	onQuoteInit: (messageId: string) => void;
-	onRemoveQuoteMessage: (messageId: string) => void;
-	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
-	onReactionInit: (messageId: string) => void;
-	onMessageLongPress: (message: TAnyMessageModel) => void;
-	onReplyInit: (messageId: string) => Promise<void>;
-	setQuotesAndText: (text: string, quotes: string[]) => void;
-	getText: () => string | undefined;
-}
 
 export function useMessageActions({
 	messageActionStore,

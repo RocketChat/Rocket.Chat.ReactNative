@@ -5,16 +5,16 @@ import { isGroupChat } from '../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import log from '../../../lib/methods/helpers/log';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
-import RoomServices from '../services';
-import { getOrCreateRoomStore, releaseRoomStore, __resetRoomStoreRegistryForTests } from './RoomStore';
+import getMessages from '../services/getMessages';
+import { getOrCreateRoomStore, releaseRoomStore } from './RoomStore';
 
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services', () => ({
+jest.mock('../services/getMessages', () => ({
 	__esModule: true,
-	default: { getMessages: jest.fn(() => Promise.resolve()) }
+	default: jest.fn(() => Promise.resolve())
 }));
 jest.mock('../../../lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
@@ -36,7 +36,7 @@ jest.mock('../../../lib/methods/isInviteSubscription', () => ({
 jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
 
 const mockGet = database.active.get as jest.Mock;
-const mockGetMessages = RoomServices.getMessages as jest.Mock;
+const mockGetMessages = getMessages as unknown as jest.Mock;
 const mockLoadThreadMessages = loadThreadMessages as jest.Mock;
 const mockGetUserInfo = getUserInfo as jest.Mock;
 const mockIsGroupChat = isGroupChat as jest.Mock;
@@ -68,11 +68,17 @@ const setupObserve = () => {
 describe('RoomStore', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		__resetRoomStoreRegistryForTests();
 		mockIsGroupChat.mockReturnValue(false);
 		mockIsInviteSubscription.mockReturnValue(false);
 		mockGetMessages.mockResolvedValue(undefined);
 		mockLoadThreadMessages.mockResolvedValue(undefined);
+	});
+
+	// Isolate cases through the public release API instead of a test-only registry reset. Every case
+	// acquires 'rid-1' at most twice; release is a no-op once the entry's refcount hits zero.
+	afterEach(() => {
+		releaseRoomStore('rid-1');
+		releaseRoomStore('rid-1');
 	});
 
 	it('exposes the initial room synchronously on creation', () => {

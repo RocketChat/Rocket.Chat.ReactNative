@@ -3,7 +3,7 @@ import { createStore } from 'zustand';
 import { renderHook } from '@testing-library/react-native';
 
 import { createMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
-import { type RoomState, type RoomStore } from '../stores/RoomStore';
+import { type RoomState, type RoomStore } from '../definitions';
 import { useRoomInit } from './useRoomInit';
 
 interface IRenderRoomInitParams {

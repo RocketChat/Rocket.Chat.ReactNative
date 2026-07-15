@@ -5,14 +5,13 @@ import { sendLoadingEvent } from '../../../containers/Loading';
 import log from '../../../lib/methods/helpers/log';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMessages';
-import RoomServices from '../services';
+import getLocalAnchorTs from '../services/getLocalAnchor';
+import getMessageInfo from '../services/getMessageInfo';
 import { resolveJumpAnchor } from '../services/resolveJumpAnchor';
 import { useJumpToMessage } from './useJumpToMessage';
 
-jest.mock('../services', () => ({
-	__esModule: true,
-	default: { getMessageInfo: jest.fn(), getLocalAnchorTs: jest.fn() }
-}));
+jest.mock('../services/getLocalAnchor', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('../services/resolveJumpAnchor', () => ({
 	resolveJumpAnchor: jest.fn()
 }));
@@ -40,7 +39,7 @@ jest.mock('@react-navigation/native', () => ({
 	useRoute: () => ({ params: mockRouteParams })
 }));
 
-const mockGetMessageInfo = RoomServices.getMessageInfo as jest.Mock;
+const mockGetMessageInfo = getMessageInfo as unknown as jest.Mock;
 const mockResolveJumpAnchor = resolveJumpAnchor as jest.Mock;
 const mockSendLoadingEvent = sendLoadingEvent as jest.Mock;
 const mockLog = log as jest.Mock;
@@ -88,7 +87,7 @@ describe('useJumpToMessage', () => {
 
 		expect(mockResolveJumpAnchor).toHaveBeenCalledWith(RID, { id: 'm1', tmid: undefined, ts: 100, fromServer: undefined }, true, {
 			loadSurroundingMessages,
-			getLocalAnchorTs: RoomServices.getLocalAnchorTs
+			getLocalAnchorTs
 		});
 		expect(listRef.current.jumpToMessage).toHaveBeenCalledWith('m1', 12345);
 		expect(mockSendLoadingEvent).toHaveBeenCalledWith({ visible: true, onCancel: result.current.cancelJumpToMessage });
@@ -114,7 +113,7 @@ describe('useJumpToMessage', () => {
 			false,
 			{
 				loadSurroundingMessages,
-				getLocalAnchorTs: RoomServices.getLocalAnchorTs
+				getLocalAnchorTs
 			}
 		);
 		expect(listRef.current.jumpToMessage).toHaveBeenCalledWith('m1', null);

@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
 import { AccessibilityInfo } from 'react-native';
-import { createStore, useStore, type StoreApi } from 'zustand';
+import { createStore, useStore } from 'zustand';
 
 import I18n from '../../../i18n';
-import { type ComposerState, type TComposerExternalState } from '../definitions';
+import { type ComposerState, type ComposerStore, type TComposerExternalState } from '../definitions';
 
 export const createComposerStore = (initial: TComposerExternalState) =>
 	createStore<ComposerState>()((set, get) => ({
@@ -22,8 +22,6 @@ export const createComposerStore = (initial: TComposerExternalState) =>
 			}
 		}
 	}));
-
-export type ComposerStore = StoreApi<ComposerState>;
 
 export const ComposerStoreContext = createContext<ComposerStore | null>(null);
 

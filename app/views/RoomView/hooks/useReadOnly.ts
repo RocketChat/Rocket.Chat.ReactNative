@@ -6,7 +6,7 @@ import { isReadOnlySync } from '../../../lib/methods/helpers/isReadOnly';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
 import { RoomStoreContext } from '../stores/RoomStoreContext';
-import { type RoomStore } from '../stores/RoomStore';
+import { type RoomStore } from '../definitions';
 
 // The orchestrator holds its `roomStore` instance directly and renders the `RoomStoreContext.Provider`
 // itself, so it cannot consume that same context (it isn't its own descendant) — it must pass the

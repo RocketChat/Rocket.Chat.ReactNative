@@ -4,24 +4,7 @@ import database from '../../../lib/database';
 import { hasPermission } from '../../../lib/methods/helpers';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { type TMessageModel, type TSubscriptionModel } from '../../../definitions';
-
-export interface IUseRightButtonsParams {
-	rid?: string;
-	tmid?: string;
-	userId?: string;
-	hasE2EEWarning: boolean;
-	toggleRoomE2EEncryptionPermission?: string[];
-}
-
-export interface IUseRightButtonsResult {
-	isFollowingThread: boolean;
-	tunread: string[];
-	tunreadUser: string[];
-	tunreadGroup: string[];
-	isSelfDm: boolean;
-	canToggleEncryption: boolean;
-	subscription?: TSubscriptionModel;
-}
+import { type IUseRightButtonsParams, type IUseRightButtonsResult } from '../definitions';
 
 export function useRightButtons({
 	rid,

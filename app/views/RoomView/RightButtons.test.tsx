@@ -63,7 +63,7 @@ jest.mock('../../containers/Header/components/HeaderButton', () => {
 		BadgeUnread: () => null
 	};
 });
-jest.mock('./components', () => ({ HeaderCallButton: () => null }));
+jest.mock('./components/HeaderCallButton', () => ({ HeaderCallButton: () => null }));
 
 describe('RightButtons', () => {
 	beforeEach(() => {

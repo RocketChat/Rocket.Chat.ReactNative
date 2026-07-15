@@ -1,28 +1,10 @@
-import { type RefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { sendLoadingEvent } from '../../../containers/Loading';
-import { type IListContainerRef } from '../List/definitions';
-import { type TGetMessageInfoResult } from '../services/getMessageInfo';
+import { type IRoomViewProps, type IUseJumpToMessageParams, type IUseJumpToMessageResult } from '../definitions';
 import { jumpToMessage as jumpToMessageService } from '../services/jumpToMessage';
-import { type IRoomViewProps } from '../definitions';
-
-export interface IUseJumpToMessageParams {
-	rid?: string;
-	tmid?: string;
-	t?: string;
-	listRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void;
-	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void;
-}
-
-export interface IUseJumpToMessageResult {
-	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
-	cancelJumpToMessage: () => void;
-	consumeJumpParam: (messageId: string) => void;
-	onThreadMessagesLoaded: () => void;
-}
 
 export function useJumpToMessage({
 	rid,

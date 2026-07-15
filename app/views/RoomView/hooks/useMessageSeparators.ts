@@ -1,11 +1,7 @@
 import dayjs from '../../../lib/dayjs';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import { type TAnyMessageModel } from '../../../definitions';
-
-export interface IUseMessageSeparatorsResult {
-	dateSeparator: TAnyMessageModel['ts'] | null;
-	showUnreadSeparator: boolean;
-}
+import { type IUseMessageSeparatorsResult } from '../definitions';
 
 export const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel): IUseMessageSeparatorsResult => {
 	'use memo';

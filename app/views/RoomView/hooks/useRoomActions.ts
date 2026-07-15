@@ -1,18 +1,7 @@
-import { type RefObject } from 'react';
-
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
 import { sendMessage } from '../../../lib/methods/sendMessage';
-import { type IRoomViewProps } from '../definitions';
-import { type RoomStore } from '../stores/RoomStore';
-
-export interface IUseRoomActionsParams {
-	rid?: string;
-	tmid?: string;
-	roomStore: RoomStore;
-	userRef: RefObject<IRoomViewProps['user']>;
-	resetAction: () => void;
-}
+import { type IUseRoomActionsParams } from '../definitions';
 
 interface IUseRoomActionsResult {
 	onJoin: () => void;

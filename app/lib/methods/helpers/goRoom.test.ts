@@ -1,11 +1,7 @@
 import { InteractionManager } from 'react-native';
 
 import { goRoom } from './goRoom';
-import {
-	getOrCreateRoomStore,
-	releaseRoomStore,
-	__resetRoomStoreRegistryForTests
-} from '../../../views/RoomView/stores/RoomStore';
+import { getOrCreateRoomStore, releaseRoomStore } from '../../../views/RoomView/stores/RoomStore';
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
@@ -27,9 +23,9 @@ jest.mock('../readMessages', () => ({ readMessages: jest.fn(() => Promise.resolv
 jest.mock('../loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('../../services/restApi', () => ({ getUserInfo: jest.fn() }));
 jest.mock('../isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../../../views/RoomView/services', () => ({
+jest.mock('../../../views/RoomView/services/getMessages', () => ({
 	__esModule: true,
-	default: { getMessages: jest.fn(() => Promise.resolve()) }
+	default: jest.fn(() => Promise.resolve())
 }));
 jest.mock('../../store/auxStore', () => ({
 	store: {
@@ -55,7 +51,6 @@ let graceCb: (() => void) | undefined;
 describe('goRoom RoomStore warm-up', () => {
 	beforeEach(() => {
 		graceCb = undefined;
-		__resetRoomStoreRegistryForTests();
 		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation(((cb: () => void) => {
 			graceCb = cb;
 			return { then: () => {} };

@@ -10,8 +10,8 @@ import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants/colors';
 import { joinRoom } from '../../lib/services/restApi';
-import { type TSupportedThemes } from '../../theme';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { type IJoinCode, type IJoinCodeProps } from './definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -42,18 +42,6 @@ const styles = StyleSheet.create({
 		height: undefined
 	}
 });
-
-export interface IJoinCodeProps {
-	rid: string;
-	t: string;
-	onJoin: Function;
-	isMasterDetail: boolean;
-	theme: TSupportedThemes;
-}
-
-export interface IJoinCode {
-	show: () => void;
-}
 
 const JoinCode = memo(
 	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {

@@ -2,17 +2,11 @@ import { useRoomStore } from '../stores/RoomStoreContext';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { type RoomType, type TAnyMessageModel } from '../../../definitions';
+import { type RoomType } from '../../../definitions';
 import { useIsIgnored } from '../hooks/useIsIgnored';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { useMessageSeparators } from '../hooks/useMessageSeparators';
-
-export type TMessageRowProps = {
-	item: TAnyMessageModel;
-	previousItem: TAnyMessageModel;
-	highlightedMessage?: string;
-	onLongPress: (item: TAnyMessageModel) => void;
-};
+import { type TMessageRowProps } from '../definitions';
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
 	'use memo';

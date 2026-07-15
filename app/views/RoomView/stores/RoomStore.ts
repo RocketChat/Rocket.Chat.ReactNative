@@ -9,39 +9,17 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { type IRoomViewState } from '../definitions';
+import {
+	type IGetOrCreateRoomStoreParams,
+	type IRoomStoreInitParams,
+	type IRoomViewState,
+	type RoomState,
+	type RoomStore
+} from '../definitions';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
-import RoomServices from '../services';
+import getMessages from '../services/getMessages';
 
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
-
-export interface IRoomStoreInitParams {
-	tmid?: string;
-	onThreadMessagesLoaded?: () => void;
-}
-
-export interface RoomState {
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	subscribed: boolean;
-	member: IRoomViewState['member'];
-	roomUserId?: string | null;
-	loading: boolean;
-	lastOpen: Date | null;
-	canAutoTranslate: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
-	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
-	init: (params?: IRoomStoreInitParams) => Promise<void>;
-	join: () => void;
-	markMessageSent: () => void;
-	joinRoom?: () => Promise<void>;
-	resumeRoom?: () => Promise<void>;
-}
-
-export type RoomStore = StoreApi<RoomState>;
 
 const getRoomMember = async (get: () => RoomState, set: StoreApi<RoomState>['setState']): Promise<IRoomViewState['member']> => {
 	const currentRoom = get().room;
@@ -98,7 +76,7 @@ const createRoomState =
 					onThreadMessagesLoaded?.();
 				} else {
 					const newLastOpen = new Date();
-					await RoomServices.getMessages({
+					await getMessages({
 						rid: currentRoom.rid,
 						t: currentRoom.t as RoomType,
 						...('lastOpen' in currentRoom && currentRoom.lastOpen ? { lastOpen: currentRoom.lastOpen } : {})
@@ -158,13 +136,6 @@ interface IRoomStoreRegistryEntry {
 
 const registry = new Map<string, IRoomStoreRegistryEntry>();
 
-export interface IGetOrCreateRoomStoreParams {
-	rid?: string;
-	t?: string;
-	initialRoom: IRoomViewState['room'];
-	roomUserId?: string | null;
-}
-
 export const getOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
 		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
@@ -211,8 +182,3 @@ export function useRoomStoreByRid<T>(rid: string | undefined, selector: (state: 
 	const store = (rid ? registry.get(rid)?.store : undefined) ?? getFallbackRoomStore();
 	return useStore(store, selector);
 }
-
-// Test-only: clears the module-level registry between test cases (no unsubscribe side effects run).
-export const __resetRoomStoreRegistryForTests = (): void => {
-	registry.clear();
-};

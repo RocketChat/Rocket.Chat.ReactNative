@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
+import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../../definitions';
 import { type TAnyMessageModel } from '../../../../definitions';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live

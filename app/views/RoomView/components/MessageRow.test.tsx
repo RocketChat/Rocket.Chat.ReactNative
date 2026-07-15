@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
-import { getOrCreateRoomStore, __resetRoomStoreRegistryForTests } from '../stores/RoomStore';
+import { getOrCreateRoomStore, releaseRoomStore } from '../stores/RoomStore';
 import { RoomStoreContext } from '../stores/RoomStoreContext';
 import { MessageRow } from './MessageRow';
 
@@ -9,9 +9,9 @@ jest.mock('../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services', () => ({
+jest.mock('../services/getMessages', () => ({
 	__esModule: true,
-	default: { getMessages: jest.fn(() => Promise.resolve()) }
+	default: jest.fn(() => Promise.resolve())
 }));
 jest.mock('../../../lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
@@ -65,7 +65,11 @@ const setupObserve = () => {
 describe('MessageRow', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		__resetRoomStoreRegistryForTests();
+	});
+
+	// Release the 'rid-1' store the case acquires, isolating via the public API (no test-only reset).
+	afterEach(() => {
+		releaseRoomStore('rid-1');
 	});
 
 	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', () => {
