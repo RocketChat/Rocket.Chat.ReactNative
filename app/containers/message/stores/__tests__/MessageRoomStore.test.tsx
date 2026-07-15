@@ -1,9 +1,18 @@
-import { memo } from 'react';
+import { memo, useContext, useEffect, type ContextType } from 'react';
 import { act, render } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { MessageRoomProvider, useAutoTranslate, useIsArchived, useTimeFormat } from '../MessageRoomStore';
+import {
+	MessageRoomProvider,
+	MessageRoomStoreContext,
+	useAutoTranslate,
+	useBlockAction,
+	useIsArchived,
+	useNavToRoomInfo,
+	useShowAttachment,
+	useTimeFormat
+} from '../MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 
@@ -151,6 +160,84 @@ describe('MessageRoomStore', () => {
 
 		act(() => rerender(wrap(true)));
 		expect(spy).toHaveBeenLastCalledWith(true);
+	});
+
+	describe('handlers bag', () => {
+		it('reads a handler through the fine-grained selector off the published bag', () => {
+			const blockAction = jest.fn();
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useBlockAction());
+				return null;
+			};
+
+			render(
+				<Provider store={mockedStore}>
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction }}>
+						<Probe />
+					</MessageRoomProvider>
+				</Provider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(blockAction);
+		});
+
+		it('prefers the view-level override over the bag for navToRoomInfo/showAttachment', () => {
+			const overrideNav = jest.fn();
+			const bagNav = jest.fn();
+			const bagShow = jest.fn();
+			const navSpy = jest.fn();
+			const showSpy = jest.fn();
+			const Probe = () => {
+				navSpy(useNavToRoomInfo());
+				showSpy(useShowAttachment());
+				return null;
+			};
+
+			render(
+				<Provider store={mockedStore}>
+					<MessageRoomProvider
+						timeFormat='fixed-format'
+						navToRoomInfo={overrideNav}
+						handlers={{ navToRoomInfo: bagNav, showAttachment: bagShow }}>
+						<Probe />
+					</MessageRoomProvider>
+				</Provider>
+			);
+
+			// Override wins for navToRoomInfo; showAttachment has no override so it falls back to the bag.
+			expect(navSpy).toHaveBeenLastCalledWith(overrideNav);
+			expect(showSpy).toHaveBeenLastCalledWith(bagShow);
+		});
+
+		it('publishes handlers in the reactive tail: a setState swap reaches the selector', () => {
+			const first = jest.fn();
+			const second = jest.fn();
+			const spy = jest.fn();
+			const captured: { store: ContextType<typeof MessageRoomStoreContext> } = { store: null };
+			const StoreProbe = () => {
+				const store = useContext(MessageRoomStoreContext);
+				useEffect(() => {
+					captured.store = store;
+				}, [store]);
+				spy(useBlockAction());
+				return null;
+			};
+
+			render(
+				<Provider store={mockedStore}>
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction: first }}>
+						<StoreProbe />
+					</MessageRoomProvider>
+				</Provider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(first);
+
+			act(() => captured.store?.setState({ handlers: { blockAction: second } }));
+
+			expect(spy).toHaveBeenLastCalledWith(second);
+		});
 	});
 
 	describe('frozen handler guard (dev)', () => {

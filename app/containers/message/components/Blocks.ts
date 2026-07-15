@@ -1,15 +1,14 @@
 import { createElement } from 'react';
 
 import { messageBlockWithContext } from '../../UIKit/MessageBlock';
-import { useRid } from '../stores/MessageRoomStore';
+import { useRid, useBlockAction } from '../stores/MessageRoomStore';
 import { useBlocks } from '../stores/MessageStore';
-import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 
 const Blocks = () => {
 	'use memo';
 
 	const rid = useRid();
-	const { blockAction } = useRoomMessageHandlers({ optional: true }) ?? {};
+	const blockAction = useBlockAction();
 	const { blocks, id: mid } = useBlocks();
 
 	if (blocks && blocks.length > 0) {

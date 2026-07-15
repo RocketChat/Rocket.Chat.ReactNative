@@ -18,9 +18,10 @@ import {
 	useIsThreadRoom,
 	useJumpToMessage,
 	useMessageGroupingPeriod,
-	useMessageUser
+	useMessageUser,
+	useOnThreadPress,
+	useOnDiscussionPress
 } from './MessageRoomStore';
-import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 
 type MessageStoreState = {
 	tick: number;
@@ -381,7 +382,8 @@ export const useMessagePress = (): (() => void) => {
 	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
 	const onPress = useMessageStore(s => s.onPress);
-	const { onThreadPress, onDiscussionPress } = useRoomMessageHandlers({ optional: true }) ?? {};
+	const onThreadPress = useOnThreadPress();
+	const onDiscussionPress = useOnDiscussionPress();
 	const closeEmojiAndAction = useCloseEmojiAndAction();
 	const { revealsIgnored } = useMessageTouchable();
 	const revealIgnored = useRevealIgnored();

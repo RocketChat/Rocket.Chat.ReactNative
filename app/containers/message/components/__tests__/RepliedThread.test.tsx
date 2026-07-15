@@ -4,32 +4,23 @@ import { Provider } from 'react-redux';
 import RepliedThread from '../RepliedThread';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider } from '../../stores/MessageRoomStore';
-import { useRoomMessageHandlers, type IUseRoomMessageHandlersResult } from '../../hooks/useRoomMessageHandlers';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
-const mockUseRoomMessageHandlers = jest.mocked(useRoomMessageHandlers);
-
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
 	({ id: 'msg1', tmid: 'thread1', tmsg: 'original reply', ...overrides } as unknown as TAnyMessageModel);
 
-const renderRepliedThread = (item: TAnyMessageModel, fetchThreadName?: jest.Mock) => {
-	mockUseRoomMessageHandlers.mockReturnValue({ fetchThreadName } as unknown as IUseRoomMessageHandlersResult);
-	return render(
+const renderRepliedThread = (item: TAnyMessageModel, fetchThreadName?: jest.Mock) =>
+	render(
 		<Provider store={mockedStore}>
-			<MessageRoomProvider>
+			<MessageRoomProvider handlers={{ fetchThreadName }}>
 				<MessageProvider item={item}>
 					<RepliedThread isHeader />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
 	);
-};
 
 describe('RepliedThread', () => {
 	test('renders the encrypted placeholder when the message is encrypted, ignoring tmsg', () => {
@@ -59,7 +50,7 @@ describe('RepliedThread', () => {
 		const updatedItem = buildItem({ tmid: 'thread2', id: 'msg2', tmsg: undefined });
 		rerender(
 			<Provider store={mockedStore}>
-				<MessageRoomProvider>
+				<MessageRoomProvider handlers={{ fetchThreadName }}>
 					<MessageProvider item={updatedItem}>
 						<RepliedThread isHeader />
 					</MessageProvider>

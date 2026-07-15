@@ -6,12 +6,12 @@ import styles from '../styles';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
-import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
+import { useHandleEnterCall } from '../stores/MessageRoomStore';
 
 const CallButton = () => {
 	'use memo';
 
-	const { handleEnterCall } = useRoomMessageHandlers({ optional: true }) ?? {};
+	const handleEnterCall = useHandleEnterCall();
 	const { colors } = useTheme();
 	return (
 		<View style={styles.buttonContainer}>

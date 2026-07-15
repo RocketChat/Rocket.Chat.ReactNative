@@ -39,10 +39,6 @@ jest.mock('expo-image', () => {
 	return { Image };
 });
 
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 
 const buildItem = () => ({ id: 'msg-1' } as unknown as TAnyMessageModel);

@@ -7,10 +7,10 @@ import log from '../../../../lib/methods/helpers/log';
 import { Review } from '../../../../lib/methods/helpers/review';
 import { sendMessage } from '../../../../lib/methods/sendMessage';
 import { getUserSelector } from '../../../../selectors/login';
-import { type RoomState, type RoomStore } from '../../../../views/RoomView/definitions';
-import { RoomStoreContext } from '../../../../views/RoomView/stores/RoomStoreContext';
-import { createMessageActionStore, MessageActionStoreContext } from '../../stores/MessageActionStore';
-import { MessageRoomProvider } from '../../stores/MessageRoomStore';
+import { type RoomState, type RoomStore } from '../../definitions';
+import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { createMessageActionStore, MessageActionStoreContext } from '../../../../containers/message/stores/MessageActionStore';
+import { MessageRoomProvider } from '../../../../containers/message/stores/MessageRoomStore';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
 jest.mock('@react-navigation/native', () => ({
@@ -25,11 +25,8 @@ jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
 jest.mock('../../../../lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
-jest.mock('../../../ActionSheet', () => ({
+jest.mock('../../../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
-}));
-jest.mock('../../../../lib/methods/helpers', () => ({
-	useDebounce: (fn: (...args: any[]) => any) => fn
 }));
 jest.mock('../../../../lib/services/restApi', () => ({
 	setReaction: jest.fn(),
@@ -117,8 +114,8 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 };
 
 // MessageRoomProvider stays mounted (useRoomTmid throws without it); the store contexts are the ones left absent.
-const renderWithoutStores = (options?: { optional?: boolean }) =>
-	renderHook(() => useRoomMessageHandlers(options as { optional: true }), {
+const renderWithoutStores = () =>
+	renderHook(() => useRoomMessageHandlers(), {
 		wrapper: ({ children }) => <MessageRoomProvider timeFormat='h:mm A'>{children}</MessageRoomProvider>
 	});
 
@@ -193,6 +190,16 @@ describe('useRoomMessageHandlers', () => {
 
 			expect(mockToggleFollowMessage).toHaveBeenCalledWith('explicit-thread', false);
 		});
+
+		it('no-ops when neither an explicit threadId nor a store tmid is available', async () => {
+			const { result } = renderRoomMessageHandlers();
+
+			await act(async () => {
+				await result.current.toggleFollowThread(false);
+			});
+
+			expect(mockToggleFollowMessage).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('onAnswerButtonPress', () => {
@@ -222,14 +229,18 @@ describe('useRoomMessageHandlers', () => {
 		});
 	});
 
-	describe('optional mode', () => {
-		it('returns undefined without throwing when the store contexts are absent', () => {
-			const { result } = renderWithoutStores({ optional: true });
+	describe('store contexts absent', () => {
+		let consoleErrorSpy: jest.SpyInstance;
 
-			expect(result.current).toBeUndefined();
+		beforeEach(() => {
+			consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 		});
 
-		it('throws when the store contexts are absent and optional is omitted', () => {
+		afterEach(() => {
+			consoleErrorSpy.mockRestore();
+		});
+
+		it('throws when the store contexts are absent', () => {
 			expect(() => renderWithoutStores()).toThrow('must be used within a RoomStoreContext.Provider');
 		});
 	});

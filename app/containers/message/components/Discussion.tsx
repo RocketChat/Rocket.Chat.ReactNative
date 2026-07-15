@@ -9,7 +9,7 @@ import { DISCUSSION } from '../constants';
 import { formatDateThreads } from '../../../lib/methods/helpers/room';
 import { useTheme } from '../../../theme';
 import { useDiscussion, useMessageField, useMessageText } from '../stores/MessageStore';
-import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
+import { useOnDiscussionPress } from '../stores/MessageRoomStore';
 
 const Discussion = () => {
 	'use memo';
@@ -23,7 +23,7 @@ const Discussion = () => {
 		time = formatDateThreads(dlm);
 	}
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
-	const { onDiscussionPress } = useRoomMessageHandlers({ optional: true }) ?? {};
+	const onDiscussionPress = useOnDiscussionPress();
 	return (
 		<View style={{ gap: 4 }}>
 			<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>

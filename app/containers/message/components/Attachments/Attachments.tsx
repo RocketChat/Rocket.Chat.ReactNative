@@ -8,8 +8,7 @@ import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
 import { useMessageField, useTranslateLanguage } from '../../stores/MessageStore';
-import { useShowAttachmentOverride } from '../../stores/MessageRoomStore';
-import { useRoomMessageHandlers } from '../../hooks/useRoomMessageHandlers';
+import { useShowAttachment } from '../../stores/MessageRoomStore';
 import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { getAttachmentKey, isContentAttachment } from './utils';
@@ -18,9 +17,7 @@ const Attachments: FC<IMessageAttachments> = ({ attachments }: IMessageAttachmen
 	'use memo';
 
 	const translateLanguage = useTranslateLanguage();
-	const showAttachmentOverride = useShowAttachmentOverride();
-	const { showAttachment: selfSourcedShowAttachment } = useRoomMessageHandlers({ optional: true }) ?? {};
-	const showAttachment = showAttachmentOverride ?? selfSourcedShowAttachment;
+	const showAttachment = useShowAttachment();
 	const author = useMessageField(item => item.u);
 
 	const nonQuoteAttachments = attachments?.filter(isContentAttachment);

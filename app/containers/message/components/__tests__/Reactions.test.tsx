@@ -2,16 +2,9 @@ import { render, fireEvent } from '@testing-library/react-native';
 
 import Reactions from '../Reactions';
 import { MessageProviders } from '../../__tests__/testHelpers';
-import { useRoomMessageHandlers, type IUseRoomMessageHandlersResult } from '../../hooks/useRoomMessageHandlers';
 import { setUser } from '../../../../actions/login';
 import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IReaction, type TAnyMessageModel } from '../../../../definitions';
-
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
-const mockUseRoomMessageHandlers = jest.mocked(useRoomMessageHandlers);
+import { type IReaction, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../../definitions';
 
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(
@@ -56,23 +49,20 @@ const buildOnReactionPress = (item: FakeItem) => (emoji: string) => {
 	item._emit();
 };
 
-const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPress: (emoji: string) => void }) => {
-	mockUseRoomMessageHandlers.mockReturnValue({
-		onReactionPress,
-		onReactionLongPress: jest.fn()
-	} as unknown as IUseRoomMessageHandlersResult);
-
-	return (
-		<MessageProviders
-			item={item}
-			room={{
-				user: { username: 'john' },
-				reactionInit: jest.fn()
-			}}>
-			<Reactions />
-		</MessageProviders>
-	);
-};
+const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPress: (emoji: string) => void }) => (
+	<MessageProviders
+		item={item}
+		room={{
+			user: { username: 'john' },
+			reactionInit: jest.fn(),
+			handlers: {
+				onReactionPress: onReactionPress as unknown as IUseRoomMessageHandlersResult['onReactionPress'],
+				onReactionLongPress: jest.fn()
+			}
+		}}>
+		<Reactions />
+	</MessageProviders>
+);
 
 it('renders all reactions and AddReaction button', () => {
 	const reactions: IReaction[] = [

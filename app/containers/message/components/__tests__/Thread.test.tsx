@@ -4,21 +4,12 @@ import { Provider } from 'react-redux';
 import Thread from '../Thread';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { useRoomMessageHandlers, type IUseRoomMessageHandlersResult } from '../../hooks/useRoomMessageHandlers';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
-jest.mocked(useRoomMessageHandlers).mockReturnValue({
-	toggleFollowThread: jest.fn(),
-	onThreadPress: jest.fn()
-} as unknown as IUseRoomMessageHandlersResult);
-
 const baseContextValue: Partial<MessageRoomState> = {
-	user: { id: 'user1', username: 'user1' }
+	user: { id: 'user1', username: 'user1' },
+	handlers: { toggleFollowThread: jest.fn(), onThreadPress: jest.fn() }
 };
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>

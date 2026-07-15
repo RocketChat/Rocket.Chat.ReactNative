@@ -9,8 +9,7 @@ import MessageTime from './Time';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useSetting } from '../../../lib/hooks/useSetting';
 import { useIsOwnMessage, useMessageAuthor, useMessageGrouping, useMessageHeaderMeta } from '../stores/MessageStore';
-import { useNavToRoomInfoOverride } from '../stores/MessageRoomStore';
-import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
+import { useNavToRoomInfo } from '../stores/MessageRoomStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,9 +44,7 @@ const User = () => {
 	'use memo';
 
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
-	const navToRoomInfoOverride = useNavToRoomInfoOverride();
-	const { navToRoomInfo: selfSourcedNavToRoomInfo } = useRoomMessageHandlers({ optional: true }) ?? {};
-	const navToRoomInfo = navToRoomInfoOverride ?? selfSourcedNavToRoomInfo;
+	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const isHeader = useMessageGrouping();

@@ -41,10 +41,6 @@ jest.mock('expo-image', () => {
 	return { Image };
 });
 
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 const mockOpenLink = openLink as jest.Mock;
 const mockFormatAttachmentUrl = formatAttachmentUrl as jest.Mock;

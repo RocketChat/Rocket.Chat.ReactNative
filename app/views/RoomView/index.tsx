@@ -26,6 +26,7 @@ import { type IMessageComposerRef } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './RoomProviders';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
+import { RoomMessageHandlersBridge } from './components/RoomMessageHandlersBridge';
 import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import { type IJoinCode, type IListContainerRef, type IRoomViewProps, type IRoomViewState, type TListRef } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
@@ -320,17 +321,19 @@ const RoomView = (props: IRoomViewProps) => {
 							Message_GroupingPeriod={Message_GroupingPeriod}
 							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-							<List
-								ref={listRef}
-								listRef={flatListRef}
-								rid={room.rid}
-								t={room.t as RoomType}
-								tmid={tmid}
-								renderRow={renderItem}
-								hideSystemMessages={hideSystemMessages}
-								showMessageInMainThread={user.showMessageInMainThread ?? false}
-								serverVersion={serverVersion}
-							/>
+							<RoomMessageHandlersBridge>
+								<List
+									ref={listRef}
+									listRef={flatListRef}
+									rid={room.rid}
+									t={room.t as RoomType}
+									tmid={tmid}
+									renderRow={renderItem}
+									hideSystemMessages={hideSystemMessages}
+									showMessageInMainThread={user.showMessageInMainThread ?? false}
+									serverVersion={serverVersion}
+								/>
+							</RoomMessageHandlersBridge>
 						</MessageRoomProvider>
 					</A11yGateProvider>
 					<RoomFooter messageComposerRef={messageComposerRef} />

@@ -6,8 +6,7 @@ import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { useMessageItem, useMessageText, useReplies, useThreadBadgeColor, useThreadData } from '../stores/MessageStore';
-import { useIsThreadRoom, useMessageUser } from '../stores/MessageRoomStore';
-import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
+import { useIsThreadRoom, useMessageUser, useOnThreadPress, useToggleFollowThread } from '../stores/MessageRoomStore';
 
 const Thread = () => {
 	'use memo';
@@ -16,7 +15,8 @@ const Thread = () => {
 	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
 	const threadBadgeColor = useThreadBadgeColor();
-	const { onThreadPress, toggleFollowThread } = useRoomMessageHandlers({ optional: true }) ?? {};
+	const onThreadPress = useOnThreadPress();
+	const toggleFollowThread = useToggleFollowThread();
 	const user = useMessageUser();
 	const replies = useReplies();
 	const { tcount, tlm, id } = useThreadData();

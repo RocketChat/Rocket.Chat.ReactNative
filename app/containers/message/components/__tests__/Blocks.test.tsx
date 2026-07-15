@@ -4,7 +4,6 @@ import { render } from '@testing-library/react-native';
 import Blocks from '../Blocks';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { useRoomMessageHandlers, type IUseRoomMessageHandlersResult } from '../../hooks/useRoomMessageHandlers';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type TAnyMessageModel } from '../../../../definitions';
 
@@ -12,14 +11,8 @@ jest.mock('../../../UIKit/MessageBlock', () => ({
 	messageBlockWithContext: jest.fn(() => () => null)
 }));
 
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { messageBlockWithContext } = jest.requireMock('../../../UIKit/MessageBlock');
-
-const mockUseRoomMessageHandlers = jest.mocked(useRoomMessageHandlers);
 
 const buildItem = (blocks: TAnyMessageModel['blocks']) => ({ id: 'msg-1', blocks } as unknown as TAnyMessageModel);
 
@@ -37,7 +30,6 @@ const renderBlocks = (blocks: TAnyMessageModel['blocks'], config: Partial<Messag
 describe('Blocks', () => {
 	beforeEach(() => {
 		messageBlockWithContext.mockClear();
-		mockUseRoomMessageHandlers.mockReturnValue({} as IUseRoomMessageHandlersResult);
 	});
 
 	it('renders null and skips messageBlockWithContext when blocks is null', () => {
@@ -64,8 +56,7 @@ describe('Blocks', () => {
 
 	it("calls blockAction with the wired params and rid defaulted to '' when absent", async () => {
 		const blockAction = jest.fn();
-		mockUseRoomMessageHandlers.mockReturnValue({ blockAction } as unknown as IUseRoomMessageHandlersResult);
-		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks']);
+		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { handlers: { blockAction } });
 
 		const { action } = messageBlockWithContext.mock.calls[0][0];
 		await action({ actionId: 'submit', value: 'v', blockId: 'block-1' });

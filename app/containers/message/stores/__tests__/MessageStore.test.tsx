@@ -9,7 +9,6 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 import { messagesStatus } from '../../../../lib/constants/messagesStatus';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import { MessageRoomProvider, type MessageRoomState } from '../MessageRoomStore';
-import { useRoomMessageHandlers, type IUseRoomMessageHandlersResult } from '../../hooks/useRoomMessageHandlers';
 import {
 	MessageProvider,
 	useAvatar,
@@ -45,15 +44,7 @@ jest.mock('../../../../lib/methods/helpers/openLink', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../../hooks/useRoomMessageHandlers', () => ({
-	useRoomMessageHandlers: jest.fn(() => ({}))
-}));
-
 const mockOpenLink = openLink as jest.Mock;
-
-// useMessagePress sources onThreadPress/onDiscussionPress from useRoomMessageHandlers, not MessageRoomState.
-const mockRoomMessageHandlers = (handlers: Partial<IUseRoomMessageHandlersResult>) =>
-	jest.mocked(useRoomMessageHandlers).mockReturnValue(handlers as unknown as IUseRoomMessageHandlersResult);
 
 type Subscriber = () => void;
 
@@ -891,7 +882,6 @@ describe('MessageStore', () => {
 		beforeEach(() => {
 			jest.useFakeTimers();
 			dismissSpy = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => {});
-			mockRoomMessageHandlers({});
 		});
 
 		afterEach(() => {
@@ -902,8 +892,7 @@ describe('MessageStore', () => {
 		it('reveals an ignored message instead of pressing', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model, { isIgnored: true });
+			const { result } = renderMessageHook(useMessagePress, model, { isIgnored: true, config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 
@@ -916,8 +905,10 @@ describe('MessageStore', () => {
 			const onPress = jest.fn();
 			const onThreadPress = jest.fn();
 			const onDiscussionPress = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress, onDiscussionPress });
-			const { result } = renderMessageHook(useMessagePress, model, { onPress });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				onPress,
+				config: { handlers: { onThreadPress, onDiscussionPress } }
+			});
 
 			act(() => result.current());
 
@@ -930,8 +921,7 @@ describe('MessageStore', () => {
 		it('dismisses the keyboard and routes to thread press for a threaded reply', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model);
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 
@@ -942,8 +932,7 @@ describe('MessageStore', () => {
 		it('routes to thread press for a root message that has replies (tlm)', () => {
 			const model = buildFakeModel({ tlm: new Date() });
 			const onThreadPress = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model);
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 
@@ -953,8 +942,9 @@ describe('MessageStore', () => {
 		it('does not route to thread press while already inside the thread room', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model, { config: { isThreadRoom: true } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				config: { isThreadRoom: true, handlers: { onThreadPress } }
+			});
 
 			act(() => result.current());
 
@@ -964,8 +954,7 @@ describe('MessageStore', () => {
 		it('routes to discussion press when the message has a discussion', () => {
 			const model = buildFakeModel({ dlm: new Date(), drid: 'drid-1' });
 			const onDiscussionPress = jest.fn();
-			mockRoomMessageHandlers({ onDiscussionPress });
-			const { result } = renderMessageHook(useMessagePress, model);
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onDiscussionPress } } });
 
 			act(() => result.current());
 
@@ -975,8 +964,7 @@ describe('MessageStore', () => {
 		it('debounces on the leading edge, suppressing an immediate repeat until the window elapses', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model);
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 			expect(onThreadPress).toHaveBeenCalledTimes(1);
@@ -994,8 +982,9 @@ describe('MessageStore', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
 			const closeEmojiAndAction = jest.fn();
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model, { config: { closeEmojiAndAction } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				config: { closeEmojiAndAction, handlers: { onThreadPress } }
+			});
 
 			act(() => result.current());
 
@@ -1008,8 +997,9 @@ describe('MessageStore', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
 			const closeEmojiAndAction = jest.fn((action?: (params?: unknown) => void) => action?.());
-			mockRoomMessageHandlers({ onThreadPress });
-			const { result } = renderMessageHook(useMessagePress, model, { config: { closeEmojiAndAction } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				config: { closeEmojiAndAction, handlers: { onThreadPress } }
+			});
 
 			act(() => result.current());
 
