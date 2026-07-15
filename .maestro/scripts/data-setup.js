@@ -20,7 +20,6 @@ const getDeepLink = (method, server, ...params) => {
     return deeplink;
 };
 
-
 const login = (username, password) => {
     const response = postWithRetry(`${data.server}/api/v1/login`, {
         headers: {
@@ -70,10 +69,8 @@ const createUserWithPasswordChange = () => {
     return createUser({ requirePasswordChange: true });
 }
 
-const deleteCreatedUser = async ({ username: usernameToDelete }) => {
+const deleteCreatedUser = ({ username: usernameToDelete }) => {
     try {
-        login(output.account.adminUser, output.account.adminPassword);
-
         const result = getWithRetry(`${data.server}/api/v1/users.info?username=${usernameToDelete}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -107,6 +104,10 @@ const createRandomTeam = (username, password) => {
         body: JSON.stringify({ "name": teamName, "members": [], "type": 1, "room": { "readOnly": false, "extraData": { "topic": "", "broadcast": false, "encrypted": false } } })
     });
 
+    data.teams.push({
+        name: teamName
+    });
+
     return teamName;
 }
 
@@ -123,6 +124,11 @@ const createRandomRoom = (username, password, type = 'c') => {
     });
 
     const result = json(response.body);
+
+    data.rooms.push({
+        name: type === 'c' ? result.channel.name : result.group.name,
+        _id: type === 'c' ? result.channel._id : result.group._id
+    });
 
     return {
         _id: type === 'c' ? result.channel._id : result.group._id,
@@ -196,7 +202,6 @@ const createDM = (username, password, otherUsername) => {
     return json(result.body);
 }
 
-// Delete created users to avoid use all the Seats Available on the server
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
         for (const deleteUser of data.accounts) {
@@ -204,10 +209,68 @@ const deleteCreatedUsers = () => {
         }
     }
 };
+const deleteCreatedRoom = (roomId) => {
+    try {
+        postWithRetry(`${data.server}/api/v1/rooms.delete`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify({
+                roomId
+            })
+        });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+    }
+};
 
-function logAccounts() {
-    console.log(JSON.stringify(data.accounts));
-}
+const deleteCreatedRooms = () => {
+    if (data.rooms.length) {
+        for (const deleteRoom of data.rooms) {
+            deleteCreatedRoom(deleteRoom._id);
+        }
+    }
+};
+
+const deleteCreatedTeam = (teamName) => {
+    try {
+        postWithRetry(`${data.server}/api/v1/teams.delete`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify({
+                teamName
+            })
+        });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+    }
+};
+
+const deleteCreatedTeams = () => {
+    if (data.teams.length) {
+        for (const deleteTeam of data.teams) {
+            deleteCreatedTeam(deleteTeam.name);
+        }
+    }
+};
+
+const addUserToClean = (server, user) => {
+    if (server === data.server) {
+        data.accounts.push(user);
+    }
+};
+
+const cleanUp = () => {
+    login(output.account.adminUser, output.account.adminPassword);
+
+    deleteCreatedUsers();
+    deleteCreatedRooms();
+    deleteCreatedTeams();
+};
+
 
 const sleep = (ms) => {
     const start = Date.now();
@@ -254,8 +317,8 @@ const getWithRetry = (url, options) => retryRequest(() => http.get(url, options)
 output.utils = {
     createUser,
     createUserWithPasswordChange,
-    logAccounts,
-    deleteCreatedUsers,
+    addUserToClean,
+    cleanUp,
     createRandomTeam,
     createRandomRoom,
     sendMessage,

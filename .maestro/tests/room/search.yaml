@@ -2,6 +2,8 @@ appId: ${APP_ID}
 name: Search
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-13
   - android-only
