@@ -39,11 +39,13 @@ const getRoomMember = async (get: () => RoomState, set: StoreApi<RoomState>['set
 	return {};
 };
 
+const EMPTY_ROOM: IRoomViewState['room'] = { rid: '', t: '' };
+
 const createRoomState =
 	(
 		rid: string | undefined,
-		initialRoom: IRoomViewState['room'],
-		roomUserId: string | null | undefined
+		initialRoom: IRoomViewState['room'] = EMPTY_ROOM,
+		roomUserId: string | null | undefined = null
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: initialRoom,
@@ -203,10 +205,12 @@ export const releaseRoomStore = (rid?: string): void => {
 	}
 };
 
+// Inert store derived from createRoomState (the empty-room default), so a true-bug registry miss
+// yields a blank room instead of throwing synchronously in native-stack header render.
 let fallbackRoomStore: RoomStore | undefined;
 const getFallbackRoomStore = (): RoomStore => {
 	if (!fallbackRoomStore) {
-		fallbackRoomStore = createStore<RoomState>(createRoomState(undefined, { rid: '', t: '' }, null));
+		fallbackRoomStore = createStore<RoomState>(createRoomState(undefined));
 	}
 	return fallbackRoomStore;
 };
@@ -216,6 +220,10 @@ const getFallbackRoomStore = (): RoomStore => {
 export function useRoomStoreByRid<T>(rid: string | undefined, selector: (state: RoomState) => T): T {
 	'use memo';
 
-	const store = (rid ? registry.get(rid)?.store : undefined) ?? getFallbackRoomStore();
-	return useStore(store, selector);
+	const entry = rid ? registry.get(rid) : undefined;
+	if (__DEV__ && rid && !entry) {
+		// With deferred unmount release this never fires on a healthy pop; a live miss is a real bug.
+		console.warn(`useRoomStoreByRid: no store registered for rid "${rid}"; falling back to empty room.`);
+	}
+	return useStore(entry?.store ?? getFallbackRoomStore(), selector);
 }

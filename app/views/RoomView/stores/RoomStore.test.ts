@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import { renderHook } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
@@ -8,7 +9,7 @@ import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription'
 import log from '../../../lib/methods/helpers/log';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
-import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from './RoomStore';
+import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore, useRoomStoreByRid } from './RoomStore';
 
 const mockScheduledSweeps: Array<() => void> = [];
 const flushSweeps = () => {
@@ -407,6 +408,40 @@ describe('RoomStore', () => {
 
 			flushSweeps();
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe('useRoomStoreByRid', () => {
+		it('reads the rid-keyed store from the registry without warning on a hit', () => {
+			setupObserve();
+			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+			const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+			const { result } = renderHook(() => useRoomStoreByRid('rid-1', s => s.room));
+
+			expect(result.current).toBe(subRoom);
+			expect(warn).not.toHaveBeenCalled();
+			warn.mockRestore();
+		});
+
+		it('falls back to a createRoomState-derived empty room and warns when the registry misses a set rid', () => {
+			const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+			const { result } = renderHook(() => useRoomStoreByRid('missing-rid', s => s.room));
+
+			expect(result.current).toEqual({ rid: '', t: '' });
+			expect(warn).toHaveBeenCalledWith(expect.stringContaining('missing-rid'));
+			warn.mockRestore();
+		});
+
+		it('does not warn when rid is undefined', () => {
+			const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+			const { result } = renderHook(() => useRoomStoreByRid(undefined, s => s.room));
+
+			expect(result.current).toEqual({ rid: '', t: '' });
+			expect(warn).not.toHaveBeenCalled();
+			warn.mockRestore();
 		});
 	});
 });

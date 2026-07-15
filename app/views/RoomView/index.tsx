@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStore } from 'zustand';
@@ -122,9 +123,13 @@ const RoomView = (props: IRoomViewProps) => {
 	const [roomStore] = useState(() => peekOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
 	// rid is stable for this RoomView instance; render peeks the store, this effect owns its lifetime.
 	// Symmetric acquire/release, so a StrictMode/concurrent double-invoke can't leak the registry entry.
+	// Release is deferred past the exit animation so the store outlives a healthy pop and the
+	// native-stack header never misses the registry mid-transition (mirrors goRoom's grace release).
 	useEffect(() => {
 		acquireRoomStore(rid);
-		return () => releaseRoomStore(rid);
+		return () => {
+			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
+		};
 	}, [rid]);
 
 	const room = useStore(roomStore, s => s.room);
