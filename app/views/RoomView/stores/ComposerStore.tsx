@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
-import { AccessibilityInfo } from 'react-native';
 import { createStore, useStore } from 'zustand';
 
-import I18n from '../../../i18n';
 import { type ComposerState, type ComposerStore, type TComposerExternalState } from '../definitions';
 
 export const createComposerStore = (initial: TComposerExternalState) =>
@@ -10,14 +8,7 @@ export const createComposerStore = (initial: TComposerExternalState) =>
 		...initial,
 		isAutocompleteVisible: false,
 		updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => {
-			const { isAutocompleteVisible } = get();
-			if (updatedAutocompleteVisible && !isAutocompleteVisible) {
-				// timeout to prevent conflict with default keyboard announcement.
-				setTimeout(() => {
-					AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
-				}, 800);
-			}
-			if (updatedAutocompleteVisible !== isAutocompleteVisible) {
+			if (updatedAutocompleteVisible !== get().isAutocompleteVisible) {
 				set({ isAutocompleteVisible: updatedAutocompleteVisible });
 			}
 		}

@@ -9,6 +9,7 @@ import { useAutocomplete } from '../../hooks';
 import { type IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useComposerRid, useUpdateAutocompleteVisible } from '../../../../views/RoomView/stores/ComposerStore';
+import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
 import { useStyle } from './styles';
 
 export const Autocomplete = ({
@@ -21,6 +22,8 @@ export const Autocomplete = ({
 	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
 	'use memo';
+
+	useAutocompleteA11yAnnounce();
 
 	const rid = useComposerRid();
 	const updateAutocompleteVisible = useUpdateAutocompleteVisible();

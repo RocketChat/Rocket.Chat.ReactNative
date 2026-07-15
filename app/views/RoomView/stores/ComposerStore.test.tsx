@@ -1,6 +1,5 @@
 import { useContext, type ReactNode } from 'react';
 import { act, render, renderHook } from '@testing-library/react-native';
-import { AccessibilityInfo } from 'react-native';
 
 import { type ComposerState } from '../definitions';
 import {
@@ -64,9 +63,7 @@ describe('ComposerStore', () => {
 		expect(result.current).toEqual({ ...props, isAutocompleteVisible: false, updateAutocompleteVisible: expect.any(Function) });
 	});
 
-	it('updates isAutocompleteVisible when updateAutocompleteVisible is called, and announces on first open', () => {
-		jest.useFakeTimers();
-		const announceSpy = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+	it('toggles isAutocompleteVisible when updateAutocompleteVisible is called', () => {
 		const props = fullProps();
 		const wrapper = ({ children }: { children: ReactNode }) => <ComposerProvider {...props}>{children}</ComposerProvider>;
 
@@ -80,17 +77,8 @@ describe('ComposerStore', () => {
 		act(() => result.current.update(true));
 		expect(result.current.isAutocompleteVisible).toBe(true);
 
-		act(() => jest.advanceTimersByTime(800));
-		expect(announceSpy).toHaveBeenCalledTimes(1);
-
-		act(() => result.current.update(true));
-		expect(announceSpy).toHaveBeenCalledTimes(1);
-
 		act(() => result.current.update(false));
 		expect(result.current.isAutocompleteVisible).toBe(false);
-
-		announceSpy.mockRestore();
-		jest.useRealTimers();
 	});
 
 	it('re-renders useComposerRoom when roomUpdate changes, even with the same room reference', () => {
