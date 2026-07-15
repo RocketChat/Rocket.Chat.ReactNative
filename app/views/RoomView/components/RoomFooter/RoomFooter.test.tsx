@@ -71,6 +71,7 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve()),
+		setJoinCodeTrigger: jest.fn(),
 		...overrides
 	}));
 

@@ -55,7 +55,10 @@ const FALLBACK_ROOM_STORE = createStore<RoomState>()(() => ({
 	canPlaceLivechatOnHold: false,
 	init: noOpAsync,
 	join: noOp,
-	markMessageSent: noOp
+	markMessageSent: noOp,
+	joinRoom: noOpAsync,
+	resumeRoom: noOpAsync,
+	setJoinCodeTrigger: noOp
 }));
 
 const toggleFollowThreadImpl = async (tmid: string | undefined, isFollowingThread: boolean, threadId?: string) => {

@@ -34,7 +34,10 @@ const makeRoomStore = (): RoomStore =>
 		canPlaceLivechatOnHold: false,
 		init: jest.fn(() => Promise.resolve()),
 		join: jest.fn(),
-		markMessageSent: jest.fn()
+		markMessageSent: jest.fn(),
+		joinRoom: jest.fn(() => Promise.resolve()),
+		resumeRoom: jest.fn(() => Promise.resolve()),
+		setJoinCodeTrigger: jest.fn()
 	}));
 
 const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStore = makeRoomStore()) => {

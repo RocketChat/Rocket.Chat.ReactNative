@@ -47,7 +47,6 @@ import { useRoomSubscription } from './hooks/useRoomSubscription';
 import { useRoomAudioLifecycle } from './hooks/useRoomAudioLifecycle';
 import { useRoomRemoved } from './hooks/useRoomRemoved';
 import { useRoomActions } from './hooks/useRoomActions';
-import { useJoinRoomPublisher } from './hooks/useJoinRoomPublisher';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 import { useInAppFeedback } from './hooks/useInAppFeedback';
@@ -132,13 +131,14 @@ const RoomView = (props: IRoomViewProps) => {
 		};
 	}, [rid]);
 
+	// Register the JoinCode modal opener once per store; joinRoom pulls it from the store at call time.
+	useEffect(() => roomStore.getState().setJoinCodeTrigger(() => joinCodeRef.current?.show()), [roomStore]);
+
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
 	const joined = useStore(roomStore, s => s.joined);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
-
-	const isOmnichannel = room.t === 'l';
 
 	const hideSystemMessages = (() => {
 		const { sysMes } = room;
@@ -205,7 +205,6 @@ const RoomView = (props: IRoomViewProps) => {
 	useRoomSubscription(sub);
 	useRoomAudioLifecycle(rid, tmid, navigation);
 	useRoomRemoved(rid, isMasterDetail, roomRef);
-	useJoinRoomPublisher({ roomStore, room, isOmnichannel, serverVersion, t, joinCodeRef });
 	const { onJoin, handleSendMessage } = useRoomActions({
 		rid,
 		tmid,

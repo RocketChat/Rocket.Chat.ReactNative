@@ -19,6 +19,8 @@ import {
 } from '../definitions';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
+import { joinRoomImpl, resumeRoomImpl } from '../services/joinRoom';
+import { store as reduxStore } from '../../../lib/store/auxStore';
 
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
 
@@ -102,7 +104,16 @@ const createRoomState =
 		},
 
 		join: () => set({ joined: true }),
-		markMessageSent: () => set({ lastOpen: null })
+		markMessageSent: () => set({ lastOpen: null }),
+
+		setJoinCodeTrigger: trigger => set({ joinCodeTrigger: trigger }),
+		joinRoom: () =>
+			joinRoomImpl(get().room, {
+				serverVersion: reduxStore.getState().server.version,
+				requestJoinCode: get().joinCodeTrigger,
+				onJoin: get().join
+			}),
+		resumeRoom: () => resumeRoomImpl(get().room, { onJoin: get().join })
 	});
 
 const observeRoom = (rid: string | undefined, t: string | undefined, store: RoomStore): (() => void) => {

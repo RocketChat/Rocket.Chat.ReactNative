@@ -179,8 +179,16 @@ export interface RoomState {
 	init: (params?: IRoomStoreInitParams) => Promise<void>;
 	join: () => void;
 	markMessageSent: () => void;
-	joinRoom?: () => Promise<void>;
-	resumeRoom?: () => Promise<void>;
+	joinRoom: () => Promise<void>;
+	resumeRoom: () => Promise<void>;
+	joinCodeTrigger?: () => void;
+	setJoinCodeTrigger: (trigger: () => void) => void;
+}
+
+export interface IJoinRoomContext {
+	serverVersion?: string | null;
+	requestJoinCode?: () => void;
+	onJoin: () => void;
 }
 
 export type RoomStore = StoreApi<RoomState>;
@@ -339,15 +347,6 @@ export interface IUseRoomNavigationResult {
 	onThreadMessagesLoaded: () => void;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
-}
-
-export interface IUseJoinRoomPublisherParams {
-	roomStore: RoomStore;
-	room: IRoomViewState['room'];
-	isOmnichannel: boolean;
-	serverVersion?: string | null;
-	t?: string;
-	joinCodeRef: RefObject<IJoinCode | null>;
 }
 
 export interface IUseOmnichannelPermissionsParams {
