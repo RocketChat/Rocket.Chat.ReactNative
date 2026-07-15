@@ -1,25 +1,25 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { SubscriptionType } from '../../../definitions/ISubscription';
-import { type RoomState, type RoomStore } from '../definitions';
-import { useHeader } from './useHeader';
+import { SubscriptionType } from '../../../../definitions/ISubscription';
+import { type RoomState, type RoomStore } from '../../definitions';
+import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
 
-jest.mock('../stores/RoomStore', () => ({
+jest.mock('../../stores/RoomStore', () => ({
 	useRoomStoreByRid: (_rid: string | undefined, selector: (state: RoomState) => unknown) =>
 		jest.requireActual('zustand').useStore(mockTestStore, selector)
 }));
-jest.mock('./useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
-jest.mock('../LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
-jest.mock('../RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
-jest.mock('../../../containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
+jest.mock('../../LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
+jest.mock('../../RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
+jest.mock('../../../../containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
+jest.mock('../../../../lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),
 	isGroupChat: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({
+jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
 

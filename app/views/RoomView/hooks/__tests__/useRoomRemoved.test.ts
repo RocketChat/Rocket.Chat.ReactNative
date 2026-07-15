@@ -1,15 +1,15 @@
 import { renderHook } from '@testing-library/react-native';
 
-import I18n from '../../../i18n';
-import EventEmitterReal from '../../../lib/methods/helpers/events';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { showErrorAlert } from '../../../lib/methods/helpers/info';
-import { type IRoomViewState } from '../definitions';
-import { useRoomRemoved } from './useRoomRemoved';
+import I18n from '../../../../i18n';
+import EventEmitterReal from '../../../../lib/methods/helpers/events';
+import Navigation from '../../../../lib/navigation/appNavigation';
+import { showErrorAlert } from '../../../../lib/methods/helpers/info';
+import { type IRoomViewState } from '../../definitions';
+import { useRoomRemoved } from '../useRoomRemoved';
 
-jest.mock('../../../lib/methods/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
-jest.mock('../../../lib/navigation/appNavigation', () => ({ __esModule: true, default: { popToTop: jest.fn() } }));
-jest.mock('../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('../../../../lib/methods/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
+jest.mock('../../../../lib/navigation/appNavigation', () => ({ __esModule: true, default: { popToTop: jest.fn() } }));
+jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
 
 const mockPopToTop = Navigation.popToTop as jest.Mock;
 const mockShowErrorAlert = showErrorAlert as jest.Mock;

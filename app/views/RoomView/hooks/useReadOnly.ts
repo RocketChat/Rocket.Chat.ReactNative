@@ -21,8 +21,6 @@ export const useReadOnly = (roomStoreOverride?: RoomStore): boolean => {
 	}
 
 	const room = useStore(store, s => s.room);
-	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
-	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders the caller.
 	useStore(store, s => s.roomUpdate);
 
 	const user = useAppSelector(getUserSelector);

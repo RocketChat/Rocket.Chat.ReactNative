@@ -26,7 +26,6 @@ const MessageA11yIndex = ({
 	const enabled = useA11yGate();
 
 	if (!enabled) {
-		// Preserve the style-bearing layout node when gated off; the unstyled call site passes no style.
 		return style ? <View style={style}>{children}</View> : <>{children}</>;
 	}
 

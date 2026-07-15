@@ -4,8 +4,6 @@ import { InteractionManager } from 'react-native';
 import log from '../../../lib/methods/helpers/log';
 import type RoomClass from '../../../lib/methods/subscriptions/room';
 
-// try/catch bodies with optional chaining can't be compiled inside a 'use memo' function (compiler
-// Todo), so these live at module scope; being eslint-stable also keeps effect dep arrays honest.
 const safeSubscribe = (sub?: RoomClass) => {
 	try {
 		sub?.subscribe?.();

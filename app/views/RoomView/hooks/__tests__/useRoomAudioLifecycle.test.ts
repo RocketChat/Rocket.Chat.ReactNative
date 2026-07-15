@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-native';
 
-import AudioManager from '../../../lib/methods/AudioManager';
-import { useRoomAudioLifecycle } from './useRoomAudioLifecycle';
+import AudioManager from '../../../../lib/methods/AudioManager';
+import { useRoomAudioLifecycle } from '../useRoomAudioLifecycle';
 
-jest.mock('../../../lib/methods/AudioManager', () => ({ pauseAudio: jest.fn(), unloadRoomAudios: jest.fn() }));
+jest.mock('../../../../lib/methods/AudioManager', () => ({ pauseAudio: jest.fn(), unloadRoomAudios: jest.fn() }));
 
 const mockUnloadRoomAudios = AudioManager.unloadRoomAudios as jest.Mock;
 const mockPauseAudio = AudioManager.pauseAudio as jest.Mock;

@@ -1,17 +1,17 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import database from '../../../lib/database';
-import { hasPermission } from '../../../lib/methods/helpers';
-import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
-import { useRightButtons } from './useRightButtons';
-import { type IUseRightButtonsParams } from '../definitions';
+import database from '../../../../lib/database';
+import { hasPermission } from '../../../../lib/methods/helpers';
+import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
+import { useRightButtons } from '../useRightButtons';
+import { type IUseRightButtonsParams } from '../../definitions';
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../../../lib/methods/helpers', () => ({ hasPermission: jest.fn(() => Promise.resolve([false])) }));
-jest.mock('../../../lib/methods/helpers/helpers', () => ({ getUidDirectMessage: jest.fn() }));
+jest.mock('../../../../lib/methods/helpers', () => ({ hasPermission: jest.fn(() => Promise.resolve([false])) }));
+jest.mock('../../../../lib/methods/helpers/helpers', () => ({ getUidDirectMessage: jest.fn() }));
 
 const mockGet = database.active.get as jest.Mock;
 const mockHasPermission = hasPermission as jest.Mock;

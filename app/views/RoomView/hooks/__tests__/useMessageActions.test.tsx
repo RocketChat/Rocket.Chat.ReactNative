@@ -1,24 +1,24 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import { editMessage, setReaction } from '../../../lib/services/restApi';
-import log from '../../../lib/methods/helpers/log';
-import { Review } from '../../../lib/methods/helpers/review';
-import { getMessageById } from '../../../lib/database/services/Message';
-import { SubscriptionType } from '../../../definitions';
-import { createMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
-import ReactionPicker from '../ReactionPicker';
-import { useMessageActions } from './useMessageActions';
-import { type IUseMessageActionsParams } from '../definitions';
+import { editMessage, setReaction } from '../../../../lib/services/restApi';
+import log from '../../../../lib/methods/helpers/log';
+import { Review } from '../../../../lib/methods/helpers/review';
+import { getMessageById } from '../../../../lib/database/services/Message';
+import { SubscriptionType } from '../../../../definitions';
+import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
+import ReactionPicker from '../../ReactionPicker';
+import { useMessageActions } from '../useMessageActions';
+import { type IUseMessageActionsParams } from '../../definitions';
 
-jest.mock('../../../lib/services/restApi', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({
 	editMessage: jest.fn(),
 	setReaction: jest.fn()
 }));
-jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
-jest.mock('../../../lib/methods/helpers/review', () => ({
+jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
+jest.mock('../../../../lib/methods/helpers/review', () => ({
 	Review: { pushPositiveEvent: jest.fn() }
 }));
-jest.mock('../../../lib/database/services/Message', () => ({
+jest.mock('../../../../lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 

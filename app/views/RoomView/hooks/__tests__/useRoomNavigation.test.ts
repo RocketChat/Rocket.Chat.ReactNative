@@ -1,16 +1,16 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { makeThreadName } from '../../../lib/methods/helpers/room';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
-import getRoomInfo from '../../../lib/methods/getRoomInfo';
-import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import { sendLoadingEvent } from '../../../containers/Loading';
-import { useJumpToMessage } from './useJumpToMessage';
-import { useRoomNavigation } from './useRoomNavigation';
-import { type IUseRoomNavigationParams } from '../definitions';
+import { makeThreadName } from '../../../../lib/methods/helpers/room';
+import { getThreadById } from '../../../../lib/database/services/Thread';
+import getThreadName from '../../../../lib/methods/getThreadName';
+import getRoomInfo from '../../../../lib/methods/getRoomInfo';
+import { goRoom } from '../../../../lib/methods/helpers/goRoom';
+import { sendLoadingEvent } from '../../../../containers/Loading';
+import { useJumpToMessage } from '../useJumpToMessage';
+import { useRoomNavigation } from '../useRoomNavigation';
+import { type IUseRoomNavigationParams } from '../../definitions';
 
-jest.mock('./useJumpToMessage', () => ({
+jest.mock('../useJumpToMessage', () => ({
 	useJumpToMessage: jest.fn(() => ({
 		jumpToMessage: jest.fn(),
 		cancelJumpToMessage: jest.fn(),
@@ -18,25 +18,25 @@ jest.mock('./useJumpToMessage', () => ({
 		onThreadMessagesLoaded: jest.fn()
 	}))
 }));
-jest.mock('../../../lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Thread Name') }));
-jest.mock('../../../lib/methods/helpers', () => ({ useDebounce: (fn: (...args: any[]) => any) => fn }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Thread Name') }));
+jest.mock('../../../../lib/methods/helpers', () => ({ useDebounce: (fn: (...args: any[]) => any) => fn }));
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
-	...jest.requireActual('../../../lib/methods/helpers/log'),
+	...jest.requireActual('../../../../lib/methods/helpers/log'),
 	default: jest.fn(),
 	logEvent: jest.fn()
 }));
-jest.mock('../../../lib/database/services/Thread', () => ({ getThreadById: jest.fn(() => Promise.resolve(null)) }));
-jest.mock('../../../lib/methods/getThreadName', () => ({
+jest.mock('../../../../lib/database/services/Thread', () => ({ getThreadById: jest.fn(() => Promise.resolve(null)) }));
+jest.mock('../../../../lib/methods/getThreadName', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve('Thread Title'))
 }));
-jest.mock('../../../lib/methods/getRoomInfo', () => ({
+jest.mock('../../../../lib/methods/getRoomInfo', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve({ rid: 'other-rid' }))
 }));
-jest.mock('../../../lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
-jest.mock('../../../containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
+jest.mock('../../../../lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
+jest.mock('../../../../containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
 
 const mockMakeThreadName = makeThreadName as jest.Mock;
 const mockGetThreadById = getThreadById as jest.Mock;

@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
 
-import { clearInAppFeedback, removeInAppFeedback } from '../../../actions/inAppFeedback';
-import UserPreferences from '../../../lib/methods/userPreferences';
-import { useInAppFeedback } from './useInAppFeedback';
+import { clearInAppFeedback, removeInAppFeedback } from '../../../../actions/inAppFeedback';
+import UserPreferences from '../../../../lib/methods/userPreferences';
+import { useInAppFeedback } from '../useInAppFeedback';
 
 const mockDispatch = jest.fn();
 const mockUseIsFocused = jest.fn();
@@ -20,7 +20,7 @@ jest.mock('expo-haptics', () => ({
 	notificationAsync: jest.fn(),
 	NotificationFeedbackType: { Success: 'success' }
 }));
-jest.mock('../../../lib/methods/userPreferences', () => ({
+jest.mock('../../../../lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: { getBool: jest.fn(() => null) }
 }));

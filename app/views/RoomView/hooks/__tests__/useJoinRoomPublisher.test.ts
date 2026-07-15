@@ -1,19 +1,19 @@
 import { createStore } from 'zustand';
 import { renderHook } from '@testing-library/react-native';
 
-import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
-import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
-import { type IUseJoinRoomPublisherParams, type RoomState, type RoomStore } from '../definitions';
-import { useJoinRoomPublisher } from './useJoinRoomPublisher';
+import { joinRoom as joinRoomService } from '../../../../lib/services/restApi';
+import { takeInquiry, takeResume } from '../../../../ee/omnichannel/lib';
+import { type IUseJoinRoomPublisherParams, type RoomState, type RoomStore } from '../../definitions';
+import { useJoinRoomPublisher } from '../useJoinRoomPublisher';
 
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
-	...jest.requireActual('../../../lib/methods/helpers/log'),
+	...jest.requireActual('../../../../lib/methods/helpers/log'),
 	default: jest.fn(),
 	logEvent: jest.fn()
 }));
-jest.mock('../../../lib/services/restApi', () => ({ joinRoom: jest.fn() }));
-jest.mock('../../../ee/omnichannel/lib', () => ({ takeInquiry: jest.fn(), takeResume: jest.fn() }));
+jest.mock('../../../../lib/services/restApi', () => ({ joinRoom: jest.fn() }));
+jest.mock('../../../../ee/omnichannel/lib', () => ({ takeInquiry: jest.fn(), takeResume: jest.fn() }));
 
 const mockJoinRoomService = joinRoomService as jest.Mock;
 const mockTakeInquiry = takeInquiry as jest.Mock;

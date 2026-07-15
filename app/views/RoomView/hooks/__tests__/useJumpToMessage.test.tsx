@@ -1,31 +1,31 @@
 import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
-import { sendLoadingEvent } from '../../../containers/Loading';
-import log from '../../../lib/methods/helpers/log';
-import { showErrorAlert } from '../../../lib/methods/helpers/info';
-import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMessages';
-import getLocalAnchorTs from '../services/getLocalAnchor';
-import getMessageInfo from '../services/getMessageInfo';
-import { resolveJumpAnchor } from '../services/resolveJumpAnchor';
-import { useJumpToMessage } from './useJumpToMessage';
+import { sendLoadingEvent } from '../../../../containers/Loading';
+import log from '../../../../lib/methods/helpers/log';
+import { showErrorAlert } from '../../../../lib/methods/helpers/info';
+import { loadSurroundingMessages } from '../../../../lib/methods/loadSurroundingMessages';
+import getLocalAnchorTs from '../../services/getLocalAnchor';
+import getMessageInfo from '../../services/getMessageInfo';
+import { resolveJumpAnchor } from '../../services/resolveJumpAnchor';
+import { useJumpToMessage } from '../useJumpToMessage';
 
-jest.mock('../services/getLocalAnchor', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../services/resolveJumpAnchor', () => ({
+jest.mock('../../services/getLocalAnchor', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../../services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../../services/resolveJumpAnchor', () => ({
 	resolveJumpAnchor: jest.fn()
 }));
-jest.mock('../../../containers/Loading', () => ({
+jest.mock('../../../../containers/Loading', () => ({
 	sendLoadingEvent: jest.fn()
 }));
-jest.mock('../../../lib/methods/loadSurroundingMessages', () => ({
+jest.mock('../../../../lib/methods/loadSurroundingMessages', () => ({
 	loadSurroundingMessages: jest.fn()
 }));
-jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
-jest.mock('../../../lib/methods/helpers/info', () => ({
+jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
+jest.mock('../../../../lib/methods/helpers/info', () => ({
 	showErrorAlert: jest.fn()
 }));
-jest.mock('../../../i18n', () => ({
+jest.mock('../../../../i18n', () => ({
 	__esModule: true,
 	default: { t: jest.fn((key: string) => key) }
 }));

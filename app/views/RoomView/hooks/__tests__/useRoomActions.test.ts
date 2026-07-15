@@ -1,16 +1,16 @@
 import { createStore } from 'zustand';
 import { renderHook } from '@testing-library/react-native';
 
-import { sendMessage } from '../../../lib/methods/sendMessage';
-import { Review } from '../../../lib/methods/helpers/review';
-import { type IUseRoomActionsParams, type RoomState, type RoomStore } from '../definitions';
-import { useRoomActions } from './useRoomActions';
+import { sendMessage } from '../../../../lib/methods/sendMessage';
+import { Review } from '../../../../lib/methods/helpers/review';
+import { type IUseRoomActionsParams, type RoomState, type RoomStore } from '../../definitions';
+import { useRoomActions } from '../useRoomActions';
 
-jest.mock('../../../lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/helpers/review', () => ({ Review: { pushPositiveEvent: jest.fn() } }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/helpers/review', () => ({ Review: { pushPositiveEvent: jest.fn() } }));
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
-	...jest.requireActual('../../../lib/methods/helpers/log'),
+	...jest.requireActual('../../../../lib/methods/helpers/log'),
 	default: jest.fn(),
 	logEvent: jest.fn()
 }));

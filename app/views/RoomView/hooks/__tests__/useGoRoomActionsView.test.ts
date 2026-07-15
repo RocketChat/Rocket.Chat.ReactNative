@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { useGoRoomActionsView } from './useGoRoomActionsView';
+import { useGoRoomActionsView } from '../useGoRoomActionsView';
 
 const mockNavigate = jest.fn();
 const mockPush = jest.fn();
@@ -11,10 +11,10 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ navigate: mockNavigate, push: mockPush }),
 	useRoute: () => ({ params: mockRouteParams })
 }));
-jest.mock('../../../lib/hooks/useMasterDetail', () => ({
+jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => mockIsMasterDetail
 }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
 	events: { ROOM_GO_RA: 'ROOM_GO_RA' },
 	logEvent: jest.fn()
@@ -30,7 +30,7 @@ const mockState = {
 	canPlaceLivechatOnHold: true
 };
 
-jest.mock('../stores/RoomStore', () => ({
+jest.mock('../../stores/RoomStore', () => ({
 	useRoomStoreByRid: (_rid: string | undefined, selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
 

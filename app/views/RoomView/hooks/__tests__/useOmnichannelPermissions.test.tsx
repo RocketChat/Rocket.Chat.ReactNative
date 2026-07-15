@@ -1,15 +1,15 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { getRoutingConfig } from '../../../lib/services/restApi';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { type IUseOmnichannelPermissionsParams, type RoomState, type RoomStore } from '../definitions';
-import { useOmnichannelPermissions } from './useOmnichannelPermissions';
+import { getRoutingConfig } from '../../../../lib/services/restApi';
+import { usePermissions } from '../../../../lib/hooks/usePermissions';
+import { type IUseOmnichannelPermissionsParams, type RoomState, type RoomStore } from '../../definitions';
+import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
 
-jest.mock('../../../lib/services/restApi', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({
 	getRoutingConfig: jest.fn()
 }));
-jest.mock('../../../lib/hooks/usePermissions', () => ({
+jest.mock('../../../../lib/hooks/usePermissions', () => ({
 	usePermissions: jest.fn()
 }));
 
