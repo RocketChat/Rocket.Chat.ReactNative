@@ -58,7 +58,7 @@ export async function sendFileMessage(
 
 		const headers = {
 			...sdk.getHeaders(),
-			'Content-Type': 'multipart/form-data',
+			'Content-Type': 'multipart/form-data'
 		};
 
 		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {
