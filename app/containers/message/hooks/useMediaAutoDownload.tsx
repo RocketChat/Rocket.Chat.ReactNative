@@ -82,13 +82,13 @@ export const useMediaAutoDownload = ({
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
+	const [currentFile, setCurrentFile] = useFile(file, id);
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
-		user?.id ?? '',
-		user?.token ?? '',
-		baseUrl ?? '',
+		user.id,
+		user.token,
+		baseUrl,
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
@@ -128,7 +128,7 @@ export const useMediaAutoDownload = ({
 	};
 
 	const tryAutoDownload = async () => {
-		const isCurrentUserAuthor = author?._id === user?.id;
+		const isCurrentUserAuthor = author?._id === user.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
@@ -139,7 +139,7 @@ export const useMediaAutoDownload = ({
 		try {
 			dispatchDownloadEvent('download_started');
 			const uri = await downloadMediaFile({
-				messageId: id ?? '',
+				messageId: id,
 				downloadUrl: url,
 				type: fileType,
 				mimeType: getFileProperty(currentFile, fileType, 'type'),

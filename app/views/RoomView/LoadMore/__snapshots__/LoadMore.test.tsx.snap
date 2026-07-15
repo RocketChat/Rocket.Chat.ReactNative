@@ -758,7 +758,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -1820,7 +1820,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -2670,7 +2670,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -3227,7 +3227,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -4289,7 +4289,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -5139,7 +5139,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -5696,7 +5696,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -6758,7 +6758,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }
@@ -7608,7 +7608,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 "headers": {
                                   "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                                 },
-                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
                               },
                             ]
                           }

@@ -313,8 +313,6 @@ const RoomView = (props: IRoomViewProps) => {
 							archived={'id' in room && room.archived}
 							isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 							rid={room.rid}
-							user={user as any}
-							baseUrl={baseUrl}
 							broadcast={'id' in room && room.broadcast}
 							isThreadRoom={!!tmid}
 							tmid={tmid}

@@ -44,7 +44,6 @@ interface IMessagesViewProps {
 		username: string;
 		token: string;
 	};
-	baseUrl: string;
 	navigation: CompositeNavigationProp<
 		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
@@ -331,7 +330,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme, user, baseUrl, insets } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -343,8 +342,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 					<MessageRoomProvider
 						navToRoomInfo={this.navToRoomInfo}
 						showAttachment={this.showAttachment}
-						user={user}
-						baseUrl={baseUrl}
 						rid={this.rid}
 						isThreadRoom
 						timeFormat={'MMM Do YYYY, h:mm:ss a'}>
@@ -365,7 +362,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
 	user: getUserSelector(state)
 });
 

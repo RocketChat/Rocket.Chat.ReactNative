@@ -45,8 +45,6 @@ const buildItem = () => ({ id: 'msg-1' } as unknown as TAnyMessageModel);
 
 const renderQuote = (attachments: IAttachment[], ctx: Partial<MessageRoomState> = {}) => {
 	const contextValue: Partial<MessageRoomState> = {
-		user: { id: 'user-1', username: 'john', token: 'token' },
-		baseUrl: 'https://open.rocket.chat',
 		timeFormat: 'HH:mm',
 		...ctx
 	};
@@ -79,10 +77,7 @@ describe('Quote', () => {
 
 		rerender(
 			<Provider store={mockedStore}>
-				<MessageRoomProvider
-					user={{ id: 'user-1', username: 'john', token: 'token' }}
-					baseUrl='https://open.rocket.chat'
-					timeFormat='HH:mm'>
+				<MessageRoomProvider timeFormat='HH:mm'>
 					<MessageProvider item={buildItem()}>
 						<Quote attachments={[attachmentB, attachmentA]} />
 					</MessageProvider>

@@ -53,7 +53,6 @@ const TestWrapper = ({ item, onReactionPress }: { item: FakeItem; onReactionPres
 	<MessageProviders
 		item={item}
 		room={{
-			user: { username: 'john' },
 			reactionInit: jest.fn(),
 			handlers: {
 				onReactionPress: onReactionPress as unknown as IUseRoomMessageHandlersResult['onReactionPress'],

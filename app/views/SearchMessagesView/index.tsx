@@ -62,7 +62,6 @@ interface INavigationOption {
 
 interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
-	baseUrl: string;
 	serverVersion: string;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
@@ -280,7 +279,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme, user, baseUrl, insets } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
@@ -292,8 +291,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 					navToRoomInfo={this.navToRoomInfo}
 					showAttachment={this.showAttachment}
 					jumpToMessage={this.jumpToMessageByUrl}
-					user={user}
-					baseUrl={baseUrl}
 					rid={this.rid}
 					isThreadRoom
 					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
@@ -337,7 +334,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
-	baseUrl: state.server.server,
 	user: getUserSelector(state)
 });
 

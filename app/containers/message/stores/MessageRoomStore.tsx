@@ -2,8 +2,10 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactEleme
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type IAttachment, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../definitions';
+import { type IAttachment, type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '../../../definitions';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useSetting } from '../../../lib/hooks/useSetting';
+import { getUserSelector } from '../../../selectors/login';
 
 export type MessageRoomState = {
 	// stable handlers
@@ -23,8 +25,6 @@ export type MessageRoomState = {
 	isReadReceiptEnabled?: boolean;
 	// room constants
 	rid?: string;
-	user?: { id?: string; username?: string; token?: string };
-	baseUrl?: string;
 	broadcast?: boolean;
 	isThreadRoom?: boolean;
 	tmid?: string;
@@ -59,8 +59,6 @@ const FROZEN_KEYS = [
 	'navToRoomInfo',
 	'showAttachment',
 	'rid',
-	'user',
-	'baseUrl',
 	'isThreadRoom',
 	'tmid'
 ] as const satisfies readonly (keyof MessageRoomState)[];
@@ -182,8 +180,8 @@ export const useIsArchived = (): boolean | undefined => useMessageRoomStore(s =>
 export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
-export const useMessageUser = (): MessageRoomState['user'] => useMessageRoomStore(s => s.user);
-export const useBaseUrl = (): string | undefined => useMessageRoomStore(s => s.baseUrl);
+export const useMessageUser = (): IUser => useAppSelector(getUserSelector);
+export const useBaseUrl = (): string => useAppSelector(state => state.server.server);
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
 export const useTimeFormat = (): string | undefined => useMessageRoomStore(s => s.timeFormat);
 export const useIsThreadRoom = (): boolean | undefined => useMessageRoomStore(s => s.isThreadRoom);

@@ -8,7 +8,6 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 
 const baseContextValue: Partial<MessageRoomState> = {
-	user: { id: 'user1', username: 'user1' },
 	handlers: { toggleFollowThread: jest.fn(), onThreadPress: jest.fn() }
 };
 

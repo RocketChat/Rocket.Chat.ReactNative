@@ -2,12 +2,14 @@ import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
 import { createMockedStore } from '../../../../reducers/mockedStore';
+import { setUser } from '../../../../actions/login';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { MessageProvider } from '../../stores/MessageStore';
 import BroadcastLeaf from '../Broadcast';
 
 const store = createMockedStore();
+store.dispatch(setUser({ id: 'reader-id', username: 'rocket.cat' }));
 
 const otherAuthorItem = {
 	id: 'msg-id',
@@ -24,8 +26,7 @@ const ownAuthorItem = {
 } as unknown as TAnyMessageModel;
 
 const room: Partial<MessageRoomState> = {
-	broadcast: true,
-	user: { id: 'reader-id', username: 'rocket.cat' }
+	broadcast: true
 };
 
 const StoryWrapper = ({ item, children }: { item: TAnyMessageModel; children: ReactNode }) => (

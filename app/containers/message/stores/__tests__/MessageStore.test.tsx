@@ -599,7 +599,7 @@ describe('MessageStore', () => {
 				u: { _id: 'u2', username: 'bob' }
 			});
 			const { latest } = renderDerived(model, useMessageText, {
-				config: { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR', user: { username: 'alice' } }
+				config: { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR' }
 			});
 			expect(latest()).toEqual({ messageText: 'Olá mundo', isTranslated: true });
 		});
@@ -1009,7 +1009,7 @@ describe('MessageStore', () => {
 	});
 
 	describe('translation boundary on item.autoTranslate', () => {
-		const translationConfig = { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR', user: { username: 'alice' } };
+		const translationConfig = { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR' };
 
 		it('useTranslateLanguage returns undefined when autoTranslate is undefined', () => {
 			const model = buildFakeModel({ autoTranslate: undefined, u: { _id: 'u2', username: 'bob' } });
