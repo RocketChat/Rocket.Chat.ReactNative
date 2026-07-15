@@ -74,14 +74,17 @@ const RoomView = (props: IRoomViewProps) => {
 		hideActionSheet
 	} = props;
 
-	const rid = route.params?.rid;
-	const t = route.params?.t;
+	// Capture screen identity once at mount: navigation can transiently wipe this route's params to
+	// undefined (e.g. popTo with no params while retained below the stack top), and a RoomView
+	// instance's rid/t/tmid never legitimately change — reading reactively corrupts store refcount + send.
+	const [rid] = useState(() => route.params?.rid);
+	const [t] = useState(() => route.params?.t);
 	/**
 	 * On threads, we don't have a subscription.
 	 * `room` is going to have only a few properties sent during navigation.
 	 * Use `tmid` as thread id.
 	 */
-	const tmid = route.params?.tmid;
+	const [tmid] = useState(() => route.params?.tmid);
 
 	const [messageActionStore] = useState(() => {
 		const quoteMessageId = route.params?.messageId;
