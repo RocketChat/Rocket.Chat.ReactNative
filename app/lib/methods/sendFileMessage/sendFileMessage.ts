@@ -1,53 +1,31 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Alert } from 'react-native';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
-import i18n from '../../../i18n';
+import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
-import log from '../helpers/log';
-import { copyFileToCacheDirectoryIfNeeded, getUploadPath, persistUploadError, uploadQueue } from './utils';
+import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import { type IFormData } from '../helpers/fileUpload/definitions';
-import sdk from '../../services/sdk';
 
 export async function sendFileMessage(
 	rid: string,
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
+	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
+	let uploadRecord: TUploadModel | null;
 	try {
+		const { id, token } = user;
 		const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 		fileInfo.rid = rid;
 
 		const db = database.active;
-		const uploadsCollection = db.get('uploads');
-		uploadPath = getUploadPath(fileInfo.path, rid);
-		let uploadRecord: TUploadModel;
-		try {
-			uploadRecord = await uploadsCollection.find(uploadPath);
-			if (uploadRecord.id && !isForceTryAgain) {
-				return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-			}
-		} catch (error) {
-			try {
-				await db.write(async () => {
-					uploadRecord = await uploadsCollection.create(u => {
-						u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
-						Object.assign(u, fileInfo);
-						if (tmid) {
-							u.tmid = tmid;
-						}
-						if (u.subscription) {
-							u.subscription.id = rid;
-						}
-					});
-				});
-			} catch (e) {
-				return log(e);
-			}
+
+		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+		if (!uploadPath || !uploadRecord) {
+			return;
 		}
 
 		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
@@ -82,8 +60,10 @@ export async function sendFileMessage(
 		}
 
 		const headers = {
-			...sdk.getHeaders(),
-			'Content-Type': 'multipart/form-data'
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'multipart/form-data',
+			'X-Auth-Token': token,
+			'X-User-Id': id
 		};
 
 		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {

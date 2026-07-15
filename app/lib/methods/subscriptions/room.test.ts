@@ -1,6 +1,9 @@
 import RoomSubscription from './room';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { clearUserTyping } from '../../../actions/usersTyping';
+import { getMessageById } from '../../database/services/Message';
+import { getThreadById } from '../../database/services/Thread';
+import log from '../helpers/log';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
 const mockOnConnectionStatus = jest.fn<() => void, [(status: string) => void]>(() => jest.fn());
@@ -90,6 +93,7 @@ jest.mock('../../encryption', () => ({
 const mockDbBatch = jest.fn().mockResolvedValue(undefined);
 const mockDbGet = jest.fn();
 jest.mock('../../database', () => {
+	let writerQueue: Promise<unknown> = Promise.resolve();
 	const mockModel = {
 		prepareCreate: jest.fn(() => ({})),
 		prepareUpdate: jest.fn(() => ({})),
@@ -101,7 +105,11 @@ jest.mock('../../database', () => {
 		default: {
 			active: {
 				get: (...args: unknown[]) => mockDbGet(...args) ?? mockModel,
-				write: jest.fn((callback: () => Promise<void>) => callback()),
+				write: jest.fn((callback: () => Promise<void>) => {
+					const run = writerQueue.then(() => callback());
+					writerQueue = run.catch(() => undefined);
+					return run;
+				}),
 				batch: (...args: unknown[]) => mockDbBatch(...args)
 			}
 		}
@@ -292,6 +300,50 @@ describe('RoomSubscription', () => {
 			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+	});
+
+	describe('updateMessage concurrency', () => {
+		const makeRecord = (debugName: string) => ({
+			_preparedState: null as string | null,
+			prepareUpdate(recordUpdater: (m: any) => void) {
+				if (this._preparedState) {
+					throw new Error(`Cannot update a record with pending changes (${debugName})`);
+				}
+				recordUpdater(this);
+				this._preparedState = 'update';
+				return this;
+			}
+		});
+
+		it('does not throw "pending changes" when two stream events for the same message id arrive concurrently', async () => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const messageRecord = makeRecord(`messages#${_id}`);
+			const threadRecord = makeRecord(`threads#${_id}`);
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(threadRecord);
+			// db.batch commits prepared records, clearing their pending state (like the real writer).
+			mockDbBatch.mockImplementation((...items: any[]) => {
+				items.forEach(item => {
+					if (item && typeof item === 'object' && '_preparedState' in item) {
+						item._preparedState = null;
+					}
+				});
+				return Promise.resolve(undefined);
+			});
+
+			const message = { _id, rid, tlm: { $date: 1 } } as any;
+
+			// updateMessage's promise never resolves on the happy path, so fire both and flush the queues.
+			sub.updateMessage({ ...message });
+			sub.updateMessage({ ...message });
+			await Array.from({ length: 10 }).reduce<Promise<unknown>>(
+				chain => chain.then(() => new Promise(resolve => setImmediate(resolve))),
+				Promise.resolve()
+			);
+
+			const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([err]) => /pending changes/.test(err?.message));
+			expect(loggedPendingChanges).toBe(false);
 		});
 	});
 });
