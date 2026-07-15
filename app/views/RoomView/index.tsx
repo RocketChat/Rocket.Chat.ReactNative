@@ -94,7 +94,8 @@ const RoomView = (props: IRoomViewProps) => {
 		name: route.params?.name,
 		fname: route.params?.fname,
 		prid: route.params?.prid,
-		visitor: route.params?.visitor
+		visitor: route.params?.visitor,
+		joinCodeRequired: route.params?.joinCodeRequired
 	}));
 	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
 	// we don't need to subscribe to threads

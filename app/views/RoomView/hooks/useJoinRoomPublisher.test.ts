@@ -69,6 +69,21 @@ describe('useJoinRoomPublisher', () => {
 		expect(roomStore.getState().join).toHaveBeenCalledTimes(1);
 	});
 
+	it('joinRoom shows the join-code modal instead of auto-joining a protected room without a subscription', async () => {
+		const roomStore = makeRoomStore();
+		const show = jest.fn();
+		renderJoinRoomPublisher(
+			{ room: { rid: 'rid-1', t: 'c', joinCodeRequired: true }, joinCodeRef: { current: { show } } },
+			roomStore
+		);
+
+		await roomStore.getState().joinRoom?.();
+
+		expect(show).toHaveBeenCalledTimes(1);
+		expect(mockJoinRoomService).not.toHaveBeenCalled();
+		expect(roomStore.getState().join).not.toHaveBeenCalled();
+	});
+
 	it('joinRoom omnichannel path calls takeInquiry with the room id and server version, then joins', async () => {
 		const roomStore = makeRoomStore();
 		renderJoinRoomPublisher(

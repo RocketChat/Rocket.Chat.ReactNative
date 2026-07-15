@@ -26,6 +26,7 @@ interface IGoRoomItem {
 	name?: string;
 	prid?: string;
 	visitor?: IVisitor;
+	joinCodeRequired?: boolean;
 }
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
@@ -37,6 +38,7 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		t: item.t,
 		prid: item.prid,
 		visitor: item.visitor,
+		joinCodeRequired: item.joinCodeRequired,
 		roomUserId: getUidDirectMessage(item),
 		...props
 	};
@@ -67,7 +69,8 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 				t: routeParams.t as string,
 				name: routeParams.name,
 				prid: routeParams.prid,
-				visitor: routeParams.visitor
+				visitor: routeParams.visitor,
+				joinCodeRequired: routeParams.joinCodeRequired
 			},
 			roomUserId: routeParams.roomUserId
 		});

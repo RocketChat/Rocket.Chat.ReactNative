@@ -40,6 +40,7 @@ export type ChatsStackParamList = {
 				fname?: string;
 				prid?: string;
 				visitor?: IVisitor;
+				joinCodeRequired?: boolean;
 				jumpToMessageId?: string;
 				jumpToThreadId?: string;
 				roomUserId?: string | null;
