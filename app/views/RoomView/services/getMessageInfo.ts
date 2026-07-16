@@ -27,7 +27,7 @@ const getMessageInfo = async (messageId: string): Promise<TGetMessageInfoResult 
 		};
 	}
 
-	const singleMessage: any = await getSingleMessage(messageId);
+	const singleMessage = await getSingleMessage(messageId);
 	if (singleMessage) {
 		return {
 			id: singleMessage._id,

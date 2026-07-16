@@ -275,8 +275,8 @@ export interface IUseMessageActionsParams {
 
 export interface IUseMessageActionsResult {
 	resetAction: () => void;
-	handleCloseEmoji: (action?: Function, params?: any) => any;
-	handleShowActionSheet: (options: any) => void;
+	handleCloseEmoji: (action?: (params?: unknown) => void, params?: unknown) => void;
+	handleShowActionSheet: (options: TActionSheetOptions) => void;
 	errorActionsShow: (message: TAnyMessageModel) => void;
 	onEditInit: (messageId: string) => void;
 	onEditCancel: () => void;

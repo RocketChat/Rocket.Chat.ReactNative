@@ -1,5 +1,5 @@
 import { forwardRef, memo, useImperativeHandle, useState } from 'react';
-import { InteractionManager, StyleSheet, Text, View } from 'react-native';
+import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -56,7 +56,7 @@ const JoinCode = memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await joinRoom(rid, code, t as any);
+				await joinRoom(rid, code, t as 'c' | 'p');
 				onJoin();
 				hide();
 			} catch (e) {
@@ -78,7 +78,7 @@ const JoinCode = memo(
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
-							inputRef={(e: any) => {
+							inputRef={(e: TextInput | null) => {
 								if (e) {
 									InteractionManager.runAfterInteractions(() => {
 										e.focus();

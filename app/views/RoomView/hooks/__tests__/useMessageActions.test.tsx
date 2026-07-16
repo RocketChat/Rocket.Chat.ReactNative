@@ -318,9 +318,9 @@ describe('useMessageActions', () => {
 		it('handleShowActionSheet opens the action sheet with the given options', () => {
 			const { result, showActionSheet } = renderMessageActions();
 
-			act(() => result.current.handleShowActionSheet({ some: 'options' }));
+			act(() => result.current.handleShowActionSheet({ hasCancel: true }));
 
-			expect(showActionSheet).toHaveBeenCalledWith({ some: 'options' });
+			expect(showActionSheet).toHaveBeenCalledWith({ hasCancel: true });
 		});
 	});
 

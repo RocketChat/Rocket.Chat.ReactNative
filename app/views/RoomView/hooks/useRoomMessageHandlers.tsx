@@ -13,7 +13,13 @@ import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCal
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { getUserSelector } from '../../../selectors/login';
-import { type IMessage, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../definitions';
+import {
+	type IMessage,
+	type IRoomInfoParam,
+	type IUseRoomMessageHandlersResult,
+	SubscriptionType,
+	type TAnyMessageModel
+} from '../../../definitions';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
@@ -68,15 +74,13 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 
 	const blockAction = (params: Parameters<IUseRoomMessageHandlersResult['blockAction']>[0]) => blockActionService(params);
 
-	const navToRoomInfo = (navParam: any) => {
-		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
-		navParam.fromRid = rid;
+	const navToRoomInfo = (navParam: IRoomInfoParam) => {
+		logEvent(events[`ROOM_GO_${navParam.t === SubscriptionType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
+		const params = { ...navParam, fromRid: rid };
 		if (isMasterDetail) {
-			navParam.showCloseModal = true;
-			// @ts-ignore
-			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
+			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: { ...params, showCloseModal: true } });
 		} else {
-			navigation.navigate('RoomInfoView', navParam);
+			navigation.navigate('RoomInfoView', params);
 		}
 	};
 
@@ -95,17 +99,14 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 
 	const onEncryptedPress = () => {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);
-		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } } as const;
 		if (isMasterDetail) {
-			// @ts-ignore
 			return navigation.navigate('ModalStackNavigator', screen);
 		}
-		// @ts-ignore
 		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
 	};
 
 	const showAttachment = (attachment: Parameters<IUseRoomMessageHandlersResult['showAttachment']>[0]) => {
-		// @ts-ignore
 		navigation.navigate('AttachmentView', { attachment });
 	};
 

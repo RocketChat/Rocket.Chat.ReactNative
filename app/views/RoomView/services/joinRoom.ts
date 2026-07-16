@@ -21,7 +21,7 @@ export const joinRoomImpl = async (
 			requestJoinCode?.();
 			return;
 		}
-		await joinRoomService(rid, null, room.t as any);
+		await joinRoomService(rid, null, room.t as 'c' | 'p');
 		onJoin();
 	} catch (e) {
 		log(e);

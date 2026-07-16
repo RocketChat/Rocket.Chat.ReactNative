@@ -1,6 +1,7 @@
 import { type IAttachment } from './IAttachment';
 import { type IEmoji } from './IEmoji';
 import { type IMessage, type TAnyMessageModel } from './IMessage';
+import { type IRoomInfoParam } from './IRoom';
 
 export interface IUseRoomMessageHandlersResult {
 	blockAction: (params: {
@@ -11,7 +12,7 @@ export interface IUseRoomMessageHandlersResult {
 		rid: string;
 		mid: string;
 	}) => Promise<any>;
-	navToRoomInfo: (navParam: any) => void;
+	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	handleEnterCall: () => void;
 	onDiscussionPress: (drid: TAnyMessageModel['drid']) => void;
 	onThreadPress: (item: TAnyMessageModel) => void;

@@ -5,6 +5,7 @@ import log from '../../../lib/methods/helpers/log';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { type IMessage, type IMessageEditAttachment, SubscriptionType, type TAnyMessageModel } from '../../../definitions';
+import { type TActionSheetOptions } from '../../../containers/ActionSheet';
 import { type IRoomViewProps, type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../components/ReactionPicker';
 import { useReactionActions } from './useReactionActions';
@@ -27,21 +28,19 @@ export function useMessageActions({
 
 	const { resetAction, onReactionClose, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
 
-	const handleCloseEmoji = (action?: Function, params?: any) => {
+	const handleCloseEmoji = (action?: (params?: unknown) => void, params?: unknown) => {
 		if (messageComposerRef?.current) {
 			return messageComposerRef.current.closeEmojiKeyboardAndAction(action, params);
 		}
-		if (action) {
-			return action(params);
-		}
+		action?.(params);
 	};
 
-	const handleShowActionSheet = (options: any) => {
-		handleCloseEmoji(showActionSheet, options);
+	const handleShowActionSheet = (options: TActionSheetOptions) => {
+		handleCloseEmoji(() => showActionSheet(options));
 	};
 
 	const errorActionsShow = (message: TAnyMessageModel) => {
-		handleCloseEmoji(messageErrorActionsRef.current?.showMessageErrorActions, message);
+		handleCloseEmoji(() => messageErrorActionsRef.current?.showMessageErrorActions(message));
 	};
 
 	const onEditInit = (messageId: string) => {
@@ -120,7 +119,7 @@ export function useMessageActions({
 		if (message.tmid && !tmid) {
 			return;
 		}
-		handleCloseEmoji(messageActionsRef.current?.showMessageActions, message);
+		handleCloseEmoji(() => messageActionsRef.current?.showMessageActions(message));
 	};
 
 	const onReplyInit = async (messageId: string) => {
