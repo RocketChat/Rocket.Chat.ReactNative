@@ -14,7 +14,9 @@ const canPostReadOnly = async (room: Partial<ISubscription>, username: string) =
 const isMuted = (room: Partial<ISubscription>, username: string) =>
 	room && room.muted && room.muted.find && !!room.muted.find(m => m === username);
 
-export const isReadOnly = async (room: Partial<ISubscription>, username: string): Promise<boolean> => {
+// Shared branch chain gating message posting. `allowPost` is resolved by each caller
+// (async via a permission fetch, sync via precomputed roles) and only consulted when `ro`.
+const evaluate = (room: Partial<ISubscription>, username: string, allowPost: boolean): boolean => {
 	if (room.archived) {
 		return true;
 	}
@@ -22,13 +24,14 @@ export const isReadOnly = async (room: Partial<ISubscription>, username: string)
 		return true;
 	}
 	if (room?.ro) {
-		const allowPost = await canPostReadOnly(room, username);
-		if (allowPost) {
-			return false;
-		}
-		return true;
+		return !allowPost;
 	}
 	return false;
+};
+
+export const isReadOnly = async (room: Partial<ISubscription>, username: string): Promise<boolean> => {
+	const allowPost = room?.ro ? await canPostReadOnly(room, username) : false;
+	return evaluate(room, username, allowPost);
 };
 
 // Synchronous counterpart to `isReadOnly` for callers that already hold a reactively-observed
@@ -39,17 +42,11 @@ export const isReadOnlySync = (
 	postReadOnlyPermission: string[] | undefined,
 	userRoles: string[]
 ): boolean => {
-	if (room.archived) {
-		return true;
-	}
-	if (isMuted(room, username)) {
-		return true;
-	}
+	let allowPost = false;
 	if (room?.ro) {
 		const isUnmuted = !!room?.unmuted?.find(m => m === username);
 		const mergedRoles = [...new Set([...(room.roles || []), ...userRoles])];
-		const allowPost = !!postReadOnlyPermission?.some(r => mergedRoles.includes(r));
-		return !(allowPost || isUnmuted);
+		allowPost = !!postReadOnlyPermission?.some(r => mergedRoles.includes(r)) || isUnmuted;
 	}
-	return false;
+	return evaluate(room, username, allowPost);
 };
