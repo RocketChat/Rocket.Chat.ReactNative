@@ -61,6 +61,13 @@ export function useJumpToMessage({
 			if (pendingJumpRef.current && !tmid) {
 				consumeJumpParamRef.current(pendingJumpRef.current);
 			}
+		});
+		return () => task.cancel();
+	}, [tmid, consumeJumpParamRef]);
+
+	useEffect(() => {
+		const task = InteractionManager.runAfterInteractions(() => {
+			// Pending jump wins: the thread nav param is dropped so the jump isn't hijacked mid-flight.
 			if (jumpToThreadIdRef.current && !pendingJumpRef.current) {
 				const threadId = jumpToThreadIdRef.current;
 				jumpToThreadIdRef.current = undefined;
@@ -68,25 +75,25 @@ export function useJumpToMessage({
 			}
 		});
 		return () => task.cancel();
-	}, [tmid, consumeJumpParamRef, navToThreadRef]);
+	}, [navToThreadRef]);
 
 	const prevJumpToMessageIdRef = useRef(route.params?.jumpToMessageId);
 	useEffect(() => {
 		const next = route.params?.jumpToMessageId;
 		if (next && next !== prevJumpToMessageIdRef.current) {
-			consumeJumpParam(next);
+			consumeJumpParamRef.current(next);
 		}
 		prevJumpToMessageIdRef.current = next;
-	}, [route.params?.jumpToMessageId, consumeJumpParam]);
+	}, [route.params?.jumpToMessageId, consumeJumpParamRef]);
 
 	const prevJumpToThreadIdRef = useRef(route.params?.jumpToThreadId);
 	useEffect(() => {
 		const next = route.params?.jumpToThreadId;
 		if (next && next !== prevJumpToThreadIdRef.current) {
-			navToThread({ tmid: next });
+			navToThreadRef.current({ tmid: next });
 		}
 		prevJumpToThreadIdRef.current = next;
-	}, [route.params?.jumpToThreadId, navToThread]);
+	}, [route.params?.jumpToThreadId, navToThreadRef]);
 
 	return { jumpToMessage, cancelJumpToMessage, consumeJumpParam, onThreadMessagesLoaded };
 }

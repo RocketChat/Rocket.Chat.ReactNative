@@ -114,9 +114,6 @@ const RoomView = (props: IRoomViewProps) => {
 	const messageActionsRef = useRef<IMessageActions | null>(null);
 	const messageErrorActionsRef = useRef<IMessageErrorActions | null>(null);
 
-	// cancelJumpToMessage is produced by useRoomNavigation below but read by handlers passed into it,
-	// so it stays a manual forward-ref (useLiveRef can't mirror a value that doesn't exist yet).
-	const cancelJumpToMessageRef = useRef<() => void>(() => {});
 	const userRef = useLiveRef(user);
 
 	const [roomStore] = useState(() => peekOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
@@ -156,18 +153,13 @@ const RoomView = (props: IRoomViewProps) => {
 		return EMPTY_HIDE_SYSTEM_MESSAGES;
 	})();
 
-	const { cancelJumpToMessage, onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl } = useRoomNavigation({
+	const { onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl } = useRoomNavigation({
 		rid,
 		tmid,
 		t,
 		isMasterDetail,
 		listRef,
-		roomUserIdRef,
-		cancelJumpToMessageRef
-	});
-
-	useEffect(() => {
-		cancelJumpToMessageRef.current = cancelJumpToMessage;
+		roomUserIdRef
 	});
 
 	const {
@@ -237,6 +229,9 @@ const RoomView = (props: IRoomViewProps) => {
 		/>
 	);
 
+	// Early returns below swap component types at this render position, so accepting an invite or
+	// resolving the E2EE key remounts the room tree. Intentional: the blocked screens hold no state
+	// worth keeping and the room tree mounts fresh once unblocked.
 	if ('id' in room && isInviteSubscription(room)) {
 		return <InvitedRoomScreen room={room} />;
 	}

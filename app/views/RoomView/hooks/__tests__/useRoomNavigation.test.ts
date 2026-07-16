@@ -58,7 +58,6 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 			isMasterDetail: false,
 			listRef: { current: null },
 			roomUserIdRef: { current: null },
-			cancelJumpToMessageRef: { current: jest.fn() },
 			...overrides
 		})
 	);

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import parse from 'url-parse';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,12 +27,15 @@ export function useRoomNavigation({
 	t,
 	isMasterDetail,
 	listRef,
-	roomUserIdRef,
-	cancelJumpToMessageRef
+	roomUserIdRef
 }: IUseRoomNavigationParams): IUseRoomNavigationResult {
 	'use memo';
 
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
+
+	// navToThread needs cancelJumpToMessage, which useJumpToMessage below produces from navToThread —
+	// the ref breaks that cycle; the mirror effect after the hook keeps it live (same discipline as useLiveRef).
+	const cancelJumpToMessageRef = useRef<() => void>(() => {});
 
 	const navToRoom = async (message: TGetMessageInfoResult) => {
 		if (!message.rid) return;
@@ -105,6 +109,10 @@ export function useRoomNavigation({
 		listRef,
 		navToRoom,
 		navToThread
+	});
+
+	useEffect(() => {
+		cancelJumpToMessageRef.current = cancelJumpToMessage;
 	});
 
 	const onThreadPress = useDebounce((item: TAnyMessageModel) => navToThread(item), 1000, { leading: true, trailing: false });

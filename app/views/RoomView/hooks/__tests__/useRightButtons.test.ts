@@ -32,7 +32,15 @@ const PERMISSION = 'toggle-room-e2e-encryption';
 
 // Wire redux + WMDB so the sync usePermissions path (useAppSelector + getSubscriptionByRoomId)
 // and the old async hasPermission path (reduxStore + database) read identical roles.
-const configure = ({ userRoles, subRoles, permissionRoles }: { userRoles: string[]; subRoles: string[]; permissionRoles: string[] }) => {
+const configure = ({
+	userRoles,
+	subRoles,
+	permissionRoles
+}: {
+	userRoles: string[];
+	subRoles: string[];
+	permissionRoles: string[];
+}) => {
 	mockState = {
 		login: { user: { roles: userRoles } },
 		permissions: { [PERMISSION]: permissionRoles }

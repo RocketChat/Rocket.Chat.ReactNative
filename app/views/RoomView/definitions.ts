@@ -342,7 +342,6 @@ export interface IUseRoomNavigationParams {
 	isMasterDetail: boolean;
 	listRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;
-	cancelJumpToMessageRef: RefObject<() => void>;
 }
 
 export interface IUseRoomNavigationResult {
