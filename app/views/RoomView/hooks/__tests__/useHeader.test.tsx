@@ -24,11 +24,12 @@ jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 }));
 
 const mockSetOptions = jest.fn();
+const mockNavigation = { setOptions: mockSetOptions };
 const defaultRouteParams = { rid: 'rid-1', tmid: undefined, t: SubscriptionType.CHANNEL, name: 'general' };
 let mockRouteParams: typeof defaultRouteParams = { ...defaultRouteParams };
 
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => ({ setOptions: mockSetOptions }),
+	useNavigation: () => mockNavigation,
 	useRoute: () => ({ params: mockRouteParams })
 }));
 
@@ -66,11 +67,12 @@ describe('useHeader', () => {
 	it('sets headerLeft, headerTitle and headerRight when rid is present', () => {
 		renderHook(() => useHeader());
 
-		expect(mockSetOptions).toHaveBeenCalledTimes(1);
-		const options = mockSetOptions.mock.calls[0][0];
-		expect(typeof options.headerLeft).toBe('function');
-		expect(typeof options.headerTitle).toBe('function');
-		expect(typeof options.headerRight).toBe('function');
+		expect(mockSetOptions).toHaveBeenCalledTimes(2);
+		const sideOptions = mockSetOptions.mock.calls[0][0];
+		expect(typeof sideOptions.headerLeft).toBe('function');
+		expect(typeof sideOptions.headerRight).toBe('function');
+		const titleOptions = mockSetOptions.mock.calls[1][0];
+		expect(typeof titleOptions.headerTitle).toBe('function');
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -85,14 +87,27 @@ describe('useHeader', () => {
 		expect(options).not.toHaveProperty('headerRight');
 	});
 
-	it('re-fires setOptions when roomUpdate changes even though the room reference is stable', () => {
+	it('re-fires the title effect when a rendered field changes even though the room reference is stable', () => {
 		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'old' } });
 
 		renderHook(() => useHeader());
-		expect(mockSetOptions).toHaveBeenCalledTimes(1);
+		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
 			mockTestStore.setState({ roomUpdate: { topic: 'new' } });
+		});
+		expect(mockSetOptions).toHaveBeenCalledTimes(3);
+		expect(mockSetOptions.mock.calls[2][0]).toHaveProperty('headerTitle');
+	});
+
+	it('does not re-fire the title effect when only lastMessage changes', () => {
+		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'same', lastMessage: { msg: 'old' } } });
+
+		renderHook(() => useHeader());
+		expect(mockSetOptions).toHaveBeenCalledTimes(2);
+
+		act(() => {
+			mockTestStore.setState({ roomUpdate: { topic: 'same', lastMessage: { msg: 'new' } } });
 		});
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 	});
@@ -100,9 +115,10 @@ describe('useHeader', () => {
 	it('renders each header callback without throwing', () => {
 		renderHook(() => useHeader());
 
-		const options = mockSetOptions.mock.calls[0][0];
-		expect(() => options.headerLeft()).not.toThrow();
-		expect(() => options.headerTitle()).not.toThrow();
-		expect(() => options.headerRight()).not.toThrow();
+		const sideOptions = mockSetOptions.mock.calls[0][0];
+		const titleOptions = mockSetOptions.mock.calls[1][0];
+		expect(() => sideOptions.headerLeft()).not.toThrow();
+		expect(() => titleOptions.headerTitle()).not.toThrow();
+		expect(() => sideOptions.headerRight()).not.toThrow();
 	});
 });
