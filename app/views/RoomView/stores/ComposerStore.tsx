@@ -29,38 +29,12 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 
 	const [store] = useState(() => createComposerStore(state));
 
-	// isAutocompleteVisible/updateAutocompleteVisible are store-owned (seeded once above) and are not
-	// synced here — only the externally-suppliable fields are kept in sync with props.
+	// `state` is exactly TComposerExternalState (children is destructured out), so this syncs every
+	// externally-suppliable field and none of the store-owned ones (isAutocompleteVisible/updateAutocompleteVisible).
+	// React Compiler keeps `state` referentially stable until a field changes, so the sync fires only then.
 	useEffect(() => {
-		store.setState({
-			rid: state.rid,
-			t: state.t,
-			tmid: state.tmid,
-			room: state.room,
-			roomUpdate: state.roomUpdate,
-			sharing: state.sharing,
-			editCancel: state.editCancel,
-			editRequest: state.editRequest,
-			onRemoveQuoteMessage: state.onRemoveQuoteMessage,
-			onSendMessage: state.onSendMessage,
-			setQuotesAndText: state.setQuotesAndText,
-			getText: state.getText
-		});
-	}, [
-		state.rid,
-		state.t,
-		state.tmid,
-		state.room,
-		state.roomUpdate,
-		state.sharing,
-		state.editCancel,
-		state.editRequest,
-		state.onRemoveQuoteMessage,
-		state.onSendMessage,
-		state.setQuotesAndText,
-		state.getText,
-		store
-	]);
+		store.setState(state);
+	}, [store, state]);
 
 	return <ComposerStoreContext.Provider value={store}>{children}</ComposerStoreContext.Provider>;
 };
