@@ -64,6 +64,7 @@ export function useOmnichannelPermissions({
 		roomUpdate.lastMessage?.token,
 		roomUpdate.visitor,
 		roomUpdate.status,
+		roomUpdate.onHold,
 		joined
 	]);
 }

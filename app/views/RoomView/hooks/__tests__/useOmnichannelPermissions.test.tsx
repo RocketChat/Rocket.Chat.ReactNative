@@ -133,4 +133,38 @@ describe('useOmnichannelPermissions', () => {
 
 		expect(roomStore.getState().canReturnQueue).toBe(true);
 	});
+
+	it('recomputes canPlaceLivechatOnHold on a pure on-hold flip of the same room instance', async () => {
+		const roomStore = makeRoomStore();
+		mockUsePermissions.mockReturnValue([true, true]);
+		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
+
+		// WatermelonDB re-emits the same mutated model instance; only roomUpdate is a fresh snapshot.
+		const room = { rid: 'rid-1', t: 'l', lastMessage: { token: undefined, u: { _id: 'u1' } }, onHold: false } as any;
+
+		const baseProps: IUseOmnichannelPermissionsParams = {
+			rid: 'rid-1',
+			t: 'l',
+			room,
+			roomUpdate: { onHold: false },
+			joined: true,
+			livechatAllowManualOnHold: true,
+			roomStore
+		};
+
+		const { rerender } = renderHook((props: IUseOmnichannelPermissionsParams) => useOmnichannelPermissions(props), {
+			initialProps: baseProps
+		});
+
+		await waitFor(() => {
+			expect(roomStore.getState().canPlaceLivechatOnHold).toBe(true);
+		});
+
+		room.onHold = true;
+		rerender({ ...baseProps, roomUpdate: { onHold: true } });
+
+		await waitFor(() => {
+			expect(roomStore.getState().canPlaceLivechatOnHold).toBe(false);
+		});
+	});
 });
