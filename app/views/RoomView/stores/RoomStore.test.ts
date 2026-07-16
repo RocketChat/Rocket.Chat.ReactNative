@@ -370,6 +370,19 @@ describe('RoomStore', () => {
 			expect(unsubscribe).not.toHaveBeenCalled();
 		});
 
+		it('warns when the grace sweep reclaims an entry before the acquire commits', () => {
+			setupObserve();
+			const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+			// Warm at refCount 0, then let the sweep tear it down before the mount effect acquires.
+			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			flushSweeps();
+			acquireRoomStore('rid-1');
+
+			expect(warn).toHaveBeenCalledWith(expect.stringContaining('swept before acquire'));
+			warn.mockRestore();
+		});
+
 		it('warm-up abandoned: the grace sweep tears down an entry no mount ever acquired', () => {
 			const { unsubscribe } = setupObserve();
 

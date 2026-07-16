@@ -198,6 +198,12 @@ export const acquireRoomStore = (rid?: string): void => {
 	const entry = registry.get(rid);
 	if (entry) {
 		entry.refCount += 1;
+		return;
+	}
+	if (__DEV__) {
+		// A missing entry here means the grace sweep reclaimed it before this acquire committed:
+		// the store is now observed-but-unowned and will leak. A live miss is a real bug.
+		console.warn(`acquireRoomStore: no store registered for rid "${rid}"; entry was swept before acquire.`);
 	}
 };
 
