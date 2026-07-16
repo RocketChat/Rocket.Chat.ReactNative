@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
@@ -39,27 +39,37 @@ export function useOmnichannelPermissions({
 		roomStore.setState({ canForwardGuest, canViewCannedResponse });
 	}, [t, canForwardGuest, canViewCannedResponse, roomStore]);
 
+	const [canReturnQueue, setCanReturnQueue] = useState(false);
+
 	useEffect(() => {
 		if (t !== 'l') {
 			return;
 		}
 		let cancelled = false;
-		getCanReturnQueue().then(canReturnQueue => {
+		getCanReturnQueue().then(returnQueue => {
 			if (cancelled) {
 				return;
 			}
-			roomStore.setState({
-				canReturnQueue,
-				canPlaceLivechatOnHold: getCanPlaceLivechatOnHold(livechatAllowManualOnHold, room)
-			});
+			setCanReturnQueue(returnQueue);
 		});
 		return () => {
 			cancelled = true;
 		};
+	}, [t, rid, joined]);
+
+	useEffect(() => {
+		if (t !== 'l') {
+			return;
+		}
+		roomStore.setState({
+			canReturnQueue,
+			canPlaceLivechatOnHold: getCanPlaceLivechatOnHold(livechatAllowManualOnHold, room)
+		});
 	}, [
 		t,
 		room,
 		roomStore,
+		canReturnQueue,
 		livechatAllowManualOnHold,
 		roomUpdate.lastMessage?.token,
 		roomUpdate.visitor,
