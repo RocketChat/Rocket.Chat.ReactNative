@@ -91,6 +91,15 @@ export const useIsBeingEdited = (messageId: string): boolean => {
 	return useStore(store, s => s.action?.kind === 'edit' && s.action.messageId === messageId);
 };
 
+// Stable ref so the selector doesn't emit a fresh array when not quoting.
+const EMPTY_MESSAGE_IDS: string[] = [];
+
+export const useQuotedMessageIds = (): string[] =>
+	useMessageActionStore(s => (s.action?.kind === 'quote' ? s.action.messageIds : EMPTY_MESSAGE_IDS));
+
+export const useEditingMessageId = (): string | undefined =>
+	useMessageActionStore(s => (s.action?.kind === 'edit' ? s.action.messageId : undefined));
+
 export const MessageActionProvider = ({
 	store: externalStore,
 	initialAction,

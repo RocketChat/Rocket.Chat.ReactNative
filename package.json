@@ -215,6 +215,7 @@
 		"prettier": "2.8.8",
 		"react-dom": "19.1.0",
 		"react-native-dotenv": "3.4.8",
+		"reassure": "^1.5.1",
 		"storybook": "~9.0.9",
 		"typescript": "~5.9.3"
 	},

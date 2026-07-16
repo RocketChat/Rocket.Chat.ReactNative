@@ -4,8 +4,10 @@ import {
 	createMessageActionStore,
 	inertStore,
 	MessageActionProvider,
+	useEditingMessageId,
 	useIsBeingEdited,
-	useMessageAction
+	useMessageAction,
+	useQuotedMessageIds
 } from '../MessageActionStore';
 
 describe('MessageActionStore', () => {
@@ -92,6 +94,74 @@ describe('MessageActionStore', () => {
 			);
 
 			expect(spy).toHaveBeenLastCalledWith(false);
+		});
+	});
+
+	describe('useQuotedMessageIds', () => {
+		it('returns the quoted messageIds under a quote action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useQuotedMessageIds());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1', 'msg-2'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(['msg-1', 'msg-2']);
+		});
+
+		it('returns an empty array for non-quote actions', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useQuotedMessageIds());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith([]);
+		});
+	});
+
+	describe('useEditingMessageId', () => {
+		it('returns the messageId under an edit action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useEditingMessageId());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith('msg-1');
+		});
+
+		it('returns undefined for non-edit actions', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useEditingMessageId());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(undefined);
 		});
 	});
 

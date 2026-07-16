@@ -12,7 +12,7 @@ import {
 	useOnSendMessage,
 	useSetQuotesAndText
 } from '../../views/RoomView/stores/ComposerStore';
-import { useMessageAction } from '../message/stores/MessageActionStore';
+import { useEditingMessageId, useMessageAction, useQuotedMessageIds } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import {
@@ -69,6 +69,8 @@ export const MessageComposer = ({
 	const onSendMessage = useOnSendMessage();
 	const setQuotesAndText = useSetQuotesAndText();
 	const action = useMessageAction();
+	const editingMessageId = useEditingMessageId();
+	const quotedMessageIds = useQuotedMessageIds();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
@@ -122,13 +124,13 @@ export const MessageComposer = ({
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
-		if (action?.kind === 'edit') {
+		if (editingMessageId) {
 			const updatedAttachments = attachments.length
 				? attachments.map(({ description, altText, fileId, filename }) =>
 						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
 				  )
 				: undefined;
-			editRequest?.({ id: action.messageId, msg: textFromInput, rid, attachments: updatedAttachments });
+			editRequest?.({ id: editingMessageId, msg: textFromInput, rid, attachments: updatedAttachments });
 			clearAttachments();
 			return;
 		}
@@ -136,8 +138,8 @@ export const MessageComposer = ({
 		if (attachments.length) {
 			let quotedMessage: string | undefined;
 
-			if (action?.kind === 'quote') {
-				quotedMessage = await prepareQuoteMessage(textFromInput, action.messageIds);
+			if (quotedMessageIds.length) {
+				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds);
 			}
 
 			try {
@@ -160,8 +162,8 @@ export const MessageComposer = ({
 			}
 		}
 
-		if (action?.kind === 'quote') {
-			const quoteMessage = await prepareQuoteMessage(textFromInput, action.messageIds);
+		if (quotedMessageIds.length) {
+			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds);
 			onSendMessage?.(quoteMessage);
 			return;
 		}

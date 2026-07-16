@@ -1,0 +1,329 @@
+steps:
+  - echo: On rooms list — open bench-roomview-hooks channel (top row)
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: bench-roomview-hooks
+      timeoutMs: 15000
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.218
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: message-composer-actions
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: exists
+      selector:
+        text: e2e_admin
+      timeoutMs: 15000
+  - echo: In room — scroll up through history until load-more pagination fires
+  - tool: run-sequence
+    args:
+      steps:
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+  - tool: run-sequence
+    args:
+      steps:
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+  - tool: await-ui-element
+    args:
+      condition: exists
+      selector:
+        text: seed message 1
+      timeoutMs: 15000
+      pollIntervalMs: 500
+  - echo: Pagination loaded. Tap composer, type run-tagged message, send
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.933
+  - wait: 700
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.933
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: return
+      timeoutMs: 10000
+  - tool: keyboard
+    args:
+      text: Bench RUNID msg1
+      delayMs: 150
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: message-composer-send
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9303
+      y: 0.5778
+  - echo: Dismiss keyboard (swipe down), jump to last message, verify send
+  - tool: gesture-swipe
+    args: { fromX: 0.5, fromY: 0.4, toX: 0.5, toY: 0.85, settle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Jump to last message
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9
+      y: 0.805
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID msg1
+      timeoutMs: 15000
+  - echo: Edit own message (long-press last message, bottom anchor)
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.5
+          y: 0.822
+        - type: Up
+          x: 0.5
+          y: 0.822
+          delayMs: 900
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Edit
+      timeoutMs: 10000
+  - wait: 400
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.586
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Reply in thread
+      timeoutMs: 10000
+  - tool: keyboard
+    args:
+      text: ' edited'
+      delayMs: 150
+  - tool: gesture-tap
+    args:
+      x: 0.93
+      y: 0.578
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID msg1 edited
+      timeoutMs: 15000
+  - echo: Quote the edited message (dismiss keyboard, jump, long-press last)
+  - tool: gesture-swipe
+    args: { fromX: 0.5, fromY: 0.4, toX: 0.5, toY: 0.85, settle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Jump to last message
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9
+      y: 0.805
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID msg1 edited
+      timeoutMs: 15000
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.5
+          y: 0.822
+        - type: Up
+          x: 0.5
+          y: 0.822
+          delayMs: 900
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Quote
+      timeoutMs: 10000
+  - wait: 400
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.64
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Reply in thread
+      timeoutMs: 10000
+  - wait: 800
+  - tool: keyboard
+    args:
+      text: Bench RUNID quote1
+      delayMs: 150
+  - tool: gesture-tap
+    args:
+      x: 0.93
+      y: 0.578
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID quote1
+      timeoutMs: 15000
+  - echo: Reply in thread on the quote message (dismiss keyboard, jump, long-press last)
+  - tool: gesture-swipe
+    args: { fromX: 0.5, fromY: 0.4, toX: 0.5, toY: 0.85, settle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Jump to last message
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9
+      y: 0.805
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID quote1
+      timeoutMs: 15000
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.5
+          y: 0.822
+        - type: Up
+          x: 0.5
+          y: 0.822
+          delayMs: 900
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Reply in thread
+      timeoutMs: 10000
+  - wait: 400
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.749
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Add thread reply
+      timeoutMs: 15000
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.892
+  - wait: 700
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.892
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: return
+      timeoutMs: 10000
+  - tool: keyboard
+    args:
+      text: Bench RUNID reply1
+      delayMs: 150
+  - wait: 800
+  - tool: gesture-tap
+    args:
+      x: 0.9303
+      y: 0.5366
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID reply1
+      timeoutMs: 15000
+  - echo: Back to room, verify reply landed in channel (also-send-to-channel)
+  - tool: gesture-tap
+    args:
+      x: 0.054
+      y: 0.097
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: message-composer-actions
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID reply1
+      timeoutMs: 15000
+executionPrerequisite: Logged in as e2e_admin on mobile.qa.rocket.chat, rooms
+  list visible, channel bench-roomview-hooks present with 70+ seed messages and
+  most recent activity (top row). Placeholder RUNID in flow YAML must be
+  sed-replaced with a unique run id before execution.

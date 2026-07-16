@@ -1,0 +1,27 @@
+steps:
+  - tool: gesture-swipe
+    args: { fromX: 0.5, fromY: 0.4, toX: 0.5, toY: 0.85, settle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Jump to last message
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9
+      y: 0.805
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench a1z msg1
+      timeoutMs: 15000
+  - long-press: { on: 'Bench a1z msg1', duration: 900 }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Edit
+      timeoutMs: 10000
+executionPrerequisite: In bench room, keyboard open, Bench a1z msg1 sent.

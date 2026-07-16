@@ -19,9 +19,16 @@ jest.mock('../../../views/RoomView/stores/ComposerStore', () => ({
 	useGetText: jest.fn()
 }));
 
-jest.mock('../../message/stores/MessageActionStore', () => ({
-	useMessageAction: jest.fn()
-}));
+jest.mock('../../message/stores/MessageActionStore', () => {
+	const useMessageAction = jest.fn();
+	return {
+		useMessageAction,
+		useQuotedMessageIds: () => {
+			const action = useMessageAction();
+			return action?.kind === 'quote' ? action.messageIds : [];
+		}
+	};
+});
 
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()

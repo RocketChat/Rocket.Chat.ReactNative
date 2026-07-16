@@ -1,0 +1,65 @@
+steps:
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Reply in thread
+      timeoutMs: 10000
+  - wait: 400
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.749
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Add thread reply
+      timeoutMs: 15000
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.892
+  - wait: 700
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.892
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: return
+      timeoutMs: 10000
+  - tool: keyboard
+    args:
+      text: Bench RUNID reply1
+      delayMs: 150
+  - wait: 800
+  - tool: gesture-tap
+    args:
+      x: 0.9303
+      y: 0.5366
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID reply1
+      timeoutMs: 15000
+  - tool: gesture-tap
+    args:
+      x: 0.054
+      y: 0.097
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: message-composer-actions
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench RUNID reply1
+      timeoutMs: 15000
+executionPrerequisite: Action sheet open on Bench RUNID quote1 (long-pressed).

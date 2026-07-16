@@ -1,0 +1,130 @@
+steps:
+  - echo: On rooms list — open bench-roomview-hooks channel (top row)
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: bench-roomview-hooks
+      timeoutMs: 15000
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.218
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: message-composer-actions
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: exists
+      selector:
+        text: e2e_admin
+      timeoutMs: 15000
+  - echo: In room — scroll up through history until load-more pagination fires
+  - tool: run-sequence
+    args:
+      steps:
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+  - tool: run-sequence
+    args:
+      steps:
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+        - tool: gesture-swipe
+          args: { fromX: 0.5, fromY: 0.25, toX: 0.5, toY: 0.75, settle: true }
+          delayMs: 400
+  - tool: await-ui-element
+    args:
+      condition: exists
+      selector:
+        text: seed message 1
+      timeoutMs: 15000
+      pollIntervalMs: 500
+  - echo: Pagination loaded. Tap composer, type run-tagged message, send
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.933
+  - wait: 700
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.933
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: return
+      timeoutMs: 10000
+  - tool: keyboard
+    args:
+      text: Bench a2 msg1
+      delayMs: 150
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: message-composer-send
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9303
+      y: 0.5778
+  - echo: Dismiss keyboard (swipe down), jump to last message, verify send
+  - tool: gesture-swipe
+    args: { fromX: 0.5, fromY: 0.4, toX: 0.5, toY: 0.85, settle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Jump to last message
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9
+      y: 0.805
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench a2 msg1
+      timeoutMs: 15000
+executionPrerequisite: Rooms list visible, bench channel top row. a2 replaced.

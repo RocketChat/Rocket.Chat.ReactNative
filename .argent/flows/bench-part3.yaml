@@ -1,0 +1,52 @@
+steps:
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Quote
+      timeoutMs: 10000
+  - wait: 400
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.64
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Reply in thread
+      timeoutMs: 10000
+  - wait: 800
+  - tool: keyboard
+    args:
+      text: Bench a2 quote1
+      delayMs: 150
+  - tool: gesture-tap
+    args:
+      x: 0.93
+      y: 0.578
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench a2 quote1
+      timeoutMs: 15000
+  - tool: gesture-swipe
+    args: { fromX: 0.5, fromY: 0.4, toX: 0.5, toY: 0.85, settle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Jump to last message
+      timeoutMs: 10000
+  - tool: gesture-tap
+    args:
+      x: 0.9
+      y: 0.805
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Bench a2 quote1
+      timeoutMs: 15000
+executionPrerequisite: Action sheet open on Bench a2 msg1 edited (long-pressed).
