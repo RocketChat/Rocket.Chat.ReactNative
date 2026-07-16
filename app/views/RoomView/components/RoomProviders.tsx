@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 
-import { type TComposerExternalState } from './definitions';
-import { ComposerProvider } from './stores/ComposerStore';
-import { type TMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
+import { type TComposerExternalState } from '../definitions';
+import { ComposerProvider } from '../stores/ComposerStore';
+import { type TMessageActionStore, MessageActionProvider } from '../../../containers/message/stores/MessageActionStore';
 
 type IRoomProvidersProps = TComposerExternalState & {
 	store: TMessageActionStore;

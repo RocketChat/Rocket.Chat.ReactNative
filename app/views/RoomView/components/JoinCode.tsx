@@ -4,14 +4,14 @@ import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import I18n from '../../i18n';
-import Button from '../../containers/Button';
-import { FormTextInput } from '../../containers/TextInput';
-import sharedStyles from '../Styles';
-import { useTheme } from '../../theme';
-import { joinRoom } from '../../lib/services/restApi';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { type IJoinCode, type IJoinCodeProps } from './definitions';
+import I18n from '../../../i18n';
+import Button from '../../../containers/Button';
+import { FormTextInput } from '../../../containers/TextInput';
+import sharedStyles from '../../Styles';
+import { useTheme } from '../../../theme';
+import { joinRoom } from '../../../lib/services/restApi';
+import { withMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { type IJoinCode, type IJoinCodeProps } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,8 +1,12 @@
 import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
-import { useComposerRid, useComposerSharing } from './stores/ComposerStore';
-import { createMessageActionStore, useIsBeingEdited, useMessageAction } from '../../containers/message/stores/MessageActionStore';
+import { useComposerRid, useComposerSharing } from '../stores/ComposerStore';
+import {
+	createMessageActionStore,
+	useIsBeingEdited,
+	useMessageAction
+} from '../../../containers/message/stores/MessageActionStore';
 
 describe('RoomProviders', () => {
 	it('exposes the provided composer values to consumers via named hooks', () => {

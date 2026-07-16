@@ -37,7 +37,7 @@ import {
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomProviders } from '../RoomView/RoomProviders';
+import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { appStart } from '../../actions/app';
 

@@ -1,15 +1,15 @@
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { type ReactElement } from 'react';
 
-import Avatar from '../../containers/Avatar';
-import { useAppNavigation } from '../../lib/hooks/navigation';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { getUserSelector } from '../../selectors/login';
-import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
-import { useUnreadsCount } from './hooks/useUnreadsCount';
-import { useGoRoomActionsView } from './hooks/useGoRoomActionsView';
-import { useRoomStoreByRid } from './stores/RoomStore';
+import Avatar from '../../../containers/Avatar';
+import { useAppNavigation } from '../../../lib/hooks/navigation';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { getUserSelector } from '../../../selectors/login';
+import { HeaderBackButton } from '../../../containers/Header/components/HeaderBackButton';
+import { useUnreadsCount } from '../hooks/useUnreadsCount';
+import { useGoRoomActionsView } from '../hooks/useGoRoomActionsView';
+import { useRoomStoreByRid } from '../stores/RoomStore';
 
 const styles = StyleSheet.create({
 	avatar: {

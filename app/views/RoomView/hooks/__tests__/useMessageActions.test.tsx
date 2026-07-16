@@ -6,7 +6,7 @@ import { Review } from '../../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { SubscriptionType } from '../../../../definitions';
 import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
-import ReactionPicker from '../../ReactionPicker';
+import ReactionPicker from '../../components/ReactionPicker';
 import { useMessageActions } from '../useMessageActions';
 import { type IUseMessageActionsParams } from '../../definitions';
 

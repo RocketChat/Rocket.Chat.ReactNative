@@ -12,8 +12,8 @@ jest.mock('../../stores/RoomStore', () => ({
 		jest.requireActual('zustand').useStore(mockTestStore, selector)
 }));
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
-jest.mock('../../LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
-jest.mock('../../RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
+jest.mock('../../components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
+jest.mock('../../components/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('../../../../containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
 jest.mock('../../../../lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title'),

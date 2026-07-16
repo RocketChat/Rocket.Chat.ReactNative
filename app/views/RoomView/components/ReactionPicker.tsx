@@ -1,15 +1,15 @@
 import { View } from 'react-native';
 import { type ReactElement, useState } from 'react';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import EmojiPicker from '../../containers/EmojiPicker';
-import styles from './styles';
-import { type IEmoji } from '../../definitions';
-import { type EventTypes } from '../../containers/EmojiPicker/interfaces';
-import { searchEmojis } from '../../lib/methods/emojis';
-import { useDebounce } from '../../lib/methods/helpers/debounce';
-import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
+import EmojiPicker from '../../../containers/EmojiPicker';
+import styles from '../styles';
+import { type IEmoji } from '../../../definitions';
+import { type EventTypes } from '../../../containers/EmojiPicker/interfaces';
+import { searchEmojis } from '../../../lib/methods/emojis';
+import { useDebounce } from '../../../lib/methods/helpers/debounce';
+import { EmojiSearch } from '../../../containers/EmojiPicker/EmojiSearch';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 
 interface IReactionPickerProps {
 	messageId?: string;

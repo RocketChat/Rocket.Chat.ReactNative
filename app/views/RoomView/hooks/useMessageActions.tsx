@@ -13,7 +13,7 @@ import {
 	type TAnyMessageModel
 } from '../../../definitions';
 import { type IRoomViewProps, type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
-import ReactionPicker from '../ReactionPicker';
+import ReactionPicker from '../components/ReactionPicker';
 
 export function useMessageActions({
 	messageActionStore,
