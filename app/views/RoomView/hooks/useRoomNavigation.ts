@@ -1,4 +1,5 @@
 import parse from 'url-parse';
+import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../../i18n';
 import getRoomInfo from '../../../lib/methods/getRoomInfo';
@@ -11,20 +12,26 @@ import getThreadName from '../../../lib/methods/getThreadName';
 import { sendLoadingEvent } from '../../../containers/Loading';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
 import { SubscriptionType, type TAnyMessageModel } from '../../../definitions';
-import { type IUseRoomNavigationParams, type IUseRoomNavigationResult, type TGetMessageInfoResult } from '../definitions';
+import {
+	type IRoomViewProps,
+	type IUseRoomNavigationParams,
+	type IUseRoomNavigationResult,
+	type TGetMessageInfoResult
+} from '../definitions';
 import { useJumpToMessage } from './useJumpToMessage';
 
 export function useRoomNavigation({
 	rid,
 	tmid,
 	t,
-	navigation,
 	isMasterDetail,
 	listRef,
 	roomUserIdRef,
 	cancelJumpToMessageRef
 }: IUseRoomNavigationParams): IUseRoomNavigationResult {
 	'use memo';
+
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	const navToRoom = async (message: TGetMessageInfoResult) => {
 		if (!message.rid) return;

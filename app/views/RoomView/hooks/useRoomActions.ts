@@ -1,12 +1,7 @@
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
 import { sendMessage } from '../../../lib/methods/sendMessage';
-import { type IUseRoomActionsParams } from '../definitions';
-
-interface IUseRoomActionsResult {
-	onJoin: () => void;
-	handleSendMessage: (message?: string, tshow?: boolean) => void;
-}
+import { type IUseRoomActionsParams, type IUseRoomActionsResult } from '../definitions';
 
 export function useRoomActions({ rid, tmid, roomStore, userRef, resetAction }: IUseRoomActionsParams): IUseRoomActionsResult {
 	'use memo';

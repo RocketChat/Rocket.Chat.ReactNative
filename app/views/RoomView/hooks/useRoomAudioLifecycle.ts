@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import AudioManager from '../../../lib/methods/AudioManager';
 import { type IRoomViewProps } from '../definitions';
 
-export function useRoomAudioLifecycle(
-	rid: string | undefined,
-	tmid: string | undefined,
-	navigation: IRoomViewProps['navigation']
-): void {
+export function useRoomAudioLifecycle(rid: string | undefined, tmid: string | undefined): void {
 	'use memo';
+
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	useEffect(() => {
 		const unsubscribeBlur = navigation.addListener('blur', () => AudioManager.pauseAudio());

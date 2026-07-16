@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStore } from 'zustand';
 
-import database from '../../lib/database';
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import I18n from '../../i18n';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -19,7 +18,6 @@ import JoinCode from './JoinCode';
 import UploadProgress from './UploadProgress';
 import List from './List';
 import { type IApplicationState, type TAnyMessageModel, type RoomType } from '../../definitions';
-import { themes } from '../../lib/constants/colors';
 import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer';
@@ -35,8 +33,7 @@ import { MissingRoomE2EEKey } from './components/MissingRoomE2EEKey';
 import { RoomFooter } from './components/RoomFooter/RoomFooter';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { isRoomFederated } from '../../lib/methods/isRoomFederated';
-import { InvitedRoom } from './components/InvitedRoom';
-import { getInvitationData } from '../../lib/methods/getInvitationData';
+import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
@@ -51,16 +48,19 @@ import { useRoomActions } from './hooks/useRoomActions';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 import { useInAppFeedback } from './hooks/useInAppFeedback';
+import { useCloseBanner } from './hooks/useCloseBanner';
+import { useLiveRef } from '../../lib/hooks/useLiveRef';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
 const RoomView = (props: IRoomViewProps) => {
 	'use memo';
 
+	const { colors } = useTheme();
+
 	const {
 		route,
 		navigation,
-		theme,
 		user,
 		isAuthenticated,
 		baseUrl,
@@ -114,11 +114,10 @@ const RoomView = (props: IRoomViewProps) => {
 	const messageActionsRef = useRef<IMessageActions | null>(null);
 	const messageErrorActionsRef = useRef<IMessageErrorActions | null>(null);
 
-	// Live-mirror refs let frozen provider handlers stay referentially stable while reading fresh values.
-	const roomRef = useRef(initialRoom);
-	const roomUserIdRef = useRef(initialRoomUserId);
+	// cancelJumpToMessage is produced by useRoomNavigation below but read by handlers passed into it,
+	// so it stays a manual forward-ref (useLiveRef can't mirror a value that doesn't exist yet).
 	const cancelJumpToMessageRef = useRef<() => void>(() => {});
-	const userRef = useRef(user);
+	const userRef = useLiveRef(user);
 
 	const [roomStore] = useState(() => peekOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
 	// rid is stable for this RoomView instance; render peeks the store, this effect owns its lifetime.
@@ -141,6 +140,8 @@ const RoomView = (props: IRoomViewProps) => {
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
 
+	const roomUserIdRef = useLiveRef(roomUserId);
+
 	const hideSystemMessages = (() => {
 		const { sysMes } = room;
 		// FIXME: handle servers with version < 3.0.0
@@ -159,7 +160,6 @@ const RoomView = (props: IRoomViewProps) => {
 		rid,
 		tmid,
 		t,
-		navigation,
 		isMasterDetail,
 		listRef,
 		roomUserIdRef,
@@ -167,9 +167,6 @@ const RoomView = (props: IRoomViewProps) => {
 	});
 
 	useEffect(() => {
-		roomRef.current = room;
-		roomUserIdRef.current = roomUserId;
-		userRef.current = user;
 		cancelJumpToMessageRef.current = cancelJumpToMessage;
 	});
 
@@ -192,7 +189,6 @@ const RoomView = (props: IRoomViewProps) => {
 		messageActionStore,
 		showActionSheet,
 		hideActionSheet,
-		navigation,
 		rid,
 		tmid,
 		roomUserId,
@@ -204,8 +200,8 @@ const RoomView = (props: IRoomViewProps) => {
 
 	useRoomInit({ rid, tmid, isAuthenticated, roomStore, roomUpdate, onThreadMessagesLoaded, messageActionStore, onQuoteInit });
 	useRoomSubscription(sub);
-	useRoomAudioLifecycle(rid, tmid, navigation);
-	useRoomRemoved(rid, isMasterDetail, roomRef);
+	useRoomAudioLifecycle(rid, tmid);
+	useRoomRemoved(rid, isMasterDetail);
 	const { onJoin, handleSendMessage } = useRoomActions({
 		rid,
 		tmid,
@@ -216,20 +212,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	useInAppFeedback();
 
-	const closeBanner = async () => {
-		if ('id' in room) {
-			try {
-				const db = database.active;
-				await db.write(async () => {
-					await room.update(r => {
-						r.bannerClosed = true;
-					});
-				});
-			} catch {
-				// do nothing
-			}
-		}
-	};
+	const closeBanner = useCloseBanner(room);
 
 	useOmnichannelPermissions({
 		rid,
@@ -255,13 +238,7 @@ const RoomView = (props: IRoomViewProps) => {
 	);
 
 	if ('id' in room && isInviteSubscription(room)) {
-		const { title, description, inviter, accept, reject } = getInvitationData(room);
-
-		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view-invited'>
-				<InvitedRoom title={title} description={description} inviter={inviter} onAccept={accept} onReject={reject} />
-			</SafeAreaView>
-		);
+		return <InvitedRoomScreen room={room} />;
 	}
 
 	if ('encrypted' in room) {
@@ -300,7 +277,7 @@ const RoomView = (props: IRoomViewProps) => {
 				onSendMessage={handleSendMessage}
 				setQuotesAndText={setQuotesAndText}
 				getText={getText}>
-				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
 					{!tmid ? (
 						<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
 					) : null}
@@ -348,7 +325,7 @@ const RoomView = (props: IRoomViewProps) => {
 						jumpToMessage={jumpToMessageByUrl}
 					/>
 					<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
-					<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} theme={theme} />
+					<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
 				</SafeAreaView>
 			</RoomProviders>
 		</RoomStoreContext.Provider>
@@ -366,6 +343,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 
-export default connect(mapStateToProps)(
-	withDimensions(withTheme(withSafeAreaInsets(withActionSheet(withMasterDetail(RoomView)))))
-);
+export default connect(mapStateToProps)(withDimensions(withSafeAreaInsets(withActionSheet(withMasterDetail(RoomView)))));

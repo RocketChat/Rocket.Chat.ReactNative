@@ -226,6 +226,10 @@ const getFallbackRoomStore = (): RoomStore => {
 	return fallbackRoomStore;
 };
 
+// Non-reactive peek: read the rid-keyed store at handler time (event callbacks) without subscribing.
+// Falls back to the inert empty-room store on a registry miss.
+export const peekRoomStore = (rid?: string): RoomStore => (rid ? registry.get(rid)?.store : undefined) ?? getFallbackRoomStore();
+
 // Non-owning peek hook: the native-stack header renders outside RoomView's provider tree, so its
 // children read the rid-keyed store from the module registry instead of context.
 export function useRoomStoreByRid<T>(rid: string | undefined, selector: (state: RoomState) => T): T {

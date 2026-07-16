@@ -5,19 +5,23 @@ import { useRoomAudioLifecycle } from '../useRoomAudioLifecycle';
 
 jest.mock('../../../../lib/methods/AudioManager', () => ({ pauseAudio: jest.fn(), unloadRoomAudios: jest.fn() }));
 
+const mockUnsubscribeBlur = jest.fn();
+const mockNavigation = { addListener: jest.fn((_event: string, _handler: () => void) => mockUnsubscribeBlur) };
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => mockNavigation
+}));
+
 const mockUnloadRoomAudios = AudioManager.unloadRoomAudios as jest.Mock;
 const mockPauseAudio = AudioManager.pauseAudio as jest.Mock;
 
 const renderRoomAudioLifecycle = (rid: string | undefined, tmid: string | undefined) => {
-	const unsubscribeBlur = jest.fn();
-	const navigation = { addListener: jest.fn((_event: string, _handler: () => void) => unsubscribeBlur) };
 	const { unmount, rerender } = renderHook(
 		({ rid: nextRid, tmid: nextTmid }: { rid: string | undefined; tmid: string | undefined }) =>
-			useRoomAudioLifecycle(nextRid, nextTmid, navigation as any),
+			useRoomAudioLifecycle(nextRid, nextTmid),
 		{ initialProps: { rid, tmid } }
 	);
 
-	return { unmount, rerender, navigation, unsubscribeBlur };
+	return { unmount, rerender, navigation: mockNavigation, unsubscribeBlur: mockUnsubscribeBlur };
 };
 
 describe('useRoomAudioLifecycle', () => {

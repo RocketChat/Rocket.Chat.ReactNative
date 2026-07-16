@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants/colors';
+import { useTheme } from '../../theme';
 import { joinRoom } from '../../lib/services/restApi';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { type IJoinCode, type IJoinCodeProps } from './definitions';
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
 });
 
 const JoinCode = memo(
-	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
+	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail }, ref) => {
+		const { colors } = useTheme();
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
 		const [code, setCode] = useState('');
@@ -72,9 +73,9 @@ const JoinCode = memo(
 						style={[
 							styles.content,
 							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-							{ backgroundColor: themes[theme].surfaceRoom }
+							{ backgroundColor: colors.surfaceRoom }
 						]}>
-						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
 							inputRef={(e: any) => {
@@ -98,7 +99,7 @@ const JoinCode = memo(
 								title={I18n.t('Cancel')}
 								type='secondary'
 								style={styles.button}
-								backgroundColor={themes[theme].surfaceTint}
+								backgroundColor={colors.surfaceTint}
 								testID='join-code-cancel'
 								onPress={hide}
 							/>

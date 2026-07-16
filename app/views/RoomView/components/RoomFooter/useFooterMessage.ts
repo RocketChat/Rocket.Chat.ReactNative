@@ -22,7 +22,6 @@ const getFederatedFooterDescription = (
 	return undefined;
 };
 
-// Resolves the read-only/blocked/federated banner string, or null when the composer should render.
 export const useFooterMessage = (): string | null => {
 	'use memo';
 

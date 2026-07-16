@@ -10,6 +10,10 @@ import { useJumpToMessage } from '../useJumpToMessage';
 import { useRoomNavigation } from '../useRoomNavigation';
 import { type IUseRoomNavigationParams } from '../../definitions';
 
+const mockNavigation = { navigate: jest.fn(), push: jest.fn(), setParams: jest.fn(), addListener: jest.fn() };
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => mockNavigation
+}));
 jest.mock('../useJumpToMessage', () => ({
 	useJumpToMessage: jest.fn(() => ({
 		jumpToMessage: jest.fn(),
@@ -46,13 +50,11 @@ const mockGoRoom = goRoom as jest.Mock;
 const mockUseJumpToMessage = useJumpToMessage as jest.Mock;
 
 const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {}) => {
-	const navigation = { navigate: jest.fn(), push: jest.fn(), setParams: jest.fn(), addListener: jest.fn() };
 	const { result } = renderHook(() =>
 		useRoomNavigation({
 			rid: 'rid-1',
 			tmid: undefined,
 			t: 'c',
-			navigation: navigation as any,
 			isMasterDetail: false,
 			listRef: { current: null },
 			roomUserIdRef: { current: null },
@@ -61,7 +63,7 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 		})
 	);
 
-	return { result, navigation };
+	return { result, navigation: mockNavigation };
 };
 
 describe('useRoomNavigation', () => {

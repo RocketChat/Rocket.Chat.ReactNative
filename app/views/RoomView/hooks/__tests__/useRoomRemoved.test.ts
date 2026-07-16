@@ -11,12 +11,17 @@ jest.mock('../../../../lib/methods/helpers', () => ({ getRoomTitle: jest.fn(() =
 jest.mock('../../../../lib/navigation/appNavigation', () => ({ __esModule: true, default: { popToTop: jest.fn() } }));
 jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
 
+let mockRoom: IRoomViewState['room'] = { rid: '', t: '' };
+jest.mock('../../stores/RoomStore', () => ({
+	peekRoomStore: () => ({ getState: () => ({ room: mockRoom }) })
+}));
+
 const mockPopToTop = Navigation.popToTop as jest.Mock;
 const mockShowErrorAlert = showErrorAlert as jest.Mock;
 
 const renderRoomRemoved = (rid: string | undefined, isMasterDetail: boolean, room: IRoomViewState['room']) => {
-	const roomRef = { current: room };
-	return renderHook(() => useRoomRemoved(rid, isMasterDetail, roomRef));
+	mockRoom = room;
+	return renderHook(() => useRoomRemoved(rid, isMasterDetail));
 };
 
 describe('useRoomRemoved', () => {

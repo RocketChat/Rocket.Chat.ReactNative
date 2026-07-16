@@ -22,7 +22,6 @@ import { type IMessageComposerRef } from '../../containers/MessageComposer/inter
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
-import { type TSupportedThemes } from '../../theme';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -242,7 +241,6 @@ export interface IJoinCodeProps {
 	t: string;
 	onJoin: Function;
 	isMasterDetail: boolean;
-	theme: TSupportedThemes;
 }
 
 export interface IJoinCode {
@@ -257,11 +255,15 @@ export interface IUseRoomActionsParams {
 	resetAction: () => void;
 }
 
+export interface IUseRoomActionsResult {
+	onJoin: () => void;
+	handleSendMessage: (message?: string, tshow?: boolean) => void;
+}
+
 export interface IUseMessageActionsParams {
 	messageActionStore: TMessageActionStore;
 	showActionSheet: (options: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
-	navigation: IRoomViewProps['navigation'];
 	rid?: string;
 	tmid?: string;
 	roomUserId?: string | null;
@@ -337,7 +339,6 @@ export interface IUseRoomNavigationParams {
 	rid?: string;
 	tmid?: string;
 	t?: string;
-	navigation: IRoomViewProps['navigation'];
 	isMasterDetail: boolean;
 	listRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;

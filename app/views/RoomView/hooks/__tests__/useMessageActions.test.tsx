@@ -10,6 +10,10 @@ import ReactionPicker from '../../ReactionPicker';
 import { useMessageActions } from '../useMessageActions';
 import { type IUseMessageActionsParams } from '../../definitions';
 
+const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => mockNavigation
+}));
 jest.mock('../../../../lib/services/restApi', () => ({
 	editMessage: jest.fn(),
 	setReaction: jest.fn()
@@ -49,7 +53,6 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 	const messageActionStore = overrides.messageActionStore ?? createMessageActionStore();
 	const showActionSheet = jest.fn();
 	const hideActionSheet = jest.fn();
-	const navigation = { navigate: jest.fn(), push: jest.fn() };
 	const onThreadPress = jest.fn();
 
 	const { result } = renderHook(() =>
@@ -57,7 +60,6 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 			messageActionStore,
 			showActionSheet,
 			hideActionSheet,
-			navigation: navigation as any,
 			rid: RID,
 			tmid: undefined,
 			roomUserId: 'room-user-1',
@@ -69,7 +71,7 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 		})
 	);
 
-	return { result, messageActionStore, showActionSheet, hideActionSheet, navigation, onThreadPress, refs };
+	return { result, messageActionStore, showActionSheet, hideActionSheet, navigation: mockNavigation, onThreadPress, refs };
 };
 
 describe('useMessageActions', () => {

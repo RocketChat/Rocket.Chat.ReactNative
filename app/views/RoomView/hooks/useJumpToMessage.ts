@@ -3,6 +3,7 @@ import { InteractionManager } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { sendLoadingEvent } from '../../../containers/Loading';
+import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { type IRoomViewProps, type IUseJumpToMessageParams, type IUseJumpToMessageResult } from '../definitions';
 import { jumpToMessage as jumpToMessageService } from '../services/jumpToMessage';
 
@@ -49,13 +50,9 @@ export function useJumpToMessage({
 		}
 	};
 
-	// consumeJumpParam/navToThread are unstable across renders; refs keep the mount effect's deps to [tmid].
-	const consumeJumpParamRef = useRef(consumeJumpParam);
-	const navToThreadRef = useRef(navToThread);
-	useEffect(() => {
-		consumeJumpParamRef.current = consumeJumpParam;
-		navToThreadRef.current = navToThread;
-	});
+	// Live-mirrored (see useLiveRef) so the mount effect can key on [tmid] despite these being unstable.
+	const consumeJumpParamRef = useLiveRef(consumeJumpParam);
+	const navToThreadRef = useLiveRef(navToThread);
 
 	useEffect(() => {
 		const task = InteractionManager.runAfterInteractions(() => {
@@ -71,7 +68,7 @@ export function useJumpToMessage({
 			}
 		});
 		return () => task.cancel();
-	}, [tmid]);
+	}, [tmid, consumeJumpParamRef, navToThreadRef]);
 
 	const prevJumpToMessageIdRef = useRef(route.params?.jumpToMessageId);
 	useEffect(() => {

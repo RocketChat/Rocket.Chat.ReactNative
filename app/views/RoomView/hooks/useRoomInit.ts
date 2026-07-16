@@ -1,6 +1,7 @@
 import { type RefObject, useEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 
+import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import { type IRoomViewState, type RoomStore } from '../definitions';
 
@@ -30,17 +31,10 @@ export function useRoomInit({
 }: IUseRoomInitParams): void {
 	'use memo';
 
-	// onThreadMessagesLoaded is recreated every render; a ref keeps it out of the init effects'
+	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
-	const onLoadedRef = useRef(onThreadMessagesLoaded);
-	useEffect(() => {
-		onLoadedRef.current = onThreadMessagesLoaded;
-	});
-
-	const onQuoteInitRef = useRef(onQuoteInit);
-	useEffect(() => {
-		onQuoteInitRef.current = onQuoteInit;
-	});
+	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
+	const onQuoteInitRef = useLiveRef(onQuoteInit);
 
 	useEffect(() => {
 		if (!rid || !isAuthenticated) {
@@ -48,7 +42,7 @@ export function useRoomInit({
 		}
 		const task = InteractionManager.runAfterInteractions(() => runInit(roomStore, tmid, onLoadedRef));
 		return () => task.cancel();
-	}, [rid, isAuthenticated, roomStore, tmid]);
+	}, [rid, isAuthenticated, roomStore, tmid, onLoadedRef]);
 
 	// messageActionStore is useState-stable, so this fires once per screen.
 	useEffect(() => {
@@ -59,7 +53,7 @@ export function useRoomInit({
 			}
 		});
 		return () => task.cancel();
-	}, [messageActionStore]);
+	}, [messageActionStore, onQuoteInitRef]);
 
 	// init() is skipped for invite subscriptions. Initialize when invite has been accepted
 	const prevStatusRef = useRef(roomUpdate.status);
@@ -68,5 +62,5 @@ export function useRoomInit({
 			runInit(roomStore, tmid, onLoadedRef);
 		}
 		prevStatusRef.current = roomUpdate.status;
-	}, [roomUpdate.status, roomStore, tmid]);
+	}, [roomUpdate.status, roomStore, tmid, onLoadedRef]);
 }

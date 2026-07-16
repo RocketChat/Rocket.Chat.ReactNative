@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+
 import { editMessage, setReaction } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
@@ -10,14 +12,13 @@ import {
 	SubscriptionType,
 	type TAnyMessageModel
 } from '../../../definitions';
-import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
+import { type IRoomViewProps, type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../ReactionPicker';
 
 export function useMessageActions({
 	messageActionStore,
 	showActionSheet,
 	hideActionSheet,
-	navigation,
 	rid,
 	tmid,
 	roomUserId,
@@ -27,6 +28,8 @@ export function useMessageActions({
 	messageErrorActionsRef
 }: IUseMessageActionsParams): IUseMessageActionsResult {
 	'use memo';
+
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	const resetAction = () => {
 		messageActionStore.getState().actions.clear();

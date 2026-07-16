@@ -1,34 +1,26 @@
 import { MessageComposerContainer } from '../../../../containers/MessageComposer';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { type IRoomFooterProps } from '../../definitions';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
 import { AirgappedWs } from './AirgappedWs';
 import { OnHold } from './OnHold';
 import { Preview } from './Preview';
 import { TakeOrJoin } from './TakeOrJoin';
-import { useFooterMessage } from './useFooterMessage';
+import { useRoomFooterState } from './useRoomFooterState';
 
 export const RoomFooter = ({ messageComposerRef }: IRoomFooterProps) => {
 	'use memo';
 
-	const room = useRoomWithUpdate();
-	const joined = useRoomStore(s => s.joined);
-	const airGappedRestrictionRemainingDays = useAppSelector(
-		state => state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days as number | undefined
-	);
-	const footerMessage = useFooterMessage();
+	const state = useRoomFooterState();
 
-	if ('onHold' in room && room.onHold) {
-		return <OnHold />;
+	switch (state.kind) {
+		case 'onHold':
+			return <OnHold />;
+		case 'takeOrJoin':
+			return <TakeOrJoin />;
+		case 'airgapped':
+			return <AirgappedWs />;
+		case 'preview':
+			return <Preview message={state.message} />;
+		case 'composer':
+			return <MessageComposerContainer ref={messageComposerRef} />;
 	}
-	if (!joined) {
-		return <TakeOrJoin />;
-	}
-	if (airGappedRestrictionRemainingDays === 0) {
-		return <AirgappedWs />;
-	}
-	if (footerMessage) {
-		return <Preview message={footerMessage} />;
-	}
-	return <MessageComposerContainer ref={messageComposerRef} />;
 };
