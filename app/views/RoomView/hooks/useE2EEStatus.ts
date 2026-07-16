@@ -1,16 +1,16 @@
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../../lib/encryption/utils';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { type IUseE2EEStatusResult } from '../definitions';
-import { useRoomStoreByRid } from '../stores/RoomStore';
+import { type IUseE2EEStatusResult, type RoomStore } from '../definitions';
+import { peekRoomStore } from '../stores/RoomStore';
+import { useRoomWithUpdateFromStore } from '../stores/RoomStoreContext';
 
-export const useE2EEStatus = (rid?: string): IUseE2EEStatusResult => {
+// Callers in the native-stack header render outside RoomView's provider, so they resolve the store
+// by rid from the module registry; the orchestrator can pass its store instance explicitly instead.
+export const useE2EEStatus = (rid?: string, roomStoreOverride?: RoomStore): IUseE2EEStatusResult => {
 	'use memo';
 
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);
-	const room = useRoomStoreByRid(rid, s => s.room);
-	// The room model mutates in place; subscribing to `roomUpdate` (a fresh snapshot per emit)
-	// is what re-runs this derivation when `encrypted`/`E2EKey` change.
-	useRoomStoreByRid(rid, s => s.roomUpdate);
+	const room = useRoomWithUpdateFromStore(roomStoreOverride ?? peekRoomStore(rid));
 
 	if (!('encrypted' in room)) {
 		return { showMissingE2EEKey: false, showE2EEDisabledRoom: false };

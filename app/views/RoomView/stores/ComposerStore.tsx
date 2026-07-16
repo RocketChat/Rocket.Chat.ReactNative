@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactElement, type
 import { createStore, useStore } from 'zustand';
 
 import { type ComposerState, type ComposerStore, type TComposerExternalState } from '../definitions';
+import { useRoomWithUpdateFromStore } from './RoomStoreContext';
 
 export const createComposerStore = (initial: TComposerExternalState) =>
 	createStore<ComposerState>()((set, get) => ({
@@ -43,10 +44,11 @@ export const useComposerRid = (): ComposerState['rid'] => useComposerStore(s => 
 export const useComposerType = (): ComposerState['t'] => useComposerStore(s => s.t);
 export const useComposerTmid = (): ComposerState['tmid'] => useComposerStore(s => s.tmid);
 export const useComposerRoom = (): ComposerState['room'] => {
-	// The room model mutates in place, so tracked-column changes keep the same `room` reference.
-	// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders the caller.
-	useComposerStore(s => s.roomUpdate);
-	return useComposerStore(s => s.room);
+	const store = useContext(ComposerStoreContext);
+	if (!store) {
+		throw new Error('Composer store hooks must be used within a ComposerProvider');
+	}
+	return useRoomWithUpdateFromStore(store);
 };
 export const useComposerSharing = (): ComposerState['sharing'] => useComposerStore(s => s.sharing);
 export const useIsAutocompleteVisible = (): ComposerState['isAutocompleteVisible'] =>
