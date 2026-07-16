@@ -2,23 +2,18 @@ import { useEffect, useRef } from 'react';
 import parse from 'url-parse';
 import { useNavigation } from '@react-navigation/native';
 
-import I18n from '../../../i18n';
 import getRoomInfo from '../../../lib/methods/getRoomInfo';
 import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
-import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { useDebounce } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
-import { sendLoadingEvent } from '../../../containers/Loading';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
-import { SubscriptionType, type TAnyMessageModel } from '../../../definitions';
+import { type TAnyMessageModel } from '../../../definitions';
 import {
 	type IRoomViewProps,
 	type IUseRoomNavigationParams,
 	type IUseRoomNavigationResult,
 	type TGetMessageInfoResult
 } from '../definitions';
+import { pushThreadRoom } from '../services/pushThreadRoom';
 import { useJumpToMessage } from './useJumpToMessage';
 
 export function useRoomNavigation({
@@ -47,60 +42,8 @@ export function useRoomNavigation({
 		});
 	};
 
-	const navToThread = async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
-		if (!rid) {
-			return;
-		}
-
-		if (item.tmid) {
-			let name = '';
-			let jumpToMessageId = '';
-			if ('id' in item) {
-				name = 'tmsg' in item ? item.tmsg ?? '' : '';
-				jumpToMessageId = item.id;
-			}
-			sendLoadingEvent({ visible: true, onCancel: cancelJumpToMessageRef.current });
-			const threadRecord = await getThreadById(item.tmid);
-			if (threadRecord?.t === 'rm') {
-				name = I18n.t('Thread');
-			}
-			if (!name) {
-				const result = await getThreadName(rid, item.tmid, jumpToMessageId);
-				// test if there isn't a thread
-				if (!result) {
-					sendLoadingEvent({ visible: false });
-					return;
-				}
-				name = result;
-			}
-			if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
-				name = I18n.t('Encrypted_message');
-			}
-			if (!jumpToMessageId) {
-				setTimeout(() => {
-					sendLoadingEvent({ visible: false });
-				}, 300);
-			}
-			return navigation.push('RoomView', {
-				rid,
-				tmid: item.tmid,
-				name,
-				t: SubscriptionType.THREAD,
-				roomUserId: roomUserIdRef.current,
-				jumpToMessageId
-			});
-		}
-
-		if ('tlm' in item) {
-			return navigation.push('RoomView', {
-				rid,
-				tmid: item.id,
-				name: makeThreadName(item),
-				t: SubscriptionType.THREAD,
-				roomUserId: roomUserIdRef.current
-			});
-		}
-	};
+	const navToThread = (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) =>
+		pushThreadRoom({ rid, item, roomUserId: roomUserIdRef.current, navigation, onCancel: cancelJumpToMessageRef.current });
 
 	const { jumpToMessage, cancelJumpToMessage, consumeJumpParam, onThreadMessagesLoaded } = useJumpToMessage({
 		rid,

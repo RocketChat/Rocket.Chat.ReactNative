@@ -4,31 +4,20 @@ import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../../i18n';
 import { replyBroadcast as replyBroadcastAction } from '../../../actions/messages';
-import { getThreadById } from '../../../lib/database/services/Thread';
 import getRoomInfo from '../../../lib/methods/getRoomInfo';
-import getThreadName from '../../../lib/methods/getThreadName';
 import { callJitsi } from '../../../lib/methods/callJitsi';
 import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
-import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { sendMessage } from '../../../lib/methods/sendMessage';
 import { setReaction } from '../../../lib/services/restApi';
 import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { getUserSelector } from '../../../selectors/login';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
-import {
-	type IEmoji,
-	type IMessage,
-	type IUseRoomMessageHandlersResult,
-	SubscriptionType,
-	type TAnyMessageModel
-} from '../../../definitions';
+import { type IEmoji, type IMessage, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../definitions';
 import { useActionSheet } from '../../../containers/ActionSheet';
-import { sendLoadingEvent } from '../../../containers/Loading';
 import ReactionsList from '../../../containers/ReactionsList';
 import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
 import { useRoomTmid } from '../../../containers/message/stores/MessageRoomStore';
@@ -37,6 +26,7 @@ import { RoomStoreContext, useRoomStore } from '../stores/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../services/toggleFollowThread';
+import { pushThreadRoom } from '../services/pushThreadRoom';
 
 export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	'use memo';
@@ -76,60 +66,8 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 		}
 	};
 
-	const onThreadPress = async (item: TAnyMessageModel) => {
-		if (!rid) {
-			return;
-		}
-
-		if (item.tmid) {
-			let name = '';
-			let jumpToMessageId = '';
-			if ('id' in item) {
-				name = 'tmsg' in item ? item.tmsg ?? '' : '';
-				jumpToMessageId = item.id;
-			}
-			// No orchestrator-owned cancelJumpToMessageRef to self-source here, so the loading overlay renders without a cancel button.
-			sendLoadingEvent({ visible: true });
-			const threadRecord = await getThreadById(item.tmid);
-			if (threadRecord?.t === 'rm') {
-				name = I18n.t('Thread');
-			}
-			if (!name) {
-				const result = await getThreadName(rid, item.tmid, jumpToMessageId);
-				if (!result) {
-					sendLoadingEvent({ visible: false });
-					return;
-				}
-				name = result;
-			}
-			if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
-				name = I18n.t('Encrypted_message');
-			}
-			if (!jumpToMessageId) {
-				setTimeout(() => {
-					sendLoadingEvent({ visible: false });
-				}, 300);
-			}
-			return navigation.push('RoomView', {
-				rid,
-				tmid: item.tmid,
-				name,
-				t: SubscriptionType.THREAD,
-				roomUserId,
-				jumpToMessageId
-			});
-		}
-
-		if ('tlm' in item) {
-			return navigation.push('RoomView', {
-				rid,
-				tmid: item.id,
-				name: makeThreadName(item),
-				t: SubscriptionType.THREAD,
-				roomUserId
-			});
-		}
-	};
+	// No orchestrator-owned cancelJumpToMessageRef to self-source here, so the loading overlay renders without a cancel button.
+	const onThreadPress = (item: TAnyMessageModel) => pushThreadRoom({ rid, item, roomUserId, navigation });
 
 	const blockAction = (params: Parameters<IUseRoomMessageHandlersResult['blockAction']>[0]) => blockActionService(params);
 
