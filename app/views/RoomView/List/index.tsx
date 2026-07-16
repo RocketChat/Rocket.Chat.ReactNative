@@ -3,12 +3,13 @@ import { forwardRef, useImperativeHandle } from 'react';
 import { useDebounce } from '../../../lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
+import { MessageRow } from '../components/MessageRow';
 import { type IListContainerProps, type IListContainerRef, type IListProps } from '../definitions';
 import { useMessages } from './hooks/useMessages';
 import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
+	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
 		'use memo';
 
 		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
@@ -39,7 +40,14 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
 		}));
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
+			<MessageRow
+				item={item}
+				previousItem={messages[index + 1]}
+				highlightedMessage={highlightedMessageId ?? undefined}
+				onLongPress={onLongPress}
+			/>
+		);
 
 		return (
 			<>

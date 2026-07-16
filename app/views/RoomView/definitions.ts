@@ -134,7 +134,7 @@ export interface IListContainerRef {
 }
 
 export interface IListContainerProps {
-	renderRow: Function;
+	onLongPress: (item: TAnyMessageModel) => void;
 	rid: string;
 	t: RoomType;
 	tmid?: string;

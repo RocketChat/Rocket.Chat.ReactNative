@@ -16,7 +16,7 @@ import Banner from './components/Banner';
 import JoinCode from './components/JoinCode';
 import UploadProgress from './components/UploadProgress';
 import List from './List';
-import { type TAnyMessageModel, type RoomType } from '../../definitions';
+import { type RoomType } from '../../definitions';
 import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
 import { useActionSheet } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer';
@@ -27,7 +27,6 @@ import { RoomMessageHandlersBridge } from './components/RoomMessageHandlersBridg
 import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import { type IJoinCode, type IListContainerRef, type IRoomViewProps, type IRoomViewState, type TListRef } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
-import { MessageRow } from './components/MessageRow';
 import { MissingRoomE2EEKey } from './components/MissingRoomE2EEKey';
 import { RoomFooter } from './components/RoomFooter/RoomFooter';
 import { RoomMessageActions } from './components/RoomMessageActions';
@@ -220,15 +219,6 @@ const RoomView = (props: IRoomViewProps) => {
 
 	useHeader();
 
-	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => (
-		<MessageRow
-			item={item}
-			previousItem={previousItem}
-			highlightedMessage={highlightedMessage}
-			onLongPress={onMessageLongPress}
-		/>
-	);
-
 	// Early returns below swap component types at this render position, so accepting an invite or
 	// resolving the E2EE key remounts the room tree. Intentional: the blocked screens hold no state
 	// worth keeping and the room tree mounts fresh once unblocked.
@@ -298,7 +288,7 @@ const RoomView = (props: IRoomViewProps) => {
 									rid={room.rid}
 									t={room.t as RoomType}
 									tmid={tmid}
-									renderRow={renderItem}
+									onLongPress={onMessageLongPress}
 									hideSystemMessages={hideSystemMessages}
 									showMessageInMainThread={user.showMessageInMainThread ?? false}
 									serverVersion={serverVersion}
