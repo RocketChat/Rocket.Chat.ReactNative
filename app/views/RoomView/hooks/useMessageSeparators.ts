@@ -11,16 +11,16 @@ export const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyM
 	let dateSeparator = null;
 	let showUnreadSeparator = false;
 
+	const itemDate = dayjs(item.ts);
+
 	if (!previousItem) {
 		dateSeparator = item.ts;
-		showUnreadSeparator = lastOpen ? dayjs(item.ts).isAfter(lastOpen) : false;
+		showUnreadSeparator = lastOpen ? itemDate.isAfter(lastOpen) : false;
 	} else {
+		const previousItemDate = dayjs(previousItem.ts);
 		showUnreadSeparator =
-			(lastOpen &&
-				(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
-				dayjs(previousItem.ts).isBefore(lastOpen)) ??
-			false;
-		if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
+			(lastOpen && (itemDate.isSame(lastOpen) || itemDate.isAfter(lastOpen)) && previousItemDate.isBefore(lastOpen)) ?? false;
+		if (!itemDate.isSame(previousItem.ts, 'day')) {
 			dateSeparator = item.ts;
 		}
 	}

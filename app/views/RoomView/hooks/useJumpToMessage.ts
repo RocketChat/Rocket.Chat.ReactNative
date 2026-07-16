@@ -7,6 +7,19 @@ import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { type IRoomViewProps, type IUseJumpToMessageParams, type IUseJumpToMessageResult } from '../definitions';
 import { jumpToMessage as jumpToMessageService } from '../services/jumpToMessage';
 
+// Fire onChange whenever a one-shot route param transitions to a new truthy value (undefined -> id, or
+// id -> different id). onChange is live-mirrored so an unstable inline callback doesn't retrigger the effect.
+function useChangedParam(value: string | undefined, onChange: (value: string) => void) {
+	const onChangeRef = useLiveRef(onChange);
+	const prevRef = useRef(value);
+	useEffect(() => {
+		if (value && value !== prevRef.current) {
+			onChangeRef.current(value);
+		}
+		prevRef.current = value;
+	}, [value, onChangeRef]);
+}
+
 export function useJumpToMessage({
 	rid,
 	tmid,
@@ -77,23 +90,8 @@ export function useJumpToMessage({
 		return () => task.cancel();
 	}, [navToThreadRef]);
 
-	const prevJumpToMessageIdRef = useRef(route.params?.jumpToMessageId);
-	useEffect(() => {
-		const next = route.params?.jumpToMessageId;
-		if (next && next !== prevJumpToMessageIdRef.current) {
-			consumeJumpParamRef.current(next);
-		}
-		prevJumpToMessageIdRef.current = next;
-	}, [route.params?.jumpToMessageId, consumeJumpParamRef]);
-
-	const prevJumpToThreadIdRef = useRef(route.params?.jumpToThreadId);
-	useEffect(() => {
-		const next = route.params?.jumpToThreadId;
-		if (next && next !== prevJumpToThreadIdRef.current) {
-			navToThreadRef.current({ tmid: next });
-		}
-		prevJumpToThreadIdRef.current = next;
-	}, [route.params?.jumpToThreadId, navToThreadRef]);
+	useChangedParam(route.params?.jumpToMessageId, id => consumeJumpParamRef.current(id));
+	useChangedParam(route.params?.jumpToThreadId, id => navToThreadRef.current({ tmid: id }));
 
 	return { jumpToMessage, cancelJumpToMessage, consumeJumpParam, onThreadMessagesLoaded };
 }

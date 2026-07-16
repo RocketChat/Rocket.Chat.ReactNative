@@ -10,7 +10,7 @@ import { useMessageAccessibilityHint } from '../../hooks/useMessageAccessibility
 import { useIsBeingEdited } from '../../stores/MessageActionStore';
 import {
 	useIsInfoMessage,
-	useMessageField,
+	useMessageId,
 	useMessageLongPress,
 	useMessagePress,
 	useMessageStatus,
@@ -25,7 +25,7 @@ const MessageTouchable = (props: TMessageProps) => {
 	const isInfo = useIsInfoMessage();
 	const { hasError } = useMessageStatus();
 	const { tappable } = useMessageTouchable();
-	const id = useMessageField(item => item.id);
+	const id = useMessageId();
 	const isBeingEdited = useIsBeingEdited(id);
 	const onPressAction = useMessagePress();
 	const onLongPress = useMessageLongPress();

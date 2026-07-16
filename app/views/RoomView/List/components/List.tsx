@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const isAutocompleteVisible = useIsAutocompleteVisible();
 	const scrollHandler = useAnimatedScrollHandler({
@@ -49,7 +49,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
+				ref={flatListRef}
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}

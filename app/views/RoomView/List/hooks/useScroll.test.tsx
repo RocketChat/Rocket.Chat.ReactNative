@@ -10,8 +10,8 @@ const makeListRef = () => {
 	const scrollToIndex = jest.fn();
 	const scrollToOffset = jest.fn();
 	const scrollToEnd = jest.fn();
-	const listRef = { current: { scrollToIndex, scrollToOffset, scrollToEnd } } as unknown as TListRef;
-	return { listRef, scrollToIndex, scrollToOffset, scrollToEnd };
+	const flatListRef = { current: { scrollToIndex, scrollToOffset, scrollToEnd } } as unknown as TListRef;
+	return { flatListRef, scrollToIndex, scrollToOffset, scrollToEnd };
 };
 
 const makeMessagesIdsRef = (ids: string[]): TMessagesIdsRef => ({ current: ids });
@@ -22,7 +22,7 @@ const renderUseScroll = (
 	fetchMessages = jest.fn(() => Promise.resolve()),
 	initialHighTs: number | null = null
 ) => {
-	const { listRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
+	const { flatListRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
 	const idsRef = makeMessagesIdsRef(initialRows.map(r => r.id));
 
 	const utils = renderHook(
@@ -30,7 +30,7 @@ const renderUseScroll = (
 			// Keep the ids ref in sync the same way useMessages does (before paint).
 			idsRef.current = rows.map(r => r.id);
 			return useScroll({
-				listRef,
+				flatListRef,
 				messages: rows as unknown as TAnyMessageModel[],
 				messagesIds: idsRef,
 				highTs,
@@ -41,7 +41,7 @@ const renderUseScroll = (
 		{ initialProps: { rows: initialRows, highTs: initialHighTs } }
 	);
 
-	return { ...utils, listRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs, fetchMessages };
+	return { ...utils, flatListRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs, fetchMessages };
 };
 
 describe('useScroll', () => {

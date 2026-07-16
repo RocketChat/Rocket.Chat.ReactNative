@@ -27,30 +27,20 @@ export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackP
 
 	return (screen?: keyof ModalStackParamList) => {
 		logEvent(events.ROOM_GO_RA);
+		const params = {
+			rid: rid as string,
+			t: t as SubscriptionType,
+			member,
+			joined,
+			omnichannelPermissions
+		};
 		if (isMasterDetail) {
-			// @ts-ignore — navigation types expect a literal screen name
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
-				params: {
-					rid: rid as string,
-					t: t as SubscriptionType,
-					room: room as ISubscription,
-					member,
-					showCloseModal: !!screen,
-					// @ts-ignore
-					joined,
-					omnichannelPermissions
-				}
+				params: { ...params, room: room as ISubscription, showCloseModal: !!screen }
 			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
 		} else if (rid && t) {
-			navigation.push('RoomActionsView', {
-				rid,
-				t: t as SubscriptionType,
-				room: room as TSubscriptionModel,
-				member,
-				joined,
-				omnichannelPermissions
-			});
+			navigation.push('RoomActionsView', { ...params, room: room as TSubscriptionModel });
 		}
 	};
 };

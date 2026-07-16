@@ -37,14 +37,14 @@ interface IPendingJump {
 }
 
 export const useScroll = ({
-	listRef,
+	flatListRef,
 	messages,
 	messagesIds,
 	highTs,
 	setHighTs,
 	fetchMessages
 }: {
-	listRef: TListRef;
+	flatListRef: TListRef;
 	messages: TAnyMessageModel[];
 	messagesIds: TMessagesIdsRef;
 	highTs: number | null;
@@ -90,13 +90,13 @@ export const useScroll = ({
 	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
 	const jumpToBottom = () => {
 		if (highTs != null) {
-			listRef.current?.scrollToOffset({ offset: 0, animated: false });
+			flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
 			pendingBottom.current = true;
 			setIsReleasing(true);
 			setHighTs(null);
 			return;
 		}
-		listRef.current?.scrollToOffset({ offset: -100 });
+		flatListRef.current?.scrollToOffset({ offset: -100 });
 	};
 
 	const setHighlightTimeout = () => {
@@ -149,7 +149,7 @@ export const useScroll = ({
 	const reScrollWhenSettled = (targetId: string | null | undefined) => {
 		const settled = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
 		if (settled !== -1) {
-			listRef.current?.scrollToIndex({
+			flatListRef.current?.scrollToIndex({
 				index: settled,
 				...JUMP_SCROLL_POSITION
 			});
@@ -160,7 +160,7 @@ export const useScroll = ({
 	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
 	// Re-read the index in case the window shifted a row between.
 	const scrollToTarget = (messageId: string, index: number) => {
-		listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
+		flatListRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 		setTimeout(() => {
 			// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
 			if (lastJumpTargetId.current !== messageId) {
@@ -179,10 +179,10 @@ export const useScroll = ({
 			return;
 		}
 		pendingBottom.current = false;
-		listRef.current?.scrollToOffset({ offset: 0, animated: false });
+		flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
 		// eslint-disable-next-line react-hooks/set-state-in-effect -- the cascade is the fix: the swap render must paint with MVCP suppressed, the follow-up render restores it
 		setIsReleasing(false);
-	}, [messages, listRef]);
+	}, [messages, flatListRef]);
 
 	// On every re-observe, check whether the pending target has appeared; the first time it has, scroll
 	// once and complete.
@@ -240,7 +240,7 @@ export const useScroll = ({
 			// short. Step to the measured frontier first (that renders the next batch, advancing
 			// highestMeasuredFrameIndex), then re-attempt — it lands once measured, or re-fires to climb on.
 			if (targetIndex > params.highestMeasuredFrameIndex) {
-				listRef.current?.scrollToIndex({
+				flatListRef.current?.scrollToIndex({
 					index: params.highestMeasuredFrameIndex,
 					animated: false
 				});
@@ -249,7 +249,7 @@ export const useScroll = ({
 				}, SCROLL_TO_INDEX_RETRY_DELAY);
 				return;
 			}
-			listRef.current?.scrollToIndex({
+			flatListRef.current?.scrollToIndex({
 				index: targetIndex,
 				...JUMP_SCROLL_POSITION
 			});

@@ -284,7 +284,7 @@ const RoomView = (props: IRoomViewProps) => {
 							<RoomMessageHandlersBridge>
 								<List
 									ref={listRef}
-									listRef={flatListRef}
+									flatListRef={flatListRef}
 									rid={room.rid}
 									t={room.t as RoomType}
 									tmid={tmid}

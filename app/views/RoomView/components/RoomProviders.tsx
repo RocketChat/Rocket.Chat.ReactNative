@@ -9,41 +9,14 @@ type IRoomProvidersProps = TComposerExternalState & {
 	children: ReactElement;
 };
 
-export const RoomProviders = ({
-	store,
-	children,
-	rid,
-	t,
-	tmid,
-	room,
-	roomUpdate,
-	sharing,
-	editCancel,
-	editRequest,
-	onRemoveQuoteMessage,
-	onSendMessage,
-	setQuotesAndText,
-	getText
-}: IRoomProvidersProps): ReactElement => {
+export const RoomProviders = (props: IRoomProvidersProps): ReactElement => {
 	'use memo';
+
+	const { store, children, ...composer } = props;
 
 	return (
 		<MessageActionProvider store={store}>
-			<ComposerProvider
-				rid={rid}
-				t={t}
-				tmid={tmid}
-				room={room}
-				roomUpdate={roomUpdate}
-				sharing={sharing}
-				editCancel={editCancel}
-				editRequest={editRequest}
-				onRemoveQuoteMessage={onRemoveQuoteMessage}
-				onSendMessage={onSendMessage}
-				setQuotesAndText={setQuotesAndText}
-				getText={getText}>
-				{children}
-			</ComposerProvider>
+			<ComposerProvider {...composer}>{children}</ComposerProvider>
 		</MessageActionProvider>
 	);
 };

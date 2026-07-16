@@ -9,7 +9,7 @@ import { useMessages } from './hooks/useMessages';
 import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
+	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
 		'use memo';
 
 		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
@@ -22,7 +22,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		});
 		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
 			useScroll({
-				listRef,
+				flatListRef,
 				messages,
 				messagesIds,
 				highTs,
@@ -53,7 +53,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
 				<List
-					listRef={listRef}
+					flatListRef={flatListRef}
 					data={messages}
 					renderItem={renderItem}
 					onEndReached={onEndReached}

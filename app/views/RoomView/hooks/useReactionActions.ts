@@ -1,5 +1,6 @@
 import log from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
+import { getEmojiContent } from '../../../lib/methods/emojis';
 import { setReaction } from '../../../lib/services/restApi';
 import { type IEmoji } from '../../../definitions';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
@@ -32,13 +33,7 @@ export function useReactionActions({
 
 	const onReactionPress = async (emoji: IEmoji, messageId: string) => {
 		try {
-			let shortname = '';
-			if (typeof emoji === 'string') {
-				shortname = emoji;
-			} else {
-				shortname = emoji.name;
-			}
-			await setReaction(shortname, messageId);
+			await setReaction(getEmojiContent(emoji), messageId);
 			onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
