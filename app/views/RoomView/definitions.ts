@@ -1,4 +1,4 @@
-import { type RefObject } from 'react';
+import { type Ref, type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
 import { type StoreApi } from 'zustand';
@@ -228,7 +228,7 @@ export interface IJoinCodeProps {
 	rid: string;
 	t: string;
 	onJoin: Function;
-	isMasterDetail: boolean;
+	ref?: Ref<IJoinCode>;
 }
 
 export interface IJoinCode {
