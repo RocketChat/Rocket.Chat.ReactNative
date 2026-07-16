@@ -30,6 +30,9 @@ const evaluate = (room: Partial<ISubscription>, username: string, allowPost: boo
 };
 
 export const isReadOnly = async (room: Partial<ISubscription>, username: string): Promise<boolean> => {
+	if (room.archived || isMuted(room, username)) {
+		return true;
+	}
 	const allowPost = room?.ro ? await canPostReadOnly(room, username) : false;
 	return evaluate(room, username, allowPost);
 };

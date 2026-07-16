@@ -38,6 +38,16 @@ describe('isReadOnly (async)', () => {
 		expect(mockedHasPermission).not.toHaveBeenCalled();
 	});
 
+	test('ro + archived returns true without fetching permission', async () => {
+		expect(await isReadOnly({ ro: true, rid: 'rid1', archived: true }, username)).toBe(true);
+		expect(mockedHasPermission).not.toHaveBeenCalled();
+	});
+
+	test('ro + muted returns true without fetching permission', async () => {
+		expect(await isReadOnly({ ro: true, rid: 'rid1', muted: [username] }, username)).toBe(true);
+		expect(mockedHasPermission).not.toHaveBeenCalled();
+	});
+
 	test('ro room without post permission is read only', async () => {
 		mockedHasPermission.mockResolvedValue([false]);
 		expect(await isReadOnly({ ro: true, rid: 'rid1' }, username)).toBe(true);
