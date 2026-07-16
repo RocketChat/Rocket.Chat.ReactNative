@@ -53,6 +53,20 @@ import { useLiveRef } from '../../lib/hooks/useLiveRef';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
+// FIXME: handle servers with version < 3.0.0
+// Return stable refs (model field / redux prop / shared empty) — a fresh [] here re-subscribes
+// the message-list WatermelonDB query on every RoomView render (fetchMessages dep).
+const getHideSystemMessages = (room: IRoomViewState['room'], Hide_System_Messages?: string[]): string[] => {
+	const { sysMes } = room;
+	if (Array.isArray(sysMes)) {
+		return sysMes;
+	}
+	if (Array.isArray(Hide_System_Messages)) {
+		return Hide_System_Messages;
+	}
+	return EMPTY_HIDE_SYSTEM_MESSAGES;
+};
+
 const RoomView = (props: IRoomViewProps) => {
 	'use memo';
 
@@ -129,7 +143,9 @@ const RoomView = (props: IRoomViewProps) => {
 	}, [rid]);
 
 	// Register the JoinCode modal opener once per store; joinRoom pulls it from the store at call time.
-	useEffect(() => roomStore.getState().setJoinCodeTrigger(() => joinCodeRef.current?.show()), [roomStore]);
+	useEffect(() => {
+		roomStore.getState().setJoinCodeTrigger(() => joinCodeRef.current?.show());
+	}, [roomStore]);
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
@@ -139,19 +155,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const roomUserIdRef = useLiveRef(roomUserId);
 
-	const hideSystemMessages = (() => {
-		const { sysMes } = room;
-		// FIXME: handle servers with version < 3.0.0
-		// Return stable refs (model field / redux prop / shared empty) — a fresh [] here re-subscribes
-		// the message-list WatermelonDB query on every RoomView render (fetchMessages dep).
-		if (Array.isArray(sysMes)) {
-			return sysMes;
-		}
-		if (Array.isArray(Hide_System_Messages)) {
-			return Hide_System_Messages;
-		}
-		return EMPTY_HIDE_SYSTEM_MESSAGES;
-	})();
+	const hideSystemMessages = getHideSystemMessages(room, Hide_System_Messages);
 
 	const { onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl } = useRoomNavigation({
 		rid,

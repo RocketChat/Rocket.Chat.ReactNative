@@ -89,7 +89,7 @@ const createRoomState =
 
 					if (get().joined && 'id' in currentRoom) {
 						set({ lastOpen: currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null });
-						readMessages(currentRoom.rid, newLastOpen, true).catch(e => console.log(e));
+						readMessages(currentRoom.rid, newLastOpen, true).catch(e => log(e));
 					}
 				}
 
