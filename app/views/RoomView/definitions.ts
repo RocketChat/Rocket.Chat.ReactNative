@@ -1,6 +1,5 @@
 import { type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
-import { type EdgeInsets } from 'react-native-safe-area-context';
 import { type FlatList } from 'react-native-gesture-handler';
 import { type StoreApi } from 'zustand';
 
@@ -17,26 +16,15 @@ import {
 	type TAnyMessageModel,
 	type TSubscriptionModel
 } from '../../definitions';
-import { type IActionSheetProvider, type TActionSheetOptions } from '../../containers/ActionSheet';
+import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 
-export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
-	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
-	isAuthenticated: boolean;
-	Message_GroupingPeriod?: number;
-	Message_Read_Receipt_Enabled?: boolean;
-	Hide_System_Messages?: string[];
-	baseUrl: string;
-	serverVersion: string | null;
-	isMasterDetail: boolean;
-	replyBroadcast: Function;
-	width: number;
-	insets: EdgeInsets;
-	livechatAllowManualOnHold?: boolean;
-}
+export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
+
+export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -251,7 +239,7 @@ export interface IUseRoomActionsParams {
 	rid?: string;
 	tmid?: string;
 	roomStore: RoomStore;
-	userRef: RefObject<IRoomViewProps['user']>;
+	userRef: RefObject<TRoomViewUser>;
 	resetAction: () => void;
 }
 

@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { InteractionManager } from 'react-native';
-import { connect } from 'react-redux';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { InteractionManager, useWindowDimensions } from 'react-native';
 import { useStore } from 'zustand';
 
 import { type IMessageActions } from '../../containers/MessageActions';
@@ -11,15 +9,16 @@ import { useTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { withDimensions } from '../../lib/hooks/withDimensions';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useSetting } from '../../lib/hooks/useSetting';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Banner from './components/Banner';
 import JoinCode from './components/JoinCode';
 import UploadProgress from './components/UploadProgress';
 import List from './List';
-import { type IApplicationState, type TAnyMessageModel, type RoomType } from '../../definitions';
+import { type TAnyMessageModel, type RoomType } from '../../definitions';
 import { getUidDirectMessage, getRoomTitle } from '../../lib/methods/helpers';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { useActionSheet } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './components/RoomProviders';
@@ -72,22 +71,19 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const { colors } = useTheme();
 
-	const {
-		route,
-		navigation,
-		user,
-		isAuthenticated,
-		baseUrl,
-		serverVersion,
-		isMasterDetail,
-		width,
-		Message_GroupingPeriod,
-		Message_Read_Receipt_Enabled,
-		Hide_System_Messages,
-		livechatAllowManualOnHold,
-		showActionSheet,
-		hideActionSheet
-	} = props;
+	const { route, navigation } = props;
+
+	const user = useAppSelector(getUserSelector);
+	const isAuthenticated = useAppSelector(state => state.login.isAuthenticated);
+	const baseUrl = useAppSelector(state => state.server.server);
+	const serverVersion = useAppSelector(state => state.server.version);
+	const Message_GroupingPeriod = useSetting('Message_GroupingPeriod') as number;
+	const Message_Read_Receipt_Enabled = useSetting('Message_Read_Receipt_Enabled') as boolean;
+	const Hide_System_Messages = useSetting('Hide_System_Messages') as string[];
+	const livechatAllowManualOnHold = useSetting('Livechat_allow_manual_on_hold') as boolean;
+	const { width } = useWindowDimensions();
+	const isMasterDetail = useMasterDetail();
+	const { showActionSheet, hideActionSheet } = useActionSheet();
 
 	// Capture screen identity once at mount: navigation can transiently wipe this route's params to
 	// undefined (e.g. popTo with no params while retained below the stack top), and a RoomView
@@ -331,15 +327,4 @@ const RoomView = (props: IRoomViewProps) => {
 	);
 };
 
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	isAuthenticated: state.login.isAuthenticated,
-	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
-	baseUrl: state.server.server,
-	serverVersion: state.server.version,
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,
-	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
-});
-
-export default connect(mapStateToProps)(withDimensions(withSafeAreaInsets(withActionSheet(withMasterDetail(RoomView)))));
+export default RoomView;

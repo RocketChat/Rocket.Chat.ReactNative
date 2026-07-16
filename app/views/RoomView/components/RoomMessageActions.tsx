@@ -2,7 +2,7 @@ import { type RefObject } from 'react';
 
 import MessageActions, { type IMessageActions, type IMessageActionsProps } from '../../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
-import { type IRoomViewProps } from '../definitions';
+import { type TRoomViewUser } from '../definitions';
 import { useReadOnly } from '../hooks/useReadOnly';
 import { useRoomStore } from '../stores/RoomStoreContext';
 
@@ -11,7 +11,7 @@ type IRoomMessageActionsProps = Pick<
 	'editInit' | 'replyInit' | 'quoteInit' | 'reactionInit' | 'onReactionPress' | 'jumpToMessage'
 > & {
 	tmid?: string;
-	user: IRoomViewProps['user'];
+	user: TRoomViewUser;
 	messageActionsRef: RefObject<IMessageActions | null>;
 	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
 };
