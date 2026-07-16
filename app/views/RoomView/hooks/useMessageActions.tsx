@@ -1,19 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 
-import { editMessage, setReaction } from '../../../lib/services/restApi';
+import { editMessage } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
-import { Review } from '../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../lib/database/services/Message';
-import {
-	type IEmoji,
-	type IMessage,
-	type IMessageEditAttachment,
-	SubscriptionType,
-	type TAnyMessageModel
-} from '../../../definitions';
+import { type IMessage, type IMessageEditAttachment, SubscriptionType, type TAnyMessageModel } from '../../../definitions';
 import { type IRoomViewProps, type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../components/ReactionPicker';
+import { useReactionActions } from './useReactionActions';
 
 export function useMessageActions({
 	messageActionStore,
@@ -31,9 +25,7 @@ export function useMessageActions({
 
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-	const resetAction = () => {
-		messageActionStore.getState().actions.clear();
-	};
+	const { resetAction, onReactionClose, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
 
 	const handleCloseEmoji = (action?: Function, params?: any) => {
 		if (messageComposerRef?.current) {
@@ -93,27 +85,6 @@ export function useMessageActions({
 
 	const onRemoveQuoteMessage = (messageId: string) => {
 		messageActionStore.getState().actions.removeQuote(messageId);
-	};
-
-	const onReactionClose = () => {
-		resetAction();
-		hideActionSheet();
-	};
-
-	const onReactionPress = async (emoji: IEmoji, messageId: string) => {
-		try {
-			let shortname = '';
-			if (typeof emoji === 'string') {
-				shortname = emoji;
-			} else {
-				shortname = emoji.name;
-			}
-			await setReaction(shortname, messageId);
-			onReactionClose();
-			Review.pushPositiveEvent();
-		} catch (e) {
-			log(e);
-		}
 	};
 
 	const showReactionPicker = () => {

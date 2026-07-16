@@ -8,15 +8,12 @@ import getRoomInfo from '../../../lib/methods/getRoomInfo';
 import { callJitsi } from '../../../lib/methods/callJitsi';
 import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { Review } from '../../../lib/methods/helpers/review';
-import { sendMessage } from '../../../lib/methods/sendMessage';
-import { setReaction } from '../../../lib/services/restApi';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { getUserSelector } from '../../../selectors/login';
-import { type IEmoji, type IMessage, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../definitions';
+import { type IMessage, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '../../../definitions';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
@@ -27,6 +24,8 @@ import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../services/toggleFollowThread';
 import { pushThreadRoom } from '../services/pushThreadRoom';
+import { sendRoomMessage } from '../services/sendRoomMessage';
+import { useReactionActions } from './useReactionActions';
 
 export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	'use memo';
@@ -51,9 +50,7 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
 	}
 
-	const resetAction = () => {
-		messageActionStore.getState().actions.clear();
-	};
+	const { resetAction, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
 
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {
 		if (!drid) return;
@@ -112,27 +109,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	const onReactionClose = () => {
-		resetAction();
-		hideActionSheet();
-	};
-
-	const onReactionPress = async (emoji: IEmoji, messageId: string) => {
-		try {
-			let shortname = '';
-			if (typeof emoji === 'string') {
-				shortname = emoji;
-			} else {
-				shortname = emoji.name;
-			}
-			await setReaction(shortname, messageId);
-			onReactionClose();
-			Review.pushPositiveEvent();
-		} catch (e) {
-			log(e);
-		}
-	};
-
 	const onReactionLongPress = (message: TAnyMessageModel) => {
 		showActionSheet({
 			children: <ReactionsList reactions={message?.reactions} />,
@@ -156,17 +132,8 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 		return toggleFollowThreadService(threadMessageId, isFollowingThread);
 	};
 
-	const onAnswerButtonPress = (message?: string, tshow?: boolean) => {
-		if (message === undefined) {
-			return;
-		}
-		logEvent(events.ROOM_SEND_MESSAGE);
-		sendMessage(rid, message, tmid, user, tshow).then(() => {
-			roomStore.getState().markMessageSent();
-			Review.pushPositiveEvent();
-		});
-		resetAction();
-	};
+	const onAnswerButtonPress = (message?: string, tshow?: boolean) =>
+		sendRoomMessage({ rid, message, tmid, user, tshow, roomStore, resetAction });
 
 	return {
 		blockAction,
