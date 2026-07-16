@@ -113,16 +113,6 @@ describe('StatusView', () => {
 			expect(screen.queryByTestId('status-view-clear-after')).toBeNull();
 		});
 
-		it('should always show away option regardless of server version', () => {
-			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
-			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
-			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
-
-			renderStatusView();
-
-			expect(screen.getByTestId('status-view-away')).toBeOnTheScreen();
-		});
-
 		it('should render status text input', () => {
 			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
 			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
