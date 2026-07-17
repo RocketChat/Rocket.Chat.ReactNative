@@ -65,13 +65,17 @@ jest.mock('../helpers/fileUpload', () => ({
 	})
 }));
 
-jest.mock('./utils', () => ({
-	copyFileToCacheDirectoryIfNeeded: jest.fn().mockImplementation((p: string) => Promise.resolve(p)),
-	getUploadPath: jest.fn(() => 'upload-path-1'),
-	persistUploadError: jest.fn().mockResolvedValue(undefined),
-	createUploadRecord: jest.fn().mockResolvedValue(['upload-path-1', { update: jest.fn(), destroyPermanently: jest.fn() }]),
-	uploadQueue: {}
-}));
+jest.mock('./utils', () => {
+	const uploadRecord = { update: jest.fn(), destroyPermanently: jest.fn() };
+	return {
+		__uploadRecord: uploadRecord,
+		copyFileToCacheDirectoryIfNeeded: jest.fn().mockImplementation((p: string) => Promise.resolve(p)),
+		getUploadPath: jest.fn(() => 'upload-path-1'),
+		persistUploadError: jest.fn().mockResolvedValue(undefined),
+		createUploadRecord: jest.fn().mockResolvedValue(['upload-path-1', uploadRecord]),
+		uploadQueue: {}
+	};
+});
 
 const mockEncryptFile = jest.fn().mockResolvedValue({
 	file: { path: '/p', name: 'n', type: 't' },
@@ -159,11 +163,12 @@ describe('sendFileMessage V1 headers', () => {
 			undefined,
 			'https://x.com'
 		);
-		const dbMod = require('../../database');
+		const { __uploadRecord } = require('./utils');
+		// sendFileMessage updates the record returned by createUploadRecord, not the DB mock.
 		await mockState.progressCb!(50, 100);
-		expect(dbMod.__update).toHaveBeenCalledWith(expect.any(Function));
+		expect(__uploadRecord.update).toHaveBeenCalledWith(expect.any(Function));
 		// The update callback assigns u.progress = Math.floor((50/100)*100) = 50
-		const updateFn = dbMod.__update.mock.calls[0][0];
+		const updateFn = __uploadRecord.update.mock.calls[0][0];
 		const u: any = {};
 		updateFn(u);
 		expect(u.progress).toBe(50);
