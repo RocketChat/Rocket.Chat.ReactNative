@@ -60,11 +60,9 @@ declare module '@rocket.chat/ddp-client' {
 class Sdk {
 	private sdk: DDPSDK | undefined;
 	private serverUrl: string | undefined;
-	private code: any = null;
 	private headers: Record<string, string> = { ...defaultHeaders } as Record<string, string>;
 
 	initialize(server: string): DDPSDK {
-		this.code = null;
 		this.headers = { ...defaultHeaders } as Record<string, string>;
 		this.sdk = DDPSDK.create(server);
 
@@ -269,6 +267,9 @@ class Sdk {
 			}
 			await this.current?.account.loginWithToken(loginResult.data.authToken);
 
+			if (this.server !== server) {
+				return Promise.reject(new Error('Server switched during login'));
+			}
 			this.setHeaders({
 				'X-Auth-Token': loginResult.data.authToken,
 				'X-User-Id': loginResult.data.userId
@@ -283,29 +284,25 @@ class Sdk {
 		}
 	}
 
-	async methodCall(...args: any[]): Promise<any> {
+	methodCall(...args: any[]): Promise<any> {
+		return this.callMethod(args);
+	}
+
+	private async callMethod(args: any[], code?: { twoFactorCode: string; twoFactorMethod: string }): Promise<any> {
 		try {
 			if (!this.current || !this.current.client) {
 				throw new Error('SDK not initialized');
 			}
 			const [method, ...params] = args;
-			const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(this.code ? [this.code] : []));
-			// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures on the next call.
-			if (this.code) {
-				this.code = null;
-			}
-			return result;
+			return await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(code ? [code] : []));
 		} catch (e: any) {
 			if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
 				const { details } = e;
 				try {
-					this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-					const result = await this.methodCall(...args);
-					this.code = null;
-					return result;
+					const totpResult = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
+					return await this.callMethod(args, totpResult);
 				} catch {
 					// twoFactor was canceled
-					this.code = null;
 					return {};
 				}
 			} else {

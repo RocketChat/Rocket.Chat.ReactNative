@@ -62,7 +62,6 @@ beforeEach(() => {
 	(UserPreferences.removeItem as jest.Mock).mockReset();
 	(DDPSDK.create as jest.Mock).mockReset();
 	(DDPSDK.createAndConnect as jest.Mock).mockReset();
-	(sdk as any).code = null;
 	(sdk as any).serverUrl = undefined;
 });
 
@@ -285,6 +284,41 @@ describe('Sdk.login', () => {
 		expect(sdk.getHeaders()['X-User-Id']).toBeUndefined();
 
 		await sdk.login({ user: 'user2', password: 'pass2' });
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-2');
+		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-2');
+	});
+
+	it('does not write stale headers if the server switches while loginWithToken() is still in flight', async () => {
+		let resolveLoginWithToken: () => void = () => {};
+		const loginWithToken = jest.fn(
+			() =>
+				new Promise<void>(resolve => {
+					resolveLoginWithToken = resolve;
+				})
+		);
+		const server1Sdk = buildFakeSdkWithLogin(
+			{ status: 'success', data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } } },
+			loginWithToken
+		);
+		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
+		sdk.initialize('https://server1.com');
+
+		// server1's login suspends inside the loginWithToken() await.
+		const loginPromise = sdk.login({ user: 'user1', password: 'pass1' });
+
+		// The app switches to server2 while server1's login is still in flight.
+		const server2Sdk = buildFakeSdkWithLogin({
+			status: 'success',
+			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
+		});
+		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);
+		sdk.initialize('https://server2.com');
+		await sdk.login({ user: 'user2', password: 'pass2' });
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-2');
+
+		// server1's suspended login now resumes — it must reject, not clobber server2's headers.
+		resolveLoginWithToken();
+		await expect(loginPromise).rejects.toThrow('Server switched during login');
 		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-2');
 		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-2');
 	});
@@ -565,12 +599,50 @@ describe('Sdk.methodCall', () => {
 		expect(result).toEqual({ result: 'ok' });
 	});
 
-	it('appends stored TOTP code to params when present', async () => {
-		const callAsync = jest.fn().mockResolvedValue({});
+	it('appends the resolved TOTP code to params when a retry is in flight', async () => {
+		const callAsync = jest
+			.fn()
+			.mockRejectedValueOnce({ error: 'totp-required', details: { method: 'totp' } })
+			.mockResolvedValueOnce({});
 		setInternalSdk(buildFakeSdkWithMethod(callAsync));
-		(sdk as any).code = '654321';
+		(twoFactor as jest.Mock).mockResolvedValue({ twoFactorCode: '654321', twoFactorMethod: 'totp' });
 		await (sdk as any).methodCall('myMethod', 'arg1');
-		expect(callAsync).toHaveBeenCalledWith('myMethod', {}, 'arg1', '654321');
+		expect(callAsync).toHaveBeenNthCalledWith(2, 'myMethod', {}, 'arg1', { twoFactorCode: '654321', twoFactorMethod: 'totp' });
+	});
+
+	it('does not leak a pending 2FA code into a concurrent, unrelated methodCall() that never needed 2FA', async () => {
+		const createDeferred = <T>() => {
+			let resolve!: (value: T) => void;
+			let reject!: (reason?: any) => void;
+			const promise = new Promise<T>((res, rej) => {
+				resolve = res;
+				reject = rej;
+			});
+			return { promise, resolve, reject };
+		};
+
+		const attempt1A = createDeferred<any>();
+		const retryA = createDeferred<any>();
+		const challengeA = createDeferred<any>();
+		const callAsync = jest
+			.fn()
+			.mockImplementationOnce(() => attempt1A.promise) // methodA attempt 1
+			.mockImplementationOnce(() => retryA.promise) // methodA retry (kept pending)
+			.mockImplementationOnce((_method: string, _opts: any, ...rest: any[]) => Promise.resolve({ methodCArgs: rest })); // methodC attempt 1
+		setInternalSdk(buildFakeSdkWithMethod(callAsync));
+		(twoFactor as jest.Mock).mockReturnValueOnce(challengeA.promise);
+
+		const callAPromise = (sdk as any).methodCall('methodA');
+		attempt1A.reject({ error: 'totp-required', details: { method: 'totp' } });
+		await Promise.resolve().then(() => Promise.resolve()); // let the catch handler call twoFactor()
+		challengeA.resolve({ twoFactorCode: 'a-code', twoFactorMethod: 'totp' });
+		await Promise.resolve().then(() => Promise.resolve()); // let this.code-equivalent retry kick off (now pending on retryA)
+
+		const callCResult = await (sdk as any).methodCall('methodC'); // unrelated, never hits a 2FA error
+		expect(callCResult.methodCArgs).toEqual([]);
+
+		retryA.resolve({ ok: true });
+		await callAPromise;
 	});
 
 	it('handles totp-required by prompting twoFactor and retrying', async () => {
@@ -922,13 +994,6 @@ describe('Sdk.initialize', () => {
 		(DDPSDK.create as jest.Mock).mockReturnValue({ rest: { handleTwoFactorChallenge: jest.fn() } });
 		sdk.initialize('https://example.com');
 		expect(sdk.getHeaders().Authorization).toBe('Basic cmVzdW1lOnRva2Vu');
-	});
-
-	it('clears any stored TOTP code on initialize', () => {
-		(sdk as any).code = '123456';
-		(DDPSDK.create as jest.Mock).mockReturnValue({ rest: { handleTwoFactorChallenge: jest.fn() } });
-		sdk.initialize('https://example.com');
-		expect((sdk as any).code).toBeNull();
 	});
 });
 

@@ -84,6 +84,23 @@ describe('helpers/fetch', () => {
 		expect(typeof call.headers['User-Agent']).toBe('string');
 		expect(call.headers['User-Agent']).toMatch(/RC Mobile/);
 	});
+
+	it('strips session headers for cross-origin requests even when the caller explicitly sets them', async () => {
+		(sdk.getHeaders as jest.Mock).mockReturnValue({ 'User-Agent': 'RC Mobile' });
+		await customFetch('https://releases.rocket.chat/v2/server/supportedVersions', {
+			headers: { 'X-Auth-Token': 'caller-supplied-tok', 'X-User-Id': 'caller-supplied-uid' } as any
+		});
+		const call = fetchMock.mock.calls[0][1];
+		expect(call.headers['X-Auth-Token']).toBeUndefined();
+		expect(call.headers['X-User-Id']).toBeUndefined();
+	});
+
+	it('still lets caller-supplied headers win for same-origin requests', async () => {
+		(sdk.getHeaders as jest.Mock).mockReturnValue({ 'X-Auth-Token': 'sdk-tok' });
+		await customFetch('https://open.rocket.chat/api/v1/settings', { headers: { 'X-Auth-Token': 'caller-tok' } as any });
+		const call = fetchMock.mock.calls[0][1];
+		expect(call.headers['X-Auth-Token']).toBe('caller-tok');
+	});
 });
 
 describe('helpers/fetch setBasicAuth', () => {
