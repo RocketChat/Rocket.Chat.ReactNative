@@ -236,7 +236,7 @@ const handleOpen = function* handleOpen({ params }) {
 		const hostAlreadyConnected = sdk.server === host;
 		if (!hostAlreadyConnected) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			yield put(serverInitAdd(host));
+			yield put(serverInitAdd(server));
 			yield delay(1000);
 			EventEmitter.emit('NewServer', { server: host });
 		}
@@ -339,7 +339,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			return;
 		}
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		yield put(serverInitAdd(host));
+		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
 		if (params.token) {

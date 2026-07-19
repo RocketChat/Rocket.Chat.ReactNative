@@ -99,7 +99,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 					store.dispatch(inquiryRequest());
 				}
 			}
-			if (['disconnected', 'closed'].includes(status)) {
+			if (['disconnected', 'closed', 'failed'].includes(status)) {
 				unsubscribeRooms();
 				pendingHangupsDrainArmed = true;
 				store.dispatch(disconnectAction());
