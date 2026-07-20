@@ -200,6 +200,27 @@ describe('Sdk.login', () => {
 		expect(result.authToken).toBe('tok-abc');
 	});
 
+	it('rejects instead of hanging forever if loginWithToken() never resolves (e.g. socket torn down mid-login)', async () => {
+		jest.useFakeTimers();
+		const loginWithToken = jest.fn(() => new Promise(() => {})); // never resolves
+		const fake = buildFakeSdkWithLogin(
+			{ status: 'success', data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } } },
+			loginWithToken
+		);
+		setInternalSdk(fake);
+
+		const loginPromise = sdk.login({ user: 'john', password: 'secret' });
+		// Attach the rejection expectation before advancing the fake timer: login() awaits its own
+		// REST call before reaching the timeout race, and advanceTimersByTimeAsync flushes pending
+		// microtasks as it advances — it can settle loginPromise before the next line would
+		// otherwise attach a handler, which Node reports as an unhandled rejection.
+		// eslint-disable-next-line jest/valid-expect
+		const assertion = expect(loginPromise).rejects.toThrow('timed out');
+		await jest.advanceTimersByTimeAsync(20000);
+		await assertion;
+		jest.useRealTimers();
+	});
+
 	it('rejects when the REST response has status: error', async () => {
 		const fake = buildFakeSdkWithLogin({ status: 'error' });
 		setInternalSdk(fake);
@@ -321,6 +342,54 @@ describe('Sdk.login', () => {
 		await expect(loginPromise).rejects.toThrow('Server switched during login');
 		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-2');
 		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-2');
+	});
+
+	it('rejects a login() superseded by a newer login() to the SAME server, without clobbering its headers', async () => {
+		// Double-tapping login, or a flapping connection re-dispatching loginRequest, can fire two
+		// concurrent login() calls at the same server. The generation guard must let only the
+		// newer one win, regardless of which loginWithToken() call happens to resolve last.
+		const resolvers: Array<() => void> = [];
+		const loginWithToken = jest.fn(() => new Promise<void>(resolve => resolvers.push(resolve)));
+		const fake = buildFakeSdkWithLogin(
+			{ status: 'success', data: { authToken: 'tok-first', userId: 'uid-first', me: { username: 'user1' } } },
+			loginWithToken
+		);
+		setInternalSdk(fake);
+
+		const firstLoginPromise = sdk.login({ user: 'user1', password: 'pass1' });
+
+		// Let the first login clear its own (pre-loginWithToken) generation check and reach
+		// loginWithToken() before the second login starts — otherwise the second login's
+		// generation bump would make the first fail its *early* check instead of exercising
+		// the race this test is actually after (both suspended inside loginWithToken()).
+		for (let i = 0; i < 10 && resolvers.length < 1; i++) {
+			// eslint-disable-next-line no-await-in-loop
+			await Promise.resolve();
+		}
+		expect(resolvers).toHaveLength(1);
+
+		fake.__post.mockResolvedValueOnce({
+			status: 'success',
+			data: { authToken: 'tok-second', userId: 'uid-second', me: { username: 'user1' } }
+		});
+		const secondLoginPromise = sdk.login({ user: 'user1', password: 'pass1' });
+
+		for (let i = 0; i < 10 && resolvers.length < 2; i++) {
+			// eslint-disable-next-line no-await-in-loop
+			await Promise.resolve();
+		}
+		expect(resolvers).toHaveLength(2);
+
+		// The second (newer) login resolves first and wins.
+		resolvers[1]();
+		await secondLoginPromise;
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-second');
+
+		// The first (now-superseded) login resumes — it must reject rather than clobber it.
+		resolvers[0]();
+		await expect(firstLoginPromise).rejects.toThrow('Superseded by a newer login attempt');
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-second');
+		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-second');
 	});
 
 	it('switches to the deep link server credentials when already logged in on another server', async () => {
@@ -597,6 +666,17 @@ describe('Sdk.methodCall', () => {
 		const result = await (sdk as any).methodCall('myMethod', 'arg1', 42);
 		expect(callAsync).toHaveBeenCalledWith('myMethod', {}, 'arg1', 42);
 		expect(result).toEqual({ result: 'ok' });
+	});
+
+	it('rejects instead of hanging forever if callAsyncWithOptions never resolves (e.g. socket torn down mid-call)', async () => {
+		jest.useFakeTimers();
+		const callAsync = jest.fn(() => new Promise(() => {})); // never resolves, as if the socket died mid-call
+		setInternalSdk(buildFakeSdkWithMethod(callAsync));
+
+		const callPromise = (sdk as any).methodCall('myMethod');
+		jest.advanceTimersByTime(20000);
+		await expect(callPromise).rejects.toThrow('timed out');
+		jest.useRealTimers();
 	});
 
 	it('appends the resolved TOTP code to params when a retry is in flight', async () => {
