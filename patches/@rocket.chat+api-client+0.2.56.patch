@@ -1,5 +1,14 @@
 --- a/node_modules/@rocket.chat/api-client/dist/index.js
 +++ b/node_modules/@rocket.chat/api-client/dist/index.js
+@@ -33,7 +33,7 @@
+     }
+     if (typeof data === 'object' && !(data instanceof File)) {
+         Object.keys(data).forEach((key) => {
+-            buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
++            buildFormData(data[key], formData, parentKey ? `${parentKey}[${key}]` : key);
+         });
+     }
+     else {
 @@ -128,9 +128,14 @@
              return response.json();
          });
@@ -11,7 +20,7 @@
 +        return __awaiter(this, arguments, void 0, function* (endpoint, params, _a = {}) {
 +            var { headers } = _a, options = __rest(_a, ["headers"]);
 +            const isFormData = checkIfIsFormData(params);
-+            const response = yield this.send(endpoint, 'DELETE', Object.assign({ body: isFormData ? buildFormData(params) : JSON.stringify(params), headers: Object.assign(Object.assign({ Accept: 'application/json' }, (!isFormData && { 'Content-Type': 'application/json' })), headers) }, options));
++            const response = yield this.send(endpoint, 'DELETE', Object.assign({ body: isFormData ? buildFormData(params) : JSON.stringify(params), headers: Object.assign(Object.assign({ Accept: 'application/json' }, (!isFormData && params !== undefined && { 'Content-Type': 'application/json' })), headers) }, options));
 +            if (response.status === 204) {
 +                return {};
 +            }
