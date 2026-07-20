@@ -52,7 +52,6 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 								if (threadMessage.tmid) {
 									tm.rid = threadMessage.tmid;
 								}
-								delete threadMessage.tmid;
 							})
 						)
 					);
@@ -67,7 +66,6 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 								if (threadMessage.tmid) {
 									tm.rid = threadMessage.tmid;
 								}
-								delete threadMessage.tmid;
 							})
 						);
 					});
