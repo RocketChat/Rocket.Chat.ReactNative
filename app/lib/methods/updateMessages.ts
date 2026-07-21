@@ -135,7 +135,6 @@ export default async function updateMessages({
 					if (threadMessage.tmid) {
 						tm.rid = threadMessage.tmid;
 					}
-					delete threadMessage.tmid;
 				})
 			)
 		);
@@ -193,7 +192,6 @@ export default async function updateMessages({
 						if (threadMessage.tmid) {
 							tm.rid = threadMessage.tmid;
 						}
-						delete threadMessage.tmid;
 					})
 				);
 			} catch {
