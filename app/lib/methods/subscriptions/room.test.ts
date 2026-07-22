@@ -1,5 +1,6 @@
 import RoomSubscription from './room';
 import { loadMissedMessages } from '../loadMissedMessages';
+import { updateLastOpen } from '../updateLastOpen';
 import { clearUserTyping } from '../../../actions/usersTyping';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
@@ -281,6 +282,65 @@ describe('RoomSubscription', () => {
 			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+	});
+
+	describe('lastOpen stamp on unsubscribe', () => {
+		const flushMicrotasks = () => new Promise(resolve => setImmediate(resolve));
+
+		it('stamps lastOpen when the room closes with no reconnect gap', async () => {
+			await sub.subscribe();
+			await sub.unsubscribe();
+
+			expect(updateLastOpen).toHaveBeenCalledWith(rid);
+		});
+
+		it('stamps lastOpen when the reconnect gap fetch completed before closing', async () => {
+			await sub.subscribe();
+			await sub.handleLogin();
+			await sub.unsubscribe();
+
+			expect(updateLastOpen).toHaveBeenCalledWith(rid);
+		});
+
+		it('does not stamp lastOpen while the reconnect gap fetch is still in flight', async () => {
+			let resolveLoad!: () => void;
+			(loadMissedMessages as jest.Mock).mockImplementationOnce(
+				() =>
+					new Promise<void>(resolve => {
+						resolveLoad = resolve;
+					})
+			);
+
+			await sub.subscribe();
+			const login = sub.handleLogin();
+			await flushMicrotasks();
+			expect(loadMissedMessages).toHaveBeenCalledWith({ rid });
+
+			await sub.unsubscribe();
+
+			expect(updateLastOpen).not.toHaveBeenCalled();
+
+			resolveLoad();
+			await login;
+		});
+
+		it('does not stamp lastOpen when the reconnect gap fetch failed', async () => {
+			(loadMissedMessages as jest.Mock).mockRejectedValueOnce(new Error('network drop'));
+
+			await sub.subscribe();
+			await sub.handleLogin();
+			await sub.unsubscribe();
+
+			expect(updateLastOpen).not.toHaveBeenCalled();
+		});
+
+		it('does not stamp lastOpen when closing after a disconnect with no reconnect', async () => {
+			await sub.subscribe();
+			await sub.handleClose();
+			await sub.unsubscribe();
+
+			expect(updateLastOpen).not.toHaveBeenCalled();
 		});
 	});
 

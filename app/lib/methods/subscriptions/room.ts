@@ -33,6 +33,10 @@ import markMessagesRead from '../helpers/markMessagesRead';
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
+	// True while messages may be missing locally (disconnect happened and the
+	// missed-messages fetch hasn't succeeded yet). Blocks the lastOpen stamp on
+	// unsubscribe, since stamping "now" would skip the gap on the next sync.
+	private hasMissedMessagesGap: boolean;
 	private promises?: Promise<TSubscriptionModel[]>;
 	private loginListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
@@ -42,6 +46,7 @@ export default class RoomSubscription {
 	constructor(rid: string) {
 		this.rid = rid;
 		this.isAlive = true;
+		this.hasMissedMessagesGap = false;
 	}
 
 	subscribe = async () => {
@@ -64,7 +69,9 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
-		updateLastOpen(this.rid);
+		if (!this.hasMissedMessagesGap) {
+			updateLastOpen(this.rid);
+		}
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
@@ -97,6 +104,7 @@ export default class RoomSubscription {
 		if (!this.isAlive) {
 			return;
 		}
+		this.hasMissedMessagesGap = true;
 		try {
 			if (this.promises) {
 				const oldSubs = await this.promises;
@@ -109,6 +117,7 @@ export default class RoomSubscription {
 			}
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
+			this.hasMissedMessagesGap = false;
 			if (!this.isAlive) {
 				return;
 			}
@@ -119,6 +128,7 @@ export default class RoomSubscription {
 	};
 
 	handleClose = () => {
+		this.hasMissedMessagesGap = true;
 		try {
 			reduxStore.dispatch(clearUserTyping());
 		} catch (e) {
