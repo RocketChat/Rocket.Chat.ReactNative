@@ -649,9 +649,9 @@ class Encryption {
 	}
 
 	// Decrypt multiple messages
-	decryptMessages = async (messages: Partial<IMessage>[]) => {
+	decryptMessages = async (messages: Partial<IMessage>[]): Promise<IMessage[]> => {
 		const results = await Promise.allSettled(messages.map((m: Partial<IMessage>) => this.decryptMessage(m as IMessage)));
-		return results.filter(r => r.status === 'fulfilled').map(r => (r as PromiseFulfilledResult<IMessage>).value);
+		return results.filter((r): r is PromiseFulfilledResult<IMessage> => r.status === 'fulfilled').map(r => r.value);
 	};
 
 	// Decrypt multiple subscriptions

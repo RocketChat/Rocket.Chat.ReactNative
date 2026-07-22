@@ -58,6 +58,7 @@ jest.mock('../database', () => ({
 }));
 
 const mockRoomEncrypt = jest.fn();
+const mockRoomDecrypt = jest.fn();
 const mockHasSessionKey = jest.fn();
 const mockHandshake = jest.fn().mockResolvedValue(undefined);
 jest.mock('./room', () => ({
@@ -65,7 +66,8 @@ jest.mock('./room', () => ({
 	default: jest.fn().mockImplementation(() => ({
 		handshake: mockHandshake,
 		hasSessionKey: () => mockHasSessionKey(),
-		encrypt: (m: any) => mockRoomEncrypt(m)
+		encrypt: (m: any) => mockRoomEncrypt(m),
+		decrypt: (m: any) => mockRoomDecrypt(m)
 	}))
 }));
 
@@ -148,17 +150,18 @@ describe('Encryption.encryptMessage', () => {
 		});
 
 		it('returns successfully decrypted messages when one fails (was Promise.all that aborted the batch)', async () => {
-			const good = { _id: 'm1', rid: 'r1', msg: 'good' } as any;
+			const good = { _id: 'm1', rid: 'r1', msg: 'good', t: 'e2e' } as any;
 			const bad = { _id: 'm2', rid: 'r2', msg: 'bad', t: 'e2e' } as any;
 			mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
 			mockHasSessionKey.mockReturnValue(true);
-			mockRoomEncrypt.mockResolvedValueOnce({ ...good, msg: 'decrypted' });
-			mockRoomEncrypt.mockRejectedValueOnce(new Error('decrypt failed'));
+			mockRoomDecrypt.mockResolvedValueOnce({ ...good, msg: 'decrypted' });
+			mockRoomDecrypt.mockRejectedValueOnce(new Error('decrypt failed'));
 			// getRoomInstance creates a new EncryptionRoom for each rid via the mock
 			mockSubFind.mockResolvedValue({ encrypted: true });
 
 			const result = await encryption.decryptMessages([good, bad]);
 
+			expect(mockRoomDecrypt).toHaveBeenCalledTimes(2);
 			expect(result).toHaveLength(1);
 			expect(result[0]._id).toBe('m1');
 		});
@@ -170,11 +173,12 @@ describe('Encryption.encryptMessage', () => {
 			] as any;
 			mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
 			mockHasSessionKey.mockReturnValue(true);
-			mockRoomEncrypt.mockRejectedValue(new Error('decrypt failed'));
+			mockRoomDecrypt.mockRejectedValue(new Error('decrypt failed'));
 			mockSubFind.mockResolvedValue({ encrypted: true });
 
 			const result = await encryption.decryptMessages(msgs);
 
+			expect(mockRoomDecrypt).toHaveBeenCalledTimes(2);
 			expect(result).toEqual([]);
 		});
 
@@ -187,7 +191,7 @@ describe('Encryption.encryptMessage', () => {
 			const result = await encryption.decryptMessages(msgs);
 
 			expect(result).toHaveLength(2);
-			expect(mockRoomEncrypt).not.toHaveBeenCalled();
+			expect(mockRoomDecrypt).not.toHaveBeenCalled();
 		});
 	});
 });

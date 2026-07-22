@@ -126,7 +126,7 @@ jest.mock('../../database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
-const flush = () => new Promise(resolve => setImmediate(resolve));
+const flushPendingMicrotasks = (): Promise<void> => new Promise(resolve => setImmediate(resolve));
 
 describe('RoomSubscription', () => {
 	const rid = 'test-room-id';
@@ -308,7 +308,7 @@ describe('RoomSubscription', () => {
 			// User opens the room; reconnect fires the login event and the missed-message sync starts.
 			await sub.subscribe();
 			const loginPromise = sub.handleLogin();
-			await flush(); // let handleLogin reach the loadMissedMessages await and register it as pending
+			await flushPendingMicrotasks(); // let handleLogin reach the loadMissedMessages await and register it as pending
 
 			// User presses back before the sync resolves -> RoomView unmount calls unsubscribe().
 			let unsubSettled = false;
@@ -317,9 +317,9 @@ describe('RoomSubscription', () => {
 			});
 
 			// Give unsubscribe every chance to run ahead if it (wrongly) didn't wait on the sync.
-			await flush();
-			await flush();
-			await flush();
+			await flushPendingMicrotasks();
+			await flushPendingMicrotasks();
+			await flushPendingMicrotasks();
 			expect(unsubSettled).toBe(false);
 			expect(updateLastOpen).not.toHaveBeenCalled();
 
@@ -342,7 +342,7 @@ describe('RoomSubscription', () => {
 
 			await sub.subscribe();
 			const loginPromise = sub.handleLogin();
-			await flush();
+			await flushPendingMicrotasks();
 
 			const unsubPromise = sub.unsubscribe();
 			rejectSync(new Error('network drop'));
@@ -372,16 +372,16 @@ describe('RoomSubscription', () => {
 
 			await sub.subscribe();
 			const firstLogin = sub.handleLogin();
-			await flush();
+			await flushPendingMicrotasks();
 			const secondLogin = sub.handleLogin();
-			await flush();
+			await flushPendingMicrotasks();
 
 			// The first sync settling must not clear tracking for the still-pending second one.
 			resolveFirst();
 			await firstLogin;
 
 			const unsubPromise = sub.unsubscribe();
-			await flush();
+			await flushPendingMicrotasks();
 			expect(updateLastOpen).not.toHaveBeenCalled();
 
 			resolveSecond();

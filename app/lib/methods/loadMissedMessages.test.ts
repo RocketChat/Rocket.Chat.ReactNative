@@ -31,7 +31,7 @@ jest.mock('../services/sdk', () => ({
 	}
 }));
 
-const flush = () => new Promise(resolve => setImmediate(resolve));
+const flushPendingMicrotasks = (): Promise<void> => new Promise(resolve => setImmediate(resolve));
 
 describe('loadMissedMessages pagination', () => {
 	beforeEach(() => {
@@ -58,7 +58,7 @@ describe('loadMissedMessages pagination', () => {
 		});
 
 		const promise = loadMissedMessages({ rid: 'room1' });
-		await flush();
+		await flushPendingMicrotasks();
 
 		// page 1 has landed and been persisted; page 2's fetch is in flight
 		expect(mockUpdateMessages).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe('loadMissedMessages pagination', () => {
 		promise.then(() => {
 			settled = true;
 		});
-		await flush();
+		await flushPendingMicrotasks();
 		expect(settled).toBe(false);
 
 		resolvePage2({ result: { updated: [{ _id: 'm2' }], cursor: { next: null } } });

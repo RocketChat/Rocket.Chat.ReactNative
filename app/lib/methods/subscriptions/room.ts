@@ -78,7 +78,7 @@ export default class RoomSubscription {
 			}
 		}
 		if (!syncFailed) {
-			updateLastOpen(this.rid);
+			await updateLastOpen(this.rid);
 		}
 
 		if (this.promises) {
