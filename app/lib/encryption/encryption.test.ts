@@ -164,6 +164,7 @@ describe('Encryption.encryptMessage', () => {
 			expect(mockRoomDecrypt).toHaveBeenCalledTimes(2);
 			expect(result).toHaveLength(1);
 			expect(result[0]._id).toBe('m1');
+			expect(result[0].msg).toBe('decrypted');
 		});
 
 		it('returns empty array when ALL messages fail decryption (does not throw)', async () => {
