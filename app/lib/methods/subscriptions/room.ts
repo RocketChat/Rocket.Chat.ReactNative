@@ -38,6 +38,7 @@ export default class RoomSubscription {
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
+	private pendingSync?: Promise<void>;
 
 	constructor(rid: string) {
 		this.rid = rid;
@@ -64,9 +65,22 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
-		updateLastOpen(this.rid);
+		const { pendingSync } = this;
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
+
+		let syncFailed = false;
+		if (pendingSync) {
+			try {
+				await pendingSync;
+			} catch (e) {
+				syncFailed = true;
+			}
+		}
+		if (!syncFailed) {
+			updateLastOpen(this.rid);
+		}
+
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
@@ -108,7 +122,15 @@ export default class RoomSubscription {
 				return;
 			}
 			reduxStore.dispatch(clearUserTyping());
-			await loadMissedMessages({ rid: this.rid });
+			const syncPromise = loadMissedMessages({ rid: this.rid });
+			this.pendingSync = syncPromise;
+			try {
+				await syncPromise;
+			} finally {
+				if (this.pendingSync === syncPromise) {
+					this.pendingSync = undefined;
+				}
+			}
 			if (!this.isAlive) {
 				return;
 			}

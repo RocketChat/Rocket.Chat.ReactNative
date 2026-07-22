@@ -1,6 +1,8 @@
 import RoomSubscription from './room';
 import { loadMissedMessages } from '../loadMissedMessages';
+import { updateLastOpen } from '../updateLastOpen';
 import { clearUserTyping } from '../../../actions/usersTyping';
+import { unsubscribeRoom } from '../../../actions/room';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import log from '../helpers/log';
@@ -123,6 +125,8 @@ jest.mock('../../database/services/Thread', () => ({
 jest.mock('../../database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
+
+const flush = () => new Promise(resolve => setImmediate(resolve));
 
 describe('RoomSubscription', () => {
 	const rid = 'test-room-id';
@@ -281,6 +285,110 @@ describe('RoomSubscription', () => {
 			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+	});
+
+	describe('unsubscribe', () => {
+		it('calls updateLastOpen immediately when there is no pending sync', async () => {
+			await sub.subscribe();
+
+			await sub.unsubscribe();
+
+			expect(updateLastOpen).toHaveBeenCalledWith(rid);
+		});
+
+		it('user opens the room (sync starts), presses back mid-sync: unsubscribe itself stays pending until the sync settles, then calls updateLastOpen', async () => {
+			let resolveSync: () => void = () => {};
+			(loadMissedMessages as jest.Mock).mockReturnValueOnce(
+				new Promise<void>(resolve => {
+					resolveSync = resolve;
+				})
+			);
+
+			// User opens the room; reconnect fires the login event and the missed-message sync starts.
+			await sub.subscribe();
+			const loginPromise = sub.handleLogin();
+			await flush(); // let handleLogin reach the loadMissedMessages await and register it as pending
+
+			// User presses back before the sync resolves -> RoomView unmount calls unsubscribe().
+			let unsubSettled = false;
+			const unsubPromise = sub.unsubscribe().then(() => {
+				unsubSettled = true;
+			});
+
+			// Give unsubscribe every chance to run ahead if it (wrongly) didn't wait on the sync.
+			await flush();
+			await flush();
+			await flush();
+			expect(unsubSettled).toBe(false);
+			expect(updateLastOpen).not.toHaveBeenCalled();
+
+			// Only once the in-flight sync actually completes does unsubscribe unblock and write lastOpen.
+			resolveSync();
+			await loginPromise;
+			await unsubPromise;
+
+			expect(unsubSettled).toBe(true);
+			expect(updateLastOpen).toHaveBeenCalledWith(rid);
+		});
+
+		it('does not call updateLastOpen when the pending sync rejects, but still completes cleanup', async () => {
+			let rejectSync: (e: Error) => void = () => {};
+			(loadMissedMessages as jest.Mock).mockReturnValueOnce(
+				new Promise<void>((_, reject) => {
+					rejectSync = reject;
+				})
+			);
+
+			await sub.subscribe();
+			const loginPromise = sub.handleLogin();
+			await flush();
+
+			const unsubPromise = sub.unsubscribe();
+			rejectSync(new Error('network drop'));
+			await loginPromise;
+			await unsubPromise;
+
+			expect(updateLastOpen).not.toHaveBeenCalled();
+			expect(log).toHaveBeenCalled();
+			expect(mockStoreDispatch).toHaveBeenCalledWith(unsubscribeRoom(rid));
+			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
+		});
+
+		it('when a second reconnect starts a new sync before the first settles, unsubscribe waits on the most recent one', async () => {
+			let resolveFirst: () => void = () => {};
+			let resolveSecond: () => void = () => {};
+			(loadMissedMessages as jest.Mock)
+				.mockReturnValueOnce(
+					new Promise<void>(resolve => {
+						resolveFirst = resolve;
+					})
+				)
+				.mockReturnValueOnce(
+					new Promise<void>(resolve => {
+						resolveSecond = resolve;
+					})
+				);
+
+			await sub.subscribe();
+			const firstLogin = sub.handleLogin();
+			await flush();
+			const secondLogin = sub.handleLogin();
+			await flush();
+
+			// The first sync settling must not clear tracking for the still-pending second one.
+			resolveFirst();
+			await firstLogin;
+
+			const unsubPromise = sub.unsubscribe();
+			await flush();
+			expect(updateLastOpen).not.toHaveBeenCalled();
+
+			resolveSecond();
+			await secondLogin;
+			await unsubPromise;
+
+			expect(updateLastOpen).toHaveBeenCalledWith(rid);
 		});
 	});
 

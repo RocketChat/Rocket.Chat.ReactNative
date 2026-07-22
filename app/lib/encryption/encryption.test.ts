@@ -140,4 +140,54 @@ describe('Encryption.encryptMessage', () => {
 		expect(result).toBe(baseMessage);
 		expect(mockRoomEncrypt).not.toHaveBeenCalled();
 	});
+
+	describe('decryptMessages', () => {
+		beforeEach(() => {
+			jest.clearAllMocks();
+			(encryption as any).roomInstances = {};
+		});
+
+		it('returns successfully decrypted messages when one fails (was Promise.all that aborted the batch)', async () => {
+			const good = { _id: 'm1', rid: 'r1', msg: 'good' } as any;
+			const bad = { _id: 'm2', rid: 'r2', msg: 'bad', t: 'e2e' } as any;
+			mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+			mockHasSessionKey.mockReturnValue(true);
+			mockRoomEncrypt.mockResolvedValueOnce({ ...good, msg: 'decrypted' });
+			mockRoomEncrypt.mockRejectedValueOnce(new Error('decrypt failed'));
+			// getRoomInstance creates a new EncryptionRoom for each rid via the mock
+			mockSubFind.mockResolvedValue({ encrypted: true });
+
+			const result = await encryption.decryptMessages([good, bad]);
+
+			expect(result).toHaveLength(1);
+			expect(result[0]._id).toBe('m1');
+		});
+
+		it('returns empty array when ALL messages fail decryption (does not throw)', async () => {
+			const msgs = [
+				{ _id: 'm1', rid: 'r1', msg: 'bad1', t: 'e2e' },
+				{ _id: 'm2', rid: 'r2', msg: 'bad2', t: 'e2e' }
+			] as any;
+			mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+			mockHasSessionKey.mockReturnValue(true);
+			mockRoomEncrypt.mockRejectedValue(new Error('decrypt failed'));
+			mockSubFind.mockResolvedValue({ encrypted: true });
+
+			const result = await encryption.decryptMessages(msgs);
+
+			expect(result).toEqual([]);
+		});
+
+		it('returns all messages unchanged for non-E2E room (short-circuits decryptMessage)', async () => {
+			const msgs = [
+				{ _id: 'm1', rid: 'r1', msg: 'hello' },
+				{ _id: 'm2', rid: 'r2', msg: 'world' }
+			] as any;
+
+			const result = await encryption.decryptMessages(msgs);
+
+			expect(result).toHaveLength(2);
+			expect(mockRoomEncrypt).not.toHaveBeenCalled();
+		});
+	});
 });
