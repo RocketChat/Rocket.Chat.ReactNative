@@ -1,7 +1,6 @@
 import { connect, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { setUser } from '../../actions/login';
 import database from '../database';
 
@@ -71,6 +70,12 @@ jest.mock('../database', () => ({
 
 jest.mock('../methods/subscribeRooms', () => ({
 	unsubscribeRooms: jest.fn()
+}));
+
+const mockBindStop = jest.fn();
+const mockBindStreamRestoration = jest.fn<Promise<{ stop: jest.Mock }>, []>(() => Promise.resolve({ stop: mockBindStop }));
+jest.mock('./connectionRestore', () => ({
+	bindStreamRestoration: () => mockBindStreamRestoration()
 }));
 
 jest.mock('../methods/getSettings', () => ({
@@ -484,7 +489,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	});
 });
 
-describe('connect — rooms subscription guard reset on close', () => {
+describe('connect — stream restoration owner', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockOnStreamDataStops.length = 0;
@@ -495,22 +500,22 @@ describe('connect — rooms subscription guard reset on close', () => {
 		});
 	});
 
-	// Regression: a long background marks the DDP socket stale, so foregrounding triggers
-	// `checkAndReopen` → `forceReopen`, which wipes the SDK subscriptions and emits 'close' while
-	// bypassing `connect()`. The rooms-list `stream-notify-user` feed only re-subscribes when the
-	// module-level guard in `subscribeRooms` is clear, and `unsubscribeRooms()` is what clears it.
-	// If the 'close' handler stops calling `unsubscribeRooms()`, the guard stays set after reconnect
-	// and the rooms list silently stops updating (subscriptions/favorites/reads).
-	it('calls unsubscribeRooms when the socket "close" fires', async () => {
+	it('binds the stream-restoration owner after initializing the SDK instance', async () => {
 		await connect({ server: 'https://example.com' });
 
-		// connect() itself calls unsubscribeRooms() once while tearing down prior listeners; ignore it.
-		(unsubscribeRooms as jest.Mock).mockClear();
+		expect(mockBindStreamRestoration).toHaveBeenCalledTimes(1);
+		expect(mockSdkInitialize.mock.invocationCallOrder[0]).toBeLessThan(mockBindStreamRestoration.mock.invocationCallOrder[0]);
+	});
 
-		const closeHandler = getHandlersByEvent('close')[0];
-		closeHandler();
+	it('stops the previous restoration owner when connect runs again', async () => {
+		await connect({ server: 'https://example.com' });
+		await flushMicrotasks();
+		mockBindStop.mockClear();
 
-		expect(unsubscribeRooms).toHaveBeenCalledTimes(1);
+		await connect({ server: 'https://example.com' });
+		await flushMicrotasks();
+
+		expect(mockBindStop).toHaveBeenCalledTimes(1);
 	});
 });
 

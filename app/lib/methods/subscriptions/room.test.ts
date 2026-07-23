@@ -17,6 +17,12 @@ jest.mock('../../services/sdk', () => ({
 	}
 }));
 
+const mockUnregisterRestorer = jest.fn();
+const mockRegisterStreamRestorer = jest.fn<() => void, [() => void]>(() => mockUnregisterRestorer);
+jest.mock('../../services/connectionRestore', () => ({
+	registerStreamRestorer: (restore: () => void) => mockRegisterStreamRestorer(restore)
+}));
+
 const mockStoreGetState = jest.fn<{ meteor: { connected: boolean } }, []>(() => ({
 	meteor: { connected: false }
 }));
@@ -143,9 +149,9 @@ describe('RoomSubscription', () => {
 		});
 	});
 
-	describe('handleLogin', () => {
+	describe('restore', () => {
 		it('calls subscribeRoom, dispatches clearUserTyping, loads missed messages, and reads', async () => {
-			await sub.handleLogin();
+			await sub.restore();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
@@ -155,7 +161,7 @@ describe('RoomSubscription', () => {
 		it('handles subscribeRoom rejection gracefully', async () => {
 			mockSubscribeRoom.mockRejectedValueOnce(new Error('boom'));
 
-			await expect(sub.handleLogin()).resolves.toBeUndefined();
+			await expect(sub.restore()).resolves.toBeUndefined();
 		});
 	});
 
@@ -170,11 +176,11 @@ describe('RoomSubscription', () => {
 	});
 
 	describe('DDP subscription recovery after forceReopen', () => {
-		it('handleLogin re-subscribes the room to restore lost DDP subscriptions', async () => {
+		it('restore re-subscribes the room to restore lost DDP subscriptions', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await sub.handleLogin();
+			await sub.restore();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
@@ -195,14 +201,14 @@ describe('RoomSubscription', () => {
 			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
 
 			await sub.subscribe();
-			await sub.handleLogin();
+			await sub.restore();
 			await sub.unsubscribe();
 
 			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('does not accumulate subscriptions across repeated handleLogin calls (simulates sequential reopen)', async () => {
+		it('does not accumulate subscriptions across repeated restore calls (simulates sequential reopen)', async () => {
 			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
@@ -211,13 +217,13 @@ describe('RoomSubscription', () => {
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 
 			// First reopen → tears down [first], creates [second]
-			await sub.handleLogin();
+			await sub.restore();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
 			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(second.unsubscribe).not.toHaveBeenCalled();
 
 			// Second reopen → tears down [second], creates []
-			await sub.handleLogin();
+			await sub.restore();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
 			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
 
@@ -227,20 +233,27 @@ describe('RoomSubscription', () => {
 			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('does not call onStreamData inside handleLogin (listeners persist across reopen)', async () => {
+		it('re-homes the stream listeners onto the current instance inside restore', async () => {
 			await sub.subscribe();
 			mockOnStreamData.mockClear();
 
-			await sub.handleLogin();
+			await sub.restore();
 
-			expect(mockOnStreamData).not.toHaveBeenCalled();
+			expect(mockOnStreamData).toHaveBeenCalledWith('close', sub.handleClose);
+			expect(mockOnStreamData).toHaveBeenCalledWith('stream-notify-room', sub.handleNotifyRoomReceived);
+			expect(mockOnStreamData).toHaveBeenCalledWith('stream-room-messages', sub.handleMessageReceived);
+			expect(mockOnStreamData).not.toHaveBeenCalledWith('login', expect.anything());
 		});
 
-		it('re-subscribes on the authenticated "login" event, not the pre-auth "connected" event', async () => {
+		it('enrolls a stream restorer on subscribe and disposes it on unsubscribe (no own "login" listener)', async () => {
 			await sub.subscribe();
 
-			expect(mockOnStreamData).toHaveBeenCalledWith('login', sub.handleLogin);
-			expect(mockOnStreamData).not.toHaveBeenCalledWith('connected', expect.anything());
+			expect(mockRegisterStreamRestorer).toHaveBeenCalledWith(sub.restore);
+			expect(mockOnStreamData).not.toHaveBeenCalledWith('login', expect.anything());
+
+			await sub.unsubscribe();
+
+			expect(mockUnregisterRestorer).toHaveBeenCalledTimes(1);
 		});
 
 		it('survives a poisoned subscription array (undefined entry from a rejected sub) and still re-subscribes', async () => {
@@ -251,30 +264,30 @@ describe('RoomSubscription', () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await expect(sub.handleLogin()).resolves.toBeUndefined();
+			await expect(sub.restore()).resolves.toBeUndefined();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
 	});
 
 	describe('isAlive guard', () => {
-		it('handleLogin does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
+		it('restore does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
 			await sub.subscribe();
 			await sub.unsubscribe();
 			jest.clearAllMocks();
 
-			await sub.handleLogin();
+			await sub.restore();
 
 			expect(mockSubscribeRoom).not.toHaveBeenCalled();
 			expect(loadMissedMessages).not.toHaveBeenCalled();
 			expect(mockStoreDispatch).not.toHaveBeenCalled();
 		});
 
-		it('handleLogin re-subscribes while the subscription is still alive', async () => {
+		it('restore re-subscribes while the subscription is still alive', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await sub.handleLogin();
+			await sub.restore();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});

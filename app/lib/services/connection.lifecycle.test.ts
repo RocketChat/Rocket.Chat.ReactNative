@@ -23,7 +23,7 @@
  *      (LOGIN.REQUEST -> Socket 'login' on the current instance) is what these scenarios exercise.
  *      (Socket.login's subscribeAll is intentionally omitted: after forceReopen wipes
  *      `this.subscriptions` it re-sends nothing, so room recovery rides entirely on the app-layer
- *      handleLogin re-subscribe — which this preserves.)
+ *      restore re-subscribe — which this preserves.)
  *
  * The connect() `connected`/`close` listeners are NO LONGER modeled: `registerAppListeners` binds
  * the REAL `createConnectedListener`/`createCloseListener` factories that production `connect()`
@@ -34,9 +34,8 @@
  * Delivery verdict per scenario: was RoomSubscription.handleMessageReceived invoked for the push?
  * GREEN = chain recovered, message delivered. RED = repro (message lost).
  *
- * Scenario f is a known-broken repro pending the fresh-instance re-home fix; it is an `it.failing`
- * asserting the DESIRED post-fix behavior, so the suite stays green without lying and flips to a plain
- * `it` when CR-6 lands.
+ * Scenario f asserts the fresh-instance re-home: after an SDK swap the owner's 'login' fan-out runs
+ * RoomSubscription.restore, which re-homes the stream listeners onto the new instance and re-subscribes.
  */
 
 import EJSON from 'ejson';
@@ -196,6 +195,7 @@ import * as ddpSdk from '@rocket.chat/sdk';
 import RoomSubscription from '../methods/subscriptions/room';
 import sdk from './sdk';
 import { createConnectedListener, createCloseListener } from './connectionListeners';
+import { bindStreamRestoration, registerStreamRestorer } from './connectionRestore';
 import connectReducer from '../../reducers/connect';
 import loginReducer from '../../reducers/login';
 import roomReducer from '../../reducers/room';
@@ -276,15 +276,18 @@ function installLoginPipeline() {
 // scope for this room-message delivery chain — only the guard/dispatch logic matters here.
 let connectedListener: any;
 let closeListener: any;
+let restoreListener: any;
 function registerAppListeners() {
 	connectedListener = sdk.onStreamData('connected', createConnectedListener(false));
-	closeListener = sdk.onStreamData('close', createCloseListener({ unsubscribeRooms: () => {} }));
+	closeListener = sdk.onStreamData('close', createCloseListener({}));
+	restoreListener = bindStreamRestoration();
 }
 
 // connect.ts's instance swap + listener rebind (connect.ts:58,103,119-143), minus peripheral wiring.
 async function harnessConnect() {
 	if (connectedListener) (await connectedListener)?.stop?.();
 	if (closeListener) (await closeListener)?.stop?.();
+	if (restoreListener) (await restoreListener)?.stop?.();
 	sdk.disconnect();
 	sdk.initialize(SERVER);
 	registerAppListeners();
@@ -323,6 +326,10 @@ function pushRoomMessage(rid: string, inst: Instance = currentInstance()) {
 
 const listenerCount = (inst: Instance, event: string) => inst.socket._listeners?.[event]?.length ?? 0;
 
+// RoomSubscriptions created by the harness. Their restorers live in the module-global registry, so
+// afterEach unsubscribes them to keep a dead sub's restorer from firing on the next test's login.
+const createdSubs: RoomSubscription[] = [];
+
 // Establishes a logged-in session with the room open and its stream-room-messages sub live.
 async function openRoomSession() {
 	await harnessConnect();
@@ -330,6 +337,7 @@ async function openRoomSession() {
 	await flush(); // connected -> guard -> loginRequest -> (pipeline) login + LOGIN.SUCCESS
 
 	const sub = new RoomSubscription(RID);
+	createdSubs.push(sub);
 	const received = jest.fn(sub.handleMessageReceived);
 	sub.handleMessageReceived = received; // spy BEFORE subscribe so the emitter binds the spy
 	await sub.subscribe();
@@ -348,9 +356,13 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 		store.dispatch({ type: types.LOGIN.SUCCESS, user: USER } as any);
 		connectedListener = undefined;
 		closeListener = undefined;
+		restoreListener = undefined;
 	});
 
-	afterEach(() => {
+	afterEach(async () => {
+		// Dispose harness subs so their registry restorers don't leak into the next test.
+		await Promise.all(createdSubs.map(sub => sub.unsubscribe().catch(() => {})));
+		createdSubs.length = 0;
 		// The real DDPDriver schedules ping/reopen timers on every socket (via ping()/reopen()) that
 		// never fire because scenarios don't advance time. Clear them so Jest exits without an
 		// open-handle warning. Test-only teardown — no production change.
@@ -381,7 +393,7 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 		await subscribedInstance.socket.open(); // stand in for the scheduled reopen firing
 		await flush();
 		fireConnected(subscribedInstance);
-		await flush(); // guard -> loginRequest -> login -> handleLogin re-subscribes
+		await flush(); // guard -> loginRequest -> login -> restore re-subscribes
 
 		const { serverHadSub } = pushRoomMessage(RID, subscribedInstance);
 		await flush();
@@ -429,7 +441,7 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 			listenerOnSocket: listenerCount(subscribedInstance, 'stream-room-messages')
 		});
 		// A stale connected=true no longer short-circuits recovery: 'connected' -> loginRequest ->
-		// handleLogin re-subscribes, the server holds the room sub, and other users' messages arrive.
+		// restore re-subscribes, the server holds the room sub, and other users' messages arrive.
 		expect(received.mock.calls.length).toBeGreaterThan(0);
 		expect(serverHadSub).toBe(true);
 	});
@@ -440,7 +452,7 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 
 		await subscribedInstance.socket.forceReopen();
 		fireConnected(subscribedInstance); // starts recovery (loginRequest queued)
-		// second forceReopen before handleLogin's re-subscribe settles
+		// second forceReopen before restore's re-subscribe settles
 		await subscribedInstance.socket.forceReopen();
 		await flush();
 		fireConnected(subscribedInstance);
@@ -454,51 +466,46 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 			delivered: received.mock.calls.length > 0,
 			listenerOnSocket: listenerCount(subscribedInstance, 'stream-room-messages')
 		});
-		// Recovers: the final connected -> loginRequest -> handleLogin re-subscribe wins.
+		// Recovers: the final connected -> loginRequest -> restore re-subscribe wins.
 		expect(received.mock.calls.length).toBeGreaterThan(0);
 	});
 
-	it.failing(
-		'f. a new SDK instance while RoomSubscription stays mounted must keep delivering [flips to `it` when CR-6 lands]',
-		async () => {
-			const { received, subscribedInstance } = await openRoomSession();
-			received.mockClear();
+	it('f. a new SDK instance while RoomSubscription stays mounted must keep delivering', async () => {
+		const { received, subscribedInstance } = await openRoomSession();
+		received.mockClear();
 
-			// connect() re-runs for the same server -> brand-new instance/socket, listeners rebound to it.
-			const generationBefore = sdk.generation;
-			await harnessConnect();
-			const freshInstance = currentInstance();
-			expect(freshInstance).not.toBe(subscribedInstance);
-			// The instance swap bumps the SDK generation id; CR-4 will key stream restoration to it.
-			expect(sdk.generation).toBe(generationBefore + 1);
+		// connect() re-runs for the same server -> brand-new instance/socket, listeners rebound to it.
+		const generationBefore = sdk.generation;
+		await harnessConnect();
+		const freshInstance = currentInstance();
+		expect(freshInstance).not.toBe(subscribedInstance);
+		// The instance swap bumps the SDK generation id; CR-4 will key stream restoration to it.
+		expect(sdk.generation).toBe(generationBefore + 1);
 
-			fireConnected(freshInstance);
-			await flush(); // fresh socket logs in
+		fireConnected(freshInstance);
+		await flush(); // fresh socket logs in
 
-			const onNew = pushRoomMessage(RID, freshInstance);
-			const deliveredOnNew = received.mock.calls.length > 0;
-			const onOld = pushRoomMessage(RID, subscribedInstance);
-			const deliveredOnOld = received.mock.calls.length > 0;
-			await flush();
+		const onNew = pushRoomMessage(RID, freshInstance);
+		const deliveredOnNew = received.mock.calls.length > 0;
+		const onOld = pushRoomMessage(RID, subscribedInstance);
+		const deliveredOnOld = received.mock.calls.length > 0;
+		await flush();
 
-			report('f', {
-				deliveredOnNewLiveSocket: deliveredOnNew,
-				deliveredOnOldDeadSocket: deliveredOnOld,
-				listenerOnOldSocket: listenerCount(subscribedInstance, 'stream-room-messages'),
-				listenerOnNewSocket: listenerCount(freshInstance, 'stream-room-messages'),
-				oldServerHadSub: onOld.serverHadSub,
-				newServerHadSub: onNew.serverHadSub
-			});
-			// DESIRED: after connect() swaps to a fresh socket, the mounted RoomSubscription must be
-			// re-homed/re-subscribed onto it (room.ts:57 binds sdk.onStreamData at subscribe time, so
-			// today the listener stays on the OLD socket with 0 listeners on the new one and the server
-			// never got the room sub). CR-6 re-homes the listener so real pushes on the new live socket
-			// are delivered.
-			expect(deliveredOnNew).toBe(true);
-			expect(listenerCount(freshInstance, 'stream-room-messages')).toBeGreaterThan(0);
-			expect(onNew.serverHadSub).toBe(true);
-		}
-	);
+		report('f', {
+			deliveredOnNewLiveSocket: deliveredOnNew,
+			deliveredOnOldDeadSocket: deliveredOnOld,
+			listenerOnOldSocket: listenerCount(subscribedInstance, 'stream-room-messages'),
+			listenerOnNewSocket: listenerCount(freshInstance, 'stream-room-messages'),
+			oldServerHadSub: onOld.serverHadSub,
+			newServerHadSub: onNew.serverHadSub
+		});
+		// After connect() swaps to a fresh socket, the owner's 'login' fan-out runs RoomSubscription's
+		// restore, which re-homes stream-room-messages onto the new instance and re-sends the room sub,
+		// so real pushes on the new live socket are delivered.
+		expect(deliveredOnNew).toBe(true);
+		expect(listenerCount(freshInstance, 'stream-room-messages')).toBeGreaterThan(0);
+		expect(onNew.serverHadSub).toBe(true);
+	});
 
 	it('g. after a transient resume-login failure, a later connected re-runs recovery', async () => {
 		const { received, subscribedInstance } = await openRoomSession();
@@ -543,5 +550,35 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 		expect(strandedState).toEqual({ meteorConnected: true, isAuthenticated: false });
 		expect(deliveredAfterFailure).toBe(false);
 		expect(deliveredAfterSecondConnected).toBe(true);
+	});
+
+	it('h. the owner fans out to an enrolled restorer once per connect+login and drops stale generations', async () => {
+		const spy = jest.fn();
+		const dispose = registerStreamRestorer(spy);
+		try {
+			await harnessConnect(); // fresh owner bound on the current generation
+
+			fireConnected(); // connected -> loginRequest -> login -> fan-out (run #1)
+			await flush();
+			expect(spy).toHaveBeenCalledTimes(1);
+
+			fireConnected(); // a later connected re-runs login -> fan-out (run #2), no close needed
+			await flush();
+			expect(spy).toHaveBeenCalledTimes(2);
+
+			// Generation guard: an owner from a superseded connect() that outlived its generation must NOT
+			// fan out. Bind an owner, then swap the SDK instance WITHOUT stopping it, and fire the old
+			// socket's 'login' — the captured generation no longer matches, so no restorer runs.
+			const strandedInstance = currentInstance();
+			await bindStreamRestoration();
+			sdk.disconnect();
+			sdk.initialize(SERVER);
+			spy.mockClear();
+			strandedInstance.socket.emit('login', { token: USER.token });
+			await flush();
+			expect(spy).not.toHaveBeenCalled();
+		} finally {
+			dispose();
+		}
 	});
 });

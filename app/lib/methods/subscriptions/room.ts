@@ -25,6 +25,7 @@ import {
 } from '../../../definitions';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
+import { registerStreamRestorer } from '../../services/connectionRestore';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
@@ -33,10 +34,10 @@ export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
 	private promises?: Promise<TSubscriptionModel[]>;
-	private loginListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
+	private unregisterRestorer?: () => void;
 
 	constructor(rid: string) {
 		this.rid = rid;
@@ -50,10 +51,10 @@ export default class RoomSubscription {
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.loginListener = sdk.onStreamData('login', this.handleLogin);
 		this.disconnectedListener = sdk.onStreamData('close', this.handleClose);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
+		this.unregisterRestorer = registerStreamRestorer(this.restore);
 		if (!this.isAlive) {
 			await this.unsubscribe();
 		}
@@ -74,7 +75,8 @@ export default class RoomSubscription {
 			}
 		}
 		reduxStore.dispatch(clearUserTyping());
-		this.removeListener(this.loginListener);
+		this.unregisterRestorer?.();
+		this.unregisterRestorer = undefined;
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
@@ -91,11 +93,22 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleLogin = async () => {
+	restore = async () => {
 		if (!this.isAlive) {
 			return;
 		}
 		try {
+			// Re-home the stream listeners onto the current (possibly new) instance's socket.
+			this.removeListener(this.disconnectedListener);
+			this.removeListener(this.notifyRoomListener);
+			this.removeListener(this.messageReceivedListener);
+			this.disconnectedListener = sdk.onStreamData('close', this.handleClose);
+			this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
+			this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
+			if (!this.isAlive) {
+				await this.unsubscribe();
+				return;
+			}
 			if (this.promises) {
 				const oldSubs = await this.promises;
 				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));

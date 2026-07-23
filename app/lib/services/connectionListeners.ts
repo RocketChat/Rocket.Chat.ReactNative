@@ -21,14 +21,12 @@ export function createConnectedListener(logoutOnError: boolean) {
 
 /**
  * Builds the `'close'` stream listener that `connect()` registers on the current SDK instance.
- * `unsubscribeRooms` and `onClose` are injected so this module stays free of the rooms-subscription
- * and VoIP dependency trees: `connect()` passes the real `unsubscribeRooms` and an `onClose` that
- * arms its closure-local pendingHangups drain flag, while the regression suite passes test doubles
- * for those out-of-scope concerns. The guard/dispatch logic itself is exercised as REAL code.
+ * `onClose` is injected so this module stays free of the VoIP dependency tree: `connect()` passes an
+ * `onClose` that arms its closure-local pendingHangups drain flag, while the regression suite passes a
+ * test double. The guard/dispatch logic itself is exercised as REAL code.
  */
-export function createCloseListener({ unsubscribeRooms, onClose }: { unsubscribeRooms: () => void; onClose?: () => void }) {
+export function createCloseListener({ onClose }: { onClose?: () => void }) {
 	return () => {
-		unsubscribeRooms();
 		onClose?.();
 		store.dispatch(disconnectAction());
 	};

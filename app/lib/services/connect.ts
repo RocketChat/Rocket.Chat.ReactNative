@@ -12,6 +12,7 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import { createConnectedListener, createCloseListener } from './connectionListeners';
+import { bindStreamRestoration } from './connectionRestore';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
@@ -50,6 +51,7 @@ let notifyAllListener: any;
 let rolesListener: any;
 let notifyLoggedListener: any;
 let logoutListener: any;
+let restoreListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
@@ -97,11 +99,16 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			logoutListener.then(stopListener);
 		}
 
+		if (restoreListener) {
+			restoreListener.then(stopListener);
+		}
+
 		unsubscribeRooms();
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		sdk.initialize(server);
+		restoreListener = bindStreamRestoration();
 		getSettings();
 
 		sdk.current
@@ -123,14 +130,9 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
 
-		// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
-		// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
-		// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
-		// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
 		closeListener = sdk.current.onStreamData(
 			'close',
 			createCloseListener({
-				unsubscribeRooms,
 				onClose: () => {
 					pendingHangupsDrainArmed = true;
 				}
