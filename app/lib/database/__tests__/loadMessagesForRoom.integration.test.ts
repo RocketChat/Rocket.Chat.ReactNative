@@ -3,6 +3,8 @@ import { Q } from '@nozbe/watermelondb';
 import type { TAppDatabase } from '../interfaces';
 import type { IMessage, TMessageModel, TSubscriptionModel } from '../../../definitions';
 import { closeLokiTestDatabase, createLokiTestDatabase, resetLokiTestDatabase, seedSubscription } from './lokiTestDatabase';
+import sdk from '../../services/sdk';
+import { loadMessagesForRoom } from '../../methods/loadMessagesForRoom';
 
 // Real persistence + real cursor: point `database.active` at the live LokiJS DB so
 // `loadMessagesForRoom` drives the real `updateMessages`, the real `getMessageById` /
@@ -36,11 +38,6 @@ jest.mock('../../encryption', () => ({
 }));
 
 jest.mock('../../methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-
-// eslint-disable-next-line import/first
-import sdk from '../../services/sdk';
-// eslint-disable-next-line import/first
-import { loadMessagesForRoom } from '../../methods/loadMessagesForRoom';
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 

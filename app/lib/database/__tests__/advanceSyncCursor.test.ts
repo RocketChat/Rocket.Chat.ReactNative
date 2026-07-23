@@ -1,5 +1,7 @@
 import type { IMessage, TSubscriptionModel } from '../../../definitions';
 import type { TAppDatabase } from '../interfaces';
+import { advanceSyncCursor } from '../../methods/helpers/advanceSyncCursor';
+import log from '../../methods/helpers/log';
 import {
 	closeLokiTestDatabase,
 	createLokiTestDatabase,
@@ -26,11 +28,6 @@ jest.mock('../../methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
-
-// eslint-disable-next-line import/first
-import log from '../../methods/helpers/log';
-// eslint-disable-next-line import/first
-import { advanceSyncCursor } from '../../methods/helpers/advanceSyncCursor';
 
 const mockedLog = log as jest.MockedFunction<typeof log>;
 

@@ -10,6 +10,8 @@ import {
 	seedSubscription
 } from './lokiTestDatabase';
 import { createFakeSyncServer, type IFakeServerMessage } from './fakeSyncServer';
+import sdk from '../../services/sdk';
+import { loadMissedMessages } from '../../methods/loadMissedMessages';
 
 // Real persistence + real cursor: point `database.active` at the live LokiJS DB so
 // `loadMissedMessages` drives the real `updateMessages` (create/remove through the
@@ -42,11 +44,6 @@ jest.mock('../../encryption', () => ({
 }));
 
 jest.mock('../../methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-
-// eslint-disable-next-line import/first
-import sdk from '../../services/sdk';
-// eslint-disable-next-line import/first
-import { loadMissedMessages } from '../../methods/loadMissedMessages';
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 
