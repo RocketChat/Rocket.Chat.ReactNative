@@ -678,7 +678,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					this.consumeJumpParam(messageId);
 				}
 			} else {
-				const newLastOpen = new Date();
+				const readAt = new Date();
 				await RoomServices.getMessages({
 					rid: room.rid,
 					t: room.t as RoomType,
@@ -692,7 +692,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					} else {
 						this.setLastOpen(null);
 					}
-					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+					readMessages(room.rid, readAt).catch(e => console.log(e));
 				}
 			}
 

@@ -61,10 +61,6 @@ jest.mock('../helpers/markMessagesRead', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../updateLastOpen', () => ({
-	updateLastOpen: jest.fn()
-}));
-
 jest.mock('../../../actions/usersTyping', () => ({
 	addUserTyping: jest.fn(),
 	clearUserTyping: jest.fn().mockReturnValue({ type: 'CLEAR_USER_TYPING' }),

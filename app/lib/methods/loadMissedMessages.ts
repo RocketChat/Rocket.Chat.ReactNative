@@ -1,5 +1,6 @@
 import { type ILastMessage } from '../../definitions';
 import { compareServerVersion } from './helpers';
+import { advanceSyncCursor } from './helpers/advanceSyncCursor';
 import updateMessages from './updateMessages';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
@@ -19,25 +20,20 @@ const getSyncMessagesFromCursor = async (
 	updatedNext?: number | null,
 	deletedNext?: number | null
 ) => {
-	const promises = [];
+	const isInitialFetch = !!lastOpen && !updatedNext && !deletedNext;
+	const updatedCursor = updatedNext || (isInitialFetch ? lastOpen : undefined);
+	const deletedCursor = deletedNext || (isInitialFetch ? lastOpen : undefined);
 
-	if (lastOpen && !updatedNext && !deletedNext) {
-		promises.push(syncMessages({ roomId, next: lastOpen, type: 'UPDATED' }));
-		promises.push(syncMessages({ roomId, next: lastOpen, type: 'DELETED' }));
-	}
-	if (updatedNext) {
-		promises.push(syncMessages({ roomId, next: updatedNext, type: 'UPDATED' }));
-	}
-	if (deletedNext) {
-		promises.push(syncMessages({ roomId, next: deletedNext, type: 'DELETED' }));
-	}
+	const [updatedResult, deletedResult] = await Promise.all([
+		updatedCursor ? syncMessages({ roomId, next: updatedCursor, type: 'UPDATED' }) : undefined,
+		deletedCursor ? syncMessages({ roomId, next: deletedCursor, type: 'DELETED' }) : undefined
+	]);
 
-	const [updatedMessages, deletedMessages] = await Promise.all(promises);
 	return {
-		deleted: deletedMessages?.deleted ?? [],
-		deletedNext: deletedMessages?.cursor.next,
-		updated: updatedMessages?.updated ?? [],
-		updatedNext: updatedMessages?.cursor.next
+		deleted: deletedResult?.deleted ?? [],
+		deletedNext: deletedResult?.cursor?.next ?? null,
+		updated: updatedResult?.updated ?? [],
+		updatedNext: updatedResult?.cursor?.next ?? null
 	};
 };
 
@@ -107,9 +103,10 @@ export async function loadMissedMessages(args: {
 		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
 		// @ts-ignore // TODO: remove loaderItem obligatoriness
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
+		await advanceSyncCursor(args.rid, [...updated, ...deleted]);
 
 		if (deletedNext || updatedNext) {
-			loadMissedMessages({
+			await loadMissedMessages({
 				rid: args.rid,
 				lastOpen: args.lastOpen,
 				updatedNext,
