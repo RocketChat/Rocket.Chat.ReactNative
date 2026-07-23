@@ -75,7 +75,8 @@ jest.mock('../methods/subscribeRooms', () => ({
 const mockBindStop = jest.fn();
 const mockBindStreamRestoration = jest.fn<Promise<{ stop: jest.Mock }>, []>(() => Promise.resolve({ stop: mockBindStop }));
 jest.mock('./connectionRestore', () => ({
-	bindStreamRestoration: () => mockBindStreamRestoration()
+	bindStreamRestoration: () => mockBindStreamRestoration(),
+	registerStreamRestorer: () => () => {}
 }));
 
 jest.mock('../methods/getSettings', () => ({

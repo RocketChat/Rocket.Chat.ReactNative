@@ -8,6 +8,7 @@ import { store as reduxStore } from '../store/auxStore';
 import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
 import { type TRoleModel } from '../../definitions';
 import sdk from '../services/sdk';
+import { registerStreamRestorer } from '../services/connectionRestore';
 import protectedFunction from './helpers/protectedFunction';
 
 export async function setRoles(): Promise<void> {
@@ -129,3 +130,9 @@ export function getRoles(): Promise<void> {
 		}
 	});
 }
+
+// Re-send the stream-roles sub and refresh roles on every DDP login.
+registerStreamRestorer(() => {
+	sdk.subscribe('stream-roles', 'roles');
+	return getRoles();
+});

@@ -8,6 +8,7 @@ import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
+import { registerStreamRestorer } from '../services/connectionRestore';
 import protectedFunction from './helpers/protectedFunction';
 import { compareServerVersion } from './helpers';
 
@@ -166,7 +167,6 @@ export function getPermissions(): Promise<void> {
 			const db = database.active;
 			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
-			sdk.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
 			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
@@ -205,3 +205,11 @@ export function getPermissions(): Promise<void> {
 		}
 	});
 }
+
+export function subscribePermissions(): void {
+	return sdk.subscribe('stream-notify-logged', 'permissions-changed');
+}
+
+// Restorer owns only re-subscription; the awaited getPermissions() fetch stays in the login saga so
+// permissions state is set before the enterprise-modules and VoIP checks that read it.
+registerStreamRestorer(() => subscribePermissions());

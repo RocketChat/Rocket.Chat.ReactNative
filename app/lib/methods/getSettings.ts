@@ -10,6 +10,7 @@ import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
+import { registerStreamRestorer } from '../services/connectionRestore';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
@@ -146,6 +147,9 @@ export async function setSettings(): Promise<void> {
 export function subscribeSettings(): void {
 	return sdk.subscribe('stream-notify-all', 'public-settings-changed');
 }
+
+// Re-send the public-settings-changed sub on every DDP login (initial, reconnect, forceReopen, swap).
+registerStreamRestorer(() => subscribeSettings());
 
 type IData = ISettingsIcon | IPreparedSettings;
 

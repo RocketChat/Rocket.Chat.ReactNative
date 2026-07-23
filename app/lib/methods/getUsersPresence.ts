@@ -9,6 +9,7 @@ import { setUser } from '../../actions/login';
 import database from '../database';
 import { type IUser } from '../../definitions';
 import sdk from '../services/sdk';
+import { registerStreamRestorer } from '../services/connectionRestore';
 import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
 import log from './helpers/log';
 import userPreferences from './userPreferences';
@@ -178,3 +179,9 @@ export const refreshDmUsersPresence = async (): Promise<void> => {
 		log(e);
 	}
 };
+
+// Re-send the presence subs and refresh open-DM presence on every DDP login.
+registerStreamRestorer(() => {
+	subscribeUsersPresence();
+	return refreshDmUsersPresence();
+});

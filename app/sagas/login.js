@@ -21,17 +21,14 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
-import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
-import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
-import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { getUserPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
-import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
@@ -173,14 +170,6 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
-const subscribeSettingsFork = function* subscribeSettingsFork() {
-	try {
-		yield subscribeSettings();
-	} catch (e) {
-		log(e);
-	}
-};
-
 const fetchPermissions = function* fetchPermissions() {
 	try {
 		yield getPermissions();
@@ -197,15 +186,6 @@ const fetchCustomEmojisFork = function* fetchCustomEmojisFork() {
 	}
 };
 
-const fetchRolesFork = function* fetchRolesFork() {
-	try {
-		sdk.subscribe('stream-roles', 'roles');
-		yield getRoles();
-	} catch (e) {
-		log(e);
-	}
-};
-
 const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	try {
 		yield getSlashCommands();
@@ -217,15 +197,6 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
 		yield registerPushToken();
-	} catch (e) {
-		log(e);
-	}
-};
-
-const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
-	try {
-		yield subscribeUsersPresence();
-		yield refreshDmUsersPresence();
 	} catch (e) {
 		log(e);
 	}
@@ -326,11 +297,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
-		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
-		yield fork(fetchUsersPresenceFork);
-		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
 		yield fork(checkBackgroundAndSetAway);
 		yield getUserPresence(user.id);

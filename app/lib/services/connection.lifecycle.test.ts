@@ -199,6 +199,12 @@ import { bindStreamRestoration, registerStreamRestorer } from './connectionResto
 import connectReducer from '../../reducers/connect';
 import loginReducer from '../../reducers/login';
 import roomReducer from '../../reducers/room';
+// Imported for their module-scope registerStreamRestorer side effect: enrolls the settings,
+// presence, permissions and roles restorers in the same registry the owner fans out to.
+import '../methods/getSettings';
+import '../methods/getUsersPresence';
+import '../methods/getPermissions';
+import '../methods/getRoles';
 /* eslint-enable import/first, import/order */
 
 const SERVER = 'https://open.rocket.chat';
@@ -580,5 +586,89 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 		} finally {
 			dispose();
 		}
+	});
+
+	// The app-stream restorers (settings, presence, permissions, roles) enroll at module import and ride
+	// the SAME owner fan-out as RoomSubscription. Each transition below drops the server-side subs, then a
+	// later connected+login must re-send every one — proving the migration from LOGIN.SUCCESS forks to
+	// idempotent restorers survives plain reopen, forceReopen, SDK swap, and a transient login failure.
+	const APP_STREAM_SUBS: [string, string][] = [
+		['stream-notify-all', 'public-settings-changed'],
+		['stream-notify-logged', 'updateAvatar'],
+		['stream-notify-logged', 'Users:NameChanged'],
+		['stream-notify-logged', 'permissions-changed'],
+		['stream-roles', 'roles']
+	];
+	const appStreamSnapshot = (inst: Instance, present: boolean) =>
+		APP_STREAM_SUBS.reduce<Record<string, boolean>>((acc, [name, event]) => {
+			acc[`${name}/${event}`] = inst.server.activeSubs.has(`${name}::${JSON.stringify(event)}`) === present;
+			return acc;
+		}, {});
+	const ALL_PRESENT = APP_STREAM_SUBS.reduce<Record<string, boolean>>((acc, [name, event]) => {
+		acc[`${name}/${event}`] = true;
+		return acc;
+	}, {});
+
+	it('i. app-stream subs re-established on the initial login and after a plain close/reopen', async () => {
+		const { subscribedInstance } = await openRoomSession();
+		// initial login already fanned out to the restorers
+		report('i-initial', appStreamSnapshot(subscribedInstance, true));
+		expect(appStreamSnapshot(subscribedInstance, true)).toEqual(ALL_PRESENT);
+
+		fireClose(subscribedInstance, 1006);
+		await flush();
+		await subscribedInstance.socket.open(); // reopen resets server-side subs
+		await flush();
+		fireConnected(subscribedInstance);
+		await flush(); // connected -> loginRequest -> login -> restorers re-subscribe
+
+		report('i', appStreamSnapshot(subscribedInstance, true));
+		expect(appStreamSnapshot(subscribedInstance, true)).toEqual(ALL_PRESENT);
+	});
+
+	it('j. app-stream subs re-established after a forceReopen with a stale connected=true', async () => {
+		const { subscribedInstance } = await openRoomSession();
+
+		await subscribedInstance.socket.forceReopen(); // wipes DDP subs, resets server subs
+		await flush();
+		store.dispatch(connectSuccess()); // redux reads connected=true when 'connected' fires
+		fireConnected(subscribedInstance);
+		await flush();
+
+		report('j', appStreamSnapshot(subscribedInstance, true));
+		expect(appStreamSnapshot(subscribedInstance, true)).toEqual(ALL_PRESENT);
+	});
+
+	it('k. app-stream subs re-established on a brand-new SDK instance', async () => {
+		await openRoomSession();
+
+		await harnessConnect(); // fresh instance/socket, listeners + owner rebound
+		const freshInstance = currentInstance();
+		fireConnected(freshInstance);
+		await flush();
+
+		report('k', appStreamSnapshot(freshInstance, true));
+		expect(appStreamSnapshot(freshInstance, true)).toEqual(ALL_PRESENT);
+	});
+
+	it('l. app-stream subs re-established after a transient resume-login failure heals', async () => {
+		const { subscribedInstance } = await openRoomSession();
+
+		subscribedInstance.socket.lastPing = 0;
+		loginPipelineMode = 'fail';
+		await subscribedInstance.socket.checkAndReopen(); // forceReopen -> resets server subs
+		await flush();
+		fireConnected(subscribedInstance); // resume login FAILS -> no fan-out
+		await flush();
+		// A failed resume login re-sends nothing: every stream is still absent.
+		const strandedAbsent = appStreamSnapshot(subscribedInstance, false);
+
+		loginPipelineMode = 'success';
+		fireConnected(subscribedInstance); // later connected re-runs recovery -> restorers fire
+		await flush();
+
+		report('l', { strandedAbsent, healed: appStreamSnapshot(subscribedInstance, true) });
+		expect(strandedAbsent).toEqual(ALL_PRESENT);
+		expect(appStreamSnapshot(subscribedInstance, true)).toEqual(ALL_PRESENT);
 	});
 });
