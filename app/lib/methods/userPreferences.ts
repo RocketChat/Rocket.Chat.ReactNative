@@ -109,7 +109,8 @@ class UserPreferences {
 			const str = this.mmkv.getString(key);
 			if (str !== undefined) {
 				try {
-					return JSON.parse(str);
+					const parsed: unknown = JSON.parse(str);
+					return typeof parsed === 'boolean' ? parsed : null;
 				} catch {
 					return null;
 				}
