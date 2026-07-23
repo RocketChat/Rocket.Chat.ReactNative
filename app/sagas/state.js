@@ -1,8 +1,9 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
+import { loginRequest } from '../actions/login';
 import { RootEnum } from '../definitions';
 import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
@@ -21,6 +22,12 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	const login = yield select(state => state.login);
 	if (!login.isAuthenticated) {
+		// Stranded after a failed resume login: a stored token with no authenticated session. Heal by
+		// re-running the resume login instead of leaving rooms silently dead until a real transport close.
+		const token = login.user?.token;
+		if (token) {
+			yield put(loginRequest({ resume: token }, false));
+		}
 		return;
 	}
 	try {

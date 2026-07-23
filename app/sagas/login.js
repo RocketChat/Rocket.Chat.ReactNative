@@ -73,76 +73,102 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
+// Transient resume-login failures (network blip, server hiccup) get bounded retries with exponential
+// backoff so a stranded session (connected socket, zero server-side subs) heals itself.
+const RESUME_LOGIN_MAX_RETRIES = 3;
+const RESUME_LOGIN_BACKOFF_MS = 2000;
+
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
-	try {
-		let result;
-		if (credentials.resume) {
-			result = yield loginCall(credentials);
-		} else {
-			result = yield call(loginWithPasswordCall, credentials);
-		}
-		if (!result.username) {
-			yield put(serverFinishAdd());
-			yield put(setUser(result));
-			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
-		} else {
-			const server = yield select(getServer);
-			yield localAuthenticate(server);
-
-			// Saves username on server history
-			const serversDB = database.servers;
-			const serversHistoryCollection = serversDB.get('servers_history');
-			const serversCollection = serversDB.get('servers');
-			yield serversDB.write(async () => {
-				try {
-					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
-					if (serversHistory?.length) {
-						const serverHistoryRecord = serversHistory[0];
-						// Get server iconURL from servers table
-						let iconURL = null;
-						try {
-							const serverRecord = await serversCollection.find(server);
-							iconURL = serverRecord.iconURL;
-						} catch (e) {
-							// Server record might not exist yet
-						}
-						// this is updating on every login just to save `updated_at`
-						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update(s => {
-							s.username = result.username;
-							if (iconURL) {
-								s.iconURL = iconURL;
-							}
-						});
-					}
-				} catch (e) {
-					log(e);
-				}
-			});
-			yield put(loginSuccess(result));
-			if (registerCustomFields) {
-				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
-				yield put(setUser({ ...result, ...updatedUser.user }));
+	const initialServer = yield select(getServer);
+	let retries = 0;
+	while (true) {
+		try {
+			let result;
+			if (credentials.resume) {
+				result = yield loginCall(credentials);
+			} else {
+				result = yield call(loginWithPasswordCall, credentials);
 			}
-		}
-	} catch (e) {
-		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
-			logEvent(events.LOGOUT_BY_SERVER);
-			yield put(logoutAction(true, 'Logged_out_by_server'));
-		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
-			logEvent(events.LOGOUT_TOKEN_EXPIRED);
-			yield put(logoutAction(true, 'Token_expired'));
-		} else if (e?.status === 401) {
-			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
-			const userId = yield select(state => state.login.user.id);
-			if (!userId) {
+			if (!result.username) {
+				yield put(serverFinishAdd());
+				yield put(setUser(result));
+				yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
+			} else {
+				const server = yield select(getServer);
+				yield localAuthenticate(server);
+
+				// Saves username on server history
+				const serversDB = database.servers;
+				const serversHistoryCollection = serversDB.get('servers_history');
+				const serversCollection = serversDB.get('servers');
+				yield serversDB.write(async () => {
+					try {
+						const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
+						if (serversHistory?.length) {
+							const serverHistoryRecord = serversHistory[0];
+							// Get server iconURL from servers table
+							let iconURL = null;
+							try {
+								const serverRecord = await serversCollection.find(server);
+								iconURL = serverRecord.iconURL;
+							} catch (e) {
+								// Server record might not exist yet
+							}
+							// this is updating on every login just to save `updated_at`
+							// keeping this server as the most recent on autocomplete order
+							await serverHistoryRecord.update(s => {
+								s.username = result.username;
+								if (iconURL) {
+									s.iconURL = iconURL;
+								}
+							});
+						}
+					} catch (e) {
+						log(e);
+					}
+				});
+				yield put(loginSuccess(result));
+				if (registerCustomFields) {
+					const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
+					yield put(setUser({ ...result, ...updatedUser.user }));
+				}
+			}
+			return;
+		} catch (e) {
+			if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
+				logEvent(events.LOGOUT_BY_SERVER);
+				yield put(logoutAction(true, 'Logged_out_by_server'));
+				return;
+			}
+			if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
+				logEvent(events.LOGOUT_TOKEN_EXPIRED);
+				yield put(logoutAction(true, 'Token_expired'));
+				return;
+			}
+			if (e?.status === 401) {
+				logEvent(events.LOGIN_DEFAULT_LOGIN_F);
+				const userId = yield select(state => state.login.user.id);
+				if (!userId) {
+					yield put(loginFailure(e));
+					return;
+				}
+				yield put(logoutAction(true));
+				return;
+			}
+			if (!credentials.resume || retries >= RESUME_LOGIN_MAX_RETRIES) {
 				yield put(loginFailure(e));
 				return;
 			}
-			yield put(logoutAction(true));
-		} else {
-			yield put(loginFailure(e));
+			yield delay(RESUME_LOGIN_BACKOFF_MS * 2 ** retries);
+			// Bail if the session became irrelevant during the wait: user logged out or server switched.
+			const token = yield select(state => state.login.user?.token);
+			const server = yield select(getServer);
+			if (!token || server !== initialServer) {
+				yield put(loginFailure(e));
+				return;
+			}
+			retries += 1;
 		}
 	}
 };

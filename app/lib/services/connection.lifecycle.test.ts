@@ -27,15 +27,16 @@
  *
  * The connect() `connected`/`close` listeners are NO LONGER modeled: `registerAppListeners` binds
  * the REAL `createConnectedListener`/`createCloseListener` factories that production `connect()`
- * calls, so the `meteor.connected` guard is exercised as shipping code. `harnessConnect` reproduces
- * connect.ts's instance-swap + listener-rebind (sdk.disconnect -> sdk.initialize -> re-register).
+ * calls, so the recovery dispatch (connectSuccess + resume loginRequest on every 'connected') is
+ * exercised as shipping code. `harnessConnect` reproduces connect.ts's instance-swap + listener-rebind
+ * (sdk.disconnect -> sdk.initialize -> re-register).
  *
  * Delivery verdict per scenario: was RoomSubscription.handleMessageReceived invoked for the push?
  * GREEN = chain recovered, message delivered. RED = repro (message lost).
  *
- * Scenarios d/f/g are known-broken repros pending the connection-recovery fixes; each is an
- * `it.failing` asserting the DESIRED post-fix behavior, so the suite stays green without lying and
- * each flips to a plain `it` when its fix ticket lands (d/g -> CR-3, f -> CR-6).
+ * Scenario f is a known-broken repro pending the fresh-instance re-home fix; it is an `it.failing`
+ * asserting the DESIRED post-fix behavior, so the suite stays green without lying and flips to a plain
+ * `it` when CR-6 lands.
  */
 
 import EJSON from 'ejson';
@@ -247,8 +248,9 @@ function buildStore(): Store<HarnessState> {
 // Models the redux-saga login pipeline: a LOGIN.REQUEST (dispatched by the connectedListener guard)
 // completes into Socket 'login' + LOGIN.SUCCESS. Emits on the CURRENT instance's socket, which is
 // exactly why a fresh instance (scenario f) strands a RoomSubscription bound to the old socket.
-// 'fail' models Socket.login throwing on a transient (non-401) error: the saga's catch lands in the
-// loginFailure branch (app/sagas/login.js:145) — no 'login' emit, no subscribeAll, meteor untouched.
+// 'fail' models the resume login terminally failing on a transient (non-401) error: no 'login' emit,
+// no subscribeAll, meteor untouched. The saga's own bounded retry/backoff lives outside this harness,
+// so this mode stands in for the outcome after retries are exhausted.
 let loginPipelineMode: 'success' | 'fail' = 'success';
 function installLoginPipeline() {
 	let prevFetching = store.getState().login.isFetching;
@@ -406,35 +408,31 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 		expect({ serverHadSub, delivered: received.mock.calls.length > 0 }).toEqual({ serverHadSub: true, delivered: true });
 	});
 
-	it.failing(
-		'd. forceReopen with a stale meteor.connected guard must still recover [flips to `it` when CR-3 lands]',
-		async () => {
-			const { received, subscribedInstance } = await openRoomSession();
-			received.mockClear();
+	it('d. forceReopen while redux still reads connected=true must still recover', async () => {
+		const { received, subscribedInstance } = await openRoomSession();
+		received.mockClear();
 
-			await subscribedInstance.socket.forceReopen(); // emits close(4000) -> disconnect dispatched
-			await flush();
-			// Simulated race: a connectSuccess lands (or the close disconnect never did) so redux reads
-			// connected=true at the moment 'connected' fires — the ordering the memory flags as the bug.
-			store.dispatch(connectSuccess());
-			fireConnected(subscribedInstance);
-			await flush();
+		await subscribedInstance.socket.forceReopen(); // emits close(4000) -> disconnect dispatched
+		await flush();
+		// Race: a connectSuccess lands (or the close disconnect never did) so redux reads connected=true
+		// at the moment 'connected' fires. Recovery must run regardless.
+		store.dispatch(connectSuccess());
+		fireConnected(subscribedInstance);
+		await flush();
 
-			const { serverHadSub } = pushRoomMessage(RID, subscribedInstance);
-			await flush();
+		const { serverHadSub } = pushRoomMessage(RID, subscribedInstance);
+		await flush();
 
-			report('d', {
-				serverHadSub,
-				delivered: received.mock.calls.length > 0,
-				listenerOnSocket: listenerCount(subscribedInstance, 'stream-room-messages')
-			});
-			// DESIRED: the stale `connected` guard (connect.ts:121-123) must NOT short-circuit recovery —
-			// loginRequest -> handleLogin re-subscribes, the server holds the room sub, and other users'
-			// messages arrive. Fails today (guard blocks re-subscribe); CR-3 removes the guard.
-			expect(received.mock.calls.length).toBeGreaterThan(0);
-			expect(serverHadSub).toBe(true);
-		}
-	);
+		report('d', {
+			serverHadSub,
+			delivered: received.mock.calls.length > 0,
+			listenerOnSocket: listenerCount(subscribedInstance, 'stream-room-messages')
+		});
+		// A stale connected=true no longer short-circuits recovery: 'connected' -> loginRequest ->
+		// handleLogin re-subscribes, the server holds the room sub, and other users' messages arrive.
+		expect(received.mock.calls.length).toBeGreaterThan(0);
+		expect(serverHadSub).toBe(true);
+	});
 
 	it('e. overlapping reconnect: forceReopen fires again mid-recovery (before login completes)', async () => {
 		const { received, subscribedInstance } = await openRoomSession();
@@ -502,68 +500,48 @@ describe('connection lifecycle — room message delivery across reconnects', () 
 		}
 	);
 
-	it.failing(
-		'g. resume login fails transiently after foreground forceReopen must still recover [flips to `it` when CR-3 lands]',
-		async () => {
-			const { received, subscribedInstance } = await openRoomSession();
-			received.mockClear();
+	it('g. after a transient resume-login failure, a later connected re-runs recovery', async () => {
+		const { received, subscribedInstance } = await openRoomSession();
+		received.mockClear();
 
-			// Foreground after silent socket death: checkAndReopen -> forceReopen.
-			// close(4000) -> meteor=false, DDP subs wiped; resume login then hits a transient error.
-			subscribedInstance.socket.lastPing = 0;
-			loginPipelineMode = 'fail';
-			await subscribedInstance.socket.checkAndReopen();
-			await flush();
-			fireConnected(subscribedInstance); // guard passes -> connectSuccess(meteor=TRUE) -> loginRequest -> FAILS
-			await flush();
+		// Foreground after silent socket death: checkAndReopen -> forceReopen.
+		// close(4000) -> meteor=false, DDP subs wiped; resume login then hits a transient error.
+		subscribedInstance.socket.lastPing = 0;
+		loginPipelineMode = 'fail';
+		await subscribedInstance.socket.checkAndReopen();
+		await flush();
+		fireConnected(subscribedInstance); // connectSuccess(meteor=TRUE) -> loginRequest -> FAILS
+		await flush();
 
-			const strandedState = {
-				meteorConnected: store.getState().meteor.connected,
-				isAuthenticated: store.getState().login.isAuthenticated
-			};
-			const push1 = pushRoomMessage(RID, subscribedInstance);
-			await flush();
-			const deliveredAfterFailure = received.mock.calls.length > 0;
+		// Transient failure strands the session: socket reads connected, but the resume login failed so
+		// there is no authenticated session and no server-side sub yet.
+		const strandedState = {
+			meteorConnected: store.getState().meteor.connected,
+			isAuthenticated: store.getState().login.isAuthenticated
+		};
+		const push1 = pushRoomMessage(RID, subscribedInstance);
+		await flush();
+		const deliveredAfterFailure = received.mock.calls.length > 0;
 
-			// Login now WOULD succeed, but a later 'connected' (no intervening close) hits the stale guard.
-			loginPipelineMode = 'success';
-			fireConnected(subscribedInstance);
-			await flush();
-			pushRoomMessage(RID, subscribedInstance);
-			await flush();
-			const deliveredAfterSecondConnected = received.mock.calls.length > 0;
+		// Login now succeeds; a later 'connected' (no intervening close) must re-run recovery.
+		loginPipelineMode = 'success';
+		fireConnected(subscribedInstance);
+		await flush();
+		pushRoomMessage(RID, subscribedInstance);
+		await flush();
+		const deliveredAfterSecondConnected = received.mock.calls.length > 0;
 
-			// Next foreground: transport is healthy (fresh lastPing + server pongs) -> checkAndReopen no-ops.
-			subscribedInstance.socket.lastPing = Date.now();
-			const opensBefore = subscribedInstance.socket.open.mock.calls.length;
-			await subscribedInstance.socket.checkAndReopen();
-			await flush();
-			const checkAndReopenHealed = subscribedInstance.socket.open.mock.calls.length > opensBefore;
-
-			// Only a REAL transport close re-arms recovery (disconnect -> guard passes on next connected).
-			fireClose(subscribedInstance, 1006);
-			await flush();
-			await subscribedInstance.socket.open();
-			await flush();
-			fireConnected(subscribedInstance);
-			await flush();
-			pushRoomMessage(RID, subscribedInstance);
-			await flush();
-			const recoveredAfterRealClose = received.mock.calls.length > 0;
-
-			report('g', {
-				strandedState,
-				serverHadSubAfterFailure: push1.serverHadSub,
-				deliveredAfterFailure,
-				deliveredAfterSecondConnected,
-				checkAndReopenHealed,
-				recoveredAfterRealClose
-			});
-			// DESIRED: after a transient resume-login failure, a later 'connected' (login now healthy)
-			// must re-run recovery and re-subscribe the room WITHOUT needing a real transport close.
-			// Fails today (the stale guard blocks the retry -> app reads online with zero server subs,
-			// stranded until a real close or a new SDK instance); CR-3 removes the guard.
-			expect(deliveredAfterSecondConnected).toBe(true);
-		}
-	);
+		report('g', {
+			strandedState,
+			serverHadSubAfterFailure: push1.serverHadSub,
+			deliveredAfterFailure,
+			deliveredAfterSecondConnected
+		});
+		// After a transient resume-login failure, a later 'connected' (login now healthy) re-runs recovery
+		// and re-subscribes the room WITHOUT needing a real transport close. The stranded state heals as
+		// soon as the next 'connected' arrives.
+		expect(strandedState).toEqual({ meteorConnected: true, isAuthenticated: false });
+		expect(deliveredAfterFailure).toBe(false);
+		expect(deliveredAfterSecondConnected).toBe(true);
+	});
 });

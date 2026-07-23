@@ -4,17 +4,13 @@ import { loginRequest } from '../../actions/login';
 
 /**
  * Builds the `'connected'` stream listener that `connect()` registers on the current SDK instance.
- * The `meteor.connected` guard short-circuits recovery when redux already reads connected — the
- * ordering under investigation by the connection-recovery effort. Extracted (with zero behavior
- * change) so the connection-lifecycle regression suite binds this REAL guard/dispatch logic instead
- * of a drifting replica.
+ * A `'connected'` DDP event only follows a real handshake on a (re)opened socket, whose server-side
+ * subscriptions are empty, so recovery must always run: `connectSuccess` is idempotent and the resume
+ * `loginRequest` is deduped by `takeLatest`. Extracted so the connection-lifecycle regression suite
+ * binds this REAL dispatch logic instead of a drifting replica.
  */
 export function createConnectedListener(logoutOnError: boolean) {
 	return () => {
-		const { connected } = store.getState().meteor;
-		if (connected) {
-			return;
-		}
 		store.dispatch(connectSuccess());
 		const { user } = store.getState().login;
 		if (user?.token) {
