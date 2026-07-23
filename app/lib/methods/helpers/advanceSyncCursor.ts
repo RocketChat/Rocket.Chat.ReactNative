@@ -37,7 +37,12 @@ export const advanceSyncCursor = async (rid: string, messages: (IMessage | ILast
 		const db = database.active;
 		await db.write(async () => {
 			await subscription.update((s: TSubscriptionModel) => {
-				s.lastOpen = new Date(latest);
+				// re-read inside the write: a concurrent sync may have advanced the
+				// cursor between the outer read and this commit (forward-only).
+				const committed = s.lastOpen ? new Date(s.lastOpen).getTime() : 0;
+				if (latest > committed) {
+					s.lastOpen = new Date(latest);
+				}
 			});
 		});
 	} catch (e) {

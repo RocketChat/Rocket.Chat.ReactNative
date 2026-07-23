@@ -66,10 +66,19 @@ const serverMessages: TFakeServerMessage[] = [];
 const serverDeleted: TFakeServerMessage[] = [];
 const DELETED_PAGE_SIZE = 2;
 
+// Injectable failure: reject the Nth DELETED page request (1-based) to model a
+// mid-pagination network error; reset in beforeEach.
+let deletedPageRequests = 0;
+let failDeletedPageAtRequest: number | null = null;
+
 const serialize = (message: TFakeServerMessage) => ({ ...message, _updatedAt: new Date(message._updatedAt).toISOString() });
 
 const fakeSyncMessages = (params: any) => {
 	if (params.type === 'DELETED') {
+		deletedPageRequests += 1;
+		if (failDeletedPageAtRequest && deletedPageRequests === failDeletedPageAtRequest) {
+			throw new Error('DELETED page request failed');
+		}
 		const matching = serverDeleted
 			.filter(message => message._updatedAt > params.next)
 			.sort((a, b) => a._updatedAt - b._updatedAt);
@@ -102,6 +111,8 @@ describe('loadMissedMessages + readMessages (RoomView.init order)', () => {
 		persistedMessageIds.clear();
 		removedMessageIds.clear();
 		mockSubscription.lastOpen = undefined;
+		deletedPageRequests = 0;
+		failDeletedPageAtRequest = null;
 
 		mockedSdkGet.mockImplementation((endpoint: any, params: any): any => {
 			if (endpoint === 'chat.syncMessages') {
@@ -181,5 +192,24 @@ describe('loadMissedMessages + readMessages (RoomView.init order)', () => {
 
 		expect(removedMessageIds).toEqual(new Set(['deleted-1', 'deleted-2', 'deleted-3']));
 		expect(persistedMessageIds.size).toBe(0);
+	});
+
+	it('does not advance the cursor when a later DELETED page fails, even after earlier pages persisted', async () => {
+		const T0 = Date.UTC(2026, 6, 22, 12, 0, 0);
+		mockSubscription.lastOpen = new Date(T0);
+
+		// three deletions after the cursor: page size 2 forces a second DELETED page
+		serverDeleted.push(
+			{ _id: 'deleted-1', rid: RID, msg: '', ts: new Date(T0 + 10_000).toISOString(), _updatedAt: T0 + 10_000 },
+			{ _id: 'deleted-2', rid: RID, msg: '', ts: new Date(T0 + 20_000).toISOString(), _updatedAt: T0 + 20_000 },
+			{ _id: 'deleted-3', rid: RID, msg: '', ts: new Date(T0 + 30_000).toISOString(), _updatedAt: T0 + 30_000 }
+		);
+		failDeletedPageAtRequest = 2;
+
+		await expect(loadMissedMessages({ rid: RID, lastOpen: new Date(T0) })).rejects.toThrow();
+
+		// page 1 was persisted, but the cursor must stay put so the failed page is retried
+		expect(removedMessageIds).toEqual(new Set(['deleted-1', 'deleted-2']));
+		expect(mockSubscription.lastOpen.getTime()).toBe(T0);
 	});
 });
