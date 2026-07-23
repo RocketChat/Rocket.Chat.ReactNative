@@ -106,10 +106,10 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			const str = this.mmkv.getString(key);
-			if (str !== undefined) {
+			const storedString = this.mmkv.getString(key);
+			if (storedString !== undefined) {
 				try {
-					const parsed: unknown = JSON.parse(str);
+					const parsed: unknown = JSON.parse(storedString);
 					return typeof parsed === 'boolean' ? parsed : null;
 				} catch {
 					return null;
