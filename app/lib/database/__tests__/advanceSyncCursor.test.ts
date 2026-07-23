@@ -1,6 +1,12 @@
 import type { IMessage, TSubscriptionModel } from '../../../definitions';
 import type { TAppDatabase } from '../interfaces';
-import { closeLokiTestDatabase, createLokiTestDatabase, resetLokiTestDatabase, seedSubscription } from './lokiTestDatabase';
+import {
+	closeLokiTestDatabase,
+	createLokiTestDatabase,
+	resetLokiTestDatabase,
+	seedSubscription,
+	withWriterQueueDiagnosticCleared
+} from './lokiTestDatabase';
 
 // The real `advanceSyncCursor` reads `database.active` (via itself and via the real
 // `getSubscriptionByRoomId` service). Point both at the live LokiJS database so the
@@ -138,13 +144,17 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 
 		// advanceSyncCursor reads the cursor still at T0 (reads don't take the writer lock),
 		// passes the forward-only gate, then queues its own db.write behind the concurrent one.
-		const inFlightAdvance = advanceSyncCursor(RID, [message(T2)]);
-		await flush();
+		// Queueing behind a running writer arms WatermelonDB's dev-only ~1.5s diagnostic timer,
+		// which would outlive Jest's exit window — clear it around the contended section.
+		await withWriterQueueDiagnosticCleared(async () => {
+			const inFlightAdvance = advanceSyncCursor(RID, [message(T2)]);
+			await flush();
 
-		// Release the concurrent write: it commits T3 first, then the in-flight write body runs,
-		// re-reads the now-committed T3, and must skip its stale T2 rather than regress the cursor.
-		openGate();
-		await Promise.all([concurrentAdvance, inFlightAdvance]);
+			// Release the concurrent write: it commits T3 first, then the in-flight write body runs,
+			// re-reads the now-committed T3, and must skip its stale T2 rather than regress the cursor.
+			openGate();
+			await Promise.all([concurrentAdvance, inFlightAdvance]);
+		});
 
 		expect(await persistedLastOpen()).toBe(T3);
 	});

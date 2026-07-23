@@ -83,6 +83,37 @@ export const closeLokiTestDatabase = (database: TAppDatabase): Promise<void> => 
 	return new Promise<void>(resolve => loki.close!(() => resolve()));
 };
 
+/**
+ * Runs `block` while capturing and then clearing WatermelonDB's dev-only
+ * "writer queued behind a running writer" diagnostic timer.
+ *
+ * In non-production builds `WorkQueue.enqueue` schedules a ~1.5s `setTimeout`
+ * whenever a write is enqueued behind an in-flight one, to warn about a possibly
+ * stuck queue. It's a harmless no-op once the queued write runs, but as a live
+ * timer it outlives Jest's 1s post-run window and prints the benign
+ * "Jest did not exit one second after the test run has completed" warning.
+ * Tests that deliberately contend the writer lock wrap that section here so the
+ * event loop drains without `--forceExit`.
+ */
+export const withWriterQueueDiagnosticCleared = async <T>(block: () => Promise<T>): Promise<T> => {
+	const scheduled: ReturnType<typeof setTimeout>[] = [];
+	const realSetTimeout = global.setTimeout;
+	global.setTimeout = ((...timeoutArgs: Parameters<typeof setTimeout>) => {
+		const timer = realSetTimeout(...timeoutArgs);
+		const delay = timeoutArgs[1];
+		if (typeof delay === 'number' && delay >= 1000) {
+			scheduled.push(timer);
+		}
+		return timer;
+	}) as typeof setTimeout;
+	try {
+		return await block();
+	} finally {
+		global.setTimeout = realSetTimeout;
+		scheduled.forEach(clearTimeout);
+	}
+};
+
 export interface ISeedSubscription {
 	id?: string;
 	rid?: string;
