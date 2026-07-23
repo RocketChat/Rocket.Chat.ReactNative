@@ -1,5 +1,11 @@
 import type { TAppDatabase } from '../interfaces';
-import { createLokiTestDatabase, resetLokiTestDatabase, seedSubscription, seedMessage } from './lokiTestDatabase';
+import {
+	closeLokiTestDatabase,
+	createLokiTestDatabase,
+	resetLokiTestDatabase,
+	seedSubscription,
+	seedMessage
+} from './lokiTestDatabase';
 import { createFakeSyncServer } from './fakeSyncServer';
 
 describe('lokiTestDatabase harness', () => {
@@ -11,6 +17,8 @@ describe('lokiTestDatabase harness', () => {
 		}
 		await resetLokiTestDatabase(database);
 	});
+
+	afterAll(() => closeLokiTestDatabase(database));
 
 	it('round-trips a subscription and a message through a real db.write + query', async () => {
 		const T0 = Date.UTC(2026, 6, 22, 12, 0, 0);

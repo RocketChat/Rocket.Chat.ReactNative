@@ -1,6 +1,6 @@
 import type { IMessage, TSubscriptionModel } from '../../../definitions';
 import type { TAppDatabase } from '../interfaces';
-import { createLokiTestDatabase, resetLokiTestDatabase, seedSubscription } from './lokiTestDatabase';
+import { closeLokiTestDatabase, createLokiTestDatabase, resetLokiTestDatabase, seedSubscription } from './lokiTestDatabase';
 
 // The real `advanceSyncCursor` reads `database.active` (via itself and via the real
 // `getSubscriptionByRoomId` service). Point both at the live LokiJS database so the
@@ -49,6 +49,8 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	beforeAll(() => {
 		mockActiveDatabase = createLokiTestDatabase();
 	});
+
+	afterAll(() => closeLokiTestDatabase(mockActiveDatabase));
 
 	beforeEach(async () => {
 		await resetLokiTestDatabase(mockActiveDatabase);

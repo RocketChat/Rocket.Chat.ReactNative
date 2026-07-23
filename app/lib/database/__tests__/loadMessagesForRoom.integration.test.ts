@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import type { TAppDatabase } from '../interfaces';
 import type { IMessage, TMessageModel, TSubscriptionModel } from '../../../definitions';
-import { createLokiTestDatabase, resetLokiTestDatabase, seedSubscription } from './lokiTestDatabase';
+import { closeLokiTestDatabase, createLokiTestDatabase, resetLokiTestDatabase, seedSubscription } from './lokiTestDatabase';
 
 // Real persistence + real cursor: point `database.active` at the live LokiJS DB so
 // `loadMessagesForRoom` drives the real `updateMessages`, the real `getMessageById` /
@@ -80,6 +80,8 @@ describe('loadMessagesForRoom cursor gate (LokiJS integration)', () => {
 	beforeAll(() => {
 		mockActiveDatabase = createLokiTestDatabase();
 	});
+
+	afterAll(() => closeLokiTestDatabase(mockActiveDatabase));
 
 	beforeEach(async () => {
 		await resetLokiTestDatabase(mockActiveDatabase);

@@ -1,8 +1,7 @@
 import { Database } from '@nozbe/watermelondb';
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs';
 
-import type { TSubscriptionModel, TMessageModel } from '../../../definitions';
-import { SubscriptionType } from '../../../definitions';
+import type { TSubscriptionModel, TMessageModel, SubscriptionType } from '../../../definitions';
 import appSchema from '../schema/app';
 import migrations from '../model/migrations';
 import Subscription from '../model/Subscription';
@@ -64,6 +63,24 @@ export const resetLokiTestDatabase = async (database: Database): Promise<void> =
 	await database.write(async () => {
 		await database.unsafeResetDatabase();
 	});
+};
+
+/**
+ * Closes the underlying in-memory LokiJS driver so Jest's event loop drains and
+ * the process exits on its own — without `--forceExit`. The adapter exposes no
+ * public close, so we reach the in-process driver the same way the adapter's own
+ * `testClone` does (`_dispatcher._worker._bridge.driver`). Call from `afterAll`.
+ */
+export const closeLokiTestDatabase = (database: TAppDatabase): Promise<void> => {
+	const compat = database.adapter as unknown as { underlyingAdapter?: unknown };
+	const adapter = (compat.underlyingAdapter ?? database.adapter) as {
+		_dispatcher?: { _worker?: { _bridge?: { driver?: { loki?: { close?: (callback: () => void) => void } } } } };
+	};
+	const loki = adapter._dispatcher?._worker?._bridge?.driver?.loki;
+	if (!loki?.close) {
+		return Promise.resolve();
+	}
+	return new Promise<void>(resolve => loki.close!(() => resolve()));
 };
 
 export interface ISeedSubscription {
