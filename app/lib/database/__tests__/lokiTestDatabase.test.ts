@@ -33,7 +33,7 @@ describe('lokiTestDatabase harness', () => {
 		expect(messages).toHaveLength(1);
 		expect(messages[0].id).toBe('message-1');
 		expect(messages[0].msg).toBe('hello world');
-		expect(messages[0].subscription.id).toBe('room-1');
+		expect(messages[0].subscription?.id).toBe('room-1');
 		expect(messages[0].u).toEqual({ _id: 'user-1', username: 'rocket.cat' });
 	});
 

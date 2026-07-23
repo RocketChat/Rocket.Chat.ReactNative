@@ -2,6 +2,7 @@ import { Database } from '@nozbe/watermelondb';
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs';
 
 import type { TSubscriptionModel, TMessageModel } from '../../../definitions';
+import { SubscriptionType } from '../../../definitions';
 import appSchema from '../schema/app';
 import migrations from '../model/migrations';
 import Subscription from '../model/Subscription';
@@ -86,7 +87,7 @@ export const seedSubscription = (database: TAppDatabase, overrides: ISeedSubscri
 			record.rid = rid;
 			record.name = overrides.name ?? 'test-room';
 			record.fname = overrides.fname ?? overrides.name ?? 'test-room';
-			record.t = overrides.t ?? 'c';
+			record.t = (overrides.t ?? 'c') as SubscriptionType;
 			record.open = true;
 			if (overrides.lastOpen) {
 				record.lastOpen = overrides.lastOpen;
@@ -120,7 +121,7 @@ export const seedMessage = (database: TAppDatabase, overrides: ISeedMessage = {}
 			if (overrides.id) {
 				record._raw.id = overrides.id;
 			}
-			record.subscription.id = rid;
+			record.subscription!.id = rid;
 			record.msg = overrides.msg ?? 'hello';
 			record.ts = ts;
 			record._updatedAt = overrides.updatedAt ?? ts;
