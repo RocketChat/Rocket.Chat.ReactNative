@@ -27,7 +27,7 @@ describe('test server reducer', () => {
 	it('should return modified store after selectServerFailure', () => {
 		mockedStore.dispatch(selectServerFailure());
 		const state = mockedStore.getState().server;
-		const manipulated = { ...initialState, connecting: false, connected: false, loading: false, changingServer: false };
+		const manipulated = { ...initialState, connecting: false, loading: false, changingServer: false };
 		expect(state).toEqual(manipulated);
 	});
 
@@ -44,7 +44,7 @@ describe('test server reducer', () => {
 		const name = 'Rocket.Chat';
 		mockedStore.dispatch(selectServerSuccess({ server, version, name: 'Rocket.Chat' }));
 		const state = mockedStore.getState().server;
-		const manipulated = { ...initialState, server, version, connected: true, loading: false, name };
+		const manipulated = { ...initialState, server, version, loading: false, name };
 		expect(state).toEqual(manipulated);
 	});
 

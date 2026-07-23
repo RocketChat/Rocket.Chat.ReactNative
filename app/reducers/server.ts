@@ -3,7 +3,6 @@ import { SERVER } from '../actions/actionsTypes';
 
 export interface IServer {
 	connecting: boolean;
-	connected: boolean;
 	failure: boolean;
 	failureMessage?: string;
 	server: string;
@@ -16,7 +15,6 @@ export interface IServer {
 
 export const initialState: IServer = {
 	connecting: false,
-	connected: false,
 	failure: false,
 	server: '',
 	version: '',
@@ -39,7 +37,6 @@ export default function server(state = initialState, action: TActionServer): ISe
 			return {
 				...state,
 				connecting: false,
-				connected: false,
 				failure: true,
 				failureMessage: action.failureMessage
 			};
@@ -47,7 +44,6 @@ export default function server(state = initialState, action: TActionServer): ISe
 			return {
 				...state,
 				connecting: false,
-				connected: true,
 				loading: false,
 				changingServer: false
 			};
@@ -58,7 +54,6 @@ export default function server(state = initialState, action: TActionServer): ISe
 				name: null,
 				previousServer: null,
 				connecting: false,
-				connected: false,
 				loading: false,
 				changingServer: false,
 				failure: false
@@ -69,7 +64,6 @@ export default function server(state = initialState, action: TActionServer): ISe
 				server: action.server,
 				version: action.version,
 				connecting: true,
-				connected: false,
 				loading: true,
 				changingServer: action.changeServer
 			};
@@ -80,7 +74,6 @@ export default function server(state = initialState, action: TActionServer): ISe
 				version: action.version,
 				name: action.name,
 				connecting: false,
-				connected: true,
 				loading: false,
 				changingServer: false,
 				failureMessage: undefined
@@ -89,7 +82,6 @@ export default function server(state = initialState, action: TActionServer): ISe
 			return {
 				...state,
 				connecting: false,
-				connected: false,
 				loading: false,
 				changingServer: false
 			};

@@ -100,7 +100,7 @@ import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
 import { connectSuccess } from '../../actions/connect';
 import { appStart } from '../../actions/app';
-import { LOGIN } from '../../actions/actionsTypes';
+import { LOGIN, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
 import deepLinkingRoot from '../deepLinking';
@@ -725,5 +725,114 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenNthCalledWith(2, {
 			oauth: { credentialToken: 'token-second-C', credentialSecret: 'secret-C2' }
 		});
+	});
+});
+
+// ─── Same-server warm start — honest-session gate ─────────────────────────
+// The socket can die without SERVER.SELECT_* ever resetting selection state. The warm-start
+// same-server branch must gate on the honest flags (state.meteor.connected + state.login.isAuthenticated),
+// re-running connect/login on a dead or stranded session before navigating onto it.
+
+describe('deepLinking saga — same-server warm start gates on honest session state', () => {
+	const makeSameServerParams = (overrides: Record<string, any> = {}) => makeParams({ path: 'channel/general', ...overrides });
+
+	const preload = ({ meteorConnected, isAuthenticated }: { meteorConnected: boolean; isAuthenticated: boolean }) =>
+		({
+			meteor: { connecting: false, connected: meteorConnected },
+			login: {
+				isLocalAuthenticated: true,
+				isAuthenticated,
+				isFetching: false,
+				user: { id: 'u-me', token: TOKEN },
+				error: {},
+				services: {},
+				failure: false
+			}
+		} as unknown as PreloadedState);
+
+	beforeEach(() => {
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(canOpenRoom).mockReset();
+		jest.mocked(waitForNavigationReady).mockReset();
+		jest.mocked(goRoom).mockReset();
+		jest.mocked(navigateToRoom).mockReset();
+		jest.mocked(database.active.get).mockReset();
+
+		// Same host as the current server, with stored credentials and a known server record.
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => (key === 'currentServer' ? HOST : TOKEN));
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord());
+		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
+		jest.mocked(waitForNavigationReady).mockResolvedValue(undefined);
+		jest.mocked(goRoom).mockResolvedValue(undefined);
+		jest.mocked(database.active.get).mockReturnValue({
+			find: jest.fn().mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' })
+		} as any);
+	});
+
+	const selectRequested = (actions: { type: string }[]) => actions.some(a => a.type === SERVER.SELECT_REQUEST);
+
+	it('re-runs connect/login before navigating when the socket is dead (notification tap)', async () => {
+		const { store, actions } = setupRecordingStore(preload({ meteorConnected: false, isAuthenticated: true }));
+
+		store.dispatch(deepLinkingOpen(makeSameServerParams()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// Pipeline re-runs and navigation is parked at take(LOGIN.SUCCESS).
+		expect(selectRequested(actions)).toBe(true);
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// Navigation proceeds only after the login pipeline completes.
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('re-runs the pipeline when the socket is up but the resume login stranded (authenticated=false)', async () => {
+		const { store, actions } = setupRecordingStore(preload({ meteorConnected: true, isAuthenticated: false }));
+
+		store.dispatch(deepLinkingOpen(makeSameServerParams()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(selectRequested(actions)).toBe(true);
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('skips connect/login and navigates immediately when connected and authenticated', async () => {
+		const { store, actions } = setupRecordingStore(preload({ meteorConnected: true, isAuthenticated: true }));
+
+		store.dispatch(deepLinkingOpen(makeSameServerParams()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(selectRequested(actions)).toBe(false);
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('applies the same gate on the call-push warm start (dead socket re-runs pipeline)', async () => {
+		const { store, actions } = setupRecordingStore(preload({ meteorConnected: false, isAuthenticated: true }));
+
+		store.dispatch(deepLinkingClickCallPush({ host: HOST, rid: 'room-1' }));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(selectRequested(actions)).toBe(true);
+		expect(jest.mocked(navigateToRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
 });

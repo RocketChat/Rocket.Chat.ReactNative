@@ -128,7 +128,7 @@ function setupStore() {
 			services: {},
 			failure: false
 		},
-		server: { server: SERVER, version: '6.0.0', name: 'open', connecting: false, connected: true, loading: false }
+		server: { server: SERVER, version: '6.0.0', name: 'open', connecting: false, loading: false }
 	};
 	const store = createStore(reducers, preloadedState, applyMiddleware(recorder, sagaMiddleware));
 	sagaMiddleware.run(loginRoot);

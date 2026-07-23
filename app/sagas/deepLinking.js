@@ -166,6 +166,18 @@ const handleShareExtension = function* handleOpen({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 };
 
+// The socket can die without SERVER.SELECT_* ever resetting selection state, so gate on the
+// honest session flags: only skip connect/login when the websocket is up and the resume login
+// already authenticated. Otherwise re-run the pipeline before navigating onto a dead socket.
+const ensureSameServerSession = function* ensureSameServerSession(host, version) {
+	const sessionReady = yield select(state => state.meteor.connected && state.login.isAuthenticated);
+	if (!sessionReady) {
+		yield localAuthenticate(host);
+		yield put(selectServerRequest(host, version, true));
+		yield take(types.LOGIN.SUCCESS);
+	}
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
@@ -201,12 +213,7 @@ const handleOpen = function* handleOpen({ params }) {
 	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
-		}
+		yield ensureSameServerSession(host, serverRecord.version);
 		yield completeDeepLinkNavigation(params);
 	} else {
 		// search if deep link's server already exists
@@ -316,12 +323,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	const serverRecord = yield getServerById(host);
 
 	if (server === host && user && serverRecord) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected) {
-			yield localAuthenticate(host);
-			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
-		}
+		yield ensureSameServerSession(host, serverRecord.version);
 		yield handleNavigateCallRoom({ params });
 	} else {
 		if (user && serverRecord) {

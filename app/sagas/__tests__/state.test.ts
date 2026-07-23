@@ -52,7 +52,7 @@ function setupStore(loginOverrides: Record<string, any>) {
 			failure: false,
 			...loginOverrides
 		},
-		server: { server: SERVER, version: '6.0.0', name: 'open', connected: true, loading: false }
+		server: { server: SERVER, version: '6.0.0', name: 'open', loading: false }
 	};
 	const store = createStore(reducers, preloadedState, applyMiddleware(recorder, sagaMiddleware));
 	sagaMiddleware.run(stateRoot);
