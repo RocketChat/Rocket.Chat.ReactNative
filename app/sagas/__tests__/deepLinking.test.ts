@@ -761,7 +761,7 @@ describe('deepLinking saga — same-server warm start gates on honest session st
 
 		// Same host as the current server, with stored credentials and a known server record.
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => (key === 'currentServer' ? HOST : TOKEN));
-		jest.mocked(getServerById).mockResolvedValue(makeServerRecord());
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
 		jest.mocked(waitForNavigationReady).mockResolvedValue(undefined);
 		jest.mocked(goRoom).mockResolvedValue(undefined);
