@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -169,13 +169,23 @@ const handleShareExtension = function* handleOpen({ params }) {
 // The socket can die without SERVER.SELECT_* ever resetting selection state, so gate on the
 // honest session flags: only skip connect/login when the websocket is up and the resume login
 // already authenticated. Otherwise re-run the pipeline before navigating onto a dead socket.
+// Race LOGIN.SUCCESS against the terminal outcomes so a failed re-run returns false instead of
+// parking under takeLatest to be woken (and mis-navigated) by a later unrelated LOGIN.SUCCESS:
+// SELECT_FAILURE (connect/SSL/DB throw before login), LOGIN.FAILURE, LOGOUT.
 const ensureSameServerSession = function* ensureSameServerSession(host, version) {
 	const sessionReady = yield select(state => state.meteor.connected && state.login.isAuthenticated);
-	if (!sessionReady) {
-		yield localAuthenticate(host);
-		yield put(selectServerRequest(host, version, true));
-		yield take(types.LOGIN.SUCCESS);
+	if (sessionReady) {
+		return true;
 	}
+	yield localAuthenticate(host);
+	yield put(selectServerRequest(host, version, true));
+	const { success } = yield race({
+		success: take(types.LOGIN.SUCCESS),
+		loginFailure: take(types.LOGIN.FAILURE),
+		selectFailure: take(types.SERVER.SELECT_FAILURE),
+		logout: take(types.LOGOUT)
+	});
+	return !!success;
 };
 
 const handleOpen = function* handleOpen({ params }) {
@@ -213,7 +223,10 @@ const handleOpen = function* handleOpen({ params }) {
 	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
-		yield ensureSameServerSession(host, serverRecord.version);
+		const sessionReady = yield ensureSameServerSession(host, serverRecord.version);
+		if (!sessionReady) {
+			return;
+		}
 		yield completeDeepLinkNavigation(params);
 	} else {
 		// search if deep link's server already exists
@@ -323,7 +336,10 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	const serverRecord = yield getServerById(host);
 
 	if (server === host && user && serverRecord) {
-		yield ensureSameServerSession(host, serverRecord.version);
+		const sessionReady = yield ensureSameServerSession(host, serverRecord.version);
+		if (!sessionReady) {
+			return;
+		}
 		yield handleNavigateCallRoom({ params });
 	} else {
 		if (user && serverRecord) {

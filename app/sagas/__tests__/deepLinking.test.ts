@@ -96,8 +96,8 @@ import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
-import { loginSuccess } from '../../actions/login';
-import { selectServerSuccess } from '../../actions/server';
+import { loginSuccess, loginFailure, logout } from '../../actions/login';
+import { selectServerSuccess, selectServerFailure } from '../../actions/server';
 import { connectSuccess } from '../../actions/connect';
 import { appStart } from '../../actions/app';
 import { LOGIN, SERVER } from '../../actions/actionsTypes';
@@ -817,6 +817,76 @@ describe('deepLinking saga — same-server warm start gates on honest session st
 
 		expect(selectRequested(actions)).toBe(false);
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not navigate when the resume login fails, and a later LOGIN.SUCCESS never wakes the stale saga', async () => {
+		const { store, actions } = setupRecordingStore(preload({ meteorConnected: false, isAuthenticated: true }));
+
+		store.dispatch(deepLinkingOpen(makeSameServerParams()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// Pipeline re-ran and navigation is parked on the LOGIN race.
+		expect(selectRequested(actions)).toBe(true);
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		// Resume login fails permanently — the race resolves to failure, no navigation.
+		store.dispatch(loginFailure({ message: 'resume failed' }));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		// A later, unrelated LOGIN.SUCCESS must NOT resurrect the abandoned navigation.
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('does not navigate when server selection fails before login, and a later LOGIN.SUCCESS never wakes the stale saga', async () => {
+		const { store, actions } = setupRecordingStore(preload({ meteorConnected: false, isAuthenticated: true }));
+
+		store.dispatch(deepLinkingOpen(makeSameServerParams()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(selectRequested(actions)).toBe(true);
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		// connect()/SSL/DB throws before login → selectServerFailure, no LOGIN.* nor LOGOUT.
+		store.dispatch(selectServerFailure());
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('does not navigate when a LOGOUT interrupts the resume login', async () => {
+		const { store } = setupRecordingStore(preload({ meteorConnected: false, isAuthenticated: true }));
+
+		store.dispatch(deepLinkingOpen(makeSameServerParams()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		store.dispatch(logout());
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 	});
 
 	it('applies the same gate on the call-push warm start (dead socket re-runs pipeline)', async () => {
