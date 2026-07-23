@@ -17,6 +17,9 @@ import { compareServerVersion, random } from '../methods/helpers';
 class Sdk {
 	private sdk: typeof Rocketchat;
 	private code: any;
+	// Monotonic id of the current SDK instance, bumped on every `initialize()`. Lets callers tell
+	// which socket generation a listener/subscription belongs to across instance swaps.
+	private generationCount = 0;
 
 	private initializeSdk(server: string): typeof Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
@@ -26,12 +29,17 @@ class Sdk {
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
 		this.code = null;
+		this.generationCount += 1;
 		this.sdk = this.initializeSdk(server);
 		return this.sdk;
 	}
 
 	get current() {
 		return this.sdk;
+	}
+
+	get generation() {
+		return this.generationCount;
 	}
 
 	/**

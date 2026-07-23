@@ -11,11 +11,12 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
+import { createConnectedListener, createCloseListener } from './connectionListeners';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
 import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
-import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
+import { connectRequest } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
@@ -116,31 +117,25 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			store.dispatch(connectRequest());
 		});
 
-		connectedListener = sdk.current.onStreamData('connected', () => {
-			const { connected } = store.getState().meteor;
-			if (connected) {
-				return;
-			}
-			store.dispatch(connectSuccess());
-			const { user } = store.getState().login;
-			if (user?.token) {
-				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
-			}
-		});
+		connectedListener = sdk.current.onStreamData('connected', createConnectedListener(logoutOnError));
 
 		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
 
-		closeListener = sdk.current.onStreamData('close', () => {
-			// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
-			// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
-			// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
-			// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
-			unsubscribeRooms();
-			pendingHangupsDrainArmed = true;
-			store.dispatch(disconnectAction());
-		});
+		// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
+		// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
+		// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
+		// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
+		closeListener = sdk.current.onStreamData(
+			'close',
+			createCloseListener({
+				unsubscribeRooms,
+				onClose: () => {
+					pendingHangupsDrainArmed = true;
+				}
+			})
+		);
 
 		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', () => {
 			if (!pendingHangupsDrainArmed) return;
