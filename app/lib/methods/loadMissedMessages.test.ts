@@ -177,6 +177,31 @@ describe('loadMissedMessages + readMessages (RoomView.init order)', () => {
 		expect(persistedMessageIds.has('missed-1')).toBe(true);
 	});
 
+	it('keeps a message received while offline: reading/leaving the room must not advance the cursor to the client clock', async () => {
+		const T0 = Date.UTC(2026, 6, 22, 12, 0, 0);
+		// room previously synced up to server-time T0 (server-derived cursor)
+		mockSubscription.lastOpen = new Date(T0);
+
+		// while the device is offline a correspondent posts; the client never
+		// receives it over the stream, so it lives only on the server
+		serverMessages.push({
+			_id: 'offline-1',
+			rid: RID,
+			msg: 'sent while you were offline',
+			ts: new Date(T0 + 60_000).toISOString(),
+			_updatedAt: T0 + 60_000
+		});
+
+		// user reads/leaves the room 5min later — plain wall clock, no skew.
+		// this must not stamp the cursor with the client time and orphan the unsynced message.
+		await readMessages(RID, new Date(T0 + 300_000));
+		expect(mockSubscription.lastOpen.getTime()).toBe(T0);
+
+		// next sync (back online) still loads the message from the untouched cursor
+		await loadMissedMessages({ rid: RID, lastOpen: mockSubscription.lastOpen });
+		expect(persistedMessageIds.has('offline-1')).toBe(true);
+	});
+
 	it('applies paginated deletions as removals, never as updates', async () => {
 		const T0 = Date.UTC(2026, 6, 22, 12, 0, 0);
 		mockSubscription.lastOpen = new Date(T0);
