@@ -2,7 +2,13 @@ import { Q } from '@nozbe/watermelondb';
 
 import type { TAppDatabase } from '../interfaces';
 import type { TMessageModel, TSubscriptionModel } from '../../../definitions';
-import { createLokiTestDatabase, resetLokiTestDatabase, seedMessage, seedSubscription } from './lokiTestDatabase';
+import {
+	closeLokiTestDatabase,
+	createLokiTestDatabase,
+	resetLokiTestDatabase,
+	seedMessage,
+	seedSubscription
+} from './lokiTestDatabase';
 import { createFakeSyncServer, type IFakeServerMessage } from './fakeSyncServer';
 
 // Real persistence + real cursor: point `database.active` at the live LokiJS DB so
@@ -75,6 +81,8 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 	beforeAll(() => {
 		mockActiveDatabase = createLokiTestDatabase();
 	});
+
+	afterAll(() => closeLokiTestDatabase(mockActiveDatabase));
 
 	beforeEach(async () => {
 		await resetLokiTestDatabase(mockActiveDatabase);
