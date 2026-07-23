@@ -106,6 +106,14 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
+			const str = this.mmkv.getString(key);
+			if (str !== undefined) {
+				try {
+					return JSON.parse(str);
+				} catch {
+					return null;
+				}
+			}
 			return this.mmkv.getBoolean(key) ?? null;
 		} catch {
 			return null;
