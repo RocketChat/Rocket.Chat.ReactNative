@@ -1236,7 +1236,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			let name = '';
 			let jumpToMessageId = '';
 			if ('id' in item) {
-				name = 'tmsg' in item ? item.tmsg ?? '' : '';
+				name = 'tmsg' in item ? (item.tmsg ?? '') : '';
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });

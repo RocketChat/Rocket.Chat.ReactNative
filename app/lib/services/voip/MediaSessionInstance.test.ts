@@ -170,20 +170,21 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
-	MediaSignalingSession: jest
-		.fn()
-		.mockImplementation(function MockMediaSignalingSession(this: MockMediaSignalingSession, config: { userId: string }) {
-			const endSession = jest.fn();
-			this.userId = config.userId;
-			this.endSession = endSession;
-			this.on = jest.fn();
-			this.processSignal = jest.fn().mockResolvedValue(undefined);
-			this.setIceGatheringTimeout = jest.fn();
-			this.startCall = jest.fn().mockResolvedValue(undefined);
-			this.getCallData = jest.fn();
-			Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
-			createdSessions.push(this);
-		})
+	MediaSignalingSession: jest.fn().mockImplementation(function MockMediaSignalingSession(
+		this: MockMediaSignalingSession,
+		config: { userId: string }
+	) {
+		const endSession = jest.fn();
+		this.userId = config.userId;
+		this.endSession = endSession;
+		this.on = jest.fn();
+		this.processSignal = jest.fn().mockResolvedValue(undefined);
+		this.setIceGatheringTimeout = jest.fn();
+		this.startCall = jest.fn().mockResolvedValue(undefined);
+		this.getCallData = jest.fn();
+		Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
+		createdSessions.push(this);
+	})
 }));
 
 const STREAM_NOTIFY_USER = 'stream-notify-user';

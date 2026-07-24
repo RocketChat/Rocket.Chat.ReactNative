@@ -122,7 +122,7 @@ const ActionSheet = memo(
 						const snap = effectiveSnaps[0];
 						const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
 						return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT);
-				  })()
+					})()
 				: undefined;
 
 		return (
