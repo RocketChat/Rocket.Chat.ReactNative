@@ -204,7 +204,7 @@
 		"react-dom": "19.1.0",
 		"react-native-dotenv": "3.4.8",
 		"storybook": "~9.0.9",
-		"typescript": "~6.0.3"
+		"typescript": "7.0.2"
 	},
 	"snyk": true,
 	"engines": {
