@@ -9,7 +9,7 @@ import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 import { type NavigatorScreenParams } from '@react-navigation/native';
 
-import { type TNavigation } from 'stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
 import {
