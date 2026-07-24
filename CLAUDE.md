@@ -32,7 +32,7 @@ pnpm test --testPathPattern='path/to/test'  # Run a single test file
 pnpm test-update           # Update snapshots
 
 # Lint & format
-pnpm lint                  # ESLint + TypeScript compiler check
+pnpm lint                  # Oxlint + TypeScript compiler check
 pnpm prettier-lint         # Prettier auto-fix + lint
 
 # Storybook
@@ -43,7 +43,7 @@ pnpm storybook-generate    # Generate story snapshots
 ## Code Style
 
 - **Prettier**: tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line
-- **ESLint**: `@rocket.chat/eslint-config` base with React, React Native, TypeScript, Jest plugins
+- **Oxlint**: config in `.oxlintrc.json` (import, react, jest, typescript plugins; `eslint-plugin-react-native` loaded via `jsPlugins`)
 - **Before committing**: Run `pnpm prettier-lint` and `TZ=UTC pnpm test` for modified files
 - Pre-commit hooks enforce these checks
 

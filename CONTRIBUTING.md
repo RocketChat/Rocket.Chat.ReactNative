@@ -50,7 +50,7 @@ Can't help coding? Triaging issues is a **great** way of helping.
 
 ## Code style
 
-We use [ESLint](https://eslint.org/) to enforce code style and best practices. We have a pre-commit hook enforcing commits to follow our lint rules.
+We use [Oxlint](https://oxc.rs/docs/guide/usage/linter) to enforce code style and best practices. We have a pre-commit hook enforcing commits to follow our lint rules.
 
 To check for lint issues on your code, run this on your terminal:
 
