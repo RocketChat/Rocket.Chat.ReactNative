@@ -193,42 +193,47 @@ describe('RoomSubscription', () => {
 			expect(mockSubscribeRoom).not.toHaveBeenCalled();
 		});
 
-		it('tears down stale subscriptions on reconnect and tracks fresh ones for later cleanup', async () => {
+		it('re-subscribes on reconnect without tearing down the stale subscriptions', async () => {
 			const staleSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
 
 			await sub.subscribe();
 			await sub.handleLogin();
+
+			// A fresh DDP session already killed the server-side subs, so handleLogin must not churn them.
+			expect(staleSub.unsubscribe).not.toHaveBeenCalled();
+
 			await sub.unsubscribe();
 
-			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
 		it('does not accumulate subscriptions across repeated handleLogin calls (simulates sequential reopen)', async () => {
 			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
-			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
+			const third = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]).mockResolvedValueOnce([third]);
 
 			await sub.subscribe();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 
-			// First reopen → tears down [first], creates [second]
+			// First reopen → tracks [second]; [first] is left alone (SDK owns the replay/dedup).
 			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
-			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
-			expect(second.unsubscribe).not.toHaveBeenCalled();
+			expect(first.unsubscribe).not.toHaveBeenCalled();
 
-			// Second reopen → tears down [second], creates []
+			// Second reopen → tracks [third]; [second] left alone.
 			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
-			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(second.unsubscribe).not.toHaveBeenCalled();
 
-			// Final cleanup → empty batch, no more unsubscribes
+			// The app-side promise list holds one batch (replaced, not grown): final cleanup tears down
+			// only the current [third]. SDK-side dedup of the replays is proven in ddpSocket.test.ts.
 			await sub.unsubscribe();
-			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
-			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
+			expect(first.unsubscribe).not.toHaveBeenCalled();
+			expect(second.unsubscribe).not.toHaveBeenCalled();
+			expect(third.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
 		it('does not call onStreamData inside handleLogin (listeners persist across reopen)', async () => {

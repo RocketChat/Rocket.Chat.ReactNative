@@ -106,6 +106,80 @@ describe('Socket.forceReopen awaitability', () => {
 	});
 });
 
+describe('Socket subscription restoration (lib-led)', () => {
+	const seed = (socket: any, name: string, params: unknown[], id: string) => {
+		socket.subscriptions[id] = {
+			id,
+			name,
+			params,
+			unsubscribe: jest.fn(() => Promise.resolve()),
+			onEvent: jest.fn()
+		};
+	};
+
+	const subFrames = (send: jest.Mock) =>
+		send.mock.calls.map(([raw]) => JSON.parse(raw as string)).filter(frame => frame.msg === 'sub');
+
+	it('forceReopen keeps the subscription registry (subtraction 1)', async () => {
+		const { socket } = buildSocket();
+		socket.open = jest.fn(() => Promise.resolve());
+		seed(socket, 'stream-notify-user', ['u1/message'], 'ddp-1');
+
+		await socket.forceReopen();
+
+		expect(Object.keys(socket.subscriptions)).toEqual(['ddp-1']);
+	});
+
+	it('subscribeAll replays each preserved sub exactly once, reusing its original id', () => {
+		const { socket, send } = buildSocket();
+		seed(socket, 'stream-notify-user', ['u1/message'], 'ddp-1');
+		seed(socket, 'stream-room-messages', ['rid-1'], 'ddp-2');
+
+		socket.subscribeAll();
+
+		const frames = subFrames(send);
+		expect(frames).toHaveLength(2);
+		expect(frames.map(f => f.id).sort()).toEqual(['ddp-1', 'ddp-2']);
+	});
+
+	it('dedups two subscribe calls with identical name+params: one sub, one entry, both callbacks fire', async () => {
+		const { socket, send } = buildSocket();
+		const cb1 = jest.fn();
+		const cb2 = jest.fn();
+
+		const first = socket.subscribe('stream-room-messages', ['rid-1'], cb1);
+		socket.subscribe('stream-room-messages', ['rid-1'], cb2);
+
+		const frames = subFrames(send);
+		expect(frames).toHaveLength(1);
+
+		// Resolve the single sub so the first subscriber's callback attaches (confirmed path).
+		socket.emit('ready', { subs: [frames[0].id] });
+		await first;
+
+		const entries = Object.values(socket.subscriptions).filter((s: any) => s.name === 'stream-room-messages');
+		expect(entries).toHaveLength(1);
+
+		socket.emit('stream-room-messages', { fields: {} });
+		expect(cb1).toHaveBeenCalledTimes(1);
+		expect(cb2).toHaveBeenCalledTimes(1);
+	});
+
+	it('keeps the registry flat across replay+re-subscribe cycles and per-room params separate', () => {
+		const { socket } = buildSocket();
+		seed(socket, 'stream-room-messages', ['rid-1'], 'ddp-1');
+		seed(socket, 'stream-room-messages', ['rid-2'], 'ddp-2');
+
+		for (let cycle = 0; cycle < 3; cycle += 1) {
+			socket.subscribeAll();
+			socket.subscribe('stream-room-messages', ['rid-1']);
+			socket.subscribe('stream-room-messages', ['rid-2']);
+		}
+
+		expect(Object.keys(socket.subscriptions)).toHaveLength(2);
+	});
+});
+
 describe('Socket.checkAndReopen bucket dispatch', () => {
 	const buildWithSpies = () => {
 		const { socket } = buildSocket();

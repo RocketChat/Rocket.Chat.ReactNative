@@ -185,6 +185,8 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 | **Server**         | A Rocket.Chat server instance the app connects to, with version, settings, and enterprise modules | Workspace (used by web but not consistently in mobile), instance |
 | **Server History** | List of previously connected Servers for quick reconnection                                       | Recent servers                                                   |
 | **Meteor Connect** | The WebSocket connection to the Server's DDP (Distributed Data Protocol) endpoint                 | Socket, connection                                               |
+| **Zombie Connection** | A live socket (`connected`) with no authenticated user and zero live subscriptions              | Stranded session, dead connection                               |
+| **Resubscribe**    | The SDK re-sending its preserved `subscriptions` registry on every DDP login via `subscribeAll()`, reusing sub ids | Re-bind, registry replay                          |
 
 ## Navigation & Layout
 

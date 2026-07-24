@@ -1,7 +1,8 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
+import { loginRequest } from '../actions/login';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
 import { checkAndReopen } from '../lib/services/connect';
@@ -14,13 +15,18 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 	return login.isAuthenticated && meteor.connected;
 };
 
-const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+export const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
 	}
 	const login = yield select(state => state.login);
 	if (!login.isAuthenticated) {
+		// A Zombie Connection (inside root, token present but not authenticated) resumes login
+		// instead of bailing; the authenticated path below owns the reconnect.
+		if (login.user?.token) {
+			yield put(loginRequest({ resume: login.user.token }));
+		}
 		return;
 	}
 	try {

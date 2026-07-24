@@ -98,10 +98,8 @@ export default class RoomSubscription {
 			return;
 		}
 		try {
-			if (this.promises) {
-				const oldSubs = await this.promises;
-				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));
-			}
+			// A fresh DDP session means the prior server-side subs are already dead, so tearing them
+			// down here is pointless churn; the SDK replays and dedups the re-subscribe on login.
 			this.promises = sdk.subscribeRoom(this.rid);
 			await this.promises;
 			if (!this.isAlive) {

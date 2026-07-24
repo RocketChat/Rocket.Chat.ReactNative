@@ -602,4 +602,47 @@ describe('connect — stream-notify-logged updateAvatar', () => {
 	});
 });
 
+describe('connect — connected-guard (Zombie Connection resume)', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockOnStreamDataStops.length = 0;
+	});
+
+	type ResumeAction = { credentials?: { resume?: string } };
+	const resumeActions = (): ResumeAction[] =>
+		mockStoreDispatch.mock.calls.map(([action]) => action as ResumeAction).filter(action => action?.credentials?.resume);
+
+	it('re-runs resume-login on a Zombie Connection (connected + !isAuthenticated + token)', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { token: 'tok' }, isAuthenticated: false },
+			settings: {}
+		});
+
+		await connect({ server: 'https://example.com' });
+		mockStoreDispatch.mockClear();
+
+		getHandlersByEvent('connected')[0]();
+
+		const resumes = resumeActions();
+		expect(resumes).toHaveLength(1);
+		expect(resumes[0].credentials).toEqual({ resume: 'tok' });
+	});
+
+	it('early-returns on a healthy connected + isAuthenticated (no relogin storm)', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { token: 'tok' }, isAuthenticated: true },
+			settings: {}
+		});
+
+		await connect({ server: 'https://example.com' });
+		mockStoreDispatch.mockClear();
+
+		getHandlersByEvent('connected')[0]();
+
+		expect(resumeActions()).toHaveLength(0);
+	});
+});
+
 // Note: Apple authentication when isIOS is true is tested in connect.ios.test.ts

@@ -118,11 +118,13 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		connectedListener = sdk.current.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
-			if (connected) {
+			const { user, isAuthenticated } = store.getState().login;
+			// A real handshake on an unauthenticated session (a Zombie Connection: connected +
+			// !isAuthenticated + token) must re-run resume-login instead of stranding with 0 subs.
+			if (connected && isAuthenticated) {
 				return;
 			}
 			store.dispatch(connectSuccess());
-			const { user } = store.getState().login;
 			if (user?.token) {
 				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 			}
