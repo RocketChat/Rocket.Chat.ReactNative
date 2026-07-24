@@ -78,7 +78,7 @@ class Sdk {
 	}
 
 	private ensureInitialized(): DDPSDK {
-		if (!this.current) {
+		if (!this.current || !this.current.client) {
 			throw new Error('SDK not initialized');
 		}
 		return this.current;
@@ -290,9 +290,7 @@ class Sdk {
 
 	private async callMethod(args: any[], code?: { twoFactorCode: string; twoFactorMethod: string }): Promise<any> {
 		try {
-			if (!this.current || !this.current.client) {
-				throw new Error('SDK not initialized');
-			}
+			this.ensureInitialized();
 			const [method, ...params] = args;
 			return await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(code ? [code] : []));
 		} catch (e: any) {
