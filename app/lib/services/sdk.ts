@@ -290,9 +290,9 @@ class Sdk {
 
 	private async callMethod(args: any[], code?: { twoFactorCode: string; twoFactorMethod: string }): Promise<any> {
 		try {
-			this.ensureInitialized();
+			const sdk = this.ensureInitialized();
 			const [method, ...params] = args;
-			return await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(code ? [code] : []));
+			return await sdk.client.callAsyncWithOptions(method, {}, ...params, ...(code ? [code] : []));
 		} catch (e: any) {
 			if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
 				const { details } = e;

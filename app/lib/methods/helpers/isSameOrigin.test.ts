@@ -18,7 +18,7 @@ describe('isSameOrigin', () => {
 		expect(isSameOrigin('/api/v1/x', 'https://open.rocket.chat')).toBe(true);
 	});
 
-	test('returns true when origin is undefined', () => {
+	test('returns false when origin is undefined', () => {
 		expect(isSameOrigin('https://releases.rocket.chat/x')).toBe(false);
 	});
 

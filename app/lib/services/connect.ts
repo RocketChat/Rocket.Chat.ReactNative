@@ -10,7 +10,7 @@ import database from '../database';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
-import sdk from './sdk';
+import sdk, { type ConnectionStatus } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
@@ -41,8 +41,10 @@ interface IServices {
 
 let connectAbortController: AbortController | null = null;
 
+const ACTIVE_CONNECTION_STATUSES: ConnectionStatus[] = ['connecting', 'connected', 'reconnecting'];
+
 async function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
-	if (sdk.server === server) {
+	if (sdk.server === server && sdk.current && ACTIVE_CONNECTION_STATUSES.includes(sdk.current.connection.status)) {
 		return;
 	}
 

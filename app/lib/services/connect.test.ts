@@ -33,16 +33,21 @@ jest.mock('./sdk', () => {
 	const state: {
 		server: string | undefined;
 		currentEnabled: boolean;
-		connection: { on: any; connect: any; checkAndReopen: any } | undefined;
+		connection: { on: any; connect: any; checkAndReopen: any; status: string } | undefined;
+		status: string;
 	} = {
 		server: undefined,
 		currentEnabled: true,
-		connection: undefined
+		connection: undefined,
+		status: 'idle'
 	};
 	const makeConnection = () => ({
 		on: (event: string, cb: any) => mockConnectionOn(event, cb),
 		connect: () => mockConnectionConnect(),
-		checkAndReopen: () => mockConnectionCheckAndReopen()
+		checkAndReopen: () => mockConnectionCheckAndReopen(),
+		get status() {
+			return state.status;
+		}
 	});
 	return {
 		__esModule: true,
@@ -52,6 +57,7 @@ jest.mock('./sdk', () => {
 			},
 			disconnect: (...args: any[]) => {
 				state.connection = undefined;
+				state.status = 'idle';
 				return mockSdkDisconnect(...args);
 			},
 			// Mirrors the real sdk.ts: initialize() yields a brand-new connection instance each
@@ -59,6 +65,7 @@ jest.mock('./sdk', () => {
 			initialize: (s: string) => {
 				state.server = s;
 				state.connection = makeConnection();
+				state.status = 'connecting';
 				return mockSdkInitialize(s);
 			},
 			onCollection: (...args: any[]) => mockSdkOnCollection(...args),
@@ -76,6 +83,9 @@ jest.mock('./sdk', () => {
 		},
 		__setCurrentEnabled: (v: boolean) => {
 			state.currentEnabled = v;
+		},
+		__setConnectionStatus: (v: string) => {
+			state.status = v;
 		},
 		__getCurrentConnection: () => state.connection
 	};
@@ -98,7 +108,8 @@ jest.mock('../../ee/omnichannel/actions/inquiry', () => ({
 const sdkMock = jest.requireMock('./sdk') as {
 	__setServer: (v: string | undefined) => void;
 	__setCurrentEnabled: (v: boolean) => void;
-	__getCurrentConnection: () => { on: any; connect: any; checkAndReopen: any } | undefined;
+	__setConnectionStatus: (v: string) => void;
+	__getCurrentConnection: () => { on: any; connect: any; checkAndReopen: any; status: string } | undefined;
 };
 
 // --- Store mock ---
@@ -493,6 +504,7 @@ describe('connect — connection status handler', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		sdkMock.__setServer(undefined);
+		sdkMock.__setConnectionStatus('idle');
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },
@@ -502,9 +514,18 @@ describe('connect — connection status handler', () => {
 	});
 
 	it('returns early without initializing when server is already active', async () => {
-		sdkMock.__setServer(SERVER);
+		await connect({ server: SERVER });
+		mockSdkInitialize.mockClear();
 		await connect({ server: SERVER });
 		expect(mockSdkInitialize).not.toHaveBeenCalled();
+	});
+
+	it('re-initializes when sdk.server matches but the SDK never finished initializing (e.g. a prior failed connect())', async () => {
+		// sdk.server is set synchronously inside initialize(), before loadBasicAuth()/handleTwoFactorChallenge()
+		// run — a throw there leaves sdk.server pointing at this server with no live connection behind it.
+		sdkMock.__setServer(SERVER);
+		await connect({ server: SERVER });
+		expect(mockSdkInitialize).toHaveBeenCalledWith(SERVER);
 	});
 
 	it('bails out if a newer connect() call switched servers while getSettings() was in flight', async () => {
