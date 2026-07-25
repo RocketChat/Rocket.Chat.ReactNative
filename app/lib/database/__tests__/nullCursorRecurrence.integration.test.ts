@@ -163,7 +163,9 @@ describe('null sync cursor recurrence (#7499, LokiJS integration)', () => {
 		await loadMissedMessages({ rid: RID });
 
 		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', expect.objectContaining({ type: 'DELETED', next: READ }));
-		expect(await persistedLastOpen()).toBe(MSG_TS);
+		// a deletion-only sync leaves the cursor where it was: the server projects deleted records
+		// to `{ _id, _deletedAt }`, so that stream can never stand in for an update timestamp
+		expect(await persistedLastOpen()).toBeUndefined();
 	});
 
 	// `advanceSyncCursor` cannot persist a cursor for a room it has no subscription row for, so a

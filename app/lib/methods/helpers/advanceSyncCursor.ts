@@ -3,7 +3,7 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { type ILastMessage, type IMessage, type TSubscriptionModel } from '../../../definitions';
 import log from './log';
 
-const maxUpdatedAt = (messages: (IMessage | ILastMessage)[]): number => {
+export const maxUpdatedAt = (messages: (IMessage | ILastMessage)[]): number => {
 	let max = 0;
 	messages.forEach(message => {
 		if (!message._updatedAt) {
@@ -17,12 +17,11 @@ const maxUpdatedAt = (messages: (IMessage | ILastMessage)[]): number => {
 	return max;
 };
 
-// lastOpen doubles as the chat.syncMessages cursor. Advance it only from server
-// message timestamps, never past an empty batch, so a client clock ahead of the
-// server can't skip messages (issue #7499).
-export const advanceSyncCursor = async (rid: string, messages: (IMessage | ILastMessage)[]): Promise<void> => {
+// lastOpen doubles as the chat.syncMessages cursor. `latest` must come from server
+// message timestamps (see maxUpdatedAt) and is 0 for an empty batch, so a client clock
+// ahead of the server can't skip messages.
+export const advanceSyncCursor = async (rid: string, latest: number): Promise<void> => {
 	try {
-		const latest = maxUpdatedAt(messages);
 		if (!latest) {
 			return;
 		}

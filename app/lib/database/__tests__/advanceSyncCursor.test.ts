@@ -1,6 +1,6 @@
 import type { IMessage, TSubscriptionModel } from '../../../definitions';
 import type { TAppDatabase } from '../interfaces';
-import { advanceSyncCursor } from '../../methods/helpers/advanceSyncCursor';
+import { advanceSyncCursor, maxUpdatedAt } from '../../methods/helpers/advanceSyncCursor';
 import log from '../../methods/helpers/log';
 import {
 	closeLokiTestDatabase,
@@ -63,7 +63,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	it('advances lastOpen to the max _updatedAt of an out-of-order batch', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
 
-		await advanceSyncCursor(RID, [message(T1), message(T3), message(T2)]);
+		await advanceSyncCursor(RID, maxUpdatedAt([message(T1), message(T3), message(T2)]));
 
 		expect(await persistedLastOpen()).toBe(T3);
 	});
@@ -71,7 +71,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	it('is forward-only: a batch older than the cursor is a no-op', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T5) });
 
-		await advanceSyncCursor(RID, [message(T2)]);
+		await advanceSyncCursor(RID, maxUpdatedAt([message(T2)]));
 
 		expect(await persistedLastOpen()).toBe(T5);
 	});
@@ -79,7 +79,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	it('is forward-only: latest equal to the cursor is a no-op', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T3) });
 
-		await advanceSyncCursor(RID, [message(T3)]);
+		await advanceSyncCursor(RID, maxUpdatedAt([message(T3)]));
 
 		expect(await persistedLastOpen()).toBe(T3);
 	});
@@ -87,7 +87,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	it('never advances past an empty batch', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T2) });
 
-		await advanceSyncCursor(RID, []);
+		await advanceSyncCursor(RID, maxUpdatedAt([]));
 
 		expect(await persistedLastOpen()).toBe(T2);
 	});
@@ -95,7 +95,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	it('never advances when every message is missing _updatedAt', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T2) });
 
-		await advanceSyncCursor(RID, [message(undefined), message(undefined)]);
+		await advanceSyncCursor(RID, maxUpdatedAt([message(undefined), message(undefined)]));
 
 		expect(await persistedLastOpen()).toBe(T2);
 	});
@@ -103,7 +103,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	it('skips messages missing _updatedAt without poisoning the max', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
 
-		await advanceSyncCursor(RID, [message(undefined), message(T3), message(undefined)]);
+		await advanceSyncCursor(RID, maxUpdatedAt([message(undefined), message(T3), message(undefined)]));
 
 		expect(await persistedLastOpen()).toBe(T3);
 	});
@@ -112,7 +112,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 	// lost is the batch itself — `nullCursorRecurrence.integration.test.ts` covers the recovery,
 	// where the row lands cursor-less and the next sync re-delivers off `ls`/`ts`.
 	it('returns cleanly when no subscription exists for the rid', async () => {
-		await expect(advanceSyncCursor('missing-room', [message(T3)])).resolves.toBeUndefined();
+		await expect(advanceSyncCursor('missing-room', maxUpdatedAt([message(T3)]))).resolves.toBeUndefined();
 
 		const count = await mockActiveDatabase.get('subscriptions').query().fetchCount();
 		expect(count).toBe(0);
@@ -147,7 +147,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 		// Queueing behind a running writer arms WatermelonDB's dev-only ~1.5s diagnostic timer,
 		// which would outlive Jest's exit window — clear it around the contended section.
 		await withWriterQueueDiagnosticCleared(async () => {
-			const inFlightAdvance = advanceSyncCursor(RID, [message(T2)]);
+			const inFlightAdvance = advanceSyncCursor(RID, maxUpdatedAt([message(T2)]));
 			await flush();
 
 			// Release the concurrent write: it commits T3 first, then the in-flight write body runs,
@@ -164,7 +164,7 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 		const error = new Error('boom');
 		const writeSpy = jest.spyOn(mockActiveDatabase, 'write').mockRejectedValueOnce(error);
 
-		await expect(advanceSyncCursor(RID, [message(T3)])).resolves.toBeUndefined();
+		await expect(advanceSyncCursor(RID, maxUpdatedAt([message(T3)]))).resolves.toBeUndefined();
 
 		expect(mockedLog).toHaveBeenCalledWith(error);
 		expect(await persistedLastOpen()).toBe(T0);

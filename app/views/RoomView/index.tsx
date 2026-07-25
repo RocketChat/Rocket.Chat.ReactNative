@@ -115,6 +115,7 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { InitRetryScheduler } from './services/initRetryScheduler';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
@@ -134,7 +135,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
-	private retryInitTimeout?: ReturnType<typeof setTimeout>;
+	private initRetry = new InitRetryScheduler();
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	// Type of InteractionManager.runAfterInteractions
@@ -379,9 +380,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
 			this.queryUnreads.unsubscribe();
 		}
-		if (this.retryInitTimeout) {
-			clearTimeout(this.retryInitTimeout);
-		}
+		this.initRetry.cancel();
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
@@ -700,11 +699,12 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
+			this.initRetry.reset();
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInitTimeout = setTimeout(() => {
-				this.init();
-			}, 300);
+			if (!this.initRetry.schedule(this.init)) {
+				log(e);
+			}
 		}
 	};
 

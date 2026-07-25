@@ -5,7 +5,7 @@ import { type IMessage, type TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { advanceSyncCursor } from './helpers/advanceSyncCursor';
+import { advanceSyncCursor, maxUpdatedAt } from './helpers/advanceSyncCursor';
 import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
@@ -146,7 +146,7 @@ export async function loadMessagesForRoom(args: {
 			// Older-history windows (latest set) can't advance the cursor: an edited old
 			// message's recent _updatedAt would jump it past unsynced newer messages
 			if (!args.latest) {
-				await advanceSyncCursor(args.rid, messages);
+				await advanceSyncCursor(args.rid, maxUpdatedAt(messages));
 			}
 		}
 	} catch (e) {

@@ -1,6 +1,6 @@
-import { type ILastMessage, type IMessage } from '../../definitions';
+import { type ILastMessage } from '../../definitions';
 import { compareServerVersion } from './helpers';
-import { advanceSyncCursor } from './helpers/advanceSyncCursor';
+import { advanceSyncCursor, maxUpdatedAt } from './helpers/advanceSyncCursor';
 import updateMessages from './updateMessages';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
@@ -8,6 +8,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getNewestMessageUpdatedAt } from '../database/services/Message';
 
 const count = 50;
+const MAX_PAGES = 10;
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
 	// @ts-ignore // this method dont have type
@@ -89,13 +90,15 @@ async function load({
 	return result;
 }
 
-// Persists each page as it arrives (idempotent) and accumulates every record.
-// The cursor advances only after the whole chain succeeds: advancing per page
-// can skip records the other stream still has pending if a later page fails.
+// Persists each page as it arrives (idempotent) and threads the newest server `_updatedAt`
+// seen so far, so no page payload outlives the page. The cursor advances only after the whole
+// chain succeeds: advancing per page can skip records the other stream still has pending if a
+// later page fails. The chain is bounded — the next sync resumes from the persisted cursor.
 async function syncPages(
 	args: { rid: string; lastOpen?: Date; updatedNext?: number | null; deletedNext?: number | null },
-	accumulated: (IMessage | ILastMessage)[]
-): Promise<void> {
+	page: number,
+	highestUpdatedAt: number
+): Promise<number> {
 	const data = await load({
 		rid: args.rid,
 		lastOpen: args.lastOpen,
@@ -103,21 +106,29 @@ async function syncPages(
 		deletedNext: args.deletedNext
 	});
 	if (!data) {
-		return;
+		return highestUpdatedAt;
 	}
 	const {
 		updated,
 		updatedNext,
 		deleted,
 		deletedNext
-	}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
+	}: {
+		updated: ILastMessage[];
+		// the server projects deleted records down to these two fields, so they carry no
+		// `_updatedAt` and can never feed the cursor
+		deleted: { _id: string; _deletedAt: string }[];
+		updatedNext: number | null;
+		deletedNext: number | null;
+	} = data;
 	// @ts-ignore // TODO: remove loaderItem obligatoriness
 	await updateMessages({ rid: args.rid, update: updated, remove: deleted });
-	accumulated.push(...updated, ...deleted);
+	const highest = Math.max(highestUpdatedAt, maxUpdatedAt(updated));
 
-	if (deletedNext || updatedNext) {
-		await syncPages({ rid: args.rid, lastOpen: args.lastOpen, updatedNext, deletedNext }, accumulated);
+	if ((deletedNext || updatedNext) && page + 1 < MAX_PAGES) {
+		return syncPages({ rid: args.rid, lastOpen: args.lastOpen, updatedNext, deletedNext }, page + 1, highest);
 	}
+	return highest;
 }
 
 export async function loadMissedMessages(args: {
@@ -126,7 +137,6 @@ export async function loadMissedMessages(args: {
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 }): Promise<void> {
-	const accumulated: (IMessage | ILastMessage)[] = [];
-	await syncPages(args, accumulated);
-	await advanceSyncCursor(args.rid, accumulated);
+	const highestUpdatedAt = await syncPages(args, 0, 0);
+	await advanceSyncCursor(args.rid, highestUpdatedAt);
 }

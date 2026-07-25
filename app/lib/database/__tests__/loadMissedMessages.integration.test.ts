@@ -134,7 +134,8 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 
 		// all three removed; none resurrected into the updated slot
 		expect(await persistedMessageIds()).toEqual([]);
-		expect(await persistedLastOpen()).toBe(T3);
+		// deletions carry no update timestamp, so the cursor stays put
+		expect(await persistedLastOpen()).toBe(T0);
 	});
 
 	it('does not advance the cursor when a later page fails, even after earlier pages persisted', async () => {
@@ -152,6 +153,39 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 		// page 1 persisted (d1, d2 removed), but the failed chain left the cursor untouched for retry
 		expect(await persistedMessageIds()).toEqual(['d3']);
 		expect(await persistedLastOpen()).toBe(T0);
+	});
+
+	it('stops following the UPDATED cursor at MAX_PAGES instead of walking the chain unbounded', async () => {
+		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
+		const paged = createFakeSyncServer({ updatedPageSize: 1 });
+		for (let index = 1; index <= 15; index += 1) {
+			paged.updated.push(serverMessage(`u${index}`, T0 + index * 1000));
+		}
+		paged.installOn(mockedSdkGet as unknown as Parameters<typeof paged.installOn>[0]);
+
+		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
+
+		const updatedRequests = mockedSdkGet.mock.calls.filter(
+			([, params]) => (params as unknown as { type?: string }).type === 'UPDATED'
+		);
+		expect(updatedRequests).toHaveLength(10);
+		// only the ten fetched pages landed, and the cursor sits on the last one so the next
+		// sync resumes exactly where the bound stopped
+		expect(await persistedMessageIds()).toEqual(['u1', 'u10', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7', 'u8', 'u9']);
+		expect(await persistedLastOpen()).toBe(T0 + 10 * 1000);
+	});
+
+	it('never advances the cursor from a deleted record, only from updated ones', async () => {
+		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
+		await seedMessage(mockActiveDatabase, { id: 'gone', rid: RID, updatedAt: new Date(T1) });
+		server.updated.push(serverMessage('u1', T1));
+		// a deletion stamped past every update must not pull the cursor past unfetched messages
+		server.deleted.push(serverMessage('gone', T5));
+
+		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
+
+		expect(await persistedMessageIds()).toEqual(['u1']);
+		expect(await persistedLastOpen()).toBe(T1);
 	});
 
 	it('leaves the cursor unchanged when the fetch is empty (server answers a current/future cursor)', async () => {
