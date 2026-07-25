@@ -155,7 +155,7 @@ async function syncPages(args: {
 // Both streams are filtered exclusively (`$gt`), so resuming from the lower of the two
 // stop-points costs a redundant refetch on the stream that ran further, never a record.
 const resolveCursor = ({ highestUpdatedAt, deletedStop }: ISyncPagesResult): number => {
-	if (!deletedStop) {
+	if (deletedStop === null) {
 		return highestUpdatedAt;
 	}
 	if (!highestUpdatedAt) {

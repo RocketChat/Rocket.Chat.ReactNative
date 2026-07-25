@@ -700,8 +700,12 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 			this.setState({ canAutoTranslate, member, loading: false });
 			this.initRetry.reset();
-		} catch {
+		} catch (e) {
 			this.setState({ loading: false });
+			// one record per broken room open: the retry loop itself must not spam the log
+			if (this.initRetry.isFirstAttempt) {
+				log(e);
+			}
 			this.initRetry.schedule(this.init);
 		}
 	};

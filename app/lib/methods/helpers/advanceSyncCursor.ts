@@ -17,9 +17,9 @@ export const maxUpdatedAt = (messages: (IMessage | ILastMessage)[]): number => {
 	return max;
 };
 
-// lastOpen doubles as the chat.syncMessages cursor. `serverLatest` must come from server
-// message timestamps (see maxUpdatedAt) and is 0 for an empty batch, so a client clock
-// ahead of the server can't skip messages.
+// lastOpen doubles as the chat.syncMessages cursor. `serverLatest` must be a server-stamped
+// `_updatedAt` or `_deletedAt` (see maxUpdatedAt) and is 0 for an empty batch, so a client
+// clock ahead of the server can't skip messages.
 export const advanceSyncCursor = async (rid: string, serverLatest: number): Promise<void> => {
 	try {
 		if (!serverLatest) {

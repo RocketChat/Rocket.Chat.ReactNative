@@ -10,6 +10,11 @@ export class InitRetryScheduler {
 	private attempts = 0;
 	private timeout?: ReturnType<typeof setTimeout>;
 
+	/** True until the first retry since the last reset is armed: the failure worth recording. */
+	get isFirstAttempt(): boolean {
+		return this.attempts === 0;
+	}
+
 	schedule(retry: () => void): void {
 		const delay = Math.min(INITIAL_RETRY_DELAY * 2 ** this.attempts, INIT_MAX_RETRY_DELAY);
 		this.attempts += 1;

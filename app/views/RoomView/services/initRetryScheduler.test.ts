@@ -46,6 +46,18 @@ describe('InitRetryScheduler', () => {
 		expect(delaysOf(scheduler, retry, 1)).toEqual([300]);
 	});
 
+	it('flags only the first arm since reset, so a caller logs one record per broken open', () => {
+		const scheduler = new InitRetryScheduler();
+		const retry = jest.fn();
+
+		expect(scheduler.isFirstAttempt).toBe(true);
+		delaysOf(scheduler, retry, 3);
+		expect(scheduler.isFirstAttempt).toBe(false);
+
+		scheduler.reset();
+		expect(scheduler.isFirstAttempt).toBe(true);
+	});
+
 	it('cancel drops a pending retry', () => {
 		const scheduler = new InitRetryScheduler();
 		const retry = jest.fn();

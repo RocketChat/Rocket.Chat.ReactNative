@@ -8,6 +8,11 @@
  * records strictly newer than the requested `next` cursor, page by page, and succeed
  * on an empty page. Deleted records are projected down to `{ _id, _deletedAt }`, so
  * they carry no message body and no `_updatedAt`.
+ *
+ * This models the DELETED cursor as intended, not as shipped: the server's
+ * `mountCursorQuery` sorts unconditionally by `_updatedAt`, which the DELETED projection
+ * strips, so its real `next` is not guaranteed to be the page's max `_deletedAt`. Do not
+ * read this fake as ground truth for that stream's ordering.
  */
 
 export interface IFakeServerMessage {
