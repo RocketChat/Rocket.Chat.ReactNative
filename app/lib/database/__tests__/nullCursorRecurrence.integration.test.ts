@@ -158,7 +158,7 @@ describe('null sync cursor recurrence (#7499, LokiJS integration)', () => {
 
 	it('deleted messages are synced off the fallback cursor too', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, ts: new Date(JOINED), ls: new Date(READ) });
-		server.deleted.push(serverMessage('gone-1', MSG_TS));
+		server.deleted.push({ _id: 'gone-1', _deletedAt: MSG_TS });
 
 		await loadMissedMessages({ rid: RID });
 

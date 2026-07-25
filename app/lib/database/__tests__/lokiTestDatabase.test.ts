@@ -54,9 +54,9 @@ describe('lokiTestDatabase harness', () => {
 		const server = createFakeSyncServer({ deletedPageSize: 2 });
 		const T0 = Date.UTC(2026, 6, 22, 12, 0, 0);
 		server.deleted.push(
-			{ _id: 'deleted-1', rid: 'room-1', msg: '', ts: '', _updatedAt: T0 + 10_000 },
-			{ _id: 'deleted-2', rid: 'room-1', msg: '', ts: '', _updatedAt: T0 + 20_000 },
-			{ _id: 'deleted-3', rid: 'room-1', msg: '', ts: '', _updatedAt: T0 + 30_000 }
+			{ _id: 'deleted-1', _deletedAt: T0 + 10_000 },
+			{ _id: 'deleted-2', _deletedAt: T0 + 20_000 },
+			{ _id: 'deleted-3', _deletedAt: T0 + 30_000 }
 		);
 
 		const firstPage = server.handleSyncMessages({ type: 'DELETED', next: T0 });

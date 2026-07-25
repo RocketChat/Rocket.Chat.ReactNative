@@ -700,11 +700,9 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 			this.setState({ canAutoTranslate, member, loading: false });
 			this.initRetry.reset();
-		} catch (e) {
+		} catch {
 			this.setState({ loading: false });
-			if (!this.initRetry.schedule(this.init)) {
-				log(e);
-			}
+			this.initRetry.schedule(this.init);
 		}
 	};
 

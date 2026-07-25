@@ -90,15 +90,26 @@ async function load({
 	return result;
 }
 
+interface ISyncPagesResult {
+	/** Newest server `_updatedAt` seen across the whole chain, 0 when no update arrived. */
+	highestUpdatedAt: number;
+	/** DELETED cursor the walk stopped at, null when that stream was exhausted. */
+	deletedStop: number | null;
+}
+
 // Persists each page as it arrives (idempotent) and threads the newest server `_updatedAt`
 // seen so far, so no page payload outlives the page. The cursor advances only after the whole
 // chain succeeds: advancing per page can skip records the other stream still has pending if a
-// later page fails. The chain is bounded — the next sync resumes from the persisted cursor.
-async function syncPages(
-	args: { rid: string; lastOpen?: Date; updatedNext?: number | null; deletedNext?: number | null },
-	page: number,
-	highestUpdatedAt: number
-): Promise<number> {
+// later page fails. The chain is bounded, and UPDATED and DELETED are independent cursors, so
+// the DELETED stop-point travels back out — the persisted cursor must not outrun either stream.
+async function syncPages(args: {
+	rid: string;
+	lastOpen?: Date;
+	updatedNext?: number | null;
+	deletedNext?: number | null;
+	page: number;
+	highestUpdatedAt: number;
+}): Promise<ISyncPagesResult> {
 	const data = await load({
 		rid: args.rid,
 		lastOpen: args.lastOpen,
@@ -106,7 +117,7 @@ async function syncPages(
 		deletedNext: args.deletedNext
 	});
 	if (!data) {
-		return highestUpdatedAt;
+		return { highestUpdatedAt: args.highestUpdatedAt, deletedStop: args.deletedNext ?? null };
 	}
 	const {
 		updated,
@@ -121,15 +132,37 @@ async function syncPages(
 		updatedNext: number | null;
 		deletedNext: number | null;
 	} = data;
-	// @ts-ignore // TODO: remove loaderItem obligatoriness
+	// @ts-ignore // the sync payload is ILastMessage[]; updateMessages types update as IMessage[]
 	await updateMessages({ rid: args.rid, update: updated, remove: deleted });
-	const highest = Math.max(highestUpdatedAt, maxUpdatedAt(updated));
+	const highestUpdatedAt = Math.max(args.highestUpdatedAt, maxUpdatedAt(updated));
 
-	if ((deletedNext || updatedNext) && page + 1 < MAX_PAGES) {
-		return syncPages({ rid: args.rid, lastOpen: args.lastOpen, updatedNext, deletedNext }, page + 1, highest);
+	if (deletedNext || updatedNext) {
+		if (args.page + 1 < MAX_PAGES) {
+			return syncPages({
+				rid: args.rid,
+				lastOpen: args.lastOpen,
+				updatedNext,
+				deletedNext,
+				page: args.page + 1,
+				highestUpdatedAt
+			});
+		}
+		return { highestUpdatedAt, deletedStop: deletedNext };
 	}
-	return highest;
+	return { highestUpdatedAt, deletedStop: null };
 }
+
+// Both streams are filtered exclusively (`$gt`), so resuming from the lower of the two
+// stop-points costs a redundant refetch on the stream that ran further, never a record.
+const resolveCursor = ({ highestUpdatedAt, deletedStop }: ISyncPagesResult): number => {
+	if (!deletedStop) {
+		return highestUpdatedAt;
+	}
+	if (!highestUpdatedAt) {
+		return deletedStop;
+	}
+	return Math.min(highestUpdatedAt, deletedStop);
+};
 
 export async function loadMissedMessages(args: {
 	rid: string;
@@ -137,6 +170,6 @@ export async function loadMissedMessages(args: {
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 }): Promise<void> {
-	const highestUpdatedAt = await syncPages(args, 0, 0);
-	await advanceSyncCursor(args.rid, highestUpdatedAt);
+	const result = await syncPages({ ...args, page: 0, highestUpdatedAt: 0 });
+	await advanceSyncCursor(args.rid, resolveCursor(result));
 }

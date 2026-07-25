@@ -17,12 +17,12 @@ export const maxUpdatedAt = (messages: (IMessage | ILastMessage)[]): number => {
 	return max;
 };
 
-// lastOpen doubles as the chat.syncMessages cursor. `latest` must come from server
+// lastOpen doubles as the chat.syncMessages cursor. `serverLatest` must come from server
 // message timestamps (see maxUpdatedAt) and is 0 for an empty batch, so a client clock
 // ahead of the server can't skip messages.
-export const advanceSyncCursor = async (rid: string, latest: number): Promise<void> => {
+export const advanceSyncCursor = async (rid: string, serverLatest: number): Promise<void> => {
 	try {
-		if (!latest) {
+		if (!serverLatest) {
 			return;
 		}
 		const subscription = await getSubscriptionByRoomId(rid);
@@ -33,7 +33,7 @@ export const advanceSyncCursor = async (rid: string, latest: number): Promise<vo
 			return;
 		}
 		const current = subscription.lastOpen ? new Date(subscription.lastOpen).getTime() : 0;
-		if (latest <= current) {
+		if (serverLatest <= current) {
 			return;
 		}
 		const db = database.active;
@@ -42,8 +42,8 @@ export const advanceSyncCursor = async (rid: string, latest: number): Promise<vo
 				// re-read inside the write: a concurrent sync may have advanced the
 				// cursor between the outer read and this commit (forward-only).
 				const committed = s.lastOpen ? new Date(s.lastOpen).getTime() : 0;
-				if (latest > committed) {
-					s.lastOpen = new Date(latest);
+				if (serverLatest > committed) {
+					s.lastOpen = new Date(serverLatest);
 				}
 			});
 		});

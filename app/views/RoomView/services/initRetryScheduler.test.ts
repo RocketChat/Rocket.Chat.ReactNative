@@ -1,4 +1,4 @@
-import { INIT_MAX_RETRY_ATTEMPTS, InitRetryScheduler } from './initRetryScheduler';
+import { INIT_MAX_RETRY_DELAY, InitRetryScheduler } from './initRetryScheduler';
 
 describe('InitRetryScheduler', () => {
 	beforeEach(() => jest.useFakeTimers());
@@ -8,58 +8,45 @@ describe('InitRetryScheduler', () => {
 		jest.useRealTimers();
 	});
 
-	const drain = (scheduler: InitRetryScheduler, retry: () => void, attempts: number) => {
-		const scheduled: boolean[] = [];
-		for (let attempt = 0; attempt < attempts; attempt += 1) {
-			scheduled.push(scheduler.schedule(retry));
-			jest.runOnlyPendingTimers();
-		}
-		return scheduled;
-	};
-
-	it('backs off exponentially instead of retrying at a fixed interval', () => {
-		const scheduler = new InitRetryScheduler();
-		const retry = jest.fn();
-
+	const delaysOf = (scheduler: InitRetryScheduler, retry: () => void, attempts: number): number[] => {
 		const delays: number[] = [];
-		for (let attempt = 0; attempt < INIT_MAX_RETRY_ATTEMPTS; attempt += 1) {
+		for (let attempt = 0; attempt < attempts; attempt += 1) {
 			const before = Date.now();
 			scheduler.schedule(retry);
 			jest.runOnlyPendingTimers();
 			delays.push(Date.now() - before);
 		}
+		return delays;
+	};
 
-		expect(delays).toEqual([300, 600, 1200, 2400, 4800]);
-		expect(retry).toHaveBeenCalledTimes(INIT_MAX_RETRY_ATTEMPTS);
-	});
-
-	it('gives up once the attempt cap is reached and schedules nothing more', () => {
-		const scheduler = new InitRetryScheduler();
+	it('backs off exponentially instead of retrying at a fixed interval', () => {
 		const retry = jest.fn();
 
-		const scheduled = drain(scheduler, retry, INIT_MAX_RETRY_ATTEMPTS);
-		expect(scheduled.every(Boolean)).toBe(true);
-
-		expect(scheduler.schedule(retry)).toBe(false);
-		jest.runOnlyPendingTimers();
-		expect(retry).toHaveBeenCalledTimes(INIT_MAX_RETRY_ATTEMPTS);
+		expect(delaysOf(new InitRetryScheduler(), retry, 5)).toEqual([300, 600, 1200, 2400, 4800]);
+		expect(retry).toHaveBeenCalledTimes(5);
 	});
 
-	it('reset restores the full budget and the initial delay', () => {
+	it('clamps the backoff at the delay floor and keeps retrying there indefinitely', () => {
+		const retry = jest.fn();
+
+		const delays = delaysOf(new InitRetryScheduler(), retry, 12);
+
+		expect(delays.slice(6)).toEqual(Array(6).fill(INIT_MAX_RETRY_DELAY));
+		// self-healing survives any number of failures: the room never stops trying
+		expect(retry).toHaveBeenCalledTimes(12);
+	});
+
+	it('reset restores the initial delay', () => {
 		const scheduler = new InitRetryScheduler();
 		const retry = jest.fn();
-		drain(scheduler, retry, INIT_MAX_RETRY_ATTEMPTS);
+		delaysOf(scheduler, retry, 8);
 
 		scheduler.reset();
 
-		const before = Date.now();
-		expect(scheduler.schedule(retry)).toBe(true);
-		jest.runOnlyPendingTimers();
-		expect(Date.now() - before).toBe(300);
-		expect(retry).toHaveBeenCalledTimes(INIT_MAX_RETRY_ATTEMPTS + 1);
+		expect(delaysOf(scheduler, retry, 1)).toEqual([300]);
 	});
 
-	it('cancel drops a pending retry without spending the budget already used', () => {
+	it('cancel drops a pending retry', () => {
 		const scheduler = new InitRetryScheduler();
 		const retry = jest.fn();
 
@@ -79,5 +66,16 @@ describe('InitRetryScheduler', () => {
 		jest.runOnlyPendingTimers();
 
 		expect(retry).not.toHaveBeenCalled();
+	});
+
+	it('keeps only the newest pending retry when scheduled twice', () => {
+		const scheduler = new InitRetryScheduler();
+		const retry = jest.fn();
+
+		scheduler.schedule(retry);
+		scheduler.schedule(retry);
+		jest.runOnlyPendingTimers();
+
+		expect(retry).toHaveBeenCalledTimes(1);
 	});
 });

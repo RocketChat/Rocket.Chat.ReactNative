@@ -94,7 +94,7 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 		// a message deleted after the cursor must pre-exist to be removed
 		await seedMessage(mockActiveDatabase, { id: 'gone', rid: RID, updatedAt: new Date(T2) });
 		server.updated.push(serverMessage('new', T1), serverMessage('stale', T0 - 1000));
-		server.deleted.push(serverMessage('gone', T2));
+		server.deleted.push({ _id: 'gone', _deletedAt: T2 });
 
 		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
 
@@ -127,7 +127,7 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 		await seedMessage(mockActiveDatabase, { id: 'd2', rid: RID, updatedAt: new Date(T2) });
 		await seedMessage(mockActiveDatabase, { id: 'd3', rid: RID, updatedAt: new Date(T3) });
 		const paged = createFakeSyncServer({ deletedPageSize: 2 });
-		paged.deleted.push(serverMessage('d1', T1), serverMessage('d2', T2), serverMessage('d3', T3));
+		paged.deleted.push({ _id: 'd1', _deletedAt: T1 }, { _id: 'd2', _deletedAt: T2 }, { _id: 'd3', _deletedAt: T3 });
 		paged.installOn(mockedSdkGet as unknown as Parameters<typeof paged.installOn>[0]);
 
 		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
@@ -144,7 +144,7 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 		await seedMessage(mockActiveDatabase, { id: 'd2', rid: RID, updatedAt: new Date(T2) });
 		await seedMessage(mockActiveDatabase, { id: 'd3', rid: RID, updatedAt: new Date(T3) });
 		const paged = createFakeSyncServer({ deletedPageSize: 2 });
-		paged.deleted.push(serverMessage('d1', T1), serverMessage('d2', T2), serverMessage('d3', T3));
+		paged.deleted.push({ _id: 'd1', _deletedAt: T1 }, { _id: 'd2', _deletedAt: T2 }, { _id: 'd3', _deletedAt: T3 });
 		paged.failDeletedPageAtRequest = 2;
 		paged.installOn(mockedSdkGet as unknown as Parameters<typeof paged.installOn>[0]);
 
@@ -175,12 +175,56 @@ describe('loadMissedMessages (LokiJS integration)', () => {
 		expect(await persistedLastOpen()).toBe(T0 + 10 * 1000);
 	});
 
+	it('resumes the DELETED walk where the bound stopped it, with no updates to carry the cursor', async () => {
+		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
+		const paged = createFakeSyncServer({ deletedPageSize: 1 });
+		for (let index = 1; index <= 15; index += 1) {
+			paged.deleted.push({ _id: `d${index}`, _deletedAt: T0 + index * 1000 });
+			await seedMessage(mockActiveDatabase, { id: `d${index}`, rid: RID, updatedAt: new Date(T0 + index * 1000) });
+		}
+		paged.installOn(mockedSdkGet as unknown as Parameters<typeof paged.installOn>[0]);
+
+		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
+
+		// with no DELETED stop-point the cursor would stay at T0 and every later sync would
+		// re-walk these same ten pages forever
+		expect(await persistedLastOpen()).toBe(T0 + 10 * 1000);
+
+		mockedSdkGet.mockClear();
+		await loadMissedMessages({ rid: RID });
+
+		const deletedCursors = mockedSdkGet.mock.calls
+			.map(([, params]) => params as unknown as { type?: string; next?: number })
+			.filter(params => params.type === 'DELETED')
+			.map(params => params.next);
+		expect(deletedCursors[0]).toBe(T0 + 10 * 1000);
+		expect(await persistedMessageIds()).toEqual([]);
+	});
+
+	it('never advances past an abandoned DELETED stop-point, even when the updates ran further', async () => {
+		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
+		const paged = createFakeSyncServer({ deletedPageSize: 1 });
+		for (let index = 1; index <= 15; index += 1) {
+			paged.deleted.push({ _id: `d${index}`, _deletedAt: T0 + index * 1000 });
+			await seedMessage(mockActiveDatabase, { id: `d${index}`, rid: RID, updatedAt: new Date(T0 + index * 1000) });
+		}
+		// an update stamped far past every deletion the bound will reach
+		paged.updated.push(serverMessage('u-late', T0 + 60 * 1000));
+		paged.installOn(mockedSdkGet as unknown as Parameters<typeof paged.installOn>[0]);
+
+		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
+
+		// advancing to the updated max would strand deletions d11..d15 forever
+		expect(await persistedLastOpen()).toBe(T0 + 10 * 1000);
+		expect(await persistedMessageIds()).toEqual(['d11', 'd12', 'd13', 'd14', 'd15', 'u-late']);
+	});
+
 	it('never advances the cursor from a deleted record, only from updated ones', async () => {
 		await seedSubscription(mockActiveDatabase, { rid: RID, lastOpen: new Date(T0) });
 		await seedMessage(mockActiveDatabase, { id: 'gone', rid: RID, updatedAt: new Date(T1) });
 		server.updated.push(serverMessage('u1', T1));
 		// a deletion stamped past every update must not pull the cursor past unfetched messages
-		server.deleted.push(serverMessage('gone', T5));
+		server.deleted.push({ _id: 'gone', _deletedAt: T5, _updatedAt: T5 });
 
 		await loadMissedMessages({ rid: RID, lastOpen: new Date(T0) });
 
