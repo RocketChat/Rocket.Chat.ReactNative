@@ -24,7 +24,7 @@ Everything else is a standard `package.json` script.
 ## Gotchas
 
 - Local-first data flow: the UI reads from WatermelonDB, sagas sync it with the server.
-- Two state systems coexist: Redux + Redux-Saga for global/server state, and Zustand for feature-local stores (`app/containers/message/stores/`, `MessageComposer/context.tsx`, `MediaCallHeader`, `app/lib/services/voip/`). Don't assume Redux.
+- Redux + Redux-Saga holds global/server state, but Zustand backs several feature-local stores. Don't assume Redux.
 
 ## Continuous Integration
 
