@@ -24,7 +24,7 @@ Everything else is a standard `package.json` script.
 ## Gotchas
 
 - Local-first data flow: the UI reads from WatermelonDB, sagas sync it with the server.
-- VoIP (`app/lib/services/voip/`) uses Zustand, not Redux — unlike the rest of the app.
+- Two state systems coexist: Redux + Redux-Saga for global/server state, and Zustand for feature-local stores (`app/containers/message/stores/`, `MessageComposer/context.tsx`, `MediaCallHeader`, `app/lib/services/voip/`). Don't assume Redux.
 - VideoConf (Jitsi, Redux-based) may be replaced or removed in the future.
 
 ## Continuous Integration
