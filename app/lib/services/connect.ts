@@ -107,7 +107,10 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		});
 		// Registered before connect() resolves: a rejected or hung connect() must not leave the
 		// client without listeners once the underlying socket connects or recovers on its own.
-		sdk.onCollection('users', protectedFunction((ddpMessage: unknown) => _setUser(ddpMessage as IActiveUsers)));
+		sdk.onCollection(
+			'users',
+			protectedFunction((ddpMessage: unknown) => _setUser(ddpMessage as IActiveUsers))
+		);
 
 		sdk.onCollection(
 			'stream-notify-all',
