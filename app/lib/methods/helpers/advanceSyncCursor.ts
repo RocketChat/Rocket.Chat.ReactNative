@@ -27,6 +27,9 @@ export const advanceSyncCursor = async (rid: string, messages: (IMessage | ILast
 			return;
 		}
 		const subscription = await getSubscriptionByRoomId(rid);
+		// A sync that ran ahead of the rooms sync has no row to persist the cursor on. Dropping it
+		// costs a redundant fetch, not a message: the batch is already persisted, so once the row
+		// lands loadMissedMessages resolves the cursor off those messages and re-delivers the gap.
 		if (!subscription) {
 			return;
 		}

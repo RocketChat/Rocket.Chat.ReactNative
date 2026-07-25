@@ -1,7 +1,7 @@
 import { Database } from '@nozbe/watermelondb';
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs';
 
-import type { TSubscriptionModel, TMessageModel, SubscriptionType } from '../../../definitions';
+import type { TSubscriptionModel, TMessageModel, SubscriptionType, MessageType } from '../../../definitions';
 import appSchema from '../schema/app';
 import migrations from '../model/migrations';
 import Subscription from '../model/Subscription';
@@ -121,6 +121,8 @@ export interface ISeedSubscription {
 	fname?: string;
 	t?: string;
 	lastOpen?: Date;
+	ls?: Date;
+	ts?: Date;
 	encrypted?: boolean;
 	E2EKey?: string;
 }
@@ -140,6 +142,12 @@ export const seedSubscription = (database: TAppDatabase, overrides: ISeedSubscri
 			if (overrides.lastOpen) {
 				record.lastOpen = overrides.lastOpen;
 			}
+			if (overrides.ls) {
+				record.ls = overrides.ls;
+			}
+			if (overrides.ts) {
+				record.ts = overrides.ts;
+			}
 			if (overrides.encrypted !== undefined) {
 				record.encrypted = overrides.encrypted;
 			}
@@ -158,6 +166,8 @@ export interface ISeedMessage {
 	updatedAt?: Date;
 	u?: { _id: string; username: string };
 	tmid?: string;
+	t?: string;
+	status?: number;
 }
 
 /** Creates a `messages` record with sensible defaults; override any field. */
@@ -176,6 +186,12 @@ export const seedMessage = (database: TAppDatabase, overrides: ISeedMessage = {}
 			record.u = overrides.u ?? { _id: 'user-1', username: 'user-1' };
 			if (overrides.tmid) {
 				record.tmid = overrides.tmid;
+			}
+			if (overrides.t) {
+				record.t = overrides.t as MessageType;
+			}
+			if (overrides.status !== undefined) {
+				record.status = overrides.status;
 			}
 		})
 	);

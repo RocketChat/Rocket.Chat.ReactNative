@@ -5,6 +5,7 @@ import updateMessages from './updateMessages';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import { getNewestMessageUpdatedAt } from '../database/services/Message';
 
 const count = 50;
 
@@ -37,12 +38,18 @@ const getSyncMessagesFromCursor = async (
 	};
 };
 
-const getLastUpdate = async (rid: string) => {
+// A room never opened on this device (a push notification tap) has no lastOpen, and an undefined
+// cursor makes the sync fetch nothing at all. Candidates are ordered by how well each answers
+// "newest point THIS device is in sync with" — `ls` is written by every device, so it can sit past
+// messages this one never received. Epoch 0 means an unseeded non-optional column, not a cursor.
+const getLastUpdate = async (rid: string): Promise<Date | null> => {
 	const sub = await getSubscriptionByRoomId(rid);
 	if (!sub) {
 		return null;
 	}
-	return sub.lastOpen;
+	const candidates = [sub.lastOpen, await getNewestMessageUpdatedAt(rid), sub.ls, sub.ts];
+	const cursor = candidates.find(candidate => candidate && new Date(candidate).getTime() > 0);
+	return cursor ? new Date(cursor) : null;
 };
 
 async function load({

@@ -129,8 +129,12 @@ export async function loadMessagesForRoom(args: {
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
 			const lastMessageRecord = await getMessageById(lastMessage._id as string);
+			// The synthetic load-more row stays out of `messages`: it has no server _updatedAt,
+			// so normalizeMessage would stamp it with the device clock and advanceSyncCursor
+			// would read that wall clock as the cursor
+			const update = [...messages];
 			if (!lastMessageRecord && lastBatchWasFull) {
-				messages.push({
+				update.push({
 					_id: generateLoadMoreId(lastMessage._id as string),
 					rid: lastMessage.rid,
 					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
@@ -138,7 +142,7 @@ export async function loadMessagesForRoom(args: {
 					msg: lastMessage.msg
 				} as IMessage);
 			}
-			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
+			await updateMessages({ rid: args.rid, update, loaderItem: args.loaderItem });
 			// Older-history windows (latest set) can't advance the cursor: an edited old
 			// message's recent _updatedAt would jump it past unsynced newer messages
 			if (!args.latest) {

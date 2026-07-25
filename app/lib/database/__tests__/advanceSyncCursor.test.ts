@@ -108,6 +108,9 @@ describe('advanceSyncCursor (LokiJS integration)', () => {
 		expect(await persistedLastOpen()).toBe(T3);
 	});
 
+	// There is nowhere to persist a cursor without a row, so the no-op stands. What must not be
+	// lost is the batch itself — `nullCursorRecurrence.integration.test.ts` covers the recovery,
+	// where the row lands cursor-less and the next sync re-delivers off `ls`/`ts`.
 	it('returns cleanly when no subscription exists for the rid', async () => {
 		await expect(advanceSyncCursor('missing-room', [message(T3)])).resolves.toBeUndefined();
 
