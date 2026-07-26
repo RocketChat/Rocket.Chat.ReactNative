@@ -17,7 +17,7 @@ import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
 import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
-import { RECORDING_EXTENSION, RECORDING_PRESET, RECORDING_MODE } from '../../../../lib/constants/audio';
+import { RECORDING_EXTENSION, RECORDING_SETTINGS, RECORDING_MODE } from '../../../../lib/constants/audio';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
 import { type IUpload } from '../../../../definitions';
@@ -30,7 +30,7 @@ import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
-	const audioRecorder = useAudioRecorder(RECORDING_PRESET);
+	const audioRecorder = useAudioRecorder(RECORDING_SETTINGS);
 	const recorderState = useAudioRecorderState(audioRecorder);
 
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
@@ -74,9 +74,11 @@ export const RecordAudio = (): ReactElement | null => {
 		record();
 
 		return () => {
-			audioRecorder.stop().catch((error: unknown) => {
-				log(error);
-			});
+			try {
+				audioRecorder.stop();
+			} catch {
+				// Do nothing
+			}
 		};
 	}, []);
 
