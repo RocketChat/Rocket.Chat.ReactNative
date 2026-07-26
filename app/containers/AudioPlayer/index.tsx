@@ -74,7 +74,7 @@ const AudioPlayer = ({
 	};
 
 	const onEnd = (data: AudioStatus) => {
-		if (data.isLoaded && data.playbackState === 'ended') {
+		if (data.isLoaded && data.didJustFinish) {
 			try {
 				setPaused(true);
 				currentTime.value = 0;

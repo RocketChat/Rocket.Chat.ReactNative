@@ -534,7 +534,7 @@ describe('AudioPlayer', () => {
 			expect(durationValue.value).toBe(0);
 		});
 
-		it('resets paused to true and currentTime to 0 when audio finishes (playbackState ended)', async () => {
+		it('resets paused to true and currentTime to 0 when audio finishes (didJustFinish)', async () => {
 			const { queryByTestId } = render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
@@ -544,7 +544,7 @@ describe('AudioPlayer', () => {
 
 			act(() => statusCb({ isLoaded: true, playing: true, duration: 5, currentTime: 4 }));
 
-			act(() => statusCb({ isLoaded: true, playing: false, playbackState: 'ended', currentTime: 5, duration: 5 }));
+			act(() => statusCb({ isLoaded: true, playing: false, didJustFinish: true, currentTime: 5, duration: 5 }));
 
 			await waitFor(() => {
 				expect(queryByTestId('playback-speed')).toBeNull();
@@ -605,7 +605,7 @@ describe('AudioPlayer', () => {
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
 			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 7.777 }));
-			act(() => statusCb({ isLoaded: true, playing: false, playbackState: 'ended', currentTime: 10, duration: 10 }));
+			act(() => statusCb({ isLoaded: true, playing: false, didJustFinish: true, currentTime: 10, duration: 10 }));
 
 			expect(currentTimeValue.value).toBe(0);
 		});
