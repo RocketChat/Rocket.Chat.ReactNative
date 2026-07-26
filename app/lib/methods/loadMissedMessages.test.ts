@@ -141,12 +141,12 @@ describe('loadMissedMessages', () => {
 			mockedSdkGet
 				.mockResolvedValueOnce(buildUpdatedPage([buildMessage('m1', firstPageMax)], 1000))
 				.mockResolvedValueOnce(buildDeletedPage([], null))
-				.mockResolvedValueOnce(buildUpdatedPage([buildMessage('m2', secondPageMax)], null))
-				.mockResolvedValueOnce(buildDeletedPage([], null));
+				.mockResolvedValueOnce(buildUpdatedPage([buildMessage('m2', secondPageMax)], null));
 
 			await loadMissedMessages({ rid: RID });
 
 			expect(mockedUpdateMessages).toHaveBeenCalledTimes(2);
+			expect(subscription.update).toHaveBeenCalledTimes(1);
 			expect(subscription.lastOpen?.getTime()).toBe(secondPageMax);
 		});
 
