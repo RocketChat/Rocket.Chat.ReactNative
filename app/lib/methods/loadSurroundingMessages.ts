@@ -51,6 +51,7 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 				}
 
 				await updateMessages({ rid, update: messages });
+				// Jump paths never write the sync cursor; a ts-ordered walk can miss post-walk edits stamped below the walk max.
 				return resolve(messages);
 			}
 			return resolve([]);

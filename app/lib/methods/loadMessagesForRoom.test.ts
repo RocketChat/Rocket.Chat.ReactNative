@@ -5,6 +5,7 @@ import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import updateMessages from './updateMessages';
 import { store } from '../store/auxStore';
+import database from '../database';
 
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
@@ -32,26 +33,54 @@ jest.mock('../store/auxStore', () => ({
 
 jest.mock('./updateMessages', () => jest.fn());
 
+jest.mock('../database', () => ({
+	__esModule: true,
+	default: {
+		active: {
+			get: jest.fn(),
+			write: jest.fn()
+		}
+	}
+}));
+
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedDispatch = store.dispatch as jest.MockedFunction<typeof store.dispatch>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
+const mockGet = database.active.get as jest.Mock;
+const mockWrite = database.active.write as jest.Mock;
 
-const buildMessage = ({ id, ts, t }: { id: string; ts: string; t?: string }) =>
+const buildMessage = (params: { id: string; ts: string; t?: string; _updatedAt?: string | Date | number }) =>
 	({
-		_id: id,
+		_id: params.id,
 		rid: 'ROOM_ID',
-		ts,
-		...(t ? { t } : {})
+		ts: params.ts,
+		...(params.t ? { t: params.t } : {}),
+		...(params._updatedAt !== undefined ? { _updatedAt: params._updatedAt } : {})
 	} as any);
+
+let subscription: { id: string; lastOpen: Date | null; update: jest.Mock };
 
 describe('loadMessagesForRoom', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedGetMessageById.mockResolvedValue(null);
+		mockedSdkGet.mockReset();
 		mockedUpdateMessages.mockResolvedValue(0);
-		mockedGetSubscriptionByRoomId.mockResolvedValue(null as any);
+		mockedGetMessageById.mockResolvedValue(null);
+		subscription = {
+			id: 'ROOM_ID',
+			lastOpen: null,
+			update: jest.fn((fn: (s: any) => void) => {
+				const model: any = { lastOpen: subscription.lastOpen };
+				fn(model);
+				subscription.lastOpen = model.lastOpen;
+				return Promise.resolve();
+			})
+		};
+		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as any);
+		mockGet.mockReturnValue({ find: jest.fn(() => Promise.resolve(subscription)) });
+		mockWrite.mockImplementation((cb: () => Promise<void>) => cb());
 	});
 
 	const buildHiddenBatch = (prefix: string, baseSeconds: number) =>
@@ -231,5 +260,60 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedUpdateMessages).toHaveBeenCalledTimes(1);
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_POP }));
+	});
+
+	describe('sync cursor', () => {
+		it('writes the cursor from the first batch of an initial tail load', async () => {
+			const firstBatch = Array.from({ length: 50 }, (_, index) =>
+				buildMessage({
+					id: `first-${index + 1}`,
+					ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString(),
+					_updatedAt: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString()
+				})
+			);
+			const expectedMax = new Date(Date.UTC(2024, 0, 1, 0, 0, 50)).toISOString();
+
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: firstBatch } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+			expect(subscription.lastOpen?.toISOString()).toBe(expectedMax);
+		});
+
+		it('does not write the cursor for a backfill request with latest', async () => {
+			const firstBatch = Array.from({ length: 50 }, (_, index) =>
+				buildMessage({
+					id: `first-${index + 1}`,
+					ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString(),
+					_updatedAt: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString()
+				})
+			);
+
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: firstBatch } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', latest: new Date() });
+
+			expect(subscription.lastOpen).toBeNull();
+		});
+
+		it('does not write the cursor when a loaderItem is provided', async () => {
+			const firstBatch = Array.from({ length: 50 }, (_, index) =>
+				buildMessage({
+					id: `first-${index + 1}`,
+					ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString(),
+					_updatedAt: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString()
+				})
+			);
+
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: firstBatch } as any);
+
+			await loadMessagesForRoom({
+				rid: 'ROOM_ID',
+				t: 'c',
+				loaderItem: { id: 'tapped-load-more' } as any
+			});
+
+			expect(subscription.lastOpen).toBeNull();
+		});
 	});
 });

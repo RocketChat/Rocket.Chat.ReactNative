@@ -37,6 +37,7 @@ export function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 					messages.push(loadMoreItem);
 				}
 				await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
+				// Jump paths never write the sync cursor; a ts-ordered walk can miss post-walk edits stamped below the walk max.
 				return resolve();
 			}
 			return resolve();

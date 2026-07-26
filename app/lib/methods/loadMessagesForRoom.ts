@@ -10,6 +10,7 @@ import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { advanceSyncCursor, maxPayloadUpdatedAt } from './helpers/advanceSyncCursor';
 
 const COUNT = 50;
 const MAX_BATCHES = 10;
@@ -32,18 +33,19 @@ async function load(args: {
 	t: RoomTypes;
 	loaderItem?: TMessageModel;
 	onUiLoaderPushed?: (loaderId: string) => void;
-}): Promise<{ messages: IMessage[]; lastBatchWasFull: boolean }> {
+}): Promise<{ messages: IMessage[]; lastBatchWasFull: boolean; firstBatchUpdatedAtMax: number }> {
 	const roomId = args.rid;
 	const hideSystemMessages = await resolveHideSystemMessages(roomId);
 	const apiType = roomTypeToApiType(args.t);
 	if (!apiType) {
-		return { messages: [], lastBatchWasFull: false };
+		return { messages: [], lastBatchWasFull: false, firstBatchUpdatedAtMax: 0 };
 	}
 
 	const allMessages: IMessage[] = [];
 	let visibleMainMessagesCount = 0;
 	let batchesFetched = 0;
 	let lastBatchWasFull = false;
+	let firstBatchUpdatedAtMax = 0;
 
 	async function fetchBatch(lastTs?: string): Promise<void> {
 		if (visibleMainMessagesCount >= COUNT || batchesFetched >= MAX_BATCHES) {
@@ -75,6 +77,10 @@ async function load(args: {
 		const batch = data.messages as IMessage[];
 		allMessages.push(...batch);
 		lastBatchWasFull = batch.length === COUNT;
+
+		if (batchesFetched === 1) {
+			firstBatchUpdatedAtMax = maxPayloadUpdatedAt(batch);
+		}
 
 		const visibleMainMessagesInBatch = batch.filter(message => isVisibleMainRoomMessage(message, hideSystemMessages));
 		visibleMainMessagesCount += visibleMainMessagesInBatch.length;
@@ -108,7 +114,7 @@ async function load(args: {
 
 	const startTimestamp = args.latest ? new Date(args.latest).toISOString() : undefined;
 	await fetchBatch(startTimestamp);
-	return { messages: allMessages, lastBatchWasFull };
+	return { messages: allMessages, lastBatchWasFull, firstBatchUpdatedAtMax };
 }
 
 export async function loadMessagesForRoom(args: {
@@ -119,7 +125,7 @@ export async function loadMessagesForRoom(args: {
 }): Promise<void> {
 	let uiLoaderId: string | null = null;
 	try {
-		const { messages, lastBatchWasFull } = await load({
+		const { messages, lastBatchWasFull, firstBatchUpdatedAtMax } = await load({
 			...args,
 			onUiLoaderPushed: id => {
 				uiLoaderId = id;
@@ -138,6 +144,10 @@ export async function loadMessagesForRoom(args: {
 				} as IMessage);
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
+
+			if (!args.latest && !args.loaderItem && firstBatchUpdatedAtMax > 0) {
+				await advanceSyncCursor(args.rid, firstBatchUpdatedAtMax);
+			}
 		}
 	} catch (e) {
 		log(e);
