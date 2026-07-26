@@ -88,10 +88,6 @@ jest.mock('../restApi', () => ({
 	registerPushToken: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../connect', () => require('./MediaCallEvents.testHelpers').createConnectMock());
-
-jest.mock('../sdk', () => require('./MediaCallEvents.testHelpers').createSdkMock());
-
 jest.mock('./MediaCallLogger', () => {
 	const log = jest.fn();
 	const debug = jest.fn();
