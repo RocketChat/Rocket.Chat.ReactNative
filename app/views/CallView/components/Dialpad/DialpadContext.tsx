@@ -66,13 +66,13 @@ export const DialpadProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	const playTone = async (digit: string) => {
-		const player = soundsRef.current[digit];
-		if (!player) {
+		const sound = soundsRef.current[digit];
+		if (!sound) {
 			return;
 		}
 		try {
-			await player.seekTo(0);
-			player.play();
+			await sound.seekTo(0);
+			sound.play();
 		} catch (error) {
 			console.warn(`[DialpadContext] Failed to play DTMF tone for "${digit}":`, error);
 		}
