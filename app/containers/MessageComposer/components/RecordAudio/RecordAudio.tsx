@@ -43,36 +43,35 @@ export const RecordAudio = (): ReactElement | null => {
 	const permissionToUpload = useCanUploadFile(rid);
 	useKeepAwake();
 
-	async function doRecording() {
-		try {
-			const permissions = await requestRecordingPermissionsAsync();
-			if (!permissions.granted) {
-				setRecordingAudio(false);
-				return;
-			}
+	useEffect(() => {
+		const record = async () => {
+			try {
+				const permissions = await requestRecordingPermissionsAsync();
+				if (!permissions.granted) {
+					setRecordingAudio(false);
+					return;
+				}
 
-			await setAudioModeAsync(RECORDING_MODE);
-			await audioRecorder.prepareToRecordAsync();
-			await audioRecorder.record();
-		} catch (error: any) {
-			if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
-				if (numberOfTriesRef.current <= 5) {
-					numberOfTriesRef.current += 1;
-					setTimeout(() => {
-						doRecording();
-					}, 100);
+				await setAudioModeAsync(RECORDING_MODE);
+				await audioRecorder.prepareToRecordAsync();
+				await audioRecorder.record();
+			} catch (error: any) {
+				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
+					if (numberOfTriesRef.current <= 5) {
+						numberOfTriesRef.current += 1;
+						setTimeout(() => {
+							record();
+						}, 100);
+					} else {
+						log(error);
+					}
 				} else {
 					log(error);
 				}
-			} else {
-				log(error);
 			}
-		}
-	}
-
-	useEffect(() => {
+		};
 		numberOfTriesRef.current = 0;
-		doRecording();
+		record();
 
 		return () => {
 			audioRecorder.stop().catch((error: unknown) => {
