@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { resolveCustomEmoji, useCustomEmoji } from './useCustomEmoji';
+import { useCustomEmoji } from './useCustomEmoji';
+import { resolveCustomEmoji } from '../../definitions';
 
 const customEmojis = { nyan_rocket: { name: 'nyan_rocket', extension: 'png' } };
 

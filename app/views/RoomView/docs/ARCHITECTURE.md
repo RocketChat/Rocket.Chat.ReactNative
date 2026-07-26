@@ -1,6 +1,6 @@
 # Room Message Loading Architecture
 
-Load-bearing reference for how the Room view loads, observes, and re-positions Messages. Read this before `FLOWS.md` — that document assumes the vocabulary defined here. Domain terms (Message Window, Live Tail, Anchored Window, Chunk, Gap, Loader Row) are defined in the repo glossary `UBIQUITOUS_LANGUAGE.md` under "Message Loading"; this document uses them as defined there.
+Load-bearing reference for how the Room view loads, observes, and re-positions Messages. Read this before `FLOWS.md` — that document assumes the vocabulary defined here. Domain terms (Message Window, Live Tail, Anchored Window, Chunk, Gap, Loader Row) are defined in the repo glossary `CONTEXT.md` under "Message Loading"; this document uses them as defined there.
 
 ## Overview
 
