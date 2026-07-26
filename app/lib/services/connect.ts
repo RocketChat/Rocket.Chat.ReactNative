@@ -40,6 +40,11 @@ interface IServices {
 	service: string;
 }
 
+function isLoginReady(): boolean {
+	const s = store.getState();
+	return s.login.isAuthenticated && s.meteor.connected;
+}
+
 let connectingListener: any;
 let connectedListener: any;
 let closeListener: any;
@@ -142,10 +147,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
 			try {
-				const isLoginReady = () => {
-					const s = store.getState();
-					return s.login.isAuthenticated && s.meteor.connected;
-				};
 				if (!isLoginReady()) {
 					await new Promise<void>(resolve => {
 						const unsub = store.subscribe(() => {
