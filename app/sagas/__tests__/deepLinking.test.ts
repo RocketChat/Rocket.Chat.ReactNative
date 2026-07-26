@@ -95,7 +95,7 @@ jest.mock('../../lib/methods/helpers', () => ({
 import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { deepLinkingOpen } from '../../actions/deepLinking';
+import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
 import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
@@ -106,10 +106,11 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
 import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
+import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -461,6 +462,60 @@ describe('deepLinking saga — server already connected, should skip changing se
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 		emitSpy.mockRestore();
+	});
+});
+
+// ─── handleClickCallPush (OPEN_VIDEO_CONF) — new server + token ───────────────
+
+describe('deepLinking saga — handleClickCallPush (new server + token + call room)', () => {
+	/** Call-push params: host + token + the rid handleNavigateCallRoom looks up. */
+	const makeCallParams = (overrides: Record<string, any> = {}) => makeParamsWithToken({ rid: 'room-1', ...overrides });
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(navigateToRoom).mockReset();
+		jest.mocked(database.active.get).mockReset();
+
+		// Unknown server with a token → reaches the SELECT_SUCCESS gate.
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(null);
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+
+		// handleNavigateCallRoom resolves the subscription for params.rid.
+		jest.mocked(database.active.get).mockReturnValue({
+			find: jest.fn().mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' })
+		} as any);
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('navigates to the call room once after SELECT_SUCCESS and LOGIN.SUCCESS', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(navigateToRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
 });
 

@@ -51,7 +51,16 @@ const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	settings: {}
 }));
 const mockStoreDispatch = jest.fn<unknown, [unknown]>();
-const mockStoreSubscribe = jest.fn<() => void, [() => void]>(() => () => undefined);
+const mockStoreSubscribeCallbacks: Array<() => void> = [];
+const mockStoreSubscribe = jest.fn<() => void, [() => void]>(cb => {
+	mockStoreSubscribeCallbacks.push(cb);
+	return () => {
+		const index = mockStoreSubscribeCallbacks.indexOf(cb);
+		if (index !== -1) {
+			mockStoreSubscribeCallbacks.splice(index, 1);
+		}
+	};
+});
 jest.mock('../store/auxStore', () => ({
 	store: {
 		getState: () => mockStoreGetState(),
@@ -403,6 +412,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockOnStreamDataStops.length = 0;
+		mockStoreSubscribeCallbacks.length = 0;
 		pendingHangups.clear();
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
@@ -428,6 +438,41 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		closeHandler();
 		drainHandler();
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
+	});
+
+	it('waits for login to become ready before draining', async () => {
+		pendingHangups.record('call-a');
+		let state: MockStoreState = {
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		};
+		mockStoreGetState.mockImplementation(() => state);
+
+		await connect({ server: 'https://example.com' });
+
+		const connectedHandlers = getHandlersByEvent('connected');
+		const closeHandlers = getHandlersByEvent('close');
+		const drainHandler = connectedHandlers[1];
+		const closeHandler = closeHandlers[0];
+
+		closeHandler();
+		drainHandler();
+		await flushMicrotasks();
+
+		// Not ready yet — subscribed but not drained.
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+
+		// Transition to authenticated + connected and notify subscribers.
+		state = {
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {}
+		};
+		mockStoreSubscribeCallbacks.forEach(cb => cb());
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
