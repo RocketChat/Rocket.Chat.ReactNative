@@ -25,6 +25,7 @@ Everything else is a standard `package.json` script.
 
 - Local-first data flow: the UI reads from WatermelonDB, sagas sync it with the server.
 - Redux + Redux-Saga holds global/server state, but Zustand backs several feature-local stores. Don't assume Redux.
+- Sync watermarks come from raw server response payloads, never from local rows or `Date.now()` — see CONTEXT.md "Timestamp Trust Boundary".
 
 ## Continuous Integration
 

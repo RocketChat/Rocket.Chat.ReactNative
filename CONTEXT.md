@@ -104,6 +104,15 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 | **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
 | **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
 
+## Timestamp Trust Boundary
+
+A Message carries two timestamps: `ts` (creation time, never moves) and `_updatedAt` (the server's Mongo write stamp, moved by every mutation — edit, reaction, pin/star, translation, thread-reply bump). `_updatedAt` is the field the server's sync cursor (`chat.syncMessages` / `lastUpdate`) compares. Its trustworthiness depends on where it is read:
+
+- **In a server response payload** — server truth, stamped by the server's clock.
+- **In a WatermelonDB row** — not trustworthy as a clock: `normalizeMessage` fills a missing `_updatedAt` with device `new Date()`, and Temp/Error Messages plus Loader Rows carry device-clock stamps.
+
+Therefore any sync watermark must be computed from the raw response payload before `normalizeMessage` runs — never from a DB row, never from `Date.now()`. A skewed device clock silently poisons watermarks derived locally.
+
 ## Message Action & Position State
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
@@ -250,3 +259,4 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 - **"Reply"** is overloaded: **Reply Broadcast** is the action available to non-authorized users in a Broadcast Room; replying in a **Thread** is navigation into the Thread view. Neither is a **Message Action** — there is no "reply" Message Action.
 - **"Status" vs "flags"** — a Message has exactly one delivery **Status** (Sent, Temp, Error). **Pinned** and **Starred** are independent **Message Flags**, not statuses; do not group them with delivery states.
 - **"Interaction" retired** — the selection-plus-action state was once an "interaction" concept; the canonical term is now **Message Action State**. Use **Message Action**, not "interaction", for which Message is selected and how. (Selection is not separate — it lives inside the active Message Action.)
+- **`_updatedAt` is overloaded by location** — in a server response payload it is server truth (the sync cursor's comparison field); in a WatermelonDB row it may be device-stamped and must not be trusted as a clock. See **Timestamp Trust Boundary**.
