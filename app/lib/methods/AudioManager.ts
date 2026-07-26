@@ -13,15 +13,27 @@ import { AUDIO_MODE } from '../constants/audio';
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
 class AudioManagerClass {
-	private audioQueue: { [audioKey: string]: AudioPlayer } = {};
-	private audioUris: { [audioKey: string]: string } = {};
-	private audioPositions: { [audioKey: string]: number } = {};
-	private audioRates: { [audioKey: string]: number } = {};
-	private audioSubscriptions: { [audioKey: string]: () => void } = {};
-	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void } = {};
-	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } } = {};
-	private audioPlaying = '';
-	private audiosRendered = new Set<string>();
+	private audioQueue: { [audioKey: string]: AudioPlayer };
+	private audioUris: { [audioKey: string]: string };
+	private audioPositions: { [audioKey: string]: number };
+	private audioRates: { [audioKey: string]: number };
+	private audioSubscriptions: { [audioKey: string]: () => void };
+	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } };
+	private audioPlaying: string;
+	private audiosRendered: Set<string>;
+
+	constructor() {
+		this.audioQueue = {};
+		this.audioUris = {};
+		this.audioPositions = {};
+		this.audioRates = {};
+		this.audioSubscriptions = {};
+		this.audioCallbacks = {};
+		this.audioMeta = {};
+		this.audioPlaying = '';
+		this.audiosRendered = new Set<string>();
+	}
 
 	loadAudio = async ({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> => {
 		const audioKey = getAudioKey({ msgId, rid, uri });
