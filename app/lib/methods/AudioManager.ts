@@ -107,12 +107,8 @@ class AudioManagerClass {
 
 	async setPositionAsync(audioKey: string, time: number) {
 		this.audioPositions[audioKey] = time;
-		const player = this.audioQueue[audioKey];
-		if (!player) {
-			return;
-		}
 		try {
-			await player.seekTo(time);
+			await this.audioQueue[audioKey]?.seekTo(time);
 		} catch {
 			// Ignore seek errors
 		}
@@ -161,17 +157,25 @@ class AudioManagerClass {
 				emitter.emit('audioFocused', '');
 				await this.playNextAudioInSequence(audioKey);
 			} catch {
-				// Ignore errors during cleanup
+				// do nothing
 			}
 		}
 	}
 
 	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
-		if (!message.attachments) return;
+		if (!message.attachments) {
+			return;
+		}
 		const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
 		const uri = getFilePathAudio({ audioUrl, audioType });
-		if (!uri) return;
-		return getAudioKey({ msgId: message.id, rid, uri });
+		if (!uri) {
+			return;
+		}
+		return getAudioKey({
+			msgId: message.id,
+			rid,
+			uri
+		});
 	};
 
 	async getNextAudioMessage(msgId: string, rid: string) {
@@ -191,29 +195,25 @@ class AudioManagerClass {
 				.fetch();
 			return message;
 		}
+
 		return null;
 	}
 
 	async playNextAudioInSequence(previousAudioKey: string) {
-		const meta = this.audioMeta[previousAudioKey];
-		if (!meta) {
-			return;
-		}
-		const { msgId, rid } = meta;
-		if (!msgId) {
-			return;
-		}
+		const [msgId, rid] = previousAudioKey.split('-');
 		const nextMessage = await this.getNextAudioMessage(msgId, rid);
 		if (nextMessage && nextMessage.attachments) {
 			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
-			if (nextAudioInSeqKey && this.audioQueue[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
+			if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
 				await this.playAudio(nextAudioInSeqKey);
 			}
 		}
 	}
 
 	async unloadRoomAudios(rid?: string) {
-		if (!rid) return;
+		if (!rid) {
+			return;
+		}
 		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => this.audioMeta[audioKey]?.rid === rid);
 		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
 		try {
