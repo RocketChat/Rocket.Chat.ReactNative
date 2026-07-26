@@ -1,4 +1,4 @@
-import { type RecordingOptions } from "expo-audio";
+import { type RecordingOptions, type AudioMode } from "expo-audio";
 
 export const RECORDING_EXTENSION = '.aac';
 
@@ -21,20 +21,20 @@ export const RECORDING_SETTINGS: RecordingOptions = {
 	web: {}
 };
 
-export const RECORDING_MODE = {
+export const RECORDING_MODE: AudioMode = {
 	playsInSilentMode: true,
 	shouldPlayInBackground: true,
 	allowsRecording: true,
 	shouldRouteThroughEarpiece: false,
 	interruptionMode: 'doNotMix',
 	interruptionModeAndroid: 'doNotMix'
-} as const;
+};
 
-export const AUDIO_MODE = {
+export const AUDIO_MODE: AudioMode = {
 	playsInSilentMode: true,
 	shouldPlayInBackground: true,
 	allowsRecording: false,
 	shouldRouteThroughEarpiece: false,
 	interruptionMode: 'doNotMix',
 	interruptionModeAndroid: 'doNotMix'
-} as const;
+};
