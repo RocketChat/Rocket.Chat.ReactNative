@@ -35,7 +35,15 @@ class AudioManagerClass {
 		this.audiosRendered = new Set<string>();
 	}
 
-	loadAudio = async ({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> => {
+	addAudioRendered = (audioKey: string) => {
+		this.audiosRendered.add(audioKey);
+	};
+
+	removeAudioRendered = (audioKey: string) => {
+		this.audiosRendered.delete(audioKey);
+	};
+
+	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.audioUris[audioKey] = uri;
 		this.audioMeta[audioKey] = { msgId, rid };
@@ -223,14 +231,6 @@ class AudioManagerClass {
 		});
 		this.audioPlaying = '';
 	}
-
-	addAudioRendered = (audioKey: string) => {
-		this.audiosRendered.add(audioKey);
-	};
-
-	removeAudioRendered = (audioKey: string) => {
-		this.audiosRendered.delete(audioKey);
-	};
 }
 
 const AudioManager = new AudioManagerClass();
