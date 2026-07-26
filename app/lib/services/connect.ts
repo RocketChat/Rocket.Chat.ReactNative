@@ -133,11 +133,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		let pendingHangupsDrainArmed = false;
 
 		closeListener = sdk.current.onStreamData('close', () => {
-			// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
-			// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
-			// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
-			// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
-			unsubscribeRooms();
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
