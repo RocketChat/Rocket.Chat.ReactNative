@@ -43,7 +43,7 @@ class AudioManagerClass {
 		this.audiosRendered.delete(audioKey);
 	};
 
-	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
+	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.audioUris[audioKey] = uri;
 		this.audioMeta[audioKey] = { msgId, rid };
@@ -98,7 +98,7 @@ class AudioManagerClass {
 		}
 	}
 
-	async pauseAudio() {
+	pauseAudio() {
 		if (this.audioPlaying) {
 			this.audioQueue[this.audioPlaying]?.pause();
 			this.audioPlaying = '';
@@ -114,7 +114,7 @@ class AudioManagerClass {
 		}
 	}
 
-	async setRateAsync(audioKey: string, value = 1.0) {
+	setRateAsync(audioKey: string, value = 1.0) {
 		this.audioRates[audioKey] = value;
 		try {
 			this.audioQueue[audioKey]?.setPlaybackRate(value);
