@@ -110,7 +110,7 @@ class AudioManagerClass {
 		try {
 			await this.audioQueue[audioKey]?.seekTo(time);
 		} catch {
-			// Ignore seek errors
+			// Do nothing
 		}
 	}
 
@@ -119,7 +119,7 @@ class AudioManagerClass {
 		try {
 			this.audioQueue[audioKey]?.setPlaybackRate(value);
 		} catch {
-			// Ignore errors when setting playback rate
+			// Do nothing
 		}
 	}
 

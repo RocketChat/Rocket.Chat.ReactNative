@@ -51,6 +51,7 @@ export const RecordAudio = (): ReactElement | null => {
 				await audioRecorder.prepareToRecordAsync();
 				await audioRecorder.record();
 			} catch (error: any) {
+				// error only occurs on iOS devices
 				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
 					if (numberOfTriesRef.current <= 5) {
 						numberOfTriesRef.current += 1;
@@ -58,10 +59,10 @@ export const RecordAudio = (): ReactElement | null => {
 							record();
 						}, 100);
 					} else {
-						log(error);
+						console.error(error);
 					}
 				} else {
-					log(error);
+					console.error(error);
 				}
 			}
 		};

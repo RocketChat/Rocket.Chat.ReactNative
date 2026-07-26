@@ -46,7 +46,7 @@ export const DialpadProvider = ({ children }: { children: ReactNode }) => {
 						const player = createAudioPlayer(asset);
 						if (cancelled) {
 							player.release();
-							return null;
+							return;
 						}
 						soundsRef.current[digit] = player;
 					} catch (error) {
