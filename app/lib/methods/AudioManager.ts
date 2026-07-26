@@ -54,7 +54,7 @@ class AudioManagerClass {
 		const sound = createAudioPlayer({ uri });
 		this.audioQueue[audioKey] = sound;
 		return audioKey;
-	};
+	}
 
 	async playAudio(audioKey: string) {
 		if (this.audioPlaying && this.audioPlaying !== audioKey) {
@@ -103,7 +103,7 @@ class AudioManagerClass {
 			this.audioQueue[this.audioPlaying]?.pause();
 			this.audioPlaying = '';
 		}
-	};
+	}
 
 	async setPositionAsync(audioKey: string, time: number) {
 		this.audioPositions[audioKey] = time;
@@ -121,7 +121,7 @@ class AudioManagerClass {
 		} catch {
 			// Ignore errors when setting playback rate
 		}
-	};
+	}
 
 	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
 		if (status) {

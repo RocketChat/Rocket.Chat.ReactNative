@@ -1,4 +1,4 @@
-import { type RecordingOptions, type AudioMode } from "expo-audio";
+import { type RecordingOptions, type AudioMode } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
 
