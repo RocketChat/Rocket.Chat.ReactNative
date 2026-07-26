@@ -8,17 +8,7 @@ import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '../../definitions';
 import { emitter } from './helpers';
 import log from './helpers/log';
-
-// Mirrors the previous expo-av AUDIO_MODE: audio plays even when the device is
-// in silent mode, stays active in the background, and does not mix with other sessions.
-const PLAYBACK_MODE = {
-	playsInSilentMode: true,
-	shouldPlayInBackground: true,
-	allowsRecording: false,
-	shouldRouteThroughEarpiece: false,
-	interruptionMode: 'doNotMix',
-	interruptionModeAndroid: 'doNotMix'
-} as const;
+import { AUDIO_MODE } from '../constants/audio';
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
@@ -50,7 +40,7 @@ class AudioManagerClass {
 		}
 
 		try {
-			await setAudioModeAsync(PLAYBACK_MODE);
+			await setAudioModeAsync(AUDIO_MODE);
 		} catch {
 			// Ignore audio mode errors — playback still attempted below
 		}

@@ -23,6 +23,15 @@ const Ringer = memo(({ ringer }: { ringer: ERingerSounds }) => {
 		} catch (error) {
 			log(error);
 		}
+
+		return () => {
+			try {
+				player.pause();
+				player.release();
+			} catch (error) {
+				log(error);
+			}
+		};
 	}, [player]);
 
 	return null;

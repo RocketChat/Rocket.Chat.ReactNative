@@ -71,7 +71,6 @@ export const DialpadProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 		try {
-			player.pause();
 			await player.seekTo(0);
 			player.play();
 		} catch (error) {

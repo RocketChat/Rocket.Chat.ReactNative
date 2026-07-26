@@ -1,7 +1,6 @@
 import { View, Text } from 'react-native';
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import {
-	RecordingPresets,
 	requestRecordingPermissionsAsync,
 	setAudioModeAsync,
 	useAudioRecorder,
@@ -18,7 +17,7 @@ import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
 import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
-import { RECORDING_EXTENSION } from '../../../../lib/constants/audio';
+import { RECORDING_EXTENSION, RECORDING_PRESET, RECORDING_MODE } from '../../../../lib/constants/audio';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
 import { type IUpload } from '../../../../definitions';
@@ -31,11 +30,11 @@ import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
-	const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+	const audioRecorder = useAudioRecorder(RECORDING_PRESET);
 	const recorderState = useAudioRecorderState(audioRecorder);
 
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
-	const preparedRef = useRef(false);
+	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -45,35 +44,40 @@ export const RecordAudio = (): ReactElement | null => {
 	useKeepAwake();
 
 	async function doRecording() {
-		const permissions = await requestRecordingPermissionsAsync();
-		if (!permissions.granted) {
-			setRecordingAudio(false);
-			return;
+		try {
+			const permissions = await requestRecordingPermissionsAsync();
+			if (!permissions.granted) {
+				setRecordingAudio(false);
+				return;
+			}
+
+			await setAudioModeAsync(RECORDING_MODE);
+			await audioRecorder.prepareToRecordAsync();
+			await audioRecorder.record();
+		} catch (error: any) {
+			if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
+				if (numberOfTriesRef.current <= 5) {
+					numberOfTriesRef.current += 1;
+					setTimeout(() => {
+						doRecording();
+					}, 100);
+				} else {
+					log(error);
+				}
+			} else {
+				log(error);
+			}
 		}
-
-		await setAudioModeAsync({
-			playsInSilentMode: true,
-			allowsRecording: true
-		});
-
-		await audioRecorder.prepareToRecordAsync();
-		await audioRecorder.record();
-		preparedRef.current = true;
 	}
 
 	useEffect(() => {
-		doRecording().catch(error => {
-			log(error);
-			setRecordingAudio(false);
-		});
+		numberOfTriesRef.current = 0;
+		doRecording();
 
 		return () => {
-			if (preparedRef.current) {
-				audioRecorder.stop().catch(() => {
-					// Do nothing
-				});
-				preparedRef.current = false;
-			}
+			audioRecorder.stop().catch((error: unknown) => {
+				log(error);
+			});
 		};
 	}, []);
 
