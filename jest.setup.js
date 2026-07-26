@@ -29,7 +29,8 @@ jest.mock('react-native-worklets', () => ({
 	callMicrotasks: jest.fn(),
 	executeOnUIRuntimeSync: jest.fn(fn => fn()),
 	serializableMappingCache: { get: jest.fn(), set: jest.fn(), has: jest.fn(() => false), delete: jest.fn() },
-	scheduleOnRN: jest.fn((fn, ...args) => fn(...args))
+	scheduleOnRN: jest.fn((fn, ...args) => fn(...args)),
+	scheduleOnUI: jest.fn()
 }));
 
 // @ts-ignore
@@ -49,8 +50,8 @@ jest.mock('react-native-reanimated', () => {
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
-jest.mock('react-native-file-viewer', () => ({
-	open: jest.fn(() => null)
+jest.mock('@magrinj/expo-quick-look', () => ({
+	previewFile: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('react-native-incall-manager', () => ({
@@ -90,7 +91,7 @@ jest.mock('expo-font', () => ({
 	__esModule: true
 }));
 
-jest.mock('expo-av', () => {
+jest.mock('./app/lib/methods/helpers/expoAvShim', () => {
 	const InterruptionModeAndroid = {
 		DoNotMix: 1,
 		DuckOthers: 2
@@ -205,6 +206,16 @@ jest.mock('expo-av', () => {
 	};
 });
 
+// Story snapshots render media attachments, whose auto-download effect runs the
+// real file-system I/O chain. Under react-test-renderer's act() that async chain
+// runs away and exhausts the heap. Stub the I/O entry points; keep the pure helpers.
+jest.mock('./app/lib/methods/handleMediaDownload', () => ({
+	...jest.requireActual('./app/lib/methods/handleMediaDownload'),
+	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),
+	downloadMediaFile: jest.fn(() => Promise.resolve('')),
+	isDownloadActive: jest.fn(() => false)
+}));
+
 jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
 }));
@@ -315,15 +326,6 @@ jest.mock('@lodev09/react-native-true-sheet', () => {
 		__esModule: true,
 		TrueSheet,
 		TrueSheetProvider: ({ children }) => children
-	};
-});
-
-jest.mock('react-native-math-view', () => {
-	const react = require('react-native');
-	return {
-		__esModule: true,
-		default: react.View, // Default export
-		MathText: react.View // {...} Named export
 	};
 });
 

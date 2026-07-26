@@ -1,10 +1,10 @@
 import { memo, useState } from 'react';
-import { Video, ResizeMode } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
+import { Video, ResizeMode } from '../../lib/methods/helpers/expoAvShim';
 import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';

@@ -26,13 +26,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey="«ra»"
+      orderKey="_r_a_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«ra»"
+        orderKey="_r_a_"
       >
         <View
           style={
@@ -1337,13 +1337,13 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
       }
     >
       <A11yOrderView
-        orderKey="«rb»"
+        orderKey="_r_b_"
       >
         <A11yIndexView
           importantForAccessibility="yes"
           orderFocusType={0}
           orderIndex={1}
-          orderKey="«rb»"
+          orderKey="_r_b_"
         >
           <View
             style={
@@ -2649,13 +2649,13 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
       }
     >
       <A11yOrderView
-        orderKey="«rc»"
+        orderKey="_r_c_"
       >
         <A11yIndexView
           importantForAccessibility="yes"
           orderFocusType={0}
           orderIndex={1}
-          orderKey="«rc»"
+          orderKey="_r_c_"
         >
           <View
             style={
@@ -3954,13 +3954,13 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey="«rd»"
+      orderKey="_r_d_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rd»"
+        orderKey="_r_d_"
       >
         <View
           style={

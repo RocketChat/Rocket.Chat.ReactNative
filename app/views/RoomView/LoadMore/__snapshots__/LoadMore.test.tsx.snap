@@ -530,13 +530,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
-      orderKey="«r0»"
+      orderKey="_r_0_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r0»"
+        orderKey="_r_0_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -637,7 +637,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r0»"
+                  orderKey="_r_0_"
                 >
                   <View
                     style={
@@ -769,6 +769,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -786,6 +787,8 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -988,13 +991,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r1»"
+      orderKey="_r_1_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r1»"
+        orderKey="_r_1_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -1095,7 +1098,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r1»"
+                  orderKey="_r_1_"
                 >
                   <View
                     style={
@@ -1214,13 +1217,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r2»"
+      orderKey="_r_2_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r2»"
+        orderKey="_r_2_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -1321,7 +1324,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r2»"
+                  orderKey="_r_2_"
                 >
                   <View
                     style={
@@ -1652,13 +1655,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
-      orderKey="«r3»"
+      orderKey="_r_3_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r3»"
+        orderKey="_r_3_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -1759,7 +1762,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r3»"
+                  orderKey="_r_3_"
                 >
                   <View
                     style={
@@ -1891,6 +1894,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -1908,6 +1912,8 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -2110,13 +2116,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r4»"
+      orderKey="_r_4_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r4»"
+        orderKey="_r_4_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -2217,7 +2223,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r4»"
+                  orderKey="_r_4_"
                 >
                   <View
                     style={
@@ -2336,13 +2342,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r5»"
+      orderKey="_r_5_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r5»"
+        orderKey="_r_5_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -2443,7 +2449,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r5»"
+                  orderKey="_r_5_"
                 >
                   <View
                     style={
@@ -2562,13 +2568,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r6»"
+      orderKey="_r_6_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r6»"
+        orderKey="_r_6_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -2669,7 +2675,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r6»"
+                  orderKey="_r_6_"
                 >
                   <View
                     style={
@@ -2801,6 +2807,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -2818,6 +2825,8 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -3139,13 +3148,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
-      orderKey="«r7»"
+      orderKey="_r_7_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r7»"
+        orderKey="_r_7_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -3246,7 +3255,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r7»"
+                  orderKey="_r_7_"
                 >
                   <View
                     style={
@@ -3378,6 +3387,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -3395,6 +3405,8 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -3597,13 +3609,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r8»"
+      orderKey="_r_8_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r8»"
+        orderKey="_r_8_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -3704,7 +3716,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r8»"
+                  orderKey="_r_8_"
                 >
                   <View
                     style={
@@ -3823,13 +3835,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«r9»"
+      orderKey="_r_9_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r9»"
+        orderKey="_r_9_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -3930,7 +3942,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«r9»"
+                  orderKey="_r_9_"
                 >
                   <View
                     style={
@@ -4261,13 +4273,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
-      orderKey="«ra»"
+      orderKey="_r_a_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«ra»"
+        orderKey="_r_a_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -4368,7 +4380,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«ra»"
+                  orderKey="_r_a_"
                 >
                   <View
                     style={
@@ -4500,6 +4512,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -4517,6 +4530,8 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -4719,13 +4734,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rb»"
+      orderKey="_r_b_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rb»"
+        orderKey="_r_b_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -4826,7 +4841,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rb»"
+                  orderKey="_r_b_"
                 >
                   <View
                     style={
@@ -4945,13 +4960,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rc»"
+      orderKey="_r_c_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rc»"
+        orderKey="_r_c_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -5052,7 +5067,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rc»"
+                  orderKey="_r_c_"
                 >
                   <View
                     style={
@@ -5171,13 +5186,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rd»"
+      orderKey="_r_d_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rd»"
+        orderKey="_r_d_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -5278,7 +5293,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rd»"
+                  orderKey="_r_d_"
                 >
                   <View
                     style={
@@ -5410,6 +5425,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -5427,6 +5443,8 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -5748,13 +5766,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
-      orderKey="«re»"
+      orderKey="_r_e_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«re»"
+        orderKey="_r_e_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -5855,7 +5873,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«re»"
+                  orderKey="_r_e_"
                 >
                   <View
                     style={
@@ -5987,6 +6005,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -6004,6 +6023,8 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -6206,13 +6227,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rf»"
+      orderKey="_r_f_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rf»"
+        orderKey="_r_f_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -6313,7 +6334,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rf»"
+                  orderKey="_r_f_"
                 >
                   <View
                     style={
@@ -6432,13 +6453,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rg»"
+      orderKey="_r_g_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rg»"
+        orderKey="_r_g_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -6539,7 +6560,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rg»"
+                  orderKey="_r_g_"
                 >
                   <View
                     style={
@@ -6870,13 +6891,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
-      orderKey="«rh»"
+      orderKey="_r_h_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rh»"
+        orderKey="_r_h_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -6977,7 +6998,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rh»"
+                  orderKey="_r_h_"
                 >
                   <View
                     style={
@@ -7109,6 +7130,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -7126,6 +7148,8 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />
@@ -7328,13 +7352,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«ri»"
+      orderKey="_r_i_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«ri»"
+        orderKey="_r_i_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -7435,7 +7459,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«ri»"
+                  orderKey="_r_i_"
                 >
                   <View
                     style={
@@ -7554,13 +7578,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rj»"
+      orderKey="_r_j_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rj»"
+        orderKey="_r_j_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -7661,7 +7685,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rj»"
+                  orderKey="_r_j_"
                 >
                   <View
                     style={
@@ -7780,13 +7804,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey="«rk»"
+      orderKey="_r_k_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«rk»"
+        orderKey="_r_k_"
       >
         <ExternalKeyboardView
           canBeFocused={true}
@@ -7887,7 +7911,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   importantForAccessibility="yes"
                   orderFocusType={0}
                   orderIndex={2}
-                  orderKey="«rk»"
+                  orderKey="_r_k_"
                 >
                   <View
                     style={
@@ -8019,6 +8043,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 onProgress={[Function]}
                                 placeholder={[]}
                                 priority="high"
+                                sfEffect={null}
                                 source={
                                   [
                                     {
@@ -8036,6 +8061,8 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                     "width": 36,
                                   }
                                 }
+                                symbolSize={null}
+                                symbolWeight={null}
                                 transition={null}
                                 width={36}
                               />

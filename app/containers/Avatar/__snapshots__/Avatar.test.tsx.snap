@@ -34,6 +34,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -49,6 +50,8 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -89,6 +92,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -104,6 +108,8 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -144,6 +150,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -159,6 +166,8 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -199,6 +208,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -214,6 +224,8 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -254,6 +266,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -269,6 +282,8 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -309,6 +324,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -324,6 +340,8 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -364,6 +382,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -379,6 +398,8 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -419,6 +440,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -434,6 +456,8 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -513,6 +537,7 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -528,6 +553,8 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -570,6 +597,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -585,6 +613,8 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -625,6 +655,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -640,6 +671,8 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -690,6 +723,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       onLoadStart={[Function]}
       onProgress={[Function]}
       placeholder={[]}
+      sfEffect={null}
       source={
         [
           {
@@ -704,6 +738,8 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           "width": 56,
         }
       }
+      symbolSize={null}
+      symbolWeight={null}
       transition={null}
       width={56}
     />
@@ -745,6 +781,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -760,6 +797,8 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -800,6 +839,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -815,6 +855,8 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -935,6 +977,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -950,6 +993,8 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
               "width": 56,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={56}
         />
@@ -993,6 +1038,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -1008,6 +1054,8 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -1048,6 +1096,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -1063,6 +1112,8 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />
@@ -1103,6 +1154,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
     onProgress={[Function]}
     placeholder={[]}
     priority="high"
+    sfEffect={null}
     source={
       [
         {
@@ -1118,6 +1170,8 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
         "width": 56,
       }
     }
+    symbolSize={null}
+    symbolWeight={null}
     transition={null}
     width={56}
   />

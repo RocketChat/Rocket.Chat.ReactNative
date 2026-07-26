@@ -205,6 +205,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -220,6 +221,8 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
               "width": 28,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={28}
         />
@@ -388,6 +391,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -403,6 +407,8 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
               "width": 28,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={28}
         />
@@ -801,6 +807,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -816,6 +823,8 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
               "width": 28,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={28}
         />

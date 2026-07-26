@@ -1,8 +1,8 @@
-import { Audio } from 'expo-av';
 import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';
 
+import { Audio } from '../../../../lib/methods/helpers/expoAvShim';
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';

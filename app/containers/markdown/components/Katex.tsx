@@ -1,52 +1,62 @@
 import { type KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
-import { type ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
-// eslint-disable-next-line import/no-unresolved
-import MathView, { MathText } from 'react-native-math-view';
+import { type WebViewMessageEvent } from 'react-native-webview';
 
+import InlineCode from './InlineCode';
 import { isAndroid } from '../../../lib/methods/helpers/deviceInfo';
 import { useTheme } from '../../../theme';
-import { DEFAULT_MESSAGE_HEIGHT } from '../../message/utils';
 
 interface IKaTeXProps {
 	value: KaTeXProps['value'];
 }
 
-const BLOCK_ENV_PATTERN = /\\begin\s*\{\s*(array|matrix|pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix)\s*\}/;
+const INITIAL_HEIGHT = 20;
 
-export const KaTeX = ({ value }: IKaTeXProps): ReactElement | null => {
+// Re-post height after layout settles: an initial read misses late glyph/webfont
+// metrics (e.g. \Huge), leaving the container too short and clipping the expression.
+const injectedJavaScript = `
+	function postHeight() { window.ReactNativeWebView.postMessage(String(document.body.scrollHeight)); }
+	postHeight();
+	new ResizeObserver(postHeight).observe(document.body);
+	if (document.fonts && document.fonts.ready) document.fonts.ready.then(postHeight);
+	true;
+`;
+
+// Center horizontally and reset margins, but omit the fork default's height:100%:
+// with a full-height body scrollHeight reflects the container, breaking the height handshake.
+const inlineStyle = (color: string) => `
+body { color: ${color}; margin: 0; display: flex; justify-content: center; }
+.katex { margin: 0; }
+`;
+
+export const KaTeX = ({ value }: IKaTeXProps): ReactElement => {
 	const { colors } = useTheme();
-	const fixAndroidWebviewCrashStyle: StyleProp<ViewStyle> = isAndroid ? { opacity: 0.99, overflow: 'hidden' } : {};
-	// KaTeX array does not render correctly in MathView (shows gray box).
-	// MathView does not throw, so renderError is never triggered.
-	if (BLOCK_ENV_PATTERN.test(value)) {
-		return (
-			<Katex
-				expression={value}
-				displayMode={true}
-				style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]}
-			/>
-		);
-	}
+	const [height, setHeight] = useState(INITIAL_HEIGHT);
+
+	const onMessage = (event: WebViewMessageEvent) => {
+		const newHeight = Number(event.nativeEvent.data);
+		if (!Number.isNaN(newHeight) && newHeight > 0) {
+			setHeight(newHeight);
+		}
+	};
+
+	const androidCrashWorkaround: StyleProp<ViewStyle> = isAndroid ? { opacity: 0.99, overflow: 'hidden' } : {};
 
 	return (
-		<MathView
-			math={value}
-			config={{ inline: false }}
-			style={{ color: colors.fontDefault }}
-			renderError={() => (
-				<Katex
-					expression={value}
-					displayMode={true}
-					style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]}
-				/>
-			)}
+		<Katex
+			expression={value}
+			displayMode
+			throwOnError={false}
+			inlineStyle={inlineStyle(colors.fontDefault)}
+			injectedJavaScript={injectedJavaScript}
+			onMessage={onMessage}
+			style={[{ flex: 1, height, backgroundColor: 'transparent' }, androidCrashWorkaround]}
 		/>
 	);
 };
 
-export const InlineKaTeX = ({ value }: IKaTeXProps): ReactElement | null => {
-	const { colors } = useTheme();
-	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
-};
+export const InlineKaTeX = ({ value }: IKaTeXProps): ReactElement => (
+	<InlineCode value={{ type: 'PLAIN_TEXT', value: `$${value}$` }} />
+);

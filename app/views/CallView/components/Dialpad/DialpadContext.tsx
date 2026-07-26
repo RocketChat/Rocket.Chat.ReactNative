@@ -1,5 +1,6 @@
 import { createContext, type ReactNode, useContext, useEffect, useRef } from 'react';
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from '../../../../lib/methods/helpers/expoAvShim';
 
 const DTMF_ASSETS: Record<string, ReturnType<typeof require>> = {
 	'0': require('../../../../containers/Ringer/dtmf/digit-0.mp3'),

@@ -95,6 +95,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
         onProgress={[Function]}
         placeholder={[]}
         priority="high"
+        sfEffect={null}
         source={
           [
             {
@@ -112,6 +113,8 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
             "width": 30,
           }
         }
+        symbolSize={null}
+        symbolWeight={null}
         transition={null}
         width={30}
       />
@@ -256,6 +259,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -273,6 +277,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "width": 30,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={30}
         />
@@ -479,6 +485,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -496,6 +503,8 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
               "width": 30,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={30}
         />
@@ -702,6 +711,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          sfEffect={null}
           source={
             [
               {
@@ -719,6 +729,8 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
               "width": 30,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={30}
         />

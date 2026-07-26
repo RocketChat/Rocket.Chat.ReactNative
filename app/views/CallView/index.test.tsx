@@ -651,7 +651,7 @@ describe('CallView outgoing ringback', () => {
 			(Platform as { OS: string }).OS = 'ios';
 		});
 
-		it('does not call native ringback (expo-av Ringer handles iOS)', () => {
+		it('does not call native ringback (Ringer component handles iOS)', () => {
 			setStoreState({ callState: 'ringing', direction: 'outgoing' });
 			render(
 				<Wrapper>

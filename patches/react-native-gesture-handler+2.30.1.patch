@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-index 2296c39..0a872ba 100644
+index c9f8067..290f404 100644
 --- a/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
 +++ b/node_modules/react-native-gesture-handler/apple/RNGestureHandlerButton.mm
-@@ -89,6 +89,52 @@
+@@ -82,6 +82,52 @@
  }
  
  #if !TARGET_OS_OSX
@@ -55,3 +55,33 @@ index 2296c39..0a872ba 100644
  - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
  {
    if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)) {
+diff --git a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
+index 32cb973..fcfe879 100644
+--- a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
++++ b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt
+@@ -488,10 +488,25 @@
+     }
+ 
+     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
++      // RN 0.83 / Fabric no longer routes base View.onKeyUp to performClick() for a focused,
++      // clickable native view, so hardware Enter/Space/DPAD_CENTER never fires onPress. Mirror the
++      // iOS patch: activate directly and consume. Removable once Fabric restores the base chain.
++      if (isActivationKey(keyCode) && !isChildTouched() && !context.isScreenReaderOn()) {
++        findGestureHandlerRootView()?.activateNativeHandlers(this)
++        return true
++      }
+       receivedKeyEvent = true
+       return super.onKeyUp(keyCode, event)
+     }
+ 
++    private fun isActivationKey(keyCode: Int) = when (keyCode) {
++      KeyEvent.KEYCODE_DPAD_CENTER,
++      KeyEvent.KEYCODE_ENTER,
++      KeyEvent.KEYCODE_NUMPAD_ENTER,
++      KeyEvent.KEYCODE_SPACE -> true
++      else -> false
++    }
++
+     override fun performClick(): Boolean {
+       // don't preform click when a child button is pressed (mainly to prevent sound effect of
+       // a parent button from playing)

@@ -1,12 +1,12 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
 import { useCallback, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system/legacy';
 
+import { ResizeMode, Video } from '../lib/methods/helpers/expoAvShim';
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import AltTextLabel from '../containers/AltTextLabel';
