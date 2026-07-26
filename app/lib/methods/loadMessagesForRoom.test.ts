@@ -315,5 +315,32 @@ describe('loadMessagesForRoom', () => {
 
 			expect(subscription.lastOpen).toBeNull();
 		});
+
+		it('pins the payload-only rule: cursor ignores device-stamped DB rows', async () => {
+			const payloadMax = new Date(Date.UTC(2024, 0, 1, 0, 0, 50)).getTime();
+			const deviceStamp = new Date(Date.UTC(2025, 0, 1, 0, 0, 0)).getTime();
+
+			const firstBatch = Array.from({ length: 50 }, (_, index) =>
+				buildMessage({
+					id: `first-${index + 1}`,
+					ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString(),
+					_updatedAt: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString()
+				})
+			);
+
+			// Simulate normalizeMessage rewriting _updatedAt with the device clock after the payload was captured.
+			mockedUpdateMessages.mockImplementation(({ update }: any) => {
+				update.forEach((m: any) => {
+					m._updatedAt = deviceStamp;
+				});
+				return Promise.resolve(0);
+			});
+
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: firstBatch } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+			expect(subscription.lastOpen?.getTime()).toBe(payloadMax);
+		});
 	});
 });

@@ -692,7 +692,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					} else {
 						this.setLastSeen(null);
 					}
-					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+					readMessages(room.rid, newLastOpen).catch(e => console.log(e));
 				}
 			}
 
