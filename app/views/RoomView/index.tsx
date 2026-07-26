@@ -79,6 +79,7 @@ import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications
 import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
 import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
+import { loadMissedMessages } from '../../lib/methods/loadMissedMessages';
 import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
 import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../lib/methods/readMessages';
@@ -679,10 +680,9 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				}
 			} else {
 				const newLastOpen = new Date();
-				await RoomServices.getMessages({
+				await loadMissedMessages({
 					rid: room.rid,
-					t: room.t as RoomType,
-					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
+					t: room.t as RoomType
 				});
 
 				// if room is joined
