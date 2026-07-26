@@ -137,13 +137,34 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', () => {
+		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
-			awaitDdpLoggedIn(5000)
-				.then(() => mediaSessionInstance.drainPendingHangups())
-				.catch(error => log(error));
+			try {
+				const isLoginReady = () => {
+					const s = store.getState();
+					return s.login.isAuthenticated && s.meteor.connected;
+				};
+				if (!isLoginReady()) {
+					await new Promise<void>(resolve => {
+						const unsub = store.subscribe(() => {
+							if (isLoginReady()) {
+								clearTimeout(timer);
+								unsub();
+								resolve();
+							}
+						});
+						const timer = setTimeout(() => {
+							unsub();
+							resolve();
+						}, 5000);
+					});
+				}
+				await mediaSessionInstance.drainPendingHangups();
+			} catch (error) {
+				log(error);
+			}
 		});
 
 		usersListener = sdk.current.onStreamData(
