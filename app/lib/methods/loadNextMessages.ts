@@ -36,6 +36,8 @@ export function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 					};
 					messages.push(loadMoreItem);
 				}
+				// Jump paths never write the sync watermark: a ts-ordered forward walk never sees the
+				// `_updatedAt` of pre-anchor messages, so any cursor derived from it would skip history.
 				await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 				return resolve();
 			}

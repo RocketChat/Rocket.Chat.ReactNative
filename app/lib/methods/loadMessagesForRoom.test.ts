@@ -5,6 +5,7 @@ import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import updateMessages from './updateMessages';
 import { store } from '../store/auxStore';
+import { writeSyncWatermark } from './writeSyncWatermark';
 
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
@@ -31,6 +32,7 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 jest.mock('./updateMessages', () => jest.fn());
+jest.mock('./writeSyncWatermark', () => ({ writeSyncWatermark: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
@@ -231,5 +233,56 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedUpdateMessages).toHaveBeenCalledTimes(1);
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_POP }));
+	});
+
+	describe('sync watermark', () => {
+		const mockedWriteSyncWatermark = writeSyncWatermark as jest.MockedFunction<typeof writeSyncWatermark>;
+
+		const buildStampedBatch = (prefix: string, hour: number, length: number) =>
+			Array.from(
+				{ length },
+				(_, index) =>
+					({
+						_id: `${prefix}-${index + 1}`,
+						rid: 'ROOM_ID',
+						ts: new Date(Date.UTC(2024, 0, 1, hour, 0, length - index)).toISOString(),
+						_updatedAt: new Date(Date.UTC(2024, 0, 1, hour, 0, length - index)).toISOString(),
+						t: 'uj'
+					} as any)
+			);
+
+		it('writes the watermark from the first batch on the initial tail load', async () => {
+			const firstBatch = buildStampedBatch('first', 11, 50);
+			const secondBatch = buildStampedBatch('second', 10, 50);
+
+			mockedSdkGet
+				.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
+				.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+			expect(mockedWriteSyncWatermark).toHaveBeenCalledTimes(1);
+			// Only the first batch's stamps — the older recursion pages must not contribute.
+			expect(mockedWriteSyncWatermark).toHaveBeenCalledWith(
+				'ROOM_ID',
+				firstBatch.map(message => ({ _updatedAt: message._updatedAt }))
+			);
+		});
+
+		it('does not write when loading an older page (latest)', async () => {
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: buildStampedBatch('older', 9, 10) } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', latest: new Date(Date.UTC(2024, 0, 1, 10, 0, 0)) });
+
+			expect(mockedWriteSyncWatermark).not.toHaveBeenCalled();
+		});
+
+		it('does not write when filling a gap (loaderItem)', async () => {
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: buildStampedBatch('gap', 9, 10) } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', loaderItem: { id: 'tapped-load-more' } as any });
+
+			expect(mockedWriteSyncWatermark).not.toHaveBeenCalled();
+		});
 	});
 });
