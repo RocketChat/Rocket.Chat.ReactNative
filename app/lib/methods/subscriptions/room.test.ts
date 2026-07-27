@@ -1,102 +1,177 @@
 import RoomSubscription from './room';
-import sdk from '../../services/sdk';
-import updateMessages from '../updateMessages';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { getMessageById } from '../../database/services/Message';
+import { getThreadById } from '../../database/services/Thread';
+import log from '../helpers/log';
 
+const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
+const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
+	Promise.resolve({ stop: jest.fn() })
+);
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		get: jest.fn()
+		subscribeRoom: (rid: string) => mockSubscribeRoom(rid),
+		onStreamData: (event: string, cb: (...args: unknown[]) => void) => mockOnStreamData(event, cb)
 	}
-}));
-
-jest.mock('../../database', () => ({
-	__esModule: true,
-	default: { active: { get: jest.fn(), write: jest.fn() } }
-}));
-
-jest.mock('../../database/services/Subscription', () => ({
-	getSubscriptionByRoomId: jest.fn()
-}));
-
-jest.mock('../../database/services/Message', () => ({
-	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
 jest.mock('../../store/auxStore', () => ({
 	store: {
-		getState: jest.fn(() => ({ server: { version: '7.4.0' }, settings: {}, login: { user: {} }, room: {} })),
+		getState: jest.fn(() => ({})),
 		dispatch: jest.fn()
 	}
 }));
 
-jest.mock('../updateMessages', () => jest.fn());
-jest.mock('../readMessages', () => ({ readMessages: jest.fn() }));
-jest.mock('../../encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
+jest.mock('../loadMissedMessages', () => ({
+	loadMissedMessages: jest.fn<Promise<void>, [unknown]>(() => Promise.resolve())
+}));
 
-const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
-const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
-const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
+jest.mock('../readMessages', () => ({
+	readMessages: jest.fn()
+}));
 
-const RID = 'ROOM_ID';
+jest.mock('../helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
 
-const missedMessage = {
-	_id: 'missed-1',
-	rid: RID,
-	msg: 'sent while the app was backgrounded',
-	ts: new Date(Date.UTC(2024, 0, 1, 12, 0, 0)).toISOString(),
-	u: { _id: 'user2', username: 'user2' }
-};
+jest.mock('../helpers', () => ({
+	debounce: (fn: (...args: unknown[]) => unknown) => fn,
+	compareServerVersion: jest.fn()
+}));
 
-const syncMessagesResponse = (updated: unknown[]) => ({
-	result: { updated, deleted: [], cursor: { next: null } }
+jest.mock('../helpers/protectedFunction', () => ({
+	__esModule: true,
+	default: (fn: (...args: unknown[]) => unknown) => fn
+}));
+
+jest.mock('../helpers/buildMessage', () => ({
+	__esModule: true,
+	default: (msg: unknown) => msg
+}));
+
+jest.mock('../helpers/markMessagesRead', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
+jest.mock('../updateLastOpen', () => ({
+	updateLastOpen: jest.fn()
+}));
+
+jest.mock('../../../actions/usersTyping', () => ({
+	addUserTyping: jest.fn(),
+	clearUserTyping: jest.fn().mockReturnValue({ type: 'CLEAR_USER_TYPING' }),
+	removeUserTyping: jest.fn()
+}));
+
+jest.mock('../../../actions/room', () => ({
+	subscribeRoom: jest.fn().mockReturnValue({ type: 'SUBSCRIBE_ROOM' }),
+	unsubscribeRoom: jest.fn().mockReturnValue({ type: 'UNSUBSCRIBE_ROOM' })
+}));
+
+jest.mock('../../encryption', () => ({
+	Encryption: {
+		decryptMessage: jest.fn((msg: unknown) => Promise.resolve(msg))
+	}
+}));
+
+const mockDbBatch = jest.fn().mockResolvedValue(undefined);
+const mockDbGet = jest.fn();
+jest.mock('../../database', () => {
+	let writerQueue: Promise<unknown> = Promise.resolve();
+	const mockModel = {
+		prepareCreate: jest.fn(() => ({})),
+		prepareUpdate: jest.fn(() => ({})),
+		prepareDestroyPermanently: jest.fn(() => ({})),
+		schema: {}
+	};
+	return {
+		__esModule: true,
+		default: {
+			active: {
+				get: (...args: unknown[]) => mockDbGet(...args) ?? mockModel,
+				write: jest.fn((callback: () => Promise<void>) => {
+					const run = writerQueue.then(() => callback());
+					writerQueue = run.catch(() => undefined);
+					return run;
+				}),
+				batch: (...args: unknown[]) => mockDbBatch(...args)
+			}
+		}
+	};
 });
 
-describe('RoomSubscription resume sync', () => {
+jest.mock('../../database/services/Message', () => ({
+	getMessageById: jest.fn()
+}));
+
+jest.mock('../../database/services/Thread', () => ({
+	getThreadById: jest.fn()
+}));
+
+jest.mock('../../database/services/ThreadMessage', () => ({
+	getThreadMessageById: jest.fn()
+}));
+
+describe('RoomSubscription', () => {
+	const rid = 'test-room-id';
+	let sub: RoomSubscription;
+
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedUpdateMessages.mockResolvedValue(0);
-		mockedSdkGet.mockResolvedValue(syncMessagesResponse([missedMessage]) as never);
+		mockSubscribeRoom.mockResolvedValue([]);
+		sub = new RoomSubscription(rid);
 	});
 
-	it('fetches and persists messages missed while backgrounded when the room has a sync cursor', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: new Date(Date.UTC(2024, 0, 1, 11, 0, 0)) } as never);
-
-		await new RoomSubscription(RID).handleConnection();
-
-		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', expect.objectContaining({ roomId: RID, type: 'UPDATED' }));
-		expect(mockedUpdateMessages).toHaveBeenCalledWith(
-			expect.objectContaining({
-				rid: RID,
-				update: expect.arrayContaining([expect.objectContaining({ _id: 'missed-1' })])
-			})
-		);
+	afterEach(() => {
+		mockSubscribeRoom.mockReset();
 	});
 
-	it('fetches and persists messages missed while backgrounded for a room opened from a push notification (null lastOpen)', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
-		mockedSdkGet.mockResolvedValue({ success: true, messages: [missedMessage] } as never);
+	describe('subscribe', () => {
+		it('calls subscribeRoom exactly once on initial entry (no duplicate from connected listener)', async () => {
+			await sub.subscribe();
 
-		await new RoomSubscription(RID).handleConnection();
-
-		expect(mockedSdkGet).toHaveBeenCalledWith('channels.history', expect.objectContaining({ roomId: RID }));
-		expect(mockedUpdateMessages).toHaveBeenCalledWith(
-			expect.objectContaining({
-				rid: RID,
-				update: expect.arrayContaining([expect.objectContaining({ _id: 'missed-1' })])
-			})
-		);
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
 	});
 
-	it('writes nothing to the subscription when the room is closed', async () => {
-		const subscriptionUpdate = jest.fn();
-		mockedGetSubscriptionByRoomId.mockResolvedValue({
-			lastOpen: new Date(Date.UTC(2024, 0, 1, 11, 0, 0)),
-			update: subscriptionUpdate
-		} as never);
+	describe('updateMessage concurrency', () => {
+		const makeRecord = (debugName: string) => ({
+			_preparedState: null as string | null,
+			prepareUpdate(recordUpdater: (m: any) => void) {
+				if (this._preparedState) {
+					throw new Error(`Cannot update a record with pending changes (${debugName})`);
+				}
+				recordUpdater(this);
+				this._preparedState = 'update';
+				return this;
+			}
+		});
 
-		await new RoomSubscription(RID).unsubscribe();
+		it('does not throw "pending changes" when two stream events for the same message id arrive concurrently', async () => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const messageRecord = makeRecord(`messages#${_id}`);
+			const threadRecord = makeRecord(`threads#${_id}`);
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(threadRecord);
+			// db.batch commits prepared records, clearing their pending state (like the real writer).
+			mockDbBatch.mockImplementation((...items: any[]) => {
+				items.forEach(item => {
+					if (item && typeof item === 'object' && '_preparedState' in item) {
+						item._preparedState = null;
+					}
+				});
+				return Promise.resolve(undefined);
+			});
 
-		expect(subscriptionUpdate).not.toHaveBeenCalled();
+			const message = { _id, rid, tlm: { $date: 1 } } as any;
+
+			await Promise.all([sub.updateMessage({ ...message }), sub.updateMessage({ ...message })]);
+
+			const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([err]) => /pending changes/.test(err?.message));
+			expect(loggedPendingChanges).toBe(false);
+		});
 	});
 });

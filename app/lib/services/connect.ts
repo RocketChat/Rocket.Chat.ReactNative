@@ -40,9 +40,10 @@ interface IServices {
 	service: string;
 }
 
+// Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket close and can read true for a stale session.
 function isLoginReady(): boolean {
-	const s = store.getState();
-	return s.login.isAuthenticated && s.meteor.connected;
+	const state = store.getState();
+	return state.login.isAuthenticated && state.meteor.connected;
 }
 
 let connectingListener: any;

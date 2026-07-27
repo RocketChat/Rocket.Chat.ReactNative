@@ -51,16 +51,8 @@ const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	settings: {}
 }));
 const mockStoreDispatch = jest.fn<unknown, [unknown]>();
-const mockStoreSubscribeCallbacks: Array<() => void> = [];
-const mockStoreSubscribe = jest.fn<() => void, [() => void]>(cb => {
-	mockStoreSubscribeCallbacks.push(cb);
-	return () => {
-		const index = mockStoreSubscribeCallbacks.indexOf(cb);
-		if (index !== -1) {
-			mockStoreSubscribeCallbacks.splice(index, 1);
-		}
-	};
-});
+const noopUnsubscribe = () => () => {};
+const mockStoreSubscribe = jest.fn<() => void, [() => void]>(noopUnsubscribe);
 jest.mock('../store/auxStore', () => ({
 	store: {
 		getState: () => mockStoreGetState(),
@@ -105,6 +97,21 @@ const flushMicrotasks = async (): Promise<void> => {
 
 const getHandlersByEvent = (event: string): Array<(...args: unknown[]) => void> =>
 	mockOnStreamData.mock.calls.filter(([e]) => e === event).map(([, cb]) => cb);
+
+// The drain listener is the `connected` one registered after `close`, since `close` is what arms it.
+const getPendingHangupsDrainRegistrationIndex = (): number => {
+	const closeIndex = mockOnStreamData.mock.calls.findIndex(([event]) => event === 'close');
+	const indexes = mockOnStreamData.mock.calls
+		.map(([event], index) => (event === 'connected' && index > closeIndex ? index : -1))
+		.filter(index => index !== -1);
+	if (indexes.length !== 1) {
+		throw new Error(`expected exactly one pendingHangups drain listener, found ${indexes.length}`);
+	}
+	return indexes[0];
+};
+
+const getPendingHangupsDrainHandler = (): ((...args: unknown[]) => void) =>
+	mockOnStreamData.mock.calls[getPendingHangupsDrainRegistrationIndex()][1];
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -412,7 +419,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockOnStreamDataStops.length = 0;
-		mockStoreSubscribeCallbacks.length = 0;
+		mockStoreSubscribe.mockImplementation(noopUnsubscribe);
 		pendingHangups.clear();
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
@@ -431,10 +438,8 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const connectedHandlers = getHandlersByEvent('connected');
-		const closeHandlers = getHandlersByEvent('close');
-		const drainHandler = connectedHandlers[1];
-		const closeHandler = closeHandlers[0];
+		const drainHandler = getPendingHangupsDrainHandler();
+		const closeHandler = getHandlersByEvent('close')[0];
 
 		closeHandler();
 		drainHandler();
@@ -444,6 +449,16 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	});
 
 	it('waits for login to become ready before draining', async () => {
+		const subscribeCallbacks: Array<() => void> = [];
+		mockStoreSubscribe.mockImplementation(cb => {
+			subscribeCallbacks.push(cb);
+			return () => {
+				const index = subscribeCallbacks.indexOf(cb);
+				if (index !== -1) {
+					subscribeCallbacks.splice(index, 1);
+				}
+			};
+		});
 		pendingHangups.record('call-a');
 		let state: MockStoreState = {
 			meteor: { connected: false },
@@ -454,10 +469,8 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const connectedHandlers = getHandlersByEvent('connected');
-		const closeHandlers = getHandlersByEvent('close');
-		const drainHandler = connectedHandlers[1];
-		const closeHandler = closeHandlers[0];
+		const drainHandler = getPendingHangupsDrainHandler();
+		const closeHandler = getHandlersByEvent('close')[0];
 
 		closeHandler();
 		drainHandler();
@@ -472,7 +485,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 			login: { user: null, isAuthenticated: true },
 			settings: {}
 		};
-		mockStoreSubscribeCallbacks.forEach(cb => cb());
+		subscribeCallbacks.forEach(cb => cb());
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
@@ -488,7 +501,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const drainHandler = getHandlersByEvent('connected')[1];
+		const drainHandler = getPendingHangupsDrainHandler();
 
 		drainHandler();
 		await flushMicrotasks();
@@ -505,7 +518,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const drainHandler = getHandlersByEvent('connected')[1];
+		const drainHandler = getPendingHangupsDrainHandler();
 		const closeHandler = getHandlersByEvent('close')[0];
 
 		closeHandler();
@@ -517,9 +530,8 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 	it('stops the previous pendingHangups connected listener when connect runs again', async () => {
 		await connect({ server: 'https://example.com' });
-		// onStreamData call order: 'connecting', 'connected', 'close', 'connected' (drain), ...
-		// pendingHangupsConnectedListener is the second 'connected' registration — index 3.
-		const firstDrainStop = mockOnStreamDataStops[3];
+		// Stops are pushed in registration order, so the drain listener's stop shares its registration index.
+		const firstDrainStop = mockOnStreamDataStops[getPendingHangupsDrainRegistrationIndex()];
 
 		await connect({ server: 'https://example.com' });
 		await flushMicrotasks();
