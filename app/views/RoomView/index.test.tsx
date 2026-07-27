@@ -181,6 +181,36 @@ describe('RoomView notification-tap race', () => {
 		expect(mockedGetMessages).toHaveBeenCalledTimes(2);
 		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
 	});
+
+	it('self-heals when the subscription row arrives while getMessages is in flight', async () => {
+		const rows = new Subject<unknown[]>();
+		mockSubscriptionsQuery.observe.mockReturnValue(rows);
+		const row = buildRow();
+		let resolveGetMessages: (value?: unknown) => void = () => {};
+		mockedGetMessages.mockImplementation(
+			() =>
+				new Promise(resolve => {
+					resolveGetMessages = resolve;
+				})
+		);
+
+		renderRoomView({ rid: 'rid-1', t: 'c' });
+		await flush();
+		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
+
+		// Subscription row lands mid-flight; the adoption callback re-triggers init(),
+		// but it no-ops because this.initializing is still true.
+		await flush(() => rows.next([row]));
+		expect(mockedReadMessages).not.toHaveBeenCalled();
+
+		// When the in-flight getMessages finally resolves, the post-await re-read
+		// sees the adopted row and runs the unread/read-receipt path.
+		await flush(() => resolveGetMessages());
+
+		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
+		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
+		expect(mockedReadMessages).toHaveBeenCalledWith('rid-1', expect.any(Date));
+	});
 });
 
 describe('RoomView bounded init retry', () => {

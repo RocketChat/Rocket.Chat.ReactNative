@@ -671,7 +671,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		this.initializing = true;
 		try {
 			this.setState({ loading: true });
-			const { room, joined } = this.state;
+			const { room } = this.state;
 			if (!this.rid) {
 				return;
 			}
@@ -696,18 +696,25 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				await RoomServices.getMessages({
 					rid: room.rid,
 					// A subscribed room resumes from its sync cursor; only a room without a
-					// subscription row has to pull history by type.
+					// subscription row has to pull history by type. Use the entry-time snapshot
+					// because the fetch in flight is the bare-room fetch; re-reading after the
+					// await would not change the request that was already sent.
 					...('id' in room ? {} : { t: room.t as RoomType })
 				});
 
+				// Re-read state after the network await: the subscription row may have arrived
+				// while getMessages was in flight (notification-tap path), and the post-fetch
+				// logic below depends on the adopted row.
+				const { room: currentRoom, joined: currentJoined } = this.state;
+
 				// if room is joined
-				if (joined && 'id' in room) {
-					if (room.alert || room.unread || room.userMentions) {
-						this.setLastSeen(room.ls);
+				if (currentJoined && 'id' in currentRoom) {
+					if (currentRoom.alert || currentRoom.unread || currentRoom.userMentions) {
+						this.setLastSeen(currentRoom.ls);
 					} else {
 						this.setLastSeen(null);
 					}
-					readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					readMessages(currentRoom.rid, newLastOpen).catch(e => console.log(e));
 				}
 			}
 
