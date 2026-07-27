@@ -1,8 +1,51 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..d5295b5 100644
+index 19d31ae..9f752df 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -549,7 +549,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -101,9 +101,25 @@ export class Socket extends EventEmitter {
+         this.logger.error(err)
+         return reject(err)
+       }
++      // Tear down the previous connection before replacing it.
++      // The `this.connected` early-return above means we only reach here when the
++      // existing socket isn't healthy, so detaching its handlers and closing it stops
++      // a stale or still-connecting socket from later firing onClose and clobbering the
++      // live connection.
++      if (this.connection) {
++        try {
++          this.connection.onopen = null as any
++          this.connection.onmessage = null as any
++          this.connection.onerror = null as any
++          this.connection.onclose = null as any
++          this.connection.close(userDisconnectCloseCode)
++        } catch (err) {
++          this.logger.debug(`[ddp] open: previous connection teardown failed: ${(err as Error).message}`)
++        }
++      }
+       this.connection = connection
+       this.connection.onmessage = this.onMessage.bind(this)
+-      this.connection.onclose = this.onClose.bind(this)
++      this.connection.onclose = (ev: any) => this.onClose(ev, connection) // pass closing socket so onClose can compare identity
+       this.connection.onopen = this.onOpen.bind(this, resolve)
+       this.emit('connecting')
+     })
+@@ -125,7 +141,14 @@ export class Socket extends EventEmitter {
+   }
+ 
+   /** Emit close event so it can be used for promise resolve in close() */
+-  onClose = (e: any) => {
++  onClose = (e: any, closedConnection?: WebSocket) => {
++    // Ignore close events from a socket we've already replaced (an
++    // orphan). Only the current connection's close should flip app state or trigger a
++    // reopen; otherwise a zombie socket's late close clobbers the live connection and
++    // the app falsely shows "Waiting for network".
++    if (closedConnection && closedConnection !== this.connection) {
++      return
++    }
+     this.emit('close', e)
+     try {
+       if (e?.code !== userDisconnectCloseCode) {
+@@ -549,7 +572,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
