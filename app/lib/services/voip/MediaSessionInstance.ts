@@ -118,7 +118,6 @@ class MediaSessionInstance {
 			}
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
-
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
