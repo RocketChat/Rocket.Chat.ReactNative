@@ -47,7 +47,7 @@ const AudioPlayer = ({
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
 
-	const onPlaybackStatusUpdate = (status: AudioStatus) => {
+	const onPlaybackStatusUpdate = (status: AudioStatus): void => {
 		if (status) {
 			onPlaying(status);
 			handlePlaybackStatusUpdate(status);
@@ -55,7 +55,7 @@ const AudioPlayer = ({
 		}
 	};
 
-	const onPlaying = (data: AudioStatus) => {
+	const onPlaying = (data: AudioStatus): void => {
 		if (data.isLoaded && data.playing) {
 			setPaused(false);
 		} else {
@@ -63,7 +63,7 @@ const AudioPlayer = ({
 		}
 	};
 
-	const handlePlaybackStatusUpdate = (data: AudioStatus) => {
+	const handlePlaybackStatusUpdate = (data: AudioStatus): void => {
 		if (!data.isLoaded) return;
 		const durationSeconds = data.duration || 0;
 		duration.value = durationSeconds > 0 ? durationSeconds : 0;
@@ -78,13 +78,14 @@ const AudioPlayer = ({
 			try {
 				setPaused(true);
 				currentTime.value = 0;
+				AudioManager.setPositionAsync(audioUri.current, 0);
 			} catch {
 				// do nothing
 			}
 		}
 	};
 
-	const setPosition = async (time: number) => {
+	const setPosition = async (time: number): Promise<void> => {
 		await AudioManager.setPositionAsync(audioUri.current, time);
 	};
 

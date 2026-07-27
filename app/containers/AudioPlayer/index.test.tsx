@@ -40,10 +40,10 @@ jest.mock('../../theme', () => ({
 }));
 
 const mockTaskCancel = jest.fn();
-let capturedFocusCb: Function | undefined;
-let capturedBlurCb: Function | undefined;
+let capturedFocusCb: (() => void) | undefined;
+let capturedBlurCb: (() => void) | undefined;
 let mockUnsubscribe: jest.Mock;
-let capturedAudioFocusedCb: Function | undefined;
+let capturedAudioFocusedCb: ((audioFocused: string) => void) | undefined;
 
 const defaultProps = {
 	fileUri: 'file:///audio.mp3',
@@ -67,7 +67,7 @@ describe('AudioPlayer', () => {
 		capturedFocusCb = undefined;
 		capturedBlurCb = undefined;
 		mockUnsubscribe = jest.fn();
-		const mockAddListener = jest.fn((event: string, cb: Function) => {
+		const mockAddListener = jest.fn((event: string, cb: () => void) => {
 			if (event === 'focus') capturedFocusCb = cb;
 			if (event === 'blur') capturedBlurCb = cb;
 			return mockUnsubscribe;
@@ -75,7 +75,7 @@ describe('AudioPlayer', () => {
 		(useNavigation as jest.Mock).mockReturnValue({ navigate: jest.fn(), addListener: mockAddListener });
 
 		capturedAudioFocusedCb = undefined;
-		(emitter.on as jest.Mock).mockImplementation((event: string, cb: Function) => {
+		(emitter.on as jest.Mock).mockImplementation((event: string, cb: (audioFocused: string) => void) => {
 			if (event === 'audioFocused') capturedAudioFocusedCb = cb;
 		});
 	});
@@ -610,13 +610,13 @@ describe('AudioPlayer', () => {
 			expect(currentTimeValue.value).toBe(0);
 		});
 
-		it('does not crash when status is null', async () => {
+		it('does not crash or update state when status is not loaded', async () => {
 			render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb(null));
+			act(() => statusCb({ isLoaded: false }));
 
 			await act(async () => {});
 		});
