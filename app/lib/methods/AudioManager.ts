@@ -45,6 +45,7 @@ class AudioManagerClass {
 
 	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
+		this.addAudioRendered(audioKey);
 		this.audioUris[audioKey] = uri;
 		this.audioMeta[audioKey] = { msgId, rid };
 		if (this.audioQueue[audioKey]) {

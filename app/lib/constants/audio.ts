@@ -1,4 +1,4 @@
-import { type RecordingOptions, type AudioMode } from 'expo-audio';
+import { AudioQuality, IOSOutputFormat, type RecordingOptions, type AudioMode } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
 
@@ -12,8 +12,8 @@ export const RECORDING_SETTINGS: RecordingOptions = {
 		audioEncoder: 'aac'
 	},
 	ios: {
-		audioQuality: 64,
-		outputFormat: 'aac',
+		audioQuality: AudioQuality.MEDIUM,
+		outputFormat: IOSOutputFormat.MPEG4AAC,
 		linearPCMBitDepth: 16,
 		linearPCMIsBigEndian: false,
 		linearPCMIsFloat: false
