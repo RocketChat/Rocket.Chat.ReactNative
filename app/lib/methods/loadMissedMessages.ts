@@ -7,6 +7,7 @@ import { type RoomTypes, types } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import { getMessageById } from '../database/services/Message';
 import { writeSyncWatermark } from './writeSyncWatermark';
 
 const count = 50;
@@ -88,6 +89,29 @@ async function load({
 	return result;
 }
 
+// A cursor written by an older build from the device clock can sit ahead of the server's
+// newest `_updatedAt`, so every sync drains empty and the gap never closes. There is no
+// migration for those rows; detect the lie from the server's own `lastMessage` and refetch.
+async function healLyingCursor(roomId: string) {
+	const sub = await getSubscriptionByRoomId(roomId);
+	const lastMessageId = sub?.lastMessage?._id;
+	if (!lastMessageId) {
+		return;
+	}
+	const localLastMessage = await getMessageById(lastMessageId);
+	if (localLastMessage) {
+		return;
+	}
+
+	const roomType = sub?.t;
+	if (!isRoomType(roomType)) {
+		log(new Error(`loadMissedMessages: cannot resolve room type for ${roomId}`));
+		return;
+	}
+	// A tail load re-anchors the watermark from a real server response; it never re-enters here.
+	await loadMessagesForRoom({ rid: roomId, t: roomType });
+}
+
 export async function loadMissedMessages(args: {
 	rid: string;
 	updatedNext?: number | null;
@@ -125,6 +149,9 @@ export async function loadMissedMessages(args: {
 		// pages not yet fetched; `deleted` is never a source, its rows carry no new history.
 		if (!updatedNext) {
 			await writeSyncWatermark(args.rid, serverUpdatedAt);
+			if (!updated.length) {
+				await healLyingCursor(args.rid);
+			}
 		}
 	}
 }
