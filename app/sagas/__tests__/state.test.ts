@@ -25,14 +25,14 @@ jest.mock('../../lib/methods/helpers/log', () => ({
 	default: jest.fn()
 }));
 
-import { applyMiddleware, createStore } from 'redux';
+import { type AnyAction, type Middleware, applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import reducers from '../../reducers';
 import stateRootSaga from '../state';
-import { APP_STATE } from '../../actions/actionsTypes';
+import { APP_STATE, ROOMS } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import { setUserPresenceOnline } from '../../lib/services/restApi';
 import { loadMissedMessages } from '../../lib/methods/loadMissedMessages';
@@ -51,8 +51,8 @@ async function flushSagaMicrotasks(): Promise<void> {
 
 function setupStore({ connected = true, isAuthenticated = true, subscribedRoom = RID } = {}) {
 	const sagaMiddleware = createSagaMiddleware();
-	const dispatched: { type: string }[] = [];
-	const recorder = () => (next: (action: unknown) => unknown) => (action: { type: string }) => {
+	const dispatched: AnyAction[] = [];
+	const recorder: Middleware = () => next => action => {
 		dispatched.push(action);
 		return next(action);
 	};
@@ -77,7 +77,7 @@ describe('foreground saga', () => {
 	});
 
 	it('re-syncs the subscribed room exactly once and marks it read', async () => {
-		const { store } = setupStore();
+		const { store, dispatched } = setupStore();
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
 		await flushSagaMicrotasks();
@@ -86,27 +86,30 @@ describe('foreground saga', () => {
 		expect(mockedLoadMissedMessages).toHaveBeenCalledWith({ rid: RID });
 		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
 		expect(mockedReadMessages).toHaveBeenCalledWith(RID, expect.any(Date));
+		expect(dispatched.some(action => action.type === ROOMS.REQUEST)).toBe(true);
 		expect(setUserPresenceOnline).toHaveBeenCalled();
 	});
 
-	it('does not sync a room when none is subscribed', async () => {
-		const { store } = setupStore({ subscribedRoom: '' });
+	it('does not sync a room when none is subscribed, but still requests the rooms delta', async () => {
+		const { store, dispatched } = setupStore({ subscribedRoom: '' });
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
 		await flushSagaMicrotasks();
 
 		expect(mockedLoadMissedMessages).not.toHaveBeenCalled();
 		expect(mockedReadMessages).not.toHaveBeenCalled();
+		expect(dispatched.some(action => action.type === ROOMS.REQUEST)).toBe(true);
 	});
 
 	it('does nothing while not connected', async () => {
-		const { store } = setupStore({ connected: false });
+		const { store, dispatched } = setupStore({ connected: false });
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
 		await flushSagaMicrotasks();
 
 		expect(mockedLoadMissedMessages).not.toHaveBeenCalled();
 		expect(mockedReadMessages).not.toHaveBeenCalled();
+		expect(dispatched.some(action => action.type === ROOMS.REQUEST)).toBe(false);
 		expect(setUserPresenceOnline).not.toHaveBeenCalled();
 	});
 

@@ -1,4 +1,4 @@
-import { call, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -8,6 +8,7 @@ import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/rest
 import { checkPendingNotification } from '../lib/notifications';
 import { loadMissedMessages } from '../lib/methods/loadMissedMessages';
 import { readMessages } from '../lib/methods/readMessages';
+import { roomsRequest } from '../actions/rooms';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -43,6 +44,9 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		yield resyncSubscribedRoom();
+		// A silently dead socket dropped every `stream-notify-user` update; this delta fetch is
+		// the only thing that heals the rooms list.
+		yield put(roomsRequest());
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);
