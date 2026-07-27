@@ -172,7 +172,7 @@ describe('RoomView notification-tap race', () => {
 		await flush(() => rows.next([row]));
 
 		expect(mockedGetMessages).toHaveBeenCalledTimes(2);
-		expect(mockedGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1' });
+		expect(mockedGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1', t: 'c' });
 		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
 		expect(mockedReadMessages).toHaveBeenCalledWith('rid-1', expect.any(Date));
 
@@ -210,6 +210,34 @@ describe('RoomView notification-tap race', () => {
 		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
 		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
 		expect(mockedReadMessages).toHaveBeenCalledWith('rid-1', expect.any(Date));
+	});
+});
+
+describe('RoomView init cursor predicate', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockedGetMessages.mockResolvedValue(undefined);
+		mockedReadMessages.mockResolvedValue(undefined);
+	});
+
+	it('routes a cursor-less subscribed room to the room-history loader directly', async () => {
+		renderRoomView({ rid: 'rid-1', t: 'c', room: buildRow() });
+		await flush();
+
+		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
+		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
+	});
+
+	it('routes a subscribed room with a cursor to the missed-messages loader', async () => {
+		renderRoomView({
+			rid: 'rid-1',
+			t: 'c',
+			room: buildRow({ lastOpen: new Date('2026-01-01T00:00:00.000Z') })
+		});
+		await flush();
+
+		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
+		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1' });
 	});
 });
 
