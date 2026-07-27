@@ -1,17 +1,33 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { call, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
-import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
+import { loadMissedMessages } from '../lib/methods/loadMissedMessages';
+import { readMessages } from '../lib/methods/readMessages';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
 	const meteor = yield select(state => state.meteor);
 	return login.isAuthenticated && meteor.connected;
+};
+
+// Backgrounding can outlive the socket without emitting a DDP event, so nothing syncs the open
+// room. `chat.syncMessages` rides REST, so it heals the room even against a dead socket.
+const resyncSubscribedRoom = function* resyncSubscribedRoom() {
+	const subscribedRoom = yield select(state => state.room.subscribedRoom);
+	if (!subscribedRoom) {
+		return;
+	}
+	try {
+		yield call(loadMissedMessages, { rid: subscribedRoom });
+		yield call(readMessages, subscribedRoom, new Date());
+	} catch (e) {
+		log(e);
+	}
 };
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
@@ -26,7 +42,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
-		checkAndReopen();
+		yield resyncSubscribedRoom();
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);

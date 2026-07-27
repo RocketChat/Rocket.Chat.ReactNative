@@ -457,10 +457,6 @@ function abort() {
 	}
 }
 
-function checkAndReopen() {
-	return sdk.current.checkAndReopen();
-}
-
 function disconnect() {
 	const result = sdk.disconnect();
 	mediaSessionInstance.reset();
@@ -552,7 +548,6 @@ export {
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
-	checkAndReopen,
 	abort,
 	connect,
 	disconnect,

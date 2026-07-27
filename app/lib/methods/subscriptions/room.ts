@@ -44,6 +44,7 @@ export default class RoomSubscription {
 	}
 
 	subscribe = async () => {
+		this.isAlive = true;
 		console.log(`[RCRN] Subscribing to room ${this.rid}`);
 		if (this.promises) {
 			await this.unsubscribe();
