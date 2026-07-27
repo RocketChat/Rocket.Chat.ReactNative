@@ -10,23 +10,12 @@ import { type TSubscriptionModel } from '../../definitions';
  */
 export async function updateLastOpen(rid: string, payload: { _updatedAt?: string | Date }[]): Promise<void> {
 	try {
-		let lastOpen: Date | null = null;
-		payload.forEach(message => {
-			if (!message._updatedAt) {
-				return;
-			}
-			const updatedAt = new Date(message._updatedAt);
-			if (Number.isNaN(updatedAt.getTime())) {
-				return;
-			}
-			if (!lastOpen || updatedAt > lastOpen) {
-				lastOpen = updatedAt;
-			}
-		});
-
-		if (!lastOpen) {
+		const timestamps = payload.map(m => new Date(m._updatedAt as string | Date).getTime()).filter(t => !Number.isNaN(t));
+		if (!timestamps.length) {
 			return;
 		}
+
+		const lastOpen = new Date(Math.max(...timestamps));
 
 		const subscription = await getSubscriptionByRoomId(rid);
 		if (!subscription) {
@@ -38,7 +27,7 @@ export async function updateLastOpen(rid: string, payload: { _updatedAt?: string
 		const db = database.active;
 		await db.write(async () => {
 			await subscription.update((s: TSubscriptionModel) => {
-				s.lastOpen = lastOpen as Date;
+				s.lastOpen = lastOpen;
 			});
 		});
 	} catch (e) {
