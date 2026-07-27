@@ -11,6 +11,9 @@ import { getMessageById } from '../database/services/Message';
 import { updateLastOpen } from './updateLastOpen';
 
 const count = 50;
+const TAIL_LOAD_COOLDOWN_MS = 5 * 60 * 1000;
+
+const lastTailLoadAttemptByRoom = new Map<string, number>();
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
 	// @ts-ignore // this method dont have type
@@ -100,6 +103,14 @@ async function normalizeCursor(roomId: string) {
 	if (localLastMessage) {
 		return;
 	}
+
+	// A tombstone `lastMessage` never resolves locally, so without a cooldown every empty sync
+	// would replay the full room history. The cooldown bounds that cost while still allowing heals.
+	const now = Date.now();
+	if (now - (lastTailLoadAttemptByRoom.get(roomId) ?? 0) < TAIL_LOAD_COOLDOWN_MS) {
+		return;
+	}
+	lastTailLoadAttemptByRoom.set(roomId, now);
 
 	const roomType = sub?.t;
 	if (!isRoomType(roomType)) {

@@ -42,6 +42,8 @@ const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof update
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
 
 const RID = 'ROOM_ID';
+const SPAM_RID = 'SPAM_ROOM_ID';
+const COOLDOWN_RID = 'COOLDOWN_ROOM_ID';
 
 describe('loadMissedMessages', () => {
 	beforeEach(() => {
@@ -252,6 +254,39 @@ describe('loadMissedMessages', () => {
 			await flush();
 
 			expect(mockedGetMessageById).toHaveBeenCalledWith('newest');
+		});
+
+		it('tail-loads only once within the cooldown when lastMessage never resolves locally', async () => {
+			mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c', lastMessage: { _id: 'ghost' } } as never);
+			mockedGetMessageById.mockResolvedValue(null);
+			emptySync();
+
+			await loadMissedMessages({ rid: SPAM_RID });
+			await loadMissedMessages({ rid: SPAM_RID });
+
+			expect(mockedLoadMessagesForRoom).toHaveBeenCalledTimes(1);
+			expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: SPAM_RID, t: 'c' });
+		});
+
+		it('tail-loads again after the cooldown expires', async () => {
+			const realNow = Date.now();
+			const dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(realNow);
+			try {
+				mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c', lastMessage: { _id: 'ghost' } } as never);
+				mockedGetMessageById.mockResolvedValue(null);
+				emptySync();
+
+				await loadMissedMessages({ rid: COOLDOWN_RID });
+
+				dateNowSpy.mockReturnValue(realNow + 5 * 60 * 1000 + 1);
+
+				await loadMissedMessages({ rid: COOLDOWN_RID });
+
+				expect(mockedLoadMessagesForRoom).toHaveBeenCalledTimes(2);
+				expect(mockedLoadMessagesForRoom).toHaveBeenLastCalledWith({ rid: COOLDOWN_RID, t: 'c' });
+			} finally {
+				dateNowSpy.mockRestore();
+			}
 		});
 	});
 });

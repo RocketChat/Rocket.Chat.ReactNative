@@ -22,8 +22,8 @@ export async function updateLastOpen(rid: string, payload: { _updatedAt?: string
 			return;
 		}
 
-		// Deliberately not monotonic: a monotonic guard would make an already-poisoned
-		// future cursor immortal, so an older server value must be allowed to heal it.
+		// Deliberately not monotonic: server `_updatedAt` is authoritative, so an older value only
+		// heals a poisoned cursor. The worst outcome is re-fetching history that is already local.
 		const db = database.active;
 		await db.write(async () => {
 			await subscription.update((s: TSubscriptionModel) => {
