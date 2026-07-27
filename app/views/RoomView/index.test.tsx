@@ -135,6 +135,13 @@ beforeAll(() => {
 	mockedStore.dispatch(setUser({ id: 'u1', username: 'user' }));
 });
 
+// The awaited microtask is what lets queued promises settle inside act.
+const flush = (mutate?: () => void) =>
+	act(async () => {
+		mutate?.();
+		await Promise.resolve();
+	});
+
 describe('RoomView notification-tap race', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -147,7 +154,7 @@ describe('RoomView notification-tap race', () => {
 		mockSubscriptionsQuery.observe.mockReturnValue(new Subject());
 
 		renderRoomView({ rid: 'rid-1', t: 'c' });
-		await act(async () => {});
+		await flush();
 
 		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
 		expect(mockedReadMessages).not.toHaveBeenCalled();
@@ -159,21 +166,17 @@ describe('RoomView notification-tap race', () => {
 		const row = buildRow();
 
 		renderRoomView({ rid: 'rid-1', t: 'c' });
-		await act(async () => {});
+		await flush();
 		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
 
-		await act(async () => {
-			rows.next([row]);
-		});
+		await flush(() => rows.next([row]));
 
 		expect(mockedGetMessages).toHaveBeenCalledTimes(2);
 		expect(mockedGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1' });
 		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
 		expect(mockedReadMessages).toHaveBeenCalledWith('rid-1', expect.any(Date));
 
-		await act(async () => {
-			rows.next([buildRow({ id: 'sub-1-updated' })]);
-		});
+		await flush(() => rows.next([buildRow({ id: 'sub-1-updated' })]));
 
 		expect(mockedGetMessages).toHaveBeenCalledTimes(2);
 		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
@@ -193,10 +196,6 @@ describe('RoomView bounded init retry', () => {
 		jest.useRealTimers();
 	});
 
-	const flush = async () => {
-		await act(async () => {});
-	};
-
 	it('schedules at most 5 backing-off retries and then stops', async () => {
 		const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
 
@@ -207,10 +206,9 @@ describe('RoomView bounded init retry', () => {
 			setTimeoutSpy.mock.calls.filter(([, delay]) => [300, 600, 1200, 2400, 4800].includes(delay as number)).map(([, d]) => d);
 
 		for (let attempt = 0; attempt < 8; attempt += 1) {
-			await act(async () => {
-				jest.runOnlyPendingTimers();
-			});
-			await flush();
+			// Each retry must be drained before the next one is armed.
+			// eslint-disable-next-line no-await-in-loop
+			await flush(() => jest.runOnlyPendingTimers());
 		}
 
 		expect(retryDelays()).toEqual([300, 600, 1200, 2400, 4800]);
@@ -221,21 +219,13 @@ describe('RoomView bounded init retry', () => {
 	it('stops retrying after unmount', async () => {
 		const { unmount } = renderRoomView({ rid: 'rid-1', t: 'c' });
 		// componentDidMount defers init() through InteractionManager, so drain that first.
-		await act(async () => {
-			jest.runOnlyPendingTimers();
-		});
-		await flush();
+		await flush(() => jest.runOnlyPendingTimers());
 
 		const callsBeforeUnmount = mockedGetMessages.mock.calls.length;
 		expect(callsBeforeUnmount).toBe(1);
 
-		await act(async () => {
-			unmount();
-		});
-		await act(async () => {
-			jest.runOnlyPendingTimers();
-		});
-		await flush();
+		await flush(() => unmount());
+		await flush(() => jest.runOnlyPendingTimers());
 
 		expect(mockedGetMessages).toHaveBeenCalledTimes(callsBeforeUnmount);
 	});
