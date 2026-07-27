@@ -149,10 +149,8 @@ class AudioManagerClass {
 			try {
 				this.audioSubscriptions[audioKey]?.();
 				delete this.audioSubscriptions[audioKey];
-				// Don't delete the callback - keep it for replay
 				this.audioQueue[audioKey].release();
 				delete this.audioQueue[audioKey];
-				// Reset position to beginning so audio can be played again
 				this.audioPositions[audioKey] = 0;
 				this.audioPlaying = '';
 				emitter.emit('audioFocused', '');
