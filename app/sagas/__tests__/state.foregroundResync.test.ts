@@ -3,10 +3,6 @@ jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
 	saveLastLocalAuthenticationSession: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/services/connect', () => ({
-	checkAndReopen: jest.fn()
-}));
-
 jest.mock('../../lib/services/restApi', () => ({
 	setUserPresenceOnline: jest.fn(() => Promise.resolve()),
 	setUserPresenceAway: jest.fn(() => Promise.resolve())

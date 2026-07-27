@@ -10,7 +10,7 @@ import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
-import { writeSyncWatermark } from './writeSyncWatermark';
+import { updateLastOpen } from './updateLastOpen';
 
 const COUNT = 50;
 const MAX_BATCHES = 10;
@@ -150,7 +150,7 @@ export async function loadMessagesForRoom(args: {
 		// Only the initial tail load reaches the newest history, so only it can state how far
 		// the room is synced. Older pages (`latest`) and gap fills (`loaderItem`) must not.
 		if (!args.latest && !args.loaderItem) {
-			await writeSyncWatermark(args.rid, firstBatch);
+			await updateLastOpen(args.rid, firstBatch);
 		}
 	} catch (e) {
 		log(e);

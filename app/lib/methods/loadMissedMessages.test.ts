@@ -3,7 +3,7 @@ import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
-import { writeSyncWatermark } from './writeSyncWatermark';
+import { updateLastOpen } from './updateLastOpen';
 import { getMessageById } from '../database/services/Message';
 import { store } from '../store/auxStore';
 
@@ -31,14 +31,14 @@ jest.mock('../store/auxStore', () => ({
 
 jest.mock('./updateMessages', () => jest.fn());
 jest.mock('./loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
-jest.mock('./writeSyncWatermark', () => ({ writeSyncWatermark: jest.fn() }));
+jest.mock('./updateLastOpen', () => ({ updateLastOpen: jest.fn() }));
 jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
 const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
-const mockedWriteSyncWatermark = writeSyncWatermark as jest.MockedFunction<typeof writeSyncWatermark>;
+const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
 
 const RID = 'ROOM_ID';
@@ -98,7 +98,7 @@ describe('loadMissedMessages', () => {
 		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c' });
 	});
 
-	describe('sync watermark', () => {
+	describe('last open', () => {
 		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
 		const flush = () => new Promise(resolve => setImmediate(resolve));
 
@@ -108,15 +108,15 @@ describe('loadMissedMessages', () => {
 			mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c' } as never);
 		});
 
-		it('writes the watermark from the updated payload once the cursor has drained', async () => {
+		it('writes the Last Open from the updated payload once the cursor has drained', async () => {
 			mockedSdkGet.mockResolvedValue({
 				result: { updated: [message('a', '2024-01-01T11:30:00.000Z')], deleted: [], cursor: { next: null } }
 			} as never);
 
 			await loadMissedMessages({ rid: RID });
 
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledTimes(1);
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:30:00.000Z' }]);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledTimes(1);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:30:00.000Z' }]);
 		});
 
 		it('does not write mid-pagination, only after the final page of a paginated run', async () => {
@@ -138,12 +138,12 @@ describe('loadMissedMessages', () => {
 			await loadMissedMessages({ rid: RID });
 
 			// First page still has a next cursor, so nothing may be persisted yet.
-			expect(mockedWriteSyncWatermark).not.toHaveBeenCalled();
+			expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
 
 			await flush();
 
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledTimes(1);
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:45:00.000Z' }]);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledTimes(1);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:45:00.000Z' }]);
 		});
 
 		it('writes nothing derived from deleted rows when the payload is deleted-only', async () => {
@@ -153,7 +153,7 @@ describe('loadMissedMessages', () => {
 
 			await loadMissedMessages({ rid: RID });
 
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledWith(RID, []);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, []);
 		});
 
 		it('writes once on the legacy unpaginated server branch', async () => {
@@ -168,12 +168,12 @@ describe('loadMissedMessages', () => {
 				'chat.syncMessages',
 				expect.objectContaining({ lastUpdate: CURSOR.toISOString() })
 			);
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledTimes(1);
-			expect(mockedWriteSyncWatermark).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:30:00.000Z' }]);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledTimes(1);
+			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:30:00.000Z' }]);
 		});
 	});
 
-	describe('lying-cursor self-heal', () => {
+	describe('cursor normalization', () => {
 		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
 		const flush = () => new Promise(resolve => setImmediate(resolve));
 

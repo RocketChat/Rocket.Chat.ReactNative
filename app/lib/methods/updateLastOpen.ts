@@ -4,13 +4,13 @@ import log from './helpers/log';
 import { type TSubscriptionModel } from '../../definitions';
 
 /**
- * Persists the sync cursor as the newest server `_updatedAt` actually received, so the next
+ * Persists the Last Open as the newest server `_updatedAt` actually received, so the next
  * `chat.syncMessages` resumes from a server-clock value the server can compare against.
  * Must run on the RAW payload: normalizeMessage invents `_updatedAt` from the device clock.
  */
-export async function writeSyncWatermark(rid: string, payload: { _updatedAt?: string | Date }[]): Promise<void> {
+export async function updateLastOpen(rid: string, payload: { _updatedAt?: string | Date }[]): Promise<void> {
 	try {
-		let watermark: Date | null = null;
+		let lastOpen: Date | null = null;
 		payload.forEach(message => {
 			if (!message._updatedAt) {
 				return;
@@ -19,12 +19,12 @@ export async function writeSyncWatermark(rid: string, payload: { _updatedAt?: st
 			if (Number.isNaN(updatedAt.getTime())) {
 				return;
 			}
-			if (!watermark || updatedAt > watermark) {
-				watermark = updatedAt;
+			if (!lastOpen || updatedAt > lastOpen) {
+				lastOpen = updatedAt;
 			}
 		});
 
-		if (!watermark) {
+		if (!lastOpen) {
 			return;
 		}
 
@@ -38,7 +38,7 @@ export async function writeSyncWatermark(rid: string, payload: { _updatedAt?: st
 		const db = database.active;
 		await db.write(async () => {
 			await subscription.update((s: TSubscriptionModel) => {
-				s.lastOpen = watermark as Date;
+				s.lastOpen = lastOpen as Date;
 			});
 		});
 	} catch (e) {

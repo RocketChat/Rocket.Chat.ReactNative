@@ -3,16 +3,14 @@ import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import updateMessages from './updateMessages';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
-import { type RoomTypes, types } from './roomTypeToApiType';
+import { isRoomType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getMessageById } from '../database/services/Message';
-import { writeSyncWatermark } from './writeSyncWatermark';
+import { updateLastOpen } from './updateLastOpen';
 
 const count = 50;
-
-const isRoomType = (t: unknown): t is RoomTypes => typeof t === 'string' && t in types;
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
 	// @ts-ignore // this method dont have type
@@ -92,7 +90,7 @@ async function load({
 // A cursor written by an older build from the device clock can sit ahead of the server's
 // newest `_updatedAt`, so every sync drains empty and the gap never closes. There is no
 // migration for those rows; detect the lie from the server's own `lastMessage` and refetch.
-async function healLyingCursor(roomId: string) {
+async function normalizeCursor(roomId: string) {
 	const sub = await getSubscriptionByRoomId(roomId);
 	const lastMessageId = sub?.lastMessage?._id;
 	if (!lastMessageId) {
@@ -108,7 +106,7 @@ async function healLyingCursor(roomId: string) {
 		log(new Error(`loadMissedMessages: cannot resolve room type for ${roomId}`));
 		return;
 	}
-	// A tail load re-anchors the watermark from a real server response; it never re-enters here.
+	// A tail load re-anchors the Last Open from a real server response; it never re-enters here.
 	await loadMessagesForRoom({ rid: roomId, t: roomType });
 }
 
@@ -148,9 +146,9 @@ export async function loadMissedMessages(args: {
 		// Only once the UPDATED cursor has drained. Advancing mid-pagination would skip the
 		// pages not yet fetched; `deleted` is never a source, its rows carry no new history.
 		if (!updatedNext) {
-			await writeSyncWatermark(args.rid, serverUpdatedAt);
+			await updateLastOpen(args.rid, serverUpdatedAt);
 			if (!updated.length) {
-				await healLyingCursor(args.rid);
+				await normalizeCursor(args.rid);
 			}
 		}
 	}

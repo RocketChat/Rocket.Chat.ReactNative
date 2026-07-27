@@ -1,4 +1,4 @@
-import { writeSyncWatermark } from './writeSyncWatermark';
+import { updateLastOpen } from './updateLastOpen';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 
 jest.mock('../database', () => ({
@@ -27,7 +27,7 @@ const makeSubscription = (lastOpen: Date | null) => {
 	return subscription;
 };
 
-describe('writeSyncWatermark', () => {
+describe('updateLastOpen', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
@@ -36,7 +36,7 @@ describe('writeSyncWatermark', () => {
 		const subscription = makeSubscription(null);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
 
-		await writeSyncWatermark(RID, [
+		await updateLastOpen(RID, [
 			{ _updatedAt: '2024-01-01T10:00:00.000Z' },
 			{ _updatedAt: '2024-01-01T12:00:00.000Z' },
 			{ _updatedAt: '2024-01-01T11:00:00.000Z' }
@@ -49,7 +49,7 @@ describe('writeSyncWatermark', () => {
 		const subscription = makeSubscription(null);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
 
-		await writeSyncWatermark(RID, [{ _updatedAt: '2024-01-01T10:00:00.000Z' }, {}, {}]);
+		await updateLastOpen(RID, [{ _updatedAt: '2024-01-01T10:00:00.000Z' }, {}, {}]);
 
 		expect(subscription.lastOpen).toEqual(new Date('2024-01-01T10:00:00.000Z'));
 	});
@@ -58,13 +58,13 @@ describe('writeSyncWatermark', () => {
 		const subscription = makeSubscription(null);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
 
-		await writeSyncWatermark(RID, [{}, {}]);
+		await updateLastOpen(RID, [{}, {}]);
 
 		expect(subscription.lastOpen).toBeNull();
 	});
 
 	it('is a no-op on an empty payload', async () => {
-		await writeSyncWatermark(RID, []);
+		await updateLastOpen(RID, []);
 
 		expect(mockedGetSubscriptionByRoomId).not.toHaveBeenCalled();
 	});
@@ -74,7 +74,7 @@ describe('writeSyncWatermark', () => {
 		const subscription = makeSubscription(poisonedFutureCursor);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
 
-		await writeSyncWatermark(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }]);
+		await updateLastOpen(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }]);
 
 		expect(subscription.lastOpen).toEqual(new Date('2024-01-01T12:00:00.000Z'));
 	});
@@ -82,6 +82,6 @@ describe('writeSyncWatermark', () => {
 	it('is a silent no-op when the subscription row does not exist', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
 
-		await expect(writeSyncWatermark(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }])).resolves.toBeUndefined();
+		await expect(updateLastOpen(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }])).resolves.toBeUndefined();
 	});
 });
