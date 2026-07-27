@@ -94,7 +94,7 @@ class UserPreferences {
 
 	getString(key: string): string | null {
 		try {
-			return this.mmkv.getString(key) || null;
+			return this.mmkv.getString(key) ?? null;
 		} catch {
 			return null;
 		}
