@@ -58,14 +58,8 @@ class AudioManagerClass {
 	}
 
 	async playAudio(audioKey: string) {
-		if (this.audioPlaying && this.audioPlaying !== audioKey) {
+		if (this.audioPlaying) {
 			this.pauseAudio();
-		}
-
-		try {
-			await setAudioModeAsync(AUDIO_MODE);
-		} catch {
-			// Ignore audio mode errors — playback still attempted below
 		}
 
 		// If player was released, recreate it
@@ -91,6 +85,7 @@ class AudioManagerClass {
 		}
 
 		try {
+			await setAudioModeAsync(AUDIO_MODE);
 			this.audioQueue[audioKey]?.play();
 			this.audioPlaying = audioKey;
 			emitter.emit('audioFocused', audioKey);
