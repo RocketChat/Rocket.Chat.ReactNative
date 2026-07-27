@@ -72,8 +72,16 @@ function setupStore({ connected = true, isAuthenticated = true, subscribedRoom =
 }
 
 describe('foreground saga', () => {
+	let now = Date.UTC(2024, 0, 1);
+
 	beforeEach(() => {
 		jest.clearAllMocks();
+		// Every read jumps 2 min so the 60s rooms-delta throttle never suppresses a test's foreground.
+		jest.spyOn(Date, 'now').mockImplementation(() => (now += 120_000));
+	});
+
+	afterEach(() => {
+		jest.restoreAllMocks();
 	});
 
 	it('re-syncs the subscribed room exactly once and marks it read', async () => {
