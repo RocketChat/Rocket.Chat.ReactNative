@@ -117,7 +117,7 @@ Therefore the **Last Open** must be taken from the raw payload _before_ `normali
 | **Server Timestamp** | An `_updatedAt` taken from a server response — the only value the server can meaningfully compare a cursor against           | Timestamp (ambiguous)  |
 | **Device Timestamp** | An `_updatedAt` present on a local row but written by the device clock; unusable as a cursor because the server never saw it | Timestamp (ambiguous)  |
 
-A **Last Open** that is ahead of the Room's newest **Server Timestamp** is a **Lying Cursor**: every sync drains empty and the Gap never closes until the cursor is healed. Avoid "stale cursor" or "bad lastOpen".
+A **Last Open** below a change's **Server Timestamp** only costs a re-fetch; one above it makes the server stay silent, and the change is never delivered. When in doubt, the lower cursor is the safe one.
 
 A **Last Open** and a **Last Seen** are not interchangeable — conflating them (one column serving as both fetch cursor and unread anchor) is what produced permanently invisible Messages.
 
