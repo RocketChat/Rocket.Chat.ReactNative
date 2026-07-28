@@ -135,89 +135,27 @@ beforeAll(() => {
 	mockedStore.dispatch(setUser({ id: 'u1', username: 'user' }));
 });
 
-// The awaited microtask is what lets queued promises settle inside act.
-const flush = (mutate?: () => void) =>
-	act(async () => {
-		mutate?.();
-		await Promise.resolve();
-	});
+describe('RoomView init cursor predicate', () => {
+	// The awaited microtask is what lets queued promises settle inside act.
+	const flush = () =>
+		act(async () => {
+			await Promise.resolve();
+		});
 
-describe('RoomView notification-tap race', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedGetMessages.mockResolvedValue(undefined);
 		mockedReadMessages.mockResolvedValue(undefined);
 		mockSubscriptionsCollection.find.mockRejectedValue(new Error('not found'));
+		mockSubscriptionsQuery.observe.mockReturnValue(new Subject());
 	});
 
 	it('loads messages for a route-param room that lacks a subscription row', async () => {
-		mockSubscriptionsQuery.observe.mockReturnValue(new Subject());
-
 		renderRoomView({ rid: 'rid-1', t: 'c' });
 		await flush();
 
 		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
 		expect(mockedReadMessages).not.toHaveBeenCalled();
-	});
-
-	it('re-runs init exactly once when the subscription row materializes, and reads with its ls', async () => {
-		const rows = new Subject<unknown[]>();
-		mockSubscriptionsQuery.observe.mockReturnValue(rows);
-		const row = buildRow();
-
-		renderRoomView({ rid: 'rid-1', t: 'c' });
-		await flush();
-		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
-
-		await flush(() => rows.next([row]));
-
-		expect(mockedGetMessages).toHaveBeenCalledTimes(2);
-		expect(mockedGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1', t: 'c' });
-		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
-		expect(mockedReadMessages).toHaveBeenCalledWith('rid-1', expect.any(Date));
-
-		await flush(() => rows.next([buildRow({ id: 'sub-1-updated' })]));
-
-		expect(mockedGetMessages).toHaveBeenCalledTimes(2);
-		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
-	});
-
-	it('self-heals when the subscription row arrives while getMessages is in flight', async () => {
-		const rows = new Subject<unknown[]>();
-		mockSubscriptionsQuery.observe.mockReturnValue(rows);
-		const row = buildRow();
-		let resolveGetMessages: (value?: unknown) => void = () => {};
-		mockedGetMessages.mockImplementation(
-			() =>
-				new Promise(resolve => {
-					resolveGetMessages = resolve;
-				})
-		);
-
-		renderRoomView({ rid: 'rid-1', t: 'c' });
-		await flush();
-		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
-
-		// Subscription row lands mid-flight; the adoption callback re-triggers init(),
-		// but it no-ops because this.initializing is still true.
-		await flush(() => rows.next([row]));
-		expect(mockedReadMessages).not.toHaveBeenCalled();
-
-		// When the in-flight getMessages finally resolves, the post-await re-read
-		// sees the adopted row and runs the unread/read-receipt path.
-		await flush(() => resolveGetMessages());
-
-		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
-		expect(mockedReadMessages).toHaveBeenCalledTimes(1);
-		expect(mockedReadMessages).toHaveBeenCalledWith('rid-1', expect.any(Date));
-	});
-});
-
-describe('RoomView init cursor predicate', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-		mockedGetMessages.mockResolvedValue(undefined);
-		mockedReadMessages.mockResolvedValue(undefined);
 	});
 
 	it('routes a cursor-less subscribed room to the room-history loader directly', async () => {
@@ -238,53 +176,5 @@ describe('RoomView init cursor predicate', () => {
 
 		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
 		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1' });
-	});
-});
-
-describe('RoomView bounded init retry', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-		jest.useFakeTimers();
-		mockSubscriptionsCollection.find.mockRejectedValue(new Error('not found'));
-		mockSubscriptionsQuery.observe.mockReturnValue(new Subject());
-		mockedGetMessages.mockRejectedValue(new Error('boom'));
-	});
-
-	afterEach(() => {
-		jest.useRealTimers();
-	});
-
-	it('schedules at most 5 backing-off retries and then stops', async () => {
-		const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
-
-		renderRoomView({ rid: 'rid-1', t: 'c' });
-		await flush();
-
-		const retryDelays = () =>
-			setTimeoutSpy.mock.calls.filter(([, delay]) => [300, 600, 1200, 2400, 4800].includes(delay as number)).map(([, d]) => d);
-
-		for (let attempt = 0; attempt < 8; attempt += 1) {
-			// Each retry must be drained before the next one is armed.
-			// eslint-disable-next-line no-await-in-loop
-			await flush(() => jest.runOnlyPendingTimers());
-		}
-
-		expect(retryDelays()).toEqual([300, 600, 1200, 2400, 4800]);
-		// 1 initial attempt + 5 retries
-		expect(mockedGetMessages).toHaveBeenCalledTimes(6);
-	});
-
-	it('stops retrying after unmount', async () => {
-		const { unmount } = renderRoomView({ rid: 'rid-1', t: 'c' });
-		// componentDidMount defers init() through InteractionManager, so drain that first.
-		await flush(() => jest.runOnlyPendingTimers());
-
-		const callsBeforeUnmount = mockedGetMessages.mock.calls.length;
-		expect(callsBeforeUnmount).toBe(1);
-
-		await flush(() => unmount());
-		await flush(() => jest.runOnlyPendingTimers());
-
-		expect(mockedGetMessages).toHaveBeenCalledTimes(callsBeforeUnmount);
 	});
 });

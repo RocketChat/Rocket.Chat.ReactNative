@@ -117,8 +117,6 @@ import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
-const MAX_INIT_RETRIES = 5;
-const INITIAL_INIT_RETRY_DELAY = 300;
 
 export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -137,9 +135,6 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
-	private initRetries = 0;
-	private initializing = false;
-	private didAdoptSubscriptionRow = false;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
 	// Type of InteractionManager.runAfterInteractions
@@ -432,17 +427,12 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				.query(Q.where('rid', this.rid as string))
 				.observe();
 			this.subObserveQuery = observeSubCollection.subscribe(data => {
-				if (data[0] && !this.didAdoptSubscriptionRow) {
-					this.didAdoptSubscriptionRow = true;
-					this.observeRoom(data[0]);
-					// The room was opened before its subscription row existed (notification tap): init() ran
-					// against a bare { rid }, so re-run it now to get the unread separator and read receipt.
-					this.setState({ room: data[0], joined: true }, () => {
-						if (this.mounted) {
-							this.init();
-						}
-					});
-					this.subObserveQuery?.unsubscribe();
+				if (data[0]) {
+					if (this.subObserveQuery && this.subObserveQuery.unsubscribe) {
+						this.observeRoom(data[0]);
+						this.setState({ room: data[0], joined: true });
+						this.subObserveQuery.unsubscribe();
+					}
 				}
 			});
 		} catch (e) {
@@ -665,13 +655,9 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	init = async () => {
-		if (this.initializing) {
-			return;
-		}
-		this.initializing = true;
 		try {
 			this.setState({ loading: true });
-			const { room } = this.state;
+			const { room, joined } = this.state;
 			if (!this.rid) {
 				return;
 			}
@@ -692,7 +678,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					this.consumeJumpParam(messageId);
 				}
 			} else {
-				const readReceiptTime = new Date();
+				const newLastOpen = new Date();
 				await RoomServices.getMessages({
 					rid: room.rid,
 					// A room with a sync cursor resumes from it; a room without one must
@@ -700,19 +686,14 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
 				});
 
-				// Re-read state after the network await: the subscription row may have arrived
-				// while getMessages was in flight (notification-tap path), and the post-fetch
-				// logic below depends on the adopted row.
-				const { room: currentRoom, joined: currentJoined } = this.state;
-
 				// if room is joined
-				if (currentJoined && 'id' in currentRoom) {
-					if (currentRoom.alert || currentRoom.unread || currentRoom.userMentions) {
-						this.setLastSeen(currentRoom.ls);
+				if (joined && 'id' in room) {
+					if (room.alert || room.unread || room.userMentions) {
+						this.setLastSeen(room.ls);
 					} else {
 						this.setLastSeen(null);
 					}
-					readMessages(currentRoom.rid, readReceiptTime).catch(e => console.log(e));
+					readMessages(room.rid, newLastOpen).catch(e => console.log(e));
 				}
 			}
 
@@ -720,25 +701,11 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
-			this.initRetries = 0;
 		} catch (e) {
 			this.setState({ loading: false });
-			if (this.initRetries < MAX_INIT_RETRIES) {
-				// Exponential backoff: a room opened from a notification has no subscription row yet, and a
-				// fixed-interval retry hammered the database until it arrived.
-				const delay = INITIAL_INIT_RETRY_DELAY * 2 ** this.initRetries;
-				this.initRetries += 1;
-				if (this.retryInitTimeout) {
-					clearTimeout(this.retryInitTimeout);
-				}
-				this.retryInitTimeout = setTimeout(() => {
-					this.init();
-				}, delay);
-			} else {
-				log(e);
-			}
-		} finally {
-			this.initializing = false;
+			this.retryInitTimeout = setTimeout(() => {
+				this.init();
+			}, 300);
 		}
 	};
 
