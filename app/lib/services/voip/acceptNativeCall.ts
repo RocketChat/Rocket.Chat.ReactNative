@@ -123,6 +123,11 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 		if (call?.callId !== callId) {
 			await mediaSession.answerCall(callId);
 		}
+	} catch (error) {
+		log(error);
+		if (!controller.signal.aborted) {
+			handleFailure(callId, mediaSession);
+		}
 	} finally {
 		cleanup();
 	}
