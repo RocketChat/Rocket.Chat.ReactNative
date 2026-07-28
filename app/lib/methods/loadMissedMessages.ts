@@ -53,7 +53,10 @@ async function load({
 	deletedNext?: number | null;
 }) {
 	const sub = await getSubscriptionByRoomId(roomId);
-	const cursor = sub?.lastOpen;
+	if (!sub) {
+		return;
+	}
+	const cursor = sub.lastOpen;
 
 	const { version: serverVersion } = store.getState().server;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.1.0')) {

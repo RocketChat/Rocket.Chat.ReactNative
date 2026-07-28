@@ -43,6 +43,7 @@ describe('loadMissedMessages', () => {
 	});
 
 	it('routes a deleted-only recursion payload to remove, not update', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
 		const deletedMessage = { _id: 'deleted-1', rid: RID, _updatedAt: new Date(Date.UTC(2024, 0, 1, 12, 0, 0)) };
 		mockedSdkGet.mockResolvedValue({
 			result: { updated: [], deleted: [deletedMessage], cursor: { next: null } }
