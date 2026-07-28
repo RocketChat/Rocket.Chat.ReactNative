@@ -66,7 +66,7 @@ export const RecordAudio = (): ReactElement | null => {
 				}
 			}
 		};
-		numberOfTriesRef.current = 0;
+
 		record();
 
 		return () => {
