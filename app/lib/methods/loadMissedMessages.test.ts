@@ -24,7 +24,10 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 jest.mock('./updateMessages', () => jest.fn());
-jest.mock('./updateLastOpen', () => ({ updateLastOpen: jest.fn() }));
+jest.mock('./updateLastOpen', () => ({
+	...jest.requireActual('./updateLastOpen'),
+	updateLastOpen: jest.fn()
+}));
 jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;

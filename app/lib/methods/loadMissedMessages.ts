@@ -4,7 +4,7 @@ import updateMessages from './updateMessages';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { updateLastOpen } from './updateLastOpen';
+import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
 
 const count = 50;
 
@@ -74,7 +74,7 @@ export async function loadMissedMessages(args: {
 	rid: string;
 	updatedNext?: number | null;
 	deletedNext?: number | null;
-	serverUpdatedAt?: { _updatedAt?: string | Date }[];
+	serverTimestamps?: TServerTimestamps;
 }): Promise<void> {
 	// A DELETED-only continuation fetches no UPDATED page, so it must not write the cursor again.
 	const fetchedUpdatedPage = !!args.updatedNext || !args.deletedNext;
@@ -91,9 +91,7 @@ export async function loadMissedMessages(args: {
 			deletedNext
 		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
 
-		// Snapshot before updateMessages: buildMessage mutates these rows and stamps a
-		// device-clock `_updatedAt` onto any row that lacks one.
-		const serverUpdatedAt = [...(args.serverUpdatedAt ?? []), ...updated.map(message => ({ _updatedAt: message._updatedAt }))];
+		const serverTimestamps = [...(args.serverTimestamps ?? []), ...snapshotServerTimestamps(updated)];
 
 		// @ts-ignore // TODO: remove loaderItem obligatoriness
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
@@ -103,7 +101,7 @@ export async function loadMissedMessages(args: {
 				rid: args.rid,
 				updatedNext,
 				deletedNext,
-				serverUpdatedAt
+				serverTimestamps
 			});
 		}
 
@@ -112,7 +110,7 @@ export async function loadMissedMessages(args: {
 		// mid-pagination would skip pages not yet fetched; `deleted` is never a source, its rows
 		// carry no new history.
 		if (fetchedUpdatedPage && !updatedNext) {
-			await updateLastOpen(args.rid, serverUpdatedAt);
+			await updateLastOpen(args.rid, serverTimestamps);
 		}
 	}
 }
