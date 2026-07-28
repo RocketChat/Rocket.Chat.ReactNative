@@ -71,7 +71,10 @@ export async function loadMissedMessages(args: {
 	rid: string;
 	updatedNext?: number | null;
 	deletedNext?: number | null;
+	serverUpdatedAt?: { _updatedAt?: string | Date }[];
 }): Promise<void> {
+	// A DELETED-only continuation fetches no UPDATED page, so it must not write the cursor again.
+	const fetchedUpdatedPage = !!args.updatedNext || !args.deletedNext;
 	const data = await load({
 		rid: args.rid,
 		updatedNext: args.updatedNext,
@@ -87,7 +90,7 @@ export async function loadMissedMessages(args: {
 
 		// Snapshot before updateMessages: buildMessage mutates these rows and stamps a
 		// device-clock `_updatedAt` onto any row that lacks one.
-		const serverUpdatedAt = updated.map(message => ({ _updatedAt: message._updatedAt }));
+		const serverUpdatedAt = [...(args.serverUpdatedAt ?? []), ...updated.map(message => ({ _updatedAt: message._updatedAt }))];
 
 		// @ts-ignore // TODO: remove loaderItem obligatoriness
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
@@ -96,13 +99,16 @@ export async function loadMissedMessages(args: {
 			loadMissedMessages({
 				rid: args.rid,
 				updatedNext,
-				deletedNext
+				deletedNext,
+				serverUpdatedAt
 			});
 		}
 
-		// Only once the UPDATED cursor has drained. Advancing mid-pagination would skip the
-		// pages not yet fetched; `deleted` is never a source, its rows carry no new history.
-		if (!updatedNext) {
+		// Only once the UPDATED cursor has drained, from the stamps of every page walked: the
+		// pages descend from the newest, so the last one alone would lower the cursor. Advancing
+		// mid-pagination would skip pages not yet fetched; `deleted` is never a source, its rows
+		// carry no new history.
+		if (fetchedUpdatedPage && !updatedNext) {
 			await updateLastOpen(args.rid, serverUpdatedAt);
 		}
 	}

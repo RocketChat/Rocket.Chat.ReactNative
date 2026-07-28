@@ -114,7 +114,45 @@ describe('loadMissedMessages', () => {
 			await flush();
 
 			expect(mockedUpdateLastOpen).toHaveBeenCalledTimes(1);
-			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, [{ _updatedAt: '2024-01-01T11:45:00.000Z' }]);
+			// Every page walked contributes its stamps, not only the last one.
+			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, [
+				{ _updatedAt: '2024-01-01T11:30:00.000Z' },
+				{ _updatedAt: '2024-01-01T11:45:00.000Z' }
+			]);
+		});
+
+		it('keeps the highest _updatedAt when it arrives on an earlier page', async () => {
+			const PAGE_2 = Date.UTC(2024, 0, 1, 11, 30, 0);
+			mockedSdkGet.mockImplementation(((_endpoint: string, params: { type?: string; next?: number }) => {
+				if (params.type === 'DELETED') {
+					return Promise.resolve({ result: { deleted: [], cursor: { next: null } } });
+				}
+				if (params.next === PAGE_2) {
+					return Promise.resolve({
+						result: { updated: [message('b', '2024-01-01T11:10:00.000Z')], deleted: [], cursor: { next: null } }
+					});
+				}
+				return Promise.resolve({
+					result: { updated: [message('a', '2024-01-01T11:59:00.000Z')], deleted: [], cursor: { next: PAGE_2 } }
+				});
+			}) as never);
+
+			await loadMissedMessages({ rid: RID });
+			await flush();
+
+			const received = mockedUpdateLastOpen.mock.calls[0][1];
+			const timestamps = received.map(m => new Date(m._updatedAt as string | Date).getTime()).filter(t => !Number.isNaN(t));
+			expect(new Date(Math.max(...timestamps))).toEqual(new Date('2024-01-01T11:59:00.000Z'));
+		});
+
+		it('does not write again on a deleted-only continuation page', async () => {
+			mockedSdkGet.mockResolvedValue({
+				result: { updated: [], deleted: [message('gone', '2024-01-01T11:30:00.000Z')], cursor: { next: null } }
+			} as never);
+
+			await loadMissedMessages({ rid: RID, deletedNext: Date.UTC(2024, 0, 1, 11, 30, 0) });
+
+			expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
 		});
 
 		it('writes nothing derived from deleted rows when the payload is deleted-only', async () => {
