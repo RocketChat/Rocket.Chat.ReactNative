@@ -237,7 +237,7 @@ export default class RoomSubscription {
 	});
 
 	read = debounce(() => {
-		readMessages(this.rid, new Date());
+		readMessages(this.rid);
 	}, 300);
 
 	updateMessage = async (message: IMessage): Promise<void> => {

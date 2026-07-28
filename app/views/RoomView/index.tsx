@@ -678,7 +678,6 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					this.consumeJumpParam(messageId);
 				}
 			} else {
-				const newLastOpen = new Date();
 				await RoomServices.getMessages({
 					rid: room.rid,
 					// A room with a sync cursor resumes from it; a room without one must
@@ -693,7 +692,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					} else {
 						this.setLastSeen(null);
 					}
-					readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					readMessages(room.rid).catch(e => console.log(e));
 				}
 			}
 

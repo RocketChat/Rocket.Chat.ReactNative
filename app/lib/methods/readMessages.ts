@@ -5,7 +5,7 @@ import sdk from '../services/sdk';
 import { hasE2EEWarning } from '../encryption/utils';
 import { store } from '../store/auxStore';
 
-export async function readMessages(rid: string, ls: Date): Promise<void> {
+export async function readMessages(rid: string): Promise<void> {
 	try {
 		const db = database.active;
 		let subscription;
@@ -36,6 +36,9 @@ export async function readMessages(rid: string, ls: Date): Promise<void> {
 		// @ts-ignore
 		await sdk.post('subscriptions.read', { rid });
 
+		// `ls` is intentionally not written here: the server stamps it and the
+		// subscription stream delivers it, so the device clock never sets it.
+
 		await db.write(async () => {
 			try {
 				await subscription.update((s: TSubscriptionModel) => {
@@ -44,7 +47,6 @@ export async function readMessages(rid: string, ls: Date): Promise<void> {
 					s.unread = 0;
 					s.userMentions = 0;
 					s.groupMentions = 0;
-					s.ls = ls;
 				});
 			} catch (e) {
 				// Do nothing
