@@ -26,7 +26,7 @@ const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number
 	useEventListener(player, 'statusChange', ({ status }) => {
 		if (status === 'error' && !hasHandledErrorRef.current) {
 			hasHandledErrorRef.current = true;
-			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_action', { action: I18n.t('playing_video') }));
+			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_playing_video'));
 		}
 	});
 

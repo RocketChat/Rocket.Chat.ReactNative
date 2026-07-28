@@ -32,7 +32,7 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 		} else if (status === 'error' && !hasHandledErrorRef.current) {
 			hasHandledErrorRef.current = true;
 			setLoading(false);
-			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_action', { action: I18n.t('playing_video') }));
+			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_playing_video'));
 			navigation.goBack();
 		}
 	});
