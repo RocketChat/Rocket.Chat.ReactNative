@@ -251,7 +251,7 @@ describe('loadMessagesForRoom', () => {
 					} as any)
 			);
 
-		it('writes the Last Open from every fetched batch on the initial tail load', async () => {
+		it('writes the Last Open from the first batch on the initial tail load', async () => {
 			const firstBatch = buildStampedBatch('first', 11, 50);
 			const secondBatch = buildStampedBatch('second', 10, 50);
 
@@ -262,32 +262,11 @@ describe('loadMessagesForRoom', () => {
 			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
 
 			expect(mockedUpdateLastOpen).toHaveBeenCalledTimes(1);
-			// Every batch's server stamps contribute to the cursor, not just the newest page.
+			// Only the first batch's stamps — the older recursion pages must not contribute.
 			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(
 				'ROOM_ID',
-				expect.arrayContaining([
-					...firstBatch.map(message => ({ _updatedAt: message._updatedAt })),
-					...secondBatch.map(message => ({ _updatedAt: message._updatedAt }))
-				])
+				firstBatch.map(message => ({ _updatedAt: message._updatedAt }))
 			);
-		});
-
-		it('uses the highest _updatedAt even when it arrives in an older batch', async () => {
-			const firstBatch = buildStampedBatch('first', 11, 50);
-			const secondBatch = buildStampedBatch('second', 10, 50).map(message => ({
-				...message,
-				_updatedAt: new Date(Date.UTC(2024, 0, 1, 12, 0, 0)).toISOString()
-			}));
-
-			mockedSdkGet
-				.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
-				.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
-
-			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
-
-			const received = mockedUpdateLastOpen.mock.calls[0][1];
-			const timestamps = received.map(m => new Date(m._updatedAt as string | Date).getTime()).filter(t => !Number.isNaN(t));
-			expect(new Date(Math.max(...timestamps))).toEqual(new Date(Date.UTC(2024, 0, 1, 12, 0, 0)));
 		});
 
 		it('does not write when loading an older page (latest)', async () => {
