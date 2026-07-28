@@ -2,7 +2,6 @@ import { loadMissedMessages } from './loadMissedMessages';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { updateLastOpen } from './updateLastOpen';
 import { store } from '../store/auxStore';
 
@@ -25,14 +24,12 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 jest.mock('./updateMessages', () => jest.fn());
-jest.mock('./loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
 jest.mock('./updateLastOpen', () => ({ updateLastOpen: jest.fn() }));
 jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
-const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
 const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
 
 const RID = 'ROOM_ID';
@@ -64,31 +61,12 @@ describe('loadMissedMessages', () => {
 		);
 	});
 
-	it('falls back to a full history load when no cursor can be resolved', async () => {
+	it('fetches nothing when the subscription has no cursor', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
 
 		await loadMissedMessages({ rid: RID });
 
 		expect(mockedSdkGet).not.toHaveBeenCalled();
-		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'p' });
-	});
-
-	it('does not fetch when the room type cannot be resolved', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'thread' } as never);
-
-		await loadMissedMessages({ rid: RID });
-
-		expect(mockedSdkGet).not.toHaveBeenCalled();
-		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
-	});
-
-	it('treats a cursor in the future as absent so a clock-skewed room self-heals', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: new Date(Date.now() + 60 * 60 * 1000), t: 'c' } as never);
-
-		await loadMissedMessages({ rid: RID });
-
-		expect(mockedSdkGet).not.toHaveBeenCalled();
-		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c' });
 	});
 
 	describe('last open', () => {

@@ -1,9 +1,6 @@
 import { type ILastMessage } from '../../definitions';
 import { compareServerVersion } from './helpers';
-import log from './helpers/log';
 import updateMessages from './updateMessages';
-import { loadMessagesForRoom } from './loadMessagesForRoom';
-import { isRoomType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
@@ -56,23 +53,7 @@ async function load({
 	deletedNext?: number | null;
 }) {
 	const sub = await getSubscriptionByRoomId(roomId);
-	const persistedCursor = sub?.lastOpen;
-
-	// A cursor in the future was written from a skewed device clock; the server would report
-	// nothing newer than it, permanently hiding messages. Treat it as absent so it self-heals.
-	const cursor = persistedCursor && persistedCursor.getTime() > Date.now() ? undefined : persistedCursor;
-
-	// A room first opened from a push notification has no cursor; syncing from
-	// nothing would fetch nothing, so fall back to a full recent-history load.
-	if (!cursor && !updatedNext && !deletedNext) {
-		const roomType = sub?.t;
-		if (!isRoomType(roomType)) {
-			log(new Error(`loadMissedMessages: cannot resolve room type for ${roomId}`));
-			return null;
-		}
-		await loadMessagesForRoom({ rid: roomId, t: roomType });
-		return null;
-	}
+	const cursor = sub?.lastOpen;
 
 	const { version: serverVersion } = store.getState().server;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.1.0')) {
