@@ -10,7 +10,7 @@ import database from '../database';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
-import { waitForLoginReady } from './waitForLoginReady';
+import { classifySocketHealth, waitForLoginReady } from './waitForLoginReady';
 import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
@@ -441,6 +441,22 @@ function abort() {
 
 function checkAndReopen() {
 	return sdk.current.checkAndReopen();
+}
+
+/** Classify DDP socket freshness from last pong. Returns 'fresh' when the SDK
+ *  lacks the new probe/reopen hooks so callers fall back to checkAndReopen. */
+export function getSocketStaleness(ddp: any): 'stale' | 'gray' | 'fresh' {
+	if (!ddp || typeof ddp.reopenNow !== 'function' || typeof ddp.probe !== 'function' || ddp.lastPing == null) {
+		return 'fresh';
+	}
+	const health = classifySocketHealth(ddp);
+	if (health === 'reopen') {
+		return 'stale';
+	}
+	if (health === 'probe') {
+		return 'gray';
+	}
+	return 'fresh';
 }
 
 function disconnect() {

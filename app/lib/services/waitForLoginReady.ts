@@ -1,5 +1,21 @@
 import { store } from '../store/auxStore';
 
+export function classifySocketHealth(ddp: {
+	lastPing: number;
+	pingInterval?: number;
+	config?: { ping?: number };
+}): 'healthy' | 'probe' | 'reopen' {
+	const pingInterval = (ddp.pingInterval ?? ddp.config?.ping) || 10000;
+	const age = Date.now() - ddp.lastPing;
+	if (age > pingInterval * 2) {
+		return 'reopen';
+	}
+	if (age > pingInterval) {
+		return 'probe';
+	}
+	return 'healthy';
+}
+
 // Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket close and can read true for a stale session.
 export function isLoginReady(): boolean {
 	const state = store.getState();

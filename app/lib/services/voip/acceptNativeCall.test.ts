@@ -30,6 +30,11 @@ jest.mock('../sdk', () => ({
 	}
 }));
 
+jest.mock('../waitForLoginReady', () => ({
+	...jest.requireActual('../waitForLoginReady'),
+	waitForLoginReady: jest.fn()
+}));
+
 jest.mock('../../methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
@@ -44,10 +49,10 @@ interface IMediaSession {
 
 function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession {
 	return {
-		applyRestStateSignals: jest.fn(() => Promise.resolve()),
-		answerCall: jest.fn(() => Promise.resolve()),
-		endCall: jest.fn(),
-		isInitialized: jest.fn(() => true),
+		applyRestStateSignals: jest.fn<Promise<void>, []>(() => Promise.resolve()),
+		answerCall: jest.fn<Promise<void>, [string]>(() => Promise.resolve()),
+		endCall: jest.fn<void, [string]>(),
+		isInitialized: jest.fn<boolean, []>(() => true),
 		...overrides
 	};
 }

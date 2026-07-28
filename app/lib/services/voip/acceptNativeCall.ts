@@ -1,6 +1,6 @@
 import log from '../../methods/helpers/log';
 import sdk from '../sdk';
-import { waitForLoginReady } from '../waitForLoginReady';
+import { classifySocketHealth, waitForLoginReady } from '../waitForLoginReady';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 
@@ -75,12 +75,10 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			return handleFailure(callId, mediaSession);
 		}
 
-		const pingInterval = ((ddp.pingInterval ?? ddp.config?.ping) || 10000) as number;
-		const age = Date.now() - ddp.lastPing;
-
-		if (age > pingInterval * 2) {
+		const action = classifySocketHealth(ddp);
+		if (action === 'reopen') {
 			await ddp.reopenNow();
-		} else if (age > pingInterval) {
+		} else if (action === 'probe') {
 			const alive = await ddp.probe(2000);
 			if (!alive) {
 				await ddp.reopenNow();
