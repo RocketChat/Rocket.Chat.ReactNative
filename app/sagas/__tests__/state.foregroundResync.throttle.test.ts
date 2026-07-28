@@ -17,6 +17,11 @@ jest.mock('../../lib/services/sdk', () => ({
 	default: { get: jest.fn() }
 }));
 
+jest.mock('../../lib/services/connect', () => ({
+	checkAndReopen: jest.fn(),
+	getSocketStaleness: jest.fn()
+}));
+
 jest.mock('../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn(), write: jest.fn(async (cb: () => Promise<void>) => cb()) } }

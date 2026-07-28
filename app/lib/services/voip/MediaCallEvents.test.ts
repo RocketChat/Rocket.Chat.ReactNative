@@ -61,7 +61,8 @@ jest.mock('react-native-callkeep', () => ({
 jest.mock('./MediaSessionInstance', () => ({
 	mediaSessionInstance: {
 		endCall: jest.fn(),
-		applyRestStateSignals: jest.fn(() => Promise.resolve())
+		applyRestStateSignals: jest.fn(() => Promise.resolve()),
+		acceptNativeCallWithReadiness: jest.fn(() => Promise.resolve())
 	}
 }));
 
@@ -144,7 +145,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				});
 			});
 
-			it('skips deep link open and replays REST state signals when host matches active workspace', () => {
+			it('skips deep link open and runs the accept readiness gate when host matches active workspace', () => {
 				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
 				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
 				const payload = buildIncomingPayload({
@@ -155,7 +156,8 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
 
 				expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('same-ws-call');
-				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
+				expect(mediaSessionInstance.acceptNativeCallWithReadiness).toHaveBeenCalledTimes(1);
+				expect(mediaSessionInstance.acceptNativeCallWithReadiness).toHaveBeenCalledWith('same-ws-call');
 				expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 			});
 

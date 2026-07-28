@@ -94,8 +94,8 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
-		mediaSessionInstance.applyRestStateSignals().catch(error => {
-			mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
+		mediaSessionInstance.acceptNativeCallWithReadiness(data.callId!).catch(error => {
+			mediaCallLogger.error(`${TAG} acceptNativeCallWithReadiness failed:`, error);
 		});
 		return;
 	}
@@ -279,8 +279,8 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 					mediaCallLogger.log(`${TAG} Same workspace as VoIP host; continuing appInit for cold-start handoff`);
 					return false;
 				}
-				mediaSessionInstance.applyRestStateSignals().catch(error => {
-					mediaCallLogger.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
+				mediaSessionInstance.acceptNativeCallWithReadiness(initialEvents.callId).catch(error => {
+					mediaCallLogger.error(`${TAG} acceptNativeCallWithReadiness (initial) failed:`, error);
 				});
 				mediaCallLogger.log(`${TAG} Same workspace as VoIP host; skipped deepLinkingOpen`);
 				return true;

@@ -10,6 +10,7 @@ import database from '../database';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
+import { classifySocketHealth, waitForLoginReady } from './waitForLoginReady';
 import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
@@ -38,12 +39,6 @@ interface IServices {
 	showButton: boolean;
 	buttonLabelText: string;
 	service: string;
-}
-
-// Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket close and can read true for a stale session.
-function isLoginReady(): boolean {
-	const state = store.getState();
-	return state.login.isAuthenticated && state.meteor.connected;
 }
 
 let connectingListener: any;
@@ -148,21 +143,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
 			try {
-				if (!isLoginReady()) {
-					await new Promise<void>(resolve => {
-						const unsub = store.subscribe(() => {
-							if (isLoginReady()) {
-								clearTimeout(timer);
-								unsub();
-								resolve();
-							}
-						});
-						const timer = setTimeout(() => {
-							unsub();
-							resolve();
-						}, 5000);
-					});
-				}
+				await waitForLoginReady(5000);
 				await mediaSessionInstance.drainPendingHangups();
 			} catch (error) {
 				log(error);
@@ -458,6 +439,26 @@ function abort() {
 	}
 }
 
+function checkAndReopen() {
+	return sdk.current.checkAndReopen();
+}
+
+/** Classify DDP socket freshness from last pong. Returns 'fresh' when the SDK
+ *  lacks the new probe/reopen hooks so callers fall back to checkAndReopen. */
+export function getSocketStaleness(ddp: any): 'stale' | 'gray' | 'fresh' {
+	if (!ddp || typeof ddp.reopenNow !== 'function' || typeof ddp.probe !== 'function' || ddp.lastPing == null) {
+		return 'fresh';
+	}
+	const health = classifySocketHealth(ddp);
+	if (health === 'reopen') {
+		return 'stale';
+	}
+	if (health === 'probe') {
+		return 'gray';
+	}
+	return 'fresh';
+}
+
 function disconnect() {
 	const result = sdk.disconnect();
 	mediaSessionInstance.reset();
@@ -549,11 +550,13 @@ export {
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
+	checkAndReopen,
 	abort,
 	connect,
 	disconnect,
 	getWebsocketInfo,
 	stopListener,
 	getLoginServices,
-	determineAuthType
+	determineAuthType,
+	waitForLoginReady
 };
