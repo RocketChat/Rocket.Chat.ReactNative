@@ -10,6 +10,7 @@ import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { updateLastOpen } from './updateLastOpen';
 
 const COUNT = 50;
 const MAX_BATCHES = 10;
@@ -32,15 +33,16 @@ async function load(args: {
 	t: RoomTypes;
 	loaderItem?: TMessageModel;
 	onUiLoaderPushed?: (loaderId: string) => void;
-}): Promise<{ messages: IMessage[]; lastBatchWasFull: boolean }> {
+}): Promise<{ messages: IMessage[]; serverUpdatedAt: { _updatedAt?: string | Date }[]; lastBatchWasFull: boolean }> {
 	const roomId = args.rid;
 	const hideSystemMessages = await resolveHideSystemMessages(roomId);
 	const apiType = roomTypeToApiType(args.t);
 	if (!apiType) {
-		return { messages: [], lastBatchWasFull: false };
+		return { messages: [], serverUpdatedAt: [], lastBatchWasFull: false };
 	}
 
 	const allMessages: IMessage[] = [];
+	const serverUpdatedAt: { _updatedAt?: string | Date }[] = [];
 	let visibleMainMessagesCount = 0;
 	let batchesFetched = 0;
 	let lastBatchWasFull = false;
@@ -73,6 +75,9 @@ async function load(args: {
 		}
 
 		const batch = data.messages as IMessage[];
+		// Snapshot before updateMessages: buildMessage mutates these rows and stamps a
+		// device-clock `_updatedAt` onto any row that lacks one.
+		serverUpdatedAt.push(...batch.map(message => ({ _updatedAt: message._updatedAt })));
 		allMessages.push(...batch);
 		lastBatchWasFull = batch.length === COUNT;
 
@@ -108,7 +113,7 @@ async function load(args: {
 
 	const startTimestamp = args.latest ? new Date(args.latest).toISOString() : undefined;
 	await fetchBatch(startTimestamp);
-	return { messages: allMessages, lastBatchWasFull };
+	return { messages: allMessages, serverUpdatedAt, lastBatchWasFull };
 }
 
 export async function loadMessagesForRoom(args: {
@@ -119,7 +124,7 @@ export async function loadMessagesForRoom(args: {
 }): Promise<void> {
 	let uiLoaderId: string | null = null;
 	try {
-		const { messages, lastBatchWasFull } = await load({
+		const { messages, serverUpdatedAt, lastBatchWasFull } = await load({
 			...args,
 			onUiLoaderPushed: id => {
 				uiLoaderId = id;
@@ -138,6 +143,12 @@ export async function loadMessagesForRoom(args: {
 				} as IMessage);
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
+		}
+
+		// Only the initial tail load reaches the newest history, so only it can state how far
+		// the room is synced. Older pages (`latest`) and gap fills (`loaderItem`) must not.
+		if (!args.latest && !args.loaderItem) {
+			await updateLastOpen(args.rid, serverUpdatedAt);
 		}
 	} catch (e) {
 		log(e);
