@@ -15,6 +15,10 @@ jest.mock('../../methods/helpers/log', () => ({
 	default: (...args: unknown[]) => mockLog(...args)
 }));
 
+jest.mock('../waitForLoginReady', () => ({
+	waitForLoginReady: jest.fn(() => Promise.resolve(true))
+}));
+
 const mockTerminateNativeCall = jest.fn();
 jest.mock('./terminateNativeCall', () => ({
 	terminateNativeCall: (...args: unknown[]) => mockTerminateNativeCall(...args)
@@ -60,7 +64,21 @@ jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
-		methodCall: (...args: unknown[]) => mockMethodCall(...args)
+		methodCall: (...args: unknown[]) => {
+			mockMethodCall(...args);
+			return Promise.resolve();
+		},
+		get current() {
+			return {
+				ddp: {
+					reopenNow: jest.fn(() => Promise.resolve()),
+					probe: jest.fn(() => Promise.resolve(true)),
+					lastPing: Date.now(),
+					pingInterval: 10000,
+					waitForNotifyUserMediaSubs: jest.fn(() => Promise.resolve(true))
+				}
+			};
+		}
 	}
 }));
 
@@ -239,6 +257,8 @@ function buildClientMediaCall(options: {
 }
 
 describe('MediaSessionInstance', () => {
+	let acceptNativeCallWithReadinessSpy: jest.SpyInstance<Promise<void>, [string]>;
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockStartVoipCallService.mockResolvedValue(undefined);
@@ -260,9 +280,13 @@ describe('MediaSessionInstance', () => {
 			roomId: null
 		});
 		mediaSessionInstance.reset();
+		acceptNativeCallWithReadinessSpy = jest
+			.spyOn(mediaSessionInstance, 'acceptNativeCallWithReadiness')
+			.mockResolvedValue(undefined);
 	});
 
 	afterEach(() => {
+		acceptNativeCallWithReadinessSpy?.mockRestore();
 		mediaSessionInstance.reset();
 	});
 
@@ -608,19 +632,7 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('REST state signals replay (native accept race)', () => {
-		it('calls answerCall from init when REST returns accepted and nativeAcceptedCallId already matches', async () => {
-			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mockMediaCallsStateSignals.mockResolvedValue({
-				success: true,
-				signals: [
-					{
-						type: 'notification',
-						notification: 'accepted',
-						signedContractId: 'test-device-id',
-						callId: 'race-call'
-					}
-				]
-			});
+		it('invokes the accept readiness gate from init when nativeAcceptedCallId is already set', async () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
@@ -632,10 +644,12 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'race-call',
 				roomId: null
 			});
+
 			await mediaSessionInstance.init('user-1');
 			await Promise.resolve();
-			expect(answerSpy).toHaveBeenCalledWith('race-call');
-			answerSpy.mockRestore();
+
+			expect(acceptNativeCallWithReadinessSpy).toHaveBeenCalledTimes(1);
+			expect(acceptNativeCallWithReadinessSpy).toHaveBeenCalledWith('race-call');
 		});
 
 		it('applyRestStateSignals skips REST when no instance', async () => {

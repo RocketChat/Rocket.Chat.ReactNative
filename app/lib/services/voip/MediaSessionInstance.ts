@@ -36,6 +36,7 @@ import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
+import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
 
 const mediaCallLogger = new MediaCallLogger();
 
@@ -79,6 +80,14 @@ class MediaSessionInstance {
 		}
 	}
 
+	public isInitialized(): boolean {
+		return this.instance != null;
+	}
+
+	public acceptNativeCallWithReadiness = (callId: string): Promise<void> => {
+		return runAcceptNativeCallGate(callId, this);
+	};
+
 	public async init(userId: string): Promise<void> {
 		this.reset();
 
@@ -94,7 +103,9 @@ class MediaSessionInstance {
 				})
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
-			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
+			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal)).catch(error => {
+				log(error);
+			});
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
 
@@ -102,7 +113,14 @@ class MediaSessionInstance {
 			throw new Error('Failed to create media session instance');
 		}
 
-		await this.applyRestStateSignals();
+		const { nativeAcceptedCallId } = useCallStore.getState();
+		if (nativeAcceptedCallId) {
+			this.acceptNativeCallWithReadiness(nativeAcceptedCallId).catch(error => {
+				log(error);
+			});
+		} else {
+			await this.applyRestStateSignals();
+		}
 
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);

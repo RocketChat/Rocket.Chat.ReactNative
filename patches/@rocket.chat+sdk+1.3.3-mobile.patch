@@ -154,4 +154,96 @@ index 19d31aee3..8a82b99da 100644
 +      'media-calls'
      ].map(event => this.subscribe(topic, `${this.userId}/${event}`, false)))
    }
- 
+
+diff --git a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
+index 591c1b9..82165c0 100644
+--- a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
++++ b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
+@@ -6,6 +6,7 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+   userId: string = ''
+   logger: ILogger = Logger
+   socket: Promise<ISocket | IDriver>
++  ddp?: any
+   config: any
+
+   constructor ({ logger, allPublic, rooms, integrationId, protocol = Protocols.DDP, ...config }: any) {
+@@ -16,7 +17,10 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+       //   this.socket = import(/* webpackChunkName: 'mqtt' */ '../drivers/mqtt').then(({ MQTTDriver }) => new MQTTDriver({ ...config, logger }))
+       //   break
+       case Protocols.DDP:
+-        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => new DDPDriver({ ...config, logger }))
++        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => {
++          this.ddp = new DDPDriver({ ...config, logger })
++          return this.ddp
++        })
+         break
+       default:
+         throw new Error(`Invalid Protocol: ${protocol}, valids: ${Object.keys(Protocols).join()}`)
+
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+index 8a82b99..b798de0 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+@@ -602,6 +602,22 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+     return this.ddp.checkAndReopen()
+   }
+
++  reopenNow = (): Promise<void> => {
++    return this.ddp.reopenNow()
++  }
++
++  probe = (timeoutMs?: number): Promise<boolean> => {
++    return this.ddp.probe(timeoutMs)
++  }
++
++  get lastPing (): number {
++    return this.ddp.lastPing
++  }
++
++  get pingInterval (): number {
++    return this.ddp.config.ping
++  }
++
+   subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
+     this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
+     return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
+@@ -654,6 +670,38 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+     ].map(event => this.subscribe(topic, `${this.userId}/${event}`, false)))
+   }
+
++  /**
++   * Re-send the user's media-signal and media-calls subscriptions on the current
++   * socket and resolve when the server acks them with `ready`. This gives the app
++   * an observable readiness signal after a forced reconnect.
++   */
++  waitForNotifyUserMediaSubs = (timeoutMs = 8000): Promise<boolean> => {
++    if (!this.userId) {
++      return Promise.resolve(false)
++    }
++    const topic = 'stream-notify-user'
++    const names = ['media-signal', 'media-calls']
++    const subs = Object.keys(this.ddp.subscriptions || {})
++      .map(id => this.ddp.subscriptions[id])
++      .filter((sub: any) => (
++        sub &&
++        sub.name === topic &&
++        names.some(name => sub.params?.[0] === `${this.userId}/${name}`)
++      ))
++    if (subs.length === 0) {
++      return Promise.resolve(false)
++    }
++    const ready = Promise.all(
++      subs.map((sub: any) => this.subscribe(topic, sub.params[0], false, sub.id))
++    )
++      .then(() => true)
++      .catch(() => false)
++    const timeout = new Promise<boolean>(resolve => {
++      const t = setTimeout(() => resolve(false), timeoutMs)
++    })
++    return Promise.race([ready, timeout])
++  }
++
+   subscribeRoom = (rid: string, ...args: any[]): Promise<ISubscription[]> => {
+     const topic = 'stream-notify-room'
+     return Promise.all([
+

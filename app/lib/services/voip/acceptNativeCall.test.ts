@@ -1,0 +1,231 @@
+import { acceptNativeCallWithReadiness } from './acceptNativeCall';
+import { useCallStore } from './useCallStore';
+import { terminateNativeCall } from './terminateNativeCall';
+import { waitForLoginReady } from '../waitForLoginReady';
+import sdk from '../sdk';
+
+const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof waitForLoginReady>;
+const mockGetState = useCallStore.getState as jest.Mock;
+const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
+const mockDdp = () => sdk.current?.ddp as any;
+
+jest.mock('../waitForLoginReady', () => ({
+	waitForLoginReady: jest.fn()
+}));
+
+jest.mock('./useCallStore', () => ({
+	useCallStore: {
+		getState: jest.fn()
+	}
+}));
+
+jest.mock('./terminateNativeCall', () => ({
+	terminateNativeCall: jest.fn()
+}));
+
+jest.mock('../sdk', () => ({
+	__esModule: true,
+	default: {
+		current: { ddp: {} }
+	}
+}));
+
+jest.mock('../../methods/helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
+interface IMediaSession {
+	applyRestStateSignals: jest.Mock<Promise<void>>;
+	answerCall: jest.Mock<Promise<void>, [string]>;
+	endCall: jest.Mock<void, [string]>;
+	isInitialized: jest.Mock<boolean>;
+}
+
+function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession {
+	return {
+		applyRestStateSignals: jest.fn(() => Promise.resolve()),
+		answerCall: jest.fn(() => Promise.resolve()),
+		endCall: jest.fn(),
+		isInitialized: jest.fn(() => true),
+		...overrides
+	};
+}
+
+function makeDdp(overrides: Record<string, unknown> = {}) {
+	return {
+		reopenNow: jest.fn(() => Promise.resolve()),
+		probe: jest.fn(() => Promise.resolve(true)),
+		lastPing: Date.now(),
+		pingInterval: 10000,
+		waitForNotifyUserMediaSubs: jest.fn(() => Promise.resolve(true)),
+		...overrides
+	};
+}
+
+function makeStoreState(overrides: Record<string, unknown> = {}) {
+	return {
+		call: null,
+		resetNativeCallId: jest.fn(),
+		...overrides
+	};
+}
+
+describe('acceptNativeCallWithReadiness', () => {
+	const CALL_ID = 'call-uuid';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		jest.useFakeTimers();
+		(sdk as any).current = { ddp: makeDdp() };
+		mockDdp().lastPing = Date.now();
+		mockDdp().pingInterval = 10000;
+		mockWaitForLoginReady.mockResolvedValue(true);
+		mockGetState.mockReturnValue(makeStoreState());
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('skips reopen when the socket is healthy', async () => {
+		const mediaSession = makeMediaSession();
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockDdp().reopenNow).not.toHaveBeenCalled();
+		expect(mockDdp().probe).not.toHaveBeenCalled();
+		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
+		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+	});
+
+	it('reopens before waiting when the socket is older than two ping intervals', async () => {
+		mockDdp().lastPing = Date.now() - 25000;
+		mockDdp().pingInterval = 10000;
+		const mediaSession = makeMediaSession();
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
+		expect(mockWaitForLoginReady.mock.invocationCallOrder[0]).toBeGreaterThan(mockDdp().reopenNow.mock.invocationCallOrder[0]);
+		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
+	});
+
+	it('probes a gray-zone socket and skips reopen when it is alive', async () => {
+		mockDdp().lastPing = Date.now() - 15000;
+		mockDdp().pingInterval = 10000;
+		const mediaSession = makeMediaSession();
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
+		expect(mockDdp().reopenNow).not.toHaveBeenCalled();
+		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
+	});
+
+	it('reopens a gray-zone socket when the probe fails', async () => {
+		mockDdp().lastPing = Date.now() - 15000;
+		mockDdp().pingInterval = 10000;
+		mockDdp().probe = jest.fn(() => Promise.resolve(false));
+		const mediaSession = makeMediaSession();
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
+		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
+		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
+	});
+
+	it('falls back to config.ping when pingInterval is missing', async () => {
+		mockDdp().lastPing = Date.now() - 15000;
+		mockDdp().pingInterval = undefined;
+		mockDdp().config = { ping: 10000 };
+		mockDdp().probe = jest.fn(() => Promise.resolve(false));
+		const mediaSession = makeMediaSession();
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
+		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
+	});
+
+	it('terminates and ends the call when login readiness times out', async () => {
+		mockWaitForLoginReady.mockResolvedValue(false);
+		const mediaSession = makeMediaSession();
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
+		expect(resetNativeCallId).toHaveBeenCalled();
+		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mediaSession.applyRestStateSignals).not.toHaveBeenCalled();
+	});
+
+	it('terminates and ends the call when media-subscription ack times out', async () => {
+		mockDdp().waitForNotifyUserMediaSubs = jest.fn(() => Promise.resolve(false));
+		const mediaSession = makeMediaSession();
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
+		expect(resetNativeCallId).toHaveBeenCalled();
+		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mediaSession.applyRestStateSignals).not.toHaveBeenCalled();
+	});
+
+	it('terminates and ends the call when the media session is not initialized', async () => {
+		const mediaSession = makeMediaSession({ isInitialized: jest.fn(() => false) });
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
+		expect(resetNativeCallId).toHaveBeenCalled();
+		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mediaSession.applyRestStateSignals).not.toHaveBeenCalled();
+	});
+
+	it('terminates and ends the call when the SDK socket is unavailable', async () => {
+		(sdk as any).current = {};
+		const mediaSession = makeMediaSession();
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
+		expect(resetNativeCallId).toHaveBeenCalled();
+		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);
+	});
+
+	it('does not call answerCall when applyRestStateSignals already answered', async () => {
+		const mediaSession = makeMediaSession();
+		mockGetState.mockReturnValue(makeStoreState({ call: { callId: CALL_ID } }));
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
+		expect(mediaSession.answerCall).not.toHaveBeenCalled();
+	});
+
+	it('aborts the previous gate for the same callId and lets the new gate succeed', async () => {
+		mockWaitForLoginReady.mockImplementation((_timeoutMs, signal) => Promise.resolve(!signal?.aborted));
+
+		const firstSession = makeMediaSession();
+		const secondSession = makeMediaSession();
+
+		const first = acceptNativeCallWithReadiness(CALL_ID, firstSession);
+		const second = acceptNativeCallWithReadiness(CALL_ID, secondSession);
+
+		await Promise.all([first, second]);
+
+		expect(firstSession.applyRestStateSignals).not.toHaveBeenCalled();
+		expect(firstSession.endCall).toHaveBeenCalledWith(CALL_ID);
+		expect(secondSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
+		expect(secondSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+	});
+});
