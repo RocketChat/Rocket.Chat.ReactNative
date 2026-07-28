@@ -36,7 +36,6 @@ export async function readMessages(rid: string): Promise<void> {
 		// @ts-ignore
 		await sdk.post('subscriptions.read', { rid });
 
-
 		await db.write(async () => {
 			try {
 				await subscription.update((s: TSubscriptionModel) => {
