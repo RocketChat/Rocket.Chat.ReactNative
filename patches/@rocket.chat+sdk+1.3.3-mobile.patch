@@ -1,8 +1,16 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..9f752df 100644
+index 19d31aee3..8a82b99da 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -101,9 +101,25 @@ export class Socket extends EventEmitter {
+@@ -55,6 +55,7 @@ export class Socket extends EventEmitter {
+   connection?: WebSocket
+   session?: string
+   logger: ILogger
++  reopenPromise?: Promise<void>
+ 
+   /** Create a websocket handler */
+   constructor (
+@@ -101,9 +102,25 @@ export class Socket extends EventEmitter {
          this.logger.error(err)
          return reject(err)
        }
@@ -29,7 +37,7 @@ index 19d31ae..9f752df 100644
        this.connection.onopen = this.onOpen.bind(this, resolve)
        this.emit('connecting')
      })
-@@ -125,7 +141,14 @@ export class Socket extends EventEmitter {
+@@ -125,7 +142,14 @@ export class Socket extends EventEmitter {
    }
  
    /** Emit close event so it can be used for promise resolve in close() */
@@ -45,7 +53,98 @@ index 19d31ae..9f752df 100644
      this.emit('close', e)
      try {
        if (e?.code !== userDisconnectCloseCode) {
-@@ -549,7 +572,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -201,6 +225,81 @@ export class Socket extends EventEmitter {
+     }, this.config.reopen);
+   }
+ 
++  /**
++   * Force an immediate reconnect. Shared across concurrent callers so only one
++   * new WebSocket is created. Emits 'disconnected' to unblock in-flight sends,
++   * then lets open() run unawaited in the background.
++   */
++  reopenNow = (): Promise<void> => {
++    if (this.reopenPromise) {
++      return this.reopenPromise
++    }
++
++    this.reopenPromise = new Promise<void>(resolve => {
++      this.openTimeout && clearTimeout(this.openTimeout as any)
++      this.lastPing = 0
++      this.emit('disconnected')
++
++      let settled = false
++      const cleanup = () => {
++        if (settled) return
++        settled = true
++        this.off('open', onOpen)
++        if (timeout) clearTimeout(timeout as any)
++        delete this.reopenPromise
++        resolve()
++      }
++
++      const onOpen = () => cleanup()
++      this.once('open', onOpen)
++
++      this.open()
++
++      const timeout = setTimeout(() => cleanup(), 10000)
++    })
++
++    return this.reopenPromise
++  }
++
++  /**
++   * Bounded liveness check for a socket in the gray zone. Returns true only if
++   * the socket is open and the server answers the ping within the deadline.
++   */
++  probe = (timeoutMs = 2000): Promise<boolean> => {
++    return new Promise<boolean>(resolve => {
++      if (!this.connection || this.connection.readyState !== 1) {
++        return resolve(false)
++      }
++
++      let settled = false
++      const cleanup = () => {
++        if (settled) return
++        settled = true
++        this.off('pong', onPong)
++        if (timeout) clearTimeout(timeout as any)
++      }
++
++      const onPong = () => {
++        cleanup()
++        resolve(true)
++      }
++
++      this.once('pong', onPong)
++
++      const timeout = setTimeout(() => {
++        cleanup()
++        resolve(false)
++      }, timeoutMs)
++
++      try {
++        this.connection.send(JSON.stringify({ msg: 'ping' }))
++      } catch {
++        cleanup()
++        resolve(false)
++      }
++    })
++  }
++
+   /** Check if websocket connected and ready. */
+   get connected () {
+     return !!(
+@@ -254,7 +353,7 @@ export class Socket extends EventEmitter {
+         return resolve()
+       }
+       this.once(listener, (result: any) => {
+-        this.off('disconnect', reject)
++        this.off('disconnected', reject)
+         return (result.error ? reject(result.error) : resolve({ ...(/connect|ping|pong/.test(obj.msg) ? {} : { id }) , ...result }))
+       })
+     })
+@@ -549,7 +648,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
