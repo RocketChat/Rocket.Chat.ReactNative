@@ -680,8 +680,6 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				await RoomServices.getMessages({
 					rid: room.rid,
-					// A room with a sync cursor resumes from it; a room without one must
-					// pull recent history and establish the cursor from the response.
 					...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
 				});
 

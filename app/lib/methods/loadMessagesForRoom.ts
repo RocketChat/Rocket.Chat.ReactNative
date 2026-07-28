@@ -143,8 +143,6 @@ export async function loadMessagesForRoom(args: {
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}
 
-		// Only the initial tail load reaches the newest history, so only it can state how far
-		// the room is synced. Older pages (`latest`) and gap fills (`loaderItem`) must not.
 		if (!args.latest && !args.loaderItem) {
 			await updateLastOpen(args.rid, serverTimestamps);
 		}

@@ -249,7 +249,7 @@ const MessageActions = memo(
 
 						await db.write(async () => {
 							try {
-								await subRecord.update(sub => (sub.ls = ts as Date)); // TODO: reevaluate IMessage
+								await subRecord.update(sub => (sub.ls = ts as Date));
 							} catch {
 								// do nothing
 							}

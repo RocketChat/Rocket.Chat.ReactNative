@@ -50,8 +50,6 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 					}
 				}
 
-				// Jump paths never write the Last Open: a ts-ordered forward walk never sees the
-				// `_updatedAt` of pre-anchor messages, so any cursor derived from it would skip history.
 				await updateMessages({ rid, update: messages });
 				return resolve(messages);
 			}

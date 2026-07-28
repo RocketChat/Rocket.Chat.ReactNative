@@ -36,8 +36,6 @@ export async function readMessages(rid: string): Promise<void> {
 		// @ts-ignore
 		await sdk.post('subscriptions.read', { rid });
 
-		// `ls` is intentionally not written here: the server stamps it and the
-		// subscription stream delivers it, so the device clock never sets it.
 
 		await db.write(async () => {
 			try {
