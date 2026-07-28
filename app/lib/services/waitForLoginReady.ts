@@ -16,7 +16,8 @@ export function classifySocketHealth(ddp: {
 	return 'healthy';
 }
 
-// Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket close and can read true for a stale session.
+// Reads redux rather than `ddp.loggedIn`: `close` clears `meteor.connected`, while `ddp.loggedIn` survives it.
+// Neither survives a silent background death, so callers must bound their wait.
 export function isLoginReady(): boolean {
 	const state = store.getState();
 	return state.login.isAuthenticated && state.meteor.connected;
