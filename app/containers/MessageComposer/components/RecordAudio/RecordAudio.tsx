@@ -103,15 +103,14 @@ export const RecordAudio = (): ReactElement | null => {
 
 	const sendAudio = async () => {
 		try {
-			if (!rid) return;
-			setRecordingAudio(false);
-			const fileData = await getInfoAsync(audioRecorder.uri as string);
+			if (!rid || !audioRecorder.uri) return;
+			const fileData = await getInfoAsync(audioRecorder.uri);
 			const fileInfo = {
 				name: `${Date.now()}${RECORDING_EXTENSION}`,
 				mime: 'audio/aac',
 				type: 'audio/aac',
 				store: 'Uploads',
-				path: audioRecorder.uri,
+				path: fileData.uri,
 				size: fileData.exists ? fileData.size : null
 			} as IUpload;
 
@@ -120,7 +119,9 @@ export const RecordAudio = (): ReactElement | null => {
 					await sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
 			}
+			setRecordingAudio(false);
 		} catch (e) {
+			setRecordingAudio(false);
 			log(e);
 		}
 	};
