@@ -48,7 +48,9 @@ const missedMessage = {
 	u: { _id: 'user2', username: 'user2' }
 };
 
-const syncMessagesResponse = (updated: unknown[]) => ({
+const syncMessagesResponse = (
+	updated: unknown[]
+): { result: { updated: unknown[]; deleted: unknown[]; cursor: { next: number | null } } } => ({
 	result: { updated, deleted: [], cursor: { next: null } }
 });
 
@@ -60,11 +62,15 @@ describe('RoomSubscription resume sync', () => {
 	});
 
 	it('fetches and persists messages missed while backgrounded when the room has a sync cursor', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: new Date(Date.UTC(2024, 0, 1, 11, 0, 0)) } as never);
+		const persistedCursor = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: persistedCursor } as never);
 
 		await new RoomSubscription(RID).handleConnection();
 
-		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', expect.objectContaining({ roomId: RID, type: 'UPDATED' }));
+		expect(mockedSdkGet).toHaveBeenCalledWith(
+			'chat.syncMessages',
+			expect.objectContaining({ roomId: RID, type: 'UPDATED', next: persistedCursor.getTime() })
+		);
 		expect(mockedUpdateMessages).toHaveBeenCalledWith(
 			expect.objectContaining({
 				rid: RID,
@@ -73,19 +79,12 @@ describe('RoomSubscription resume sync', () => {
 		);
 	});
 
-	it('fetches and persists messages missed while backgrounded for a room opened from a push notification (null lastOpen)', async () => {
+	it('fetches nothing for a room without a sync cursor (null lastOpen): RoomView owns the initial load', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
-		mockedSdkGet.mockResolvedValue({ success: true, messages: [missedMessage] } as never);
 
 		await new RoomSubscription(RID).handleConnection();
 
-		expect(mockedSdkGet).toHaveBeenCalledWith('channels.history', expect.objectContaining({ roomId: RID }));
-		expect(mockedUpdateMessages).toHaveBeenCalledWith(
-			expect.objectContaining({
-				rid: RID,
-				update: expect.arrayContaining([expect.objectContaining({ _id: 'missed-1' })])
-			})
-		);
+		expect(mockedSdkGet).not.toHaveBeenCalled();
 	});
 
 	it('writes nothing to the subscription when the room is closed', async () => {

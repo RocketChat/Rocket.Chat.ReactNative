@@ -3,14 +3,18 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from './helpers/log';
 import { type TSubscriptionModel } from '../../definitions';
 
-export type TServerTimestamps = { _updatedAt?: string | Date }[];
+export type TServerTimestamps = { _updatedAt?: string | Date | null }[];
 
 export const snapshotServerTimestamps = (payload: TServerTimestamps): TServerTimestamps =>
 	payload.map(message => ({ _updatedAt: message._updatedAt }));
 
 export async function updateLastOpen(rid: string, payload: TServerTimestamps): Promise<void> {
 	try {
-		const timestamps = payload.map(m => new Date(m._updatedAt as string | Date).getTime()).filter(t => !Number.isNaN(t));
+		const timestamps = payload
+			.map(message => message._updatedAt)
+			.filter((updatedAt): updatedAt is string | Date => updatedAt != null)
+			.map(updatedAt => new Date(updatedAt).getTime())
+			.filter(t => !Number.isNaN(t));
 		if (!timestamps.length) {
 			return;
 		}

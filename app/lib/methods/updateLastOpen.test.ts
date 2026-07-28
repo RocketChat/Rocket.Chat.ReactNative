@@ -63,6 +63,15 @@ describe('updateLastOpen', () => {
 		expect(subscription.lastOpen).toEqual(new Date('2024-01-01T12:00:00.000Z'));
 	});
 
+	it('does not write when every _updatedAt is null', async () => {
+		const subscription = makeSubscription(null);
+		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
+
+		await updateLastOpen(RID, [{ _updatedAt: null }, { _updatedAt: null }]);
+
+		expect(subscription.lastOpen).toBeNull();
+	});
+
 	it('does not write when every _updatedAt is invalid', async () => {
 		const subscription = makeSubscription(null);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);

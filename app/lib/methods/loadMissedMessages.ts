@@ -4,6 +4,7 @@ import updateMessages from './updateMessages';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import log from './helpers/log';
 import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
 
 const count = 50;
@@ -102,7 +103,7 @@ export async function loadMissedMessages(args: {
 				updatedNext,
 				deletedNext,
 				serverTimestamps
-			});
+			}).catch(log);
 		}
 
 		// Only once the UPDATED cursor has drained, from the stamps of every page walked: the
