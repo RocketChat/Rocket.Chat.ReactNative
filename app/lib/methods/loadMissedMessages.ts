@@ -7,13 +7,9 @@ import { isRoomType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { getMessageById } from '../database/services/Message';
 import { updateLastOpen } from './updateLastOpen';
 
 const count = 50;
-const TAIL_LOAD_COOLDOWN_MS = 5 * 60 * 1000;
-
-const lastTailLoadAttemptByRoom = new Map<string, number>();
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
 	// @ts-ignore // this method dont have type
@@ -90,37 +86,6 @@ async function load({
 	return result;
 }
 
-// A cursor written by an older build from the device clock can sit ahead of the server's
-// newest `_updatedAt`, so every sync drains empty and the gap never closes. There is no
-// migration for those rows; detect the lie from the server's own `lastMessage` and refetch.
-async function normalizeCursor(roomId: string) {
-	const sub = await getSubscriptionByRoomId(roomId);
-	const lastMessageId = sub?.lastMessage?._id;
-	if (!lastMessageId) {
-		return;
-	}
-	const localLastMessage = await getMessageById(lastMessageId);
-	if (localLastMessage) {
-		return;
-	}
-
-	// A tombstone `lastMessage` never resolves locally, so without a cooldown every empty sync
-	// would replay the full room history. The cooldown bounds that cost while still allowing heals.
-	const now = Date.now();
-	if (now - (lastTailLoadAttemptByRoom.get(roomId) ?? 0) < TAIL_LOAD_COOLDOWN_MS) {
-		return;
-	}
-	lastTailLoadAttemptByRoom.set(roomId, now);
-
-	const roomType = sub?.t;
-	if (!isRoomType(roomType)) {
-		log(new Error(`loadMissedMessages: cannot resolve room type for ${roomId}`));
-		return;
-	}
-	// A tail load re-anchors the Last Open from a real server response; it never re-enters here.
-	await loadMessagesForRoom({ rid: roomId, t: roomType });
-}
-
 export async function loadMissedMessages(args: {
 	rid: string;
 	updatedNext?: number | null;
@@ -158,9 +123,6 @@ export async function loadMissedMessages(args: {
 		// pages not yet fetched; `deleted` is never a source, its rows carry no new history.
 		if (!updatedNext) {
 			await updateLastOpen(args.rid, serverUpdatedAt);
-			if (!updated.length) {
-				await normalizeCursor(args.rid);
-			}
 		}
 	}
 }
