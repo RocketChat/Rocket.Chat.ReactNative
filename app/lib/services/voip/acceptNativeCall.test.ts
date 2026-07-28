@@ -9,10 +9,6 @@ const mockGetState = useCallStore.getState as jest.Mock;
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
 const mockDdp = () => sdk.current?.ddp as any;
 
-jest.mock('../waitForLoginReady', () => ({
-	waitForLoginReady: jest.fn()
-}));
-
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
 		getState: jest.fn()

@@ -114,6 +114,10 @@ describe('Socket.probe', () => {
 });
 
 describe('Socket.reopenNow', () => {
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
 	it('preserves subscriptions and subscribeAll re-sends them', async () => {
 		const { socket } = buildSocket();
 		const subscription = {
@@ -200,7 +204,6 @@ describe('Socket.reopenNow', () => {
 		mockConnections[1].onopen();
 		await jest.runOnlyPendingTimersAsync();
 		await secondPromise;
-		jest.useRealTimers();
 	});
 
 	it('forces a reconnect on an already healthy socket', async () => {
