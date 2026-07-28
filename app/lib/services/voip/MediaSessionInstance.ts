@@ -71,7 +71,9 @@ class MediaSessionInstance {
 		try {
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
 			for (const signal of signals) {
-				this.instance.processSignal(signal);
+				// Sequential replay: signals depend on prior state mutations.
+				// eslint-disable-next-line no-await-in-loop
+				await this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
@@ -108,7 +110,7 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
+		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
 			}
@@ -117,7 +119,12 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
-			this.instance.processSignal(signal);
+			try {
+				// `tryAnswerIfNativeAcceptedNotification` reads the state this signal mutates.
+				await this.instance.processSignal(signal);
+			} catch (error) {
+				log(error);
+			}
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
