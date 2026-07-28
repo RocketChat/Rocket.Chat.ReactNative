@@ -11,6 +11,15 @@ export interface NativeCallMediaSession {
 	isInitialized(): boolean;
 }
 
+interface VoipReadyDdp {
+	reopenNow(): Promise<void>;
+	probe(timeoutMs: number): Promise<boolean>;
+	lastPing: number;
+	pingInterval?: number;
+	config?: { ping?: number };
+	waitForNotifyUserMediaSubs(timeoutMs: number): Promise<boolean>;
+}
+
 const activeGates = new Map<string, AbortController>();
 
 function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
@@ -25,12 +34,12 @@ function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
 		signal.addEventListener('abort', callback, { once: true });
 	} else {
 		// Fallback for older runtimes where AbortSignal only exposes onabort.
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(signal as any).onabort = callback;
+		const legacy = signal as unknown as { onabort: (() => void) | null };
+		legacy.onabort = callback;
 	}
 }
 
-async function waitForMediaSignalSubs(ddp: any, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
+async function waitForMediaSignalSubs(ddp: VoipReadyDdp, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
 	if (typeof ddp.waitForNotifyUserMediaSubs !== 'function') {
 		return false;
 	}
@@ -66,11 +75,13 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 	const controller = new AbortController();
 	activeGates.set(callId, controller);
 	const cleanup = () => {
-		activeGates.delete(callId);
+		if (activeGates.get(callId) === controller) {
+			activeGates.delete(callId);
+		}
 	};
 
 	try {
-		const ddp = sdk.current?.ddp;
+		const ddp = sdk.current?.ddp as VoipReadyDdp | undefined;
 		if (!ddp || typeof ddp.reopenNow !== 'function' || typeof ddp.probe !== 'function' || ddp.lastPing == null) {
 			return handleFailure(callId, mediaSession);
 		}
@@ -86,7 +97,7 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 		}
 
 		if (controller.signal.aborted) {
-			return handleFailure(callId, mediaSession);
+			return;
 		}
 
 		const [loginReady, mediaSubsReady] = await Promise.all([
@@ -94,14 +105,18 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			waitForMediaSignalSubs(ddp, 8000, controller.signal)
 		]);
 
-		if (!loginReady || !mediaSubsReady || !mediaSession.isInitialized() || controller.signal.aborted) {
+		if (controller.signal.aborted) {
+			return;
+		}
+
+		if (!loginReady || !mediaSubsReady || !mediaSession.isInitialized()) {
 			return handleFailure(callId, mediaSession);
 		}
 
 		await mediaSession.applyRestStateSignals();
 
 		if (controller.signal.aborted) {
-			return handleFailure(callId, mediaSession);
+			return;
 		}
 
 		const { call } = useCallStore.getState();

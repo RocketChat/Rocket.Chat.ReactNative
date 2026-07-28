@@ -229,8 +229,58 @@ describe('acceptNativeCallWithReadiness', () => {
 		await Promise.all([first, second]);
 
 		expect(firstSession.applyRestStateSignals).not.toHaveBeenCalled();
-		expect(firstSession.endCall).toHaveBeenCalledWith(CALL_ID);
+		expect(firstSession.endCall).not.toHaveBeenCalled();
+		expect(firstSession.answerCall).not.toHaveBeenCalled();
 		expect(secondSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
 		expect(secondSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+	});
+
+	it('does not terminate or end the call when an aborted gate finishes', async () => {
+		mockWaitForLoginReady.mockImplementation((_timeoutMs, signal) => Promise.resolve(!signal?.aborted));
+
+		const firstSession = makeMediaSession();
+		const secondSession = makeMediaSession();
+
+		const first = acceptNativeCallWithReadiness(CALL_ID, firstSession);
+		const second = acceptNativeCallWithReadiness(CALL_ID, secondSession);
+
+		await Promise.all([first, second]);
+
+		expect(mockTerminateNativeCall).not.toHaveBeenCalledWith(CALL_ID);
+		expect(firstSession.endCall).not.toHaveBeenCalled();
+		expect(secondSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+	});
+
+	it('keeps the newer gate entry when an older gate cleans up, so a third gate aborts the newer one', async () => {
+		let gateIndex = 0;
+		mockWaitForLoginReady.mockImplementation((_timeoutMs, signal) => {
+			const myIndex = ++gateIndex;
+			if (signal?.aborted) {
+				return Promise.resolve(false);
+			}
+			return new Promise(resolve => {
+				setTimeout(() => resolve(true), myIndex * 1000);
+			});
+		});
+
+		const firstSession = makeMediaSession();
+		const secondSession = makeMediaSession();
+		const thirdSession = makeMediaSession();
+
+		const first = acceptNativeCallWithReadiness(CALL_ID, firstSession);
+		const second = acceptNativeCallWithReadiness(CALL_ID, secondSession);
+
+		await Promise.resolve();
+		await Promise.resolve();
+
+		const third = acceptNativeCallWithReadiness(CALL_ID, thirdSession);
+
+		await jest.advanceTimersByTimeAsync(3000);
+
+		await Promise.all([first, second, third]);
+
+		expect(firstSession.endCall).not.toHaveBeenCalled();
+		expect(secondSession.answerCall).not.toHaveBeenCalled();
+		expect(thirdSession.answerCall).toHaveBeenCalledWith(CALL_ID);
 	});
 });

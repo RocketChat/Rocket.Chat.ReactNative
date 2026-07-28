@@ -34,8 +34,8 @@ function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
 		signal.addEventListener('abort', callback, { once: true });
 	} else {
 		// Fallback for older runtimes where AbortSignal only exposes onabort.
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(signal as any).onabort = callback;
+		const legacy = signal as unknown as { onabort: (() => void) | null };
+		legacy.onabort = callback;
 	}
 }
 

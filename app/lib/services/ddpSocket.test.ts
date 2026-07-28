@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Socket } = require('@rocket.chat/sdk/lib/drivers/ddp');
+const { Socket, DDPDriver } = require('@rocket.chat/sdk/lib/drivers/ddp');
 
 const mockConnections: any[] = [];
 const trackedSockets: any[] = [];
@@ -250,5 +250,79 @@ describe('Socket.send disconnected listener', () => {
 		await socket.send({ msg: 'ping' });
 
 		expect(socket._listeners.disconnected?.length || 0).toBe(baseline);
+	});
+});
+
+describe('DDPDriver.waitForNotifyUserMediaSubs', () => {
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	const makeDriver = () =>
+		new DDPDriver({
+			logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() }
+		});
+
+	it('resolves true when media subs are present and server acks', async () => {
+		const driver = makeDriver();
+		driver.userId = 'uid';
+		driver.ddp.subscriptions['sub-ms'] = {
+			id: 'sub-ms',
+			name: 'stream-notify-user',
+			params: ['uid/media-signal'],
+			unsubscribe: jest.fn()
+		};
+		driver.ddp.subscriptions['sub-mc'] = {
+			id: 'sub-mc',
+			name: 'stream-notify-user',
+			params: ['uid/media-calls'],
+			unsubscribe: jest.fn()
+		};
+		jest.spyOn(driver, 'subscribe').mockResolvedValue({});
+
+		await expect(driver.waitForNotifyUserMediaSubs(1000)).resolves.toBe(true);
+		expect(driver.subscribe).toHaveBeenCalledWith('stream-notify-user', 'uid/media-signal', false, 'sub-ms');
+		expect(driver.subscribe).toHaveBeenCalledWith('stream-notify-user', 'uid/media-calls', false, 'sub-mc');
+	});
+
+	it('waits for media subs to appear before re-subscribing', async () => {
+		jest.useFakeTimers();
+		const driver = makeDriver();
+		driver.userId = 'uid';
+		jest.spyOn(driver, 'subscribe').mockResolvedValue({});
+
+		const promise = driver.waitForNotifyUserMediaSubs(1000);
+		driver.ddp.subscriptions['sub-ms'] = {
+			id: 'sub-ms',
+			name: 'stream-notify-user',
+			params: ['uid/media-signal'],
+			unsubscribe: jest.fn()
+		};
+		driver.ddp.subscriptions['sub-mc'] = {
+			id: 'sub-mc',
+			name: 'stream-notify-user',
+			params: ['uid/media-calls'],
+			unsubscribe: jest.fn()
+		};
+
+		await jest.advanceTimersByTimeAsync(100);
+		await expect(promise).resolves.toBe(true);
+		expect(driver.subscribe).toHaveBeenCalledTimes(2);
+	});
+
+	it('resolves false if media subs never appear before the timeout', async () => {
+		jest.useFakeTimers();
+		const driver = makeDriver();
+		driver.userId = 'uid';
+
+		const promise = driver.waitForNotifyUserMediaSubs(500);
+		await jest.advanceTimersByTimeAsync(500);
+
+		await expect(promise).resolves.toBe(false);
+	});
+
+	it('resolves false when userId is missing', async () => {
+		const driver = makeDriver();
+		await expect(driver.waitForNotifyUserMediaSubs(1000)).resolves.toBe(false);
 	});
 });

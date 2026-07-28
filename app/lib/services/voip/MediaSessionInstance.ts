@@ -49,7 +49,7 @@ class MediaSessionInstance {
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
-	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal): void {
+	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal, useGate = false): void {
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
 		if (
 			signal.type === 'notification' &&
@@ -58,9 +58,15 @@ class MediaSessionInstance {
 			nativeAcceptedCallId === signal.callId &&
 			call == null
 		) {
-			this.answerCall(signal.callId).catch(error => {
-				log(error);
-			});
+			if (useGate) {
+				this.acceptNativeCallWithReadiness(signal.callId).catch(error => {
+					log(error);
+				});
+			} else {
+				this.answerCall(signal.callId).catch(error => {
+					log(error);
+				});
+			}
 		}
 	}
 
@@ -136,7 +142,7 @@ class MediaSessionInstance {
 			}
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
-			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
+			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal, true);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {

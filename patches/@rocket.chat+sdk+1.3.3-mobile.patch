@@ -1,5 +1,5 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31aee3..abdc69a3f 100644
+index 19d31ae..3540fe4 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 @@ -55,6 +55,7 @@ export class Socket extends EventEmitter {
@@ -222,7 +222,7 @@ index 19d31aee3..abdc69a3f 100644
    subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
      this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
      return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
-@@ -549,10 +686,44 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -549,10 +686,60 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
@@ -237,6 +237,9 @@ index 19d31aee3..abdc69a3f 100644
 +   * Re-send the user's media-signal and media-calls subscriptions on the current
 +   * socket and resolve when the server acks them with `ready`. This gives the app
 +   * an observable readiness signal after a forced reconnect.
++   *
++   * If the subscriptions are not yet present (e.g. immediately after reopenNow),
++   * it polls the socket subscription map until they appear or the timeout expires.
 +   */
 +  waitForNotifyUserMediaSubs = (timeoutMs = 8000): Promise<boolean> => {
 +    if (!this.userId) {
@@ -244,33 +247,45 @@ index 19d31aee3..abdc69a3f 100644
 +    }
 +    const topic = 'stream-notify-user'
 +    const names = ['media-signal', 'media-calls']
-+    const subs = Object.keys(this.ddp.subscriptions || {})
++    const userId = this.userId
++    const findSubs = () => Object.keys(this.ddp.subscriptions || {})
 +      .map(id => this.ddp.subscriptions[id])
 +      .filter((sub: any) => (
 +        sub &&
 +        sub.name === topic &&
-+        names.some(name => sub.params?.[0] === `${this.userId}/${name}`)
++        names.some(name => sub.params?.[0] === `${userId}/${name}`)
 +      ))
-+    if (subs.length === 0) {
-+      return Promise.resolve(false)
-+    }
-+    const ready = Promise.all(
++    const resubscribe = (subs: any[]) => Promise.all(
 +      subs.map((sub: any) => this.subscribe(topic, sub.params[0], false, sub.id))
 +    )
 +      .then(() => true)
 +      .catch(() => false)
-+    const timeout = new Promise<boolean>(resolve => {
-+      const t = setTimeout(() => resolve(false), timeoutMs)
++    return new Promise<boolean>(resolve => {
++      let settled = false
++      const finish = (value: boolean) => {
++        if (settled) return
++        settled = true
++        clearInterval(poll)
++        clearTimeout(deadline)
++        resolve(value)
++      }
++      const attempt = () => {
++        const subs = findSubs()
++        if (subs.length > 0) {
++          resubscribe(subs).then(finish)
++        }
++      }
++      const deadline = setTimeout(() => finish(false), timeoutMs)
++      const poll = setInterval(attempt, 100)
++      attempt()
 +    })
-+    return Promise.race([ready, timeout])
 +  }
 +
    subscribeRoom = (rid: string, ...args: any[]): Promise<ISubscription[]> => {
      const topic = 'stream-notify-room'
      return Promise.all([
-
 diff --git a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
-index 591c1b9e8..82165c002 100644
+index 591c1b9..82165c0 100644
 --- a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
 @@ -6,6 +6,7 @@ export default class RocketChatClient extends ClientRest implements ISocket {
