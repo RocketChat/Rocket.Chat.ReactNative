@@ -53,6 +53,7 @@ class AudioManagerClass {
 		}
 
 		const sound = createAudioPlayer({ uri });
+		sound.paused = true;
 		this.audioQueue[audioKey] = sound;
 		return audioKey;
 	}
@@ -133,6 +134,10 @@ class AudioManagerClass {
 			this.onPlaybackStatusUpdate(audioKey, status, callback);
 		});
 		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
+	}
+
+	getCurrentStatus(audioKey: string): AudioStatus | null {
+		return this.audioQueue[audioKey]?.currentStatus ?? null;
 	}
 
 	async onEnd(audioKey: string, status: AudioStatus) {
