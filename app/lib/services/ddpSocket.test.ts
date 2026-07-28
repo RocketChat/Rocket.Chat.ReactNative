@@ -281,18 +281,18 @@ describe('DDPDriver.waitForNotifyUserMediaSubs', () => {
 			params: ['uid/media-calls'],
 			unsubscribe: jest.fn()
 		};
-		jest.spyOn(driver, 'subscribe').mockResolvedValue({});
+		jest.spyOn(driver.ddp, 'subscribe').mockResolvedValue({});
 
 		await expect(driver.waitForNotifyUserMediaSubs(1000)).resolves.toBe(true);
-		expect(driver.subscribe).toHaveBeenCalledWith('stream-notify-user', 'uid/media-signal', false, 'sub-ms');
-		expect(driver.subscribe).toHaveBeenCalledWith('stream-notify-user', 'uid/media-calls', false, 'sub-mc');
+		expect(driver.ddp.subscribe).toHaveBeenCalledWith('stream-notify-user', ['uid/media-signal'], undefined, 'sub-ms');
+		expect(driver.ddp.subscribe).toHaveBeenCalledWith('stream-notify-user', ['uid/media-calls'], undefined, 'sub-mc');
 	});
 
 	it('waits for media subs to appear before re-subscribing', async () => {
 		jest.useFakeTimers();
 		const driver = makeDriver();
 		driver.userId = 'uid';
-		jest.spyOn(driver, 'subscribe').mockResolvedValue({});
+		jest.spyOn(driver.ddp, 'subscribe').mockResolvedValue({});
 
 		const promise = driver.waitForNotifyUserMediaSubs(1000);
 		driver.ddp.subscriptions['sub-ms'] = {
@@ -310,7 +310,41 @@ describe('DDPDriver.waitForNotifyUserMediaSubs', () => {
 
 		await jest.advanceTimersByTimeAsync(100);
 		await expect(promise).resolves.toBe(true);
-		expect(driver.subscribe).toHaveBeenCalledTimes(2);
+		expect(driver.ddp.subscribe).toHaveBeenCalledTimes(2);
+	});
+
+	it('stays pending while only one of the media subs is present', async () => {
+		jest.useFakeTimers();
+		const driver = makeDriver();
+		driver.userId = 'uid';
+		jest.spyOn(driver.ddp, 'subscribe').mockResolvedValue({});
+
+		let resolved: boolean | undefined;
+		const promise = driver.waitForNotifyUserMediaSubs(1000).then((value: boolean) => {
+			resolved = value;
+			return value;
+		});
+
+		driver.ddp.subscriptions['sub-ms'] = {
+			id: 'sub-ms',
+			name: 'stream-notify-user',
+			params: ['uid/media-signal'],
+			unsubscribe: jest.fn()
+		};
+
+		await jest.advanceTimersByTimeAsync(100);
+		expect(resolved).toBeUndefined();
+		expect(driver.ddp.subscribe).not.toHaveBeenCalled();
+
+		driver.ddp.subscriptions['sub-mc'] = {
+			id: 'sub-mc',
+			name: 'stream-notify-user',
+			params: ['uid/media-calls'],
+			unsubscribe: jest.fn()
+		};
+
+		await jest.advanceTimersByTimeAsync(100);
+		await expect(promise).resolves.toBe(true);
 	});
 
 	it('resolves false if media subs never appear before the timeout', async () => {

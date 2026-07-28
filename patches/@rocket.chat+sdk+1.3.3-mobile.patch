@@ -1,5 +1,5 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..3540fe4 100644
+index 19d31ae..068b61e 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 @@ -55,6 +55,7 @@ export class Socket extends EventEmitter {
@@ -222,7 +222,7 @@ index 19d31ae..3540fe4 100644
    subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
      this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
      return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
-@@ -549,10 +686,60 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -549,10 +686,70 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
@@ -255,13 +255,17 @@ index 19d31ae..3540fe4 100644
 +        sub.name === topic &&
 +        names.some(name => sub.params?.[0] === `${userId}/${name}`)
 +      ))
++    // Go through the raw socket: the driver's subscribe() wrapper reshapes its
++    // arguments and would drop the subscription id, making the server treat the
++    // resubscribe as a brand new subscription.
 +    const resubscribe = (subs: any[]) => Promise.all(
-+      subs.map((sub: any) => this.subscribe(topic, sub.params[0], false, sub.id))
++      subs.map((sub: any) => this.ddp.subscribe(topic, sub.params, undefined, sub.id))
 +    )
 +      .then(() => true)
 +      .catch(() => false)
 +    return new Promise<boolean>(resolve => {
 +      let settled = false
++      let inFlight = false
 +      const finish = (value: boolean) => {
 +        if (settled) return
 +        settled = true
@@ -270,9 +274,15 @@ index 19d31ae..3540fe4 100644
 +        resolve(value)
 +      }
 +      const attempt = () => {
++        if (inFlight) return
 +        const subs = findSubs()
-+        if (subs.length > 0) {
-+          resubscribe(subs).then(finish)
++        const allPresent = names.every(name => subs.some((sub: any) => sub.params?.[0] === `${userId}/${name}`))
++        if (allPresent) {
++          inFlight = true
++          resubscribe(subs).then(value => {
++            inFlight = false
++            finish(value)
++          })
 +        }
 +      }
 +      const deadline = setTimeout(() => finish(false), timeoutMs)
