@@ -53,7 +53,6 @@ class AudioManagerClass {
 		}
 
 		const sound = createAudioPlayer({ uri });
-		sound.paused = true;
 		this.audioQueue[audioKey] = sound;
 		return audioKey;
 	}
@@ -67,10 +66,6 @@ class AudioManagerClass {
 		if (!this.audioQueue[audioKey] && this.audioUris[audioKey]) {
 			const sound = createAudioPlayer({ uri: this.audioUris[audioKey] });
 			this.audioQueue[audioKey] = sound;
-
-			if (this.audioRates[audioKey] !== undefined) {
-				sound.setPlaybackRate(this.audioRates[audioKey]);
-			}
 
 			if (this.audioPositions[audioKey] !== undefined) {
 				await sound.seekTo(this.audioPositions[audioKey]);
@@ -87,8 +82,9 @@ class AudioManagerClass {
 
 		try {
 			await setAudioModeAsync(AUDIO_MODE);
-			this.audioQueue[audioKey]?.play();
 			this.audioPlaying = audioKey;
+			this.setRateAsync(audioKey, this.audioRates[audioKey]);
+			this.audioQueue[audioKey]?.play();
 			emitter.emit('audioFocused', audioKey);
 		} catch {
 			// Ignore playback start errors
@@ -113,6 +109,10 @@ class AudioManagerClass {
 
 	setRateAsync(audioKey: string, value = 1.0) {
 		this.audioRates[audioKey] = value;
+		if (!audioKey || this.audioPlaying !== audioKey) {
+			return;
+		}
+
 		try {
 			this.audioQueue[audioKey]?.setPlaybackRate(value);
 		} catch {
