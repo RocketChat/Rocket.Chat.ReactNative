@@ -72,6 +72,7 @@ describe('Socket.probe', () => {
 	it('resolves true when pong arrives within deadline', async () => {
 		const { socket } = buildSocket();
 		const probePromise = socket.probe();
+		socket.lastPing += 1;
 		socket.emit('pong');
 		await expect(probePromise).resolves.toBe(true);
 	});
@@ -96,6 +97,19 @@ describe('Socket.probe', () => {
 		const { socket } = buildSocket();
 		socket.connection.readyState = 2;
 		await expect(socket.probe()).resolves.toBe(false);
+	});
+
+	it('ignores a stale pong that does not advance lastPing', async () => {
+		jest.useFakeTimers();
+		const { socket } = buildSocket();
+		const initialLastPing = Date.now() - 1000;
+		socket.lastPing = initialLastPing;
+
+		const probePromise = socket.probe();
+		socket.emit('pong');
+
+		await jest.advanceTimersByTimeAsync(2000);
+		await expect(probePromise).resolves.toBe(false);
 	});
 });
 
@@ -161,6 +175,67 @@ describe('Socket.reopenNow', () => {
 		mockConnections[0].onopen();
 
 		await Promise.all([a, b]);
+	});
+
+	it('times out and clears in-flight state so a later reopenNow retries', async () => {
+		jest.useFakeTimers();
+		const socket = trackSocket(
+			new Socket({
+				logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() },
+				timeout: 10000
+			})
+		);
+
+		const promise = socket.reopenNow();
+		expect(socket.reopenPromise).toBeTruthy();
+
+		await jest.advanceTimersByTimeAsync(10000);
+		await promise;
+
+		expect(socket.reopenPromise).toBeUndefined();
+
+		const secondPromise = socket.reopenNow();
+		expect(mockConnections).toHaveLength(2);
+
+		mockConnections[1].onopen();
+		await jest.runOnlyPendingTimersAsync();
+		await secondPromise;
+		jest.useRealTimers();
+	});
+
+	it('forces a reconnect on an already healthy socket', async () => {
+		const { socket } = buildSocket();
+		const initialConnection = socket.connection;
+
+		const promise = socket.reopenNow();
+
+		expect(mockConnections).toHaveLength(1);
+		expect(initialConnection.close).toHaveBeenCalled();
+
+		mockConnections[0].onopen();
+		await promise;
+
+		expect(socket.connection).toBe(mockConnections[0]);
+	});
+
+	it('serializes against concurrent open(): no second socket, no closing in-flight one', async () => {
+		const socket = trackSocket(
+			new Socket({
+				logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() },
+				timeout: 10000
+			})
+		);
+
+		const reopenPromise = socket.reopenNow();
+		const inFlightConnection = mockConnections[0];
+
+		const openPromise = socket.open();
+		expect(mockConnections).toHaveLength(1);
+		expect(inFlightConnection.close).not.toHaveBeenCalled();
+
+		mockConnections[0].onopen();
+		await reopenPromise;
+		await openPromise;
 	});
 });
 
