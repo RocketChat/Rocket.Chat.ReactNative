@@ -1,7 +1,31 @@
-diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..068b61e 100644
---- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-+++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+diff --git a/lib/clients/Rocketchat.ts b/lib/clients/Rocketchat.ts
+index 591c1b9..82165c0 100644
+--- a/lib/clients/Rocketchat.ts
++++ b/lib/clients/Rocketchat.ts
+@@ -6,6 +6,7 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+   userId: string = ''
+   logger: ILogger = Logger
+   socket: Promise<ISocket | IDriver>
++  ddp?: any
+   config: any
+ 
+   constructor ({ logger, allPublic, rooms, integrationId, protocol = Protocols.DDP, ...config }: any) {
+@@ -16,7 +17,10 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+       //   this.socket = import(/* webpackChunkName: 'mqtt' */ '../drivers/mqtt').then(({ MQTTDriver }) => new MQTTDriver({ ...config, logger }))
+       //   break
+       case Protocols.DDP:
+-        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => new DDPDriver({ ...config, logger }))
++        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => {
++          this.ddp = new DDPDriver({ ...config, logger })
++          return this.ddp
++        })
+         break
+       default:
+         throw new Error(`Invalid Protocol: ${protocol}, valids: ${Object.keys(Protocols).join()}`)
+diff --git a/lib/drivers/ddp.ts b/lib/drivers/ddp.ts
+index 19d31ae..c3bf309 100644
+--- a/lib/drivers/ddp.ts
++++ b/lib/drivers/ddp.ts
 @@ -55,6 +55,7 @@ export class Socket extends EventEmitter {
    connection?: WebSocket
    session?: string
@@ -10,7 +34,7 @@ index 19d31ae..068b61e 100644
  
    /** Create a websocket handler */
    constructor (
-@@ -82,18 +83,13 @@ export class Socket extends EventEmitter {
+@@ -82,33 +83,74 @@ export class Socket extends EventEmitter {
    }
  
    /**
@@ -32,8 +56,16 @@ index 19d31ae..068b61e 100644
 -
        try {
          connection = new WebSocket(this.host, null, { headers: settings.customHeaders })
-         connection.onerror = reject
-@@ -101,14 +97,53 @@ export class Socket extends EventEmitter {
+-        connection.onerror = reject
++        connection.onerror = (e: any) => {
++          try {
++            console.log(`[trace] ddp onerror ${JSON.stringify(e)}`)
++          } catch {
++            console.log(`[trace] ddp onerror (unserializable)`)
++          }
++          reject(e)
++        }
+       } catch (err) {
          this.logger.error(err)
          return reject(err)
        }
@@ -88,7 +120,7 @@ index 19d31ae..068b61e 100644
    /** Send handshake message to confirm connection, start pinging. */
    onOpen = async (callback: Function) => {
      this.lastPing = Date.now()
-@@ -125,7 +160,14 @@ export class Socket extends EventEmitter {
+@@ -125,11 +167,22 @@ export class Socket extends EventEmitter {
    }
  
    /** Emit close event so it can be used for promise resolve in close() */
@@ -99,12 +131,40 @@ index 19d31ae..068b61e 100644
 +    // reopen; otherwise a zombie socket's late close clobbers the live connection and
 +    // the app falsely shows "Waiting for network".
 +    if (closedConnection && closedConnection !== this.connection) {
++      console.log(`[trace] ddp close ignored (orphan socket) code=${e?.code}`)
 +      return
 +    }
++    console.log(`[trace] ddp close code=${e?.code} reason=${e?.reason || '-'} wasClean=${e?.wasClean}`)
      this.emit('close', e)
      try {
        if (e?.code !== userDisconnectCloseCode) {
-@@ -201,6 +243,85 @@ export class Socket extends EventEmitter {
+         this.reopen()
++      } else {
++        console.log(`[trace] ddp close: user disconnect, no reopen`)
+       }
+       this.logger.info(`[ddp] Close (${e?.code})`)
+     } catch (error) {
+@@ -188,19 +241,110 @@ export class Socket extends EventEmitter {
+ 
+   /** Clear connection and try to connect again. */
+   reopen = () => {
+-    if (this.openTimeout) return
++    if (this.openTimeout) {
++      console.log(`[trace] ddp reopen skipped: openTimeout already set`)
++      return
++    }
++    console.log(`[trace] ddp reopen scheduled in ${this.config.reopen}ms`)
+     this.openTimeout = setTimeout(async() => {
+       delete this.openTimeout
++      console.log(`[trace] ddp reopen fired`)
+ 
+       try {
+         await this.open()
+       } catch (err) {
++        console.log(`[trace] ddp reopen open() failed: ${(err as Error).message}`)
+         this.logger.error(`[ddp] Reopen error: ${err.message}`);
+         this.reopen();
+       }
      }, this.config.reopen);
    }
  
@@ -117,11 +177,14 @@ index 19d31ae..068b61e 100644
 +   */
 +  reopenNow = (): Promise<void> => {
 +    if (this.reopenPromise) {
++      console.log(`[trace] ddp reopenNow: already in flight`)
 +      return this.reopenPromise
 +    }
++    console.log(`[trace] ddp reopenNow`)
 +
 +    this.reopenPromise = new Promise<void>(resolve => {
 +      this.openTimeout && clearTimeout(this.openTimeout as any)
++      delete this.openTimeout
 +      this.lastPing = 0
 +      this.emit('disconnected')
 +
@@ -139,7 +202,10 @@ index 19d31ae..068b61e 100644
 +
 +      this.createConnection().catch(() => {})
 +
-+      const timeout = setTimeout(() => cleanup(), 10000)
++      const timeout = setTimeout(() => {
++        console.log(`[trace] ddp reopenNow: 10s timeout, no open`)
++        cleanup()
++      }, 10000)
 +    })
 +
 +    return this.reopenPromise
@@ -190,7 +256,7 @@ index 19d31ae..068b61e 100644
    /** Check if websocket connected and ready. */
    get connected () {
      return !!(
-@@ -254,7 +375,7 @@ export class Socket extends EventEmitter {
+@@ -254,7 +398,7 @@ export class Socket extends EventEmitter {
          return resolve()
        }
        this.once(listener, (result: any) => {
@@ -199,7 +265,16 @@ index 19d31ae..068b61e 100644
          return (result.error ? reject(result.error) : resolve({ ...(/connect|ping|pong/.test(obj.msg) ? {} : { id }) , ...result }))
        })
      })
-@@ -503,6 +624,22 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -447,7 +591,7 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+       ...config,
+       ...moreConfigs,
+       host: host.replace(/(^\w+:|^)\/\//, ''),
+-      timeout: 20000
++      timeout: 10000
+ 			// reopen: number
+ 			// ping: number
+ 			// close: number
+@@ -503,6 +647,22 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
      return this.ddp.checkAndReopen()
    }
  
@@ -222,7 +297,7 @@ index 19d31ae..068b61e 100644
    subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
      this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
      return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
-@@ -549,10 +686,70 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -549,10 +709,70 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
@@ -294,27 +369,3 @@ index 19d31ae..068b61e 100644
    subscribeRoom = (rid: string, ...args: any[]): Promise<ISubscription[]> => {
      const topic = 'stream-notify-room'
      return Promise.all([
-diff --git a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
-index 591c1b9..82165c0 100644
---- a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
-+++ b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
-@@ -6,6 +6,7 @@ export default class RocketChatClient extends ClientRest implements ISocket {
-   userId: string = ''
-   logger: ILogger = Logger
-   socket: Promise<ISocket | IDriver>
-+  ddp?: any
-   config: any
- 
-   constructor ({ logger, allPublic, rooms, integrationId, protocol = Protocols.DDP, ...config }: any) {
-@@ -16,7 +17,10 @@ export default class RocketChatClient extends ClientRest implements ISocket {
-       //   this.socket = import(/* webpackChunkName: 'mqtt' */ '../drivers/mqtt').then(({ MQTTDriver }) => new MQTTDriver({ ...config, logger }))
-       //   break
-       case Protocols.DDP:
--        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => new DDPDriver({ ...config, logger }))
-+        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => {
-+          this.ddp = new DDPDriver({ ...config, logger })
-+          return this.ddp
-+        })
-         break
-       default:
-         throw new Error(`Invalid Protocol: ${protocol}, valids: ${Object.keys(Protocols).join()}`)
