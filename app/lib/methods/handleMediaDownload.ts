@@ -249,11 +249,17 @@ const persistMessage = async (messageId: string, uri: string, encryption: boolea
 			})
 		);
 	}
-	if (batch.length) {
-		await db.write(async () => {
-			await db.batch(batch);
-		});
+	if (!batch.length) {
+		// No row to point at the cached file. Expected for forwarded messages and for the
+		// Files/Mentions/Starred/Pinned lists, whose attachments come from REST payloads that carry no
+		// message id. useFile keeps the local uri in component state so playback still works, but the
+		// database keeps the remote url — worth knowing about rather than failing silently.
+		console.log(`[handleMediaDownload] no message found for id "${messageId}", cached uri not persisted`);
+		return;
 	}
+	await db.write(async () => {
+		await db.batch(batch);
+	});
 };
 
 export function downloadMediaFile({

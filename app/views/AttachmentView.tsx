@@ -59,9 +59,9 @@ const RenderContent = ({
 	}, [navigation]);
 
 	if (attachment.image_url) {
-		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
-		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(url);
+		// formatAttachmentUrl already encodes the url; encoding again would turn `%20` into `%2520`.
+		const uri = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
+		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(uri);
 		return (
 			<ImageViewer
 				uri={uri}
@@ -74,8 +74,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
+		const uri = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 		return (
 			<Video
 				source={{ uri }}

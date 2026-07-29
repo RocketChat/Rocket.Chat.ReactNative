@@ -82,7 +82,7 @@ export const useMediaAutoDownload = ({
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
+	const [currentFile, setCurrentFile] = useFile(file);
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
