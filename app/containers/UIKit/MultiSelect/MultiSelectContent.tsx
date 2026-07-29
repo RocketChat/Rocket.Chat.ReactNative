@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, memo, type Dispatch, type SetStateAction } from 'react';
 import { View } from 'react-native';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
@@ -16,14 +16,14 @@ interface IMultiSelectContentProps {
 	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;
 	options?: IItemData[];
 	multiselect: boolean;
-	select: React.Dispatch<any>;
+	select: Dispatch<any>;
 	onChange: ({ value }: { value: string[] }) => void;
-	setCurrentValue: React.Dispatch<React.SetStateAction<string>>;
+	setCurrentValue: Dispatch<SetStateAction<string>>;
 	onHide: Function;
 	selectedItems: IItemData[];
 }
 
-export const MultiSelectContent = React.memo(
+export const MultiSelectContent = memo(
 	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
 		const { colors } = useTheme();
 		const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);

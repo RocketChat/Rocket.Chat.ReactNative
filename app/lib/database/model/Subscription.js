@@ -37,7 +37,7 @@ export default class Subscription extends Model {
 
 	@field('alert') alert;
 
-	@json('roles', sanitizer) roles;
+	@json('roles', sanitizer, { memo: true }) roles;
 
 	@field('unread') unread;
 
@@ -45,11 +45,11 @@ export default class Subscription extends Model {
 
 	@field('group_mentions') groupMentions;
 
-	@json('tunread', sanitizer) tunread;
+	@json('tunread', sanitizer, { memo: true }) tunread;
 
-	@json('tunread_user', sanitizer) tunreadUser;
+	@json('tunread_user', sanitizer, { memo: true }) tunreadUser;
 
-	@json('tunread_group', sanitizer) tunreadGroup;
+	@json('tunread_group', sanitizer, { memo: true }) tunreadGroup;
 
 	@date('room_updated_at') roomUpdatedAt;
 
@@ -77,11 +77,11 @@ export default class Subscription extends Model {
 
 	@field('notifications') notifications;
 
-	@json('muted', sanitizer) muted;
+	@json('muted', sanitizer, { memo: true }) muted;
 
-	@json('unmuted', sanitizer) unmuted;
+	@json('unmuted', sanitizer, { memo: true }) unmuted;
 
-	@json('ignored', sanitizer) ignored;
+	@json('ignored', sanitizer, { memo: true }) ignored;
 
 	@field('broadcast') broadcast;
 
@@ -97,7 +97,7 @@ export default class Subscription extends Model {
 
 	@field('auto_translate_language') autoTranslateLanguage;
 
-	@json('last_message', sanitizer) lastMessage;
+	@json('last_message', sanitizer, { memo: true }) lastMessage;
 
 	@children('messages') messages;
 
@@ -109,25 +109,25 @@ export default class Subscription extends Model {
 
 	@field('hide_mention_status') hideMentionStatus;
 
-	@json('sys_mes', sanitizer) sysMes;
+	@json('sys_mes', sanitizer, { memo: true }) sysMes;
 
-	@json('uids', sanitizer) uids;
+	@json('uids', sanitizer, { memo: true }) uids;
 
-	@json('usernames', sanitizer) usernames;
+	@json('usernames', sanitizer, { memo: true }) usernames;
 
-	@json('visitor', sanitizer) visitor;
+	@json('visitor', sanitizer, { memo: true }) visitor;
 
 	@field('department_id') departmentId;
 
-	@json('served_by', sanitizer) servedBy;
+	@json('served_by', sanitizer, { memo: true }) servedBy;
 
-	@json('livechat_data', sanitizer) livechatData;
+	@json('livechat_data', sanitizer, { memo: true }) livechatData;
 
-	@json('tags', sanitizer) tags;
+	@json('tags', sanitizer, { memo: true }) tags;
 
 	@field('e2e_key') E2EKey;
 
-	@json('old_room_keys', sanitizer) oldRoomKeys;
+	@json('old_room_keys', sanitizer, { memo: true }) oldRoomKeys;
 
 	@field('e2e_suggested_key') E2ESuggestedKey;
 
@@ -135,7 +135,7 @@ export default class Subscription extends Model {
 
 	@field('e2e_key_id') e2eKeyId;
 
-	@json('users_waiting_for_e2e_keys', sanitizer) usersWaitingForE2EKeys;
+	@json('users_waiting_for_e2e_keys', sanitizer, { memo: true }) usersWaitingForE2EKeys;
 
 	@field('avatar_etag') avatarETag;
 
@@ -147,19 +147,19 @@ export default class Subscription extends Model {
 
 	@field('users_count') usersCount;
 
-	@json('source', sanitizer) source;
+	@json('source', sanitizer, { memo: true }) source;
 
 	@field('disable_notifications') disableNotifications;
 
 	@field('federated') federated;
 
-	@json('abac_attributes', sanitizer) abacAttributes;
+	@json('abac_attributes', sanitizer, { memo: true }) abacAttributes;
 
-	@json('federation', sanitizer) federation;
+	@json('federation', sanitizer, { memo: true }) federation;
 
 	@field('status') status;
 
-	@json('inviter', sanitizer) inviter;
+	@json('inviter', sanitizer, { memo: true }) inviter;
 
 	asPlain() {
 		return {

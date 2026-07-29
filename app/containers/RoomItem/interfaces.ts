@@ -1,5 +1,5 @@
-import type React from 'react';
 import { type SharedValue } from 'react-native-reanimated';
+import { type ReactElement } from 'react';
 
 import { type TSupportedThemes } from '../../theme';
 import {
@@ -41,11 +41,12 @@ export interface IUpdatedAtProps {
 
 export interface IWrapperProps {
 	accessibilityLabel: string;
+	accessibilityHint?: string;
 	avatar: string;
 	type: string;
 	userId: string | null;
 	rid: string;
-	children: React.ReactElement;
+	children: ReactElement;
 	displayMode: string;
 	prid: string;
 	showLastMessage: boolean;
@@ -139,7 +140,7 @@ export interface ILastMessageProps {
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
-	children: JSX.Element;
+	children: ReactElement;
 	type: SubscriptionType;
 	testID: string;
 	width: number;

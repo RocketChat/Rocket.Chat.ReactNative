@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
@@ -9,7 +9,6 @@ interface IMarkdownContext {
 	useRealName?: boolean;
 	username?: string;
 	navToRoomInfo?: Function;
-	getCustomEmoji?: Function;
 	onLinkPress?: Function;
 	textStyle?: StyleProp<TextStyle>;
 }
@@ -23,5 +22,5 @@ const defaultState = {
 	textStyle: undefined
 };
 
-const MarkdownContext = React.createContext<IMarkdownContext>(defaultState);
+const MarkdownContext = createContext<IMarkdownContext>(defaultState);
 export default MarkdownContext;

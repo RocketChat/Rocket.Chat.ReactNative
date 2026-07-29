@@ -2,11 +2,11 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
-import React from 'react';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { type Observable, type Subscription } from 'rxjs';
 import { type CompositeNavigationProp } from '@react-navigation/native';
+import { Component } from 'react';
 
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
@@ -15,7 +15,7 @@ import * as List from '../../containers/List';
 import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Status from '../../containers/Status';
+import StatusRows from '../../containers/Status/StatusRows';
 import {
 	type IApplicationState,
 	type IBaseScreen,
@@ -24,7 +24,9 @@ import {
 	SubscriptionType,
 	type TSubscriptionModel
 } from '../../definitions';
-import { withDimensions } from '../../dimensions';
+import { type IActiveUser } from '../../reducers/activeUsers';
+import { withDimensions } from '../../lib/hooks/withDimensions';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
@@ -34,7 +36,6 @@ import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import Touch from '../../containers/Touch';
-import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
@@ -107,6 +108,7 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	videoConf_Enable_Channels: boolean;
 	videoConf_Enable_Groups: boolean;
 	videoConf_Enable_Teams: boolean;
+	activeUser?: IActiveUser;
 }
 
 interface IRoomActionsViewState {
@@ -125,7 +127,7 @@ interface IRoomActionsViewState {
 	loading: boolean;
 }
 
-class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
+class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewState> {
 	private mounted: boolean;
 	private rid: string;
 	private t: string;
@@ -470,7 +472,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const roomUserId = getUidDirectMessage(room);
 				const result = await getUserInfo(roomUserId);
 				if (result.success) {
-					this.setState({ member: result.user as any });
+					this.setState({ member: result.user as unknown as Partial<IUser> });
 				}
 			}
 		} catch (e) {
@@ -484,8 +486,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
+		// member may not be fetched yet; the other user's id is derivable from the subscription
+		const blockedUserId = member._id || getUidDirectMessage(room);
+		if (!blockedUserId) return;
 		try {
-			await toggleBlockUser(rid, member._id as string, !blocker);
+			await toggleBlockUser(rid, blockedUserId as string, !blocker);
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
@@ -747,12 +752,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderRoomInfo = () => {
-		const { room, member } = this.state;
+		const { room } = this.state;
 		const { rid, name, t, topic, source } = room;
-		const { theme, fontScale } = this.props;
+		const { theme, fontScale, activeUser } = this.props;
+		const member = { ...this.state.member, ...activeUser };
+		const { status, statusText, statusExpiresAt } = member;
 
 		const avatar = getRoomAvatar(room);
 		const isGroupChatHandler = isGroupChat(room);
+		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
 
 		return (
 			<List.Section>
@@ -775,14 +783,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'>
-					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
-						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
-							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme].surfaceRoom }]}>
-									<Status size={16} id={member._id} />
-								</View>
-							) : undefined}
-						</Avatar>
+					<View style={styles.roomInfoContainer}>
+						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid} />
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
 								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
@@ -806,10 +808,19 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 							/>
-							{room.t === 'd' && (
-								<MarkdownPreview
-									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
+							{t === 'd' && (
+								<StatusRows
+									userId={roomUserId}
+									statusText={statusText}
+									status={status}
+									statusExpiresAt={statusExpiresAt}
+									statusTextColor={themes[theme].fontSecondaryInfo}
+									fontSecondaryInfo={themes[theme].fontSecondaryInfo}
+									renderStatusText={text => (
+										<MarkdownPreview msg={text} style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
+									)}
+									textStyle={styles.roomDescription}
+									secondaryTextStyle={styles.roomDescription}
 								/>
 							)}
 						</View>
@@ -1081,15 +1092,16 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate, hasE2EEWarning } = this.state;
-		const { isMasterDetail, navigation } = this.props;
+		const { isMasterDetail, navigation, userId } = this.props;
 		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
+		const itsMe = t === SubscriptionType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
 
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
-					<CallSection rid={rid} disabled={hasE2EEWarning} />
+					<CallSection room={room} disabled={hasE2EEWarning} itsMe={itsMe} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />
@@ -1312,21 +1324,27 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	userId: getUserSelector(state).id,
-	encryptionEnabled: state.encryption.enabled,
-	serverVersion: state.server.version,
-	isMasterDetail: state.app.isMasterDetail,
-	editRoomPermission: state.permissions['edit-room'],
-	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
-	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
-	createTeamPermission: state.permissions['create-team'],
-	addTeamChannelPermission: state.permissions['add-team-channel'],
-	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
-	convertTeamPermission: state.permissions['convert-team'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
-});
+const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomActionsViewProps, 'route'>>) => {
+	const params = ownProps.route?.params;
+	const room = params?.room || { rid: params?.rid, t: params?.t };
+	const userId = getUserSelector(state).id;
+	const roomUserId = room?.t === 'd' ? getUidDirectMessage(room, userId) : undefined;
+	return {
+		userId,
+		encryptionEnabled: state.encryption.enabled,
+		serverVersion: state.server.version,
+		editRoomPermission: state.permissions['edit-room'],
+		toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
+		viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
+		createTeamPermission: state.permissions['create-team'],
+		addTeamChannelPermission: state.permissions['add-team-channel'],
+		moveRoomToTeamPermission: state.permissions['move-room-to-team'],
+		convertTeamPermission: state.permissions['convert-team'],
+		viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+		livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+		livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
+		activeUser: roomUserId ? state.activeUsers[roomUserId] : undefined
+	};
+};
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(withMasterDetail(RoomActionsView)))));

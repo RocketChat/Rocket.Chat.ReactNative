@@ -34,7 +34,7 @@ export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
 	private promises?: Promise<TSubscriptionModel[]>;
-	private connectedListener?: Promise<any>;
+	private loginListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
@@ -51,8 +51,8 @@ export default class RoomSubscription {
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.loginListener = sdk.onStreamData('login', this.handleLogin);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleClose);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -70,13 +70,13 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.unsubscribe?.().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}
 		}
 		reduxStore.dispatch(clearUserTyping());
-		this.removeListener(this.connectedListener);
+		this.removeListener(this.loginListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
@@ -93,11 +93,34 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleConnection = async () => {
+	handleLogin = async () => {
+		if (!this.isAlive) {
+			return;
+		}
 		try {
+			if (this.promises) {
+				const oldSubs = await this.promises;
+				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));
+			}
+			this.promises = sdk.subscribeRoom(this.rid);
+			await this.promises;
+			if (!this.isAlive) {
+				return;
+			}
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
+			if (!this.isAlive) {
+				return;
+			}
 			this.read();
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	handleClose = () => {
+		try {
+			reduxStore.dispatch(clearUserTyping());
 		} catch (e) {
 			log(e);
 		}
@@ -242,20 +265,23 @@ export default class RoomSubscription {
 		readMessages(this.rid, new Date());
 	}, 300);
 
-	updateMessage = (message: IMessage): Promise<void> =>
-		new Promise(async resolve => {
-			if (this.rid !== message.rid) {
-				return resolve();
-			}
+	updateMessage = async (message: IMessage): Promise<void> => {
+		if (this.rid !== message.rid) {
+			return;
+		}
 
+		const db = database.active;
+		const msgCollection = db.get('messages');
+		const threadsCollection = db.get('threads');
+		const threadMessagesCollection = db.get('thread_messages');
+
+		// Decrypt the message if necessary
+		message = (await Encryption.decryptMessage(message)) as IMessage;
+
+		// Serialize reads, prepares and the batch under the writer lock so concurrent stream
+		// events for the same id can't call prepareUpdate on a record with pending changes.
+		await db.write(async () => {
 			const batch: TMessageModel[] | TThreadModel[] | TThreadMessageModel[] = [];
-			const db = database.active;
-			const msgCollection = db.get('messages');
-			const threadsCollection = db.get('threads');
-			const threadMessagesCollection = db.get('thread_messages');
-
-			// Decrypt the message if necessary
-			message = (await Encryption.decryptMessage(message)) as IMessage;
 
 			// Create or update message
 			try {
@@ -366,10 +392,9 @@ export default class RoomSubscription {
 				}
 			}
 
-			await db.write(async () => {
-				await db.batch(...batch);
-			});
+			await db.batch(...batch);
 		});
+	};
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
 		try {

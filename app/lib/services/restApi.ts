@@ -1,3 +1,7 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { getUniqueId } from 'react-native-device-info';
+import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -24,9 +28,11 @@ import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar'
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
+import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import log from '../methods/helpers/log';
 
 export const createChannel = ({
 	name,
@@ -323,9 +329,9 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { userId, data });
 
-export const setUserStatus = (status: string, message: string) =>
+export const setUserStatus = (status: string, message: string, expiresAt?: string | null) =>
 	// RC 1.2.0
-	sdk.methodCall('setUserStatus', status, message);
+	sdk.post('users.setStatus', { status, message, ...(expiresAt !== undefined && { expiresAt }) });
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
@@ -1044,6 +1050,43 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
+export const editMediaMessage = async (
+	rid: string,
+	fileId: string,
+	body: { description?: string; filename: string; msg?: string }
+) => {
+	const { login, server } = reduxStore.getState();
+	const { user } = login;
+	// RC 8.4.0
+	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+		method: 'POST',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		},
+		body: JSON.stringify({
+			description: body.description,
+			filename: body.filename,
+			msg: body.msg || ''
+		})
+	});
+
+	if (!response.ok) {
+		let errorReason = `${response.status} ${response.statusText}`;
+		try {
+			const errorBody = await response.json();
+			errorReason = errorBody?.error || errorBody?.message || errorReason;
+		} catch {
+			// Best effort only: keep default HTTP reason when body is not JSON.
+		}
+		throw new Error(`Failed to edit media message: ${errorReason}`);
+	}
+
+	return response.json();
+};
+
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
 	if (!result) {
@@ -1067,29 +1110,74 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	});
 };
 
-export const registerPushToken = () =>
-	new Promise<void>(async resolve => {
-		const token = getDeviceToken();
-		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
-			const data = {
-				value: token,
-				type,
-				appName: getBundleId
-			};
-			try {
-				// RC 0.60.0
-				await sdk.post('push.token', data);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		return resolve();
-	});
+let lastToken = '';
+let lastVoipToken = '';
 
+type TRegisterPushTokenData = {
+	id?: string;
+	value: string;
+	type: string;
+	appName: string;
+	voipToken?: string;
+};
+export const registerPushToken = async (): Promise<void> => {
+	const token = getDeviceToken();
+	// Always returns an empty string on Android
+	const voipToken = NativeVoipModule.getLastVoipToken();
+
+	if (!token) {
+		return;
+	}
+
+	if (token === lastToken && voipToken === lastVoipToken) {
+		return;
+	}
+
+	// SDK is initialized on connect() only after a server is selected and the user is logged in.
+	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
+	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
+	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
+	if (!sdk.current) {
+		return;
+	}
+
+	const serverVersion = reduxStore.getState().server.version;
+	let data: TRegisterPushTokenData = {
+		value: '',
+		type: '',
+		appName: getBundleId
+	};
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		data.id = await getUniqueId();
+	}
+	if (token) {
+		const type = isIOS ? 'apn' : 'gcm';
+		data = {
+			...data,
+			value: token,
+			type
+		};
+	}
+	if (voipToken && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0')) {
+		data.voipToken = voipToken;
+	}
+
+	try {
+		// RC 0.60.0
+		await sdk.post('push.token', data);
+		lastToken = token;
+		lastVoipToken = voipToken;
+	} catch (e) {
+		log(e);
+	}
+};
+
+// TODO: add voip token removal
 export const removePushToken = (): Promise<boolean | void> => {
 	const token = getDeviceToken();
 	if (token) {
+		lastToken = '';
+		lastVoipToken = '';
 		// RC 0.60.0
 		return sdk.current.del('push.token', { token });
 	}
@@ -1205,3 +1293,14 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+
+export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
+	try {
+		const result = await (
+			sdk.get as unknown as (path: string, params?: object) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
+		)('media-calls.stateSignals', { contractId });
+		return result;
+	} catch {
+		return { signals: [], success: false };
+	}
+};

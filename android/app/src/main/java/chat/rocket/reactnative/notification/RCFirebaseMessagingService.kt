@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import chat.rocket.reactnative.BuildConfig
+import chat.rocket.reactnative.voip.VoipNotification
+import chat.rocket.reactnative.voip.VoipPayload
 
 /**
  * Custom Firebase Messaging Service for Rocket.Chat.
  *
- * Handles incoming FCM messages and routes them to CustomPushNotification
- * for advanced processing (E2E decryption, MessagingStyle, direct reply, etc.)
+ * Handles incoming FCM messages and routes them to the appropriate handler:
+ * - VoipNotification for VoIP calls (notificationType: "voip")
+ * - CustomPushNotification for regular messages and video conferences
  */
 class RCFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -18,7 +22,11 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "FCM message received from: ${remoteMessage.from}")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "FCM message received from: ${remoteMessage.from} data: ${remoteMessage.data}")
+        } else {
+            Log.d(TAG, "FCM message received from: ${remoteMessage.from}")
+        }
 
         val data = remoteMessage.data
         if (data.isEmpty()) {
@@ -26,15 +34,20 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             return
         }
 
-        // Convert FCM data to Bundle for processing
-        val bundle = Bundle().apply {
-            data.forEach { (key, value) ->
-                putString(key, value)
-            }
+        val voipPayload = VoipPayload.fromMap(data)
+        if (voipPayload != null) {
+            Log.d(TAG, "Detected VoIP payload of type ${voipPayload.type}, routing to VoipNotification handler")
+            VoipNotification(this).onMessageReceived(voipPayload)
+            return
         }
 
-        // Process the notification
+        // Process regular notifications via CustomPushNotification
         try {
+            val bundle = Bundle().apply {
+                data.forEach { (key, value) ->
+                    putString(key, value)
+                }
+            }
             val notification = CustomPushNotification(this, bundle)
             notification.onReceived()
         } catch (e: Exception) {

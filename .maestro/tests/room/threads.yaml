@@ -1,11 +1,11 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Threads
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-12
+  - test-13
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -198,10 +198,10 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      id: 'message-thread-replied-on-thread'
+      id: 'message-content-navthreadname'
     timeout: 60000
 - tapOn:
-    id: 'message-thread-replied-on-thread'
+    id: 'message-content-navthreadname'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
@@ -324,9 +324,21 @@ tags:
     visible:
       id: 'message-composer-input-thread'
     timeout: 60000
-- tapOn:
-    id: 'message-composer-input-thread'
-- inputText: 'replied'
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: 'message-composer-input-thread'
+      - eraseText
+      - inputText: 'replied'
+      - extendedWaitUntil:
+          visible:
+            text: 'replied'
+          timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-send'
+    timeout: 60000
 - tapOn:
     id: 'message-composer-send'
 - extendedWaitUntil:

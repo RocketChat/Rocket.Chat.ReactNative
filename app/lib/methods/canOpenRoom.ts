@@ -1,7 +1,8 @@
 import { ERoomTypes } from '../../definitions';
 import database from '../database';
 import sdk from '../services/sdk';
-import { createDirectMessage, getRoomByTypeAndName } from '../services/restApi';
+import { createDirectMessage } from './createDirectMessage';
+import { getRoomByTypeAndName } from '../services/restApi';
 
 const restTypes = {
 	channel: 'channels',

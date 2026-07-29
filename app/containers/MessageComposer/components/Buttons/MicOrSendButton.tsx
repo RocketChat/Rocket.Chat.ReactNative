@@ -1,5 +1,5 @@
 import { Audio } from 'expo-av';
-import React, { useContext } from 'react';
+import { useContext, type ReactElement } from 'react';
 import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';
 
@@ -8,15 +8,16 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
 import { useRoomContext } from '../../../../views/RoomView/context';
-import { MessageInnerContext, useMessageComposerApi, useMicOrSend } from '../../context';
+import { MessageInnerContext, useComposerAttachments, useMessageComposerApi, useMicOrSend } from '../../context';
 import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 
-export const MicOrSendButton = (): React.ReactElement | null => {
+export const MicOrSendButton = (): ReactElement | null => {
 	'use memo';
 
 	const { rid, sharing } = useRoomContext();
 	const micOrSend = useMicOrSend();
+	const attachments = useComposerAttachments();
 	const { sendMessage } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const { Message_AudioRecorderEnabled } = useAppSelector(state => state.settings);
@@ -51,7 +52,7 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 		);
 	};
 
-	if (micOrSend === 'send' || sharing) {
+	if (micOrSend === 'send' || sharing || attachments.length > 0) {
 		return (
 			<BaseButton
 				onPress={sendMessage}
@@ -69,7 +70,7 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 				onPress={startRecording}
 				testID='message-composer-send-audio'
 				accessibilityLabel='Record_audio_message'
-				icon='microphone'
+				icon='mic'
 			/>
 		);
 	}

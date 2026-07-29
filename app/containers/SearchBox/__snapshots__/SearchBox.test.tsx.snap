@@ -26,8 +26,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               "marginBottom": 10,
             },
             {
-              "margin": 16,
               "marginBottom": 16,
+              "marginHorizontal": 12,
+              "marginTop": 16,
             },
           ]
         }

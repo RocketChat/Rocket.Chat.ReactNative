@@ -222,4 +222,5 @@ export type MasterDetailInsideStackParamList = {
 		room: ISubscription;
 		thread: any; // TODO: Change
 	};
+	CallView: undefined;
 };

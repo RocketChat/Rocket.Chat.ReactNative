@@ -1,6 +1,4 @@
-import React from 'react';
 import { Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
@@ -25,7 +23,6 @@ const DirectoryOptions = ({
 	toggleWorkspace
 }: IDirectoryOptionsProps) => {
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 
 	const renderItem = (itemType: string) => {
 		let text = 'Users';
@@ -53,7 +50,7 @@ const DirectoryOptions = ({
 	};
 
 	return (
-		<List.Container contentContainerStyle={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<List.Container contentContainerStyle={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />

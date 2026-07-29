@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Enter E2EE Key
 tags:
   - 'util'
