@@ -36,7 +36,6 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 				}
 
 				// RC 0.61.0
-				// @ts-ignore
 				await sdk.post('groups.open', { roomId: response._id });
 
 				return {
