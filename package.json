@@ -155,10 +155,7 @@
 			"protobufjs",
 			"sharp",
 			"unrs-resolver"
-		],
-		"patchedDependencies": {
-			"@rocket.chat/sdk@1.3.3-mobile": "patches-pnpm/@rocket.chat+sdk+1.3.3-mobile.patch"
-		}
+		]
 	},
 	"devDependencies": {
 		"@babel/core": "~7.25.9",
