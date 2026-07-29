@@ -1,6 +1,9 @@
 import RoomSubscription from './room';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { clearUserTyping } from '../../../actions/usersTyping';
+import { getMessageById } from '../../database/services/Message';
+import { getThreadById } from '../../database/services/Thread';
+import log from '../helpers/log';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
 const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
@@ -86,6 +89,7 @@ jest.mock('../../encryption', () => ({
 const mockDbBatch = jest.fn().mockResolvedValue(undefined);
 const mockDbGet = jest.fn();
 jest.mock('../../database', () => {
+	let writerQueue: Promise<unknown> = Promise.resolve();
 	const mockModel = {
 		prepareCreate: jest.fn(() => ({})),
 		prepareUpdate: jest.fn(() => ({})),
@@ -97,7 +101,11 @@ jest.mock('../../database', () => {
 		default: {
 			active: {
 				get: (...args: unknown[]) => mockDbGet(...args) ?? mockModel,
-				write: jest.fn((callback: () => Promise<void>) => callback()),
+				write: jest.fn((callback: () => Promise<void>) => {
+					const run = writerQueue.then(() => callback());
+					writerQueue = run.catch(() => undefined);
+					return run;
+				}),
 				batch: (...args: unknown[]) => mockDbBatch(...args)
 			}
 		}
@@ -139,9 +147,9 @@ describe('RoomSubscription', () => {
 		});
 	});
 
-	describe('handleConnected', () => {
+	describe('handleLogin', () => {
 		it('calls subscribeRoom, dispatches clearUserTyping, loads missed messages, and reads', async () => {
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 			expect(mockStoreDispatch).toHaveBeenCalledWith(clearUserTyping());
@@ -151,7 +159,7 @@ describe('RoomSubscription', () => {
 		it('handles subscribeRoom rejection gracefully', async () => {
 			mockSubscribeRoom.mockRejectedValueOnce(new Error('boom'));
 
-			await expect(sub.handleConnected()).resolves.toBeUndefined();
+			await expect(sub.handleLogin()).resolves.toBeUndefined();
 		});
 	});
 
@@ -166,11 +174,11 @@ describe('RoomSubscription', () => {
 	});
 
 	describe('DDP subscription recovery after forceReopen', () => {
-		it('handleConnected re-subscribes the room to restore lost DDP subscriptions', async () => {
+		it('handleLogin re-subscribes the room to restore lost DDP subscriptions', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
@@ -191,14 +199,14 @@ describe('RoomSubscription', () => {
 			mockSubscribeRoom.mockResolvedValueOnce([staleSub]).mockResolvedValueOnce([freshSub]);
 
 			await sub.subscribe();
-			await sub.handleConnected();
+			await sub.handleLogin();
 			await sub.unsubscribe();
 
 			expect(staleSub.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(freshSub.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('does not accumulate subscriptions across repeated handleConnected calls (simulates sequential reopen)', async () => {
+		it('does not accumulate subscriptions across repeated handleLogin calls (simulates sequential reopen)', async () => {
 			const first = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			const second = { unsubscribe: jest.fn(() => Promise.resolve()) };
 			mockSubscribeRoom.mockResolvedValueOnce([first]).mockResolvedValueOnce([second]);
@@ -207,13 +215,13 @@ describe('RoomSubscription', () => {
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
 
 			// First reopen → tears down [first], creates [second]
-			await sub.handleConnected();
+			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(2);
 			expect(first.unsubscribe).toHaveBeenCalledTimes(1);
 			expect(second.unsubscribe).not.toHaveBeenCalled();
 
 			// Second reopen → tears down [second], creates []
-			await sub.handleConnected();
+			await sub.handleLogin();
 			expect(mockSubscribeRoom).toHaveBeenCalledTimes(3);
 			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
 
@@ -223,36 +231,100 @@ describe('RoomSubscription', () => {
 			expect(second.unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('does not call onStreamData inside handleConnected (listeners persist across reopen)', async () => {
+		it('does not call onStreamData inside handleLogin (listeners persist across reopen)', async () => {
 			await sub.subscribe();
 			mockOnStreamData.mockClear();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockOnStreamData).not.toHaveBeenCalled();
+		});
+
+		it('re-subscribes on the authenticated "login" event, not the pre-auth "connected" event', async () => {
+			await sub.subscribe();
+
+			expect(mockOnStreamData).toHaveBeenCalledWith('login', sub.handleLogin);
+			expect(mockOnStreamData).not.toHaveBeenCalledWith('connected', expect.anything());
+		});
+
+		it('survives a poisoned subscription array (undefined entry from a rejected sub) and still re-subscribes', async () => {
+			// A pre-auth subscribe rejected by the server (nosub) resolves to undefined inside Promise.all.
+			const freshSub = { unsubscribe: jest.fn(() => Promise.resolve()) };
+			mockSubscribeRoom.mockResolvedValueOnce([undefined as any]).mockResolvedValueOnce([freshSub]);
+
+			await sub.subscribe();
+			mockSubscribeRoom.mockClear();
+
+			await expect(sub.handleLogin()).resolves.toBeUndefined();
+			expect(mockSubscribeRoom).toHaveBeenCalledTimes(1);
+			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
 		});
 	});
 
 	describe('isAlive guard', () => {
-		it('handleConnected does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
+		it('handleLogin does nothing once the subscription is no longer alive (race with unsubscribe)', async () => {
 			await sub.subscribe();
 			await sub.unsubscribe();
 			jest.clearAllMocks();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).not.toHaveBeenCalled();
 			expect(loadMissedMessages).not.toHaveBeenCalled();
 			expect(mockStoreDispatch).not.toHaveBeenCalled();
 		});
 
-		it('handleConnected re-subscribes while the subscription is still alive', async () => {
+		it('handleLogin re-subscribes while the subscription is still alive', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();
 
-			await sub.handleConnected();
+			await sub.handleLogin();
 
 			expect(mockSubscribeRoom).toHaveBeenCalledWith(rid);
+		});
+	});
+
+	describe('updateMessage concurrency', () => {
+		const makeRecord = (debugName: string) => ({
+			_preparedState: null as string | null,
+			prepareUpdate(recordUpdater: (m: any) => void) {
+				if (this._preparedState) {
+					throw new Error(`Cannot update a record with pending changes (${debugName})`);
+				}
+				recordUpdater(this);
+				this._preparedState = 'update';
+				return this;
+			}
+		});
+
+		it('does not throw "pending changes" when two stream events for the same message id arrive concurrently', async () => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const messageRecord = makeRecord(`messages#${_id}`);
+			const threadRecord = makeRecord(`threads#${_id}`);
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(threadRecord);
+			// db.batch commits prepared records, clearing their pending state (like the real writer).
+			mockDbBatch.mockImplementation((...items: any[]) => {
+				items.forEach(item => {
+					if (item && typeof item === 'object' && '_preparedState' in item) {
+						item._preparedState = null;
+					}
+				});
+				return Promise.resolve(undefined);
+			});
+
+			const message = { _id, rid, tlm: { $date: 1 } } as any;
+
+			// updateMessage's promise never resolves on the happy path, so fire both and flush the queues.
+			sub.updateMessage({ ...message });
+			sub.updateMessage({ ...message });
+			await Array.from({ length: 10 }).reduce<Promise<unknown>>(
+				chain => chain.then(() => new Promise(resolve => setImmediate(resolve))),
+				Promise.resolve()
+			);
+
+			const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([err]) => /pending changes/.test(err?.message));
+			expect(loggedPendingChanges).toBe(false);
 		});
 	});
 });
