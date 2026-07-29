@@ -56,13 +56,7 @@ export default StyleSheet.create({
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 16,
-		...Platform.select({
-			ios: sharedStyles.textSemibold,
-			android: {
-				...sharedStyles.textSemibold,
-				fontWeight: '700'
-			}
-		})
+		...sharedStyles.textSemibold
 	},
 	paragraph: {
 		marginTop: 0,

@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { Platform, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 
 import { Bold, Link, Strike } from './index';
@@ -14,45 +13,13 @@ interface IItalicProps {
 const styles = StyleSheet.create({
 	text: {
 		fontStyle: 'italic'
-	},
-	boldItalic: {
-		...Platform.select({
-			ios: {
-				fontStyle: 'italic'
-			},
-			android: {
-				fontStyle: 'italic',
-				fontWeight: '700'
-			}
-		})
-	},
-	semiboldItalic: {
-		...Platform.select({
-			ios: {
-				fontStyle: 'italic'
-			},
-			android: {
-				fontFamily: 'Inter-SemiBoldItalic'
-			}
-		})
 	}
 });
-
-function getStyle(heading: number | undefined, bold: boolean | undefined) {
-	if ((heading && heading < 3) || bold) {
-		return styles.boldItalic;
-	}
-	if (heading && heading < 5) {
-		return styles.semiboldItalic;
-	}
-	return styles.text;
-}
 
 const Italic = ({ value }: IItalicProps) => {
 	'use memo';
 
-	const { heading, bold } = useContext(MarkdownContext);
-	const context = useMarkdownContext({ textStyle: getStyle(heading, bold) });
+	const context = useMarkdownContext({ textStyle: styles.text });
 
 	return (
 		<Text style={context.textStyle}>

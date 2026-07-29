@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 const Bold = ({ value }: IBoldProps) => {
 	'use memo';
 
-	const context = useMarkdownContext({ bold: true });
+	const context = useMarkdownContext({ textStyle: sharedStyles.textBold });
 
 	return (
 		<Text style={styles.text}>

@@ -10,8 +10,6 @@ interface IMarkdownContext {
 	username?: string;
 	navToRoomInfo?: Function;
 	onLinkPress?: Function;
-	heading?: number;
-	bold?: boolean;
 	textStyle?: StyleProp<TextStyle>;
 }
 
