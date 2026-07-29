@@ -238,8 +238,8 @@ importers:
         specifier: ~2.28.0
         version: 2.28.0(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-image-crop-picker:
-        specifier: RocketChat/react-native-image-crop-picker#f028aac24373d05166747ef6d9e59bb037fe3224
-        version: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: RocketChat/react-native-image-crop-picker#be641dcfca6977e26eec22e679eeba74aa38bf30
+        version: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/be641dcfca6977e26eec22e679eeba74aa38bf30(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-incall-manager:
         specifier: ^4.2.1
         version: 4.2.1(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))
@@ -2448,7 +2448,7 @@ packages:
     resolution: {integrity: sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==}
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c':
-    resolution: {gitHosted: true, integrity: sha512-v3uaVCYlj9gGZkAZe3JWQkhlGaRyahmnagbMSKtSnl+6WuLNxaPOf0GjJKVuxBdqkXPPhr23JIihVlch3FVeCQ==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
     version: 0.4.0
     peerDependencies:
       react: '*'
@@ -6417,9 +6417,9 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224}
-    version: 0.51.0
+  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/be641dcfca6977e26eec22e679eeba74aa38bf30:
+    resolution: {gitHosted: true, integrity: sha512-FnRawb4DLecEUJj27EgitXa5SsQcp2r8xUX4Nk/tvCKRWwvGzaqd2nIv8cWmXF0azc73WHSOcDeybxlNkIcedA==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/be641dcfca6977e26eec22e679eeba74aa38bf30}
+    version: 0.51.1
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -15086,7 +15086,7 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
 
-  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/be641dcfca6977e26eec22e679eeba74aa38bf30(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
