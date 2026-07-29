@@ -94,5 +94,5 @@ export type GroupsEndpoints = {
 		POST: (params: { roomId: string; roomName?: string } | { roomId?: string; roomName: string }) => {
 			success: boolean;
 		};
-	}
+	};
 };
