@@ -10,13 +10,7 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	return urlObj.toString();
 }
 
-/**
- * Percent-encodes a url without double-encoding one that already is. The server hands us attachment
- * paths already encoded (`/file-upload/<id>/Screen%20Recording.mov`), and a plain `encodeURI` turns
- * every `%` into `%25`, producing a path the server can't resolve. Decoding first makes the result
- * the same whichever form we were given. `decodeURI` leaves escapes for reserved characters alone,
- * so query string values survive the round trip; it throws on a malformed escape, hence the guard.
- */
+// Idempotent encode: the server already sends encoded paths, and a plain encodeURI would turn `%20` into `%2520`.
 export const encodeAttachmentUrl = (url: string): string => {
 	try {
 		return encodeURI(decodeURI(url));
