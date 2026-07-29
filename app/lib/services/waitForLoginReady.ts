@@ -1,10 +1,16 @@
+import { reconnectMark } from '../methods/helpers/reconnectTrace';
 import { store } from '../store/auxStore';
 
 export function classifySocketHealth(ddp: {
 	lastPing: number;
 	pingInterval?: number;
 	config?: { ping?: number };
+	connected?: boolean;
 }): 'healthy' | 'probe' | 'reopen' {
+	// Ping age can't vouch for a socket the OS already closed.
+	if (ddp.connected === false) {
+		return 'reopen';
+	}
 	const pingInterval = (ddp.pingInterval ?? ddp.config?.ping) || 10000;
 	const age = Date.now() - ddp.lastPing;
 	if (age > pingInterval * 2) {
@@ -28,6 +34,7 @@ function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
 		return;
 	}
 	if (signal.aborted) {
+		reconnectMark('waitForLoginReady.onAbort()');
 		callback();
 		return;
 	}
@@ -46,6 +53,7 @@ export function waitForLoginReady(timeoutMs: number, abortSignal?: AbortSignal):
 			return resolve(false);
 		}
 		if (isLoginReady()) {
+			reconnectMark('waitForLoginReady.isLoginReady()');
 			return resolve(true);
 		}
 
@@ -62,6 +70,7 @@ export function waitForLoginReady(timeoutMs: number, abortSignal?: AbortSignal):
 
 		const unsub = store.subscribe(() => {
 			if (isLoginReady()) {
+				reconnectMark('waitForLoginReady.store.subscribe()');
 				finish(true);
 			}
 		});

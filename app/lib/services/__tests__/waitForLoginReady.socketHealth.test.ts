@@ -51,4 +51,14 @@ describe('classifySocketHealth', () => {
 		const ddp = makeDdp({ pingInterval: undefined, config: {}, lastPing: now - 15000 });
 		expect(classifySocketHealth(ddp)).toBe('probe');
 	});
+
+	it('returns reopen for a closed socket even when lastPing is fresh', () => {
+		const ddp = makeDdp({ connected: false, lastPing: now });
+		expect(classifySocketHealth(ddp)).toBe('reopen');
+	});
+
+	it('classifies by ping age when the socket is open', () => {
+		const ddp = makeDdp({ connected: true, lastPing: now - 5000 });
+		expect(classifySocketHealth(ddp)).toBe('healthy');
+	});
 });
