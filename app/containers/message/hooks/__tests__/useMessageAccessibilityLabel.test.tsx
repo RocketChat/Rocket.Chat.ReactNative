@@ -85,6 +85,18 @@ describe('useMessageAccessibilityLabel', () => {
 		).toBe(`alice ${HOUR} hey alice check general.`);
 	});
 
+	// The screen shows the fname, so the label has to match it rather than announcing the room id
+	it('announces a discussion mention by its fname', () => {
+		expect(
+			renderLabel(
+				buildItem({
+					msg: 'see #aBcD123xyz',
+					channels: [{ _id: 'c1', name: 'aBcD123xyz', fname: 'My Discussion' }]
+				})
+			)
+		).toBe(`alice ${HOUR} see My Discussion.`);
+	});
+
 	it('appends "Message was read" when read receipts are enabled and the message is read', () => {
 		expect(renderLabel(buildItem({ unread: false }), { isReadReceiptEnabled: true })).toBe(
 			`alice ${HOUR} hello world. Message was read`

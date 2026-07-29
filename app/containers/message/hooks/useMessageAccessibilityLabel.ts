@@ -25,7 +25,7 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 	});
 	channels?.forEach(item => {
 		if (item?.name) {
-			result = result.replaceAll(`#${item.name}`, item.name);
+			result = result.replaceAll(`#${item.name}`, item.fname || item.name);
 		}
 	});
 	return result;

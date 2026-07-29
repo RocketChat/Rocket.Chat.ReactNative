@@ -41,6 +41,8 @@ export interface IUserChannel {
 	[index: number]: string | number;
 	name: string;
 	_id: string;
+	// Discussions carry a server-generated, ID-like `name`; `fname` holds the human-readable label
+	fname?: string;
 }
 
 export interface IEditedBy {

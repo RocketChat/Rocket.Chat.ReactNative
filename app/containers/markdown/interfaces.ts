@@ -8,6 +8,7 @@ export interface IUserMention {
 export interface IUserChannel {
 	name: string;
 	_id: string;
+	fname?: string;
 }
 
 export type TOnLinkPress = (link: string) => void;

@@ -40,4 +40,26 @@ describe('Markdown textStyle integration', () => {
 
 		expect(onLinkPress).toHaveBeenCalledWith('https://rocket.chat');
 	});
+
+	it('renders a channel mention using fname while still matching the token by name', () => {
+		const navToRoomInfo = jest.fn();
+
+		const { getByText, queryByText } = render(
+			<Markdown
+				msg='see #aBcD123xyz'
+				channels={[{ _id: 'r1', name: 'aBcD123xyz', fname: 'My Discussion' }]}
+				navToRoomInfo={navToRoomInfo}
+			/>
+		);
+
+		// `roomsWithHashTagSymbol` is mocked on, hence the leading `#`
+		expect(getByText('#My Discussion')).toBeTruthy();
+		expect(queryByText('#aBcD123xyz')).toBeNull();
+	});
+
+	it('falls back to the raw token when the channel has no fname', () => {
+		const { getByText } = render(<Markdown msg='#general' channels={[{ _id: 'r1', name: 'general' }]} />);
+
+		expect(getByText('#general')).toBeTruthy();
+	});
 });

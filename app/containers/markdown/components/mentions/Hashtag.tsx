@@ -25,12 +25,12 @@ const Hashtag = memo(({ hashtag }: IHashtag) => {
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useMasterDetail();
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
+	const channel = channels?.find(({ name }) => name === hashtag);
 	const handlePress = async () => {
-		const index = channels?.findIndex(channel => channel.name === hashtag);
-		if (typeof index !== 'undefined' && navToRoomInfo) {
+		if (channel && navToRoomInfo) {
 			const navParam = {
 				t: 'c',
-				rid: channels?.[index]._id
+				rid: channel._id
 			};
 			const room = navParam.rid && (await getSubscriptionByRoomId(navParam.rid));
 			if (room) {
@@ -49,7 +49,7 @@ const Hashtag = memo(({ hashtag }: IHashtag) => {
 		}
 	};
 
-	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
+	if (channel) {
 		return (
 			<Text
 				style={[
@@ -60,7 +60,7 @@ const Hashtag = memo(({ hashtag }: IHashtag) => {
 					}
 				]}
 				onPress={handlePress}>
-				{`${preffix}${hashtag}`}
+				{`${preffix}${channel?.fname || hashtag}`}
 			</Text>
 		);
 	}
