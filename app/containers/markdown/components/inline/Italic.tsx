@@ -4,7 +4,6 @@ import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 import { Bold, Link, Strike } from './index';
 import Plain from '../Plain';
 import { AtMention, Hashtag } from '../mentions';
-import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
 
 interface IItalicProps {
 	value: ItalicProps['value'];
@@ -19,30 +18,26 @@ const styles = StyleSheet.create({
 const Italic = ({ value }: IItalicProps) => {
 	'use memo';
 
-	const context = useMarkdownContext({ textStyle: styles.text });
-
 	return (
-		<Text style={context.textStyle}>
-			<MarkdownContext.Provider value={context}>
-				{value.map(block => {
-					switch (block.type) {
-						case 'LINK':
-							return <Link value={block.value} />;
-						case 'PLAIN_TEXT':
-							return <Plain value={block.value} />;
-						case 'STRIKE':
-							return <Strike value={block.value} />;
-						case 'BOLD':
-							return <Bold value={block.value} />;
-						case 'MENTION_CHANNEL':
-							return <Hashtag hashtag={block.value.value} />;
-						case 'MENTION_USER':
-							return <AtMention mention={block.value.value} />;
-						default:
-							return null;
-					}
-				})}
-			</MarkdownContext.Provider>
+		<Text style={styles.text}>
+			{value.map(block => {
+				switch (block.type) {
+					case 'LINK':
+						return <Link value={block.value} />;
+					case 'PLAIN_TEXT':
+						return <Plain value={block.value} />;
+					case 'STRIKE':
+						return <Strike value={block.value} />;
+					case 'BOLD':
+						return <Bold value={block.value} />;
+					case 'MENTION_CHANNEL':
+						return <Hashtag hashtag={block.value.value} />;
+					case 'MENTION_USER':
+						return <AtMention mention={block.value.value} />;
+					default:
+						return null;
+				}
+			})}
 		</Text>
 	);
 };

@@ -129617,9 +129617,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                           {
                                             "color": "#2F343D",
                                           },
-                                          {
-                                            "fontStyle": "italic",
-                                          },
                                         ]
                                       }
                                     >
@@ -130865,9 +130862,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                           },
                                           {
                                             "color": "#2F343D",
-                                          },
-                                          {
-                                            "fontStyle": "italic",
                                           },
                                         ]
                                       }
