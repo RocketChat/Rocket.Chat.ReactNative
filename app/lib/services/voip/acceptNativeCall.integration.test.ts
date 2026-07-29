@@ -59,7 +59,7 @@ jest.mock('../../methods/helpers/log', () => ({
 
 const USER_ID = 'user-id';
 const CALL_ID = 'call-uuid';
-const PING_INTERVAL = 20000;
+const PING_INTERVAL = 10000;
 
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
 const mockGetCallState = useCallStore.getState as jest.Mock;
