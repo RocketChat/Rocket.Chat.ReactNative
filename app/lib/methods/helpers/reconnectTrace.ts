@@ -61,7 +61,7 @@ const dump = async (): Promise<void> => {
 };
 
 // tests mock react-native without AppState events
-if (__DEV__ && typeof AppState.addEventListener === 'function') {
+if (__DEV__ && typeof AppState?.addEventListener === 'function') {
 	loadMarks();
 	AppState.addEventListener('change', state => {
 		if (state !== 'active') {
