@@ -1,7 +1,7 @@
 import log from '../../methods/helpers/log';
 import sdk from '../sdk';
 import { waitForLoginReady } from '../waitForLoginReady';
-import { classifySocketHealth } from '../socketHealth';
+import { recoverSocket } from '../socketHealth';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 
@@ -12,12 +12,8 @@ export interface NativeCallMediaSession {
 	isInitialized(): boolean;
 }
 
-interface VoipReadyDdp {
-	reopenNow(): Promise<void>;
-	probe(timeoutMs: number): Promise<boolean>;
-	lastPing: number;
-	pingInterval?: number;
-	config?: { ping?: number };
+/** The slice of the patched DDP driver the accept path reads: Media Signal subscription readiness. */
+interface MediaSignalDdp {
 	waitForNotifyUserMediaSubs(timeoutMs: number): Promise<boolean>;
 }
 
@@ -40,7 +36,7 @@ function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
 	}
 }
 
-async function waitForMediaSignalSubs(ddp: VoipReadyDdp, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
+async function waitForMediaSignalSubs(ddp: MediaSignalDdp, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
 	if (typeof ddp.waitForNotifyUserMediaSubs !== 'function') {
 		return false;
 	}
@@ -82,24 +78,21 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 	};
 
 	try {
-		const ddp = sdk.current?.ddp as VoipReadyDdp | undefined;
-		if (!ddp || typeof ddp.reopenNow !== 'function' || typeof ddp.probe !== 'function' || ddp.lastPing == null) {
+		const outcome = await recoverSocket({ abortSignal: controller.signal });
+		if (outcome === 'no-socket') {
 			return handleFailure(callId, mediaSession);
 		}
-
-		const action = classifySocketHealth(ddp);
-		if (action === 'reopen') {
-			await ddp.reopenNow();
-		} else {
-			// A stored timestamp can't vouch for a socket the OS may have frozen.
-			const alive = await ddp.probe(2000);
-			if (!alive) {
-				await ddp.reopenNow();
-			}
+		if (outcome === 'abandoned') {
+			return;
 		}
 
 		if (controller.signal.aborted) {
 			return;
+		}
+
+		const ddp = sdk.current?.ddp as MediaSignalDdp | undefined;
+		if (!ddp) {
+			return handleFailure(callId, mediaSession);
 		}
 
 		const [loginReady, mediaSubsReady] = await Promise.all([

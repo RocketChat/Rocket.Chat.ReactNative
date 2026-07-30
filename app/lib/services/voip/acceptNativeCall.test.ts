@@ -2,9 +2,11 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
+import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
 
 const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof waitForLoginReady>;
+const mockRecoverSocket = recoverSocket as jest.MockedFunction<typeof recoverSocket>;
 const mockGetState = useCallStore.getState as jest.Mock;
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
 const mockDdp = () => sdk.current?.ddp as any;
@@ -24,6 +26,10 @@ jest.mock('../sdk', () => ({
 	default: {
 		current: { ddp: {} }
 	}
+}));
+
+jest.mock('../socketHealth', () => ({
+	recoverSocket: jest.fn()
 }));
 
 jest.mock('../waitForLoginReady', () => ({
@@ -55,10 +61,6 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 
 function makeDdp(overrides: Record<string, unknown> = {}) {
 	return {
-		reopenNow: jest.fn(() => Promise.resolve()),
-		probe: jest.fn(() => Promise.resolve(true)),
-		lastPing: Date.now(),
-		pingInterval: 10000,
 		waitForNotifyUserMediaSubs: jest.fn(() => Promise.resolve(true)),
 		...overrides
 	};
@@ -79,8 +81,7 @@ describe('acceptNativeCallWithReadiness', () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
 		(sdk as any).current = { ddp: makeDdp() };
-		mockDdp().lastPing = Date.now();
-		mockDdp().pingInterval = 10000;
+		mockRecoverSocket.mockResolvedValue('confirmed-alive');
 		mockWaitForLoginReady.mockResolvedValue(true);
 		mockGetState.mockReturnValue(makeStoreState());
 	});
@@ -89,51 +90,62 @@ describe('acceptNativeCallWithReadiness', () => {
 		jest.useRealTimers();
 	});
 
-	it('probes a young-ping socket instead of trusting it, and skips reopen when the probe answers', async () => {
+	it.each(['confirmed-alive', 'reopened'] as const)(
+		'waits for readiness and answers the call when socket recovery reports %s',
+		async outcome => {
+			mockRecoverSocket.mockResolvedValue(outcome);
+			const mediaSession = makeMediaSession();
+
+			await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+			expect(mockRecoverSocket).toHaveBeenCalledTimes(1);
+			expect(mockRecoverSocket.mock.calls[0][0]?.abortSignal).toBeDefined();
+			expect(mockWaitForLoginReady.mock.invocationCallOrder[0]).toBeGreaterThan(mockRecoverSocket.mock.invocationCallOrder[0]);
+			expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
+			expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+		}
+	);
+
+	it('terminates and ends the call when there is no socket to recover', async () => {
+		mockRecoverSocket.mockResolvedValue('no-socket');
 		const mediaSession = makeMediaSession();
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
+
 		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
-		expect(mockDdp().reopenNow).not.toHaveBeenCalled();
-		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
+		expect(resetNativeCallId).toHaveBeenCalled();
+		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mockWaitForLoginReady).not.toHaveBeenCalled();
 	});
 
-	it('reopens a young-ping socket when the probe gets no answer', async () => {
-		mockDdp().probe = jest.fn(() => Promise.resolve(false));
+	it('returns silently without terminating when socket recovery reports the gate abandoned', async () => {
+		mockRecoverSocket.mockResolvedValue('abandoned');
 		const mediaSession = makeMediaSession();
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
 
 		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
-		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
-		expect(mockWaitForLoginReady.mock.invocationCallOrder[0]).toBeGreaterThan(mockDdp().reopenNow.mock.invocationCallOrder[0]);
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
+		expect(resetNativeCallId).not.toHaveBeenCalled();
+		expect(mediaSession.endCall).not.toHaveBeenCalled();
+		expect(mediaSession.applyRestStateSignals).not.toHaveBeenCalled();
+		expect(mockWaitForLoginReady).not.toHaveBeenCalled();
 	});
 
-	it('reopens before waiting when the socket is older than two ping intervals', async () => {
-		mockDdp().lastPing = Date.now() - 25000;
-		mockDdp().pingInterval = 10000;
+	it('terminates and ends the call when socket recovery throws', async () => {
+		mockRecoverSocket.mockRejectedValue(new Error('reopen failed'));
 		const mediaSession = makeMediaSession();
+		const resetNativeCallId = jest.fn();
+		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
 
 		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
-		expect(mockWaitForLoginReady.mock.invocationCallOrder[0]).toBeGreaterThan(mockDdp().reopenNow.mock.invocationCallOrder[0]);
-		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
-	});
-
-	it('falls back to config.ping when pingInterval is missing', async () => {
-		// Only a 30s config.ping keeps a 25s-old ping on the probe branch instead of reopening.
-		mockDdp().lastPing = Date.now() - 25000;
-		mockDdp().pingInterval = undefined;
-		mockDdp().config = { ping: 30000 };
-		const mediaSession = makeMediaSession();
-
-		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-
-		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
-		expect(mockDdp().reopenNow).not.toHaveBeenCalled();
+		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
+		expect(resetNativeCallId).toHaveBeenCalled();
+		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);
 	});
 
 	it('terminates and ends the call when login readiness times out', async () => {
@@ -177,7 +189,7 @@ describe('acceptNativeCallWithReadiness', () => {
 		expect(mediaSession.applyRestStateSignals).not.toHaveBeenCalled();
 	});
 
-	it('terminates and ends the call when the SDK socket is unavailable', async () => {
+	it('terminates and ends the call when the SDK socket is unavailable for media subscriptions', async () => {
 		(sdk as any).current = {};
 		const mediaSession = makeMediaSession();
 		const resetNativeCallId = jest.fn();

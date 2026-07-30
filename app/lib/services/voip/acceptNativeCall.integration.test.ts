@@ -4,38 +4,9 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { initStore } from '../../store/auxStore';
+import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
 import type { IApplicationState } from '../../../definitions';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { DDPDriver } = require('@rocket.chat/sdk/lib/drivers/ddp');
-
-const mockConnections: any[] = [];
-
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data);
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
-	})
-);
 
 jest.mock('./terminateNativeCall', () => ({
 	terminateNativeCall: jest.fn()
@@ -45,6 +16,10 @@ jest.mock('./useCallStore', () => ({
 	useCallStore: {
 		getState: jest.fn()
 	}
+}));
+
+jest.mock('../socketHealth', () => ({
+	recoverSocket: jest.fn()
 }));
 
 jest.mock('../sdk', () => ({
@@ -57,12 +32,12 @@ jest.mock('../../methods/helpers/log', () => ({
 	default: jest.fn()
 }));
 
-const USER_ID = 'user-id';
 const CALL_ID = 'call-uuid';
-const PING_INTERVAL = 10000;
+const READINESS_TIMEOUT = 8000;
 
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
 const mockGetCallState = useCallStore.getState as jest.Mock;
+const mockRecoverSocket = recoverSocket as jest.MockedFunction<typeof recoverSocket>;
 
 interface IMediaSession {
 	applyRestStateSignals: jest.Mock<Promise<void>, []>;
@@ -77,6 +52,22 @@ function makeMediaSession(): IMediaSession {
 		answerCall: jest.fn<Promise<void>, [string]>(() => Promise.resolve()),
 		endCall: jest.fn<void, [string]>(),
 		isInitialized: jest.fn<boolean, []>(() => true)
+	};
+}
+
+/** Media Signal subs that ack `delayMs` after the gate starts waiting. */
+function mediaSubsAckAfter(delayMs: number) {
+	return {
+		waitForNotifyUserMediaSubs: jest.fn(() => new Promise<boolean>(resolve => setTimeout(() => resolve(true), delayMs)))
+	};
+}
+
+/** Media Signal subs that never ack: the wait ends on its own timeout. */
+function mediaSubsNeverAck() {
+	return {
+		waitForNotifyUserMediaSubs: jest.fn(
+			(timeoutMs: number) => new Promise<boolean>(resolve => setTimeout(() => resolve(false), timeoutMs))
+		)
 	};
 }
 
@@ -104,128 +95,68 @@ function makeReduxStore() {
 	};
 }
 
-const logger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
-
-/** Real patched DDPDriver over a mocked WebSocket, connected and logged in. */
-async function buildConnectedDriver() {
-	const driver = new DDPDriver({ host: 'localhost:3000', logger });
-	driver.userId = USER_ID;
-	const openPromise = driver.ddp.open();
-	mockConnections[0].onopen();
-	await jest.advanceTimersByTimeAsync(0);
-	await openPromise;
-	return driver;
-}
-
-function addMediaSubs(driver: any) {
-	['media-signal', 'media-calls'].forEach((name, index) => {
-		const id = `sub-${index}`;
-		driver.ddp.subscriptions[id] = {
-			id,
-			name: 'stream-notify-user',
-			params: [`${USER_ID}/${name}`],
-			unsubscribe: jest.fn()
-		};
-	});
-}
-
-function backdateLastPing(driver: any, ageMs: number) {
-	driver.ddp.lastPing = Date.now() - ageMs;
-}
-
-/** Sub messages sent over the wire, across every connection the socket opened. */
-function subMessages() {
-	return mockConnections
-		.flatMap(connection => connection.send.mock.calls.map(([data]: [string]) => JSON.parse(data)))
-		.filter(message => message.msg === 'sub');
-}
-
-describe('acceptNativeCallWithReadiness with the real patched socket', () => {
+describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	let redux: ReturnType<typeof makeReduxStore>;
-	let driver: any;
 
-	beforeEach(async () => {
+	beforeEach(() => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
-		mockConnections.length = 0;
 		redux = makeReduxStore();
 		initStore(redux.store);
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
-		driver = await buildConnectedDriver();
-		(sdk as any).current = { ddp: driver };
+		mockRecoverSocket.mockResolvedValue('reopened');
+		(sdk as any).current = { ddp: mediaSubsAckAfter(100) };
 	});
 
 	afterEach(() => {
-		if (driver.ddp.pingTimeout) clearTimeout(driver.ddp.pingTimeout);
-		if (driver.ddp.openTimeout) clearTimeout(driver.ddp.openTimeout);
 		jest.useRealTimers();
 	});
 
-	it('exposes the ping interval the health classification depends on', () => {
-		expect(driver.pingInterval).toBe(PING_INTERVAL);
-	});
-
-	it('reopens a dead socket, waits for readiness, then answers the call', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
+	it('recovers the socket, waits for readiness, then answers the call', async () => {
 		const mediaSession = makeMediaSession();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		// The gate reopens before it starts waiting, so a second connection is created.
+		// Readiness only lands after the gate is already waiting on it.
 		await jest.advanceTimersByTimeAsync(0);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-
+		expect(mediaSession.answerCall).not.toHaveBeenCalled();
 		redux.setLoginReady();
+
 		await jest.advanceTimersByTimeAsync(200);
 		await gate;
 
+		expect(mockRecoverSocket).toHaveBeenCalledTimes(1);
 		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
 		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
 		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
-		// Both media subs were re-sent on the new socket reusing their ids.
-		expect(subMessages()).toEqual([
-			expect.objectContaining({ id: 'sub-0', name: 'stream-notify-user', params: [`${USER_ID}/media-signal`] }),
-			expect.objectContaining({ id: 'sub-1', name: 'stream-notify-user', params: [`${USER_ID}/media-calls`] })
-		]);
 	});
 
 	it('releases its store listener and readiness polling as soon as readiness lands', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
 		redux.setLoginReady();
 		const mediaSession = makeMediaSession();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(200);
 		await gate;
 
 		expect(redux.listenerCount()).toBe(0);
-		const subsAfterGate = subMessages().length;
 
-		// Nothing is left scheduled: no late resubscribe, no late failure ladder.
+		// Nothing is left scheduled: no late failure ladder.
 		await jest.advanceTimersByTimeAsync(60000);
-		expect(subMessages()).toHaveLength(subsAfterGate);
 		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
 		expect(mediaSession.endCall).not.toHaveBeenCalled();
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		(sdk as any).current = { ddp: mediaSubsNeverAck() };
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
 
-		// Login never authenticates and the media subs never appear.
-		await jest.advanceTimersByTimeAsync(8000);
+		// Login never authenticates and the media subs never ack.
+		await jest.advanceTimersByTimeAsync(READINESS_TIMEOUT);
 		await gate;
 
 		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
@@ -237,138 +168,5 @@ describe('acceptNativeCallWithReadiness with the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(60000);
 		expect(mockTerminateNativeCall).toHaveBeenCalledTimes(1);
 		expect(mediaSession.endCall).toHaveBeenCalledTimes(1);
-	});
-
-	it('keeps a gray-zone socket when the probe gets a pong', async () => {
-		backdateLastPing(driver, PING_INTERVAL + 5000);
-		addMediaSubs(driver);
-		redux.setLoginReady();
-		const mediaSession = makeMediaSession();
-
-		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(200);
-		await gate;
-
-		// The probe pinged the existing socket and the pong kept it alive.
-		const pings = mockConnections[0].send.mock.calls.filter(([data]: [string]) => JSON.parse(data).msg === 'ping');
-		expect(pings.length).toBeGreaterThan(0);
-		expect(mockConnections).toHaveLength(1);
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
-		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
-	});
-
-	it('reopens a gray-zone socket when the probe gets no pong', async () => {
-		backdateLastPing(driver, PING_INTERVAL + 5000);
-		// A zombie socket: still `readyState: 1`, but the server never answers.
-		mockConnections[0].send.mockImplementation(() => undefined);
-		addMediaSubs(driver);
-		redux.setLoginReady();
-		const mediaSession = makeMediaSession();
-
-		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(2000);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-
-		await jest.advanceTimersByTimeAsync(200);
-		await gate;
-
-		// The probe was actually attempted on the dead socket before reopening.
-		const pings = mockConnections[0].send.mock.calls.filter(([data]: [string]) => JSON.parse(data).msg === 'ping');
-		expect(pings.length).toBeGreaterThan(0);
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
-		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
-	});
-
-	it('reopens a frozen socket whose last ping is still young', async () => {
-		// A young `lastPing` proves nothing: `onOpen` refreshes it before the handshake
-		// reply lands, so the timestamp can sit on an unusable session.
-		mockConnections[0].send.mockImplementation(() => undefined);
-		addMediaSubs(driver);
-		redux.setLoginReady();
-		const mediaSession = makeMediaSession();
-
-		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(2000);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-
-		await jest.advanceTimersByTimeAsync(200);
-		await gate;
-
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
-		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
-	});
-
-	it('reopens without probing when the socket is older than two ping intervals', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 2 + 1000);
-		addMediaSubs(driver);
-		redux.setLoginReady();
-		const mediaSession = makeMediaSession();
-
-		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-
-		expect(mockConnections).toHaveLength(2);
-		// No raw probe ping was sent on the dead socket.
-		const pings = mockConnections[0].send.mock.calls.filter(([data]: [string]) => JSON.parse(data).msg === 'ping');
-		expect(pings).toHaveLength(0);
-
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(200);
-		await gate;
-
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
-	});
-
-	it('shares a single reopen between the accept gate and a concurrent foreground reopen', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
-		redux.setLoginReady();
-		const mediaSession = makeMediaSession();
-
-		// The foreground saga reopens the stale socket while the gate does the same.
-		const foregroundReopen = driver.reopenNow();
-		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-
-		await jest.advanceTimersByTimeAsync(0);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-
-		await jest.advanceTimersByTimeAsync(200);
-		await Promise.all([foregroundReopen, gate]);
-
-		expect(mockConnections).toHaveLength(2);
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
-
-		// No queued third open fires later — the reopen really was shared.
-		await jest.advanceTimersByTimeAsync(60000);
-		expect(mockConnections).toHaveLength(2);
-	});
-
-	it('rejects an in-flight DDP method call when the gate reopens the socket', async () => {
-		let rejected = false;
-		const inFlight = driver.ddp.send({ msg: 'method', method: 'getRoomByTypeAndName', params: [] }).catch(() => {
-			rejected = true;
-		});
-		await jest.advanceTimersByTimeAsync(0);
-		expect(rejected).toBe(false);
-
-		// The socket dies silently after the call went out.
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
-		redux.setLoginReady();
-		const mediaSession = makeMediaSession();
-
-		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-		await inFlight;
-		expect(rejected).toBe(true);
-
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(200);
-		await gate;
-
-		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
 	});
 });
