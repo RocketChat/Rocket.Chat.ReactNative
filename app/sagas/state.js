@@ -4,12 +4,9 @@ import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
-import { checkAndReopen, getSocketStaleness } from '../lib/services/connect';
+import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
-import sdk from '../lib/services/sdk';
-
-let isProbingSocket = false;
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -23,7 +20,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		return;
 	}
 	// Socket state is deliberately not checked here: a closed socket is the case
-	// the reopen ladder below exists for.
+	// recoverSocket below exists for.
 	const { isAuthenticated } = yield select(state => state.login);
 	if (!isAuthenticated) {
 		return;
@@ -32,28 +29,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 
-		const ddp = sdk.current?.ddp;
-		const staleness = getSocketStaleness(ddp);
-		if (staleness === 'stale') {
-			ddp.reopenNow().catch(e => log(e));
-		} else if (staleness === 'gray') {
-			if (!isProbingSocket) {
-				isProbingSocket = true;
-				ddp
-					.probe(2000)
-					.then(alive => {
-						if (!alive) {
-							ddp.reopenNow().catch(e => log(e));
-						}
-					})
-					.catch(e => log(e))
-					.finally(() => {
-						isProbingSocket = false;
-					});
-			}
-		} else {
-			checkAndReopen();
-		}
+		recoverSocket().catch(e => log(e));
 
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {

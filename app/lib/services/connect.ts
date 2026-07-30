@@ -11,7 +11,6 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
-import { classifySocketHealth } from './socketHealth';
 import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
@@ -440,23 +439,6 @@ function abort() {
 	}
 }
 
-function checkAndReopen() {
-	return sdk.current.checkAndReopen();
-}
-
-/** Map socket health onto the foreground reconnect ladder. Returns 'fresh' only when
- *  the SDK lacks the probe/reopen hooks, so callers fall back to checkAndReopen. */
-export function getSocketStaleness(ddp: any): 'stale' | 'gray' | 'fresh' {
-	if (!ddp || typeof ddp.reopenNow !== 'function' || typeof ddp.probe !== 'function' || ddp.lastPing == null) {
-		return 'fresh';
-	}
-	const health = classifySocketHealth(ddp);
-	if (health === 'reopen') {
-		return 'stale';
-	}
-	return 'gray';
-}
-
 function disconnect() {
 	const result = sdk.disconnect();
 	mediaSessionInstance.reset();
@@ -548,7 +530,6 @@ export {
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
-	checkAndReopen,
 	abort,
 	connect,
 	disconnect,

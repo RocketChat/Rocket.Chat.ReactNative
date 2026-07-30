@@ -12,18 +12,14 @@ jest.mock('../../lib/notifications', () => ({
 	checkPendingNotification: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/services/connect', () => ({
-	checkAndReopen: jest.fn(),
-	getSocketStaleness: jest.fn()
+jest.mock('../../lib/services/socketHealth', () => ({
+	recoverSocket: jest.fn(() => Promise.resolve('confirmed-alive'))
 }));
 
-jest.mock('../../lib/services/sdk', () => ({
+jest.mock('../../lib/methods/helpers/log', () => ({
+	...jest.requireActual('../../lib/methods/helpers/log'),
 	__esModule: true,
-	default: {
-		current: {
-			ddp: null as any
-		}
-	}
+	default: jest.fn()
 }));
 
 import { applyMiddleware, createStore } from 'redux';
@@ -39,8 +35,8 @@ import reducers from '../../reducers';
 import stateRoot from '../state';
 import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { setUserPresenceOnline, setUserPresenceAway } from '../../lib/services/restApi';
-import sdk from '../../lib/services/sdk';
-import { checkAndReopen, getSocketStaleness } from '../../lib/services/connect';
+import { recoverSocket } from '../../lib/services/socketHealth';
+import log from '../../lib/methods/helpers/log';
 
 async function flushSagaMicrotasks(): Promise<void> {
 	await Promise.resolve();
@@ -58,21 +54,10 @@ function setupStore(preloadedState?: PreloadedState) {
 
 const HOST = 'https://open.rocket.chat';
 
-function makeDdp(overrides: Record<string, any> = {}) {
-	return {
-		lastPing: Date.now(),
-		pingInterval: 10000,
-		reopenNow: jest.fn(() => Promise.resolve()),
-		probe: jest.fn(() => Promise.resolve(true)),
-		...overrides
-	};
-}
-
-describe('state saga — foreground stale-socket reconnect', () => {
+describe('state saga — foreground socket recovery', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.clearAllMocks();
-		(sdk.current as any).ddp = null;
 	});
 
 	afterEach(() => {
@@ -89,111 +74,26 @@ describe('state saga — foreground stale-socket reconnect', () => {
 		return store;
 	}
 
-	it('calls reopenNow when socket is stale (age > 2 * pingInterval)', async () => {
-		const ddp = makeDdp({ lastPing: Date.now() - 25000 });
-		(sdk.current as any).ddp = ddp;
-		jest.mocked(getSocketStaleness).mockReturnValue('stale');
+	it('requests recovery once when foregrounding while inside and authenticated', async () => {
 		const store = setupReadyStore();
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
 		await flushSagaMicrotasks();
 
-		expect(ddp.reopenNow).toHaveBeenCalledTimes(1);
-		expect(ddp.probe).not.toHaveBeenCalled();
-		expect(checkAndReopen).not.toHaveBeenCalled();
+		expect(recoverSocket).toHaveBeenCalledTimes(1);
+		expect(setUserPresenceOnline).toHaveBeenCalledTimes(1);
 	});
 
-	it('probes when socket is gray (pingInterval < age <= 2 * pingInterval)', async () => {
-		const ddp = makeDdp({ lastPing: Date.now() - 15000 });
-		(sdk.current as any).ddp = ddp;
-		jest.mocked(getSocketStaleness).mockReturnValue('gray');
+	it('logs a recovery rejection and still sets presence online', async () => {
+		const failure = new Error('reopen failed');
+		jest.mocked(recoverSocket).mockRejectedValueOnce(failure);
 		const store = setupReadyStore();
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
 		await flushSagaMicrotasks();
 
-		expect(ddp.probe).toHaveBeenCalledTimes(1);
-		expect(ddp.probe).toHaveBeenCalledWith(2000);
-		expect(ddp.reopenNow).not.toHaveBeenCalled();
-		expect(checkAndReopen).not.toHaveBeenCalled();
-	});
-
-	it('calls reopenNow when probe resolves false', async () => {
-		const ddp = makeDdp({ lastPing: Date.now() - 15000, probe: jest.fn(() => Promise.resolve(false)) });
-		(sdk.current as any).ddp = ddp;
-		jest.mocked(getSocketStaleness).mockReturnValue('gray');
-		const store = setupReadyStore();
-
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
-
-		expect(ddp.probe).toHaveBeenCalledTimes(1);
-		expect(ddp.reopenNow).toHaveBeenCalledTimes(1);
-		expect(checkAndReopen).not.toHaveBeenCalled();
-	});
-
-	it('falls back to checkAndReopen when staleness is fresh (SDK without probe hooks)', async () => {
-		const ddp = makeDdp({ lastPing: Date.now() - 5000 });
-		(sdk.current as any).ddp = ddp;
-		jest.mocked(getSocketStaleness).mockReturnValue('fresh');
-		const store = setupReadyStore();
-
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-
-		expect(checkAndReopen).toHaveBeenCalledTimes(1);
-		expect(ddp.probe).not.toHaveBeenCalled();
-		expect(ddp.reopenNow).not.toHaveBeenCalled();
-	});
-
-	it('does not stack probes during rapid foreground flaps', async () => {
-		const resolvers: Array<(value: boolean) => void> = [];
-		const ddp = makeDdp({
-			lastPing: Date.now() - 15000,
-			probe: jest.fn(() => new Promise<boolean>(resolve => resolvers.push(resolve)))
-		});
-		(sdk.current as any).ddp = ddp;
-		jest.mocked(getSocketStaleness).mockReturnValue('gray');
-		const store = setupReadyStore();
-
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-
-		expect(ddp.probe).toHaveBeenCalledTimes(1);
-
-		resolvers.forEach(resolve => resolve(true));
-		await flushSagaMicrotasks();
-
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-
-		expect(ddp.probe).toHaveBeenCalledTimes(2);
-
-		resolvers.forEach(resolve => resolve(true));
-	});
-
-	it('still calls reopenNow immediately when stale while a gray probe is in flight', async () => {
-		const resolvers: Array<(value: boolean) => void> = [];
-		const ddp = makeDdp({
-			lastPing: Date.now() - 15000,
-			probe: jest.fn(() => new Promise<boolean>(resolve => resolvers.push(resolve)))
-		});
-		(sdk.current as any).ddp = ddp;
-		jest.mocked(getSocketStaleness).mockReturnValueOnce('gray').mockReturnValueOnce('stale');
-		const store = setupReadyStore();
-
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-		expect(ddp.probe).toHaveBeenCalledTimes(1);
-
-		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flushSagaMicrotasks();
-
-		expect(ddp.reopenNow).toHaveBeenCalledTimes(1);
-		resolvers.forEach(resolve => resolve(true));
+		expect(log).toHaveBeenCalledWith(failure);
+		expect(setUserPresenceOnline).toHaveBeenCalledTimes(1);
 	});
 });
 
@@ -201,7 +101,6 @@ describe('state saga — foreground early exits', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.clearAllMocks();
-		(sdk.current as any).ddp = null;
 	});
 
 	afterEach(() => {
