@@ -1,4 +1,5 @@
 import log from '../../methods/helpers/log';
+import { onAbort } from '../../methods/helpers/onAbort';
 import sdk from '../sdk';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';
@@ -18,23 +19,6 @@ interface MediaSignalDdp {
 }
 
 const activeGates = new Map<string, AbortController>();
-
-function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
-	if (!signal) {
-		return;
-	}
-	if (signal.aborted) {
-		callback();
-		return;
-	}
-	if ('addEventListener' in signal) {
-		signal.addEventListener('abort', callback, { once: true });
-	} else {
-		// Fallback for older runtimes where AbortSignal only exposes onabort.
-		const legacy = signal as unknown as { onabort: (() => void) | null };
-		legacy.onabort = callback;
-	}
-}
 
 async function waitForMediaSignalSubs(ddp: MediaSignalDdp, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
 	if (typeof ddp.waitForNotifyUserMediaSubs !== 'function') {

@@ -1,3 +1,4 @@
+import { onAbort } from '../methods/helpers/onAbort';
 import sdk from './sdk';
 
 /**
@@ -57,16 +58,6 @@ export type SocketRecoveryOutcome = 'confirmed-alive' | 'reopened' | 'no-socket'
 
 let inFlightRecovery: Promise<SocketRecoveryOutcome> | null = null;
 
-function onAbort(signal: AbortSignal, callback: () => void): void {
-	if ('addEventListener' in signal) {
-		signal.addEventListener('abort', callback, { once: true });
-	} else {
-		// Fallback for older runtimes where AbortSignal only exposes onabort.
-		const legacy = signal as unknown as { onabort: (() => void) | null };
-		legacy.onabort = callback;
-	}
-}
-
 async function executeRecovery(ddp: SocketHealthDdp): Promise<SocketRecoveryOutcome> {
 	if (classifySocketHealth(ddp) === 'reopen') {
 		await ddp.reopenNow();
@@ -80,9 +71,13 @@ async function executeRecovery(ddp: SocketHealthDdp): Promise<SocketRecoveryOutc
 	return 'reopened';
 }
 
-function shareRecovery(ddp: SocketHealthDdp): Promise<SocketRecoveryOutcome> {
+function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
+	}
+	const ddp = sdk.current?.ddp as SocketHealthDdp | undefined;
+	if (!ddp) {
+		return Promise.resolve('no-socket');
 	}
 	const recovery = executeRecovery(ddp);
 	inFlightRecovery = recovery;
@@ -122,12 +117,7 @@ export function recoverSocket(options?: { abortSignal?: AbortSignal }): Promise<
 		return Promise.resolve('abandoned');
 	}
 
-	const ddp = sdk.current?.ddp as SocketHealthDdp | undefined;
-	if (!ddp) {
-		return Promise.resolve('no-socket');
-	}
-
-	const recovery = shareRecovery(ddp);
+	const recovery = shareRecovery();
 	if (!abortSignal) {
 		return recovery;
 	}
