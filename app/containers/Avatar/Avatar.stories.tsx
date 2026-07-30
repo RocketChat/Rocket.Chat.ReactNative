@@ -1,8 +1,12 @@
 import { StyleSheet } from 'react-native';
 
+import { setCustomEmojis } from '../../actions/customEmojis';
+import { mockedStore } from '../../reducers/mockedStore';
 import Status from '../Status/Status';
 import sharedStyles from '../../views/Styles';
 import Avatar from './Avatar';
+
+mockedStore.dispatch(setCustomEmojis({ troll: { name: 'troll', extension: 'jpg' } }));
 
 const styles = StyleSheet.create({
 	custom: {
@@ -40,9 +44,7 @@ export const WithETag = () => (
 
 export const WithoutETag = () => <Avatar type='d' text='djorkaeff.alexandre' server={server} size={56} />;
 
-export const Emoji = () => (
-	<Avatar emoji='troll' getCustomEmoji={() => ({ name: 'troll', extension: 'jpg' })} server={server} size={56} />
-);
+export const Emoji = () => <Avatar emoji='troll' server={server} size={56} />;
 
 export const Direct = () => <Avatar text='diego.mello' server={server} type='d' size={56} />;
 

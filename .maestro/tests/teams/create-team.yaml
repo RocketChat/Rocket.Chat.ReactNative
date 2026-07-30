@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: Create Team and Delete
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-4

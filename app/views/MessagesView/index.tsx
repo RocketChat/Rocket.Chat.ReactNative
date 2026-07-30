@@ -8,6 +8,7 @@ import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-cont
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
+import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
@@ -19,18 +20,16 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { type ChatsStackParamList } from '../../stacks/types';
-import { type IRoomInfoParam } from '../SearchMessagesView';
 import {
 	type IApplicationState,
+	type IRoomInfoParam,
 	type TMessageModel,
 	type ISubscription,
 	SubscriptionType,
 	type IAttachment,
 	type IMessage,
 	type TAnyMessageModel,
-	type IUrl,
-	type TGetCustomEmoji,
-	type ICustomEmoji
+	type IUrl
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -51,10 +50,8 @@ interface IMessagesViewProps {
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: ICustomEmoji };
 	theme: TSupportedThemes;
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
-	useRealName: boolean;
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
 }
@@ -163,23 +160,10 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	};
 
 	defineMessagesViewContent = (name: string) => {
-		const { user, baseUrl, theme, useRealName } = this.props;
+		const { user } = this.props;
 		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
-			baseUrl,
-			user,
-			author: item.u || item.user,
-			timeFormat: 'MMM Do YYYY, h:mm:ss a',
-			isEdited: !!item.editedAt,
-			isHeader: true,
-			isThreadRoom: true,
-			attachments: item.attachments || [],
-			useRealName,
-			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji,
-			navToRoomInfo: this.navToRoomInfo,
-			onPress: () => this.jumpToMessage({ item }),
-			rid: this.rid
+			onPress: () => this.jumpToMessage({ item })
 		});
 
 		return {
@@ -198,7 +182,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				renderItem: (item: any) => (
 					<Message
 						{...renderItemCommonProps(item)}
-						theme={theme}
 						item={{
 							...item,
 							u: item.user,
@@ -224,7 +207,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
-				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
+				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} />
 			},
 			// Starred Messages Screen
 			Starred: {
@@ -236,7 +219,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
 				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
+					<Message {...renderItemCommonProps(item)} onLongPress={() => this.onLongPress(item)} />
 				),
 				action: (message: IMessage) => ({
 					title: I18n.t('Unstar'),
@@ -255,7 +238,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
 				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
+					<Message {...renderItemCommonProps(item)} onLongPress={() => this.onLongPress(item)} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
 				handleActionPress: (message: IMessage) => togglePinMessage(message._id, message.pinned)
@@ -301,15 +284,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			this.setState({ loading: false });
 			console.error(error);
 		}
-	};
-
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
 	};
 
 	showAttachment = (attachment: IAttachment) => {
@@ -360,7 +334,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme, insets } = this.props;
+		const { theme, user, baseUrl, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -368,15 +342,24 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<FlatList
-					data={messages}
-					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-					keyExtractor={item => item._id}
-					onEndReached={this.load}
-					contentContainerStyle={{ paddingBottom: insets.bottom }}
-					ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				/>
+				<MessageRoomProvider
+					navToRoomInfo={this.navToRoomInfo}
+					showAttachment={this.showAttachment}
+					user={user}
+					baseUrl={baseUrl}
+					rid={this.rid}
+					isThreadRoom
+					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+					<FlatList
+						data={messages}
+						renderItem={this.renderItem}
+						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+						keyExtractor={item => item._id}
+						onEndReached={this.load}
+						contentContainerStyle={{ paddingBottom: insets.bottom }}
+						ListFooterComponent={loading ? <ActivityIndicator /> : null}
+					/>
+				</MessageRoomProvider>
 			</SafeAreaView>
 		);
 	}
@@ -384,9 +367,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(MessagesView)))));
