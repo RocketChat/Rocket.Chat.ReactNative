@@ -9,7 +9,6 @@ import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { reconnectMark } from '../lib/methods/helpers/reconnectTrace';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -291,7 +290,6 @@ const startVoipFork = function* startVoipFork() {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		reconnectMark('login-success');
 		yield put(setUser(user));
 		setLanguage(user?.language);
 

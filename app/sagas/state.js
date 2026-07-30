@@ -1,7 +1,6 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
-import { reconnectMark } from '../lib/methods/helpers/reconnectTrace';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
@@ -35,9 +34,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 		const ddp = sdk.current?.ddp;
 		const staleness = getSocketStaleness(ddp);
-		reconnectMark('app-foreground', staleness);
 		if (staleness === 'stale') {
-			reconnectMark('reopen-start', 'stale');
 			ddp.reopenNow().catch(e => log(e));
 		} else if (staleness === 'gray') {
 			if (!isProbingSocket) {
@@ -45,9 +42,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 				ddp
 					.probe(2000)
 					.then(alive => {
-						reconnectMark('socket-check-done', String(alive));
 						if (!alive) {
-							reconnectMark('reopen-start', 'gray-dead');
 							ddp.reopenNow().catch(e => log(e));
 						}
 					})

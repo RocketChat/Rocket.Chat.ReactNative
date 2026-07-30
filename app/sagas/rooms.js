@@ -6,7 +6,6 @@ import * as types from '../actions/actionsTypes';
 import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
-import { reconnectMark } from '../lib/methods/helpers/reconnectTrace';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import { getRooms } from '../lib/methods/getRooms';
@@ -135,7 +134,6 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 
 		yield updateRooms({ server, newRoomsUpdatedAt });
 		yield put(roomsSuccess());
-		reconnectMark('rooms-sync-done');
 	} catch (e) {
 		yield put(roomsFailure(e));
 		log(e);

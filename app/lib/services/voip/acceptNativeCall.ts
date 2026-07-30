@@ -1,5 +1,4 @@
 import log from '../../methods/helpers/log';
-import { reconnectMark } from '../../methods/helpers/reconnectTrace';
 import sdk from '../sdk';
 import { classifySocketHealth, waitForLoginReady } from '../waitForLoginReady';
 import { terminateNativeCall } from './terminateNativeCall';
@@ -88,17 +87,13 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 		}
 
 		const action = classifySocketHealth(ddp);
-		reconnectMark('voip-gate-start', action);
 		if (action === 'reopen') {
 			await ddp.reopenNow();
-			reconnectMark('voip-reopen-done');
 		} else {
 			// A stored timestamp can't vouch for a socket the OS may have frozen.
 			const alive = await ddp.probe(2000);
-			reconnectMark('voip-probe-done', String(alive));
 			if (!alive) {
 				await ddp.reopenNow();
-				reconnectMark('voip-reopen-done');
 			}
 		}
 
@@ -119,8 +114,6 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			return handleFailure(callId, mediaSession);
 		}
 
-		reconnectMark('voip-gate-ready');
-
 		await mediaSession.applyRestStateSignals();
 
 		if (controller.signal.aborted) {
@@ -129,7 +122,6 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 
 		const { call } = useCallStore.getState();
 		if (call?.callId !== callId) {
-			reconnectMark('voip-answer');
 			await mediaSession.answerCall(callId);
 		}
 	} catch (error) {

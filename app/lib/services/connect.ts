@@ -4,7 +4,6 @@ import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../methods/helpers/log';
-import { reconnectMark } from '../methods/helpers/reconnectTrace';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
@@ -115,12 +114,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			});
 
 		connectingListener = sdk.current.onStreamData('connecting', () => {
-			reconnectMark('socket-connecting');
 			store.dispatch(connectRequest());
 		});
 
 		connectedListener = sdk.current.onStreamData('connected', () => {
-			reconnectMark('socket-connected');
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;

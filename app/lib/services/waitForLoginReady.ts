@@ -1,4 +1,3 @@
-import { reconnectMark } from '../methods/helpers/reconnectTrace';
 import { store } from '../store/auxStore';
 
 export function classifySocketHealth(ddp: {
@@ -33,7 +32,6 @@ function onAbort(signal: AbortSignal | undefined, callback: () => void): void {
 		return;
 	}
 	if (signal.aborted) {
-		reconnectMark('waitForLoginReady.onAbort()');
 		callback();
 		return;
 	}
@@ -52,7 +50,6 @@ export function waitForLoginReady(timeoutMs: number, abortSignal?: AbortSignal):
 			return resolve(false);
 		}
 		if (isLoginReady()) {
-			reconnectMark('waitForLoginReady.isLoginReady()');
 			return resolve(true);
 		}
 
@@ -69,7 +66,6 @@ export function waitForLoginReady(timeoutMs: number, abortSignal?: AbortSignal):
 
 		const unsub = store.subscribe(() => {
 			if (isLoginReady()) {
-				reconnectMark('waitForLoginReady.store.subscribe()');
 				finish(true);
 			}
 		});
