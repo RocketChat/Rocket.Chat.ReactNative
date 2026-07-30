@@ -58,19 +58,6 @@ export type SocketRecoveryOutcome = 'confirmed-alive' | 'reopened' | 'no-socket'
 
 let inFlightRecovery: Promise<SocketRecoveryOutcome> | null = null;
 
-async function executeRecovery(ddp: SocketHealthDdp): Promise<SocketRecoveryOutcome> {
-	if (classifySocketHealth(ddp) === 'reopen') {
-		await ddp.reopenNow();
-		return 'reopened';
-	}
-	const alive = await ddp.probe(2000);
-	if (alive) {
-		return 'confirmed-alive';
-	}
-	await ddp.reopenNow();
-	return 'reopened';
-}
-
 function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
@@ -79,7 +66,18 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (!ddp) {
 		return Promise.resolve('no-socket');
 	}
-	const recovery = executeRecovery(ddp);
+	const recovery = (async (): Promise<SocketRecoveryOutcome> => {
+		if (classifySocketHealth(ddp) === 'reopen') {
+			await ddp.reopenNow();
+			return 'reopened';
+		}
+		const alive = await ddp.probe(2000);
+		if (alive) {
+			return 'confirmed-alive';
+		}
+		await ddp.reopenNow();
+		return 'reopened';
+	})();
 	inFlightRecovery = recovery;
 	const release = () => {
 		if (inFlightRecovery === recovery) {
