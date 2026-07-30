@@ -1,6 +1,7 @@
 import log from '../../methods/helpers/log';
 import sdk from '../sdk';
-import { classifySocketHealth, waitForLoginReady } from '../waitForLoginReady';
+import { waitForLoginReady } from '../waitForLoginReady';
+import { classifySocketHealth } from '../socketHealth';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 

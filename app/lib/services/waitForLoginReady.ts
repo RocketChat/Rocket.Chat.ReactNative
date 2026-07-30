@@ -1,25 +1,5 @@
 import { store } from '../store/auxStore';
 
-export function classifySocketHealth(ddp: {
-	lastPing: number;
-	pingInterval?: number;
-	config?: { ping?: number };
-	connected?: boolean;
-}): 'probe' | 'reopen' {
-	// Ping age can't vouch for a socket the OS already closed.
-	if (ddp.connected === false) {
-		return 'reopen';
-	}
-	const pingInterval = (ddp.pingInterval ?? ddp.config?.ping) || 10000;
-	const age = Date.now() - ddp.lastPing;
-	if (age > pingInterval * 2) {
-		return 'reopen';
-	}
-	// Anything younger is verified by a round trip, never trusted outright: onOpen
-	// refreshes lastPing before the handshake reply lands.
-	return 'probe';
-}
-
 // Reads redux rather than `ddp.loggedIn`: `close` clears `meteor.connected`, while `ddp.loggedIn` survives it.
 // Neither survives a silent background death, so callers must bound their wait.
 export function isLoginReady(): boolean {
