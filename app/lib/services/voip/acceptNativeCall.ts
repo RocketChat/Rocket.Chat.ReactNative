@@ -92,8 +92,10 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 		if (action === 'reopen') {
 			await ddp.reopenNow();
 			reconnectMark('voip-reopen-done');
-		} else if (action === 'probe') {
+		} else {
+			// A stored timestamp can't vouch for a socket the OS may have frozen.
 			const alive = await ddp.probe(2000);
+			reconnectMark('voip-probe-done', String(alive));
 			if (!alive) {
 				await ddp.reopenNow();
 				reconnectMark('voip-reopen-done');

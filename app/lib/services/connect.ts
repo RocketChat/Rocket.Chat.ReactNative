@@ -446,8 +446,8 @@ function checkAndReopen() {
 	return sdk.current.checkAndReopen();
 }
 
-/** Classify DDP socket freshness from last pong. Returns 'fresh' when the SDK
- *  lacks the new probe/reopen hooks so callers fall back to checkAndReopen. */
+/** Map socket health onto the foreground reconnect ladder. Returns 'fresh' only when
+ *  the SDK lacks the probe/reopen hooks, so callers fall back to checkAndReopen. */
 export function getSocketStaleness(ddp: any): 'stale' | 'gray' | 'fresh' {
 	if (!ddp || typeof ddp.reopenNow !== 'function' || typeof ddp.probe !== 'function' || ddp.lastPing == null) {
 		return 'fresh';
@@ -456,10 +456,7 @@ export function getSocketStaleness(ddp: any): 'stale' | 'gray' | 'fresh' {
 	if (health === 'reopen') {
 		return 'stale';
 	}
-	if (health === 'probe') {
-		return 'gray';
-	}
-	return 'fresh';
+	return 'gray';
 }
 
 function disconnect() {

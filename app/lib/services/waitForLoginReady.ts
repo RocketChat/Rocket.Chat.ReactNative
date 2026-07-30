@@ -6,7 +6,7 @@ export function classifySocketHealth(ddp: {
 	pingInterval?: number;
 	config?: { ping?: number };
 	connected?: boolean;
-}): 'healthy' | 'probe' | 'reopen' {
+}): 'probe' | 'reopen' {
 	// Ping age can't vouch for a socket the OS already closed.
 	if (ddp.connected === false) {
 		return 'reopen';
@@ -16,10 +16,9 @@ export function classifySocketHealth(ddp: {
 	if (age > pingInterval * 2) {
 		return 'reopen';
 	}
-	if (age > pingInterval) {
-		return 'probe';
-	}
-	return 'healthy';
+	// Anything younger is verified by a round trip, never trusted outright: onOpen
+	// refreshes lastPing before the handshake reply lands.
+	return 'probe';
 }
 
 // Reads redux rather than `ddp.loggedIn`: `close` clears `meteor.connected`, while `ddp.loggedIn` survives it.

@@ -89,13 +89,25 @@ describe('acceptNativeCallWithReadiness', () => {
 		jest.useRealTimers();
 	});
 
-	it('skips reopen when the socket is healthy', async () => {
+	it('probes a young-ping socket instead of trusting it, and skips reopen when the probe answers', async () => {
 		const mediaSession = makeMediaSession();
 		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
+		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
 		expect(mockDdp().reopenNow).not.toHaveBeenCalled();
-		expect(mockDdp().probe).not.toHaveBeenCalled();
 		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
+		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+	});
+
+	it('reopens a young-ping socket when the probe gets no answer', async () => {
+		mockDdp().probe = jest.fn(() => Promise.resolve(false));
+		const mediaSession = makeMediaSession();
+
+		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+
+		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
+		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
+		expect(mockWaitForLoginReady.mock.invocationCallOrder[0]).toBeGreaterThan(mockDdp().reopenNow.mock.invocationCallOrder[0]);
 		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
 	});
 
@@ -111,42 +123,17 @@ describe('acceptNativeCallWithReadiness', () => {
 		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
 	});
 
-	it('probes a gray-zone socket and skips reopen when it is alive', async () => {
-		mockDdp().lastPing = Date.now() - 15000;
-		mockDdp().pingInterval = 10000;
+	it('falls back to config.ping when pingInterval is missing', async () => {
+		// Only a 30s config.ping keeps a 25s-old ping on the probe branch instead of reopening.
+		mockDdp().lastPing = Date.now() - 25000;
+		mockDdp().pingInterval = undefined;
+		mockDdp().config = { ping: 30000 };
 		const mediaSession = makeMediaSession();
 
 		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
 		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
 		expect(mockDdp().reopenNow).not.toHaveBeenCalled();
-		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
-	});
-
-	it('reopens a gray-zone socket when the probe fails', async () => {
-		mockDdp().lastPing = Date.now() - 15000;
-		mockDdp().pingInterval = 10000;
-		mockDdp().probe = jest.fn(() => Promise.resolve(false));
-		const mediaSession = makeMediaSession();
-
-		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-
-		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
-		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
-		expect(mediaSession.applyRestStateSignals).toHaveBeenCalled();
-	});
-
-	it('falls back to config.ping when pingInterval is missing', async () => {
-		mockDdp().lastPing = Date.now() - 15000;
-		mockDdp().pingInterval = undefined;
-		mockDdp().config = { ping: 10000 };
-		mockDdp().probe = jest.fn(() => Promise.resolve(false));
-		const mediaSession = makeMediaSession();
-
-		await acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-
-		expect(mockDdp().probe).toHaveBeenCalledWith(2000);
-		expect(mockDdp().reopenNow).toHaveBeenCalledTimes(1);
 	});
 
 	it('terminates and ends the call when login readiness times out', async () => {

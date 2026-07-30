@@ -32,33 +32,29 @@ describe('classifySocketHealth', () => {
 		expect(classifySocketHealth(ddp)).toBe('reopen');
 	});
 
-	it('returns probe when pingInterval < age <= 2 * pingInterval', () => {
+	it('returns probe when age <= 2 * pingInterval', () => {
 		const ddp = makeDdp({ lastPing: now - 15000 });
 		expect(classifySocketHealth(ddp)).toBe('probe');
 	});
 
-	it('returns healthy when age <= pingInterval', () => {
+	it('returns probe for a young ping rather than trusting it outright', () => {
 		const ddp = makeDdp({ lastPing: now - 5000 });
-		expect(classifySocketHealth(ddp)).toBe('healthy');
+		expect(classifySocketHealth(ddp)).toBe('probe');
 	});
 
 	it('falls back to config.ping when pingInterval is missing', () => {
-		const ddp = makeDdp({ pingInterval: undefined, lastPing: now - 15000 });
+		// Only a 30s config.ping keeps a 21s-old ping below the reopen threshold.
+		const ddp = makeDdp({ pingInterval: undefined, config: { ping: 30000 }, lastPing: now - 21000 });
 		expect(classifySocketHealth(ddp)).toBe('probe');
 	});
 
 	it('uses 10000ms default when pingInterval and config.ping are missing', () => {
-		const ddp = makeDdp({ pingInterval: undefined, config: {}, lastPing: now - 15000 });
-		expect(classifySocketHealth(ddp)).toBe('probe');
+		const ddp = makeDdp({ pingInterval: undefined, config: {}, lastPing: now - 21000 });
+		expect(classifySocketHealth(ddp)).toBe('reopen');
 	});
 
 	it('returns reopen for a closed socket even when lastPing is fresh', () => {
 		const ddp = makeDdp({ connected: false, lastPing: now });
 		expect(classifySocketHealth(ddp)).toBe('reopen');
-	});
-
-	it('classifies by ping age when the socket is open', () => {
-		const ddp = makeDdp({ connected: true, lastPing: now - 5000 });
-		expect(classifySocketHealth(ddp)).toBe('healthy');
 	});
 });

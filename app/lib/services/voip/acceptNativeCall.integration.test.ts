@@ -280,6 +280,26 @@ describe('acceptNativeCallWithReadiness with the real patched socket', () => {
 		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
 	});
 
+	it('reopens a frozen socket whose last ping is still young', async () => {
+		// A young `lastPing` proves nothing: `onOpen` refreshes it before the handshake
+		// reply lands, so the timestamp can sit on an unusable session.
+		mockConnections[0].send.mockImplementation(() => undefined);
+		addMediaSubs(driver);
+		redux.setLoginReady();
+		const mediaSession = makeMediaSession();
+
+		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+		await jest.advanceTimersByTimeAsync(2000);
+		expect(mockConnections).toHaveLength(2);
+		mockConnections[1].onopen();
+
+		await jest.advanceTimersByTimeAsync(200);
+		await gate;
+
+		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
+	});
+
 	it('reopens without probing when the socket is older than two ping intervals', async () => {
 		backdateLastPing(driver, PING_INTERVAL * 2 + 1000);
 		addMediaSubs(driver);

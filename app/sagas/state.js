@@ -23,8 +23,10 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
 	}
-	const isReady = yield isAuthAndConnected();
-	if (!isReady) {
+	// Socket state is deliberately not checked here: a closed socket is the case
+	// the reopen ladder below exists for.
+	const { isAuthenticated } = yield select(state => state.login);
+	if (!isAuthenticated) {
 		return;
 	}
 	try {

@@ -133,7 +133,7 @@ describe('state saga — foreground stale-socket reconnect', () => {
 		expect(checkAndReopen).not.toHaveBeenCalled();
 	});
 
-	it('falls back to checkAndReopen when socket is fresh (age <= pingInterval)', async () => {
+	it('falls back to checkAndReopen when staleness is fresh (SDK without probe hooks)', async () => {
 		const ddp = makeDdp({ lastPing: Date.now() - 5000 });
 		(sdk.current as any).ddp = ddp;
 		jest.mocked(getSocketStaleness).mockReturnValue('fresh');
