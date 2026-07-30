@@ -23,14 +23,14 @@ tags:
 - extendedWaitUntil:
     visible: '.*Open your authentication app and enter the code.*'
     timeout: 5000
-- assertVisible: "Cancel"
-- assertVisible: "Verify"
+- assertVisible: 'Cancel'
+- assertVisible: 'Verify'
 
 # Click verify button with wrong TOTP to make sure it's clickable and working
 - tapOn:
     id: 'two-factor-input'
 - inputText: '000000'
-- tapOn: "Verify"
+- tapOn: 'Verify'
 - extendedWaitUntil:
     visible: '.*Invalid code.*'
     timeout: 5000
