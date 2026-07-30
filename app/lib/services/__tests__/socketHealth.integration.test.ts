@@ -2,15 +2,49 @@ import sdk from '../sdk';
 import { recoverSocket } from '../socketHealth';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { DDPDriver } = require('@rocket.chat/sdk/lib/drivers/ddp');
+const { DDPDriver } = require('@rocket.chat/sdk/lib/drivers/ddp') as {
+	DDPDriver: new (options: { host: string; logger: unknown }) => PatchedDriver;
+};
 
-const mockConnections: any[] = [];
+interface MockConnection {
+	send: jest.Mock;
+	close: jest.Mock;
+	readyState: number;
+	onopen: () => void;
+	onmessage: (event: { data: string }) => void;
+	onerror: () => void;
+	onclose: () => void;
+}
+
+interface WireFrame {
+	msg: string;
+	id?: string;
+	name?: string;
+	params?: string[];
+}
+
+interface PatchedDriver {
+	userId: string;
+	pingInterval: number;
+	reopenNow(): Promise<void>;
+	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
+	ddp: {
+		lastPing: number;
+		pingTimeout?: ReturnType<typeof setTimeout>;
+		openTimeout?: ReturnType<typeof setTimeout>;
+		open(): Promise<void>;
+		send(message: Record<string, unknown>): Promise<unknown>;
+		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
+	};
+}
+
+const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
 		const connection = {
 			send: jest.fn((data: string) => {
-				const message = JSON.parse(data);
+				const message = JSON.parse(data) as { msg: string; id?: string };
 				if (message.msg === 'connect') {
 					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
 				} else if (message.msg === 'ping') {
@@ -52,7 +86,7 @@ async function buildConnectedDriver() {
 	return driver;
 }
 
-function addMediaSubs(driver: any) {
+function addMediaSubs(driver: PatchedDriver) {
 	['media-signal', 'media-calls'].forEach((name, index) => {
 		const id = `sub-${index}`;
 		driver.ddp.subscriptions[id] = {
@@ -64,24 +98,26 @@ function addMediaSubs(driver: any) {
 	});
 }
 
-function backdateLastPing(driver: any, ageMs: number) {
+function backdateLastPing(driver: PatchedDriver, ageMs: number) {
 	driver.ddp.lastPing = Date.now() - ageMs;
 }
 
 /** Frames of a given `msg` sent over the wire on one connection. */
-function framesOn(connection: any, msg: string) {
-	return connection.send.mock.calls.map(([data]: [string]) => JSON.parse(data)).filter((message: any) => message.msg === msg);
+function framesOn(connection: MockConnection, msg: string) {
+	return connection.send.mock.calls
+		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
+		.filter(message => message.msg === msg);
 }
 
 describe('recoverSocket against the real patched socket', () => {
-	let driver: any;
+	let driver: PatchedDriver;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
 		mockConnections.length = 0;
 		driver = await buildConnectedDriver();
-		(sdk as any).current = { ddp: driver };
+		(sdk as unknown as { current: { ddp: PatchedDriver } }).current = { ddp: driver };
 	});
 
 	afterEach(() => {
