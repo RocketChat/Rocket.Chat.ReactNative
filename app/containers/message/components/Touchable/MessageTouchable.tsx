@@ -1,7 +1,7 @@
 import { A11y } from 'react-native-a11y-order';
 
 import { useTheme } from '../../../../theme';
-import Touch from './Touch';
+import Touch from '../../../Touch';
 import Message, { type TMessageProps } from '../Message/Message';
 import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from '../../hooks/useMessageAccessibilityLabel';
