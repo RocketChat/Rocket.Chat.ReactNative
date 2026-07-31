@@ -6,7 +6,7 @@ import { getThreadMessageById } from './ThreadMessage';
 const getCollection = (db: TAppDatabase) => db.get(MESSAGES_TABLE);
 
 export const getMessageById = async (messageId: string | null, tmid?: string | null) => {
-	if (!messageId || !tmid) {
+	if (!messageId) {
 		return null;
 	}
 
