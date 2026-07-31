@@ -1,16 +1,46 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..9f752df 100644
+index 19d31ae..068b61e 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -101,9 +101,25 @@ export class Socket extends EventEmitter {
+@@ -55,6 +55,7 @@ export class Socket extends EventEmitter {
+   connection?: WebSocket
+   session?: string
+   logger: ILogger
++  reopenPromise?: Promise<void>
+ 
+   /** Create a websocket handler */
+   constructor (
+@@ -82,18 +83,13 @@ export class Socket extends EventEmitter {
+   }
+ 
+   /**
+-   * Open websocket connection, with optional retry interval.
+-   * Stores connection, setting up handlers for open/close/message events.
+-   * Resumes login if given token.
++   * Create a new WebSocket, tear down any previous one, and wire up handlers.
++   * Emits 'connecting' exactly once per actual new socket.
+    */
+-  open = (ms: number = this.config.reopen) => {
+-    return new Promise(async (resolve, reject) => {
++  private createConnection = (): Promise<WebSocket> => {
++    return new Promise((resolve, reject) => {
+       let connection: WebSocket
+ 
+-      if (this.connected) {
+-        return resolve()
+-      }
+-
+       try {
+         connection = new WebSocket(this.host, null, { headers: settings.customHeaders })
+         connection.onerror = reject
+@@ -101,14 +97,53 @@ export class Socket extends EventEmitter {
          this.logger.error(err)
          return reject(err)
        }
 +      // Tear down the previous connection before replacing it.
-+      // The `this.connected` early-return above means we only reach here when the
-+      // existing socket isn't healthy, so detaching its handlers and closing it stops
-+      // a stale or still-connecting socket from later firing onClose and clobbering the
-+      // live connection.
++      // Callers only reach here when the existing socket isn't healthy, so
++      // detaching its handlers and closing it stops a stale or still-connecting
++      // socket from later firing onClose and clobbering the live connection.
 +      if (this.connection) {
 +        try {
 +          this.connection.onopen = null as any
@@ -29,7 +59,36 @@ index 19d31ae..9f752df 100644
        this.connection.onopen = this.onOpen.bind(this, resolve)
        this.emit('connecting')
      })
-@@ -125,7 +141,14 @@ export class Socket extends EventEmitter {
+   }
+ 
++  /**
++   * Open websocket connection, with optional retry interval.
++   * Stores connection, setting up handlers for open/close/message events.
++   * Resumes login if given token.
++   */
++  open = (ms: number = this.config.reopen) => {
++    return new Promise(async (resolve, reject) => {
++      if (this.connected) {
++        return resolve()
++      }
++
++      if (this.reopenPromise) {
++        return this.reopenPromise.then(() => resolve(this.connection)).catch(reject)
++      }
++
++      try {
++        await this.createConnection()
++        resolve(this.connection)
++      } catch (err) {
++        reject(err)
++      }
++    })
++  }
++
+   /** Send handshake message to confirm connection, start pinging. */
+   onOpen = async (callback: Function) => {
+     this.lastPing = Date.now()
+@@ -125,7 +160,14 @@ export class Socket extends EventEmitter {
    }
  
    /** Emit close event so it can be used for promise resolve in close() */
@@ -45,7 +104,134 @@ index 19d31ae..9f752df 100644
      this.emit('close', e)
      try {
        if (e?.code !== userDisconnectCloseCode) {
-@@ -549,7 +572,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -201,6 +243,85 @@ export class Socket extends EventEmitter {
+     }, this.config.reopen);
+   }
+ 
++  /**
++   * Force an immediate reconnect. Shared across concurrent callers so only one
++   * new WebSocket is created. Emits 'disconnected' to unblock in-flight sends,
++   * then creates the connection directly so a concurrent open() cannot tear it
++   * down. Unhandled creation errors are swallowed because cleanup already runs
++   * via the open/timeout paths.
++   */
++  reopenNow = (): Promise<void> => {
++    if (this.reopenPromise) {
++      return this.reopenPromise
++    }
++
++    this.reopenPromise = new Promise<void>(resolve => {
++      this.openTimeout && clearTimeout(this.openTimeout as any)
++      this.lastPing = 0
++      this.emit('disconnected')
++
++      let settled = false
++      const cleanup = () => {
++        if (settled) return
++        settled = true
++        this.off('open', cleanup)
++        if (timeout) clearTimeout(timeout as any)
++        delete this.reopenPromise
++        resolve()
++      }
++
++      this.once('open', cleanup)
++
++      this.createConnection().catch(() => {})
++
++      const timeout = setTimeout(() => cleanup(), 10000)
++    })
++
++    return this.reopenPromise
++  }
++
++  /**
++   * Bounded liveness check for a socket in the gray zone. Returns true only if
++   * the socket is open and the server answers the ping within the deadline.
++   */
++  probe = (timeoutMs = 2000): Promise<boolean> => {
++    return new Promise<boolean>(resolve => {
++      if (!this.connection || this.connection.readyState !== 1) {
++        return resolve(false)
++      }
++
++      const lastPingAtStart = this.lastPing
++
++      let settled = false
++      const cleanup = () => {
++        if (settled) return
++        settled = true
++        this.off('pong', onPong)
++        if (timeout) clearTimeout(timeout as any)
++      }
++
++      const onPong = () => {
++        if (this.lastPing <= lastPingAtStart) return
++        cleanup()
++        resolve(true)
++      }
++
++      this.once('pong', onPong)
++
++      const timeout = setTimeout(() => {
++        cleanup()
++        resolve(false)
++      }, timeoutMs)
++
++      try {
++        this.connection.send(JSON.stringify({ msg: 'ping' }))
++      } catch {
++        cleanup()
++        resolve(false)
++      }
++    })
++  }
++
+   /** Check if websocket connected and ready. */
+   get connected () {
+     return !!(
+@@ -254,7 +375,7 @@ export class Socket extends EventEmitter {
+         return resolve()
+       }
+       this.once(listener, (result: any) => {
+-        this.off('disconnect', reject)
++        this.off('disconnected', reject)
+         return (result.error ? reject(result.error) : resolve({ ...(/connect|ping|pong/.test(obj.msg) ? {} : { id }) , ...result }))
+       })
+     })
+@@ -447,7 +568,7 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+       ...config,
+       ...moreConfigs,
+       host: host.replace(/(^\w+:|^)\/\//, ''),
+-      timeout: 20000
++      timeout: 10000
+ 			// reopen: number
+ 			// ping: number
+ 			// close: number
+@@ -503,6 +624,22 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+     return this.ddp.checkAndReopen()
+   }
+ 
++  reopenNow = (): Promise<void> => {
++    return this.ddp.reopenNow()
++  }
++
++  probe = (timeoutMs?: number): Promise<boolean> => {
++    return this.ddp.probe(timeoutMs)
++  }
++
++  get lastPing (): number {
++    return this.ddp.lastPing
++  }
++
++  get pingInterval (): number {
++    return this.ddp.config.ping
++  }
++
+   subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
+     this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
+     return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
+@@ -549,10 +686,70 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
@@ -56,3 +242,88 @@ index 19d31ae..9f752df 100644
      ].map(event => this.subscribe(topic, `${this.userId}/${event}`, false)))
    }
  
++  /**
++   * Re-send the user's media-signal and media-calls subscriptions on the current
++   * socket and resolve when the server acks them with `ready`. This gives the app
++   * an observable readiness signal after a forced reconnect.
++   *
++   * If the subscriptions are not yet present (e.g. immediately after reopenNow),
++   * it polls the socket subscription map until they appear or the timeout expires.
++   */
++  waitForNotifyUserMediaSubs = (timeoutMs = 8000): Promise<boolean> => {
++    if (!this.userId) {
++      return Promise.resolve(false)
++    }
++    const topic = 'stream-notify-user'
++    const names = ['media-signal', 'media-calls']
++    const userId = this.userId
++    const findSubs = () => Object.keys(this.ddp.subscriptions || {})
++      .map(id => this.ddp.subscriptions[id])
++      .filter((sub: any) => (
++        sub &&
++        sub.name === topic &&
++        names.some(name => sub.params?.[0] === `${userId}/${name}`)
++      ))
++    // Go through the raw socket: the driver's subscribe() wrapper reshapes its
++    // arguments and would drop the subscription id, making the server treat the
++    // resubscribe as a brand new subscription.
++    const resubscribe = (subs: any[]) => Promise.all(
++      subs.map((sub: any) => this.ddp.subscribe(topic, sub.params, undefined, sub.id))
++    )
++      .then(() => true)
++      .catch(() => false)
++    return new Promise<boolean>(resolve => {
++      let settled = false
++      let inFlight = false
++      const finish = (value: boolean) => {
++        if (settled) return
++        settled = true
++        clearInterval(poll)
++        clearTimeout(deadline)
++        resolve(value)
++      }
++      const attempt = () => {
++        if (inFlight) return
++        const subs = findSubs()
++        const allPresent = names.every(name => subs.some((sub: any) => sub.params?.[0] === `${userId}/${name}`))
++        if (allPresent) {
++          inFlight = true
++          resubscribe(subs).then(value => {
++            inFlight = false
++            finish(value)
++          })
++        }
++      }
++      const deadline = setTimeout(() => finish(false), timeoutMs)
++      const poll = setInterval(attempt, 100)
++      attempt()
++    })
++  }
++
+   subscribeRoom = (rid: string, ...args: any[]): Promise<ISubscription[]> => {
+     const topic = 'stream-notify-room'
+     return Promise.all([
+diff --git a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
+index 591c1b9..82165c0 100644
+--- a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
++++ b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
+@@ -6,6 +6,7 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+   userId: string = ''
+   logger: ILogger = Logger
+   socket: Promise<ISocket | IDriver>
++  ddp?: any
+   config: any
+ 
+   constructor ({ logger, allPublic, rooms, integrationId, protocol = Protocols.DDP, ...config }: any) {
+@@ -16,7 +17,10 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+       //   this.socket = import(/* webpackChunkName: 'mqtt' */ '../drivers/mqtt').then(({ MQTTDriver }) => new MQTTDriver({ ...config, logger }))
+       //   break
+       case Protocols.DDP:
+-        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => new DDPDriver({ ...config, logger }))
++        this.socket = import(/* webpackChunkName: 'ddp' */ '../drivers/ddp').then(({ DDPDriver }) => {
++          this.ddp = new DDPDriver({ ...config, logger })
++          return this.ddp
++        })
+         break
+       default:
+         throw new Error(`Invalid Protocol: ${protocol}, valids: ${Object.keys(Protocols).join()}`)

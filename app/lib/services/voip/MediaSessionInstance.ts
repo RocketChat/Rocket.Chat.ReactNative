@@ -36,6 +36,7 @@ import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
+import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
 
 const mediaCallLogger = new MediaCallLogger();
 
@@ -48,7 +49,7 @@ class MediaSessionInstance {
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
-	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal): void {
+	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal, useGate = false): void {
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
 		if (
 			signal.type === 'notification' &&
@@ -57,9 +58,15 @@ class MediaSessionInstance {
 			nativeAcceptedCallId === signal.callId &&
 			call == null
 		) {
-			this.answerCall(signal.callId).catch(error => {
-				log(error);
-			});
+			if (useGate) {
+				this.acceptNativeCallWithReadiness(signal.callId).catch(error => {
+					log(error);
+				});
+			} else {
+				this.answerCall(signal.callId).catch(error => {
+					log(error);
+				});
+			}
 		}
 	}
 
@@ -71,13 +78,23 @@ class MediaSessionInstance {
 		try {
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
 			for (const signal of signals) {
-				this.instance.processSignal(signal);
+				// Sequential replay: signals depend on prior state mutations.
+				// eslint-disable-next-line no-await-in-loop
+				await this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
 			log(error);
 		}
 	}
+
+	public isInitialized(): boolean {
+		return this.instance != null;
+	}
+
+	public acceptNativeCallWithReadiness = (callId: string): Promise<void> => {
+		return runAcceptNativeCallGate(callId, this);
+	};
 
 	public async init(userId: string): Promise<void> {
 		this.reset();
@@ -94,7 +111,9 @@ class MediaSessionInstance {
 				})
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
-			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
+			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal)).catch(error => {
+				log(error);
+			});
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
 
@@ -102,13 +121,20 @@ class MediaSessionInstance {
 			throw new Error('Failed to create media session instance');
 		}
 
-		await this.applyRestStateSignals();
+		const { nativeAcceptedCallId } = useCallStore.getState();
+		if (nativeAcceptedCallId) {
+			this.acceptNativeCallWithReadiness(nativeAcceptedCallId).catch(error => {
+				log(error);
+			});
+		} else {
+			await this.applyRestStateSignals();
+		}
 
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
+		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
 			}
@@ -117,8 +143,13 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
-			this.instance.processSignal(signal);
-			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
+			try {
+				// `tryAnswerIfNativeAcceptedNotification` reads the state this signal mutates.
+				await this.instance.processSignal(signal);
+			} catch (error) {
+				log(error);
+			}
+			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal, true);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
