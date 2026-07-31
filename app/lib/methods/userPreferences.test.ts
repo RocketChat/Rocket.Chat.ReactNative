@@ -8,6 +8,20 @@ describe('UserPreferences', () => {
 		expect(userPreferences.getBool('k')).toBe(false);
 	});
 
+	it('getBool parses JSON-string stored boolean', () => {
+		userPreferences.setString('k', JSON.stringify(false));
+		expect(userPreferences.getBool('k')).toBe(false);
+		userPreferences.setString('k', JSON.stringify(true));
+		expect(userPreferences.getBool('k')).toBe(true);
+	});
+
+	it('getBool returns null for non-boolean or invalid JSON strings', () => {
+		for (const value of ['1', 'null', '{}', 'not-json']) {
+			userPreferences.setString('k', value);
+			expect(userPreferences.getBool('k')).toBeNull();
+		}
+	});
+
 	it('getBool returns null for unset key', () => {
 		expect(userPreferences.getBool('missing')).toBeNull();
 	});
