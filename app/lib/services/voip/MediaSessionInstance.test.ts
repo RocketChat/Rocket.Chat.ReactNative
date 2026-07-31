@@ -188,8 +188,8 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 
 const STREAM_NOTIFY_USER = 'stream-notify-user';
 
-function getStreamNotifyHandler(): (ddpMessage: IDDPMessage) => Promise<void> {
-	const calls = mockOnStreamData.mock.calls as unknown as [string, (m: IDDPMessage) => Promise<void>][];
+function getStreamNotifyHandler(): (ddpMessage: IDDPMessage) => void {
+	const calls = mockOnStreamData.mock.calls as unknown as [string, (m: IDDPMessage) => void][];
 	for (let i = calls.length - 1; i >= 0; i--) {
 		const [eventName, handler] = calls[i];
 		if (eventName === STREAM_NOTIFY_USER && typeof handler === 'function') {
@@ -519,7 +519,7 @@ describe('MediaSessionInstance', () => {
 			});
 			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
-			await streamHandler({
+			streamHandler({
 				msg: 'changed',
 				fields: {
 					eventName: 'uid/media-signal',
@@ -553,7 +553,7 @@ describe('MediaSessionInstance', () => {
 			});
 			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
-			await streamHandler({
+			streamHandler({
 				msg: 'changed',
 				fields: {
 					eventName: 'uid/media-signal',

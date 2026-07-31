@@ -40,6 +40,13 @@ interface IServices {
 	service: string;
 }
 
+// Reads redux rather than `ddp.loggedIn`: `close` clears `meteor.connected`, while `ddp.loggedIn` survives it.
+// Neither survives a silent background death, so callers must bound their wait.
+function isLoginReady(): boolean {
+	const state = store.getState();
+	return state.login.isAuthenticated && state.meteor.connected;
+}
+
 let connectingListener: any;
 let connectedListener: any;
 let closeListener: any;
@@ -133,22 +140,34 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		let pendingHangupsDrainArmed = false;
 
 		closeListener = sdk.current.onStreamData('close', () => {
-			// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
-			// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
-			// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
-			// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
-			unsubscribeRooms();
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', () => {
+		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
-			awaitDdpLoggedIn(5000)
-				.then(() => mediaSessionInstance.drainPendingHangups())
-				.catch(error => log(error));
+			try {
+				if (!isLoginReady()) {
+					await new Promise<void>(resolve => {
+						const unsub = store.subscribe(() => {
+							if (isLoginReady()) {
+								clearTimeout(timer);
+								unsub();
+								resolve();
+							}
+						});
+						const timer = setTimeout(() => {
+							unsub();
+							resolve();
+						}, 5000);
+					});
+				}
+				await mediaSessionInstance.drainPendingHangups();
+			} catch (error) {
+				log(error);
+			}
 		});
 
 		usersListener = sdk.current.onStreamData(
@@ -444,36 +463,6 @@ function checkAndReopen() {
 	return sdk.current.checkAndReopen();
 }
 
-/**
- * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
- * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
- * close and can read true for a stale session. Redux resets to
- * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
- * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
- */
-async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
-	const isReady = () => {
-		const s = store.getState();
-		return s.login.isAuthenticated && s.meteor.connected;
-	};
-	if (isReady()) {
-		return;
-	}
-	await new Promise<void>(resolve => {
-		const unsub = store.subscribe(() => {
-			if (isReady()) {
-				clearTimeout(timer);
-				unsub();
-				resolve();
-			}
-		});
-		const timer = setTimeout(() => {
-			unsub();
-			resolve();
-		}, timeoutMs);
-	});
-}
-
 function disconnect() {
 	const result = sdk.disconnect();
 	mediaSessionInstance.reset();
@@ -566,7 +555,6 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
-	awaitDdpLoggedIn,
 	abort,
 	connect,
 	disconnect,

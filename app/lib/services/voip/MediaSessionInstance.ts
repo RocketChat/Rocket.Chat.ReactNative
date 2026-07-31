@@ -57,11 +57,8 @@ class MediaSessionInstance {
 			nativeAcceptedCallId === signal.callId &&
 			call == null
 		) {
-			// Defer past the lib's `updatingInputTrack` re-entrancy lock held during the
-			// current `processSignal` tick — otherwise `accept()`'s state change is dropped
-			// inside the lock, mic never opens, call hangs in `waiting-for-offer` for 10s.
-			queueMicrotask(() => {
-				this.answerCall(signal.callId).catch(error => log(error));
+			this.answerCall(signal.callId).catch(error => {
+				log(error);
 			});
 		}
 	}
@@ -122,7 +119,12 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
-			await this.instance.processSignal(signal);
+			try {
+				// `tryAnswerIfNativeAcceptedNotification` reads the state this signal mutates.
+				await this.instance.processSignal(signal);
+			} catch (error) {
+				log(error);
+			}
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 

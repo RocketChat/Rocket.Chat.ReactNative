@@ -34,7 +34,7 @@ export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
 	private promises?: Promise<TSubscriptionModel[]>;
-	private loginListener?: Promise<any>;
+	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
@@ -51,8 +51,8 @@ export default class RoomSubscription {
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.loginListener = sdk.onStreamData('login', this.handleLogin);
-		this.disconnectedListener = sdk.onStreamData('close', this.handleClose);
+		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -70,13 +70,13 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub?.unsubscribe?.().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}
 		}
 		reduxStore.dispatch(clearUserTyping());
-		this.removeListener(this.loginListener);
+		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
@@ -93,34 +93,11 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleLogin = async () => {
-		if (!this.isAlive) {
-			return;
-		}
+	handleConnection = async () => {
 		try {
-			if (this.promises) {
-				const oldSubs = await this.promises;
-				oldSubs?.forEach(sub => sub?.unsubscribe?.().catch(() => {}));
-			}
-			this.promises = sdk.subscribeRoom(this.rid);
-			await this.promises;
-			if (!this.isAlive) {
-				return;
-			}
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
-			if (!this.isAlive) {
-				return;
-			}
 			this.read();
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	handleClose = () => {
-		try {
-			reduxStore.dispatch(clearUserTyping());
 		} catch (e) {
 			log(e);
 		}
