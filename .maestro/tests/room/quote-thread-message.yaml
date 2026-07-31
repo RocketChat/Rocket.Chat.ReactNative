@@ -1,0 +1,115 @@
+appId: ${APP_ID}
+name: Quote a message inside a thread
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-13
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# should create a thread with a reply
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: thread
+- tapOn:
+    id: 'room-view-messages'
+- longPressOn:
+    id: 'message-content-thread'
+- extendedWaitUntil:
+    visible:
+      text: 'Reply in thread'
+    timeout: 60000
+- tapOn:
+    text: 'Reply in thread'
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: quotable
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-quotable'
+    timeout: 60000
+
+# Reload with a clean local database. Thread replies are only written to the
+# `thread_messages` table when the thread is opened -- loading the room history does
+# not put them in `messages`. Quoting used a messages-only lookup, so after this
+# reload the reply could no longer be resolved and Quote silently did nothing.
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+      CLEAR_STATE: true
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# should open the thread
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-quotable'
+    timeout: 60000
+
+# should quote the thread reply
+- longPressOn:
+    id: 'message-content-quotable'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-actions-quote'
+    timeout: 60000
+- tapOn:
+    id: 'message-actions-quote'
+
+# should show the quote preview in the composer
+- extendedWaitUntil:
+    visible:
+      id: 'composer-quote-.*'
+    timeout: 60000
+- assertVisible:
+    id: 'composer-quote-remove-.*'
+
+# should send the message with the quote attached
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: quotedinthread
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-quotedinthread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'reply-.*-quotable'
+    timeout: 60000
