@@ -31,7 +31,7 @@ export const DeleteAction = memo(({ transX, width, actionWidth, longSwipe, onDel
 	const translateXDelete = useSharedValue(0);
 
 	const triggerDeleteAnimation = (toValue: number) => {
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
 		translateXDelete.value = withSpring(toValue, { overshootClamping: true, mass: 0.7 });
 	};
 
@@ -118,9 +118,6 @@ export const DeleteAction = memo(({ transX, width, actionWidth, longSwipe, onDel
 });
 
 const styles = StyleSheet.create({
-	// Stretches to the row it sits behind, so the row always covers it exactly. Deriving
-	// the height from a row-height constant instead double-counts whatever padding that
-	// constant already includes, and any leftover shows up as a red strip below the row.
 	actionsLeftContainer: {
 		flexDirection: 'row',
 		position: 'absolute',
