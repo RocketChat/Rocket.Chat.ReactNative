@@ -155,9 +155,14 @@ export async function triggerAction({
 		}
 
 		const { type: interactionType, ...data } = parsed;
-		const modalType = toServerModalInteractionType(interactionType ?? '');
+		if (interactionType === undefined) {
+			// A bare { success: true } response (no type field) is a valid
+			// "done, nothing more to render" signal — treat it as modal.close.
+			return ModalActions.CLOSE;
+		}
+		const modalType = toServerModalInteractionType(interactionType);
 		if (!modalType) {
-			throw new Error(`Unknown modal interaction type: ${interactionType ?? 'undefined'}`);
+			throw new Error(`Unknown modal interaction type: ${interactionType}`);
 		}
 		if (modalType === ModalActions.CLOSE) {
 			return ModalActions.CLOSE;
