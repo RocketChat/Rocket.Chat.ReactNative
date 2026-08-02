@@ -150,7 +150,7 @@ class Sdk {
 		const sdk = this.ensureInitialized();
 		try {
 			// @ts-ignore
-			return sdk.rest.get(endpoint, params, {
+			return await sdk.rest.get(endpoint, params, {
 				headers: this.headers
 			});
 		} catch (e: any) {
