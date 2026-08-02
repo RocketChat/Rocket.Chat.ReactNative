@@ -155,7 +155,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 	};
 
 	tryAgain = async (item: TUploadModel) => {
-		const { rid, baseUrl: server, user } = this.props;
+		const { rid, baseUrl: server } = this.props;
 
 		try {
 			const db = database.active;
@@ -164,7 +164,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
+			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, true);
 		} catch (e) {
 			log(e);
 		}

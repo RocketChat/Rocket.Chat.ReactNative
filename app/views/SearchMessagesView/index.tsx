@@ -131,7 +131,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string): Promise<(IMessageFromServer | TMessageModel)[]> => {
+	searchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}

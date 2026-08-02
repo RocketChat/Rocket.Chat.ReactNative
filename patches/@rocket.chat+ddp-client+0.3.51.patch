@@ -1,0 +1,165 @@
+diff --git a/node_modules/@rocket.chat/ddp-client/dist/Connection.js b/node_modules/@rocket.chat/ddp-client/dist/Connection.js
+index c6c3edf..15cd6be 100644
+--- a/node_modules/@rocket.chat/ddp-client/dist/Connection.js
++++ b/node_modules/@rocket.chat/ddp-client/dist/Connection.js
+@@ -11,6 +11,8 @@ class ConnectionImpl extends emitter_1.Emitter {
+         this.status = 'idle';
+         this.retryCount = 0;
+         this.queue = new Set();
++        this.lastPing = Date.now();
++        this.reopenInFlight = null;
+         this.ssl = url.startsWith('https') || url.startsWith('wss');
+         this.url = url.replace(/^https?:\/\//, '').replace(/^wss?:\/\//, '');
+         this.client.onDispatchMessage((message) => {
+@@ -51,7 +53,9 @@ class ConnectionImpl extends emitter_1.Emitter {
+         this.ws = ws;
+         return new Promise((resolve, reject) => {
+             ws.onopen = () => {
++                this.lastPing = Date.now();
+                 ws.onmessage = (event) => {
++                    this.lastPing = Date.now();
+                     this.client.handleMessage(String(event.data));
+                 };
+                 // The server may send an initial message which is a JSON object lacking a msg key. If so, the client should ignore it. The client does not have to wait for this message.
+@@ -91,6 +95,12 @@ class ConnectionImpl extends emitter_1.Emitter {
+                 });
+             };
+             ws.onclose = () => {
++                // Ignore close events from a socket we've already replaced.
++                // Without this, a zombie socket's late onclose clobbers the live
++                // connection's status and may trigger a spurious reconnect.
++                if (ws !== this.ws) {
++                    return;
++                }
+                 clearTimeout(this.retryOptions.retryTimer);
+                 if (this.status === 'closed') {
+                     return;
+@@ -109,11 +119,97 @@ class ConnectionImpl extends emitter_1.Emitter {
+         });
+     }
+     close() {
+-        var _a;
+         this.status = 'closed';
+-        (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close();
++        if (this.ws) {
++            // Sever all handlers before closing so the dying socket cannot
++            // deliver late messages or fire onclose on the live connection.
++            try {
++                this.ws.onopen = null;
++                this.ws.onmessage = null;
++                this.ws.onerror = null;
++                this.ws.onclose = null;
++            }
++            catch (_) {
++                // some WebSocket impls throw on null assignment — safe to ignore
++            }
++            this.ws.close();
++        }
+         this.emitStatus();
+     }
++    probe(timeoutMs = 2000) {
++        return new Promise((resolve) => {
++            if (!this.ws || this.ws.readyState !== this.ws.OPEN) {
++                resolve(false);
++                return;
++            }
++            const lastPingAtStart = this.lastPing;
++            let settled = false;
++            let off;
++            const cleanup = () => {
++                if (settled) return;
++                settled = true;
++                if (off) off();
++                clearTimeout(timer);
++            };
++            const onPong = () => {
++                if (this.lastPing <= lastPingAtStart) return;
++                cleanup();
++                resolve(true);
++            };
++            off = this.client.on('pong', onPong);
++            const timer = setTimeout(() => {
++                cleanup();
++                resolve(false);
++            }, timeoutMs);
++            try {
++                this.ws.send(JSON.stringify({ msg: 'ping' }));
++            }
++            catch (_a) {
++                cleanup();
++                resolve(false);
++            }
++        });
++    }
++    reopenNow() {
++        if (this.reopenInFlight) return this.reopenInFlight;
++        clearTimeout(this.retryOptions.retryTimer);
++        this.emit('disconnected');
++        if (this.ws) {
++            try {
++                this.ws.onopen = null;
++                this.ws.onmessage = null;
++                this.ws.onerror = null;
++                this.ws.onclose = null;
++            }
++            catch (_a) {
++                // some WebSocket impls throw on null assignment — safe to ignore
++            }
++            try {
++                this.ws.close();
++            }
++            catch (_b) {
++                // ignore — we're rebuilding anyway
++            }
++        }
++        this.status = 'disconnected';
++        const p = new Promise((resolve) => {
++            let settled = false;
++            const finish = () => {
++                if (settled) return;
++                settled = true;
++                clearTimeout(timer);
++                resolve();
++            };
++            const timer = setTimeout(finish, 10000);
++            this.connect().then(finish, finish);
++        });
++        this.reopenInFlight = p;
++        const clear = () => {
++            if (this.reopenInFlight === p) this.reopenInFlight = null;
++        };
++        p.then(clear, clear);
++        return p;
++    }
+     static create(url, webSocketImpl, client, retryOptions = { retryCount: 0, retryTime: 1000 }) {
+         return new ConnectionImpl(url, webSocketImpl, client, retryOptions);
+     }
+diff --git a/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts b/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
+index 5b312fa..fabff3e 100644
+--- a/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
++++ b/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
+@@ -21,6 +21,8 @@ export interface Connection extends Emitter<{
+     connect(): Promise<boolean>;
+     reconnect(): Promise<boolean>;
+     close(): void;
++    probe(timeoutMs?: number): Promise<boolean>;
++    reopenNow(): Promise<void>;
+ }
+ interface WebSocketConstructor {
+     new (url: string | URL, protocols?: string | string[]): WebSocket;
+@@ -43,11 +45,15 @@ export declare class ConnectionImpl extends Emitter<{
+     ws: WebSocket | undefined;
+     retryCount: number;
+     queue: Set<string>;
++    private lastPing;
++    private reopenInFlight;
+     constructor(url: string, WS: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions);
+     private emitStatus;
+     reconnect(): Promise<boolean>;
+     connect(): Promise<boolean>;
+     close(): void;
++    probe(timeoutMs?: number): Promise<boolean>;
++    reopenNow(): Promise<void>;
+     static create(url: string, webSocketImpl: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions): ConnectionImpl;
+ }
+ export {};

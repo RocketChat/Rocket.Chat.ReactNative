@@ -1,8 +1,7 @@
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import type Model from '@nozbe/watermelondb/Model';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import { getDeviceToken } from '../notifications';
-import { isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
@@ -66,18 +65,30 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		if (userId) {
 			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
+			let tempSdk: DDPSDK | undefined;
 			try {
-				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume });
+				tempSdk = await DDPSDK.createAndConnect(server);
+				if (resume) {
+					await tempSdk.account.loginWithToken(resume);
+				}
 
 				const token = getDeviceToken();
 				if (token) {
-					await sdk.del('push.token', { token });
+					const result = await tempSdk.rest.delete('/v1/push.token', { token });
+					if (result?.success !== true) {
+						log(new Error('Failed to remove push token while removing server'));
+					}
 				}
 
-				await sdk.logout();
+				await tempSdk.account.logout();
 			} catch (e) {
 				log(e);
+			} finally {
+				try {
+					tempSdk?.connection.close();
+				} catch (e) {
+					log(e);
+				}
 			}
 		}
 
@@ -106,7 +117,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 
 	try {
 		// RC 0.60.0
-		await sdk.current.logout();
+		await sdk.logout();
 	} catch (e) {
 		log(e);
 	}

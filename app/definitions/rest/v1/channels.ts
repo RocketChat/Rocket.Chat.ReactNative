@@ -71,7 +71,7 @@ export type ChannelsEndpoints = {
 		};
 	};
 	'channels.join': {
-		POST: (params: { roomId: string; joinCode: string | null }) => { channel: IServerRoom };
+		POST: (params: { roomId: string; joinCode?: string | null }) => { channel: IServerRoom; success: boolean };
 	};
 	'channels.close': {
 		POST: (params: { roomId: string }) => {};

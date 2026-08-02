@@ -244,7 +244,7 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	Accounts_AllowInvisibleStatusOption: {
-		type: 'valueAsString'
+		type: 'valueAsBoolean'
 	},
 	Canned_Responses_Enable: {
 		type: 'valueAsBoolean'

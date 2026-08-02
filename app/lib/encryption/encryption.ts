@@ -490,11 +490,15 @@ class Encryption {
 					}
 
 					const result = await fetchUsersWaitingForGroupKey(sampleIds);
-					if (!result.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
+					if (!result?.success) {
+						return;
+					}
+					const { usersWaitingForE2EKeys } = result;
+					if (!usersWaitingForE2EKeys || !Object.keys(usersWaitingForE2EKeys).length) {
 						return;
 					}
 
-					const userKeysWithRooms = await this.getSuggestedE2EEKeys(result.usersWaitingForE2EKeys);
+					const userKeysWithRooms = await this.getSuggestedE2EEKeys(usersWaitingForE2EKeys);
 
 					if (!Object.keys(userKeysWithRooms).length) {
 						return;

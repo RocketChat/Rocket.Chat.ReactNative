@@ -1,58 +1,135 @@
-import { connect, determineAuthType, disconnect } from './connect';
+import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { setUser } from '../../actions/login';
 import database from '../database';
+import { onRolesChanged } from '../methods/getRoles';
+import { STATUSES } from '../../definitions';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
 }));
 
-// Mock the isIOS helper
 jest.mock('../methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('../methods/helpers/deviceInfo'),
 	isIOS: false
 }));
 
-const mockOnStreamDataStops: jest.Mock[] = [];
-const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: any[]) => void]>(() => {
-	const stop = jest.fn();
-	mockOnStreamDataStops.push(stop);
-	return Promise.resolve({ stop });
-});
-const mockSdkConnect = jest.fn<Promise<void>, []>(() => Promise.resolve());
-const mockSdkAbort = jest.fn<void, []>();
-const mockSdkDisconnect = jest.fn<void, []>();
-const mockSdkInitialize = jest.fn<void, [string]>();
-const mockSdkCurrent = {
-	onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
-	connect: () => mockSdkConnect(),
-	abort: () => mockSdkAbort()
-};
-jest.mock('./sdk', () => ({
-	__esModule: true,
-	default: {
-		initialize: (server: string) => mockSdkInitialize(server),
-		disconnect: () => mockSdkDisconnect(),
-		get current() {
-			return mockSdkCurrent;
+// --- SDK mock ---
+// The new DDP SDK registers a single connection.on('connection', cb) listener.
+// All event-driven tests invoke getCapturedConnectionListener() to drive it.
+const mockConnectionOn = jest.fn();
+const mockConnectionConnect = jest.fn().mockResolvedValue(undefined);
+const mockConnectionProbe = jest.fn().mockResolvedValue(true);
+const mockConnectionReopenNow = jest.fn().mockResolvedValue(undefined);
+const mockSdkInitialize = jest.fn().mockResolvedValue(undefined);
+const mockSdkOnCollection = jest.fn();
+const mockSdkDisconnect = jest.fn();
+
+const mockSdkLogin = jest.fn();
+const mockAccountUser: { value: any } = { value: undefined };
+
+jest.mock('./sdk', () => {
+	const state: {
+		server: string | undefined;
+		currentEnabled: boolean;
+		connection: { on: any; connect: any; probe: any; reopenNow: any; status: string } | undefined;
+		status: string;
+	} = {
+		server: undefined,
+		currentEnabled: true,
+		connection: undefined,
+		status: 'idle'
+	};
+	const makeConnection = () => ({
+		on: (event: string, cb: any) => mockConnectionOn(event, cb),
+		connect: () => mockConnectionConnect(),
+		probe: () => mockConnectionProbe(),
+		reopenNow: () => mockConnectionReopenNow(),
+		get status() {
+			return state.status;
 		}
-	}
+	});
+	return {
+		__esModule: true,
+		default: {
+			get server() {
+				return state.server;
+			},
+			disconnect: (...args: any[]) => {
+				state.connection = undefined;
+				state.status = 'idle';
+				return mockSdkDisconnect(...args);
+			},
+			// Mirrors the real sdk.ts: initialize() yields a brand-new connection instance each
+			// call, so handlers attached by a previous connect() are discarded with the old instance.
+			initialize: (s: string) => {
+				state.server = s;
+				state.connection = makeConnection();
+				state.status = 'connecting';
+				return mockSdkInitialize(s);
+			},
+			onCollection: (...args: any[]) => mockSdkOnCollection(...args),
+			login: (...args: any[]) => mockSdkLogin(...args),
+			get current() {
+				if (!state.currentEnabled || !state.connection) return undefined;
+				return {
+					account: { user: mockAccountUser.value },
+					connection: state.connection
+				};
+			}
+		},
+		__setServer: (v: string | undefined) => {
+			state.server = v;
+		},
+		__setCurrentEnabled: (v: boolean) => {
+			state.currentEnabled = v;
+		},
+		__setConnectionStatus: (v: string) => {
+			state.status = v;
+		},
+		__getCurrentConnection: () => state.connection
+	};
+});
+
+const mockCreateAndConnect = jest.fn();
+jest.mock('@rocket.chat/ddp-client', () => ({
+	DDPSDK: { createAndConnect: (...args: unknown[]) => mockCreateAndConnect(...args) }
 }));
 
+const mockTwoFactor = jest.fn();
+jest.mock('./twoFactor', () => ({
+	twoFactor: (...args: any[]) => mockTwoFactor(...args)
+}));
+
+jest.mock('../../ee/omnichannel/actions/inquiry', () => ({
+	inquiryRequest: jest.fn().mockReturnValue({ type: 'INQUIRY_REQUEST' })
+}));
+
+const sdkMock = jest.requireMock('./sdk') as {
+	__setServer: (v: string | undefined) => void;
+	__setCurrentEnabled: (v: boolean) => void;
+	__setConnectionStatus: (v: string) => void;
+	__getCurrentConnection: () => { on: any; connect: any; probe: any; reopenNow: any; status: string } | undefined;
+};
+
+// --- Store mock ---
 type MockStoreState = {
 	meteor: { connected: boolean };
 	login: { user: unknown; isAuthenticated: boolean };
 	settings: Record<string, unknown>;
+	server?: { version: string };
 };
 const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	meteor: { connected: false },
 	login: { user: null, isAuthenticated: false },
-	settings: {}
+	settings: {},
+	server: { version: '6.0.0' }
 }));
 const mockStoreDispatch = jest.fn<unknown, [unknown]>();
-const noopUnsubscribe = () => () => {};
-const mockStoreSubscribe = jest.fn<() => void, [() => void]>(noopUnsubscribe);
+const mockStoreSubscribe = jest.fn<() => void, [() => void]>(() => () => undefined);
+
 jest.mock('../store/auxStore', () => ({
 	store: {
 		getState: () => mockStoreGetState(),
@@ -63,31 +140,43 @@ jest.mock('../store/auxStore', () => ({
 
 jest.mock('../database', () => ({
 	__esModule: true,
-	default: {
-		setActiveDB: jest.fn(),
-		active: { get: jest.fn() }
-	}
+	default: { setActiveDB: jest.fn(), active: { get: jest.fn() } }
 }));
 
-jest.mock('../methods/subscribeRooms', () => ({
-	unsubscribeRooms: jest.fn()
-}));
-
-jest.mock('../methods/getSettings', () => ({
-	getSettings: jest.fn()
-}));
-
+jest.mock('../methods/subscribeRooms', () => ({ unsubscribeRooms: jest.fn() }));
+jest.mock('../methods/getSettings', () => ({ getSettings: jest.fn().mockResolvedValue(undefined) }));
 jest.mock('../methods/helpers/events', () => ({
 	__esModule: true,
 	default: { emit: jest.fn(), on: jest.fn(), removeListener: jest.fn() }
 }));
+jest.mock('../methods/helpers/protectedFunction', () => ({ __esModule: true, default: (fn: any) => fn }));
+jest.mock('../methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../methods/setUser', () => ({ _setUser: jest.fn(), _activeUsers: { activeUsers: {} }, _setUserTimer: {} }));
+jest.mock('../methods/getRoles', () => ({ onRolesChanged: jest.fn() }));
+jest.mock('../methods/getUsersPresence', () => ({ setPresenceCap: jest.fn() }));
 
-const mockLog = jest.fn<void, unknown[]>();
-jest.mock('../methods/helpers/log', () => ({
-	__esModule: true,
-	default: (...args: unknown[]) => mockLog(...args)
+const mockHasRole = jest.fn();
+jest.mock('../methods/helpers', () => ({
+	...jest.requireActual('../methods/helpers'),
+	hasRole: (...args: any[]) => mockHasRole(...args)
 }));
 
+jest.mock('../../actions/connect', () => ({
+	connectRequest: jest.fn().mockReturnValue({ type: 'CONNECT_REQUEST' }),
+	connectSuccess: jest.fn().mockReturnValue({ type: 'CONNECT_SUCCESS' }),
+	disconnect: jest.fn().mockReturnValue({ type: 'DISCONNECT' })
+}));
+jest.mock('../../actions/login', () => ({
+	loginRequest: jest.fn().mockReturnValue({ type: 'LOGIN_REQUEST' }),
+	logout: jest.fn().mockReturnValue({ type: 'LOGOUT' }),
+	setLoginServices: jest.fn().mockReturnValue({ type: 'SET_LOGIN_SERVICES' }),
+	setUser: jest.fn().mockReturnValue({ type: 'SET_USER' })
+}));
+jest.mock('../../actions/settings', () => ({ updateSettings: jest.fn().mockReturnValue({ type: 'UPDATE_SETTINGS' }) }));
+jest.mock('../../actions/permissions', () => ({ updatePermission: jest.fn().mockReturnValue({ type: 'UPDATE_PERMISSION' }) }));
+jest.mock('../../actions/activeUsers', () => ({ setActiveUsers: jest.fn().mockReturnValue({ type: 'SET_ACTIVE_USERS' }) }));
+
+// --- Helpers ---
 const flushMicrotasks = async (): Promise<void> => {
 	for (let i = 0; i < 5; i += 1) {
 		// eslint-disable-next-line no-await-in-loop
@@ -95,23 +184,16 @@ const flushMicrotasks = async (): Promise<void> => {
 	}
 };
 
-const getHandlersByEvent = (event: string): Array<(...args: unknown[]) => void> =>
-	mockOnStreamData.mock.calls.filter(([e]) => e === event).map(([, cb]) => cb);
-
-// The drain listener is the `connected` one registered after `close`, since `close` is what arms it.
-const getPendingHangupsDrainRegistrationIndex = (): number => {
-	const closeIndex = mockOnStreamData.mock.calls.findIndex(([event]) => event === 'close');
-	const indexes = mockOnStreamData.mock.calls
-		.map(([event], index) => (event === 'connected' && index > closeIndex ? index : -1))
-		.filter(index => index !== -1);
-	if (indexes.length !== 1) {
-		throw new Error(`expected exactly one pendingHangups drain listener, found ${indexes.length}`);
-	}
-	return indexes[0];
+/** Returns the status-handler callback registered via connection.on('connection', cb). */
+const getCapturedConnectionListener = (): ((status: string) => void) => {
+	const call = mockConnectionOn.mock.calls.find(([event]) => event === 'connection');
+	if (!call) throw new Error('connection listener was never registered');
+	return call[1];
 };
 
-const getPendingHangupsDrainHandler = (): ((...args: unknown[]) => void) =>
-	mockOnStreamData.mock.calls[getPendingHangupsDrainRegistrationIndex()][1];
+/** Returns the collection handlers registered via sdk.onCollection(event, cb) for a given event. */
+const getHandlersByEvent = (event: string): Array<(ddpMessage: any) => void> =>
+	mockSdkOnCollection.mock.calls.filter(([collection]) => collection === event).map(([, cb]) => cb);
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -122,6 +204,7 @@ interface IServices {
 	service: string;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 describe('determineAuthType', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -164,7 +247,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('saml'); // Should continue to next conditions
+			expect(result).toBe('saml');
 		});
 
 		it('should not return oauth_custom when custom is false', () => {
@@ -177,7 +260,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('saml'); // Should continue to next conditions
+			expect(result).toBe('saml');
 		});
 	});
 
@@ -222,7 +305,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('not_supported'); // Should fall through to not_supported since isIOS is mocked as false
+			expect(result).toBe('not_supported');
 		});
 
 		it('should return not_supported when service is apple and name is empty but isIOS is false', () => {
@@ -235,7 +318,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('not_supported'); // Should fall through to not_supported since isIOS is mocked as false
+			expect(result).toBe('not_supported');
 		});
 	});
 
@@ -336,7 +419,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth'); // name 'github' should be used
+			expect(result).toBe('oauth');
 		});
 
 		it('should use service as authName when name is empty', () => {
@@ -349,7 +432,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth'); // service 'facebook' should be used
+			expect(result).toBe('oauth');
 		});
 
 		it('should use service as authName when name is null', () => {
@@ -362,14 +445,14 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth'); // service 'google' should be used
+			expect(result).toBe('oauth');
 		});
 	});
 
 	describe('priority order', () => {
 		it('should prioritize oauth_custom over other types', () => {
 			const services: IServices = {
-				name: 'github', // This would normally return 'oauth'
+				name: 'github',
 				custom: true,
 				showButton: true,
 				buttonLabelText: 'Custom GitHub',
@@ -377,12 +460,12 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth_custom'); // Should return oauth_custom first
+			expect(result).toBe('oauth_custom');
 		});
 
 		it('should prioritize saml over oauth', () => {
 			const services: IServices = {
-				name: 'github', // This would normally return 'oauth'
+				name: 'github',
 				custom: false,
 				showButton: true,
 				buttonLabelText: 'SAML GitHub',
@@ -390,12 +473,12 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('saml'); // Should return saml before checking for oauth
+			expect(result).toBe('saml');
 		});
 
 		it('should prioritize cas over oauth', () => {
 			const services: IServices = {
-				name: 'github', // This would normally return 'oauth'
+				name: 'github',
 				custom: false,
 				showButton: true,
 				buttonLabelText: 'CAS GitHub',
@@ -403,11 +486,12 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('cas'); // Should return cas before checking for oauth
+			expect(result).toBe('cas');
 		});
 	});
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
 describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
@@ -415,34 +499,167 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	});
 });
 
-describe('connect — pendingHangups drain on reconnect', () => {
+// ─────────────────────────────────────────────────────────────────────────────
+describe('connect — connection status handler', () => {
+	const SERVER = 'https://example.com';
+
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockOnStreamDataStops.length = 0;
-		mockStoreSubscribe.mockImplementation(noopUnsubscribe);
-		pendingHangups.clear();
+		sdkMock.__setServer(undefined);
+		sdkMock.__setConnectionStatus('idle');
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },
-			settings: {}
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('returns early without initializing when server is already active', async () => {
+		await connect({ server: SERVER });
+		mockSdkInitialize.mockClear();
+		await connect({ server: SERVER });
+		expect(mockSdkInitialize).not.toHaveBeenCalled();
+	});
+
+	it('re-initializes when sdk.server matches but the SDK never finished initializing (e.g. a prior failed connect())', async () => {
+		// sdk.server is set synchronously inside initialize(), before loadBasicAuth()/handleTwoFactorChallenge()
+		// run — a throw there leaves sdk.server pointing at this server with no live connection behind it.
+		sdkMock.__setServer(SERVER);
+		await connect({ server: SERVER });
+		expect(mockSdkInitialize).toHaveBeenCalledWith(SERVER);
+	});
+
+	it('bails out if a newer connect() call switched servers while getSettings() was in flight', async () => {
+		const getSettingsMock = jest.requireMock('../methods/getSettings').getSettings as jest.Mock;
+		let resolveSettingsA: () => void;
+		getSettingsMock.mockImplementationOnce(
+			() =>
+				new Promise<void>(resolve => {
+					resolveSettingsA = resolve;
+				})
+		);
+
+		sdkMock.__setServer(undefined);
+		const connectAPromise = connect({ server: 'https://a.example.com' });
+		await Promise.resolve(); // let connect(A) reach the getSettings() await
+
+		// Simulate connect(B) having already taken over.
+		sdkMock.__setServer('https://b.example.com');
+
+		resolveSettingsA!();
+		await connectAPromise;
+
+		// connect(A)'s continuation must not have registered a connection listener for the stale call.
+		expect(mockConnectionOn).not.toHaveBeenCalled();
+	});
+
+	it('aborts the previous connect() in-flight getSettings when a newer call supersedes it', async () => {
+		const getSettingsMock = jest.requireMock('../methods/getSettings').getSettings as jest.Mock;
+		let resolveSettingsA: () => void;
+		let capturedSignal: AbortSignal | undefined;
+		getSettingsMock.mockImplementationOnce((signal?: AbortSignal) => {
+			capturedSignal = signal;
+			return new Promise<void>(resolve => {
+				resolveSettingsA = resolve;
+			});
+		});
+
+		sdkMock.__setServer(undefined);
+		const connectAPromise = connect({ server: 'https://a.example.com' });
+		await Promise.resolve(); // let connect(A) reach the getSettings() await
+
+		// connect(B) supersedes connect(A) while getSettings(A) is still in flight.
+		// sdk.server is still 'a.example.com' here (set by connect(A)'s own initialize()) —
+		// connect(B) is what flips it to 'b.example.com' via its own initialize() call below.
+		await connect({ server: 'https://b.example.com' });
+
+		// The previous call's REST request must have been signalled to abort so it
+		// can't write server A's data into the now-active database B.
+		expect(capturedSignal?.aborted).toBe(true);
+
+		resolveSettingsA!();
+		await connectAPromise;
+	});
+
+	it('dispatches connectSuccess and loginRequest(resume) on reconnect when user has a token', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+		const connectSuccessMock = jest.requireMock('../../actions/connect').connectSuccess;
+		const loginRequestMock = jest.requireMock('../../actions/login').loginRequest;
+
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: 'auth-token-123' }, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+
+		listener('connected');
+
+		expect(connectSuccessMock).toHaveBeenCalled();
+		expect(loginRequestMock).toHaveBeenCalledWith({ resume: 'auth-token-123' }, false);
+	});
+
+	it('does not dispatch connectSuccess when socket was already marked connected', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+		const connectSuccessMock = jest.requireMock('../../actions/connect').connectSuccess;
+
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+
+		listener('connected');
+
+		expect(connectSuccessMock).not.toHaveBeenCalled();
+	});
+
+	it('does not dispatch loginRequest when user has no token', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+		const loginRequestMock = jest.requireMock('../../actions/login').loginRequest;
+
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: null }, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+
+		listener('connected');
+
+		expect(loginRequestMock).not.toHaveBeenCalled();
+	});
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+describe('connect — pendingHangups drain on reconnect', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		pendingHangups.clear();
+		// isAuthenticated + connected = true so awaitDdpLoggedIn resolves immediately
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {},
+			server: { version: '6.0.0' }
 		});
 	});
 
 	it('drains pendingHangups via mediaSessionInstance after close → connected', async () => {
 		pendingHangups.record('call-a');
-		mockStoreGetState.mockReturnValue({
-			meteor: { connected: true },
-			login: { user: null, isAuthenticated: true },
-			settings: {}
-		});
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
 
-		await connect({ server: 'https://example.com' });
-
-		const drainHandler = getPendingHangupsDrainHandler();
-		const closeHandler = getHandlersByEvent('close')[0];
-
-		closeHandler();
-		drainHandler();
+		listener('closed');
+		listener('connected');
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
@@ -469,11 +686,9 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const drainHandler = getPendingHangupsDrainHandler();
-		const closeHandler = getHandlersByEvent('close')[0];
-
-		closeHandler();
-		drainHandler();
+		const listener = getCapturedConnectionListener();
+		listener('closed');
+		listener('connected');
 		await flushMicrotasks();
 
 		// Not ready yet — subscribed but not drained.
@@ -493,50 +708,129 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 	it('does not drain when "connected" fires without a prior "close"', async () => {
 		pendingHangups.record('call-a');
-		mockStoreGetState.mockReturnValue({
-			meteor: { connected: true },
-			login: { user: null, isAuthenticated: true },
-			settings: {}
-		});
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
 
-		await connect({ server: 'https://example.com' });
-
-		const drainHandler = getPendingHangupsDrainHandler();
-
-		drainHandler();
+		listener('connected');
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
 	});
 
 	it('skips drainPendingHangups when pendingHangups is empty', async () => {
-		mockStoreGetState.mockReturnValue({
-			meteor: { connected: true },
-			login: { user: null, isAuthenticated: true },
-			settings: {}
-		});
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
 
-		await connect({ server: 'https://example.com' });
-
-		const drainHandler = getPendingHangupsDrainHandler();
-		const closeHandler = getHandlersByEvent('close')[0];
-
-		closeHandler();
-		drainHandler();
+		listener('closed');
+		listener('connected');
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
 	});
 
 	it('stops the previous pendingHangups connected listener when connect runs again', async () => {
-		await connect({ server: 'https://example.com' });
-		// Stops are pushed in registration order, so the drain listener's stop shares its registration index.
-		const firstDrainStop = mockOnStreamDataStops[getPendingHangupsDrainRegistrationIndex()];
+		// Arm the drain on the first connection
+		pendingHangups.record('call-a');
+		await connect({ server: SERVER });
+		const firstListener = getCapturedConnectionListener();
+		firstListener('closed');
 
-		await connect({ server: 'https://example.com' });
+		// Reconnect to a new server — new closure resets pendingHangupsDrainArmed to false
+		sdkMock.__setServer(undefined);
+		mockConnectionOn.mockClear();
+		await connect({ server: 'https://other.example.com' });
+		const secondListener = getCapturedConnectionListener();
+
+		// Firing 'connected' on the new connection should NOT drain (armed state was not carried over)
+		secondListener('connected');
 		await flushMicrotasks();
 
-		expect(firstDrainStop).toHaveBeenCalled();
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+});
+
+describe('connect — collection listeners register independently of connection.connect() outcome', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('registers collection listeners even when connection.connect() rejects', async () => {
+		mockConnectionConnect.mockRejectedValueOnce(new Error('socket error'));
+
+		await expect(connect({ server: SERVER })).rejects.toThrow('socket error');
+
+		expect(mockSdkOnCollection).toHaveBeenCalledWith('stream-force_logout', expect.any(Function));
+	});
+
+	it('registers collection listeners before a hung connection.connect() ever settles', async () => {
+		mockConnectionConnect.mockReturnValueOnce(new Promise(() => {}));
+
+		// Intentionally not awaited: connection.connect() never resolves/rejects.
+		connect({ server: SERVER });
+		await flushMicrotasks();
+
+		expect(mockSdkOnCollection).toHaveBeenCalledWith('stream-force_logout', expect.any(Function));
+	});
+});
+
+describe('connect — listener lifecycle across reconnects', () => {
+	it('attaches handlers to a fresh connection instance each connect, so old handlers are dropped (no leak)', async () => {
+		sdkMock.__setServer(undefined);
+		await connect({ server: 'https://a.example.com' });
+		const connectionA = sdkMock.__getCurrentConnection();
+
+		sdkMock.__setServer(undefined);
+		await connect({ server: 'https://b.example.com' });
+		const connectionB = sdkMock.__getCurrentConnection();
+
+		// Each connect() renders its connection.on('connection', …) on its own instance.
+		// Because the new SDK creates a fresh connection per connect() and disconnect() drops
+		// the previous one, connectionA (and the handlers attached to it) is unreachable after
+		// the second connect — exactly why the old `*.then(stopListener)` teardown is unnecessary.
+		expect(connectionA).toBeDefined();
+		expect(connectionB).toBeDefined();
+		expect(connectionA).not.toBe(connectionB);
+		expect(sdkMock.__getCurrentConnection()).toBe(connectionB);
+	});
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+describe('connect — rooms subscription guard reset on close', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	// Regression: a long background marks the DDP socket stale, so foregrounding triggers
+	// `recoverSocket` → `reopenNow` (socketHealth.ts), which closes the stale socket and reconnects. The rooms-list `stream-notify-user` feed only re-subscribes when the
+	// module-level guard in `subscribeRooms` is clear, and `unsubscribeRooms()` is what clears it.
+	// If the 'close' handler stops calling `unsubscribeRooms()`, the guard stays set after reconnect
+	// and the rooms list silently stops updating (subscriptions/favorites/reads).
+	it('calls unsubscribeRooms when the socket "close" fires', async () => {
+		await connect({ server: 'https://example.com' });
+
+		// connect() itself calls unsubscribeRooms() once while tearing down prior listeners; ignore it.
+		(unsubscribeRooms as jest.Mock).mockClear();
+
+		const listener = getCapturedConnectionListener();
+		listener('closed');
+
+		expect(unsubscribeRooms).toHaveBeenCalledTimes(1);
 	});
 });
 
@@ -553,7 +847,7 @@ describe('connect — stream-notify-logged updateAvatar', () => {
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
-		mockOnStreamDataStops.length = 0;
+		sdkMock.__setServer(undefined);
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },
@@ -629,3 +923,327 @@ describe('connect — stream-notify-logged updateAvatar', () => {
 });
 
 // Note: Apple authentication when isIOS is true is tested in connect.ios.test.ts
+
+// ─────────────────────────────────────────────────────────────────────────────
+describe('login', () => {
+	beforeEach(() => {
+		mockSdkLogin.mockReset();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		mockAccountUser.value = undefined;
+	});
+
+	it('throws when sdk.login result has no me', async () => {
+		mockSdkLogin.mockResolvedValue({});
+		await expect(login({ user: 'u', password: 'p' } as any)).rejects.toThrow("Couldn't fetch user data");
+	});
+
+	it('throws when sdk.current.account.user is missing', async () => {
+		mockSdkLogin.mockResolvedValue({ me: { username: 'john' } });
+		mockAccountUser.value = undefined;
+		await expect(login({ user: 'u', password: 'p' } as any)).rejects.toThrow('Login failed: no user returned');
+	});
+
+	it('returns an ILoggedUser combining account.user + me', async () => {
+		mockAccountUser.value = { id: 'u-1', token: 'tok-1' };
+		mockSdkLogin.mockResolvedValue({
+			me: { username: 'john', name: 'John D', language: 'en', emails: [{ address: 'j@x.com' }] }
+		});
+		const result = await login({ user: 'john', password: 'p' } as any);
+		expect(result).toEqual(
+			expect.objectContaining({
+				id: 'u-1',
+				token: 'tok-1',
+				username: 'john',
+				name: 'John D',
+				language: 'en'
+			})
+		);
+	});
+
+	it('reads showMessageInMainThread / enableMessageParserEarlyAdoption from me on RC < 5.0', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '4.9.0' }
+		});
+		mockAccountUser.value = { id: 'u-1', token: 'tok-1' };
+		mockSdkLogin.mockResolvedValue({
+			me: {
+				username: 'john',
+				settings: { preferences: { enableMessageParserEarlyAdoption: false, showMessageInMainThread: true } }
+			}
+		});
+		const result = await login({ user: 'john', password: 'p' } as any);
+		expect(result?.enableMessageParserEarlyAdoption).toBe(false);
+		expect(result?.showMessageInMainThread).toBe(true);
+	});
+});
+
+describe('loginTOTP', () => {
+	beforeEach(() => {
+		mockSdkLogin.mockReset();
+		mockTwoFactor.mockReset();
+		mockStoreDispatch.mockReset();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		mockAccountUser.value = { id: 'u-1', token: 'tok-1' };
+	});
+
+	it('returns the login result when no 2FA challenge is raised', async () => {
+		mockSdkLogin.mockResolvedValue({ me: { username: 'john' } });
+		const result = await loginTOTP({ user: 'john', password: 'p' } as any);
+		expect(result.username).toBe('john');
+	});
+
+	it('prompts twoFactor with details.method and retries when totp-required', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
+
+		const result = await loginTOTP({ user: 'john', password: 'p' } as any, true);
+		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false });
+		expect(result.username).toBe('john');
+	});
+
+	it('passes invalid:true when retrying after totp-invalid', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({
+				data: { error: 'totp-invalid', details: { method: 'totp', error: 'totp-invalid' } }
+			})
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '999999', twoFactorMethod: 'totp' });
+		await loginTOTP({ user: 'john', password: 'p' } as any, true);
+		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
+	it('passes invalid:true when e.data.error is totp-invalid even if details.error is absent', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({
+				// details.error is intentionally absent — only e.data.error is set
+				data: { error: 'totp-invalid', details: { method: 'totp' } }
+			})
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '777777', twoFactorMethod: 'totp' });
+		await loginTOTP({ user: 'john', password: 'p' } as any, true);
+		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
+	it('normalizes ldapPass to password on RC >= 3.9.0 before 2FA retry', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '111111', twoFactorMethod: 'totp' });
+		await loginTOTP({ username: 'john', ldapPass: 'secret-ldap' } as any, true);
+		const retryArgs = mockSdkLogin.mock.calls[1][0];
+		expect(retryArgs).toMatchObject({ user: 'john', password: 'secret-ldap', code: '111111' });
+		expect(retryArgs).not.toHaveProperty('ldapPass');
+	});
+
+	it('wraps the retry params in a totp envelope when loginEmailPassword is falsy', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })
+			.mockResolvedValueOnce({ me: { username: 'service' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '222222', twoFactorMethod: 'totp' });
+		await loginTOTP({ user: 'service', password: 'p' } as any);
+		const retryArgs = mockSdkLogin.mock.calls[1][0];
+		expect(retryArgs).toMatchObject({ totp: { login: expect.any(Object), code: '222222' } });
+	});
+
+	it('rejects when twoFactor is cancelled', async () => {
+		mockSdkLogin.mockRejectedValue({ data: { error: 'totp-required', details: { method: 'totp' } } });
+		mockTwoFactor.mockRejectedValue(new Error('cancelled'));
+		await expect(loginTOTP({ user: 'john', password: 'p' } as any, true)).rejects.toBeUndefined();
+	});
+
+	it('rejects non-2FA errors as-is', async () => {
+		mockSdkLogin.mockRejectedValue(new Error('500 server'));
+		await expect(loginTOTP({ user: 'john', password: 'p' } as any)).rejects.toThrow('500 server');
+	});
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fix 4 regression — inquiry dispatch on reconnect
+describe('connection status handler (Fix 4 regression)', () => {
+	beforeEach(() => {
+		mockConnectionOn.mockReset();
+		mockStoreDispatch.mockReset();
+		mockHasRole.mockReset();
+		sdkMock.__setServer(undefined);
+	});
+
+	it('dispatches inquiryRequest on connected when user is a livechat-agent', async () => {
+		mockHasRole.mockImplementation((r: string) => r === 'livechat-agent');
+		await connect({ server: 'https://x.com' });
+		const listener = getCapturedConnectionListener();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: 't' }, isAuthenticated: true },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		listener('connected');
+		await flushMicrotasks();
+		const actions = mockStoreDispatch.mock.calls.map(([action]) => (action as any).type);
+		expect(actions).toContain('INQUIRY_REQUEST');
+	});
+
+	it('does NOT dispatch inquiryRequest on connected when user has no livechat role', async () => {
+		mockHasRole.mockReturnValue(false);
+		await connect({ server: 'https://no-livechat.com' });
+		const listener = getCapturedConnectionListener();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: 't' }, isAuthenticated: true },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		listener('connected');
+		await flushMicrotasks();
+		const actions = mockStoreDispatch.mock.calls.map(([action]) => (action as any).type);
+		expect(actions).not.toContain('INQUIRY_REQUEST');
+	});
+});
+
+// Regression: stream-notify-all/stream-roles/stream-notify-logged handlers are wrapped in
+// protectedFunction, which only catches synchronous throws. A fieldless payload reaching an
+// async handler that destructures `ddpMessage.fields` without a guard would reject instead of
+// throw, producing an unhandled promise rejection. Each handler must bail out early instead.
+describe('connect — collection handlers guard against fieldless payloads', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('ignores a stream-notify-all message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-notify-all');
+
+		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
+	});
+
+	it('ignores a stream-roles message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-roles');
+
+		expect(() => handler({ msg: 'added' })).not.toThrow();
+		expect(onRolesChanged).not.toHaveBeenCalled();
+	});
+
+	it('ignores a stream-notify-logged message with no fields instead of throwing', async () => {
+		await connect({ server: 'https://example.com' });
+		const [handler] = getHandlersByEvent('stream-notify-logged');
+
+		await expect(handler({ msg: 'added' })).resolves.toBeUndefined();
+	});
+});
+
+describe('connect — stream-user-presence updates active users', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	const fireUserPresence = (uid: string, status: number, statusText: string) => {
+		const [handler] = getHandlersByEvent('stream-user-presence');
+		handler({
+			msg: 'changed',
+			fields: { uid, args: [[uid, status, statusText, undefined, undefined]] }
+		});
+	};
+
+	it('dispatches setActiveUsers with the presence for a user who is not the logged-in user', async () => {
+		await connect({ server: SERVER });
+		const setActiveUsersMock = jest.requireMock('../../actions/activeUsers').setActiveUsers;
+
+		fireUserPresence('other-user-1', 1, 'online');
+
+		expect(setActiveUsersMock).toHaveBeenCalledWith({
+			'other-user-1': { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
+		});
+	});
+
+	it('still dispatches setActiveUsers for the logged-in user (in addition to setUser)', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { id: 'me' }, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		await connect({ server: SERVER });
+		const setActiveUsersMock = jest.requireMock('../../actions/activeUsers').setActiveUsers;
+		const setUserMock = jest.requireMock('../../actions/login').setUser;
+
+		fireUserPresence('me', 1, 'online');
+
+		expect(setActiveUsersMock).toHaveBeenCalledWith({
+			me: { status: STATUSES[1], statusText: 'online', statusSource: undefined, statusExpiresAt: undefined }
+		});
+		expect(setUserMock).toHaveBeenCalledWith({
+			status: STATUSES[1],
+			statusText: 'online',
+			statusSource: undefined,
+			statusExpiresAt: undefined
+		});
+	});
+});
+
+describe('getWebsocketInfo', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('returns success when the probe socket connects', async () => {
+		const { getWebsocketInfo } = require('./connect');
+		mockCreateAndConnect.mockResolvedValue({ connection: { close: jest.fn() } });
+
+		const result = await getWebsocketInfo({ server: 'https://example.com' });
+
+		expect(result).toEqual({ success: true });
+		expect(mockCreateAndConnect).toHaveBeenCalledWith('https://example.com');
+	});
+
+	it('returns a disabled message when the server rejects with 400', async () => {
+		const { getWebsocketInfo } = require('./connect');
+		mockCreateAndConnect.mockRejectedValue(new Error('Error: 400 bad request'));
+
+		const result = await getWebsocketInfo({ server: 'https://example.com' });
+
+		expect(result.success).toBe(false);
+		expect(result.message).toMatch(/disabled/i);
+	});
+
+	it('falls back to the error message for non-400 failures', async () => {
+		const { getWebsocketInfo } = require('./connect');
+		mockCreateAndConnect.mockRejectedValue(new Error('boom'));
+
+		const result = await getWebsocketInfo({ server: 'https://example.com' });
+
+		expect(result.success).toBe(false);
+		expect(result.message).toBe('boom');
+	});
+});

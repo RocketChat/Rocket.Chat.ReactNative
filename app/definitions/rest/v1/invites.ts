@@ -2,13 +2,16 @@ import type { IInvite } from '../../IInvite';
 import type { IServerRoom } from '../../IRoom';
 
 export type InvitesEndpoints = {
+	findOrCreateInvite: {
+		POST: (params: { rid: string; days: number; maxUses: number }) => IInvite;
+	};
 	listInvites: {
 		GET: () => Array<IInvite>;
 	};
 	'removeInvite/:_id': {
 		DELETE: () => void;
 	};
-	'/v1/useInviteToken': {
+	useInviteToken: {
 		POST: (params: { token: string }) => {
 			room: {
 				rid: IServerRoom['_id'];
@@ -19,7 +22,7 @@ export type InvitesEndpoints = {
 			};
 		};
 	};
-	'/v1/validateInviteToken': {
+	validateInviteToken: {
 		POST: (params: { token: string }) => { valid: boolean };
 	};
 };

@@ -282,7 +282,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					rid: room.rid,
 					tmid: this.getThreadId(thread),
 					server,
-					user: { id: user.id, token: user.token },
 					altTextSupported: isAltTextSupported,
 					getMsg: ({ description }) => (isAltTextSupported ? description || msg : msg)
 				});

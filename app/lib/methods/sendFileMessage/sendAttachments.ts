@@ -1,4 +1,4 @@
-import { type IShareAttachment, type IUser } from '../../../definitions';
+import { type IShareAttachment } from '../../../definitions';
 import { sendFileMessage } from './index';
 
 const ROTATED_ORIENTATIONS = ['5', '6', '7', '8'];
@@ -8,7 +8,6 @@ export const sendAttachments = ({
 	rid,
 	tmid,
 	server,
-	user,
 	altTextSupported,
 	getMsg
 }: {
@@ -16,7 +15,6 @@ export const sendAttachments = ({
 	rid: string;
 	tmid: string | undefined;
 	server: string;
-	user: Partial<Pick<IUser, 'id' | 'token'>>;
 	altTextSupported: boolean;
 	getMsg: (attachment: IShareAttachment, index: number) => string | undefined;
 }): Promise<void[]> =>
@@ -47,8 +45,7 @@ export const sendAttachments = ({
 					width
 				},
 				tmid,
-				server,
-				user
+				server
 			);
 		})
 	);

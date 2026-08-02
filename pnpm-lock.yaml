@@ -7,6 +7,8 @@ settings:
 overrides:
   ua-parser-js: 1.0.2
   jpeg-js: 0.4.4
+  '@rocket.chat/core-typings': 8.3.2
+  '@rocket.chat/media-signaling': 1.0.0-rc.1
 
 importers:
 
@@ -81,6 +83,12 @@ importers:
       '@react-navigation/native-stack':
         specifier: ^7.17.5
         version: 7.17.5(20e22ec03db44899c27c93ee7866e802)
+      '@rocket.chat/core-typings':
+        specifier: 8.3.2
+        version: 8.3.2(@types/node@25.0.3)(typescript@5.9.3)
+      '@rocket.chat/ddp-client':
+        specifier: ^0.3.50
+        version: 0.3.51(@rocket.chat/emitter@0.32.0)(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
       '@rocket.chat/media-signaling':
         specifier: 1.0.0-rc.1
         version: 1.0.0-rc.1
@@ -90,9 +98,6 @@ importers:
       '@rocket.chat/mobile-crypto':
         specifier: RocketChat/rocket.chat-mobile-crypto#main
         version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      '@rocket.chat/sdk':
-        specifier: RocketChat/Rocket.Chat.js.SDK#mobile
-        version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f
       '@rocket.chat/ui-kit':
         specifier: ^0.39.0
         version: 0.39.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
@@ -2428,6 +2433,17 @@ packages:
   '@redux-saga/types@1.3.1':
     resolution: {integrity: sha512-YRCrJdhQLobGIQ8Cj1sta3nn6DrZDTSUnrIYhS2e5V590BmfVDleKoAquclAiKSBKWJwmuXTb+b4BL6rSHnahw==}
 
+  '@rocket.chat/api-client@0.2.56':
+    resolution: {integrity: sha512-ua6f3JRg/WZDfq9b1c0codJzg3XnbzcJxZgDfmhKLuK7vEl1HvzjjdCh1yN3ZqDoec7MZ2IdlF11KUgSRYyENQ==}
+
+  '@rocket.chat/core-typings@8.3.2':
+    resolution: {integrity: sha512-/Oxd9qrkrOBlE9oibDhDppoydYXVSSFw6cGB8uBjryWwfNzuXYJR82prHBA9G0XMqCh/p9I3qiqNJXWVgpA3Tg==}
+
+  '@rocket.chat/ddp-client@0.3.51':
+    resolution: {integrity: sha512-U2BtHpddvlsCqMZB5MegCB5M9wJ94SFD/AAXyJmxDRxhKdeZABEJ0t4FEdTGk3lePeTytnJaJkyvsEONRMI9Og==}
+    peerDependencies:
+      '@rocket.chat/emitter': '*'
+
   '@rocket.chat/emitter@0.32.0':
     resolution: {integrity: sha512-QCXNGDm5xjJPePMeP9GknMAZne5xhNmLLD/ZVVqNgOyeWdfQKddwBUqtMiWDaFCRq1bC22kNf3WQLqt89CO6fg==}
 
@@ -2449,19 +2465,30 @@ packages:
     engines: {node: 22.16.0}
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
+    resolution: {gitHosted: true, integrity: sha512-v3uaVCYlj9gGZkAZe3JWQkhlGaRyahmnagbMSKtSnl+6WuLNxaPOf0GjJKVuxBdqkXPPhr23JIihVlch3FVeCQ==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
     version: 0.4.0
     peerDependencies:
       react: '*'
       react-native: '*'
 
-  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f}
-    version: 1.3.3-mobile
-    engines: {node: '> 8.0.0', npm: '> 5.0.0'}
+  '@rocket.chat/rest-typings@7.13.7':
+    resolution: {integrity: sha512-RYxlcwCKeB4KHayKLzAvSPySQDrIVhJSfnN5hrf2eUvC37KMcHZhM0AVRTWD73ZLphKC4BC8ONxqx4eftRDZSw==}
+
+  '@rocket.chat/rest-typings@8.4.1':
+    resolution: {integrity: sha512-8QB/MiIXdOSHIJJF3eAiDTl2rActcaMgGcKMHcDnjq7jeQW4WkSMKFo/GuJi5TipnZX31wemjGmTrOJ2kkARsA==}
+
+  '@rocket.chat/ui-kit@0.38.0':
+    resolution: {integrity: sha512-meF64T8J0JcijPltxAxWFY6LH9gI7oXNHlVYxz7sTET18qrBCgGz3H8mtg8Uv9F0iCmyc3HIK44uAFT4nURi9A==}
+    peerDependencies:
+      '@rocket.chat/icons': '*'
 
   '@rocket.chat/ui-kit@0.39.0':
     resolution: {integrity: sha512-kdzZsR74DsUNpBQEKyhV8z0jaRsPe4u/VgR9tqHfevP4gQ/dx1GeDtl/LHkw/BADmqTn7nZpwEaelECKhtBNyQ==}
+    peerDependencies:
+      '@rocket.chat/icons': '*'
+
+  '@rocket.chat/ui-kit@1.0.0':
+    resolution: {integrity: sha512-NHAWtFbB1LK/09BnwCqO0XamZ9CAJgo1esz/qhqAvjGGeIF5hDSZv56iHOWE+YlOeCFM7U6IQNNLbpdd0Xf+KA==}
     peerDependencies:
       '@rocket.chat/icons': '*'
 
@@ -3122,6 +3149,14 @@ packages:
 
   ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependencies:
+      ajv: ^8.0.0
+    peerDependenciesMeta:
+      ajv:
+        optional: true
+
+  ajv-formats@3.0.1:
+    resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
     peerDependencies:
       ajv: ^8.0.0
     peerDependenciesMeta:
@@ -4607,6 +4642,10 @@ packages:
     resolution: {integrity: sha512-8rXg1ZnX7xzy2NGDVkBVaAy+lSlPNwad13BtgSlLuxfIslyt5Vg64U7tFcCt4WS1R0hvtnQybT/IyCkGZ3DpXQ==}
     engines: {node: '>=0.10.0'}
 
+  filter-obj@3.0.0:
+    resolution: {integrity: sha512-oQZM+QmVni8MsYzcq9lgTHD/qeLqaG8XaOPOW7dzuSafVxSUlH1+1ZDefj2OD9f2XsmG5lFl2Euc9NI4jgwFWg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
   finalhandler@1.1.2:
     resolution: {integrity: sha512-aAWcW57uxVNrQZqFXjITpW3sIUQmHGG3qSb9mUah9MgMC4NeWhNOlNjXEYq3HjRAvL6arUviZGGJsBg6z0zsWA==}
     engines: {node: '>= 0.8'}
@@ -5633,9 +5672,6 @@ packages:
     resolution: {integrity: sha512-B5Y16Jr9LB9dHVkh6ZevG+vAbOsNOYCX+sXvFWFu7B3Iz5mijW3zdbMyhsh8ANd2mSWBYdJgnqi+mL7/LrOPYg==}
     engines: {node: 20 || >=22}
 
-  lru-cache@4.1.5:
-    resolution: {integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==}
-
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
@@ -5653,10 +5689,6 @@ packages:
 
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
-
-  map-age-cleaner@0.1.3:
-    resolution: {integrity: sha512-bJzx6nMoP6PDLPBFmg7+xRKeFZvFboMrGlxmNj9ClvX53KrmvM5bXFXEWjbz4cz1AFn+jWJ9z/DJSz7hrs0w3w==}
-    engines: {node: '>=6'}
 
   map-or-similar@1.5.0:
     resolution: {integrity: sha512-0aF7ZmVon1igznGI4VS30yugpduQW3y3GkcgGJOp7d8x8QrizhigUxjI/m2UojsXXto+jLAH3KSz+xOJTiORjg==}
@@ -5678,10 +5710,6 @@ packages:
   media-typer@0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
-
-  mem@4.3.0:
-    resolution: {integrity: sha512-qX2bG48pTqYRVmDB37rn/6PT7LcR8T7oAX3bf99u1Tt1nzxYfxkgqDwUwolPlXweM0XzBOBFzSx4kfp7KP1s/w==}
-    engines: {node: '>=6'}
 
   memoize-one@5.2.1:
     resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
@@ -6034,14 +6062,6 @@ packages:
     resolution: {integrity: sha512-qFOyK5PjiWZd+QQIh+1jhdb9LpxTF0qs7Pm8o5QHYZ0M3vKqSqzsZaEB6oWlxZ+q2sJBMI/Ktgd2N5ZwQoRHfg==}
     engines: {node: '>= 0.4'}
 
-  p-defer@1.0.0:
-    resolution: {integrity: sha512-wB3wfAxZpk2AzOfUMJNL+d36xothRSyj8EXOa4f6GMqYDN9BJaaSISbsk+wS9abmnebVw95C2Kb5t85UmpCxuw==}
-    engines: {node: '>=4'}
-
-  p-is-promise@2.1.0:
-    resolution: {integrity: sha512-Y3W0wlRPK8ZMRbNq97l4M5otioeA5lm1z7bkNkxCka8HSPjR0xRWmpCmc9utiaLP9Jb1eD8BgeIxTW4AIF45Pg==}
-    engines: {node: '>=6'}
-
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -6253,9 +6273,6 @@ packages:
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
-  pseudomap@1.0.2:
-    resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
-
   psl@1.15.0:
     resolution: {integrity: sha512-JZd3gMVBAVQkSs6HdNZo9Sdo0LNcQeMNP3CozBJb3JYC/QUYZTnKxP+f8oWRX4rHP5EurWxqAHTSwUCjlNKa1w==}
 
@@ -6419,7 +6436,7 @@ packages:
       react-native: '*'
 
   react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224}
+    resolution: {gitHosted: true, integrity: sha512-KEHtYIXO1DkDAVoPW34xKOzho8UF6F+HZBbHQOtQ2ERPGlsVi1kY4+cOS5+thBEPNbXq/3VvH5bSEBAdZEOX0A==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224}
     version: 0.51.0
     peerDependencies:
       react: '*'
@@ -6437,7 +6454,7 @@ packages:
       react-native: '*'
 
   react-native-katex@https://codeload.github.com/RocketChat/react-native-katex/tar.gz/37e579804fe238732d8a4b06dec073610ab062b1:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-katex/tar.gz/37e579804fe238732d8a4b06dec073610ab062b1}
+    resolution: {gitHosted: true, integrity: sha512-ovD0cOy8/Ef2F0kmYF7XfMwPje94Fu+q6gO9ffiJbEPGj5ivGeshiTFGoWiPFxvqtlvujBCVOPyY323Apt8hGQ==, tarball: https://codeload.github.com/RocketChat/react-native-katex/tar.gz/37e579804fe238732d8a4b06dec073610ab062b1}
     version: 1.3.0
     peerDependencies:
       react: '>=16'
@@ -6995,6 +7012,10 @@ packages:
     resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}
     engines: {node: '>=6'}
 
+  split-on-first@3.0.0:
+    resolution: {integrity: sha512-qxQJTx2ryR0Dw0ITYyekNQWpz6f8dGd7vffGNflQQ3Iqj9NJ6qiZ7ELpZsJ/QBhIVAiDfXdag3+Gp8RvWa62AA==}
+    engines: {node: '>=12'}
+
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
@@ -7260,9 +7281,6 @@ packages:
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
-  tiny-events@1.0.1:
-    resolution: {integrity: sha512-QuhRLBsUWwrj+7mVvffHWmtHmMjt4GihlCN8/WucyHBqDINW9n9K5xsdfK3MdIeJIHRlmI4zI6izU1jbD3kn6Q==}
-
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
@@ -7479,9 +7497,6 @@ packages:
   unique-string@2.0.0:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}
     engines: {node: '>=8'}
-
-  universal-websocket-client@1.0.3:
-    resolution: {integrity: sha512-ZQF2hSasp4IM7Y3E+IAkA40c6kclsfhpligALvnuecEnU1dTJQZ5XlgXWLt3C8+uizDw5x48kCMBDPnLg/EVzA==}
 
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
@@ -7771,9 +7786,6 @@ packages:
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
-
-  yallist@2.1.2:
-    resolution: {integrity: sha512-ncTzHV7NvsQZkYe1DW7cbDLm0YpzHmZF5r/iyP3ZnQtMiJ+pjzisCiMNI+Sj+xQF5pXhSHxSB3uDbsBTzY/c2A==}
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -10444,6 +10456,42 @@ snapshots:
 
   '@redux-saga/types@1.3.1': {}
 
+  '@rocket.chat/api-client@0.2.56(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
+    dependencies:
+      '@rocket.chat/core-typings': 8.3.2(@types/node@25.0.3)(typescript@5.9.3)
+      '@rocket.chat/rest-typings': 8.4.1(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+      filter-obj: 3.0.0
+      query-string: 7.1.3
+      split-on-first: 3.0.0
+      strict-uri-encode: 2.0.0
+    transitivePeerDependencies:
+      - '@rocket.chat/icons'
+      - '@types/node'
+      - typescript
+
+  '@rocket.chat/core-typings@8.3.2(@types/node@25.0.3)(typescript@5.9.3)':
+    dependencies:
+      '@rocket.chat/icons': 0.47.0
+      '@rocket.chat/message-parser': 0.31.36
+      '@rocket.chat/ui-kit': 1.0.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+      typia: 9.7.2(@types/node@25.0.3)(typescript@5.9.3)
+      zod: 4.3.6
+    transitivePeerDependencies:
+      - '@types/node'
+      - typescript
+
+  '@rocket.chat/ddp-client@0.3.51(@rocket.chat/emitter@0.32.0)(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
+    dependencies:
+      '@rocket.chat/api-client': 0.2.56(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+      '@rocket.chat/core-typings': 8.3.2(@types/node@25.0.3)(typescript@5.9.3)
+      '@rocket.chat/emitter': 0.32.0
+      '@rocket.chat/media-signaling': 1.0.0-rc.1
+      '@rocket.chat/rest-typings': 7.13.7(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@rocket.chat/icons'
+      - '@types/node'
+      - typescript
+
   '@rocket.chat/emitter@0.32.0': {}
 
   '@rocket.chat/eslint-config@0.4.0(eslint-plugin-import@2.32.0)(eslint@8.57.1)':
@@ -10467,18 +10515,47 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@5.9.3))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
 
-  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f':
+  '@rocket.chat/rest-typings@7.13.7(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
     dependencies:
-      js-sha256: 0.9.0
-      lru-cache: 4.1.5
-      mem: 4.3.0
-      tiny-events: 1.0.1
-      universal-websocket-client: 1.0.3
+      '@rocket.chat/core-typings': 8.3.2(@types/node@25.0.3)(typescript@5.9.3)
+      '@rocket.chat/message-parser': 0.31.36
+      '@rocket.chat/ui-kit': 0.38.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+      ajv: 8.18.0
+      ajv-formats: 3.0.1(ajv@8.18.0)
     transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
+      - '@rocket.chat/icons'
+      - '@types/node'
+      - typescript
+
+  '@rocket.chat/rest-typings@8.4.1(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
+    dependencies:
+      '@rocket.chat/core-typings': 8.3.2(@types/node@25.0.3)(typescript@5.9.3)
+      '@rocket.chat/message-parser': 0.31.36
+      '@rocket.chat/ui-kit': 1.0.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)
+      ajv: 8.18.0
+      ajv-formats: 3.0.1(ajv@8.18.0)
+    transitivePeerDependencies:
+      - '@rocket.chat/icons'
+      - '@types/node'
+      - typescript
+
+  '@rocket.chat/ui-kit@0.38.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
+    dependencies:
+      '@rocket.chat/icons': 0.47.0
+      typia: 9.7.2(@types/node@25.0.3)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - typescript
 
   '@rocket.chat/ui-kit@0.39.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
+    dependencies:
+      '@rocket.chat/icons': 0.47.0
+      typia: 9.7.2(@types/node@25.0.3)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - typescript
+
+  '@rocket.chat/ui-kit@1.0.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@5.9.3)':
     dependencies:
       '@rocket.chat/icons': 0.47.0
       typia: 9.7.2(@types/node@25.0.3)(typescript@5.9.3)
@@ -11209,6 +11286,10 @@ snapshots:
   agent-base@7.1.4: {}
 
   ajv-formats@2.1.1(ajv@8.18.0):
+    optionalDependencies:
+      ajv: 8.18.0
+
+  ajv-formats@3.0.1(ajv@8.18.0):
     optionalDependencies:
       ajv: 8.18.0
 
@@ -12878,6 +12959,8 @@ snapshots:
 
   filter-obj@1.1.0: {}
 
+  filter-obj@3.0.0: {}
+
   finalhandler@1.1.2:
     dependencies:
       debug: 2.6.9
@@ -14186,11 +14269,6 @@ snapshots:
 
   lru-cache@11.2.4: {}
 
-  lru-cache@4.1.5:
-    dependencies:
-      pseudomap: 1.0.2
-      yallist: 2.1.2
-
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
@@ -14209,10 +14287,6 @@ snapshots:
     dependencies:
       tmpl: 1.0.5
 
-  map-age-cleaner@0.1.3:
-    dependencies:
-      p-defer: 1.0.0
-
   map-or-similar@1.5.0: {}
 
   marky@1.3.0: {}
@@ -14229,12 +14303,6 @@ snapshots:
   mdn-data@2.0.14: {}
 
   media-typer@0.3.0: {}
-
-  mem@4.3.0:
-    dependencies:
-      map-age-cleaner: 0.1.3
-      mimic-fn: 2.1.0
-      p-is-promise: 2.1.0
 
   memoize-one@5.2.1: {}
 
@@ -14687,10 +14755,6 @@ snapshots:
       object-keys: 1.1.1
       safe-push-apply: 1.0.0
 
-  p-defer@1.0.0: {}
-
-  p-is-promise@2.1.0: {}
-
   p-limit@2.3.0:
     dependencies:
       p-try: 2.2.0
@@ -14907,8 +14971,6 @@ snapshots:
       long: 5.3.2
 
   proxy-from-env@1.1.0: {}
-
-  pseudomap@1.0.2: {}
 
   psl@1.15.0:
     dependencies:
@@ -15744,6 +15806,8 @@ snapshots:
 
   split-on-first@1.1.0: {}
 
+  split-on-first@3.0.0: {}
+
   sprintf-js@1.0.3: {}
 
   sql-escape-string@1.1.0: {}
@@ -16064,8 +16128,6 @@ snapshots:
 
   through@2.3.8: {}
 
-  tiny-events@1.0.1: {}
-
   tiny-invariant@1.3.3: {}
 
   tinyglobby@0.2.15:
@@ -16267,13 +16329,6 @@ snapshots:
   unique-string@2.0.0:
     dependencies:
       crypto-random-string: 2.0.0
-
-  universal-websocket-client@1.0.3:
-    dependencies:
-      ws: 8.18.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
 
   universalify@0.1.2: {}
 
@@ -16579,8 +16634,6 @@ snapshots:
   y18n@4.0.3: {}
 
   y18n@5.0.8: {}
-
-  yallist@2.1.2: {}
 
   yallist@3.1.1: {}
 

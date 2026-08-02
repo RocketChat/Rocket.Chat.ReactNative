@@ -1,6 +1,4 @@
 import log from '../../methods/helpers/log';
-import { onAbort } from '../../methods/helpers/onAbort';
-import sdk from '../sdk';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';
 import { terminateNativeCall } from './terminateNativeCall';
@@ -13,33 +11,7 @@ export interface NativeCallMediaSession {
 	isInitialized(): boolean;
 }
 
-/** The slice of the patched DDP driver the accept path reads: Media Signal subscription readiness. */
-interface MediaSignalDdp {
-	waitForNotifyUserMediaSubs(timeoutMs: number): Promise<boolean>;
-}
-
 const activeGates = new Map<string, AbortController>();
-
-async function waitForMediaSignalSubs(ddp: MediaSignalDdp, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
-	if (typeof ddp.waitForNotifyUserMediaSubs !== 'function') {
-		return false;
-	}
-	if (abortSignal?.aborted) {
-		return false;
-	}
-
-	const ready = ddp.waitForNotifyUserMediaSubs(timeoutMs);
-	const aborted = new Promise<boolean>(resolve => {
-		onAbort(abortSignal, () => resolve(false));
-	});
-
-	try {
-		return await Promise.race([ready, aborted]);
-	} catch (error) {
-		log(error);
-		return false;
-	}
-}
 
 function handleFailure(callId: string, mediaSession: NativeCallMediaSession): void {
 	terminateNativeCall(callId);
@@ -74,21 +46,16 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			return;
 		}
 
-		const ddp = sdk.current?.ddp as MediaSignalDdp | undefined;
-		if (!ddp) {
-			return handleFailure(callId, mediaSession);
-		}
-
-		const [loginReady, mediaSubsReady] = await Promise.all([
-			waitForLoginReady(8000, controller.signal),
-			waitForMediaSignalSubs(ddp, 8000, controller.signal)
-		]);
+		// Media-signal/media-calls subscriptions are established with the user's
+		// login (subscribeNotifyUser in subscribeRooms), so login readiness is
+		// the only media-readiness gate needed here.
+		const loginReady = await waitForLoginReady(8000, controller.signal);
 
 		if (controller.signal.aborted) {
 			return;
 		}
 
-		if (!loginReady || !mediaSubsReady || !mediaSession.isInitialized()) {
+		if (!loginReady || !mediaSession.isInitialized()) {
 			return handleFailure(callId, mediaSession);
 		}
 

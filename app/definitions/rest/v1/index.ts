@@ -1,3 +1,4 @@
+import { type AuthEndpoints } from './auth';
 import { type ChannelsEndpoints } from './channels';
 import { type ChatEndpoints } from './chat';
 import { type CustomUserStatusEndpoints } from './customUserStatus';
@@ -20,9 +21,11 @@ import { type CommandsEndpoints } from './commands';
 import { type PushEndpoints } from './push';
 import { type DirectoryEndpoint } from './directory';
 import { type AutoTranslateEndpoints } from './autotranslate';
+import { type MediaCallsEndpoints } from './mediaCalls';
 import { type ModerationEndpoints } from './moderation';
 
-export type Endpoints = ChannelsEndpoints &
+export type Endpoints = AuthEndpoints &
+	ChannelsEndpoints &
 	ChatEndpoints &
 	CustomUserStatusEndpoints &
 	DmEndpoints &
@@ -30,6 +33,7 @@ export type Endpoints = ChannelsEndpoints &
 	GroupsEndpoints &
 	ImEndpoints &
 	InvitesEndpoints &
+	MediaCallsEndpoints &
 	OmnichannelEndpoints &
 	PermissionsEndpoints &
 	RolesEndpoints &

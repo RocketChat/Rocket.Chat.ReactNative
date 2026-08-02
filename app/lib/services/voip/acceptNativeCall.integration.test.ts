@@ -5,7 +5,6 @@ import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { initStore } from '../../store/auxStore';
 import { recoverSocket } from '../socketHealth';
-import sdk from '../sdk';
 import type { IApplicationState } from '../../../definitions';
 
 jest.mock('./terminateNativeCall', () => ({
@@ -20,11 +19,6 @@ jest.mock('./useCallStore', () => ({
 
 jest.mock('../socketHealth', () => ({
 	recoverSocket: jest.fn()
-}));
-
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: { current: undefined }
 }));
 
 jest.mock('../../methods/helpers/log', () => ({
@@ -52,22 +46,6 @@ function makeMediaSession(): IMediaSession {
 		answerCall: jest.fn<Promise<void>, [string]>(() => Promise.resolve()),
 		endCall: jest.fn<void, [string]>(),
 		isInitialized: jest.fn<boolean, []>(() => true)
-	};
-}
-
-/** Media Signal subs that ack `delayMs` after the gate starts waiting. */
-function mediaSubsAckAfter(delayMs: number) {
-	return {
-		waitForNotifyUserMediaSubs: jest.fn(() => new Promise<boolean>(resolve => setTimeout(() => resolve(true), delayMs)))
-	};
-}
-
-/** Media Signal subs that never ack: the wait ends on its own timeout. */
-function mediaSubsNeverAck() {
-	return {
-		waitForNotifyUserMediaSubs: jest.fn(
-			(timeoutMs: number) => new Promise<boolean>(resolve => setTimeout(() => resolve(false), timeoutMs))
-		)
 	};
 }
 
@@ -105,7 +83,6 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 		initStore(redux.store);
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 		mockRecoverSocket.mockResolvedValue('reopened');
-		(sdk as any).current = { ddp: mediaSubsAckAfter(100) };
 	});
 
 	afterEach(() => {
@@ -148,14 +125,13 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		(sdk as any).current = { ddp: mediaSubsNeverAck() };
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		// Login never authenticates and the media subs never ack.
+		// Login never authenticates, so the readiness wait times out.
 		await jest.advanceTimersByTimeAsync(READINESS_TIMEOUT);
 		await gate;
 

@@ -143,7 +143,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -667,7 +667,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -1191,7 +1191,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -1702,7 +1702,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -2246,7 +2246,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -2754,7 +2754,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -3262,7 +3262,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -3770,7 +3770,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -4278,7 +4278,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -4806,7 +4806,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -5317,7 +5317,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
@@ -5828,7 +5828,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   [
                     {
                       "headers": {
-                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                       },
                       "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },

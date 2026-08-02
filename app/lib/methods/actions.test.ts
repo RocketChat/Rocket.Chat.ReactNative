@@ -21,15 +21,11 @@ jest.mock('../navigation/appNavigation', () => ({
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		current: {
-			currentLogin: {
-				userId: 'user-id',
-				authToken: 'auth-token'
-			},
-			client: {
-				host: 'https://chat.example.com'
-			}
-		}
+		currentLogin: {
+			userId: 'user-id',
+			authToken: 'auth-token'
+		},
+		server: 'https://chat.example.com'
 	}
 }));
 
@@ -106,11 +102,13 @@ describe('actions', () => {
 				expect.objectContaining({
 					method: 'POST',
 					headers: expect.objectContaining({
-						'X-Auth-Token': 'auth-token',
-						'X-User-Id': 'user-id'
+						'Content-Type': 'application/json'
 					})
 				})
 			);
+			const headersArg = mockedFetch.mock.calls[0][1]?.headers as Record<string, string>;
+			expect(headersArg['X-Auth-Token']).toBeUndefined();
+			expect(headersArg['X-User-Id']).toBeUndefined();
 		});
 
 		it('handles modal.update response', async () => {

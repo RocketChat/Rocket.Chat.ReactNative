@@ -6,7 +6,8 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		get: jest.fn()
+		get: jest.fn(),
+		subscribeRoom: jest.fn(() => Promise.resolve([]))
 	}
 }));
 
@@ -50,7 +51,8 @@ const missedMessage = {
 
 const syncMessagesResponse = (
 	updated: unknown[]
-): { result: { updated: unknown[]; deleted: unknown[]; cursor: { next: number | null } } } => ({
+): { success: true; result: { updated: unknown[]; deleted: unknown[]; cursor: { next: number | null } } } => ({
+	success: true,
 	result: { updated, deleted: [], cursor: { next: null } }
 });
 
@@ -68,7 +70,7 @@ describe('RoomSubscription resume sync', () => {
 		await new RoomSubscription(RID).handleConnection();
 
 		expect(mockedSdkGet).toHaveBeenCalledWith(
-			'chat.syncMessages',
+			'/v1/chat.syncMessages',
 			expect.objectContaining({ roomId: RID, type: 'UPDATED', next: persistedCursor.getTime() })
 		);
 		expect(mockedUpdateMessages).toHaveBeenCalledWith(

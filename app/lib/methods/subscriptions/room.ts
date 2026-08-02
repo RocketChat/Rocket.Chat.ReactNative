@@ -18,13 +18,12 @@ import { Encryption } from '../../encryption';
 import {
 	type IMessage,
 	type TMessageModel,
-	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel,
 	type IDeleteMessageBulkParams
 } from '../../../definitions';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
-import sdk from '../../services/sdk';
+import sdk, { type DDPSubscription } from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
@@ -32,9 +31,9 @@ import markMessagesRead from '../helpers/markMessagesRead';
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private promises?: Promise<TSubscriptionModel[]>;
-	private connectedListener?: Promise<any>;
-	private disconnectedListener?: Promise<any>;
+	private promises?: Promise<DDPSubscription[]>;
+	private connectionStatusListener?: () => void;
+	private loginListener?: () => void;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
 
@@ -50,8 +49,12 @@ export default class RoomSubscription {
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.connectionStatusListener = sdk.onConnectionStatus(status => {
+			if (['disconnected', 'closed'].includes(status)) {
+				this.handleClose();
+			}
+		});
+		this.loginListener = sdk.onLogin(this.handleConnection);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -68,14 +71,14 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.stop?.());
 			} catch (e) {
 				// do nothing
 			}
 		}
 		reduxStore.dispatch(clearUserTyping());
-		this.removeListener(this.connectedListener);
-		this.removeListener(this.disconnectedListener);
+		this.connectionStatusListener?.();
+		this.loginListener?.();
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
 	};
@@ -92,10 +95,33 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = async () => {
+		if (!this.isAlive) {
+			return;
+		}
 		try {
+			if (this.promises) {
+				const oldSubs = await this.promises;
+				oldSubs?.forEach(sub => sub?.stop?.());
+			}
+			this.promises = sdk.subscribeRoom(this.rid);
+			await this.promises;
+			if (!this.isAlive) {
+				return;
+			}
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
+			if (!this.isAlive) {
+				return;
+			}
 			this.read();
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	handleClose = () => {
+		try {
+			reduxStore.dispatch(clearUserTyping());
 		} catch (e) {
 			log(e);
 		}

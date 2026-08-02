@@ -31,7 +31,6 @@ import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
 
@@ -63,7 +62,6 @@ export const MessageComposer = ({
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
-	const user = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
 	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
@@ -134,7 +132,6 @@ export const MessageComposer = ({
 					rid,
 					tmid,
 					server,
-					user: { id: user.id, token: user.token },
 					altTextSupported,
 					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
 				});

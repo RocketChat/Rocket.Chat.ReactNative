@@ -96,7 +96,7 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
 		expect(mockedSdkGet).toHaveBeenNthCalledWith(
 			2,
-			'channels.history',
+			'/v1/channels.history',
 			expect.objectContaining({
 				roomId: 'ROOM_ID',
 				latest: firstBatch[firstBatch.length - 1].ts

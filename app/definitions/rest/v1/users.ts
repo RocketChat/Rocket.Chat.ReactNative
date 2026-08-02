@@ -1,6 +1,8 @@
 import { type IAvatarSuggestion, type IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
 import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
+import type { TUserStatus } from '../../TUserStatus';
+import type { TStatusSource } from '../../TStatusSource';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -58,7 +60,7 @@ export type UsersEndpoints = {
 		POST: (params: { userId: string }) => {};
 	};
 	'users.setAvatar': {
-		POST: (params: { avatarUrl: string }) => { success: boolean };
+		POST: (params: { avatarUrl: string; userId?: string }) => { success: boolean };
 	};
 	'users.removeOtherTokens': {
 		POST: (params: { userId: string }) => {};
@@ -66,6 +68,23 @@ export type UsersEndpoints = {
 	'users.getPreferences': {
 		GET: (params: { userId: IUser['_id'] }) => {
 			preferences: INotificationPreferences;
+			success: boolean;
+		};
+	};
+	'users.presence': {
+		GET: (params?: { ids?: string; from?: string }) => {
+			users: {
+				_id: string;
+				name: string;
+				username: string;
+				status: TUserStatus;
+				utcOffset: number;
+				statusText?: string;
+				avatarETag?: string;
+				statusExpiresAt?: string;
+				statusSource?: TStatusSource;
+			}[];
+			full: boolean;
 			success: boolean;
 		};
 	};

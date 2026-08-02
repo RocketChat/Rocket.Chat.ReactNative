@@ -1,6 +1,6 @@
 import log from '../../../../lib/methods/helpers/log';
 import { store } from '../../../../lib/store/auxStore';
-import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
+import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate } from '../../actions/inquiry';
 import sdk from '../../../../lib/services/sdk';
 import { type IOmnichannelRoom } from '../../../../definitions';
 import { hasRole } from '../../../../lib/methods/helpers';
@@ -22,15 +22,16 @@ interface IDdpMessage {
 
 const removeListener = (listener: any) => listener.stop();
 
-let connectedListener: any;
 let queueListener: any;
+let departmentListeners: any[] = [];
+let activeGeneration = 0;
 
 const streamTopic = 'stream-livechat-inquiry-queue-observer';
 
 export default function subscribeInquiry() {
-	const handleConnection = () => {
-		store.dispatch(inquiryRequest());
-	};
+	const generation = ++activeGeneration;
+	let stopped = false;
+	const isStale = () => stopped || generation !== activeGeneration;
 
 	const handleQueueMessageReceived = (ddpMessage: IDdpMessage) => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
@@ -62,17 +63,21 @@ export default function subscribeInquiry() {
 	};
 
 	const stop = () => {
-		if (connectedListener) {
-			connectedListener.then(removeListener);
-			connectedListener = false;
-		}
+		stopped = true;
 		if (queueListener) {
 			queueListener.then(removeListener);
 			queueListener = false;
 		}
+		departmentListeners.forEach(listener => {
+			try {
+				removeListener(listener);
+			} catch (e) {
+				log(e);
+			}
+		});
+		departmentListeners = [];
 	};
 
-	connectedListener = sdk.onStreamData('connected', handleConnection);
 	queueListener = sdk.onStreamData(streamTopic, handleQueueMessageReceived);
 
 	try {
@@ -82,27 +87,36 @@ export default function subscribeInquiry() {
 			throw new Error('inquiry: @subscribeInquiry user.id not found');
 		}
 
-		getAgentDepartments(user.id).then(result => {
-			if (result.success) {
-				const { departments } = result;
+		getAgentDepartments(user.id)
+			.then(result => {
+				if (isStale()) return;
+				if (result.success) {
+					const { departments } = result;
 
-				if (!departments.length || hasRole('livechat-manager')) {
-					sdk.subscribe(streamTopic, 'public').catch((e: unknown) => console.log(e));
+					const trackSubscription = (sub: ReturnType<typeof sdk.subscribe>) => {
+						if (sub) {
+							departmentListeners.push(sub);
+						}
+					};
+
+					if (!departments?.length || hasRole('livechat-manager')) {
+						trackSubscription(sdk.subscribe(streamTopic, 'public'));
+					}
+
+					const departmentIds = departments?.map(({ departmentId }) => departmentId) || [];
+					departmentIds.forEach((departmentId: string) => {
+						// subscribe to all departments of the agent
+						trackSubscription(sdk.subscribe(streamTopic, `department/${departmentId}`));
+					});
 				}
-
-				const departmentIds = departments.map(({ departmentId }) => departmentId);
-				departmentIds.forEach(departmentId => {
-					// subscribe to all departments of the agent
-					sdk.subscribe(streamTopic, `department/${departmentId}`).catch((e: unknown) => console.log(e));
-				});
-			}
-		});
+			})
+			.catch((e: unknown) => log(e));
 
 		return {
 			stop: () => stop()
 		};
 	} catch (e) {
 		log(e);
-		return Promise.reject();
+		return Promise.reject(e instanceof Error ? e : new Error('subscribeInquiry failed'));
 	}
 }

@@ -6,7 +6,8 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		get: jest.fn()
+		get: jest.fn(),
+		subscribeRoom: jest.fn(() => Promise.resolve([]))
 	}
 }));
 
@@ -74,6 +75,7 @@ const makeSubscription = (lastOpen: Date | null) => {
 const respondFromServer = () =>
 	mockedSdkGet.mockImplementation(((_endpoint: string, params: { next?: number; type?: string }) =>
 		Promise.resolve({
+			success: true,
 			result: {
 				updated:
 					params.type === 'UPDATED' && typeof params.next === 'number' && MISSED_SERVER_UPDATED_AT.getTime() >= params.next

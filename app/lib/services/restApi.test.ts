@@ -1,10 +1,11 @@
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 
-import { mediaCallsStateSignals } from './restApi';
+import { findOrCreateInvite, mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
+const mockSdkDelete = jest.fn();
 let mockSdkCurrent: unknown = {};
 
 jest.mock('./sdk', () => ({
@@ -12,6 +13,7 @@ jest.mock('./sdk', () => ({
 	default: {
 		get: (...args: unknown[]) => mockSdkGet(...args),
 		post: (...args: unknown[]) => mockSdkPost(...args),
+		delete: (...args: unknown[]) => mockSdkDelete(...args),
 		get current() {
 			return mockSdkCurrent;
 		}
@@ -83,7 +85,7 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-contract-id-123');
 
-		expect(mockSdkGet).toHaveBeenCalledWith('media-calls.stateSignals', { contractId: 'device-contract-id-123' });
+		expect(mockSdkGet).toHaveBeenCalledWith('/v1/media-calls.stateSignals', { contractId: 'device-contract-id-123' });
 		expect(result).toEqual({ signals: [], success: true });
 	});
 
@@ -96,8 +98,9 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.signals).toHaveLength(2);
 		expect(result.success).toBe(true);
+		if (!result.success) return;
+		expect(result.signals).toHaveLength(2);
 	});
 
 	it('returns empty signals and success false when sdk.get throws', async () => {
@@ -105,8 +108,7 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.signals).toEqual([]);
-		expect(result.success).toBe(false);
+		expect(result).toEqual({ signals: [], success: false });
 	});
 
 	it('returns empty signals and success false when sdk.get returns an error response', async () => {
@@ -114,8 +116,31 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.signals).toEqual([]);
-		expect(result.success).toBe(false);
+		expect(result).toEqual({ signals: [], success: false });
+	});
+});
+
+describe('findOrCreateInvite', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('returns an invite with a url field', async () => {
+		mockSdkPost.mockResolvedValueOnce({
+			success: true,
+			_id: 'inv1',
+			days: 1,
+			maxUses: 0,
+			rid: 'room1',
+			url: 'https://example.com/invite/abc'
+		});
+
+		const invite = await findOrCreateInvite({ rid: 'room1', days: 1, maxUses: 0 });
+
+		expect(mockSdkPost).toHaveBeenCalledWith('/v1/findOrCreateInvite', { rid: 'room1', days: 1, maxUses: 0 });
+		expect(invite.success).toBe(true);
+		if (!invite.success) return;
+		expect(invite.url).toBe('https://example.com/invite/abc');
 	});
 });
 
@@ -164,7 +189,7 @@ describe('registerPushToken', () => {
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id',
 				value: 'apns-token',
@@ -185,7 +210,7 @@ describe('registerPushToken', () => {
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id',
 				value: 'fcm-token',
@@ -216,7 +241,7 @@ describe('registerPushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id',
 				value: 'apns-token',
@@ -256,12 +281,50 @@ describe('registerPushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id'
 			})
 		);
 		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
 		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
+	});
+});
+
+describe('usersAutoComplete', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('JSON-stringifies the selector before sending it', () => {
+		const { usersAutoComplete } = require('./restApi');
+		usersAutoComplete({ term: 'abc', exceptions: [] });
+		expect(mockSdkGet).toHaveBeenCalledWith('/v1/users.autocomplete', {
+			selector: JSON.stringify({ term: 'abc', exceptions: [] })
+		});
+	});
+});
+
+describe('removePushToken', () => {
+	let removePushToken: () => Promise<boolean | void>;
+
+	beforeEach(() => {
+		jest.resetModules();
+		mockSdkDelete.mockClear();
+		mockSdkDelete.mockResolvedValue({ success: true });
+		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue('device-token');
+		removePushToken = require('./restApi').removePushToken;
+	});
+
+	it('sends a DELETE to /v1/push.token with the token in the body', async () => {
+		const result = await removePushToken();
+		expect(result).toBe(true);
+		expect(mockSdkDelete).toHaveBeenCalledWith('/v1/push.token', { token: 'device-token' });
+	});
+
+	it('returns undefined and does not call delete when there is no device token', async () => {
+		(require('../notifications').getDeviceToken as jest.Mock).mockReturnValue(undefined);
+		expect(await removePushToken()).toBeUndefined();
+		expect(mockSdkDelete).not.toHaveBeenCalled();
 	});
 });

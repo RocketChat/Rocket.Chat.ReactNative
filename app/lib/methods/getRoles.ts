@@ -69,63 +69,59 @@ export async function onRolesChanged(ddpMessage: IRolesChanged): Promise<void> {
 	}
 }
 
-export function getRoles(): Promise<void> {
+export async function getRoles(): Promise<void> {
 	const db = database.active;
-	return new Promise(async resolve => {
-		try {
-			// RC 0.70.0
-			const result = await sdk.get('roles.list');
+	try {
+		// RC 0.70.0
+		const result = await sdk.get('/v1/roles.list');
 
-			if (!result.success) {
-				return resolve();
-			}
-
-			const { roles } = result;
-
-			if (roles && roles.length) {
-				await db.write(async () => {
-					const rolesCollections = db.get('roles');
-					const allRolesRecords = await rolesCollections.query().fetch();
-
-					// filter roles
-					const filteredRolesToCreate = roles.filter(i1 => !allRolesRecords.find(i2 => i1._id === i2.id));
-					const filteredRolesToUpdate = allRolesRecords.filter(i1 => roles.find(i2 => i1.id === i2._id));
-
-					// Create
-					const rolesToCreate = filteredRolesToCreate.map(role =>
-						rolesCollections.prepareCreate(
-							protectedFunction((r: TRoleModel) => {
-								r._raw = sanitizedRaw({ id: role._id }, rolesCollections.schema);
-								Object.assign(r, role);
-							})
-						)
-					);
-
-					// Update
-					const rolesToUpdate = filteredRolesToUpdate.map(role => {
-						const newRole = roles.find(r => r._id === role.id);
-						return role.prepareUpdate(
-							protectedFunction((r: TRoleModel) => {
-								Object.assign(r, newRole);
-							})
-						);
-					});
-
-					const allRecords: Model[] = [...rolesToCreate, ...rolesToUpdate];
-
-					try {
-						await db.batch(allRecords);
-					} catch (e) {
-						log(e);
-					}
-					setRoles();
-					return allRecords.length;
-				});
-				return resolve();
-			}
-		} catch (e) {
-			log(e);
-			return resolve();
+		if (!result.success) {
+			return;
 		}
-	});
+
+		const { roles } = result;
+
+		if (roles && roles.length) {
+			await db.write(async () => {
+				const rolesCollections = db.get('roles');
+				const allRolesRecords = await rolesCollections.query().fetch();
+
+				// filter roles
+				const filteredRolesToCreate = roles.filter(i1 => !allRolesRecords.find(i2 => i1._id === i2.id));
+				const filteredRolesToUpdate = allRolesRecords.filter(i1 => roles.find(i2 => i1.id === i2._id));
+
+				// Create
+				const rolesToCreate = filteredRolesToCreate.map(role =>
+					rolesCollections.prepareCreate(
+						protectedFunction((r: TRoleModel) => {
+							r._raw = sanitizedRaw({ id: role._id }, rolesCollections.schema);
+							Object.assign(r, role);
+						})
+					)
+				);
+
+				// Update
+				const rolesToUpdate = filteredRolesToUpdate.map(role => {
+					const newRole = roles.find(r => r._id === role.id);
+					return role.prepareUpdate(
+						protectedFunction((r: TRoleModel) => {
+							Object.assign(r, newRole);
+						})
+					);
+				});
+
+				const allRecords: Model[] = [...rolesToCreate, ...rolesToUpdate];
+
+				try {
+					await db.batch(allRecords);
+				} catch (e) {
+					log(e);
+				}
+				setRoles();
+				return allRecords.length;
+			});
+		}
+	} catch (e) {
+		log(e);
+	}
 }

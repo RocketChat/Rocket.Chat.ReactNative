@@ -1,30 +1,25 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
-import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../../definitions';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
+import sdk from '../../services/sdk';
 
 export async function sendFileMessageV2(
 	rid: string,
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
-		const { id, token } = user;
-		const headers = {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
+		const headers: Record<string, string> = {
+			...sdk.getHeaders(),
+			'Content-Type': 'multipart/form-data'
 		};
 		const db = database.active;
 
@@ -66,7 +61,7 @@ export async function sendFileMessageV2(
 		if (getContent) {
 			content = await getContent(response.file._id, response.file.url);
 		}
-		await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
+		const confirmResponse = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
 			method: 'POST',
 			headers: {
 				...headers,
@@ -80,6 +75,9 @@ export async function sendFileMessageV2(
 				content
 			})
 		});
+		if (!confirmResponse.ok) {
+			throw new Error(`mediaConfirm failed with status ${confirmResponse.status}`);
+		}
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});

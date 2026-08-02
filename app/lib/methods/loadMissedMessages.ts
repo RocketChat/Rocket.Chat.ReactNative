@@ -10,9 +10,11 @@ import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from
 const count = 50;
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
-	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('chat.syncMessages', { roomId, next, count, type });
-	return result;
+	const response = await sdk.get('/v1/chat.syncMessages', { roomId, next, count, type });
+	if (!response.success) {
+		return undefined;
+	}
+	return response.result;
 };
 
 const getSyncMessagesFromCursor = async (
@@ -38,9 +40,9 @@ const getSyncMessagesFromCursor = async (
 	const [updatedMessages, deletedMessages] = await Promise.all([updatedPromise, deletedPromise]);
 	return {
 		deleted: deletedMessages?.deleted ?? [],
-		deletedNext: deletedMessages?.cursor.next,
+		deletedNext: deletedMessages?.cursor?.next,
 		updated: updatedMessages?.updated ?? [],
-		updatedNext: updatedMessages?.cursor.next
+		updatedNext: updatedMessages?.cursor?.next
 	};
 };
 
@@ -66,9 +68,11 @@ async function load({
 	}
 
 	// RC 0.60.0
-	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('chat.syncMessages', { roomId, lastUpdate: cursor?.toISOString() });
-	return result;
+	const response = await sdk.get('/v1/chat.syncMessages', { roomId, lastUpdate: cursor?.toISOString() });
+	if (!response.success) {
+		return undefined;
+	}
+	return response.result;
 }
 
 export async function loadMissedMessages(args: {
@@ -90,7 +94,7 @@ export async function loadMissedMessages(args: {
 			updatedNext,
 			deleted,
 			deletedNext
-		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
+		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext?: number | null; deletedNext?: number | null } = data;
 
 		const serverTimestamps = [...(args.serverTimestamps ?? []), ...snapshotServerTimestamps(updated)];
 
@@ -98,7 +102,7 @@ export async function loadMissedMessages(args: {
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
 		if (deletedNext || updatedNext) {
-			loadMissedMessages({
+			await loadMissedMessages({
 				rid: args.rid,
 				updatedNext,
 				deletedNext,

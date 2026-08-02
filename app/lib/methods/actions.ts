@@ -108,8 +108,10 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { userId, authToken } = sdk.current.currentLogin;
-		const { host } = sdk.current.client;
+		const host = sdk.server;
+		if (!host) {
+			throw new Error('SDK not initialized');
+		}
 		const interaction = toUserInteraction({
 			type,
 			actionId,
@@ -127,12 +129,12 @@ export async function triggerAction({
 		});
 
 		// we need to use fetch because this.sdk.post add /v1 to url
+		// fetch() already attaches the session headers ambiently for same-origin requests
+		// (host === sdk.server), so we don't rebuild them here.
 		const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				'X-Auth-Token': authToken,
-				'X-User-Id': userId
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(interaction)
 		});

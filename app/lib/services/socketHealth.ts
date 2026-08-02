@@ -1,16 +1,15 @@
 import { onAbort } from '../methods/helpers/onAbort';
-import sdk from './sdk';
+import sdk, { type ConnectionStatus } from './sdk';
 
 /**
- * The slice of the patched DDP driver this module reads.
- * The only guard is `sdk.current?.ddp` being undefined — the patch is guaranteed
- * at runtime, so there are no per-method typeof checks.
+ * The slice of the patched ddp-client connection this module reads
+ * (`probe`/`reopenNow`/`lastPing` come from patches/@rocket.chat+ddp-client+0.3.51.patch).
+ * The only guard is `sdk.current?.connection` being undefined — the patch is
+ * guaranteed at runtime, so there are no per-method typeof checks.
  */
-interface SocketHealthDdp {
-	connected?: boolean;
+interface SocketHealthConnection {
+	status: ConnectionStatus;
 	lastPing: number;
-	pingInterval?: number;
-	config?: { ping?: number };
 	reopenNow(): Promise<void>;
 	probe(timeoutMs: number): Promise<boolean>;
 }
@@ -26,14 +25,15 @@ interface SocketHealthDdp {
  */
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
-export function classifySocketHealth(ddp: SocketHealthDdp): SocketRecoveryPlan {
+export function classifySocketHealth(connection: SocketHealthConnection): SocketRecoveryPlan {
 	// Ping age can't vouch for a socket the OS already closed.
-	if (ddp.connected === false) {
+	if (connection.status !== 'connected') {
 		return 'reopen';
 	}
-	const pingInterval = (ddp.pingInterval ?? ddp.config?.ping) || 10000;
-	const age = Date.now() - ddp.lastPing;
-	if (age > pingInterval * 2) {
+	// The ddp-client heartbeats every 30s (TimeoutControl); a lastPing older
+	// than 2x the old SDK's 10s default means the transport is stale.
+	const age = Date.now() - connection.lastPing;
+	if (age > 20000) {
 		return 'reopen';
 	}
 	// Anything younger is verified by a round trip, never trusted outright: onOpen
@@ -62,20 +62,20 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
 	}
-	const ddp = sdk.current?.ddp as SocketHealthDdp | undefined;
-	if (!ddp) {
+	const connection = sdk.current?.connection as SocketHealthConnection | undefined;
+	if (!connection) {
 		return Promise.resolve('no-socket');
 	}
 	const recovery = (async (): Promise<SocketRecoveryOutcome> => {
-		if (classifySocketHealth(ddp) === 'reopen') {
-			await ddp.reopenNow();
+		if (classifySocketHealth(connection) === 'reopen') {
+			await connection.reopenNow();
 			return 'reopened';
 		}
-		const alive = await ddp.probe(2000);
+		const alive = await connection.probe(2000);
 		if (alive) {
 			return 'confirmed-alive';
 		}
-		await ddp.reopenNow();
+		await connection.reopenNow();
 		return 'reopened';
 	})();
 	inFlightRecovery = recovery;
@@ -129,7 +129,7 @@ export function recoverSocket(options?: { abortSignal?: AbortSignal }): Promise<
  * Vocabulary:
  * - socket health      — the classification concern (`classifySocketHealth`).
  * - recovery plan      — `SocketRecoveryPlan`, the decision.
- * - round trip         — the liveness check (`ddp.probe` stays as the SDK
- *                        method name; our terms say round trip).
+ * - round trip         — the liveness check (`connection.probe`; our terms
+ *                        say round trip).
  * - recovery outcome   — `SocketRecoveryOutcome`, what callers see.
  */
