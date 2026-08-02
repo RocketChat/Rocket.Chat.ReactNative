@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useContext } from 'react';
+import { useContext, type ReactElement } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
 	UiKitParserMessage,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
-class MessageParser extends UiKitParserMessage<React.ReactElement> {
+class MessageParser extends UiKitParserMessage<ReactElement> {
 	constructor() {
 		super();
 		// Compatibility for @rocket.chat/ui-kit@0.39.0 where info_card is exported
@@ -78,7 +78,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		return this as unknown as IParser;
 	}
 
-	plain_text(element: PlainText, context: BlockContext): React.ReactElement {
+	plain_text(element: PlainText, context: BlockContext): ReactElement {
 		const { theme } = useContext(ThemeContext);
 
 		const isContext = context === BlockContext.CONTEXT;
@@ -88,7 +88,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		return <Text style={[styles.text, { color: themes[theme].fontDefault }]}>{element.text}</Text>;
 	}
 
-	mrkdwn(element: IMarkdown, context: BlockContext): React.ReactElement {
+	mrkdwn(element: IMarkdown, context: BlockContext): ReactElement {
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
 			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
@@ -96,7 +96,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} textStyle={{ fontSize: 14 }} />;
 	}
 
-	button(element: IButton, context: BlockContext): React.ReactElement {
+	button(element: IButton, context: BlockContext): ReactElement {
 		const { text, value, actionId, style } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
 		return (
@@ -111,32 +111,32 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		);
 	}
 
-	icon(element: IIcon, _context: BlockContext): React.ReactElement {
+	icon(element: IIcon, _context: BlockContext): ReactElement {
 		return <Icon element={element} />;
 	}
 
-	icon_button(element: IIconButton, context: BlockContext): React.ReactElement {
+	icon_button(element: IIconButton, context: BlockContext): ReactElement {
 		return <IconButton element={element} context={context} />;
 	}
 
-	divider(): React.ReactElement {
+	divider(): ReactElement {
 		return <Divider />;
 	}
 
-	section(args: ISection): React.ReactElement {
+	section(args: ISection): ReactElement {
 		return <Section {...args} parser={this.current} />;
 	}
 
-	actions(args: IActions): React.ReactElement {
+	actions(args: IActions): ReactElement {
 		return <Actions {...args} parser={this.current} />;
 	}
 
-	overflow(element: IElement, context: BlockContext): React.ReactElement {
+	overflow(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		return <Overflow element={element} context={context} loading={loading} action={action} parser={this.current} />;
 	}
 
-	datePicker(element: IElement, context: BlockContext): React.ReactElement {
+	datePicker(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value, error, language }, action] = useBlockContext(
 			{ ...element, actionId: element.actionId || '' },
 			context
@@ -154,43 +154,43 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		);
 	}
 
-	image(element: IElement, context: BlockContext): React.ReactElement {
+	image(element: IElement, context: BlockContext): ReactElement {
 		return <Image element={element} context={context} />;
 	}
 
-	context(args: IContext): React.ReactElement {
+	context(args: IContext): ReactElement {
 		const { theme } = useContext(ThemeContext);
 		return <Context {...args} theme={theme} parser={this.current} />;
 	}
 
-	info_card(args: IInfoCard): React.ReactElement {
+	info_card(args: IInfoCard): ReactElement {
 		return <InfoCard {...args} parser={this.current} />;
 	}
 
-	multiStaticSelect(element: IElement, context: BlockContext): React.ReactElement {
+	multiStaticSelect(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		const valueFiltered = element?.options?.filter(option => value?.includes(option.value));
 		return <MultiSelect {...element} value={valueFiltered} onChange={action} context={context} loading={loading} multiselect />;
 	}
 
-	staticSelect(element: IElement, context: BlockContext): React.ReactElement {
+	staticSelect(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		return <Select {...element} value={value} onChange={action} loading={loading} />;
 	}
 
-	selectInput(element: IElement, context: BlockContext): React.ReactElement {
+	selectInput(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} />;
 	}
 
-	video_conf(element: IElement & { callId: string }): React.ReactElement {
+	video_conf(element: IElement & { callId: string }): ReactElement {
 		return <VideoConferenceBlock callId={element.callId} blockId={element.blockId!} />;
 	}
 }
 
 // plain_text and mrkdwn functions are created in MessageParser and the ModalParser's constructor use the same functions
 // @ts-ignore
-class ModalParser extends UiKitParserModal<React.ReactElement> {
+class ModalParser extends UiKitParserModal<ReactElement> {
 	constructor() {
 		super();
 		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
@@ -203,7 +203,7 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 		return this as unknown as IParser;
 	}
 
-	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number): React.ReactElement {
+	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number): ReactElement {
 		const [{ error }] = useBlockContext({ ...element, appId, blockId, actionId: element.actionId || '' }, context);
 		const { theme } = useContext(ThemeContext);
 		return (
@@ -219,11 +219,11 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 		);
 	}
 
-	image(element: IElement, context: BlockContext): React.ReactElement {
+	image(element: IElement, context: BlockContext): ReactElement {
 		return <Image element={element} context={context} />;
 	}
 
-	plainInput(element: IElement, context: BlockContext): React.ReactElement {
+	plainInput(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value, error }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		const { multiline, actionId, placeholder } = element;
 		return (

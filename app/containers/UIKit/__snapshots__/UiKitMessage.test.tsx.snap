@@ -1081,9 +1081,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -1181,9 +1189,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -1348,9 +1364,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -1448,9 +1472,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -1615,9 +1647,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -1782,9 +1822,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -1959,9 +2007,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2059,9 +2115,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2226,9 +2290,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2326,9 +2398,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2493,9 +2573,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2660,9 +2748,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2837,9 +2933,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -2937,9 +3041,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -3104,9 +3216,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -3204,9 +3324,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -3371,9 +3499,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -3538,9 +3674,17 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "fontSize": 14,
-                            },
+                            [
+                              {
+                                "fontSize": 14,
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ],
                           ]
                         }
                       >
@@ -3660,9 +3804,17 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "fontSize": 14,
-                      },
+                      [
+                        {
+                          "fontSize": 14,
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ],
                     ]
                   }
                 >
@@ -3760,9 +3912,17 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "fontSize": 14,
-                      },
+                      [
+                        {
+                          "fontSize": 14,
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ],
                     ]
                   }
                 >
@@ -3860,9 +4020,17 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "fontSize": 14,
-                      },
+                      [
+                        {
+                          "fontSize": 14,
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ],
                     ]
                   }
                 >
@@ -3960,9 +4128,17 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "fontSize": 14,
-                      },
+                      [
+                        {
+                          "fontSize": 14,
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ],
                     ]
                   }
                 >
@@ -5095,9 +5271,17 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "fontSize": 14,
-                  },
+                  [
+                    {
+                      "fontSize": 14,
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
+                  ],
                 ]
               }
             >

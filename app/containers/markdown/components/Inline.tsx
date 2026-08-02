@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
@@ -9,7 +9,6 @@ import { Bold, Italic, Link, Strike } from './inline/index';
 import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
-import MarkdownContext from '../contexts/MarkdownContext';
 import Timestamp from './Timestamp';
 // import { InlineKaTeX, KaTeX } from './Katex';
 
@@ -18,8 +17,7 @@ interface IParagraphProps {
 	forceTrim?: boolean;
 }
 
-const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
-	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
+const Inline = ({ value, forceTrim }: IParagraphProps): ReactElement | null => {
 	return (
 		<Text style={styles.inline}>
 			{value.map((block, index) => {
@@ -53,19 +51,11 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					case 'LINK':
 						return <Link value={block.value} />;
 					case 'MENTION_USER':
-						return (
-							<AtMention
-								mention={block.value.value}
-								useRealName={useRealName}
-								username={username}
-								navToRoomInfo={navToRoomInfo}
-								mentions={mentions}
-							/>
-						);
+						return <AtMention mention={block.value.value} />;
 					case 'EMOJI':
 						return <Emoji block={block} index={index} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+						return <Hashtag hashtag={block.value.value} />;
 					case 'INLINE_CODE':
 						return <InlineCode value={block.value} />;
 					case 'INLINE_KATEX':

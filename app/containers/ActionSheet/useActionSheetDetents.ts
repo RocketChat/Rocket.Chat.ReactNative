@@ -1,6 +1,5 @@
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
@@ -24,7 +23,6 @@ function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 
 type UseActionSheetDetentsParams = {
 	windowHeight: number;
-	bottomInset: number;
 	itemHeight: number;
 	optionsLength?: number;
 	snaps?: (string | number)[];
@@ -39,7 +37,6 @@ function heightToDetent(height: number, screenHeight: number): number {
 
 export function useActionSheetDetents({
 	windowHeight,
-	bottomInset,
 	itemHeight,
 	optionsLength = 0,
 	snaps,
@@ -47,18 +44,12 @@ export function useActionSheetDetents({
 	hasCancel = false,
 	contentHeight
 }: UseActionSheetDetentsParams): { detents: SheetDetent[]; maxHeight: number; scrollEnabled: boolean } {
-	const { fontScale } = useWindowDimensions();
-	const CANCEL_HEIGHT = 48 * fontScale;
-
 	return useMemo(() => {
 		const maxHeight = windowHeight * ACTION_SHEET_MAX_HEIGHT_FRACTION;
 		const hasOptions = optionsLength > 0;
 
 		const maxSnap = hasOptions
-			? Math.min(
-					(itemHeight + 0.5) * optionsLength + HANDLE_HEIGHT + headerHeight + bottomInset + (hasCancel ? CANCEL_HEIGHT : 0),
-					maxHeight
-			  )
+			? Math.min((itemHeight + 0.5) * optionsLength + HANDLE_HEIGHT + headerHeight + (hasCancel ? itemHeight : 0), maxHeight)
 			: 0;
 
 		let detents: SheetDetent[];
@@ -71,14 +62,13 @@ export function useActionSheetDetents({
 				detents = [0.5, ACTION_SHEET_MAX_HEIGHT_FRACTION];
 				scrollEnabled = true;
 			} else {
-				const measuredHeight =
-					optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + bottomInset + (hasCancel ? CANCEL_HEIGHT : 0);
+				const measuredHeight = optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + (hasCancel ? itemHeight : 0);
 
 				scrollEnabled = false;
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
 			}
 		} else if (contentHeight > 0) {
-			const rawContentDetent = (contentHeight + bottomInset + HANDLE_HEIGHT) / windowHeight;
+			const rawContentDetent = (contentHeight + HANDLE_HEIGHT) / windowHeight;
 			const contentDetent = Math.min(
 				ACTION_SHEET_MAX_HEIGHT_FRACTION,
 				Math.max(ACTION_SHEET_MIN_HEIGHT_FRACTION, rawContentDetent)
@@ -90,5 +80,5 @@ export function useActionSheetDetents({
 		}
 
 		return { detents, maxHeight, scrollEnabled };
-	}, [bottomInset, contentHeight, hasCancel, headerHeight, itemHeight, optionsLength, snaps, windowHeight]);
+	}, [contentHeight, hasCancel, headerHeight, itemHeight, optionsLength, snaps, windowHeight]);
 }

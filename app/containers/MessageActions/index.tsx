@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, memo } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
@@ -36,6 +36,7 @@ import {
 	reportMessage
 } from '../../lib/services/restApi';
 import { createDirectMessage } from '../../lib/methods/createDirectMessage';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 // Extra delay on top of the action sheet animation so accessibility focus is restored
 // only after the sheet is fully dismissed.
@@ -74,7 +75,7 @@ export interface IMessageActions {
 	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
 }
 
-const MessageActions = React.memo(
+const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{
@@ -248,7 +249,7 @@ const MessageActions = React.memo(
 
 						await db.write(async () => {
 							try {
-								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
+								await subRecord.update(sub => (sub.ls = ts as Date));
 							} catch {
 								// do nothing
 							}
@@ -618,7 +619,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_AllowPinning: state.settings.Message_AllowPinning as boolean,
 	Message_AllowStarring: state.settings.Message_AllowStarring as boolean,
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users as boolean,
-	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
@@ -628,4 +628,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withMasterDetail(MessageActions));

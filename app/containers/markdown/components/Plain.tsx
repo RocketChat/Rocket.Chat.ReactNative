@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type Plain as PlainProps } from '@rocket.chat/message-parser';
 
@@ -9,7 +9,7 @@ interface IPlainProps {
 	value: PlainProps['value'];
 }
 
-const Plain = ({ value }: IPlainProps): React.ReactElement => {
+const Plain = ({ value }: IPlainProps): ReactElement => {
 	const { textStyle } = useContext(MarkdownContext);
 	return (
 		/**

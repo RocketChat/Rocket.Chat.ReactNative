@@ -1,4 +1,3 @@
-import React from 'react';
 import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -25,6 +24,7 @@ import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
@@ -42,6 +42,7 @@ import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
@@ -55,7 +56,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 		return;
 	}
 	const serverRecord = yield getServerById(server);
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	const isMasterDetail = getIsMasterDetail();
 	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
@@ -260,7 +261,9 @@ const checkVoipPermission = async () => {
 		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
 
 		if (!canUseVoip) {
-			mediaSessionInstance.reset();
+			if (!isInActiveVoipCall()) {
+				mediaSessionInstance.reset();
+			}
 			return;
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {

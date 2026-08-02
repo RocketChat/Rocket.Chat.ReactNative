@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 

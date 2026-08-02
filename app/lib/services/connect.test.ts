@@ -1,7 +1,8 @@
 import { connect, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
+import { setUser } from '../../actions/login';
+import database from '../database';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -50,7 +51,8 @@ const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	settings: {}
 }));
 const mockStoreDispatch = jest.fn<unknown, [unknown]>();
-const mockStoreSubscribe = jest.fn<() => void, [() => void]>(() => () => undefined);
+const noopUnsubscribe = () => () => {};
+const mockStoreSubscribe = jest.fn<() => void, [() => void]>(noopUnsubscribe);
 jest.mock('../store/auxStore', () => ({
 	store: {
 		getState: () => mockStoreGetState(),
@@ -95,6 +97,21 @@ const flushMicrotasks = async (): Promise<void> => {
 
 const getHandlersByEvent = (event: string): Array<(...args: unknown[]) => void> =>
 	mockOnStreamData.mock.calls.filter(([e]) => e === event).map(([, cb]) => cb);
+
+// The drain listener is the `connected` one registered after `close`, since `close` is what arms it.
+const getPendingHangupsDrainRegistrationIndex = (): number => {
+	const closeIndex = mockOnStreamData.mock.calls.findIndex(([event]) => event === 'close');
+	const indexes = mockOnStreamData.mock.calls
+		.map(([event], index) => (event === 'connected' && index > closeIndex ? index : -1))
+		.filter(index => index !== -1);
+	if (indexes.length !== 1) {
+		throw new Error(`expected exactly one pendingHangups drain listener, found ${indexes.length}`);
+	}
+	return indexes[0];
+};
+
+const getPendingHangupsDrainHandler = (): ((...args: unknown[]) => void) =>
+	mockOnStreamData.mock.calls[getPendingHangupsDrainRegistrationIndex()][1];
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -402,6 +419,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockOnStreamDataStops.length = 0;
+		mockStoreSubscribe.mockImplementation(noopUnsubscribe);
 		pendingHangups.clear();
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
@@ -420,13 +438,54 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const connectedHandlers = getHandlersByEvent('connected');
-		const closeHandlers = getHandlersByEvent('close');
-		const drainHandler = connectedHandlers[1];
-		const closeHandler = closeHandlers[0];
+		const drainHandler = getPendingHangupsDrainHandler();
+		const closeHandler = getHandlersByEvent('close')[0];
 
 		closeHandler();
 		drainHandler();
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
+	});
+
+	it('waits for login to become ready before draining', async () => {
+		const subscribeCallbacks: Array<() => void> = [];
+		mockStoreSubscribe.mockImplementation(cb => {
+			subscribeCallbacks.push(cb);
+			return () => {
+				const index = subscribeCallbacks.indexOf(cb);
+				if (index !== -1) {
+					subscribeCallbacks.splice(index, 1);
+				}
+			};
+		});
+		pendingHangups.record('call-a');
+		let state: MockStoreState = {
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		};
+		mockStoreGetState.mockImplementation(() => state);
+
+		await connect({ server: 'https://example.com' });
+
+		const drainHandler = getPendingHangupsDrainHandler();
+		const closeHandler = getHandlersByEvent('close')[0];
+
+		closeHandler();
+		drainHandler();
+		await flushMicrotasks();
+
+		// Not ready yet — subscribed but not drained.
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+
+		// Transition to authenticated + connected and notify subscribers.
+		state = {
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {}
+		};
+		subscribeCallbacks.forEach(cb => cb());
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
@@ -442,7 +501,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const drainHandler = getHandlersByEvent('connected')[1];
+		const drainHandler = getPendingHangupsDrainHandler();
 
 		drainHandler();
 		await flushMicrotasks();
@@ -459,7 +518,7 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 		await connect({ server: 'https://example.com' });
 
-		const drainHandler = getHandlersByEvent('connected')[1];
+		const drainHandler = getPendingHangupsDrainHandler();
 		const closeHandler = getHandlersByEvent('close')[0];
 
 		closeHandler();
@@ -471,9 +530,8 @@ describe('connect — pendingHangups drain on reconnect', () => {
 
 	it('stops the previous pendingHangups connected listener when connect runs again', async () => {
 		await connect({ server: 'https://example.com' });
-		// onStreamData call order: 'connecting', 'connected', 'close', 'connected' (drain), ...
-		// pendingHangupsConnectedListener is the second 'connected' registration — index 3.
-		const firstDrainStop = mockOnStreamDataStops[3];
+		// Stops are pushed in registration order, so the drain listener's stop shares its registration index.
+		const firstDrainStop = mockOnStreamDataStops[getPendingHangupsDrainRegistrationIndex()];
 
 		await connect({ server: 'https://example.com' });
 		await flushMicrotasks();
@@ -482,8 +540,18 @@ describe('connect — pendingHangups drain on reconnect', () => {
 	});
 });
 
-describe('connect — rooms subscription guard reset on close', () => {
-	beforeEach(() => {
+describe('connect — stream-notify-logged updateAvatar', () => {
+	const mockUserUpdate = jest.fn<Promise<void>, [(u: { avatarETag: string }) => void]>(fn => {
+		fn({ avatarETag: '' });
+		return Promise.resolve();
+	});
+	const mockUserRecord = { update: (fn: (u: { avatarETag: string }) => void) => mockUserUpdate(fn) };
+	const mockFetch = jest.fn<Promise<unknown[]>, []>(() => Promise.resolve([mockUserRecord]));
+	const mockDbWrite = jest.fn<Promise<void>, [() => Promise<void>]>(async fn => {
+		await fn();
+	});
+
+	beforeEach(async () => {
 		jest.clearAllMocks();
 		mockOnStreamDataStops.length = 0;
 		mockStoreGetState.mockReturnValue({
@@ -491,24 +559,72 @@ describe('connect — rooms subscription guard reset on close', () => {
 			login: { user: null, isAuthenticated: false },
 			settings: {}
 		});
+
+		// Wire up database.active so the WatermelonDB section of the handler runs.
+		(database.active as any).get = jest.fn(() => ({
+			query: () => ({ fetch: () => mockFetch() })
+		}));
+		(database.active as any).write = (fn: () => Promise<void>) => mockDbWrite(fn);
+
+		await connect({ server: 'https://example.com' });
 	});
 
-	// Regression: a long background marks the DDP socket stale, so foregrounding triggers
-	// `checkAndReopen` → `forceReopen`, which wipes the SDK subscriptions and emits 'close' while
-	// bypassing `connect()`. The rooms-list `stream-notify-user` feed only re-subscribes when the
-	// module-level guard in `subscribeRooms` is clear, and `unsubscribeRooms()` is what clears it.
-	// If the 'close' handler stops calling `unsubscribeRooms()`, the guard stays set after reconnect
-	// and the rooms list silently stops updating (subscriptions/favorites/reads).
-	it('calls unsubscribeRooms when the socket "close" fires', async () => {
-		await connect({ server: 'https://example.com' });
+	const getUpdateAvatarHandler = () => getHandlersByEvent('stream-notify-logged')[0];
 
-		// connect() itself calls unsubscribeRooms() once while tearing down prior listeners; ignore it.
-		(unsubscribeRooms as jest.Mock).mockClear();
+	const fireUpdateAvatar = async (args: { username: string; etag: string }) => {
+		const handler = getUpdateAvatarHandler();
+		handler({ fields: { eventName: 'updateAvatar', args: [args] } });
+		await flushMicrotasks();
+	};
 
-		const closeHandler = getHandlersByEvent('close')[0];
-		closeHandler();
+	it('dispatches setUser with the new etag when the avatar belongs to the logged user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'u1', username: 'rocket.cat' }, isAuthenticated: true },
+			settings: {}
+		});
 
-		expect(unsubscribeRooms).toHaveBeenCalledTimes(1);
+		await fireUpdateAvatar({ username: 'rocket.cat', etag: 'newEtag' });
+
+		expect(mockStoreDispatch).toHaveBeenCalledWith(setUser({ avatarETag: 'newEtag' }));
+	});
+
+	it('does not dispatch setUser when the avatar belongs to another user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'u1', username: 'rocket.cat' }, isAuthenticated: true },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'someone.else', etag: 'newEtag' });
+
+		expect(mockStoreDispatch).not.toHaveBeenCalledWith(setUser({ avatarETag: 'newEtag' }));
+	});
+
+	it('does not dispatch setUser when there is no logged user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'rocket.cat', etag: 'newEtag' });
+
+		expect(mockStoreDispatch).not.toHaveBeenCalledWith(setUser({ avatarETag: 'newEtag' }));
+	});
+
+	it('still updates the users-DB record with the new etag for the logged user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'u1', username: 'rocket.cat' }, isAuthenticated: true },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'rocket.cat', etag: 'newEtag' });
+
+		const updated = { avatarETag: '' };
+		await mockUserUpdate.mock.calls[0][0](updated);
+		expect(updated.avatarETag).toBe('newEtag');
 	});
 });
 

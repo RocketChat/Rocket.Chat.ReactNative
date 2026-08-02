@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { type TSupportedThemes, useTheme } from '../../theme';
@@ -39,6 +39,8 @@ const ITEM_MARGIN = 8;
 
 const styles = StyleSheet.create({
 	container: {
+		height: HEADER_HEIGHT,
+		justifyContent: 'center',
 		alignItems: 'center',
 		marginHorizontal: CONTAINER_MARGIN,
 		paddingBottom: 16
@@ -91,7 +93,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Touch>
 );
 
-const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
+const Header = memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
 	const { width } = useWindowDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);

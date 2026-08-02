@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -20,7 +20,7 @@ interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
-const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
+const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel, settings } = useAppSelector(state =>
 		getUserSelector(state)
 	);

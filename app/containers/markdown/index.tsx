@@ -1,11 +1,10 @@
-import React from 'react';
+import { type FC } from 'react';
 import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import MarkdownContext from './contexts/MarkdownContext';
 import LineBreak from './components/LineBreak';
 import { KaTeX } from './components/Katex';
@@ -26,7 +25,6 @@ interface IMarkdownProps {
 	msg?: string | null;
 	md?: Root;
 	mentions?: IUserMention[];
-	getCustomEmoji?: TGetCustomEmoji;
 	username?: string;
 	useRealName?: boolean;
 	channels?: IUserChannel[];
@@ -101,7 +99,7 @@ const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
 	}
 };
 
-const Markdown: React.FC<IMarkdownProps> = ({
+const Markdown: FC<IMarkdownProps> = ({
 	msg,
 	md,
 	mentions,
@@ -109,7 +107,6 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	navToRoomInfo,
 	useRealName,
 	username = '',
-	getCustomEmoji,
 	onLinkPress,
 	isTranslated,
 	textStyle
@@ -133,7 +130,6 @@ const Markdown: React.FC<IMarkdownProps> = ({
 		useRealName,
 		username,
 		navToRoomInfo,
-		getCustomEmoji,
 		onLinkPress,
 		textStyle
 	};

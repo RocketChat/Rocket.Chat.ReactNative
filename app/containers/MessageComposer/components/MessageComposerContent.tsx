@@ -1,7 +1,7 @@
 import { memo, type ReactElement, type RefObject } from 'react';
 import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { type TMessageAction } from '../../../views/RoomView/context';
+import { type TMessageAction } from '../../../definitions';
 import { type IComposerInput } from '../interfaces';
 import { useTheme } from '../../../theme';
 import { RecordAudio } from './RecordAudio';
@@ -17,6 +17,7 @@ import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../lib/constants/ac
 interface MessageComposerContentProps {
 	recordingAudio: boolean;
 	action: TMessageAction | undefined;
+	showEmojiSearchbar: boolean;
 	composerInputComponentRef: RefObject<IComposerInput>;
 	composerInputRef: RefObject<any>;
 	children?: ReactElement | null;
@@ -24,7 +25,7 @@ interface MessageComposerContentProps {
 }
 
 export const MessageComposerContent = memo<MessageComposerContentProps>(
-	({ recordingAudio, action, composerInputComponentRef, composerInputRef, children, onLayout }) => {
+	({ recordingAudio, action, showEmojiSearchbar, composerInputComponentRef, composerInputRef, children, onLayout }) => {
 		'use memo';
 
 		const { colors } = useTheme();
@@ -47,7 +48,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 				</View>
 				<Quotes />
 				<Toolbar />
-				<EmojiSearchbar />
+				{showEmojiSearchbar ? <EmojiSearchbar /> : null}
 				<SendThreadToChannel />
 				{children}
 			</View>

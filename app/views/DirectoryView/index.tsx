@@ -1,6 +1,7 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect, type ReactElement } from 'react';
 import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 
@@ -24,6 +25,7 @@ import { getRoomByTypeAndName } from '../../lib/services/restApi';
 import { createDirectMessage } from '../../lib/methods/createDirectMessage';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { useDirectorySearch } from './hooks/useDirectorySearch';
 
 interface IDirectoryViewProps {
@@ -33,18 +35,19 @@ interface IDirectoryViewProps {
 	>;
 }
 
-const DirectoryView = ({ navigation }: IDirectoryViewProps): React.ReactElement => {
+const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
-	const { isFederationEnabled, directoryDefaultView, isMasterDetail } = useAppSelector(
+	const { isFederationEnabled, directoryDefaultView } = useAppSelector(
 		state => ({
 			isFederationEnabled: state.settings.FEDERATION_Enabled as boolean,
-			directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string,
-			isMasterDetail: state.app.isMasterDetail
+			directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string
 		}),
 		shallowEqual
 	);
+	const isMasterDetail = useMasterDetail();
 
 	const { data, loading, type, globalUsers, search, loadMore, onSearchChangeText, changeType, toggleWorkspace } =
 		useDirectorySearch(directoryDefaultView);
@@ -197,7 +200,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): React.ReactElement 
 			<FlatList
 				data={data}
 				style={styles.list}
-				contentContainerStyle={styles.listContainer}
+				contentContainerStyle={[styles.listContainer, { paddingBottom: bottom }]}
 				extraData={type}
 				keyExtractor={item => item._id}
 				renderItem={renderItem}

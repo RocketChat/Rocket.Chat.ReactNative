@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
 import { Keyboard, Text, View } from 'react-native';
@@ -31,14 +31,14 @@ import {
 	type IShareAttachment,
 	type IUser,
 	RootEnum,
-	type TMessageAction,
 	type TSubscriptionModel,
 	type TThreadModel
 } from '../../definitions';
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomContext } from '../RoomView/context';
+import { RoomProviders } from '../RoomView/RoomProviders';
+import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { appStart } from '../../actions/app';
 
 interface IShareViewState {
@@ -51,8 +51,6 @@ interface IShareViewState {
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
-	selectedMessages: string[];
-	action: TMessageAction;
 }
 
 interface IShareViewProps {
@@ -74,21 +72,24 @@ interface IShareViewProps {
 type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: TShareServerInfo;
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
+	private messageActionStore: TMessageActionStore;
 
 	constructor(props: IShareViewProps) {
 		super(props);
-		this.messageComposerRef = React.createRef();
+		this.messageComposerRef = createRef();
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 		this.finishShareView = props.route.params?.finishShareView;
 		this.sentMessage = false;
+		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuoteMessageIds.
+		this.messageActionStore = createMessageActionStore();
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -99,11 +100,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
-			mediaAllowList: this.isShareExtension
-				? this.serverInfo?.FileUpload_MediaTypeWhiteList
-				: props.FileUpload_MediaTypeWhiteList,
-			selectedMessages: [],
-			action: props.route.params?.action
+			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
 		};
 		this.getServerInfo();
 	}
@@ -119,8 +116,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		console.countReset(`${this.constructor.name}.render calls`);
 		if (this.finishShareView && !this.sentMessage) {
 			const text = this.messageComposerRef.current?.getText();
-			this.finishShareView(text, this.state.selectedMessages);
+			this.finishShareView(text, this.getSelectedMessageIds());
 		}
+	};
+
+	// ShareView's message action store only ever holds the quote flow.
+	getSelectedMessageIds = (): string[] => {
+		const { action } = this.messageActionStore.getState();
+		return action?.kind === 'quote' ? action.messageIds : [];
 	};
 
 	getThreadId = (thread: TThreadModel | string | undefined) => {
@@ -236,7 +239,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Synchronization needed for Fabric to work
 			await new Promise(resolve => setTimeout(resolve, 100));
 			this.messageComposerRef.current?.setInput(text);
-			this.setState({ selectedMessages });
+			this.messageActionStore.getState().actions.setQuoteMessageIds(selectedMessages);
 		}
 	};
 
@@ -245,7 +248,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread, action, selectedMessages } = this.state;
+		const { attachments, room, text, thread } = this.state;
 		const { navigation, server, user, dispatch } = this.props;
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
@@ -263,8 +266,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		let msg: string | undefined;
-		if (action === 'quote') {
-			msg = await prepareQuoteMessage('', selectedMessages);
+		const { action } = this.messageActionStore.getState();
+		if (action?.kind === 'quote') {
+			msg = await prepareQuoteMessage('', action.messageIds);
 		}
 
 		const { isAltTextSupported } = this;
@@ -293,7 +297,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		} catch {
 			if (!this.isShareExtension) {
 				const text = this.messageComposerRef.current?.getText();
-				this.finishShareView(text, this.state.selectedMessages);
+				this.finishShareView(text, this.getSelectedMessageIds());
 			}
 		}
 
@@ -379,29 +383,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	}
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		const { selectedMessages } = this.state;
-		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
+		const newSelectedMessages = this.getSelectedMessageIds().filter(item => item !== messageId);
+		this.messageActionStore.getState().actions.setQuoteMessageIds(newSelectedMessages);
 	};
 
 	renderContent = () => {
-		const { attachments, selected, text, room, thread, selectedMessages } = this.state;
-		const { theme, route } = this.props;
+		const { attachments, selected, text, room, thread } = this.state;
+		const { theme } = this.props;
 
 		if (attachments.length) {
 			return (
-				<RoomContext.Provider
-					value={{
-						rid: room.rid,
-						t: room.t,
-						room,
-						tmid: this.getThreadId(thread),
-						sharing: true,
-						action: route.params?.action,
-						selectedMessages,
-						onSendMessage: this.send,
-						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}>
+				<RoomProviders
+					store={this.messageActionStore}
+					rid={room.rid}
+					t={room.t}
+					room={room}
+					tmid={this.getThreadId(thread)}
+					sharing
+					onSendMessage={this.send}
+					onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected
@@ -414,7 +414,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
 						</MessageComposerContainer>
 					</View>
-				</RoomContext.Provider>
+				</RoomProviders>
 			);
 		}
 

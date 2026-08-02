@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { NewMediaCall } from '../../../containers/NewMediaCall';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';

@@ -1,6 +1,6 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { PeerItem } from './PeerItem';
 import { mockedStore } from '../../reducers/mockedStore';
@@ -10,7 +10,7 @@ import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
 const onSelectOptionMock = jest.fn();
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const userItem: TPeerItem = {
 	type: 'user',

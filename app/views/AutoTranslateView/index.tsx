@@ -1,7 +1,8 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, memo, type ReactElement } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
 import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -18,12 +19,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AutoTranslateView = (): React.ReactElement => {
+const AutoTranslateView = (): ReactElement => {
 	const navigation = useNavigation();
 	const {
 		params: { rid, room }
 	} = useRoute<RouteProp<ChatsStackParamList, 'AutoTranslateView'>>();
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
 	const [languages, setLanguages] = useState<{ language: string; name: string }[]>([]);
 	const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(room?.autoTranslateLanguage);
@@ -93,7 +95,7 @@ const AutoTranslateView = (): React.ReactElement => {
 		}
 	};
 
-	const LanguageItem = React.memo(({ language, name }: { language: string; name?: string }) => (
+	const LanguageItem = memo(({ language, name }: { language: string; name?: string }) => (
 		<List.Item
 			title={name || language}
 			onPress={() => saveAutoTranslateLanguage(language)}
@@ -131,7 +133,7 @@ const AutoTranslateView = (): React.ReactElement => {
 				}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list, { paddingBottom: bottom }]}
 			/>
 		</SafeAreaView>
 	);
