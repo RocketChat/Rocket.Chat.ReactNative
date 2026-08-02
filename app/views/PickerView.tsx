@@ -1,5 +1,6 @@
 import { type ReactElement, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import * as List from '../containers/List';
@@ -57,6 +58,7 @@ const PickerView = (): ReactElement => {
 
 	const { colors } = useTheme();
 
+	const { bottom } = useSafeAreaInsets();
 	const [data, setData] = useState(paramData);
 	const [total, setTotal] = useState(paramTotal ?? 0);
 	const [searchText, setSearchText] = useState('');
@@ -106,6 +108,7 @@ const PickerView = (): ReactElement => {
 				onEndReachedThreshold={0.5}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				ListFooterComponent={List.Separator}
 				ListEmptyComponent={() => (
 					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>

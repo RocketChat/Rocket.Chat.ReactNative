@@ -4,7 +4,7 @@ import EventEmitter from './events';
 import log from './log';
 import { ignoreUser } from '../../services/restApi';
 
-export const handleIgnore = async (userId: string, ignore: boolean, rid: string) => {
+export const handleIgnore = async (userId: string, ignore: boolean, rid: string): Promise<boolean> => {
 	try {
 		await ignoreUser({
 			rid,
@@ -13,7 +13,9 @@ export const handleIgnore = async (userId: string, ignore: boolean, rid: string)
 		});
 		const message = I18n.t(ignore ? 'User_has_been_ignored' : 'User_has_been_unignored');
 		EventEmitter.emit(LISTENER, { message });
+		return true;
 	} catch (e) {
 		log(e);
+		return false;
 	}
 };

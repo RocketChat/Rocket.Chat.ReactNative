@@ -4,6 +4,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../i18n';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
@@ -19,12 +20,17 @@ import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useRespons
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
+	'use memo';
+
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
+	const { bottom } = useSafeAreaInsets();
 
 	const server = useAppSelector(state => state.server.server);
 	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
 	const { fontScale } = useResponsiveLayout();
+
+	const paddingBottom = Math.max(16, bottom);
 
 	const getItemLayout = useCallback(
 		(_data: any, index: number) => {
@@ -67,7 +73,7 @@ const SelectServerView = () => {
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				removeClippedSubviews
