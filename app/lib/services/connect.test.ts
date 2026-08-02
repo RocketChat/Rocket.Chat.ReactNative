@@ -1,4 +1,4 @@
-import { checkAndReopen, connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
+import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
@@ -804,41 +804,6 @@ describe('connect — listener lifecycle across reconnects', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-describe('checkAndReopen', () => {
-	afterEach(() => {
-		sdkMock.__setCurrentEnabled(true);
-		jest.clearAllMocks();
-	});
-
-	it('resolves false when sdk.current is undefined', async () => {
-		sdkMock.__setCurrentEnabled(false);
-		await expect(checkAndReopen()).resolves.toBe(false);
-	});
-
-	it('reopens when the connection status is not connected', async () => {
-		sdkMock.__setConnectionStatus('disconnected');
-		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(mockConnectionReopenNow).toHaveBeenCalledTimes(1);
-		expect(mockConnectionProbe).not.toHaveBeenCalled();
-	});
-
-	it('probes when connected and skips the reopen when the socket is alive', async () => {
-		sdkMock.__setConnectionStatus('connected');
-		mockConnectionProbe.mockResolvedValueOnce(true);
-		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(mockConnectionProbe).toHaveBeenCalledTimes(1);
-		expect(mockConnectionReopenNow).not.toHaveBeenCalled();
-	});
-
-	it('reopens when the probe reports the socket dead', async () => {
-		sdkMock.__setConnectionStatus('connected');
-		mockConnectionProbe.mockResolvedValueOnce(false);
-		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(mockConnectionProbe).toHaveBeenCalledTimes(1);
-		expect(mockConnectionReopenNow).toHaveBeenCalledTimes(1);
-	});
-});
-
 describe('connect — rooms subscription guard reset on close', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -852,7 +817,7 @@ describe('connect — rooms subscription guard reset on close', () => {
 	});
 
 	// Regression: a long background marks the DDP socket stale, so foregrounding triggers
-	// `checkAndReopen` → `reopenNow`, which closes the stale socket and reconnects. The rooms-list `stream-notify-user` feed only re-subscribes when the
+	// `recoverSocket` → `reopenNow` (socketHealth.ts), which closes the stale socket and reconnects. The rooms-list `stream-notify-user` feed only re-subscribes when the
 	// module-level guard in `subscribeRooms` is clear, and `unsubscribeRooms()` is what clears it.
 	// If the 'close' handler stops calling `unsubscribeRooms()`, the guard stays set after reconnect
 	// and the rooms list silently stops updating (subscriptions/favorites/reads).
