@@ -33,12 +33,19 @@ import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from 
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
+import {
+	saveUserProfile,
+	registerPushToken,
+	getUsersRoles,
+	getCustomUserStatus,
+	setUserPresenceAway
+} from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { setCustomUserStatus } from '../actions/customUserStatus';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -229,6 +236,17 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const fetchCustomUserStatus = function* fetchCustomUserStatusFork() {
+	try {
+		const customUserStatus = yield getCustomUserStatus();
+		if (customUserStatus.length) {
+			yield put(setCustomUserStatus(customUserStatus));
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
 		const { background, root } = yield select(state => state.app);
@@ -309,6 +327,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchUsersPresenceFork);
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(fetchCustomUserStatus);
 		yield fork(checkBackgroundAndSetAway);
 		yield getUserPresence(user.id);
 

@@ -14,7 +14,8 @@ import {
 	type IRoomNotifications,
 	type IServerRoom,
 	type RoomType,
-	type SubscriptionType
+	type SubscriptionType,
+	type ICustomUserStatus
 } from '../../definitions';
 import { type TParams } from '../../definitions/ILivechatEditView';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
@@ -1293,6 +1294,8 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+
+export const getCustomUserStatus = (): Promise<ICustomUserStatus[]> => sdk.methodCallWrapper('listCustomUserStatus');
 
 export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {

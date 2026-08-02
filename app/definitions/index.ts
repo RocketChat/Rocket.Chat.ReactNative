@@ -40,6 +40,7 @@ export * from './IDataSelect';
 export * from './TStatusSource';
 export * from './TUserStatus';
 export * from './IDeleteMessageBulkParams';
+export * from './ICustomUserStatus';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: NativeStackNavigationProp<T & TNavigation, S>;

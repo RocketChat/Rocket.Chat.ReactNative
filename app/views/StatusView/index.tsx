@@ -35,26 +35,32 @@ const validationSchema = yup.object().shape({
 });
 
 interface IStatus {
-	id: TUserStatus;
+	_id: string;
 	name: string;
+	statusType: TUserStatus;
+	isCustom?: boolean;
 }
 
 const STATUS: IStatus[] = [
 	{
-		id: 'online',
-		name: 'Online'
+		_id: 'online',
+		name: 'Online',
+		statusType: 'online'
 	},
 	{
-		id: 'busy',
-		name: 'Busy'
+		_id: 'busy',
+		name: 'Busy',
+		statusType: 'busy'
 	},
 	{
-		id: 'away',
-		name: 'Away'
+		_id: 'away',
+		name: 'Away',
+		statusType: 'away'
 	},
 	{
-		id: 'offline',
-		name: 'Offline'
+		_id: 'offline',
+		name: 'Offline',
+		statusType: 'offline'
 	}
 ];
 
@@ -72,33 +78,44 @@ const styles = StyleSheet.create({
 });
 
 const Status = ({
-	statusType,
+	option,
 	status,
-	setStatus
+	statusText,
+	setStatus,
+	isCustom
 }: {
-	statusType: IStatus;
+	option: IStatus;
 	status: TUserStatus;
-	setStatus: (status: TUserStatus) => void;
+	statusText: string;
+	setStatus: (status: TUserStatus, statusText: string) => void;
+	isCustom?: boolean;
 }) => {
 	'use memo';
 
-	const { id, name } = statusType;
+	const { _id, name } = option;
+	const isSelected = isCustom ? status === option.statusType && statusText === name : status === _id && !statusText;
 	return (
 		<>
 			<List.Radio
-				isSelected={status === id}
-				additionalAccessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
+				isSelected={isSelected}
 				title={name}
+				translateTitle={!isCustom}
 				onPress={() => {
-					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
-					logEvent(events[key]);
-					if (status !== id) {
-						setStatus(id);
+					if (isCustom) {
+						if (status !== option.statusType || statusText !== name) {
+							setStatus(option.statusType, name);
+						}
+					} else {
+						const key = `STATUS_${_id.toUpperCase()}` as keyof typeof events;
+						logEvent(events[key]);
+						if (status !== _id || statusText) {
+							setStatus(_id as TUserStatus, '');
+						}
 					}
 				}}
-				testID={`status-view-${id}`}
-				value={statusType.id}
-				left={() => <StatusIcon size={24} status={statusType.id} />}
+				testID={`status-view-${_id}`}
+				value={_id}
+				left={() => <StatusIcon size={24} status={option.statusType} />}
 			/>
 			<List.Separator />
 		</>
@@ -113,6 +130,7 @@ const StatusView = (): ReactElement => {
 	const Accounts_AllowInvisibleStatusOption = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
+	const customUserStatus = useSelector((state: IApplicationState) => state.customUserStatus);
 	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
 	const supportsStatusExpiry = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0');
 
@@ -164,8 +182,9 @@ const StatusView = (): ReactElement => {
 		setHeader();
 	}, [isMasterDetail]);
 
-	const setStatus = (updatedStatus: TUserStatus) => {
-		setValue('status', updatedStatus);
+	const setStatus = (status: TUserStatus, statusText: string) => {
+		setValue('status', status);
+		setValue('statusText', statusText);
 	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string, expiresAt?: string | null) => {
@@ -189,10 +208,13 @@ const StatusView = (): ReactElement => {
 		sendLoadingEvent({ visible: false });
 	};
 
-	const statusType = STATUS.filter(s => {
-		if (s.id === 'offline' && !Accounts_AllowInvisibleStatusOption) return false;
-		return true;
-	});
+	const statusOptions = useMemo(() => {
+		const statuses = STATUS.filter(s => {
+			if (s._id === 'offline' && !Accounts_AllowInvisibleStatusOption) return false;
+			return true;
+		});
+		return [...statuses, ...customUserStatus.map(s => ({ _id: s._id, name: s.name, statusType: s.statusType, isCustom: true }))];
+	}, [Accounts_AllowInvisibleStatusOption, customUserStatus]);
 
 	const isStatusChanged = () => {
 		const { status } = inputValues;
@@ -216,9 +238,17 @@ const StatusView = (): ReactElement => {
 	return (
 		<SafeAreaView testID='status-view'>
 			<FlatList
-				data={statusType}
-				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
+				data={statusOptions}
+				keyExtractor={item => item._id}
+				renderItem={({ item }) => (
+					<Status
+						option={item}
+						statusText={inputValues.statusText}
+						status={inputValues.status}
+						setStatus={setStatus}
+						isCustom={item.isCustom}
+					/>
+				)}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput
