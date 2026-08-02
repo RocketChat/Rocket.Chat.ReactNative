@@ -54,7 +54,7 @@ export default class RoomSubscription {
 				this.handleClose();
 			}
 		});
-		this.loginListener = sdk.onLogin(this.handleLogin);
+		this.loginListener = sdk.onLogin(this.handleConnection);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -94,7 +94,7 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleLogin = async () => {
+	handleConnection = async () => {
 		if (!this.isAlive) {
 			return;
 		}
