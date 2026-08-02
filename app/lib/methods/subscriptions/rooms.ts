@@ -42,7 +42,7 @@ let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
-let rawSubscriptionHandles: { stop: () => void }[] = [];
+let subscriptionHandles: { stop: () => void }[] = [];
 const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
@@ -428,14 +428,14 @@ export default function subscribeRooms() {
 			streamListener.then(removeListener);
 			streamListener = false;
 		}
-		rawSubscriptionHandles.forEach(handle => {
+		subscriptionHandles.forEach(handle => {
 			try {
 				handle.stop();
 			} catch (e) {
 				log(e);
 			}
 		});
-		rawSubscriptionHandles = [];
+		subscriptionHandles = [];
 		queue = {};
 		if (subTimer) {
 			clearTimeout(subTimer);
@@ -449,7 +449,7 @@ export default function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = sdk.current?.connection.url || '';
-		rawSubscriptionHandles = sdk.subscribeNotifyUser();
+		subscriptionHandles = sdk.subscribeNotifyUser();
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {
