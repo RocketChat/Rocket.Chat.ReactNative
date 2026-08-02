@@ -10,6 +10,7 @@ import database from '../database';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
+import { waitForLoginReady } from './waitForLoginReady';
 import sdk, { type ConnectionStatus } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
@@ -80,7 +81,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				if (pendingHangupsDrainArmed) {
 					pendingHangupsDrainArmed = false;
 					if (pendingHangups.size > 0) {
-						awaitDdpLoggedIn(5000)
+						waitForLoginReady(5000)
 							.then(() => mediaSessionInstance.drainPendingHangups())
 							.catch(error => log(error));
 					}
@@ -420,38 +421,6 @@ async function checkAndReopen(): Promise<boolean> {
 	return true;
 }
 
-/**
- * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
- * Trusts redux state rather than the ddp-client's own connection/account state,
- * which isn't cleared on socket close and can appear valid for a stale session.
- * Redux resets to `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched from the
- * `connection.on('connection', ...)` handler in `connect()` when `status ===
- * 'connected'`) and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers
- * the handshake.
- */
-async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
-	const isReady = () => {
-		const s = store.getState();
-		return s.login.isAuthenticated && s.meteor.connected;
-	};
-	if (isReady()) {
-		return;
-	}
-	await new Promise<void>(resolve => {
-		const unsub = store.subscribe(() => {
-			if (isReady()) {
-				clearTimeout(timer);
-				unsub();
-				resolve();
-			}
-		});
-		const timer = setTimeout(() => {
-			unsub();
-			resolve();
-		}, timeoutMs);
-	});
-}
-
 function disconnect() {
 	connectAbortController?.abort();
 	const result = sdk.disconnect();
@@ -548,10 +517,10 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
-	awaitDdpLoggedIn,
 	connect,
 	disconnect,
 	getWebsocketInfo,
 	getLoginServices,
-	determineAuthType
+	determineAuthType,
+	waitForLoginReady
 };

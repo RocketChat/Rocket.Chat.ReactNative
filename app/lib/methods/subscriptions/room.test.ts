@@ -1,8 +1,8 @@
 import RoomSubscription from './room';
-import { loadMissedMessages } from '../loadMissedMessages';
-import { clearUserTyping } from '../../../actions/usersTyping';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
+import { clearUserTyping } from '../../../actions/usersTyping';
+import { loadMissedMessages } from '../loadMissedMessages';
 import log from '../helpers/log';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
@@ -21,16 +21,18 @@ jest.mock('../../services/sdk', () => ({
 	}
 }));
 
-const mockStoreGetState = jest.fn<{ meteor: { connected: boolean } }, []>(() => ({
-	meteor: { connected: false }
-}));
-const mockStoreDispatch = jest.fn<unknown, [unknown]>();
-jest.mock('../../store/auxStore', () => ({
-	store: {
-		getState: () => mockStoreGetState(),
-		dispatch: (action: unknown) => mockStoreDispatch(action)
-	}
-}));
+jest.mock('../../store/auxStore', () => {
+	const __mockStoreDispatch = jest.fn();
+	return {
+		store: {
+			getState: jest.fn(() => ({})),
+			dispatch: (action: unknown) => __mockStoreDispatch(action)
+		},
+		__mockStoreDispatch
+	};
+});
+
+const { __mockStoreDispatch: mockStoreDispatch } = jest.requireMock('../../store/auxStore');
 
 jest.mock('../loadMissedMessages', () => ({
 	loadMissedMessages: jest.fn<Promise<void>, [unknown]>(() => Promise.resolve())
@@ -82,11 +84,7 @@ jest.mock('../../../actions/room', () => ({
 
 jest.mock('../../encryption', () => ({
 	Encryption: {
-		decryptMessage: jest.fn((msg: unknown) => Promise.resolve(msg)),
-		decryptPendingSubscriptions: jest.fn(),
-		decryptPendingMessages: jest.fn(),
-		getRoomInstance: jest.fn(),
-		stopRoom: jest.fn()
+		decryptMessage: jest.fn((msg: unknown) => Promise.resolve(msg))
 	}
 }));
 
@@ -334,13 +332,7 @@ describe('RoomSubscription', () => {
 
 			const message = { _id, rid, tlm: { $date: 1 } } as any;
 
-			// updateMessage's promise never resolves on the happy path, so fire both and flush the queues.
-			sub.updateMessage({ ...message });
-			sub.updateMessage({ ...message });
-			await Array.from({ length: 10 }).reduce<Promise<unknown>>(
-				chain => chain.then(() => new Promise(resolve => setImmediate(resolve))),
-				Promise.resolve()
-			);
+			await Promise.all([sub.updateMessage({ ...message }), sub.updateMessage({ ...message })]);
 
 			const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([err]) => /pending changes/.test(err?.message));
 			expect(loggedPendingChanges).toBe(false);

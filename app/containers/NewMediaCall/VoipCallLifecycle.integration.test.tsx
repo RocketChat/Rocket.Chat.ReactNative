@@ -24,6 +24,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
+import { acceptNativeCallWithReadiness } from '../../lib/services/voip/acceptNativeCall';
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
@@ -156,6 +157,15 @@ jest.mock('../../lib/services/voip/getPeerAutocompleteOptions', () => ({
 // navigateToCallRoom → goRoom → restApi → encryption → ESM fail.
 jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
+}));
+// Gate boundary mock: the DDP listener now routes accepted signals through
+// acceptNativeCallWithReadiness rather than calling answerCall directly. The
+// gate's own unit tests cover readiness orchestration; this file asserts the
+// lifecycle/navigation contract, so the gate is short-circuited to answerCall.
+jest.mock('../../lib/services/voip/acceptNativeCall', () => ({
+	acceptNativeCallWithReadiness: jest.fn(async (_callId: string, mediaSession: any) => {
+		await mediaSession.answerCall(_callId);
+	})
 }));
 // playCallEndedSound → expo-av → Audio.Sound constructor not present in this test boundary.
 jest.mock('../../lib/services/voip/playCallEndedSound', () => ({
@@ -545,6 +555,9 @@ describe('VoIP call lifecycle (integration)', () => {
 	});
 
 	// ── MediaSessionInstance contract: answerCall ────────────────────────────
+	// Incoming accepted signals now flow through acceptNativeCallWithReadiness
+	// (readiness gate). The gate module is mocked here to delegate straight to
+	// answerCall; gate readiness is covered by acceptNativeCall.test.ts.
 
 	describe('MediaSessionInstance contract: answerCall', () => {
 		it('A1: DDP accepted signal with native pre-accept → answerCall navigates to CallView', async () => {
@@ -570,6 +583,9 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('incoming-1');
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
+			// The DDP listener now funnels accepted signals through the readiness
+			// gate instead of invoking answerCall directly.
+			expect(acceptNativeCallWithReadiness).toHaveBeenCalledWith('incoming-1', mediaSessionInstance);
 		});
 
 		it('A2: accepted signal but call not found → RNCallKeep.endCall, no navigate', async () => {
@@ -594,6 +610,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
+			expect(acceptNativeCallWithReadiness).toHaveBeenCalledWith('missing-1', mediaSessionInstance);
 			// Tighten: confirm the known-noise allowlist entry was actually triggered.
 			expect(consoleErrorSpy).toHaveBeenCalledWith(
 				expect.objectContaining({ message: '[VoIP] Call not found after accept: missing-1' })

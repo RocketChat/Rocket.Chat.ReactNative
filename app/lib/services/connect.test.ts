@@ -665,6 +665,47 @@ describe('connect — pendingHangups drain on reconnect', () => {
 		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
 	});
 
+	it('waits for login to become ready before draining', async () => {
+		const subscribeCallbacks: Array<() => void> = [];
+		mockStoreSubscribe.mockImplementation(cb => {
+			subscribeCallbacks.push(cb);
+			return () => {
+				const index = subscribeCallbacks.indexOf(cb);
+				if (index !== -1) {
+					subscribeCallbacks.splice(index, 1);
+				}
+			};
+		});
+		pendingHangups.record('call-a');
+		let state: MockStoreState = {
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		};
+		mockStoreGetState.mockImplementation(() => state);
+
+		await connect({ server: 'https://example.com' });
+
+		const listener = getCapturedConnectionListener();
+		listener('closed');
+		listener('connected');
+		await flushMicrotasks();
+
+		// Not ready yet — subscribed but not drained.
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+
+		// Transition to authenticated + connected and notify subscribers.
+		state = {
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {}
+		};
+		subscribeCallbacks.forEach(cb => cb());
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
+	});
+
 	it('does not drain when "connected" fires without a prior "close"', async () => {
 		pendingHangups.record('call-a');
 		await connect({ server: SERVER });
