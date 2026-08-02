@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -82,36 +82,41 @@ const Status = ({
 	status,
 	statusText,
 	setStatus,
-	isCustom,
-	isCustomSelected
+	isCustom
 }: {
 	statusType: IStatus;
 	status: TUserStatus;
 	statusText: string;
 	setStatus: (status: TUserStatus, statusText: string) => void;
 	isCustom?: boolean;
-	isCustomSelected: boolean;
 }) => {
 	'use memo';
 
-	const { id, name } = statusType;
+	const { _id, name } = statusType;
+	const isSelected = isCustom ? status === statusType.statusType && statusText === name : status === _id && !statusText;
 	return (
 		<>
 			<List.Radio
-				isSelected={status === id}
-				additionalAccessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
+				isSelected={isSelected}
 				title={name}
 				translateTitle={!isCustom}
 				onPress={() => {
-					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
-					logEvent(events[key]);
-					if (status !== id) {
-						setStatus(id);
+					if (isCustom) {
+						logEvent(events.STATUS_CUSTOM);
+						if (status !== statusType.statusType || statusText !== name) {
+							setStatus(statusType.statusType, name);
+						}
+					} else {
+						const key = `STATUS_${_id.toUpperCase()}` as keyof typeof events;
+						logEvent(events[key]);
+						if (status !== _id || statusText) {
+							setStatus(_id as TUserStatus, '');
+						}
 					}
 				}}
-				testID={`status-view-${id}`}
-				value={statusType.id}
-				left={() => <StatusIcon size={24} status={statusType.id} />}
+				testID={`status-view-${_id}`}
+				value={_id}
+				left={() => <StatusIcon size={24} status={statusType.statusType} />}
 			/>
 			<List.Separator />
 		</>
@@ -180,9 +185,7 @@ const StatusView = (): ReactElement => {
 
 	const setStatus = (status: TUserStatus, statusText: string) => {
 		setValue('status', status);
-		if (statusText) {
-			setValue('statusText', statusText);
-		}
+		setValue('statusText', statusText);
 	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string, expiresAt?: string | null) => {
@@ -206,10 +209,13 @@ const StatusView = (): ReactElement => {
 		sendLoadingEvent({ visible: false });
 	};
 
-	const statusType = STATUS.filter(s => {
-		if (s.id === 'offline' && !Accounts_AllowInvisibleStatusOption) return false;
-		return true;
-	});
+	const statusType = useMemo(() => {
+		const statuses = STATUS.filter(s => {
+			if (s._id === 'offline' && !Accounts_AllowInvisibleStatusOption) return false;
+			return true;
+		});
+		return [...statuses, ...customUserStatus.map(s => ({ _id: s._id, name: s.name, statusType: s.statusType, isCustom: true }))];
+	}, [Accounts_AllowInvisibleStatusOption, customUserStatus]);
 
 	const isStatusChanged = () => {
 		const { status } = inputValues;
@@ -242,7 +248,6 @@ const StatusView = (): ReactElement => {
 						status={inputValues.status}
 						setStatus={setStatus}
 						isCustom={item.isCustom}
-						isCustomSelected={isCustomSelected}
 					/>
 				)}
 				ListHeaderComponent={

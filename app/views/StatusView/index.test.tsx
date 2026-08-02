@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 import { mockedStore } from '../../reducers/mockedStore';
 import { setUser } from '../../actions/login';
+import { setCustomUserStatus } from '../../actions/customUserStatus';
 import { addSettings } from '../../actions/settings';
 import { selectServerSuccess } from '../../actions/server';
 import { initStore } from '../../lib/store/auxStore';
@@ -121,6 +122,50 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			expect(screen.getByTestId('status-view-input')).toBeOnTheScreen();
+		});
+	});
+
+	describe('custom status', () => {
+		beforeEach(() => {
+			mockedStore.dispatch(setCustomUserStatus([{ _id: 'custom-1', name: 'On Vacation', statusType: 'away' }]));
+		});
+
+		it('should render custom statuses from the store', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-custom-1')).toBeOnTheScreen();
+		});
+
+		it('should submit custom status with its name as status text', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-custom-1'));
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('away', 'On Vacation', undefined);
+		});
+
+		it('should clear status text when a built-in status is selected', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'away', statusText: 'On Vacation' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-online'));
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', undefined);
 		});
 	});
 

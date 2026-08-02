@@ -33,7 +33,13 @@ import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from 
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles, getCustomUserStatus, setUserPresenceAway } from '../lib/services/restApi';
+import {
+	saveUserProfile,
+	registerPushToken,
+	getUsersRoles,
+	getCustomUserStatus,
+	setUserPresenceAway
+} from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
@@ -236,7 +242,7 @@ const fetchCustomUserStatus = function* fetchCustomUserStatusFork() {
 		if (customUserStatus.length) {
 			yield put(setCustomUserStatus(customUserStatus));
 		}
-    	} catch (e) {
+	} catch (e) {
 		log(e);
 	}
 };
@@ -324,8 +330,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchCustomUserStatus);
 		yield fork(checkBackgroundAndSetAway);
 		yield getUserPresence(user.id);
-    
-    setLanguage(user?.language);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
