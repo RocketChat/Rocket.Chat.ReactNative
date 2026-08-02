@@ -101,8 +101,8 @@ class Sdk {
 		return this.current?.connection.probe(timeoutMs) ?? Promise.resolve(false);
 	}
 
-	forceReopen(): Promise<boolean> {
-		return this.current?.connection.forceReopen() ?? Promise.resolve(false);
+	reopenNow(): Promise<void> {
+		return this.current?.connection.reopenNow() ?? Promise.resolve();
 	}
 
 	private loadBasicAuth(): void {
@@ -397,7 +397,7 @@ class Sdk {
 
 	/**
 	 * Re-subscribe to the per-user `stream-notify-user` channels needed for VoIP,
-	 * notifications, and presence. Used after `forceReopen()` — once the socket
+	 * notifications, and presence. Used after `reopenNow()` — once the socket
 	 * is rebuilt, any prior subscriptions are server-side stale and must be
 	 * re-established or the user receives no signals (incoming call answers,
 	 * messages, etc.) until the next full saga re-run.

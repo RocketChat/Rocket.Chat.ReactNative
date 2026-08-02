@@ -43,9 +43,9 @@ const setInternalSdk = (value: any) => {
 	(sdk as unknown as { sdk: any }).sdk = value;
 };
 
-const buildFakeConnection = (overrides: Partial<{ probe: jest.Mock; forceReopen: jest.Mock; close: jest.Mock }> = {}) => ({
+const buildFakeConnection = (overrides: Partial<{ probe: jest.Mock; reopenNow: jest.Mock; close: jest.Mock }> = {}) => ({
 	probe: jest.fn().mockResolvedValue(true),
-	forceReopen: jest.fn().mockResolvedValue(true),
+	reopenNow: jest.fn().mockResolvedValue(undefined),
 	close: jest.fn(),
 	...overrides
 });
@@ -90,23 +90,17 @@ describe('Sdk.probe', () => {
 	});
 });
 
-describe('Sdk.forceReopen', () => {
-	it('returns false when sdk.current is undefined', async () => {
+describe('Sdk.reopenNow', () => {
+	it('resolves when sdk.current is undefined', async () => {
 		setInternalSdk(undefined);
-		await expect(sdk.forceReopen()).resolves.toBe(false);
+		await expect(sdk.reopenNow()).resolves.toBeUndefined();
 	});
 
-	it('delegates to connection.forceReopen()', async () => {
+	it('delegates to connection.reopenNow()', async () => {
 		const connection = buildFakeConnection();
 		setInternalSdk({ connection });
-		await expect(sdk.forceReopen()).resolves.toBe(true);
-		expect(connection.forceReopen).toHaveBeenCalledTimes(1);
-	});
-
-	it('returns the result from connection.forceReopen()', async () => {
-		const connection = buildFakeConnection({ forceReopen: jest.fn().mockResolvedValue(false) });
-		setInternalSdk({ connection });
-		await expect(sdk.forceReopen()).resolves.toBe(false);
+		await expect(sdk.reopenNow()).resolves.toBeUndefined();
+		expect(connection.reopenNow).toHaveBeenCalledTimes(1);
 	});
 });
 
@@ -157,7 +151,7 @@ describe('Sdk.subscribeNotifyUser', () => {
 	});
 
 	it('uses the explicit userId even when no user is logged in', () => {
-		// Guards the reconnect/forceReopen timing gap: callers pass userId explicitly
+		// Guards the reconnect/reopenNow timing gap: callers pass userId explicitly
 		// so subscriptions are established even before account.user is re-populated.
 		const fake = buildFakeSdkWithSubscribe(undefined);
 		setInternalSdk(fake);

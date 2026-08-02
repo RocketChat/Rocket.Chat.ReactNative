@@ -1,59 +1,27 @@
---- a/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
-+++ b/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
-@@ -21,6 +21,26 @@
-     connect(): Promise<boolean>;
-     reconnect(): Promise<boolean>;
-     close(): void;
-+    /**
-+     * Active liveness check: sends a raw DDP `ping` and resolves true if `pong`
-+     * arrives within `timeoutMs`. Useful for detecting zombie sockets that
-+     * remain in `status === 'connected'` but whose underlying transport is dead
-+     * (e.g. mobile NAT timeouts that don't fire `onclose`).
-+     */
-+    probe(timeoutMs?: number): Promise<boolean>;
-+    /**
-+     * Tear down the current socket and reconnect from scratch. Concurrent
-+     * callers share one in-flight promise so parallel calls don't race each
-+     * other. Resolves true once the new socket is connected; false on failure.
-+     */
-+    forceReopen(): Promise<boolean>;
-+    /**
-+     * Ensure the socket is usable. If `status !== 'connected'`, force-reopens.
-+     * If status is `connected`, runs a `probe()` to detect zombie sockets; on
-+     * a dead probe, force-reopens. Resolves true when the socket is healthy or
-+     * was successfully reopened.
-+     */
-+    checkAndReopen(probeTimeoutMs?: number): Promise<boolean>;
- }
- interface WebSocketConstructor {
-     new (url: string | URL, protocols?: string | string[]): WebSocket;
-@@ -43,11 +63,15 @@
-     ws: WebSocket | undefined;
-     retryCount: number;
-     queue: Set<string>;
-+    private reopenInFlight;
-     constructor(url: string, WS: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions);
-     private emitStatus;
-     reconnect(): Promise<boolean>;
-     connect(): Promise<boolean>;
-     close(): void;
-+    probe(timeoutMs?: number): Promise<boolean>;
-+    forceReopen(): Promise<boolean>;
-+    checkAndReopen(probeTimeoutMs?: number): Promise<boolean>;
-     static create(url: string, webSocketImpl: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions): ConnectionImpl;
- }
- export {};
+diff --git a/node_modules/@rocket.chat/ddp-client/dist/Connection.js b/node_modules/@rocket.chat/ddp-client/dist/Connection.js
+index c6c3edf..15cd6be 100644
 --- a/node_modules/@rocket.chat/ddp-client/dist/Connection.js
 +++ b/node_modules/@rocket.chat/ddp-client/dist/Connection.js
-@@ -11,6 +11,7 @@
+@@ -11,6 +11,8 @@ class ConnectionImpl extends emitter_1.Emitter {
          this.status = 'idle';
          this.retryCount = 0;
          this.queue = new Set();
++        this.lastPing = Date.now();
 +        this.reopenInFlight = null;
          this.ssl = url.startsWith('https') || url.startsWith('wss');
          this.url = url.replace(/^https?:\/\//, '').replace(/^wss?:\/\//, '');
          this.client.onDispatchMessage((message) => {
-@@ -91,6 +92,12 @@
+@@ -51,7 +53,9 @@ class ConnectionImpl extends emitter_1.Emitter {
+         this.ws = ws;
+         return new Promise((resolve, reject) => {
+             ws.onopen = () => {
++                this.lastPing = Date.now();
+                 ws.onmessage = (event) => {
++                    this.lastPing = Date.now();
+                     this.client.handleMessage(String(event.data));
+                 };
+                 // The server may send an initial message which is a JSON object lacking a msg key. If so, the client should ignore it. The client does not have to wait for this message.
+@@ -91,6 +95,12 @@ class ConnectionImpl extends emitter_1.Emitter {
                  });
              };
              ws.onclose = () => {
@@ -66,7 +34,7 @@
                  clearTimeout(this.retryOptions.retryTimer);
                  if (this.status === 'closed') {
                      return;
-@@ -109,11 +116,75 @@
+@@ -109,11 +119,97 @@ class ConnectionImpl extends emitter_1.Emitter {
          });
      }
      close() {
@@ -91,41 +59,71 @@
      }
 +    probe(timeoutMs = 2000) {
 +        return new Promise((resolve) => {
-+            const ddp = this.client;
-+            if (!ddp || typeof ddp.ping !== 'function' || typeof ddp.on !== 'function') {
++            if (!this.ws || this.ws.readyState !== this.ws.OPEN) {
 +                resolve(false);
 +                return;
 +            }
++            const lastPingAtStart = this.lastPing;
 +            let settled = false;
 +            let off;
-+            const finish = (alive) => {
++            const cleanup = () => {
 +                if (settled) return;
 +                settled = true;
-+                clearTimeout(timer);
 +                if (off) off();
-+                resolve(alive);
++                clearTimeout(timer);
 +            };
-+            const timer = setTimeout(() => finish(false), timeoutMs);
++            const onPong = () => {
++                if (this.lastPing <= lastPingAtStart) return;
++                cleanup();
++                resolve(true);
++            };
++            off = this.client.on('pong', onPong);
++            const timer = setTimeout(() => {
++                cleanup();
++                resolve(false);
++            }, timeoutMs);
 +            try {
-+                off = ddp.on('pong', () => finish(true));
-+                ddp.ping();
++                this.ws.send(JSON.stringify({ msg: 'ping' }));
 +            }
 +            catch (_a) {
-+                finish(false);
++                cleanup();
++                resolve(false);
 +            }
 +        });
 +    }
-+    forceReopen() {
++    reopenNow() {
 +        if (this.reopenInFlight) return this.reopenInFlight;
-+        try {
-+            this.close();
++        clearTimeout(this.retryOptions.retryTimer);
++        this.emit('disconnected');
++        if (this.ws) {
++            try {
++                this.ws.onopen = null;
++                this.ws.onmessage = null;
++                this.ws.onerror = null;
++                this.ws.onclose = null;
++            }
++            catch (_a) {
++                // some WebSocket impls throw on null assignment — safe to ignore
++            }
++            try {
++                this.ws.close();
++            }
++            catch (_b) {
++                // ignore — we're rebuilding anyway
++            }
 +        }
-+        catch (_a) {
-+            // ignore — we're rebuilding anyway
-+        }
-+        const p = this.reconnect()
-+            .then((v) => Boolean(v))
-+            .catch(() => false);
++        this.status = 'disconnected';
++        const p = new Promise((resolve) => {
++            let settled = false;
++            const finish = () => {
++                if (settled) return;
++                settled = true;
++                clearTimeout(timer);
++                resolve();
++            };
++            const timer = setTimeout(finish, 10000);
++            this.connect().then(finish, finish);
++        });
 +        this.reopenInFlight = p;
 +        const clear = () => {
 +            if (this.reopenInFlight === p) this.reopenInFlight = null;
@@ -133,14 +131,35 @@
 +        p.then(clear, clear);
 +        return p;
 +    }
-+    async checkAndReopen(probeTimeoutMs = 2000) {
-+        if (this.status !== 'connected') {
-+            return this.forceReopen();
-+        }
-+        const alive = await this.probe(probeTimeoutMs);
-+        if (alive) return true;
-+        return this.forceReopen();
-+    }
      static create(url, webSocketImpl, client, retryOptions = { retryCount: 0, retryTime: 1000 }) {
          return new ConnectionImpl(url, webSocketImpl, client, retryOptions);
      }
+diff --git a/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts b/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
+index 5b312fa..fabff3e 100644
+--- a/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
++++ b/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
+@@ -21,6 +21,8 @@ export interface Connection extends Emitter<{
+     connect(): Promise<boolean>;
+     reconnect(): Promise<boolean>;
+     close(): void;
++    probe(timeoutMs?: number): Promise<boolean>;
++    reopenNow(): Promise<void>;
+ }
+ interface WebSocketConstructor {
+     new (url: string | URL, protocols?: string | string[]): WebSocket;
+@@ -43,11 +45,15 @@ export declare class ConnectionImpl extends Emitter<{
+     ws: WebSocket | undefined;
+     retryCount: number;
+     queue: Set<string>;
++    private lastPing;
++    private reopenInFlight;
+     constructor(url: string, WS: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions);
+     private emitStatus;
+     reconnect(): Promise<boolean>;
+     connect(): Promise<boolean>;
+     close(): void;
++    probe(timeoutMs?: number): Promise<boolean>;
++    reopenNow(): Promise<void>;
+     static create(url: string, webSocketImpl: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions): ConnectionImpl;
+ }
+ export {};

@@ -404,8 +404,20 @@ async function loginOAuthOrSso(params: ICredentials) {
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
-function checkAndReopen(): Promise<boolean> {
-	return sdk.current?.connection.checkAndReopen() ?? Promise.resolve(false);
+async function checkAndReopen(): Promise<boolean> {
+	const connection = sdk.current?.connection;
+	if (!connection) {
+		return false;
+	}
+	if (connection.status !== 'connected') {
+		await connection.reopenNow();
+		return true;
+	}
+	const alive = await connection.probe();
+	if (!alive) {
+		await connection.reopenNow();
+	}
+	return true;
 }
 
 /**

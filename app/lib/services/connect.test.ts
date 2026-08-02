@@ -21,7 +21,8 @@ jest.mock('../methods/helpers/deviceInfo', () => ({
 // All event-driven tests invoke getCapturedConnectionListener() to drive it.
 const mockConnectionOn = jest.fn();
 const mockConnectionConnect = jest.fn().mockResolvedValue(undefined);
-const mockConnectionCheckAndReopen = jest.fn().mockResolvedValue(true);
+const mockConnectionProbe = jest.fn().mockResolvedValue(true);
+const mockConnectionReopenNow = jest.fn().mockResolvedValue(undefined);
 const mockSdkInitialize = jest.fn().mockResolvedValue(undefined);
 const mockSdkOnCollection = jest.fn();
 const mockSdkDisconnect = jest.fn();
@@ -33,7 +34,7 @@ jest.mock('./sdk', () => {
 	const state: {
 		server: string | undefined;
 		currentEnabled: boolean;
-		connection: { on: any; connect: any; checkAndReopen: any; status: string } | undefined;
+		connection: { on: any; connect: any; probe: any; reopenNow: any; status: string } | undefined;
 		status: string;
 	} = {
 		server: undefined,
@@ -44,7 +45,8 @@ jest.mock('./sdk', () => {
 	const makeConnection = () => ({
 		on: (event: string, cb: any) => mockConnectionOn(event, cb),
 		connect: () => mockConnectionConnect(),
-		checkAndReopen: () => mockConnectionCheckAndReopen(),
+		probe: () => mockConnectionProbe(),
+		reopenNow: () => mockConnectionReopenNow(),
 		get status() {
 			return state.status;
 		}
@@ -109,7 +111,7 @@ const sdkMock = jest.requireMock('./sdk') as {
 	__setServer: (v: string | undefined) => void;
 	__setCurrentEnabled: (v: boolean) => void;
 	__setConnectionStatus: (v: string) => void;
-	__getCurrentConnection: () => { on: any; connect: any; checkAndReopen: any; status: string } | undefined;
+	__getCurrentConnection: () => { on: any; connect: any; probe: any; reopenNow: any; status: string } | undefined;
 };
 
 // --- Store mock ---
@@ -764,6 +766,7 @@ describe('connect — listener lifecycle across reconnects', () => {
 describe('checkAndReopen', () => {
 	afterEach(() => {
 		sdkMock.__setCurrentEnabled(true);
+		jest.clearAllMocks();
 	});
 
 	it('resolves false when sdk.current is undefined', async () => {
@@ -771,15 +774,27 @@ describe('checkAndReopen', () => {
 		await expect(checkAndReopen()).resolves.toBe(false);
 	});
 
-	it('delegates to connection.checkAndReopen() and returns its result', async () => {
-		mockConnectionCheckAndReopen.mockResolvedValueOnce(true);
+	it('reopens when the connection status is not connected', async () => {
+		sdkMock.__setConnectionStatus('disconnected');
 		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(mockConnectionCheckAndReopen).toHaveBeenCalledTimes(1);
+		expect(mockConnectionReopenNow).toHaveBeenCalledTimes(1);
+		expect(mockConnectionProbe).not.toHaveBeenCalled();
 	});
 
-	it('forwards false when connection.checkAndReopen() resolves false', async () => {
-		mockConnectionCheckAndReopen.mockResolvedValueOnce(false);
-		await expect(checkAndReopen()).resolves.toBe(false);
+	it('probes when connected and skips the reopen when the socket is alive', async () => {
+		sdkMock.__setConnectionStatus('connected');
+		mockConnectionProbe.mockResolvedValueOnce(true);
+		await expect(checkAndReopen()).resolves.toBe(true);
+		expect(mockConnectionProbe).toHaveBeenCalledTimes(1);
+		expect(mockConnectionReopenNow).not.toHaveBeenCalled();
+	});
+
+	it('reopens when the probe reports the socket dead', async () => {
+		sdkMock.__setConnectionStatus('connected');
+		mockConnectionProbe.mockResolvedValueOnce(false);
+		await expect(checkAndReopen()).resolves.toBe(true);
+		expect(mockConnectionProbe).toHaveBeenCalledTimes(1);
+		expect(mockConnectionReopenNow).toHaveBeenCalledTimes(1);
 	});
 });
 
@@ -796,8 +811,7 @@ describe('connect — rooms subscription guard reset on close', () => {
 	});
 
 	// Regression: a long background marks the DDP socket stale, so foregrounding triggers
-	// `checkAndReopen` → `forceReopen`, which wipes the SDK subscriptions and emits 'close' while
-	// bypassing `connect()`. The rooms-list `stream-notify-user` feed only re-subscribes when the
+	// `checkAndReopen` → `reopenNow`, which closes the stale socket and reconnects. The rooms-list `stream-notify-user` feed only re-subscribes when the
 	// module-level guard in `subscribeRooms` is clear, and `unsubscribeRooms()` is what clears it.
 	// If the 'close' handler stops calling `unsubscribeRooms()`, the guard stays set after reconnect
 	// and the rooms list silently stops updating (subscriptions/favorites/reads).

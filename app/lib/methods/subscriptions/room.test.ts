@@ -199,7 +199,7 @@ describe('RoomSubscription', () => {
 		});
 	});
 
-	describe('DDP subscription recovery after forceReopen', () => {
+	describe('DDP subscription recovery after reconnect', () => {
 		it('handleLogin re-subscribes the room to restore lost DDP subscriptions', async () => {
 			await sub.subscribe();
 			mockSubscribeRoom.mockClear();

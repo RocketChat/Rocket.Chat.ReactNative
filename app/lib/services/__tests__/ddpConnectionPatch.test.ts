@@ -3,20 +3,22 @@
  * `patches/@rocket.chat+ddp-client+0.3.51.patch`.
  *
  * `sdk.test.ts` / `connect.test.ts` only assert delegation to a *mocked*
- * `connection.probe` / `forceReopen` / `checkAndReopen` — none of the real
- * patched logic runs under test. This file imports the real compiled
- * `ConnectionImpl` (the deep `dist/Connection` path, since it isn't part of
- * the package's public API surface) and drives it with a fake `WebSocket` and
- * the package's own `MinimalDDPClient`, so a future edit to the patch (or a
- * `ddp-client` version bump that silently drops it) is caught by a real
- * regression rather than a mock.
+ * `connection.probe` / `reopenNow` — none of the real patched logic runs
+ * under test. This file imports the real compiled `ConnectionImpl` (the deep
+ * `dist/Connection` path, since it isn't part of the package's public API
+ * surface) and drives it with a fake `WebSocket` and the package's own
+ * `MinimalDDPClient`, so a future edit to the patch (or a `ddp-client`
+ * version bump that silently drops it) is caught by a real regression rather
+ * than a mock.
  *
  * Patched behaviors under test:
  *  - stale-`onclose` guard: `ws.onclose` bails out with `if (ws !== this.ws) return;`
- *    so a late close event from a socket that `forceReopen()` already replaced
+ *    so a late close event from a socket that `reopenNow()` already replaced
  *    cannot clobber the live connection's status.
- *  - `forceReopen()` in-flight dedup: concurrent calls share one `reopenInFlight`
+ *  - `reopenNow()` in-flight dedup: concurrent calls share one `reopenInFlight`
  *    promise instead of tearing the socket down twice.
+ *  - `probe()`: only resolves true for a pong received on an open socket after
+ *    the probe started (lastPing guard).
  */
 import { ConnectionImpl } from '@rocket.chat/ddp-client/dist/Connection';
 import { MinimalDDPClient } from '@rocket.chat/ddp-client/dist/MinimalDDPClient';
@@ -89,36 +91,39 @@ const buildConnection = () => {
 	return { client, connection };
 };
 
+const connectUp = async (connection: any) => {
+	const connectPromise = connection.connect();
+	const ws = FakeWebSocket.instances[0];
+	ws.open();
+	completeHandshake(ws, 'session-1');
+	await connectPromise;
+	return ws;
+};
+
 describe('patched ConnectionImpl (patches/@rocket.chat+ddp-client+0.3.51.patch)', () => {
 	beforeEach(() => {
 		FakeWebSocket.instances = [];
 	});
 
-	it('ignores a stale onclose from a socket that forceReopen() already replaced', async () => {
+	it('ignores a stale onclose from a socket that reopenNow() already replaced', async () => {
 		const { connection } = buildConnection();
+		const staleSocket = await connectUp(connection);
 
-		const connectPromise = connection.connect();
-		const staleSocket = FakeWebSocket.instances[0];
-		staleSocket.open();
-		completeHandshake(staleSocket, 'session-1');
-		await expect(connectPromise).resolves.toBe(true);
-		expect(connection.status).toBe('connected');
-
-		// Capture the stale socket's onclose handler *before* forceReopen (via
-		// close()) severs it, to stand in for a close event that was already
-		// in flight on the transport at the moment the socket got replaced —
-		// the real-world race the `ws !== this.ws` guard defends against.
+		// Capture the stale socket's onclose handler *before* reopenNow severs
+		// it, to stand in for a close event that was already in flight on the
+		// transport at the moment the socket got replaced — the real-world race
+		// the `ws !== this.ws` guard defends against.
 		const staleOnClose = staleSocket.onclose;
 		expect(typeof staleOnClose).toBe('function');
 
-		const reopenPromise = connection.forceReopen();
+		const reopenPromise = connection.reopenNow();
 		expect(FakeWebSocket.instances).toHaveLength(2);
 		const freshSocket = FakeWebSocket.instances[1];
 		expect(freshSocket).not.toBe(staleSocket);
 
 		freshSocket.open();
 		completeHandshake(freshSocket, 'session-2');
-		await expect(reopenPromise).resolves.toBe(true);
+		await expect(reopenPromise).resolves.toBeUndefined();
 		expect(connection.status).toBe('connected');
 		expect(connection.ws).toBe(freshSocket);
 
@@ -132,16 +137,12 @@ describe('patched ConnectionImpl (patches/@rocket.chat+ddp-client+0.3.51.patch)'
 		expect(connection.ws).toBe(freshSocket);
 	});
 
-	it('dedupes concurrent forceReopen() calls into a single in-flight reopen', async () => {
+	it('dedupes concurrent reopenNow() calls into a single in-flight reopen', async () => {
 		const { connection } = buildConnection();
+		await connectUp(connection);
 
-		const connectPromise = connection.connect();
-		FakeWebSocket.instances[0].open();
-		completeHandshake(FakeWebSocket.instances[0], 'session-1');
-		await connectPromise;
-
-		const first = connection.forceReopen();
-		const second = connection.forceReopen();
+		const first = connection.reopenNow();
+		const second = connection.reopenNow();
 
 		// The second call must return the exact same in-flight promise rather
 		// than tearing the socket down again.
@@ -152,101 +153,82 @@ describe('patched ConnectionImpl (patches/@rocket.chat+ddp-client+0.3.51.patch)'
 		freshSocket.open();
 		completeHandshake(freshSocket, 'session-2');
 
-		await expect(Promise.all([first, second])).resolves.toEqual([true, true]);
+		await expect(Promise.all([first, second])).resolves.toEqual([undefined, undefined]);
 		// Still only one extra socket was ever opened for the two concurrent calls.
 		expect(FakeWebSocket.instances).toHaveLength(2);
 	});
 
+	it('tears down the replaced socket without emitting a status event', async () => {
+		const { connection } = buildConnection();
+		const staleSocket = await connectUp(connection);
+
+		const statusEvents: string[] = [];
+		connection.on('connection', (status: string) => statusEvents.push(status));
+		const disconnected = jest.fn();
+		connection.on('disconnected', disconnected);
+
+		connection.reopenNow();
+		expect(staleSocket.onopen).toBeNull();
+		expect(staleSocket.onmessage).toBeNull();
+		expect(staleSocket.onclose).toBeNull();
+		expect(disconnected).toHaveBeenCalledTimes(1);
+		// No 'disconnected' status event from the swap: the app's redux state is
+		// only flipped by the fresh 'connecting'/'connected' that follows,
+		// avoiding a spurious disconnect clobber.
+		expect(statusEvents).toEqual(['connecting']);
+
+		// Complete the fresh handshake so the reconnect bailout timer is cleared.
+		const freshSocket = FakeWebSocket.instances[1];
+		freshSocket.open();
+		completeHandshake(freshSocket, 'session-2');
+		await new Promise(r => setTimeout(r, 0));
+	});
+
 	describe('probe()', () => {
-		it('resolves true when a pong is received', async () => {
-			const { client, connection } = buildConnection();
-			const connectPromise = connection.connect();
-			const ws = FakeWebSocket.instances[0];
-			ws.open();
-			completeHandshake(ws, 'session-1');
-			await connectPromise;
+		it('resolves true when a pong is received on an open socket', async () => {
+			const { connection } = buildConnection();
+			const ws = await connectUp(connection);
 
-			let pongCb: ((data: unknown) => void) | undefined;
-			(client as any).on = jest.fn((ev: string, cb: (data: unknown) => void) => {
-				if (ev === 'pong') pongCb = cb;
-				return () => {};
-			});
-			(client as any).ping = jest.fn(() => {
-				pongCb?.({ id: 'x' });
-			});
+			const p = connection.probe(200);
+			// Pongs arrive over the wire, so deliver it after the probe started —
+			// never synchronously, or it would land in the same millisecond as the
+			// probe's lastPing snapshot and be filtered by the stale-pong guard.
+			setTimeout(() => {
+				ws.onmessage?.({ data: JSON.stringify({ msg: 'pong' }) });
+			}, 5);
 
-			await expect(connection.probe()).resolves.toBe(true);
+			await expect(p).resolves.toBe(true);
 		});
 
 		it('resolves false when no pong arrives within the timeout', async () => {
-			const { client, connection } = buildConnection();
-			const connectPromise = connection.connect();
-			const ws = FakeWebSocket.instances[0];
-			ws.open();
-			completeHandshake(ws, 'session-1');
-			await connectPromise;
+			const { connection } = buildConnection();
+			await connectUp(connection);
 
 			jest.useFakeTimers();
-			(client as any).on = jest.fn(() => () => {});
-			(client as any).ping = jest.fn();
 			const p = connection.probe(50);
 			jest.advanceTimersByTime(100);
 			await expect(p).resolves.toBe(false);
 			jest.useRealTimers();
 		});
 
-		it('resolves false when the client has no ping/on', async () => {
-			const { client, connection } = buildConnection();
-			const connectPromise = connection.connect();
-			const ws = FakeWebSocket.instances[0];
-			ws.open();
-			completeHandshake(ws, 'session-1');
-			await connectPromise;
-
-			(client as any).ping = undefined;
-			(client as any).on = undefined;
-
+		it('resolves false when the socket is not open', async () => {
+			const { connection } = buildConnection();
 			await expect(connection.probe()).resolves.toBe(false);
 		});
-	});
 
-	describe('checkAndReopen()', () => {
-		it('forces a reopen when status is not connected', async () => {
+		it('ignores pongs that arrived before the probe started', async () => {
 			const { connection } = buildConnection();
-			// status defaults to 'idle'
-			const reopen = jest.spyOn(connection, 'forceReopen').mockResolvedValue(true);
+			const ws = await connectUp(connection);
 
-			await expect(connection.checkAndReopen()).resolves.toBe(true);
-			expect(reopen).toHaveBeenCalled();
-		});
+			// A heartbeat pong lands just before the probe begins; only a pong
+			// that advances lastPing past the probe start should count.
+			ws.onmessage?.({ data: JSON.stringify({ msg: 'pong' }) });
 
-		it('returns true when the probe reports the socket alive', async () => {
-			const { connection } = buildConnection();
-			const connectPromise = connection.connect();
-			const ws = FakeWebSocket.instances[0];
-			ws.open();
-			completeHandshake(ws, 'session-1');
-			await connectPromise;
-
-			const probe = jest.spyOn(connection, 'probe').mockResolvedValue(true);
-
-			await expect(connection.checkAndReopen()).resolves.toBe(true);
-			expect(probe).toHaveBeenCalled();
-		});
-
-		it('forces a reopen when the probe reports the socket dead', async () => {
-			const { connection } = buildConnection();
-			const connectPromise = connection.connect();
-			const ws = FakeWebSocket.instances[0];
-			ws.open();
-			completeHandshake(ws, 'session-1');
-			await connectPromise;
-
-			jest.spyOn(connection, 'probe').mockResolvedValue(false);
-			const reopen = jest.spyOn(connection, 'forceReopen').mockResolvedValue(true);
-
-			await expect(connection.checkAndReopen()).resolves.toBe(true);
-			expect(reopen).toHaveBeenCalled();
+			jest.useFakeTimers();
+			const p = connection.probe(50);
+			jest.advanceTimersByTime(100);
+			await expect(p).resolves.toBe(false);
+			jest.useRealTimers();
 		});
 	});
 });
