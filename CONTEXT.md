@@ -104,6 +104,23 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 | **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
 | **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
 
+## Timestamp Trust Boundary
+
+Not every `_updatedAt` is worth the same. A Message's `_updatedAt` read out of a **server response** is server truth, and is the only legitimate source for the sync cursor. The same field read off of a **WatermelonDB row** is device-tainted: offline sends, Temp and Error sends, push-inserted rows, and `normalizeMessage`'s `_updatedAt || new Date()` fallback all stamp the device clock.
+
+Therefore the **Last Open** must be taken from the raw payload _before_ `normalizeMessage` / `buildMessage` runs — never from a database row, and never from `Date.now()`.
+
+| Term                 | Definition                                                                                                                   | Aliases to avoid       |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **Last Open**        | The fetch cursor for a Subscription (`lastOpen` column): the newest server `_updatedAt` actually received for that Room      | last open, last update |
+| **Last Seen**        | The Subscription's read receipt (`ls`): the newest Message the user has read, which anchors the Unread Separator             | last read              |
+| **Server Timestamp** | An `_updatedAt` taken from a server response — the only value the server can meaningfully compare a cursor against           | Timestamp (ambiguous)  |
+| **Device Timestamp** | An `_updatedAt` present on a local row but written by the device clock; unusable as a cursor because the server never saw it | Timestamp (ambiguous)  |
+
+A **Last Open** below a change's **Server Timestamp** only costs a re-fetch; one above it makes the server stay silent, and the change is never delivered. When in doubt, the lower cursor is the safe one.
+
+A **Last Open** and a **Last Seen** are not interchangeable — conflating them (one column serving as both fetch cursor and unread anchor) is what produced permanently invisible Messages.
+
 ## Message Action & Position State
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
@@ -180,11 +197,12 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Server & Connection
 
-| Term               | Definition                                                                                        | Aliases to avoid                                                 |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **Server**         | A Rocket.Chat server instance the app connects to, with version, settings, and enterprise modules | Workspace (used by web but not consistently in mobile), instance |
-| **Server History** | List of previously connected Servers for quick reconnection                                       | Recent servers                                                   |
-| **Meteor Connect** | The WebSocket connection to the Server's DDP (Distributed Data Protocol) endpoint                 | Socket, connection                                               |
+| Term               | Definition                                                                                                               | Aliases to avoid                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| **Server**         | A Rocket.Chat server instance the app connects to, with version, settings, and enterprise modules                        | Workspace (used by web but not consistently in mobile), instance |
+| **Server History** | List of previously connected Servers for quick reconnection                                                              | Recent servers                                                   |
+| **Meteor Connect** | The WebSocket connection to the Server's DDP (Distributed Data Protocol) endpoint                                        | Socket, connection                                               |
+| **Socket Health**  | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead | Staleness (stale/gray/fresh), socket probe                       |
 
 ## Navigation & Layout
 
@@ -242,6 +260,7 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 - **"Forward"** in omnichannel context means **Transfer** (reassigning a room to another agent/department). The codebase uses both `forwardRoom` and "transfer" — prefer **Transfer** as the domain term.
 - **"History"** is overloaded: **Server History** is the recent-Servers reconnection list; **Room History** is older Messages fetched on demand. The action `roomHistoryRequest` and saga `ROOM.HISTORY_REQUEST` refer to **Room History**.
 - **"Window"** is used metaphorically in the Subscriptions dialogue ("a Subscription is the user's window into it"); a **Message Window** is the concrete observed Message range in the Room view. Disambiguate when both could be meant.
+- **"`lastOpen`"** names a database column, not a concept: it stores the **Last Open**, a server-clock fetch cursor. It has never meant "when the user last opened the room". The Unread Separator anchor is **Last Seen** (`ls`). Do not read `lastOpen` as a read receipt or write a device clock into it.
 - **"Load more"** is directional: older Messages are an **Older Loader** (`MORE`/`PREVIOUS_CHUNK`), newer Messages are a **Newer Loader** (`NEXT_CHUNK`). Avoid bare "load more".
 - **"System message" vs "Info message"** — **System Message** is the umbrella (any `t`-bearing server Message); **Info Message** is the narrower set of room-event System Messages. The typed events `e2e`, `discussion-created`, `jitsi_call_started`, and `videoconf` are System Messages but NOT Info Messages — each gets its own rendering branch.
 - **"Thread reply"** is overloaded. The glossary's **Thread Message** is the data concept (any Message with `tmid`); the code's `isThreadReply` is a _rendering position_ — the first Thread Message in a run shown in the parent Room, which gets the "in reply to" header. Do not use "thread reply" for the data concept.
