@@ -10,6 +10,7 @@ import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
 
 const COUNT = 50;
 const MAX_BATCHES = 10;
@@ -32,15 +33,16 @@ async function load(args: {
 	t: RoomTypes;
 	loaderItem?: TMessageModel;
 	onUiLoaderPushed?: (loaderId: string) => void;
-}): Promise<{ messages: IMessage[]; lastBatchWasFull: boolean }> {
+}): Promise<{ messages: IMessage[]; serverTimestamps: TServerTimestamps; lastBatchWasFull: boolean }> {
 	const roomId = args.rid;
 	const hideSystemMessages = await resolveHideSystemMessages(roomId);
 	const apiType = roomTypeToApiType(args.t);
 	if (!apiType) {
-		return { messages: [], lastBatchWasFull: false };
+		return { messages: [], serverTimestamps: [], lastBatchWasFull: false };
 	}
 
 	const allMessages: IMessage[] = [];
+	const serverTimestamps: TServerTimestamps = [];
 	let visibleMainMessagesCount = 0;
 	let batchesFetched = 0;
 	let lastBatchWasFull = false;
@@ -73,6 +75,7 @@ async function load(args: {
 		}
 
 		const batch = data.messages as IMessage[];
+		serverTimestamps.push(...snapshotServerTimestamps(batch));
 		allMessages.push(...batch);
 		lastBatchWasFull = batch.length === COUNT;
 
@@ -108,7 +111,7 @@ async function load(args: {
 
 	const startTimestamp = args.latest ? new Date(args.latest).toISOString() : undefined;
 	await fetchBatch(startTimestamp);
-	return { messages: allMessages, lastBatchWasFull };
+	return { messages: allMessages, serverTimestamps, lastBatchWasFull };
 }
 
 export async function loadMessagesForRoom(args: {
@@ -119,7 +122,7 @@ export async function loadMessagesForRoom(args: {
 }): Promise<void> {
 	let uiLoaderId: string | null = null;
 	try {
-		const { messages, lastBatchWasFull } = await load({
+		const { messages, serverTimestamps, lastBatchWasFull } = await load({
 			...args,
 			onUiLoaderPushed: id => {
 				uiLoaderId = id;
@@ -138,6 +141,10 @@ export async function loadMessagesForRoom(args: {
 				} as IMessage);
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
+		}
+
+		if (!args.latest && !args.loaderItem) {
+			await updateLastOpen(args.rid, serverTimestamps);
 		}
 	} catch (e) {
 		log(e);
