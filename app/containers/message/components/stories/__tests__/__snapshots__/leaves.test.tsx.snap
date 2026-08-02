@@ -296,9 +296,6 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -2692,9 +2689,6 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -2915,9 +2909,6 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -3140,9 +3131,6 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -3363,9 +3351,6 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4588,9 +4573,6 @@ exports[`Story Snapshots: SingleImageOldServer should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
