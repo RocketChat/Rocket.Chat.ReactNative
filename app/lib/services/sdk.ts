@@ -150,7 +150,7 @@ class Sdk {
 		const sdk = this.ensureInitialized();
 		try {
 			// @ts-ignore
-			return await sdk.rest.get(endpoint, params, {
+			return sdk.rest.get(endpoint, params, {
 				headers: this.headers
 			});
 		} catch (e: any) {
@@ -190,9 +190,6 @@ class Sdk {
 			}
 			return result;
 		} catch (e: any) {
-			// @rocket.chat/api-client rejects with the raw fetch Response on transport failures (network/5xx),
-			// for both REST and method calls. Normalize it so callers can read e.data.* (REST) or e.error/e.reason
-			// (method call, which is flat, matching the shape already thrown for method-call business errors above).
 			const normalizedResponse = e instanceof Response ? await normalizeResponseError(e) : null;
 			const normalized = isMethodCall ? normalizedResponse?.data ?? e : normalizedResponse ?? e;
 			const errorType = isMethodCall ? normalized?.error : normalized?.data?.errorType;
@@ -258,10 +255,6 @@ class Sdk {
 			if (loginResult?.status !== 'success' || !loginResult.data) {
 				return Promise.reject(new Error('Invalid response from server'));
 			}
-			// Auth is tracked in two places, both required: loginWithToken() sets the DDP-level session used
-			// by methodCall()/subscribe(), while setHeaders() below sets the REST-level auth used by get/post/delete.
-			// Another server may have been selected while the REST login was in flight — applying this token
-			// to the wrong sdk instance would authenticate server A's credentials on server B's connection.
 			if (this.server !== server) {
 				return Promise.reject(new Error('Server switched during login'));
 			}
@@ -395,16 +388,6 @@ class Sdk {
 		return this.current?.stream(...args);
 	}
 
-	/**
-	 * Re-subscribe to the per-user `stream-notify-user` channels needed for VoIP,
-	 * notifications, and presence. Used after `reopenNow()` — once the socket
-	 * is rebuilt, any prior subscriptions are server-side stale and must be
-	 * re-established or the user receives no signals (incoming call answers,
-	 * messages, etc.) until the next full saga re-run.
-	 *
-	 * Ports the old SDK's `subscribeNotifyUser()` helper. Returns an empty array
-	 * when there is no current SDK or no logged-in user.
-	 */
 	subscribeNotifyUser(userId?: string) {
 		const client = this.current?.client;
 		const uid = userId ?? this.current?.account.user?.id;
