@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
+import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
+import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/externalInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
+import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
@@ -18,19 +23,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
-	const [visible, setVisible] = useState(false);
+const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
-				runOnJS(setVisible)(true);
+				scheduleOnRN(setScrolledPastLimit, true);
 			} else {
-				runOnJS(setVisible)(false);
+				scheduleOnRN(setScrolledPastLimit, false);
 			}
 		}
 	});
 
+	// Anchored window: loaded rows' bottom edge isn't the Live Tail, so force the FAB visible to keep a path back to live.
+	const visible = scrolledPastLimit || !!isAnchored;
+
+	const isScreenReaderEnabled = useIsScreenReaderEnabled();
+
+	const renderScrollComponent = !isIOS && (isScreenReaderEnabled || isExternalKeyboardConnected());
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}
@@ -43,8 +54,13 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
+				renderScrollComponent={
+					renderScrollComponent
+						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
+						: undefined
+				}
 				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
+				initialNumToRender={20}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}

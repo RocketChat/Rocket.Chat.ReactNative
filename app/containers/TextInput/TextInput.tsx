@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { I18nManager, type StyleProp, StyleSheet, TextInput as RNTextInput, type TextStyle } from 'react-native';
 
 import { type IRCTextInputProps } from './FormTextInput';
@@ -15,7 +15,7 @@ export interface IThemedTextInput extends IRCTextInputProps {
 	style: StyleProp<TextStyle>;
 }
 
-export const TextInput = React.forwardRef<RNTextInput, IThemedTextInput>(({ style, ...props }, ref) => {
+export const TextInput = forwardRef<RNTextInput, IThemedTextInput>(({ style, ...props }, ref) => {
 	const { theme } = useTheme();
 	return (
 		<RNTextInput

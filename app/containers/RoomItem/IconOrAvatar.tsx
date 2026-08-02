@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
@@ -20,8 +20,9 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	displayMode,
-	sourceType
-}: IIconOrAvatar): React.ReactElement | null => {
+	sourceType,
+	abacAttributes
+}: IIconOrAvatar): ReactElement | null => {
 	const { rowHeight } = useResponsiveLayout();
 
 	if (showAvatar) {
@@ -43,6 +44,7 @@ const IconOrAvatar = ({
 					size={24}
 					style={{ marginRight: 12 }}
 					sourceType={sourceType}
+					abacAttributes={abacAttributes}
 				/>
 			</View>
 		);

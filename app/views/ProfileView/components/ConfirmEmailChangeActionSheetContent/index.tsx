@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
+import { type ReactElement } from 'react';
 
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
@@ -47,7 +47,7 @@ const FooterButtons = ({
 	disabled = false,
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = ''
-}): React.ReactElement => {
+}): ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>
@@ -73,7 +73,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 	onSubmit = () => {}
 }: {
 	onSubmit: (inputValue: string) => void;
-}): React.ReactElement => {
+}): ReactElement => {
 	const { colors } = useTheme();
 	const {
 		control,
@@ -104,7 +104,6 @@ const ConfirmEmailChangeActionSheetContent = ({
 				autoComplete='password'
 				testID='profile-view-enter-password-sheet-input'
 				secureTextEntry
-				bottomSheet={true}
 				containerStyle={styles.inputContainer}
 				error={errors.password?.message}
 			/>

@@ -1,31 +1,29 @@
-import React from 'react';
-import { type StyleProp, Text, type TextStyle } from 'react-native';
+import { useContext, memo } from 'react';
+import { Text } from 'react-native';
 
 import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
 import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
+import MarkdownContext from '../../contexts/MarkdownContext';
 
 interface IHashtag {
 	hashtag: string;
-	navToRoomInfo?: Function;
-	style?: StyleProp<TextStyle>[];
-	channels?: IUserChannel[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = memo(({ hashtag }: IHashtag) => {
 	const { theme } = useTheme();
-	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const { textStyle, channels, navToRoomInfo } = useContext(MarkdownContext);
+	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
+	const isMasterDetail = useMasterDetail();
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
 	const handlePress = async () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
@@ -56,17 +54,19 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			<Text
 				style={[
 					styles.mention,
+					...(textStyle ? [textStyle] : []),
 					{
 						color: themes[theme].fontInfo
-					},
-					...style
+					}
 				]}
 				onPress={handlePress}>
 				{`${preffix}${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
+	return (
+		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }]}>{`#${hashtag}`}</Text>
+	);
 });
 
 export default Hashtag;

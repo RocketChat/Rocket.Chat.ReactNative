@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -24,7 +24,7 @@ interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
-const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
+const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
@@ -95,14 +95,18 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						title='Log_analytics_events'
 						testID='security-privacy-view-analytics-events'
 						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
-						additionalAcessibilityLabel={analyticsEventsState}
+						onPress={() => toggleAnalyticsEvents(!analyticsEventsState)}
+						additionalAccessibilityLabel={analyticsEventsState}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Send_crash_report'
 						testID='security-privacy-view-crash-report'
 						right={() => <Switch value={crashReportState} onValueChange={toggleCrashReport} />}
-						additionalAcessibilityLabel={analyticsEventsState}
+						onPress={() => toggleCrashReport(!crashReportState)}
+						additionalAccessibilityLabel={crashReportState}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Info info='Crash_report_disclaimer' />

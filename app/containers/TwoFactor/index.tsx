@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -7,6 +7,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ControlledFormTextInput } from '../TextInput';
 import I18n from '../../i18n';
@@ -17,7 +18,7 @@ import sharedStyles from '../../views/Styles';
 import styles from './styles';
 import { type ICredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import log from '../../lib/methods/helpers/log';
@@ -61,14 +62,12 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(() => {
+const TwoFactor = memo(() => {
 	const schema = yup.object().shape({
 		code: yup.string().required(I18n.t('Code_required'))
 	});
 	const { colors } = useTheme();
-	const { isMasterDetail } = useAppSelector(state => ({
-		isMasterDetail: state.app.isMasterDetail as boolean
-	}));
+	const isMasterDetail = useMasterDetail();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const {
@@ -157,7 +156,7 @@ const TwoFactor = React.memo(() => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating>
-			<View style={styles.container} testID='two-factor'>
+			<GestureHandlerRootView style={styles.container} testID='two-factor'>
 				<View
 					style={[
 						styles.content,
@@ -198,7 +197,7 @@ const TwoFactor = React.memo(() => {
 					</View>
 				</View>
 				<Toast />
-			</View>
+			</GestureHandlerRootView>
 		</Modal>
 	);
 });

@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Logout
 tags:
   - 'util'
@@ -36,6 +36,11 @@ tags:
 
 - tapOn:
     id: 'sidebar-settings'
+
+- scrollUntilVisible:
+    element:
+      id: 'settings-logout'
+    direction: DOWN
 
 - assertVisible:
     id: 'settings-logout'

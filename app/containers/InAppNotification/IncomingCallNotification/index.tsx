@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo, type ReactElement } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
@@ -8,7 +7,7 @@ import { A11y } from 'react-native-a11y-order';
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { type ISubscription, type SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';
@@ -16,6 +15,7 @@ import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
 import useUserData from '../../../lib/hooks/useUserData';
 import Ringer, { ERingerSounds } from '../../Ringer';
+import Touch from '../../Touch';
 
 export interface INotifierComponent {
 	notification: {
@@ -32,14 +32,14 @@ export interface INotifierComponent {
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const IncomingCallHeader = React.memo(
+const IncomingCallHeader = memo(
 	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
 		const componentRef = useRef<View>(null);
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const [audio, setAudio] = useState(true);
 		const dispatch = useDispatch();
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const isMasterDetail = useMasterDetail();
 		const styles = useStyle();
 		const insets = useSafeAreaInsets();
 
@@ -84,7 +84,7 @@ const IncomingCallHeader = React.memo(
 						</A11y.Index>
 						<View style={styles.row}>
 							<A11y.Index index={3} style={{ flex: 1 }}>
-								<Touchable
+								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
@@ -93,10 +93,10 @@ const IncomingCallHeader = React.memo(
 									accessibilityLabel={i18n.t('A11y_incoming_call_dismiss')}
 									style={styles.closeButton}>
 									<CustomIcon name='close' size={20} />
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 							<A11y.Index index={4} style={{ flex: 1 }}>
-								<Touchable
+								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
@@ -105,10 +105,10 @@ const IncomingCallHeader = React.memo(
 									}}
 									style={styles.cancelButton}>
 									<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 							<A11y.Index index={5} style={{ flex: 1 }}>
-								<Touchable
+								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
@@ -117,7 +117,7 @@ const IncomingCallHeader = React.memo(
 									}}
 									style={styles.acceptButton}>
 									<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 						</View>
 						{audio ? <Ringer ringer={ERingerSounds.RINGTONE} /> : null}
@@ -132,7 +132,7 @@ const IncomingCallNotification = ({
 	notification: { rid, callId }
 }: {
 	notification: { rid: string; callId: string };
-}): React.ReactElement | null => {
+}): ReactElement | null => {
 	const { result } = useEndpointData('video-conference.info', { callId });
 
 	const user = useUserData(rid);

@@ -1,7 +1,7 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import moment from 'moment';
 
+import dayjs from '../lib/dayjs';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants/colors';
@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): React.ReactElement | null => {
+const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): ReactElement | null => {
 	const { theme } = useTheme();
 
 	if (!ts && !unread) {
 		return null;
 	}
 
-	const date = ts ? moment(ts).format('LL') : null;
+	const date = ts ? dayjs(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
 	const unreadText = { color: themes[theme].fontDanger };
 	if (ts && unread) {

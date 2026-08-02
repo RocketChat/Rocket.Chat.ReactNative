@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import i18n from '../../../i18n';
@@ -56,11 +55,9 @@ describe('SwitchItemEncrypted', () => {
 				type={testEncrypted.type}
 			/>
 		);
-		const component = screen.queryByTestId(testEncrypted.testSwitchID);
-		if (component) {
-			fireEvent(component, 'valueChange', { value: true });
-			expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
-		}
+		const component = screen.getByTestId(testEncrypted.testSwitchID);
+		fireEvent(component, 'valueChange', { value: true });
+		expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
 	});
 
 	it('label when encrypted and isTeam are true and is a private team', () => {

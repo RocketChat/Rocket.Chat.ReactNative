@@ -1,8 +1,7 @@
-import React from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
-import { CustomIcon } from '../../containers/CustomIcon';
+import { useActionSheet } from '../../containers/ActionSheet';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -60,30 +59,44 @@ interface IBaseParams {
 const ListPicker = ({
 	value,
 	title,
+	testID,
 	onChangeValue
 }: {
 	title: string;
+	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
-	const getOptions = (): TActionSheetOptionsItem[] =>
-		OPTIONS.map(i => ({
-			title: I18n.t(i.label, { defaultValue: i.label }),
-			onPress: () => {
-				hideActionSheet();
-				onChangeValue(i.value);
-			},
-			right: option.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
-		}));
+	const getOptions = (): ReactElement => (
+		<View style={{ backgroundColor: colors.surfaceRoom }}>
+			<List.Separator />
+			{OPTIONS.map(i => (
+				<Fragment key={i.value}>
+					<List.Radio
+						onPress={() => {
+							hideActionSheet();
+							onChangeValue(i.value);
+						}}
+						title={i.label}
+						value={i.value}
+						isSelected={option.value === i.value}
+						testID={`${testID}-${i.value}`}
+					/>
+					<List.Separator />
+				</Fragment>
+			))}
+		</View>
+	);
 
 	/* when picking an option the label should be Never but when showing among the other settings the label should be Off */
 	const label = option.label === 'Never' ? I18n.t('Off') : I18n.t(option.label);
 
 	return (
 		<List.Item
-			onPress={() => showActionSheet({ options: getOptions() })}
+			testID={testID}
+			onPress={() => showActionSheet({ children: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
 					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
@@ -95,7 +108,7 @@ const ListPicker = ({
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };

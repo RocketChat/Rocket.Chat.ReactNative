@@ -1,17 +1,16 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
-import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import { type IAvatar } from './interfaces';
-import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
+import Touch from '../Touch';
 
-const Avatar = React.memo(
+const Avatar = memo(
 	({
 		server,
 		style,
@@ -21,7 +20,6 @@ const Avatar = React.memo(
 		token,
 		onPress,
 		emoji,
-		getCustomEmoji,
 		avatarETag,
 		isStatic,
 		rid,
@@ -34,7 +32,8 @@ const Avatar = React.memo(
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
 		cdnPrefix,
-		accessibilityLabel
+		accessibilityLabel,
+		accessible = true
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -50,16 +49,11 @@ const Avatar = React.memo(
 		let image;
 		if (emoji) {
 			image = (
-				<MarkdownContext.Provider
-					value={{
-						getCustomEmoji
-					}}>
-					<Emoji
-						block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
-						style={avatarStyle}
-						isAvatar={true}
-					/>
-				</MarkdownContext.Provider>
+				<Emoji
+					block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
+					style={avatarStyle}
+					isAvatar={true}
+				/>
 			);
 		} else {
 			let uri = avatar;
@@ -96,15 +90,15 @@ const Avatar = React.memo(
 
 		if (onPress) {
 			image = (
-				<Touchable accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
+				<Touch accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
 					{image}
-				</Touchable>
+				</Touch>
 			);
 		}
 
 		return (
 			<View
-				accessible
+				accessible={accessible}
 				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
 				style={[avatarStyle, style]}
 				testID='avatar'>

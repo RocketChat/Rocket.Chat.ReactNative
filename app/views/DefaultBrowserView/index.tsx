@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { FlatList, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import * as List from '../../containers/List';
@@ -9,7 +10,6 @@ import { isIOS } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import Item from './Item';
 
 export type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
 
@@ -49,6 +49,9 @@ const DefaultBrowserView = () => {
 	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
 	const navigation = useNavigation();
+	const { bottom } = useSafeAreaInsets();
+
+	const paddingBottom = useMemo(() => Math.max(16, bottom), [bottom]);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -82,15 +85,22 @@ const DefaultBrowserView = () => {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}, []);
-
 	return (
 		<SafeAreaView testID='default-browser-view'>
 			<FlatList
 				data={DEFAULT_BROWSERS.concat(supported)}
 				keyExtractor={item => item.value}
-				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
 				renderItem={({ item }) => (
-					<Item browser={browser} changeDefaultBrowser={changeDefaultBrowser} title={item.title} value={item.value} />
+					<List.Radio
+						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
+						title={item.title}
+						value={item.value}
+						translateTitle={['In_app', 'System_default'].includes(item.title)}
+						translateSubtitle={false}
+						onPress={changeDefaultBrowser}
+						testID={`default-browser-view-${item.value}`}
+					/>
 				)}
 				ListHeaderComponent={
 					<>

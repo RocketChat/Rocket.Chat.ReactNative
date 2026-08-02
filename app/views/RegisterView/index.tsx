@@ -1,10 +1,12 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
@@ -12,7 +14,6 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { type IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
 import { type OutsideParamList } from '../../stacks/types';
@@ -29,9 +30,10 @@ import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
-interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
+type RegisterViewProps = StaticScreenProps<{ title: string; username?: string }>;
 
-const RegisterView = ({ navigation, route }: IProps) => {
+const RegisterView = ({ route }: RegisterViewProps) => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'RegisterView'>>();
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup
@@ -240,7 +242,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						error={errors.confirmPassword?.message}
 						required
 						label={I18n.t('Password')}
-						secureTextEntry
+						secureTextEntry={process.env.RUNNING_E2E_TESTS !== 'true'}
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
 						onSubmitEditing={() => setFocus('confirmPassword')}
@@ -255,7 +257,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						required
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
-						secureTextEntry
+						secureTextEntry={process.env.RUNNING_E2E_TESTS !== 'true'}
 						error={errors.confirmPassword?.message}
 						onSubmitEditing={() => {
 							if (parsedCustomFields) {

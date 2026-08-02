@@ -39,7 +39,7 @@ Contains the scripts that are going to be executed by the flows before running t
 #### `data.js`
 
 - Contains seeds to common test data, like server url, public channels, etc
-- Currently we point to https://mobile.rocket.chat as main server
+- Currently we point to https://mobile.qa.rocket.chat as main server
   - Pointing to a local server is not recommended yet, as you would need to create a few public channels and change some permissions
   - Ideally we should point to a docker or even a mocked server, but that's tbd
 - Try not to add new data there. Use random values instead.
@@ -68,23 +68,16 @@ Create a release version APK or IPA file and install it on your device/simulator
 #### Android Production Build
 
 ```bash
-./gradlew bundleOfficialRelease
-```
-
-#### iOS Production Build (Simulator)
-
-Build Experimental app for Simulator:
-```bash
-bundle exec fastlane build_experimental_simulator
+./gradlew bundleRelease
 ```
 
 ### Option 2: Development Build
 
 Start the app in development mode:
 ```bash
-yarn android  # for Android
+pnpm android  # for Android
 
-yarn ios      # for iOS
+pnpm ios      # for iOS
 ```
 
 ## Running Maestro Tests

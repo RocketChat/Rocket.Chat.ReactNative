@@ -1,0 +1,108 @@
+diff --git a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContainerViewManager.kt b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContainerViewManager.kt
+index 359546c..e8d8f0a 100644
+--- a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContainerViewManager.kt
++++ b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContainerViewManager.kt
+@@ -1,10 +1,8 @@
+ package com.lodev09.truesheet
+
+ import com.facebook.react.module.annotations.ReactModule
+-import com.facebook.react.uimanager.PointerEvents
+ import com.facebook.react.uimanager.ThemedReactContext
+ import com.facebook.react.uimanager.ViewGroupManager
+-import com.facebook.react.uimanager.annotations.ReactProp
+
+ /**
+  * ViewManager for TrueSheetContainerView
+@@ -17,11 +15,6 @@ class TrueSheetContainerViewManager : ViewGroupManager<TrueSheetContainerView>()
+
+   override fun createViewInstance(reactContext: ThemedReactContext): TrueSheetContainerView = TrueSheetContainerView(reactContext)
+
+-  @ReactProp(name = "pointerEvents")
+-  fun setPointerEvents(view: TrueSheetContainerView, pointerEventsStr: String?) {
+-    view.pointerEvents = PointerEvents.parsePointerEvents(pointerEventsStr)
+-  }
+-
+   companion object {
+     const val REACT_CLASS = "TrueSheetContainerView"
+   }
+diff --git a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContentViewManager.kt b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContentViewManager.kt
+index 2853192..2bf5fe5 100644
+--- a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContentViewManager.kt
++++ b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetContentViewManager.kt
+@@ -1,10 +1,8 @@
+ package com.lodev09.truesheet
+
+ import com.facebook.react.module.annotations.ReactModule
+-import com.facebook.react.uimanager.PointerEvents
+ import com.facebook.react.uimanager.ThemedReactContext
+ import com.facebook.react.uimanager.ViewGroupManager
+-import com.facebook.react.uimanager.annotations.ReactProp
+
+ /**
+  * ViewManager for TrueSheetContentView
+@@ -17,11 +15,6 @@ class TrueSheetContentViewManager : ViewGroupManager<TrueSheetContentView>() {
+
+   override fun createViewInstance(reactContext: ThemedReactContext): TrueSheetContentView = TrueSheetContentView(reactContext)
+
+-  @ReactProp(name = "pointerEvents")
+-  fun setPointerEvents(view: TrueSheetContentView, pointerEventsStr: String?) {
+-    view.pointerEvents = PointerEvents.parsePointerEvents(pointerEventsStr)
+-  }
+-
+   companion object {
+     const val REACT_CLASS = "TrueSheetContentView"
+   }
+diff --git a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetFooterViewManager.kt b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetFooterViewManager.kt
+index aedf0a3..d317e6c 100644
+--- a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetFooterViewManager.kt
++++ b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetFooterViewManager.kt
+@@ -1,10 +1,8 @@
+ package com.lodev09.truesheet
+
+ import com.facebook.react.module.annotations.ReactModule
+-import com.facebook.react.uimanager.PointerEvents
+ import com.facebook.react.uimanager.ThemedReactContext
+ import com.facebook.react.uimanager.ViewGroupManager
+-import com.facebook.react.uimanager.annotations.ReactProp
+
+ /**
+  * ViewManager for TrueSheetFooterView
+@@ -17,11 +15,6 @@ class TrueSheetFooterViewManager : ViewGroupManager<TrueSheetFooterView>() {
+
+   override fun createViewInstance(reactContext: ThemedReactContext): TrueSheetFooterView = TrueSheetFooterView(reactContext)
+
+-  @ReactProp(name = "pointerEvents")
+-  fun setPointerEvents(view: TrueSheetFooterView, pointerEventsStr: String?) {
+-    view.pointerEvents = PointerEvents.parsePointerEvents(pointerEventsStr)
+-  }
+-
+   companion object {
+     const val REACT_CLASS = "TrueSheetFooterView"
+   }
+diff --git a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetHeaderViewManager.kt b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetHeaderViewManager.kt
+index a811616..bc43932 100644
+--- a/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetHeaderViewManager.kt
++++ b/node_modules/@lodev09/react-native-true-sheet/android/src/main/java/com/lodev09/truesheet/TrueSheetHeaderViewManager.kt
+@@ -1,10 +1,8 @@
+ package com.lodev09.truesheet
+
+ import com.facebook.react.module.annotations.ReactModule
+-import com.facebook.react.uimanager.PointerEvents
+ import com.facebook.react.uimanager.ThemedReactContext
+ import com.facebook.react.uimanager.ViewGroupManager
+-import com.facebook.react.uimanager.annotations.ReactProp
+
+ /**
+  * ViewManager for TrueSheetHeaderView
+@@ -17,11 +15,6 @@ class TrueSheetHeaderViewManager : ViewGroupManager<TrueSheetHeaderView>() {
+
+   override fun createViewInstance(reactContext: ThemedReactContext): TrueSheetHeaderView = TrueSheetHeaderView(reactContext)
+
+-  @ReactProp(name = "pointerEvents")
+-  fun setPointerEvents(view: TrueSheetHeaderView, pointerEventsStr: String?) {
+-    view.pointerEvents = PointerEvents.parsePointerEvents(pointerEventsStr)
+-  }
+-
+   companion object {
+     const val REACT_CLASS = "TrueSheetHeaderView"
+   }

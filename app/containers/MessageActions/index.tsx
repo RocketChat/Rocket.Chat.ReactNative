@@ -1,9 +1,9 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, memo } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
+import dayjs from '../../lib/dayjs';
 import database from '../../lib/database';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import I18n from '../../i18n';
@@ -14,6 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import {
@@ -31,10 +32,15 @@ import {
 	markAsUnread,
 	toggleStarMessage,
 	togglePinMessage,
-	createDirectMessage,
 	translateMessage,
 	reportMessage
 } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+
+// Extra delay on top of the action sheet animation so accessibility focus is restored
+// only after the sheet is fully dismissed.
+const REFOCUS_BUFFER = 50;
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -69,7 +75,7 @@ export interface IMessageActions {
 	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
 }
 
-const MessageActions = React.memo(
+const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{
@@ -112,6 +118,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
+			const { restoreFocusOnClose } = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -154,11 +161,11 @@ const MessageActions = React.memo(
 				if (blockEditInMinutes) {
 					let msgTs;
 					if (message.ts != null) {
-						msgTs = moment(message.ts);
+						msgTs = dayjs(message.ts);
 					}
 					let currentTsDiff = 0;
 					if (msgTs != null) {
-						currentTsDiff = moment().diff(msgTs, 'minutes');
+						currentTsDiff = dayjs().diff(msgTs, 'minutes');
 					}
 					return currentTsDiff < blockEditInMinutes;
 				}
@@ -185,11 +192,11 @@ const MessageActions = React.memo(
 				if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 					let msgTs;
 					if (message.ts != null) {
-						msgTs = moment(message.ts);
+						msgTs = dayjs(message.ts);
 					}
 					let currentTsDiff = 0;
 					if (msgTs != null) {
-						currentTsDiff = moment().diff(msgTs, 'minutes');
+						currentTsDiff = dayjs().diff(msgTs, 'minutes');
 					}
 					return currentTsDiff < blockDeleteInMinutes;
 				}
@@ -242,7 +249,7 @@ const MessageActions = React.memo(
 
 						await db.write(async () => {
 							try {
-								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
+								await subRecord.update(sub => (sub.ls = ts as Date));
 							} catch {
 								// do nothing
 							}
@@ -404,7 +411,8 @@ const MessageActions = React.memo(
 						title: I18n.t('Edit'),
 						icon: 'edit',
 						onPress: () => handleEdit(message.id),
-						enabled: isEditAllowed
+						enabled: isEditAllowed,
+						testID: 'message-actions-edit'
 					});
 				}
 
@@ -414,7 +422,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Jump_to_message'),
 						icon: 'jump-to-message',
-						onPress: () => jumpToMessage(quoteMessageLink, true)
+						onPress: () => jumpToMessage(quoteMessageLink, true),
+						testID: 'message-actions-jump-to-message'
 					});
 				}
 
@@ -423,7 +432,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message.id)
+						onPress: () => handleQuote(message.id),
+						testID: 'message-actions-quote'
 					});
 				}
 
@@ -432,7 +442,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Reply_in_Thread'),
 						icon: 'threads',
-						onPress: () => handleReply(message.id)
+						onPress: () => handleReply(message.id),
+						testID: 'message-actions-reply-in-thread'
 					});
 				}
 
@@ -442,7 +453,9 @@ const MessageActions = React.memo(
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
 						onPress: () => handleReplyInDM(message),
-						enabled: permissions.hasCreateDirectMessagePermission
+						enabled: permissions.hasCreateDirectMessagePermission && !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+						testID: 'message-actions-reply-in-dm'
 					});
 				}
 
@@ -451,22 +464,30 @@ const MessageActions = React.memo(
 					title: I18n.t('Start_a_Discussion'),
 					icon: 'discussions',
 					onPress: () => handleCreateDiscussion(message),
-					enabled: permissions.hasCreateDiscussionOtherUserPermission
+					enabled: permissions.hasCreateDiscussionOtherUserPermission,
+					testID: 'message-actions-create-discussion'
 				});
 
+				// Forward
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Forward'),
 						icon: 'arrow-forward',
-						onPress: () => handleShareMessage(message)
+						onPress: () => handleShareMessage(message),
+						enabled: !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+						testID: 'message-actions-forward'
 					});
 				}
 
-				// Permalink
+				// Get link
 				options.push({
 					title: I18n.t('Get_link'),
 					icon: 'link',
-					onPress: () => handlePermalink(message)
+					onPress: () => handlePermalink(message),
+					enabled: !room.abacAttributes,
+					disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+					testID: 'message-actions-get-link'
 				});
 
 				// Copy
@@ -474,7 +495,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Copy'),
 						icon: 'copy',
-						onPress: () => handleCopy(message)
+						onPress: () => handleCopy(message),
+						testID: 'message-actions-copy'
 					});
 				}
 
@@ -482,7 +504,8 @@ const MessageActions = React.memo(
 				options.push({
 					title: I18n.t('Share'),
 					icon: 'share',
-					onPress: () => handleShare(message)
+					onPress: () => handleShare(message),
+					testID: 'message-actions-share'
 				});
 
 				// Pin
@@ -491,7 +514,8 @@ const MessageActions = React.memo(
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
 						onPress: () => handlePin(message),
-						enabled: permissions?.hasPinPermission
+						enabled: permissions?.hasPinPermission,
+						testID: `message-actions-${message.pinned ? 'unpin' : 'pin'}`
 					});
 				}
 
@@ -500,7 +524,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message.id, message.starred || false)
+						onPress: () => handleStar(message.id, message.starred || false),
+						testID: `message-actions-${message.starred ? 'unstar' : 'star'}`
 					});
 				}
 
@@ -509,7 +534,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Mark_unread'),
 						icon: 'flag',
-						onPress: () => handleUnread(message)
+						onPress: () => handleUnread(message),
+						testID: 'message-actions-mark-unread'
 					});
 				}
 
@@ -518,7 +544,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Read_Receipt'),
 						icon: 'info',
-						onPress: () => handleReadReceipt(message)
+						onPress: () => handleReadReceipt(message),
+						testID: 'message-actions-read-receipt'
 					});
 				}
 
@@ -527,7 +554,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
-						onPress: () => handleToggleTranslation(message)
+						onPress: () => handleToggleTranslation(message),
+						testID: 'message-actions-toggle-translation'
 					});
 				}
 
@@ -536,7 +564,8 @@ const MessageActions = React.memo(
 					title: I18n.t('Report'),
 					icon: 'warning',
 					danger: true,
-					onPress: () => handleReport(message)
+					onPress: () => handleReport(message),
+					testID: 'message-actions-report'
 				});
 
 				// Delete
@@ -547,7 +576,8 @@ const MessageActions = React.memo(
 						icon: 'delete',
 						danger: true,
 						onPress: () => handleDelete(message),
-						enabled: isDeleteAllowed
+						enabled: isDeleteAllowed,
+						testID: 'message-actions-delete'
 					});
 				}
 
@@ -557,6 +587,8 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
+				// Buffer so focus lands after the action sheet is fully dismissed, not mid-animation.
+				const onClose = restoreFocusOnClose(ACTION_SHEET_ANIMATION_DURATION + REFOCUS_BUFFER);
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
@@ -566,7 +598,8 @@ const MessageActions = React.memo(
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
 						</>
-					)
+					),
+					onClose
 				});
 			};
 
@@ -586,7 +619,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_AllowPinning: state.settings.Message_AllowPinning as boolean,
 	Message_AllowStarring: state.settings.Message_AllowStarring as boolean,
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users as boolean,
-	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
@@ -596,4 +628,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withMasterDetail(MessageActions));

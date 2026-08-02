@@ -19,6 +19,19 @@ export type OmnichannelEndpoints = {
 			appearance: ISetting[];
 		};
 	};
+	'livechat/config/routing': {
+		GET: () => {
+			config: {
+				previewRoom: boolean;
+				showConnecting: boolean;
+				showQueue: boolean;
+				showQueueLink: boolean;
+				returnQueue: boolean;
+				enableTriggerAction: boolean;
+				autoAssignAgent: boolean;
+			};
+		};
+	};
 	'livechat/visitors.info': {
 		GET: (params: { visitorId: string }) => {
 			visitor: ILivechatVisitor;
@@ -120,6 +133,19 @@ export type OmnichannelEndpoints = {
 		GET: () => PaginatedResult<{
 			inquiries: IOmnichannelRoom[];
 		}>;
+	};
+
+	'livechat/inquiries.take': {
+		POST: (params: { inquiryId: string; userId?: string }) => {
+			success: boolean;
+		};
+	};
+
+	'livechat/inquiries.returnAsInquiry': {
+		POST: (params: { roomId: string; departmentId?: string }) => {
+			result: boolean;
+			success: boolean;
+		};
 	};
 
 	'livechat/rooms': {
@@ -229,5 +255,39 @@ export type OmnichannelEndpoints = {
 				slaId?: string;
 			};
 		}) => void;
+	};
+	'livechat/agent.status': {
+		POST: (params: { agentId?: string }) => {
+			status: string;
+			success: boolean;
+		};
+	};
+	'livechat/room.closeByUser': {
+		POST: (params: {
+			rid: string;
+			comment?: string;
+			forceClose?: boolean;
+			tags?: string[];
+			generateTranscriptPdf?: boolean;
+			transcriptEmail?: { sendToVisitor: boolean; requestData?: { email?: string; subject?: string } };
+		}) => {
+			success: boolean;
+		};
+	};
+	'livechat/room.forward': {
+		POST: (params: { roomId: string; userId?: string; departmentId?: string }) => {
+			success: boolean;
+		};
+	};
+	'livechat/tags': {
+		GET: () => {
+			tags: ILivechatTag[];
+			success: boolean;
+		};
+	};
+	'livechat/room.resumeOnHold': {
+		POST: (params: { roomId: string }) => {
+			success: boolean;
+		};
 	};
 };

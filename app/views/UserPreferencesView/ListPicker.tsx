@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
@@ -72,7 +72,7 @@ const ListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => <Text style={[styles.title, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };

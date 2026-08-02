@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState, type ReactElement } from 'react';
 import { View } from 'react-native';
 import { type Route } from 'reanimated-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,8 +24,9 @@ const EmojiPicker = ({
 	onItemClicked,
 	isEmojiKeyboard = false,
 	searching = false,
-	searchedEmojis = []
-}: IEmojiPickerProps): React.ReactElement | null => {
+	searchedEmojis = [],
+	bottomSheet = false
+}: IEmojiPickerProps): ReactElement | null => {
 	const [parentWidth, setParentWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
 	const { colors } = useTheme();
@@ -39,7 +40,12 @@ const EmojiPicker = ({
 	);
 
 	const renderScene = ({ route }: { route: Route }) => (
-		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as any} />
+		<EmojiCategory
+			parentWidth={parentWidth}
+			onEmojiSelected={handleEmojiSelect}
+			category={route.key as any}
+			bottomSheet={bottomSheet}
+		/>
 	);
 
 	const renderTabItem = (tab: Route, color: string) => (
@@ -63,6 +69,7 @@ const EmojiPicker = ({
 					emojis={searchedEmojis}
 					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
 					parentWidth={parentWidth}
+					bottomSheet={bottomSheet}
 				/>
 			) : (
 				<TabView renderScene={renderScene} renderTabItem={renderTabItem} routes={routes} />

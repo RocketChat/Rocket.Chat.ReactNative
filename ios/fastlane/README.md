@@ -1,44 +1,48 @@
 fastlane documentation
-================
+----
+
 # Installation
 
 Make sure you have the latest version of the Xcode command line tools installed:
 
-```
+```sh
 xcode-select --install
 ```
 
-Install _fastlane_ using
-```
-[sudo] gem install fastlane -NV
-```
-or alternatively using `brew install fastlane`
+For _fastlane_ installation instructions, see [Installing _fastlane_](https://docs.fastlane.tools/#installing-fastlane)
 
 # Available Actions
+
 ## iOS
+
 ### ios beta
+
+```sh
+[bundle exec] fastlane ios beta
 ```
-fastlane ios beta
-```
+
 Submit a new Beta Build to Apple TestFlight
-### ios release
+
+### ios build
+
+```sh
+[bundle exec] fastlane ios build
 ```
-fastlane ios release
+
+Build app
+
+### ios build_simulator
+
+```sh
+[bundle exec] fastlane ios build_simulator
 ```
-Build Experimental app
-### ios build_fork
-```
-fastlane ios build_fork
-```
-Build fork app
-### ios build_official
-```
-fastlane ios build_official
-```
-Build Official app
+
+Build app for Simulator
 
 ----
 
-This README.md is auto-generated and will be re-generated every time [fastlane](https://fastlane.tools) is run.
-More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
-The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
+This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
+
+More information about _fastlane_ can be found on [fastlane.tools](https://fastlane.tools).
+
+The documentation of _fastlane_ can be found on [docs.fastlane.tools](https://docs.fastlane.tools).

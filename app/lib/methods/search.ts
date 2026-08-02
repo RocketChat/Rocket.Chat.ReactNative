@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
+import { getSubscriptionSearchClause, sanitizeLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
@@ -20,23 +20,9 @@ export const localSearchSubscription = async ({
 }): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
-	const likeString = sanitizeLikeString(searchText);
-	const slugifiedString = slugifyLikeString(searchText);
 	let subscriptions = await db
 		.get('subscriptions')
-		.query(
-			Q.or(
-				// `sanitized_fname` is an optional column, so it's going to start null and it's going to get filled over time
-				Q.where('sanitized_fname', Q.like(`%${slugifiedString}%`)),
-				// TODO: Remove the conditionals below at some point. It is merged at 4.39
-				// the param 'name' is slugified by the server when the slugify setting is enable, just for channels and teams
-				Q.where('name', Q.like(`%${slugifiedString}%`)),
-				// Still need the below conditionals because at the first moment the the sanitized_fname won't be filled
-				Q.where('name', Q.like(`%${likeString}%`)),
-				Q.where('fname', Q.like(`%${likeString}%`))
-			),
-			Q.sortBy('room_updated_at', Q.desc)
-		)
+		.query(getSubscriptionSearchClause(searchText), Q.sortBy('room_updated_at', Q.desc))
 		.fetch();
 
 	if (filterUsers && !filterRooms) {
@@ -67,7 +53,7 @@ export const localSearchSubscription = async ({
 		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
 	}
 
-	const search = subscriptions.slice(0, 7).map(item => ({
+	const search = subscriptions.map(item => ({
 		_id: item._id,
 		rid: item.rid,
 		name: item.name,
@@ -81,7 +67,6 @@ export const localSearchSubscription = async ({
 		prid: item.prid,
 		f: item.f
 	})) as ISearchLocal[];
-
 	return search;
 };
 
@@ -111,34 +96,56 @@ export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Pro
 	return usersFromLocal;
 };
 
-export const search = async ({ text = '', filterUsers = true, filterRooms = true, rid = '' }): Promise<TSearch[]> => {
+interface ISearchParams {
+	text?: string;
+	filterUsers?: boolean;
+	filterRooms?: boolean;
+	rid?: string;
+}
+
+// the users provided by localSearchUsersMessageByRid return the username properly, data.username
+// Example: Diego Mello's user -> {name: "Diego Mello", username: "diego.mello"}
+// Meanwhile, the username provided by localSearchSubscription is in name's property
+// Example: Diego Mello's subscription -> {fname: "Diego Mello",  name: "diego.mello"}
+export const searchLocal = ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	rid = ''
+}: ISearchParams): Promise<TSearch[]> => {
+	if (rid && filterUsers) {
+		return localSearchUsersMessageByRid({ text, rid });
+	}
+	return localSearchSubscription({ text, filterUsers, filterRooms });
+};
+
+// Augments the already-computed local results with the spotlight (backend) results.
+// Callers are expected to render `localData` first and then re-render with the value
+// returned here, so the UI never blocks on the network round-trip.
+export const searchRemote = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	rid = '',
+	localData = []
+}: ISearchParams & { localData?: TSearch[] }): Promise<TSearch[]> => {
 	const searchText = text.trim();
 
 	if (debounce) {
 		debounce('cancel');
 	}
 
-	let localSearchData = [];
-	// the users provided by localSearchUsersMessageByRid return the username properly, data.username
-	// Example: Diego Mello's user -> {name: "Diego Mello", username: "diego.mello"}
-	// Meanwhile, the username provided by localSearchSubscription is in name's property
-	// Example: Diego Mello's subscription -> {fname: "Diego Mello",  name: "diego.mello"}
-	let usernames = [];
-	if (rid && filterUsers) {
-		localSearchData = await localSearchUsersMessageByRid({ text, rid });
-		usernames = localSearchData.map(sub => sub.username as string);
-	} else {
-		localSearchData = await localSearchSubscription({ text, filterUsers, filterRooms });
-		usernames = localSearchData.map(sub => sub.name as string);
-	}
-
-	const data: TSearch[] = localSearchData;
+	const data: TSearch[] = [...localData];
+	const usernames =
+		rid && filterUsers
+			? (localData as IUserMessage[]).map(sub => sub.username as string)
+			: (localData as ISearchLocal[]).map(sub => sub.name);
 
 	try {
-		if (searchText && localSearchData.length < 7) {
+		if (searchText) {
 			const { users, rooms } = (await Promise.race([
 				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms, mentions: true }, rid),
-				new Promise((resolve, reject) => (debounce = reject))
+				new Promise((_resolve, reject) => (debounce = reject))
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {
@@ -182,4 +189,16 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 		console.warn(e);
 		return data;
 	}
+};
+
+export const search = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	rid = '',
+	onLocal
+}: ISearchParams & { onLocal?: (localData: TSearch[]) => void }): Promise<TSearch[]> => {
+	const localData = await searchLocal({ text, filterUsers, filterRooms, rid });
+	onLocal?.(localData);
+	return searchRemote({ text, filterUsers, filterRooms, rid, localData });
 };

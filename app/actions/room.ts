@@ -39,9 +39,14 @@ interface IForwardRoom extends Action {
 	rid: string;
 }
 
+type IUserTypingArgs = {
+	tmid?: string;
+};
+
 interface IUserTyping extends Action {
 	rid: string;
 	status: boolean;
+	args?: IUserTypingArgs;
 }
 
 export interface IRoomHistoryRequest extends Action {
@@ -54,6 +59,14 @@ export interface IRoomHistoryFinished extends Action {
 	loaderId: string;
 }
 
+export interface IRoomHistoryUiLoaderPush extends Action {
+	loaderId: string;
+}
+
+export interface IRoomHistoryUiLoaderPop extends Action {
+	loaderId: string;
+}
+
 export type TActionsRoom = TSubscribeRoom &
 	TUnsubscribeRoom &
 	ILeaveRoom &
@@ -61,7 +74,9 @@ export type TActionsRoom = TSubscribeRoom &
 	IForwardRoom &
 	IUserTyping &
 	IRoomHistoryRequest &
-	IRoomHistoryFinished;
+	IRoomHistoryFinished &
+	IRoomHistoryUiLoaderPush &
+	IRoomHistoryUiLoaderPop;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
 	return {
@@ -109,11 +124,12 @@ export function removedRoom(): Action {
 	};
 }
 
-export function userTyping(rid: string, status = true): IUserTyping {
+export function userTyping(rid: string, status = true, args?: IUserTypingArgs): IUserTyping {
 	return {
 		type: ROOM.USER_TYPING,
 		rid,
-		status
+		status,
+		args
 	};
 }
 
@@ -129,6 +145,20 @@ export function roomHistoryRequest({ rid, t, loaderId }: { rid: string; t: RoomT
 export function roomHistoryFinished({ loaderId }: { loaderId: string }): IRoomHistoryFinished {
 	return {
 		type: ROOM.HISTORY_FINISHED,
+		loaderId
+	};
+}
+
+export function roomHistoryUiLoaderPush({ loaderId }: { loaderId: string }): IRoomHistoryUiLoaderPush {
+	return {
+		type: ROOM.HISTORY_UI_LOADER_PUSH,
+		loaderId
+	};
+}
+
+export function roomHistoryUiLoaderPop({ loaderId }: { loaderId: string }): IRoomHistoryUiLoaderPop {
+	return {
+		type: ROOM.HISTORY_UI_LOADER_POP,
 		loaderId
 	};
 }

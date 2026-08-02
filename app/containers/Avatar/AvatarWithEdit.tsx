@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 
 import Button from '../Button';
@@ -39,12 +39,11 @@ const AvatarWithEdit = ({
 	type,
 	children,
 	onPress,
-	getCustomEmoji,
 	isStatic,
 	rid,
 	handleEdit,
 	editAccessibilityLabel
-}: IAvatarContainer): React.ReactElement => {
+}: IAvatarContainer): ReactElement => {
 	const { colors } = useTheme();
 
 	const { serverVersion } = useAppSelector(state => ({
@@ -61,12 +60,11 @@ const AvatarWithEdit = ({
 				size={120}
 				borderRadius={borderRadius}
 				type={type}
-				children={children}
 				onPress={onPress}
-				getCustomEmoji={getCustomEmoji}
 				isStatic={isStatic}
-				rid={rid}
-			/>
+				rid={rid}>
+				{children}
+			</AvatarContainer>
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
 					accessibilityLabel={editAccessibilityLabel}

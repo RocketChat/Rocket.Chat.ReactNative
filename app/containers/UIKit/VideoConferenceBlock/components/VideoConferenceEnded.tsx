@@ -1,15 +1,16 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import { type IUser } from '../../../../definitions';
 import { type VideoConferenceType } from '../../../../definitions/IVideoConference';
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
+import { useIsInActiveVoipCall } from '../../../../lib/services/voip/isInActiveVoipCall';
 import { CallParticipants, type TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
+import Touch from '../../../Touch';
 
 export default function VideoConferenceEnded({
 	users,
@@ -21,10 +22,11 @@ export default function VideoConferenceEnded({
 	type: VideoConferenceType;
 	createdBy: Pick<IUser, '_id' | 'username' | 'name'>;
 	rid: string;
-}): React.ReactElement {
+}): ReactElement {
 	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
 	const { showInitCallActionSheet } = useVideoConf(rid);
+	const isInActiveVoipCall = useIsInActiveVoipCall();
 
 	const onlyAuthorOnCall = users.length === 1 && users.some(user => user.username === createdBy.username);
 
@@ -32,11 +34,11 @@ export default function VideoConferenceEnded({
 		<VideoConferenceBaseContainer variant='ended'>
 			{type === 'direct' ? (
 				<>
-					<Touchable style={style.callToActionCallBack} onPress={showInitCallActionSheet}>
+					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInActiveVoipCall}>
 						<Text style={style.callToActionCallBackText}>
 							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
-					</Touchable>
+					</Touch>
 					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>
 				</>
 			) : (

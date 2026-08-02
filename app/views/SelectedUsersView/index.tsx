@@ -1,13 +1,15 @@
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -17,27 +19,36 @@ import database from '../../lib/database';
 import UserItem from '../../containers/UserItem';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList, type NewMessageStackParamList } from '../../stacks/types';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { search as searchMethod, type TSearch } from '../../lib/methods/search';
+import { search as runSearch, type TSearch } from '../../lib/methods/search';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
 
-type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
-type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
+type TRoute = RouteProp<ChatsStackParamList & NewMessageStackParamList & ModalStackParamList, 'SelectedUsersView'>;
+type TNavigation = NativeStackNavigationProp<
+	ChatsStackParamList & NewMessageStackParamList & ModalStackParamList,
+	'SelectedUsersView'
+>;
 
 const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
 	const [search, setSearch] = useState<TSearch[]>([]);
+	// True while the remote (spotlight) request is in flight, after local results are already painted
+	const [searching, setSearching] = useState(false);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
 
 	const { maxUsers, showButton, title, buttonText, showSkipText = true, nextAction } = useRoute<TRoute>().params;
 	const navigation = useNavigation<TNavigation>();
 
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+	const { bottom } = useSafeAreaInsets();
 
 	const { users, loading, useRealName, user } = useAppSelector(
 		state => ({
@@ -66,8 +77,8 @@ const SelectedUsersView = () => {
 
 	useLayoutEffect(() => {
 		const titleHeader = title ?? I18n.t('Select_Members');
-		const buttonTextHeader = buttonText ?? I18n.t('Next');
-		const nextActionHeader = nextAction ?? (() => {});
+		const buttonTextHeader = buttonText || I18n.t('Next');
+		const nextActionHeader = nextAction || (() => {});
 		const buttonTitle = handleButtonTitle(buttonTextHeader);
 		const options = {
 			title: titleHeader,
@@ -80,7 +91,7 @@ const SelectedUsersView = () => {
 				)
 		};
 		navigation.setOptions(options);
-	}, [navigation, users.length, maxUsers]);
+	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
 
 	useEffect(() => {
 		if (isGroupChat()) {
@@ -114,8 +125,30 @@ const SelectedUsersView = () => {
 	}, [dispatch]);
 
 	const handleSearch = useCallback(async (text: string) => {
-		const result = await searchMethod({ text, filterRooms: false });
-		setSearch(result);
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
+		setSearching(true);
+
+		try {
+			// Paint local results immediately while the backend request is still in flight
+			const result = await runSearch({
+				text,
+				filterRooms: false,
+				onLocal: localData => {
+					if (isStale()) return;
+					setSearch(localData);
+				}
+			});
+			if (isStale()) return;
+			setSearch(result);
+		} catch (e) {
+			log(e);
+		} finally {
+			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
+			if (!isStale()) setSearching(false);
+		}
 	}, []);
 
 	const toggleUser = (userItem: ISelectedUser) => {
@@ -169,9 +202,9 @@ const SelectedUsersView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={<List.Separator />}
+				ListFooterComponent={searching ? <ActivityIndicator /> : <List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

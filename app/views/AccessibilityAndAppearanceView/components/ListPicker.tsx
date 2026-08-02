@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../../containers/ActionSheet';
@@ -100,7 +99,7 @@ const ListPicker = ({
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}
-			additionalAcessibilityLabel={option?.label}
+			additionalAccessibilityLabel={option?.label}
 		/>
 	);
 };

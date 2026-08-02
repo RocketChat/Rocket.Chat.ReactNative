@@ -1,18 +1,21 @@
 const path = require('path');
 const withStorybook = require('@storybook/react-native/metro/withStorybook');
-const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
-// eslint-disable-next-line import/no-unresolved
+
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
 
-const sourceExts = [...defaultSourceExts, 'mjs'];
+const defaultConfig = getDefaultConfig(__dirname);
+
+const sourceExts = [...defaultConfig.resolver.sourceExts, 'mjs'];
 
 const config = {
 	transformer: {
 		unstable_allowRequireContext: true
 	},
 	resolver: {
-		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
+		// When running E2E tests, prioritize .mock.ts files for app code
+		// Note: react-native-mmkv's internal mock file is disabled via patch-package
+		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts
 	}
 };
 

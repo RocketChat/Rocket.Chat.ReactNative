@@ -1,8 +1,10 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Create Account
 onFlowStart:
   - runFlow: '../../../helpers/setup.yaml'
   - evalScript: ${output.user = output.randomUser()}
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-2
 
@@ -28,13 +30,14 @@ tags:
 - tapOn:
     id: register-view-confirm-password
 - inputText: ${output.user.password}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: register-view-submit
     centerElement: true
 - tapOn:
     id: register-view-submit
+- evalScript: ${output.data.accounts.push(output.user)}
 - extendedWaitUntil:
     visible:
       id: rooms-list-view

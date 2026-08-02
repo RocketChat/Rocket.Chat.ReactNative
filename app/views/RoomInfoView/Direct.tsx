@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, View } from 'react-native';
+import { type ReactElement } from 'react';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -7,6 +7,7 @@ import CustomFields from './CustomFields';
 import Timezone from './Timezone';
 import styles from './styles';
 import { type IUser } from '../../definitions';
+import { RoomInfoTag, RoomInfoTagContainer } from './components/RoomInfoTag';
 
 const Roles = ({ roles }: { roles?: string[] }) => {
 	const { colors } = useTheme();
@@ -15,18 +16,11 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 		return (
 			<View style={styles.item} testID='user-roles'>
 				<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Roles')}</Text>
-				<View style={styles.rolesContainer}>
+				<RoomInfoTagContainer>
 					{roles.map(role =>
-						role ? (
-							<View
-								style={[styles.roleBadge, { backgroundColor: colors.surfaceSelected }]}
-								key={role}
-								testID={`user-role-${role.replace(/ /g, '-')}`}>
-								<Text style={[styles.role, { color: colors.fontTitlesLabels }]}>{role}</Text>
-							</View>
-						) : null
+						role ? <RoomInfoTag name={role} key={role} testID={`user-role-${role.replace(/ /g, '-')}`} /> : null
 					)}
-				</View>
+				</RoomInfoTagContainer>
 			</View>
 		);
 	}
@@ -34,7 +28,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	return null;
 };
 
-const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => (
+const Direct = ({ roomUser }: { roomUser: IUser }): ReactElement => (
 	<>
 		<Roles roles={roomUser.roles} />
 		<Timezone utcOffset={roomUser.utcOffset} />

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -16,6 +16,8 @@ import { type IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { CustomIcon } from '../CustomIcon';
+import { useTheme } from '../../theme';
 
 const RoomItem = ({
 	rid,
@@ -53,10 +55,13 @@ const RoomItem = ({
 	displayMode,
 	sourceType,
 	hideMentionStatus,
-	accessibilityDate
+	accessibilityDate,
+	abacAttributes,
+	isInvited
 }: IRoomItemProps) => {
 	'use memo';
 
+	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
@@ -88,6 +93,7 @@ const RoomItem = ({
 			displayMode={displayMode}>
 			<Wrapper
 				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={I18n.t('Long_press_for_more_actions')}
 				avatar={avatar}
 				type={type}
 				userId={userId}
@@ -112,6 +118,7 @@ const RoomItem = ({
 									isGroupChat={isGroupChat}
 									teamMain={teamMain}
 									sourceType={sourceType}
+									abacAttributes={abacAttributes}
 								/>
 							) : null}
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
@@ -137,6 +144,15 @@ const RoomItem = ({
 								hideMentionStatus={hideMentionStatus}
 								hideUnreadStatus={hideUnreadStatus}
 							/>
+							{isInvited ? (
+								<CustomIcon
+									size={24}
+									name='mail'
+									role='status'
+									accessibilityLabel={I18n.t('Invited')}
+									color={colors.badgeBackgroundLevel2}
+								/>
+							) : null}
 						</View>
 						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
 					</>
@@ -153,9 +169,19 @@ const RoomItem = ({
 								size={22}
 								style={{ marginRight: 8 }}
 								sourceType={sourceType}
+								abacAttributes={abacAttributes}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
+							{isInvited ? (
+								<CustomIcon
+									size={24}
+									name='mail'
+									role='status'
+									accessibilityLabel={I18n.t('Invited')}
+									color={colors.badgeBackgroundLevel2}
+								/>
+							) : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
 								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,6 @@ import { createDiscussionRequest, type ICreateDiscussionRequestData } from '../.
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
-import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
 import { type ISearchLocal, type ISubscription } from '../../definitions';
@@ -25,9 +24,12 @@ import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
 import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsers from '../../containers/SelectedUsers';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const schema = yup.object().shape({
@@ -41,12 +43,14 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		blockUnauthenticatedAccess,
 		encryptionEnabled,
 		failure,
-		isMasterDetail,
 		loading,
 		result,
 		serverVersion,
-		user
+		user,
+		selectedUsers,
+		useRealName
 	} = useAppSelector(state => ({
+		selectedUsers: state.selectedUsers.users,
 		user: getUserSelector(state),
 		server: state.server.server,
 		error: state.createDiscussion.error as IError,
@@ -55,14 +59,14 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		result: state.createDiscussion.result as IResult,
 		blockUnauthenticatedAccess: !!(state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true),
 		serverVersion: state.server.version as string,
-		isMasterDetail: state.app.isMasterDetail,
-		encryptionEnabled: state.encryption.enabled
+		encryptionEnabled: state.encryption.enabled,
+		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
+	const isMasterDetail = useMasterDetail();
 
 	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
-	const [users, setUsers] = useState<string[]>([]);
-
+	const [users, setUsers] = useState<ISelectedUser[]>(selectedUsers);
 	const message = route.params?.message;
 	const {
 		control,
@@ -86,14 +90,13 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		setEncrypted(value?.encrypted);
 	};
 
-	const selectUsers = ({ value }: { value: string[] }) => {
-		logEvent(events.CD_SELECT_USERS);
-		setUsers(value);
-	};
-
 	const onEncryptedChange = (value: boolean) => {
 		logEvent(events.CD_TOGGLE_ENCRY);
 		setEncrypted(value);
+	};
+
+	const removeUser = (user: ISelectedUser) => {
+		setUsers(prevState => prevState.filter(item => item._id !== user._id));
 	};
 
 	const submit = () => {
@@ -110,7 +113,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			pmid,
 			t_name,
 			reply,
-			users
+			users: users.map(item => item.name)
 		};
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
@@ -139,8 +142,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	}, [navigation, route]);
 
 	return (
-		<KeyboardView style={styles.container} backgroundColor={colors.surfaceHover}>
-			<SafeAreaView testID='create-discussion-view'>
+		<KeyboardView style={styles.container} backgroundColor={colors.surfaceTint}>
+			<SafeAreaView testID='create-discussion-view' style={{ backgroundColor: colors.surfaceTint }}>
 				<ScrollView {...scrollPersistTaps}>
 					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
 					<View style={styles.form}>
@@ -162,27 +165,19 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 							testID='multi-select-discussion-name'
 							containerStyle={styles.inputStyle}
 						/>
-						<SelectUsers
-							server={server}
-							userId={user.id}
-							token={user.token}
-							selected={users}
-							onUserSelect={selectUsers}
-							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-							serverVersion={serverVersion}
-						/>
 					</View>
 
 					{isEncryptionEnabled ? (
 						<>
 							<List.Item
 								title='Encrypted'
-								testID='room-actions-encrypt'
-								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} />}
-								additionalAcessibilityLabel={encrypted}
+								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} testID='room-actions-encrypt' />}
+								additionalAccessibilityLabel={encrypted}
 							/>
 						</>
 					) : null}
+
+					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}
 
 					<Button
 						testID='create-discussion-submit'

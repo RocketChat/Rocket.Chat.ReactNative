@@ -1,5 +1,4 @@
-import moment from 'moment';
-
+import dayjs from '../../lib/dayjs';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const applyParams = (message: string, params: Record<string, unknown>) => {
@@ -25,7 +24,7 @@ export const useSupportedVersionMessage = () => {
 		instance_email: email,
 		instance_ws_name: name,
 		instance_domain: server,
-		remaining_days: moment(expiration).diff(new Date(), 'days'),
+		remaining_days: dayjs(expiration).diff(new Date(), 'days'),
 		instance_version: version,
 		...message?.params
 	};

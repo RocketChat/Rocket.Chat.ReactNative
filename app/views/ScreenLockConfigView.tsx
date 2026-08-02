@@ -1,6 +1,6 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { type Subscription } from 'rxjs';
+import { Component } from 'react';
 
 import I18n from '../i18n';
 import { type TSupportedThemes, withTheme } from '../theme';
@@ -42,7 +42,7 @@ interface IScreenLockConfigViewState {
 	biometryLabel: string | null;
 }
 
-class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
+class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
 	private serverRecord?: TServerModel;
 
 	private observable?: Subscription;
@@ -193,8 +193,8 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
-					additionalAcessibilityLabel={this.isSelected(value)}
-					additionalAcessibilityLabelCheck
+					additionalAccessibilityLabel={this.isSelected(value)}
+					additionalAccessibilityLabelCheck
 				/>
 				<List.Separator />
 			</>
@@ -254,7 +254,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
 					translateTitle={false}
-					additionalAcessibilityLabel={this.state.biometry ? I18n.t('Enabled') : I18n.t('Disabled')}
+					additionalAccessibilityLabel={this.state.biometry ? I18n.t('Enabled') : I18n.t('Disabled')}
 				/>
 				<List.Separator />
 			</List.Section>
@@ -271,7 +271,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 						<List.Item
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
-							additionalAcessibilityLabel={autoLock}
+							additionalAccessibilityLabel={autoLock}
 						/>
 						{autoLock ? (
 							<>

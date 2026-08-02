@@ -3,15 +3,14 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	container: {
+		paddingVertical: 0
+	},
 	list: {
 		flex: 1
 	},
 	listContainer: {
 		paddingBottom: 30
-	},
-	filterItemButton: {
-		paddingVertical: 12,
-		justifyContent: 'center'
 	},
 	filterItemContainer: {
 		flex: 1,

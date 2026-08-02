@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
@@ -13,6 +13,7 @@ import OmnichannelQueue from './OmnichannelQueue';
 import { isOmnichannelModuleAvailable } from '../../../../lib/methods/enterpriseModules';
 import Switch from '../../../../containers/Switch';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { getUserSelector } from '../../../../selectors/login';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
@@ -22,7 +23,7 @@ const OmnichannelStatus = memo(() => {
 	const { roles, statusLivechat } = useAppSelector(state => getUserSelector(state), shallowEqual);
 	const inquiryEnabled = useAppSelector(state => state.inquiry.enabled);
 	const queueSize = useAppSelector(state => getInquiryQueueSelector(state).length);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation<any>();
 
 	if (!(isOmnichannelModuleAvailable() && roles?.includes('livechat-agent'))) {
@@ -71,7 +72,7 @@ const OmnichannelStatus = memo(() => {
 				title='Omnichannel'
 				color={colors.fontDefault}
 				onPress={toggleLivechat}
-				additionalAcessibilityLabel={statusLivechat}
+				additionalAccessibilityLabel={statusLivechat}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						<Switch value={isOmnichannelStatusAvailable(statusLivechat)} onValueChange={toggleLivechat} />

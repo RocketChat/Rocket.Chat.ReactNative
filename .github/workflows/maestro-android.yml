@@ -11,21 +11,66 @@ jobs:
   android-test:
     name: 'Android Tests'
     runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      MAESTRO_VERSION: 2.5.1
+      ANDROID_AVD_HOME: /home/runner/.android/avd
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
+
+      # Restore-only: the AVD snapshot is seeded on develop (build-develop.yml);
+      # on a miss the shard cold-boots. Shard 14 builds its own keyboard AVD.
+      - name: Restore Android AVD
+        if: ${{ inputs.shard != '14' }}
+        id: avd-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ runner.os }}-api34
+
+      # Restore-only: seeded on develop. Saves each shard re-downloading ~1 GB
+      # of emulator + system image; on a miss the preinstall step backfills.
+      - name: Restore Android SDK packages (emulator + system image)
+        id: sdk-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            /usr/local/lib/android/sdk/emulator
+            /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
+          key: android-sdk-emu-${{ runner.os }}-api34
+
+      # Retried install so a corrupt partial download self-heals instead of
+      # failing the shard ("Error on ZipFile unknown archive").
+      - name: Pre-install Android SDK packages (cache miss only)
+        if: steps.sdk-cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/preinstall-android-sdk
+
+      # Restore-only: written by e2e-build-android.yml. Install dirs only — the
+      # server-flake log scan must see only this run's logs.
+      - name: Restore Maestro cache
+        id: cache-maestro
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.maestro/bin
+            ~/.maestro/lib
+            ~/.maestro/deps
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: Android Experimental APK
+          name: Android APK
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
@@ -33,72 +78,104 @@ jobs:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
       - name: Install Maestro
-        run: |
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
-        
+        # The install script always wipes ~/.maestro, so only run it on a cache miss.
+        if: steps.cache-maestro.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
       - name: Enable KVM group permissions
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Create Maestro script
+      - name: Disable unnecessary services (improves emulator stability)
         run: |
-          cat << 'EOF' > run-maestro.sh
-          #!/bin/bash
-          SHARD=${{ inputs.shard }}
-          echo "Running shard: $SHARD"
+          sudo systemctl stop docker || true
+          sudo systemctl stop snapd || true
 
-          adb shell settings put system show_touches 1
-          adb install app-experimental-release.apk
-          adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
-          sleep 10
-          adb shell am force-stop chat.rocket.reactnative
-          export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
+      - name: Make Maestro script executable
+        run: chmod +x .github/scripts/run-maestro.sh
 
-          MAX_RETRIES=3
-          ATTEMPT=1
-          FINAL_EXIT_CODE=1
+      - name: Create Keyboard-enabled AVD (shard 14)
+        if: ${{ inputs.shard == '14' }}
+        run: |
+          set -eux
 
-          while [ $ATTEMPT -le $MAX_RETRIES ]; do
-            echo "Attempt $ATTEMPT of $MAX_RETRIES"
+          ANDROID_SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDKMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/sdkmanager"
+          AVDMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/avdmanager"
+          AVD_NAME="Pixel_API_34_Keyboard"
+          IMAGE="system-images;android-34;google_apis;x86_64"
+          AVD_BASE="$ANDROID_AVD_HOME"
+          AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
 
-            echo "Starting screen recording..."
-            adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
-            RECORD_PID=$!
+          mkdir -p "$AVD_BASE"
+          rm -rf "$AVD_BASE/${AVD_NAME}.avd" "$AVD_INI"
 
-            maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --format junit --output maestro-report.xml
-            TEST_EXIT_CODE=$?
+          "$SDKMANAGER" --install emulator "$IMAGE"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
 
-            echo "Stopping screen recording..."
-            kill -INT $RECORD_PID || true
-            sleep 2
+          echo "no" | "$AVDMANAGER" create avd -n "$AVD_NAME" -d pixel_7_pro --package "$IMAGE" --force
 
-            echo "Pulling video from device..."
-            adb pull /sdcard/test_run.mp4 test_run_${SHARD}_attempt_${ATTEMPT}.mp4 || true
-            adb shell rm /sdcard/test_run.mp4 || true
+          if [ ! -f "$AVD_INI" ]; then
+            echo "Expected AVD ini not found: $AVD_INI"
+            echo "--- avdmanager list avd ---"
+            "$AVDMANAGER" list avd || true
+            echo "--- ls AVD_BASE ---"
+            ls -la "$AVD_BASE" || true
+            exit 1
+          fi
 
-            if [ $TEST_EXIT_CODE -eq 0 ]; then
-              echo "Maestro passed on attempt $ATTEMPT"
-              FINAL_EXIT_CODE=0
-              break
-            else
-              echo "Maestro failed on attempt $ATTEMPT"
-            fi
+          AVD_PATH="$(sed -n 's/^path=//p' "$AVD_INI")"
+          if [ -z "$AVD_PATH" ]; then
+            echo "Could not resolve AVD path from: $AVD_INI"
+            cat "$AVD_INI"
+            exit 1
+          fi
 
-            ATTEMPT=$((ATTEMPT+1))
-          done
+          AVD_CONFIG="$AVD_PATH/config.ini"
+          if [ ! -f "$AVD_CONFIG" ]; then
+            echo "Expected AVD config not found: $AVD_CONFIG"
+            ls -la "$AVD_BASE" || true
+            ls -la "$AVD_PATH" || true
+            exit 1
+          fi
 
-          exit $FINAL_EXIT_CODE
-          EOF
+          {
+            echo "hw.keyboard=yes"
+            echo "hw.keyboard.lid=no"
+            echo "hw.lcd.density=440"
+            echo "hw.lcd.height=2280"
+            echo "hw.lcd.width=1080"
+          } >> "$AVD_CONFIG"
 
-          chmod +x run-maestro.sh
-        env:
-          SHARD: ${{ inputs.shard }}
+          echo "$AVD_NAME created with physical keyboard support"
 
-      - name: Start Android Emulator and Run Maestro Tests
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Start Android Emulator and Run Maestro Tests (keyboard AVD)
+        if: ${{ inputs.shard == '14' }}
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
+        timeout-minutes: 60
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          avd-name: Pixel_API_34_Keyboard
+          cores: 4
+          ram-size: 6144M
+          force-avd-creation: false
+          disable-animations: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
+
+      # -no-snapshot-save keeps PRs restore-only; the AVD cache is written only on develop.
+      - name: Start Android Emulator and Run Maestro Tests (default)
+        if: ${{ inputs.shard != '14' }}
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: 60
         with:
           api-level: 34
@@ -107,24 +184,20 @@ jobs:
           target: google_apis
           profile: pixel_7_pro
           cores: 4
-          ram-size: 4096M
+          ram-size: 6144M
           force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./run-maestro.sh
+          emulator-boot-timeout: 900
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
-      - name: Upload Test Report
+      - name: Android Maestro Logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: Android Test Report - Shard ${{ inputs.shard }}
-          path: maestro-report.xml
-          retention-days: 7
-      
-      - name: Upload Screen Recording
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: maestro-video-${{ inputs.shard }}
-          path: test_run_${{ inputs.shard }}_attempt_*.mp4
+          name: Android Maestro Logs - Shard ${{ inputs.shard }}
+          path: |
+            ~/.maestro/tests/**/*
+            maestro-report.xml
+            maestro-rerun-round-*.xml
           retention-days: 7

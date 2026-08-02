@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Launch app
 tags:
   - 'util'
@@ -19,4 +19,10 @@ tags:
             platform: Android
           commands:
             - tapOn: 'Close App'
+      - runFlow:
+          when:
+            visible: ".*isn't responding.*"
+            platform: Android
+          commands:
+            - tapOn: 'Wait'
       - assertVisible: 'Add workspace'

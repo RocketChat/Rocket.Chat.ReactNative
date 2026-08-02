@@ -66,7 +66,11 @@ export const SUPPORTED_PERMISSIONS = [
 	'create-team-channel',
 	'create-team-group',
 	'delete-team-channel',
-	'delete-team-group'
+	'delete-team-group',
+	'mention-all',
+	'mention-here',
+	'allow-internal-voice-calls',
+	'allow-external-voice-calls'
 ] as const;
 
 export async function setPermissions(): Promise<void> {

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, Fragment } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
@@ -7,15 +7,18 @@ import { connect } from 'react-redux';
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
+import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
-import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
+import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
-import { type IApplicationState } from '../definitions';
+import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
+import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '../containers/message/stores/MessageStore';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	content: {
@@ -51,10 +54,8 @@ interface IModalBlockViewProps {
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	theme: TSupportedThemes;
 	language: string;
-	user: {
-		id: string;
-		token: string;
-	};
+	user: ReturnType<typeof getUserSelector>;
+	baseUrl: string;
 }
 
 // eslint-disable-next-line no-sequences
@@ -93,7 +94,14 @@ const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 	return null;
 };
 
-class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
+// A UIKit modal is not a message, but the shared media components it can render
+// (ImageContainer -> Button -> Touchable) assume a per-message context. Provide an
+// empty one: no long-press target, no id-scoped cache. Images still load via the
+// room provider's user/baseUrl. Routed through `unknown` (the repo's convention for
+// fake TAnyMessageModel fixtures) so the cast reads as intentional, not a real message.
+const EMPTY_MESSAGE = {} as unknown as TAnyMessageModel;
+
+class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
 
 	private values: IValues;
@@ -164,8 +172,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		});
 	};
 
-	handleUpdate = ({ type, ...data }: { type: ModalActions }) => {
-		if ([ModalActions.ERRORS].includes(type)) {
+	handleUpdate = ({ type, ...data }: { type: TModalAction }) => {
+		if (type === ModalActions.ERRORS) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {
@@ -247,31 +255,38 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 			blockId,
 			value
 		};
+		this.setState({});
 	};
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { language } = this.props;
+		const { language, user, baseUrl } = this.props;
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
-
+		// Key must change when block structure changes so the tree remounts and hook count matches.
+		// Kept stable when only form values change (typing) so the input keeps focus.
+		const modalKey = `${data.viewId}-${blocks.length}-${blocks
+			.map((b: any, index: number) => `${b.blockId || b.type}-${index}`)
+			.join('-')}`;
 		return (
 			<KeyboardView>
 				<ScrollView style={styles.content}>
-					{React.createElement(
-						modalBlockWithContext({
-							action: this.action,
-							state: this.changeState,
-							...data
-						}),
-						{
-							blocks,
-							errors,
-							language,
-							values
-						}
-					)}
+					<Fragment key={modalKey}>
+						<MessageRoomProvider user={user} baseUrl={baseUrl}>
+							<MessageProvider item={EMPTY_MESSAGE}>
+								<ModalBlockWithContext
+									action={this.action}
+									state={this.changeState}
+									{...data}
+									blocks={blocks}
+									errors={errors}
+									language={language}
+									values={values}
+								/>
+							</MessageProvider>
+						</MessageRoomProvider>
+					</Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
 			</KeyboardView>
@@ -280,7 +295,9 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	language: state.login.user.language as string
+	language: state.login.user.language as string,
+	baseUrl: state.server.server,
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(ModalBlockView);

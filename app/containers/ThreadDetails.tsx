@@ -1,7 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
+import Touch from './Touch';
 import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
@@ -47,11 +46,11 @@ interface IThreadDetails {
 		id: string;
 	};
 	badgeColor?: string;
-	toggleFollowThread: Function;
+	toggleFollowThread?: (isFollowingThread: boolean, tmid: string) => Promise<void> | void;
 	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
 	const { theme } = useTheme();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {
@@ -63,7 +62,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 		replies = '+999';
 	}
 
-	const isFollowing = item.replies?.find((u: string) => u === user?.id);
+	const isFollowing = !!item.replies?.find((u: string) => u === user?.id);
 
 	return (
 		<View style={[styles.container, style]}>
@@ -87,11 +86,11 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			</View>
 			<View style={styles.badgeContainer}>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
-				<Touchable
+				<Touch
 					accessibilityLabel={i18n.t(isFollowing ? 'Unfollow_thread' : 'Follow_thread')}
 					onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />
-				</Touchable>
+				</Touch>
 			</View>
 		</View>
 	);

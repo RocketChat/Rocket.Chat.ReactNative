@@ -9,10 +9,6 @@ interface IAppStart extends Action {
 	text?: string;
 }
 
-interface ISetMasterDetail extends Action {
-	isMasterDetail: boolean;
-}
-
 interface ISetNotificationPresenceCap extends Action {
 	show: boolean;
 }
@@ -21,7 +17,7 @@ interface ISetNetInfoState extends Action {
 	netInfoState: NetInfoStateType;
 }
 
-export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetNetInfoState;
+export type TActionApp = IAppStart & ISetNotificationPresenceCap & ISetNetInfoState;
 
 interface Params {
 	root: RootEnum;
@@ -51,13 +47,6 @@ export function appInit(): Action {
 export function appInitLocalSettings(): Action {
 	return {
 		type: APP.INIT_LOCAL_SETTINGS
-	};
-}
-
-export function setMasterDetail(isMasterDetail: boolean): ISetMasterDetail {
-	return {
-		type: APP.SET_MASTER_DETAIL,
-		isMasterDetail
 	};
 }
 

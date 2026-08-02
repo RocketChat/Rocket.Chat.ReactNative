@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
@@ -39,7 +39,20 @@ export interface IUnreadBadge {
 	hideMentionStatus?: boolean;
 }
 
-const UnreadBadge = React.memo(
+function getTestId(userMentions: number | undefined, groupMentions: number | undefined, unread: number | undefined) {
+	if (userMentions) {
+		return `mention-badge-${unread}`;
+	}
+	if (groupMentions) {
+		return `group-mention-badge-${unread}`;
+	}
+	if (unread) {
+		return `unread-badge-${unread}`;
+	}
+	return '';
+}
+
+const UnreadBadge = memo(
 	({
 		unread,
 		userMentions,
@@ -95,13 +108,16 @@ const UnreadBadge = React.memo(
 			minWidth = 11 + text.length * 5;
 		}
 		const borderRadius = 10.5 * fontScale;
+		const testId = getTestId(userMentions, groupMentions, text);
+
 		return (
 			<View
 				style={[
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
 					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
 					style
-				]}>
+				]}
+				testID={testId}>
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
 					{text}
 				</Text>

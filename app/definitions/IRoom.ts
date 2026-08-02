@@ -3,7 +3,7 @@ import type Model from '@nozbe/watermelondb/Model';
 import { type IMessage } from './IMessage';
 import { type IRocketChatRecord } from './IRocketChatRecord';
 import { type IServedBy } from './IServedBy';
-import { type IVisitor, type SubscriptionType } from './ISubscription';
+import { type ISubscription, type IVisitor, type SubscriptionType } from './ISubscription';
 import { type IUser, type TNotifications } from './IUser';
 
 interface IRequestTranscript {
@@ -14,6 +14,15 @@ interface IRequestTranscript {
 }
 
 export type TUserWaitingForE2EKeys = { userId: string; ts: Date };
+
+export interface IRoomInfoParam {
+	room?: ISubscription;
+	member?: any;
+	rid: string;
+	t: SubscriptionType;
+	joined?: boolean;
+	itsMe?: boolean;
+}
 
 export interface IRoom {
 	fname?: string;
@@ -163,7 +172,12 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	username?: string;
 	nickname?: string;
-	federation?: any;
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+		peer?: string;
+	};
 	roomsCount?: number;
 
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
@@ -233,6 +247,7 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	isLastOwner?: boolean;
 	federated?: boolean;
+	abacAttributes?: { key: string; values: string[] }[];
 }
 
 export interface IRoomNotifications {

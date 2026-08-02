@@ -1,6 +1,5 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 
@@ -15,6 +14,7 @@ import I18n from '../../../i18n';
 import { TOKEN_KEY } from '../../../lib/constants/keys';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { removeServer } from '../../../lib/methods/logout';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
@@ -35,14 +35,13 @@ const ServersList = () => {
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
 	const server = useAppSelector(state => state.server.server);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 
-	useEffect(() => {
-		const init = async () => {
+	useLayoutEffect(() => {
+		const init = () => {
 			const serversDB = database.servers;
-			const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
+			const observable = serversDB.get('servers').query().observeWithColumns(['name']);
 
 			subscription.current = observable.subscribe(data => {
 				setServers(data);
@@ -124,8 +123,7 @@ const ServersList = () => {
 		<View
 			style={{
 				backgroundColor: colors.surfaceLight,
-				borderColor: colors.strokeLight,
-				marginBottom: insets.bottom
+				borderColor: colors.strokeLight
 			}}
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>

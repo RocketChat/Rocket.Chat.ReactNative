@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -15,7 +15,7 @@ import SelectPersonOrChannel from './SelectPersonOrChannel';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { type NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
-import MessagePreview from '../../containers/message/Preview';
+import MessagePreview from '../../containers/message/components/Preview';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 
@@ -32,7 +32,7 @@ const ForwardMessageView = () => {
 	const { blockUnauthenticatedAccess, server, serverVersion, user } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		server: state.server.server,
-		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess,
 		serverVersion: state.server.version as string
 	}));
 

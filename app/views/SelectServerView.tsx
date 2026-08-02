@@ -1,9 +1,10 @@
-import React, { useEffect, useLayoutEffect } from 'react';
-import { FlatList } from 'react-native';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { FlatList, PixelRatio, StyleSheet } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../i18n';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
@@ -14,16 +15,30 @@ import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { type TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
-	const [servers, setServers] = React.useState<TServerModel[]>([]);
+	'use memo';
+
+	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
+	const { bottom } = useSafeAreaInsets();
 
 	const server = useAppSelector(state => state.server.server);
 	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
+	const { fontScale } = useResponsiveLayout();
+
+	const paddingBottom = Math.max(16, bottom);
+
+	const getItemLayout = useCallback(
+		(_data: any, index: number) => {
+			const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
+			return { length: height, offset: (height + StyleSheet.hairlineWidth) * index, index };
+		},
+		[fontScale]
+	);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -56,9 +71,9 @@ const SelectServerView = () => {
 					<ServerItem onPress={() => select(item.id, item.version)} item={item} hasCheck={item.id === server} />
 				)}
 				keyExtractor={keyExtractor}
-				getItemLayout={getItemLayout} // Refactor row_height
+				getItemLayout={getItemLayout}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				removeClippedSubviews

@@ -1,4 +1,4 @@
-import React, { type ElementType, memo, useEffect } from 'react';
+import { memo, useEffect, type ElementType } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { useDispatch } from 'react-redux';
 import { AccessibilityInfo } from 'react-native';
@@ -59,7 +59,7 @@ const InAppNotification = memo(() => {
 				componentProps: {
 					notification
 				},
-				duration: notification.customTime || 3000, // default 3s,
+				duration: notification.customTime || (process.env.RUNNING_E2E_TESTS ? 5000 : 3000), // default 3s,
 				hideOnPress: notification.hideOnPress ?? true,
 				swipeEnabled: notification.swipeEnabled ?? true
 			});

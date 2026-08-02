@@ -1,5 +1,3 @@
-import React from 'react';
-
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
@@ -27,8 +25,8 @@ const Item = ({ title, value, browser, changeDefaultBrowser }: IRenderItem) => {
 			testID={`default-browser-view-${title}`}
 			right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
 			translateTitle={false}
-			additionalAcessibilityLabel={isSelected}
-			additionalAcessibilityLabelCheck
+			additionalAccessibilityLabel={isSelected}
+			additionalAccessibilityLabelCheck
 		/>
 	);
 };

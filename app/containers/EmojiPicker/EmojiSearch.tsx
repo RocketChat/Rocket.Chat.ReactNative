@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import { useState, type ReactElement } from 'react';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { isIOS } from '../../lib/methods/helpers';
 import { type IEmojiSearchBarProps } from './interfaces';
 import styles from './styles';
 
-export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): React.ReactElement => {
+export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 
@@ -38,7 +37,6 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 			onBlur={onBlur}
 			iconRight={'search'}
 			testID='emoji-searchbar-input'
-			bottomSheet={bottomSheet && isIOS}
 			autoFocus={!bottomSheet} // focus on input when not in reaction picker
 		/>
 	);

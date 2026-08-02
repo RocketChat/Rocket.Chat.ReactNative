@@ -1,27 +1,17 @@
 import { type EdgeInsets } from 'react-native-safe-area-context';
 
 import { type ChatsStackParamList } from '../../stacks/types';
-import {
-	type IBaseScreen,
-	type ILastMessage,
-	type ILoggedUser,
-	type TSubscriptionModel,
-	type ICustomEmojis,
-	type TMessageAction
-} from '../../definitions';
+import { type IBaseScreen, type ILastMessage, type ILoggedUser, type TSubscriptionModel } from '../../definitions';
 import { type IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
-	useRealName?: boolean;
 	isAuthenticated: boolean;
 	Message_GroupingPeriod?: number;
-	Message_TimeFormat?: string;
 	Message_Read_Receipt_Enabled?: boolean;
 	Hide_System_Messages?: string[];
 	baseUrl: string;
 	serverVersion: string | null;
-	customEmojis: ICustomEmojis;
 	isMasterDetail: boolean;
 	replyBroadcast: Function;
 	width: number;
@@ -32,13 +22,14 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	inAppFeedback?: { [key: string]: string };
 	encryptionEnabled: boolean;
 	airGappedRestrictionRemainingDays: number | undefined;
+	isFederationEnabled: boolean;
+	isFederationModuleEnabled: boolean;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;
 export type TRoomUpdate = keyof TSubscriptionModel;
 
 export interface IRoomViewState {
-	[key: string]: any;
 	joined: boolean;
 	room:
 		| TSubscriptionModel
@@ -58,17 +49,17 @@ export interface IRoomViewState {
 		[K in TRoomUpdate]?: any;
 	};
 	member: any;
-	lastOpen: Date | null;
-	reactionsModalVisible: boolean;
+	lastSeen: Date | null;
 	canAutoTranslate: boolean;
 	loading: boolean;
-	replyWithMention: boolean;
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
-	action: TMessageAction;
-	selectedMessages: string[];
 	isAutocompleteVisible: boolean;
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;
+	canForwardGuest: boolean;
+	canReturnQueue: boolean;
+	canViewCannedResponse: boolean;
+	canPlaceLivechatOnHold: boolean;
 }

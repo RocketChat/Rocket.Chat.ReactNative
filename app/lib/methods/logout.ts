@@ -1,12 +1,12 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import type Model from '@nozbe/watermelondb/Model';
-import * as Keychain from 'react-native-keychain';
 
 import { getDeviceToken } from '../notifications';
-import { isIOS, isSsl } from './helpers';
+import { isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
+import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
@@ -14,7 +14,7 @@ import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
-async function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
+function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
 		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
@@ -23,9 +23,6 @@ async function removeServerKeys({ server, userId }: { server: string; userId?: s
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-	if (isIOS) {
-		await Keychain.resetInternetCredentials(server);
-	}
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
@@ -44,7 +41,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		batch.push(serverRecord.prepareDestroyPermanently());
 
 		await serversDB.write(() => serversDB.batch(batch));
-		await removeServerKeys({ server, userId });
+		removeServerKeys({ server, userId });
 	} catch (e) {
 		log(e);
 	}
@@ -115,7 +112,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	}
 
 	if (sdk.current) {
-		sdk.disconnect();
+		disconnect();
 	}
 
 	await removeServerData({ server });

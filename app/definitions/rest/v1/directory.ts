@@ -8,6 +8,6 @@ export type DirectoryEndpoint = {
 			count: number;
 			offset: number;
 			sort: { [key: string]: number };
-		}) => PaginatedResult<{ result: IServerRoom[] }>;
+		}) => PaginatedResult<{ result: IServerRoom[]; count: number }>;
 	};
 };

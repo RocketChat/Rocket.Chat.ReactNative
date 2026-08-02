@@ -1,6 +1,6 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { type Dispatch } from 'redux';
 import { type Observable, type Subscription } from 'rxjs';
@@ -20,6 +20,7 @@ import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import database from '../../lib/database';
 import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
@@ -29,6 +30,7 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
 import { type TColors, type TSupportedThemes, withTheme } from '../../theme';
 import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -68,6 +70,7 @@ interface IRigthButtonsState {
 	tunreadUser: string[];
 	tunreadGroup: string[];
 	canToggleEncryption: boolean;
+	isSelfDm: boolean;
 }
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
@@ -82,7 +85,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			tunread: [],
 			tunreadUser: [],
 			tunreadGroup: [],
-			canToggleEncryption: false
+			canToggleEncryption: false,
+			isSelfDm: false
 		};
 	}
 
@@ -112,7 +116,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	}
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption, isSelfDm } = this.state;
 		const {
 			teamId,
 			status,
@@ -137,6 +141,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextState.canToggleEncryption !== canToggleEncryption) {
+			return true;
+		}
+		if (nextState.isSelfDm !== isSelfDm) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -210,10 +217,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	updateSubscription = (sub: TSubscriptionModel) => {
+		const { userId } = this.props;
+		const isSelfDm = sub?.t === 'd' && !!userId && getUidDirectMessage(sub) === userId;
 		this.setState({
 			tunread: sub?.tunread ?? [],
 			tunreadUser: sub?.tunreadUser ?? [],
-			tunreadGroup: sub?.tunreadGroup ?? []
+			tunreadGroup: sub?.tunreadGroup ?? [],
+			isSelfDm
 		});
 	};
 
@@ -232,14 +242,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	returnLivechat = () => {
-		const { rid } = this.props;
+		const { rid, departmentId } = this.props;
 		if (rid) {
 			showConfirmationAlert({
 				message: i18n.t('Would_you_like_to_return_the_inquiry'),
 				confirmationText: i18n.t('Yes'),
 				onPress: async () => {
 					try {
-						await returnLivechat(rid);
+						await returnLivechat(rid, departmentId);
 					} catch (e: any) {
 						showErrorAlert(e.reason, i18n.t('Oops'));
 					}
@@ -454,7 +464,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	render() {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption, isSelfDm } = this.state;
 		const {
 			t,
 			tmid,
@@ -476,6 +486,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				? roomName
 				: getRoomAccessibilityLabel({ type: t, userId, isGroupChat, status: status as TUserStatus, teamMain });
 		if (!rid) {
+			return null;
+		}
+
+		if (status === 'INVITED') {
 			return null;
 		}
 
@@ -520,11 +534,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				<HeaderCallButton
-					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
-					rid={rid}
-					disabled={hasE2EEWarning}
-				/>
+				{!isSelfDm ? (
+					<HeaderCallButton
+						accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+						rid={rid}
+						disabled={hasE2EEWarning}
+					/>
+				) : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						accessibilityLabel={this.threadsAccessibilityLabel()}
@@ -550,10 +566,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled as boolean,
-	isMasterDetail: state.app.isMasterDetail,
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
 	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications,
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption']
 });
 
-export default connect(mapStateToProps)(withTheme(RightButtonsContainer));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(RightButtonsContainer)));

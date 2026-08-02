@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { delay, put, race, select, take, takeLatest, actionChannel, throttle, fork, cancel } from 'redux-saga/effects';
+import { delay, put, race, take, takeLatest, actionChannel, throttle, fork, cancel } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
@@ -11,6 +11,7 @@ import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
 import { leaveRoom, deleteRoom, leaveTeam, deleteTeam, forwardLivechat, emitTyping } from '../lib/services/restApi';
 import getMoreMessages from '../lib/methods/getMoreMessages';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getMessageById } from '../lib/database/services/Message';
 
 function* watchHistoryRequests() {
@@ -51,10 +52,10 @@ const clearInactiveTyping = function* clearInactiveTyping({ rid }) {
 	yield clearUserTyping({ rid, status: false });
 };
 
-const watchUserTyping = function* watchUserTyping({ rid, status }) {
+const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 	try {
 		if (status) {
-			yield emitTyping(rid, status);
+			yield emitTyping(rid, status, args);
 			if (inactiveTypingTask) {
 				yield cancel(inactiveTypingTask);
 			}
@@ -66,7 +67,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 };
 
 const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	const isMasterDetail = getIsMasterDetail();
 	Navigation.popToTop(isMasterDetail);
 
 	if (actionType === 'leave') {
@@ -145,7 +146,7 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 	try {
 		const result = yield forwardLivechat(transferData);
 		if (result === true) {
-			const isMasterDetail = yield select(state => state.app.isMasterDetail);
+			const isMasterDetail = getIsMasterDetail();
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
 			} else {

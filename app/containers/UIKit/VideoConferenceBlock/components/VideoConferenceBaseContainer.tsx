@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View, Text } from 'react-native';
 
 import i18n from '../../../../i18n';
@@ -8,16 +8,16 @@ import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
 	variant: 'ended' | 'incoming' | 'outgoing' | 'issue';
-	children: React.ReactElement | React.ReactElement[];
+	children: ReactElement | ReactElement[];
 };
 
-export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMessageIconProps): React.ReactElement => {
+export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMessageIconProps): ReactElement => {
 	const { colors } = useTheme();
 	const style = useStyle();
 
 	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
 		ended: {
-			icon: 'phone-end',
+			icon: 'phone-off',
 			color: colors.fontSecondaryInfo,
 			backgroundColor: colors.surfaceNeutral,
 			label: i18n.t('Call_ended')

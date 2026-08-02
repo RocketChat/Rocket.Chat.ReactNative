@@ -3,8 +3,8 @@ import React
 import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
-import MMKV
 import WatchConnectivity
+import PushKit
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -18,18 +18,24 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
+    // This reads existing encryption key or generates a new one for fresh installs
+    // Must run before Firebase, Bugsnag, and React Native start
+    MMKVKeyManager.initialize()
+    
     FirebaseApp.configure()
     Bugsnag.start()
-    
-    // Initialize MMKV with app group
-    if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
-       let groupDir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path {
-      MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .debug)
-    }
-    
-    // Initialize notifications
-    RNNotifications.startMonitorNotifications()
     ReplyNotification.configure()
+    if !VoipRegion.isChina() {
+      VoipService.voipRegistration()
+      RNCallKeep.setup([
+        "appName": "Rocket.Chat",
+        "supportsVideo": false,
+        "maximumCallGroups": 1,
+        "maximumCallsPerCallGroup": 1,
+        "includesCallsInRecents": true
+      ])
+    }
       
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
@@ -61,19 +67,6 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
-  }
-
-  // Remote Notification handling
-  public override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    RNNotifications.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
-  }
-  
-  public override func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    RNNotifications.didFailToRegisterForRemoteNotificationsWithError(error)
-  }
-  
-  public override func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    RNNotifications.didReceiveBackgroundNotification(userInfo, withCompletionHandler: completionHandler)
   }
 
   // Linking API

@@ -1,36 +1,21 @@
+import { useState, Fragment } from 'react';
+import { Button, View } from 'react-native';
+
 import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
-import MessageContext from '../message/Context';
-import { themes } from '../../lib/constants/colors';
-
-const user = {
-	id: 'y8bd77ptZswPj3EW8',
-	username: 'diego.mello',
-	token: 'abc'
-};
-
-const baseUrl = 'https://open.rocket.chat';
+import { MessageRoomProvider } from '../message/stores/MessageRoomStore';
+import { MessageProvider } from '../message/stores/MessageStore';
+import { type TAnyMessageModel } from '../../definitions';
 
 export default {
 	title: 'UIKit/UiKitModal',
 	decorators: [
 		(Story: any) => (
-			<MessageContext.Provider
-				value={{
-					user,
-					baseUrl,
-					onPress: () => {},
-					onLongPress: () => {},
-					reactionInit: () => {},
-					onErrorPress: () => {},
-					replyBroadcast: () => {},
-					onReactionPress: () => {},
-					onDiscussionPress: () => {},
-					onReactionLongPress: () => {},
-					threadBadgeColor: themes.light.fontInfo
-				}}>
-				<Story />
-			</MessageContext.Provider>
+			<MessageRoomProvider user={{ id: 'u1', username: 'user', token: 't' }} baseUrl='https://open.rocket.chat'>
+				<MessageProvider item={{} as TAnyMessageModel}>
+					<Story />
+				</MessageProvider>
+			</MessageRoomProvider>
 		)
 	]
 };
@@ -299,48 +284,47 @@ export const ModalFormTextArea = () =>
 	]);
 ModalFormTextArea.storyName = 'Modal - Form TextArea';
 
-// FIXME: Commented out because it's breaking jest snapshots
-// export const ModalImages = () =>
-// 	UiKitModal([
-// 		{
-// 			type: 'image',
-// 			title: {
-// 				type: 'plain_text',
-// 				text: 'Example Image',
-// 				emoji: true
-// 			},
-// 			imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
-// 			alt_text: 'Example Image'
-// 		},
-// 		{
-// 			type: 'section',
-// 			text: {
-// 				type: 'mrkdwn',
-// 				text: 'How could be the life in Mars?'
-// 			}
-// 		},
-// 		{
-// 			type: 'context',
-// 			elements: [
-// 				{
-// 					type: 'image',
-// 					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png'
-// 				},
-// 				{
-// 					type: 'mrkdwn',
-// 					text: 'November 25, 2019'
-// 				}
-// 			]
-// 		},
-// 		{
-// 			type: 'section',
-// 			text: {
-// 				type: 'mrkdwn',
-// 				text: '*Next stop, Mars!*\nMussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
-// 			}
-// 		}
-// 	]);
-// ModalImages.storyName = 'Modal - Images';
+export const ModalImages = () =>
+	UiKitModal([
+		{
+			type: 'image',
+			title: {
+				type: 'plain_text',
+				text: 'Example Image',
+				emoji: true
+			},
+			imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png',
+			alt_text: 'Example Image'
+		},
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: 'How could be the life in Mars?'
+			}
+		},
+		{
+			type: 'context',
+			elements: [
+				{
+					type: 'image',
+					imageUrl: 'https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png'
+				},
+				{
+					type: 'mrkdwn',
+					text: 'November 25, 2019'
+				}
+			]
+		},
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: '*Next stop, Mars!*\nMussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.'
+			}
+		}
+	]);
+ModalImages.storyName = 'Modal - Images';
 
 export const ModalActions = () =>
 	UiKitModal([
@@ -469,6 +453,116 @@ export const ModalActions = () =>
 		}
 	]);
 ModalActions.storyName = 'Modal - Actions';
+
+export const ModalActionsWithShowMore = () =>
+	UiKitModal([
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: '*Actions with Show More* 🚀\n\nThis modal demonstrates the "Show more" functionality. The actions block has 8 buttons, but only the first 5 are visible initially. Click "Show more" to reveal all buttons.'
+			}
+		},
+		{
+			type: 'divider'
+		},
+		{
+			type: 'actions',
+			blockId: 'actions-show-more',
+			elements: [
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Primary Action',
+						emoji: false
+					},
+					style: 'primary',
+					actionId: 'action_1',
+					value: 'action1'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Secondary',
+						emoji: false
+					},
+					actionId: 'action_2',
+					value: 'action2'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Danger Action',
+						emoji: false
+					},
+					style: 'danger',
+					actionId: 'action_3',
+					value: 'action3'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 4',
+						emoji: false
+					},
+					actionId: 'action_4',
+					value: 'action4'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 5',
+						emoji: false
+					},
+					actionId: 'action_5',
+					value: 'action5'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 6 - Hidden',
+						emoji: false
+					},
+					actionId: 'action_6',
+					value: 'action6'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 7 - Hidden',
+						emoji: false
+					},
+					actionId: 'action_7',
+					value: 'action7'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 8 - Hidden',
+						emoji: false
+					},
+					actionId: 'action_8',
+					value: 'action8'
+				}
+			]
+		},
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: 'This actions block has *8 buttons* but only shows *5* initially. Click "Show more" to see all buttons!'
+			}
+		}
+	]);
+ModalActionsWithShowMore.storyName = 'Modal - Actions with Show More';
 
 export const ModalContextsDividers = () =>
 	UiKitModal([
@@ -649,3 +743,53 @@ export const ModalDatePickerWithError = () => (
 	</KitContext.Provider>
 );
 ModalDatePickerWithError.storyName = 'Modal - DatePicker with error';
+
+const initialInputBlocks = [
+	{
+		type: 'input',
+		element: { type: 'plain_text_input', actionId: 'input-1' },
+		label: { type: 'plain_text', text: 'First field', emoji: true },
+		placeholder: { type: 'plain_text', text: 'Type here…', emoji: true }
+	},
+	{
+		type: 'input',
+		element: { type: 'plain_text_input', actionId: 'input-2' },
+		label: { type: 'plain_text', text: 'Second field', emoji: true },
+		placeholder: { type: 'plain_text', text: 'Type here…', emoji: true }
+	}
+];
+
+export const ModalInputWithAddField = () => {
+	const [values, setValues] = useState<Record<string, { blockId: string; value: string }>>({});
+	const [blocks, setBlocks] = useState(initialInputBlocks);
+	const changeState = ({ actionId, value, blockId = 'default' }: { actionId: string; value: string; blockId?: string }) => {
+		setValues(prev => ({ ...prev, [actionId]: { blockId, value } }));
+	};
+	const addField = () => {
+		const nextId = `input-${blocks.length + 1}`;
+		setBlocks(prev => [
+			...prev,
+			{
+				type: 'input',
+				element: { type: 'plain_text_input', actionId: nextId },
+				label: { type: 'plain_text', text: `Field ${blocks.length + 1}`, emoji: true },
+				placeholder: { type: 'plain_text', text: 'Type here…', emoji: true }
+			}
+		]);
+	};
+	const modalKey = `${blocks.length}-${blocks
+		.map((b: any, index: number) => `${b.element?.actionId || b.type}-${index}`)
+		.join('-')}`;
+
+	return (
+		<View>
+			<Fragment key={modalKey}>
+				<KitContext.Provider value={{ ...defaultContext, state: changeState, values }}>
+					<UiKitComponent render={UiKitModal} blocks={blocks} />
+				</KitContext.Provider>
+			</Fragment>
+			<Button title='Add field' onPress={addField} />
+		</View>
+	);
+};
+ModalInputWithAddField.storyName = 'Modal - Input with add field';

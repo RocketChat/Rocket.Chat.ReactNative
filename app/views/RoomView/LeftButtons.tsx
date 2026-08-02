@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
+import { type ReactElement } from 'react';
 
 import Avatar from '../../containers/Avatar';
 import { useAppNavigation } from '../../lib/hooks/navigation';
@@ -20,7 +20,7 @@ interface ILeftButtonsProps {
 	token?: string;
 	title?: string;
 	t: string;
-	goRoomActionsView: Function;
+	goRoomActionsView: () => void;
 	isMasterDetail: boolean;
 }
 
@@ -35,7 +35,7 @@ const LeftButtons = ({
 	t,
 	goRoomActionsView,
 	isMasterDetail
-}: ILeftButtonsProps): React.ReactElement | null => {
+}: ILeftButtonsProps): ReactElement | null => {
 	const { goBack } = useAppNavigation();
 	const onPress = () => goRoomActionsView();
 	const { fontScale } = useWindowDimensions();

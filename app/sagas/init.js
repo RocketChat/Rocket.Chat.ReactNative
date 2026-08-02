@@ -22,7 +22,6 @@ export const initLocalSettings = function* initLocalSettings() {
 };
 
 const restore = function* restore() {
-	console.log('RESTORE');
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);

@@ -1,5 +1,5 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -10,6 +10,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { type IRoomNotifications, type TRoomNotificationsModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -67,7 +68,7 @@ const RenderListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
 			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };
@@ -86,14 +87,14 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	);
 };
 
-const NotificationPreferencesView = (): React.ReactElement => {
+const NotificationPreferencesView = (): ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
-	const { serverVersion, isMasterDetail } = useAppSelector(state => ({
-		serverVersion: state.server.version,
-		isMasterDetail: state.app.isMasterDetail
+	const { serverVersion } = useAppSelector(state => ({
+		serverVersion: state.server.version
 	}));
+	const isMasterDetail = useMasterDetail();
 	const [hideUnreadStatus, setHideUnreadStatus] = useState(room.hideUnreadStatus);
 
 	useEffect(() => {
@@ -146,7 +147,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						right={() => (
 							<RenderSwitch preference='disableNotifications' room={room} onChangeValue={handleSaveNotificationSettings} />
 						)}
-						additionalAcessibilityLabel={!room.disableNotifications}
+						additionalAccessibilityLabel={!room.disableNotifications}
 					/>
 					<List.Separator />
 					<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
@@ -161,7 +162,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							<RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={handleSaveNotificationSettings} />
 						)}
 						// @ts-ignore
-						additionalAcessibilityLabel={!room.muteGroupMentions}
+						additionalAccessibilityLabel={!room.muteGroupMentions}
 					/>
 					<List.Separator />
 					<List.Info info='Receive_Group_Mentions_Info' />
@@ -175,7 +176,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						right={() => (
 							<RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={handleSaveNotificationSettings} />
 						)}
-						additionalAcessibilityLabel={!room.hideUnreadStatus}
+						additionalAccessibilityLabel={!room.hideUnreadStatus}
 					/>
 					<List.Separator />
 					<List.Info info='Mark_as_unread_Info' />
@@ -190,7 +191,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							right={() => (
 								<RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={handleSaveNotificationSettings} />
 							)}
-							additionalAcessibilityLabel={!room.hideMentionStatus}
+							additionalAccessibilityLabel={!room.hideMentionStatus}
 						/>
 						<List.Separator />
 						<List.Info info='Show_badge_for_mentions_Info' />

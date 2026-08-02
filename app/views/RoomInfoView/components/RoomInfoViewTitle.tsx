@@ -1,13 +1,14 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { type ReactElement } from 'react';
 
-import { type ISubscription, SubscriptionType } from '../../../definitions';
+import { type ISubscription, type TUserStatus, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import { getRoomTitle } from '../../../lib/methods/helpers';
 import CollapsibleText from '../../../containers/CollapsibleText';
+import StatusRows from '../../../containers/Status/StatusRows';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
@@ -16,11 +17,23 @@ interface IRoomInfoViewTitle {
 	room?: ISubscription;
 	name?: string;
 	username: string;
+	userId?: string;
+	status?: TUserStatus;
 	statusText?: string;
+	statusExpiresAt?: string;
 	type: SubscriptionType;
 }
 
-const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfoViewTitle): React.ReactElement => {
+const RoomInfoViewTitle = ({
+	room,
+	name,
+	username,
+	userId,
+	status,
+	statusText,
+	statusExpiresAt,
+	type
+}: IRoomInfoViewTitle): ReactElement => {
 	const { colors } = useTheme();
 
 	const copyInfoToClipboard = (data: string) => {
@@ -43,15 +56,21 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 						testID='room-info-view-username'
 						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{`@${username}`}</Text>
 				)}
-				{!!statusText && (
-					<View testID='room-info-view-custom-status'>
-						<CollapsibleText
-							linesToTruncate={2}
-							msg={statusText}
-							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
-						/>
-					</View>
-				)}
+				<StatusRows
+					userId={userId}
+					statusText={statusText}
+					status={status}
+					statusExpiresAt={statusExpiresAt}
+					statusTextColor={colors.fontTitlesLabels}
+					fontSecondaryInfo={colors.fontSecondaryInfo}
+					renderStatusText={text => (
+						<CollapsibleText linesToTruncate={2} msg={text} style={[styles.statusText, { color: colors.fontTitlesLabels }]} />
+					)}
+					textStyle={styles.statusText}
+					secondaryTextStyle={styles.expiryText}
+					rowStyle={styles.statusRow}
+					expiryRowStyle={styles.statusExpiryRow}
+				/>
 			</View>
 		);
 	}
@@ -63,6 +82,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				key='room-info-type'
 				status={room?.visitor?.status}
 				sourceType={room?.source}
+				abacAttributes={room?.abacAttributes}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
 				{getRoomTitle(room)}

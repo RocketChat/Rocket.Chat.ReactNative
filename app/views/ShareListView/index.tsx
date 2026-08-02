@@ -1,12 +1,13 @@
-import React from 'react';
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, Text, View } from 'react-native';
+import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -19,7 +20,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { sanitizeLikeString } from '../../lib/database/utils';
+import { getSubscriptionSearchClause } from '../../lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
 import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
@@ -61,12 +62,16 @@ interface IShareListViewProps extends INavigationOption {
 	airGappedRestrictionRemainingDays: number | undefined;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
+	insets: EdgeInsets;
 }
 
-const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (_data: any, index: number) => {
+	const rowHeight = PixelRatio.roundToNearestPixel(ROW_HEIGHT * PixelRatio.getFontScale());
+	return { length: rowHeight, offset: (rowHeight + StyleSheet.hairlineWidth) * index, index };
+};
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
-class ShareListView extends React.Component<IShareListViewProps, IState> {
+class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
 
 	private unsubscribeBlur: (() => void) | undefined;
@@ -101,7 +106,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { mediaUris } = shareExtensionParams;
 		if (mediaUris) {
 			try {
-				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
+				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri)));
 				const attachments = info.map(file => {
 					if (!file.exists) {
 						return null;
@@ -227,8 +232,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
-			const likeString = sanitizeLikeString(text);
-			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
+			defaultWhereClause.push(getSubscriptionSearchClause(text));
 		}
 		const data = (await db
 			.get('subscriptions')
@@ -446,7 +450,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -487,6 +491,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}
@@ -514,4 +519,4 @@ const mapStateToProps = ({ login, server, share, settings }: IApplicationState) 
 			: undefined
 });
 
-export default connect(mapStateToProps)(withTheme(ShareListView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ShareListView)));

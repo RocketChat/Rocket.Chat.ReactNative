@@ -2,23 +2,14 @@ package chat.rocket.reactnative.notification;
 
 import android.util.Log;
 
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.Callback;
-
-import com.ammarahmed.mmkv.SecureKeystore;
 import com.tencent.mmkv.MMKV;
-import com.wix.reactnativenotifications.core.AppLifecycleFacade;
-import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 
 import java.math.BigInteger;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 
 import chat.rocket.reactnative.BuildConfig;
-
-class RNCallback implements Callback {
-    public void invoke(Object... args) {
-
-    }
-}
+import chat.rocket.reactnative.storage.MMKVKeyManager;
 
 class Utils {
     static public String toHex(String arg) {
@@ -32,112 +23,120 @@ class Utils {
 
 public class Ejson {
     private static final String TAG = "RocketChat.Ejson";
+    private static final String TOKEN_KEY = "reactnativemeteor_usertoken-";
     
-    String host;
+    public String host;
     String rid;
     String type;
     Sender sender;
+    Caller caller; // For video conf notifications
     String messageId;
+    String callId; // For video conf notifications
     String notificationType;
     String messageType;
     String senderName;
+    String name; // Room name for groups/channels
     String msg;
+    Integer status; // For video conf: 0=incoming, 4=cancelled
 
     String tmid;
-
     Content content;
 
-    private ReactApplicationContext reactContext;
-
-    private MMKV mmkv;
-    
-    private boolean initializationAttempted = false;
-
-    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
-
-    public Ejson() {
-        // Don't initialize MMKV in constructor - use lazy initialization instead
-    }
-    
-    /**
-     * Lazily initialize MMKV when first needed.
-     * 
-     * NOTE: MMKV requires ReactApplicationContext (not regular Context) because SecureKeystore
-     * needs access to React-specific keystore resources. This means MMKV cannot be initialized
-     * before React Native starts.
-     */
-    private synchronized void ensureMMKVInitialized() {
-        if (initializationAttempted) {
-            return;
+    private MMKV getMMKV() {
+        String encryptionKey = MMKVKeyManager.getEncryptionKey();
+        if (encryptionKey != null && !encryptionKey.isEmpty()) {
+            return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, encryptionKey);
         }
-        
-        initializationAttempted = true;
-        
-        // Try to get ReactApplicationContext from available sources
-        if (this.reactContext == null) {
-            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-            if (facade != null) {
-                Object runningContext = facade.getRunningReactContext();
-                if (runningContext instanceof ReactApplicationContext) {
-                    this.reactContext = (ReactApplicationContext) runningContext;
-                }
-            }
-            
-            if (this.reactContext == null) {
-                this.reactContext = CustomPushNotification.reactApplicationContext;
-            }
-        }
-        
-        // Initialize MMKV if context is available
-        if (this.reactContext != null && mmkv == null) {
-            try {
-                MMKV.initialize(this.reactContext);
-                SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
-                // Alias format from react-native-mmkv-storage
-                String alias = Utils.toHex("com.MMKV.default");
-                String password = secureKeystore.getSecureKey(alias);
-                mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to initialize MMKV", e);
-                mmkv = null;
-            }
-        } else if (this.reactContext == null) {
-            Log.w(TAG, "Cannot initialize MMKV: ReactApplicationContext not available");
-        }
+        // Fallback to no encryption if key is not available
+        // This can happen if Keystore is unavailable (e.g., device locked/Direct Boot)
+        Log.w(TAG, "MMKV encryption key not available, opening without encryption");
+        return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE);
     }
 
-    public String getAvatarUri() {
-        if (sender == null || sender.username == null || sender.username.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
-            return null;
-        }
-        
+    private String buildAvatarUri(String avatarPath, int sizePx) {
         String server = serverURL();
         if (server == null || server.isEmpty()) {
             Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
             return null;
         }
+        return server + avatarPath + "?format=png&size=" + sizePx;
+    }
+
+    public String getAvatarUri() {
+        String avatarPath;
         
-        String userToken = token();
-        String uid = userId();
+        if ("d".equals(type)) {
+            if (sender == null || sender.username == null || sender.username.isEmpty()) {
+                Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
+                return null;
+            }
+            try {
+                avatarPath = "/avatar/" + URLEncoder.encode(sender.username, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                Log.e(TAG, "Failed to encode username", e);
+                return null;
+            }
+        } else {
+            if (rid == null || rid.isEmpty()) {
+                Log.w(TAG, "Cannot generate avatar URI: rid is null for non-DM");
+                return null;
+            }
+            try {
+                avatarPath = "/avatar/room/" + URLEncoder.encode(rid, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                Log.e(TAG, "Failed to encode rid", e);
+                return null;
+            }
+        }
         
-        if (userToken.isEmpty() || uid.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials (token=" + !userToken.isEmpty() + ", uid=" + !uid.isEmpty() + ")");
+        return buildAvatarUri(avatarPath, 100);
+    }
+
+    /**
+     * Factory for building caller avatar URIs from host + username (e.g. VoIP payload).
+     * Caller is package-private, so this is the only way to get avatar URI from outside the package.
+     */
+    public static Ejson forCallerAvatar(String host, String username) {
+        if (host == null || host.isEmpty() || username == null || username.isEmpty()) {
+            return null;
+        }
+        Ejson ejson = new Ejson();
+        ejson.host = host;
+        ejson.caller = new Caller();
+        ejson.caller.username = username;
+        return ejson;
+    }
+
+    /**
+     * Generates avatar URI for video conference caller (default size 100).
+     * Returns null if caller username is not available (username is required for avatar endpoint).
+     */
+    public String getCallerAvatarUri() {
+        return getCallerAvatarUri(100);
+    }
+
+    /**
+     * Generates avatar URI for video conference caller with custom size.
+     * Returns null if caller username is not available.
+     */
+    public String getCallerAvatarUri(int sizePx) {
+        if (caller == null || caller.username == null || caller.username.isEmpty()) {
+            Log.w(TAG, "Cannot generate caller avatar URI: caller or username is null");
             return null;
         }
         
-        String uri = server + "/avatar/" + sender.username + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
-        
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Generated avatar URI for user: " + sender.username);
+        try {
+            String avatarPath = "/avatar/" + URLEncoder.encode(caller.username, "UTF-8");
+            return buildAvatarUri(avatarPath, sizePx);
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "Failed to encode caller username", e);
+            return null;
         }
-        
-        return uri;
     }
 
     public String token() {
-        ensureMMKVInitialized();
         String userId = userId();
+        MMKV mmkv = getMMKV();
         
         if (mmkv == null) {
             Log.e(TAG, "token() called but MMKV is null");
@@ -166,19 +165,21 @@ public class Ejson {
     }
 
     public String userId() {
-        ensureMMKVInitialized();
         String serverURL = serverURL();
-        String key = TOKEN_KEY.concat(serverURL);
+        
+        if (serverURL == null) {
+            Log.e(TAG, "userId() called but serverURL is null");
+            return "";
+        }
+        
+        MMKV mmkv = getMMKV();
         
         if (mmkv == null) {
             Log.e(TAG, "userId() called but MMKV is null");
             return "";
         }
         
-        if (serverURL == null) {
-            Log.e(TAG, "userId() called but serverURL is null");
-            return "";
-        }
+        String key = TOKEN_KEY.concat(serverURL);
         
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Looking up userId with key: " + key);
@@ -216,8 +217,8 @@ public class Ejson {
     }
 
     public String privateKey() {
-        ensureMMKVInitialized();
         String serverURL = serverURL();
+        MMKV mmkv = getMMKV();
         if (mmkv != null && serverURL != null) {
             return mmkv.decodeString(serverURL.concat("-RC_E2E_PRIVATE_KEY"));
         }
@@ -236,6 +237,12 @@ public class Ejson {
         String _id;
         String username;
         String name;
+    }
+
+    static class Caller {
+        String _id;
+        String name;
+        String username;
     }
 
     static class Content {

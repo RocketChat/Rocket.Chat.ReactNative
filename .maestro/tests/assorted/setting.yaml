@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Setting
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
@@ -66,6 +66,54 @@ tags:
 # should have media auto-download
 - assertVisible:
     id: 'settings-view-media-auto-download'
+- tapOn:
+    id: 'settings-view-media-auto-download'
+- extendedWaitUntil:
+    visible:
+      id: 'media-auto-download-image'
+    timeout: 60000
+
+# check options in image picker
+- tapOn:
+    id: 'media-auto-download-image'
+- assertVisible:
+    id: 'media-auto-download-image-wifi_mobile_data'
+- assertVisible:
+    id: 'media-auto-download-image-wifi'
+- assertVisible:
+    id: 'media-auto-download-image-never'
+- tapOn:
+    id: 'action-sheet-handle'
+
+# check options in video picker
+- tapOn:
+    id: 'media-auto-download-video'
+- assertVisible:
+    id: 'media-auto-download-video-wifi_mobile_data'
+- assertVisible:
+    id: 'media-auto-download-video-wifi'
+- assertVisible:
+    id: 'media-auto-download-video-never'
+- tapOn:
+    id: 'action-sheet-handle'
+
+# check options in audio picker
+- tapOn:
+    id: 'media-auto-download-audio'
+- assertVisible:
+    id: 'media-auto-download-audio-wifi_mobile_data'
+- assertVisible:
+    id: 'media-auto-download-audio-wifi'
+- assertVisible:
+    id: 'media-auto-download-audio-never'
+- tapOn:
+    id: 'action-sheet-handle'
+- runFlow:
+    file: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view'
+    timeout: 60000
 
 # should have license
 - assertVisible:
@@ -104,8 +152,12 @@ tags:
     visible:
       id: 'settings-view'
     timeout: 60000
-- assertVisible:
-    id: 'settings-view-clear-cache'
+- waitForAnimationToEnd:
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view-clear-cache'
+    timeout: 60000
 - tapOn:
     id: 'settings-view-clear-cache'
     retryTapIfNoChange: true

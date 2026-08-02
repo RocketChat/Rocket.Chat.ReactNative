@@ -27,7 +27,6 @@ import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
-import { updateLastOpen } from '../updateLastOpen';
 import markMessagesRead from '../helpers/markMessagesRead';
 
 export default class RoomSubscription {
@@ -64,7 +63,6 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
-		updateLastOpen(this.rid);
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
@@ -239,28 +237,48 @@ export default class RoomSubscription {
 	});
 
 	read = debounce(() => {
-		readMessages(this.rid, new Date());
+		readMessages(this.rid);
 	}, 300);
 
-	updateMessage = (message: IMessage): Promise<void> =>
-		new Promise(async resolve => {
-			if (this.rid !== message.rid) {
-				return resolve();
-			}
+	updateMessage = async (message: IMessage): Promise<void> => {
+		if (this.rid !== message.rid) {
+			return;
+		}
 
+		const db = database.active;
+		const msgCollection = db.get('messages');
+		const threadsCollection = db.get('threads');
+		const threadMessagesCollection = db.get('thread_messages');
+
+		// Decrypt the message if necessary
+		message = (await Encryption.decryptMessage(message)) as IMessage;
+
+		// Serialize reads, prepares and the batch under the writer lock so concurrent stream
+		// events for the same id can't call prepareUpdate on a record with pending changes.
+		await db.write(async () => {
 			const batch: TMessageModel[] | TThreadModel[] | TThreadMessageModel[] = [];
-			const db = database.active;
-			const msgCollection = db.get('messages');
-			const threadsCollection = db.get('threads');
-			const threadMessagesCollection = db.get('thread_messages');
-
-			// Decrypt the message if necessary
-			message = (await Encryption.decryptMessage(message)) as IMessage;
 
 			// Create or update message
 			try {
 				const messageRecord = await getMessageById(message._id);
 				if (messageRecord) {
+					if (messageRecord.t === 'e2e' && message.attachments) {
+						message.attachments = message.attachments?.map(att => {
+							const existing = messageRecord.attachments?.find(
+								a =>
+									(a.image_url && a.image_url === att.image_url) ||
+									(a.video_url && a.video_url === att.video_url) ||
+									(a.audio_url && a.audio_url === att.audio_url) ||
+									(a.thumb_url && a.thumb_url === att.thumb_url)
+							);
+
+							return {
+								...att,
+								e2e: existing?.e2e,
+								title_link: existing?.e2e === 'done' ? existing?.title_link : att.title_link
+							};
+						});
+					}
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
@@ -349,10 +367,9 @@ export default class RoomSubscription {
 				}
 			}
 
-			await db.write(async () => {
-				await db.batch(...batch);
-			});
+			await db.batch(...batch);
 		});
+	};
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
 		try {

@@ -1,8 +1,8 @@
-import React from 'react';
 import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { type ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -11,7 +11,6 @@ import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
-import { isIOS } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
 import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DeleteAccountActionSheetContent = (): React.ReactElement => {
+const DeleteAccountActionSheetContent = (): ReactElement => {
 	const { colors } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
@@ -109,7 +108,6 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 				autoComplete='password'
 				testID='profile-view-delete-account-sheet-input'
 				secureTextEntry
-				bottomSheet={isIOS}
 				containerStyle={styles.inputContainer}
 				error={errors.password?.message}
 			/>

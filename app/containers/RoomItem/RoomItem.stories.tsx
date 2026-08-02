@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dimensions } from 'react-native';
 
 import {
@@ -71,6 +70,8 @@ export const Type = () => (
 		<RoomItem type='l' />
 		<RoomItem type='discussion' />
 		<RoomItem type='d' isGroupChat />
+		<RoomItem type='p' abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]} />
+		<RoomItem type='p' abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]} teamMain />
 		<RoomItem type='&' />
 	</>
 );
@@ -187,5 +188,12 @@ export const OmnichannelIcon = () => (
 		<RoomItem type='l' sourceType={{ type: 'sms' }} />
 		<RoomItem type='l' sourceType={{ type: 'other' }} status='online' />
 		<RoomItem type='l' sourceType={{ type: 'other' }} />
+	</>
+);
+
+export const InvitedRoom = () => (
+	<>
+		<RoomItem isInvited />
+		<RoomItem isInvited displayMode={DisplayMode.Condensed} />
 	</>
 );

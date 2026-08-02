@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -20,9 +20,6 @@ import ButtonCreate from './ButtonCreate';
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 16
-	},
-	buttonContainer: {
-		paddingBottom: 16
 	}
 });
 
@@ -43,19 +40,19 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
+		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}, [navigation]);
 
 	const createTeam = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_TEAM);
-		navigation.navigate('SelectedUsersViewCreateChannel', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true })
 		});
 	}, [navigation]);
 
 	const createGroupChat = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		navigation.navigate('SelectedUsersViewCreateChannel', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => dispatch(createChannelRequest({ group: true })),
 			buttonText: I18n.t('Create'),
 			maxUsers
@@ -64,43 +61,45 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createDiscussion = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
-		Navigation.navigate('CreateDiscussionView');
-	}, []);
+		navigation.navigate('SelectedUsersView', {
+			nextAction: () => Navigation.navigate('CreateDiscussionView'),
+			title: I18n.t('Create_Discussion'),
+			buttonText: I18n.t('Next')
+		});
+	}, [navigation]);
 
 	return (
 		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}>
-				<View style={styles.buttonContainer}>
-					{createPublicChannelPermission || createPrivateChannelPermission ? (
-						<ButtonCreate
-							onPress={createChannel}
-							title={'Channel'}
-							icon={'channel-public'}
-							testID={'new-message-view-create-channel'}
-						/>
-					) : null}
-					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
-						<ButtonCreate onPress={createTeam} title={'Team'} icon={'teams'} testID={'new-message-view-create-team'} />
-					) : null}
-					{maxUsers > 2 && createDirectMessagePermission ? (
-						<ButtonCreate
-							onPress={createGroupChat}
-							title={'Direct_message'}
-							icon={'message'}
-							testID={'new-message-view-create-direct-message'}
-						/>
-					) : null}
-					{createDiscussionPermission ? (
-						<ButtonCreate
-							onPress={createDiscussion}
-							title={'Discussion'}
-							icon={'discussions'}
-							testID={'new-message-view-create-discussion'}
-						/>
-					) : null}
-				</View>
+			<View style={[styles.container, { backgroundColor: themes[theme].surfaceTint }]}>
+				{createPublicChannelPermission || createPrivateChannelPermission ? (
+					<ButtonCreate
+						onPress={createChannel}
+						title={'Channel'}
+						icon={'channel-public'}
+						testID={'new-message-view-create-channel'}
+					/>
+				) : null}
+				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
+					<ButtonCreate onPress={createTeam} title={'Team'} icon={'teams'} testID={'new-message-view-create-team'} />
+				) : null}
+				{maxUsers > 2 && createDirectMessagePermission ? (
+					<ButtonCreate
+						onPress={createGroupChat}
+						title={'Direct_message'}
+						icon={'message'}
+						testID={'new-message-view-create-direct-message'}
+					/>
+				) : null}
+				{createDiscussionPermission ? (
+					<ButtonCreate
+						onPress={createDiscussion}
+						title={'Discussion'}
+						icon={'discussions'}
+						testID={'new-message-view-create-discussion'}
+					/>
+				) : null}
+				<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
 			</View>
-			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
 		</>
 	);
 };

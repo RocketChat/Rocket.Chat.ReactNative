@@ -1,5 +1,5 @@
 import { type KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
-import React from 'react';
+import { type ReactElement } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
 // eslint-disable-next-line import/no-unresolved
@@ -13,21 +13,40 @@ interface IKaTeXProps {
 	value: KaTeXProps['value'];
 }
 
-export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+const BLOCK_ENV_PATTERN = /\\begin\s*\{\s*(array|matrix|pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix)\s*\}/;
+
+export const KaTeX = ({ value }: IKaTeXProps): ReactElement | null => {
 	const { colors } = useTheme();
 	const fixAndroidWebviewCrashStyle: StyleProp<ViewStyle> = isAndroid ? { opacity: 0.99, overflow: 'hidden' } : {};
+	// KaTeX array does not render correctly in MathView (shows gray box).
+	// MathView does not throw, so renderError is never triggered.
+	if (BLOCK_ENV_PATTERN.test(value)) {
+		return (
+			<Katex
+				expression={value}
+				displayMode={true}
+				style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]}
+			/>
+		);
+	}
+
 	return (
 		<MathView
 			math={value}
+			config={{ inline: false }}
 			style={{ color: colors.fontDefault }}
 			renderError={() => (
-				<Katex expression={value} style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]} />
+				<Katex
+					expression={value}
+					displayMode={true}
+					style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]}
+				/>
 			)}
 		/>
 	);
 };
 
-export const InlineKaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+export const InlineKaTeX = ({ value }: IKaTeXProps): ReactElement | null => {
 	const { colors } = useTheme();
 	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
 };
