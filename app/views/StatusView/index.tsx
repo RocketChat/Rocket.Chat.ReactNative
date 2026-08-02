@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
 });
 
 const Status = ({
-	statusType,
+	option,
 	status,
 	statusText,
 	setStatus,
 	isCustom
 }: {
-	statusType: IStatus;
+	option: IStatus;
 	status: TUserStatus;
 	statusText: string;
 	setStatus: (status: TUserStatus, statusText: string) => void;
@@ -92,8 +92,8 @@ const Status = ({
 }) => {
 	'use memo';
 
-	const { _id, name } = statusType;
-	const isSelected = isCustom ? status === statusType.statusType && statusText === name : status === _id && !statusText;
+	const { _id, name } = option;
+	const isSelected = isCustom ? status === option.statusType && statusText === name : status === _id && !statusText;
 	return (
 		<>
 			<List.Radio
@@ -102,9 +102,8 @@ const Status = ({
 				translateTitle={!isCustom}
 				onPress={() => {
 					if (isCustom) {
-						logEvent(events.STATUS_CUSTOM);
-						if (status !== statusType.statusType || statusText !== name) {
-							setStatus(statusType.statusType, name);
+						if (status !== option.statusType || statusText !== name) {
+							setStatus(option.statusType, name);
 						}
 					} else {
 						const key = `STATUS_${_id.toUpperCase()}` as keyof typeof events;
@@ -116,7 +115,7 @@ const Status = ({
 				}}
 				testID={`status-view-${_id}`}
 				value={_id}
-				left={() => <StatusIcon size={24} status={statusType.statusType} />}
+				left={() => <StatusIcon size={24} status={option.statusType} />}
 			/>
 			<List.Separator />
 		</>
@@ -209,7 +208,7 @@ const StatusView = (): ReactElement => {
 		sendLoadingEvent({ visible: false });
 	};
 
-	const statusType = useMemo(() => {
+	const statusOptions = useMemo(() => {
 		const statuses = STATUS.filter(s => {
 			if (s._id === 'offline' && !Accounts_AllowInvisibleStatusOption) return false;
 			return true;
@@ -239,11 +238,11 @@ const StatusView = (): ReactElement => {
 	return (
 		<SafeAreaView testID='status-view'>
 			<FlatList
-				data={statusType}
+				data={statusOptions}
 				keyExtractor={item => item._id}
 				renderItem={({ item }) => (
 					<Status
-						statusType={item}
+						option={item}
 						statusText={inputValues.statusText}
 						status={inputValues.status}
 						setStatus={setStatus}

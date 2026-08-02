@@ -154,6 +154,17 @@ describe('StatusView', () => {
 			expect(mockSetUserStatus).toHaveBeenCalledWith('away', 'On Vacation', undefined);
 		});
 
+		it('should show custom status as selected and built-in as unselected when they match', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'away', statusText: 'On Vacation' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+
+			renderStatusView();
+
+			expect(screen.getByTestId('status-view-custom-1').props.accessibilityLabel).toBe('On Vacation Selected');
+			expect(screen.getByTestId('status-view-away').props.accessibilityLabel).toBe('Away Unselected');
+		});
+
 		it('should clear status text when a built-in status is selected', () => {
 			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'away', statusText: 'On Vacation' }));
 			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
