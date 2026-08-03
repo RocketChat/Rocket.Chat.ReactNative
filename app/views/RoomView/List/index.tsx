@@ -57,7 +57,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 							: {
 									minIndexForVisible: 0,
 									autoscrollToTopThreshold: 0
-							  }
+								}
 					}
 				/>
 			</>

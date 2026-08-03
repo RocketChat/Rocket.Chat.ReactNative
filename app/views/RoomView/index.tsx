@@ -9,7 +9,7 @@ import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 import { type NavigatorScreenParams } from '@react-navigation/native';
 
-import { type TNavigation } from 'stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
 import {
@@ -118,7 +118,7 @@ import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
-class RoomView extends Component<IRoomViewProps, IRoomViewState> {
+export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
@@ -177,7 +177,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			room,
 			roomUpdate: {},
 			member: {},
-			lastOpen: null,
+			lastSeen: null,
 			canAutoTranslate: false,
 			loading: true,
 			readOnly: false,
@@ -678,21 +678,19 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					this.consumeJumpParam(messageId);
 				}
 			} else {
-				const newLastOpen = new Date();
 				await RoomServices.getMessages({
 					rid: room.rid,
-					t: room.t as RoomType,
-					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
+					...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
 				});
 
 				// if room is joined
 				if (joined && 'id' in room) {
 					if (room.alert || room.unread || room.userMentions) {
-						this.setLastOpen(room.ls);
+						this.setLastSeen(room.ls);
 					} else {
-						this.setLastOpen(null);
+						this.setLastSeen(null);
 					}
-					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+					readMessages(room.rid).catch(e => console.log(e));
 				}
 			}
 
@@ -1121,14 +1119,14 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		const { user } = this.props;
 		sendMessage(rid, message, this.tmid, user, tshow).then(() => {
 			if (this.mounted) {
-				this.setLastOpen(null);
+				this.setLastSeen(null);
 			}
 			Review.pushPositiveEvent();
 		});
 		this.resetAction();
 	};
 
-	setLastOpen = (lastOpen: Date | null) => this.setState({ lastOpen });
+	setLastSeen = (lastSeen: Date | null) => this.setState({ lastSeen });
 
 	onJoin = () => {
 		this.internalSetState({
@@ -1236,7 +1234,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			let name = '';
 			let jumpToMessageId = '';
 			if ('id' in item) {
-				name = 'tmsg' in item ? item.tmsg ?? '' : '';
+				name = 'tmsg' in item ? (item.tmsg ?? '') : '';
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
@@ -1404,19 +1402,19 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
-		const { room, lastOpen } = this.state;
+		const { room, lastSeen } = this.state;
 		const { inAppFeedback } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
-			showUnreadSeparator = lastOpen ? dayjs(item.ts).isAfter(lastOpen) : false;
+			showUnreadSeparator = lastSeen ? dayjs(item.ts).isAfter(lastSeen) : false;
 		} else {
 			showUnreadSeparator =
-				(lastOpen &&
-					(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
-					dayjs(previousItem.ts).isBefore(lastOpen)) ??
+				(lastSeen &&
+					(dayjs(item.ts).isSame(lastSeen) || dayjs(item.ts).isAfter(lastSeen)) &&
+					dayjs(previousItem.ts).isBefore(lastSeen)) ??
 				false;
 			if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
