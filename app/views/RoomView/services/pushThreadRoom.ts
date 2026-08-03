@@ -30,7 +30,7 @@ export const pushThreadRoom = async ({
 		let name = '';
 		let jumpToMessageId = '';
 		if ('id' in item) {
-			name = 'tmsg' in item ? item.tmsg ?? '' : '';
+			name = 'tmsg' in item ? (item.tmsg ?? '') : '';
 			jumpToMessageId = item.id;
 		}
 		sendLoadingEvent({ visible: true, onCancel });

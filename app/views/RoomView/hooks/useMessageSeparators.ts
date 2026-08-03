@@ -6,7 +6,7 @@ import { type IUseMessageSeparatorsResult } from '../definitions';
 export const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel): IUseMessageSeparatorsResult => {
 	'use memo';
 
-	const lastOpen = useRoomStore(s => s.lastOpen);
+	const lastSeen = useRoomStore(s => s.lastSeen);
 
 	let dateSeparator = null;
 	let showUnreadSeparator = false;
@@ -15,11 +15,11 @@ export const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyM
 
 	if (!previousItem) {
 		dateSeparator = item.ts;
-		showUnreadSeparator = lastOpen ? itemDate.isAfter(lastOpen) : false;
+		showUnreadSeparator = lastSeen ? itemDate.isAfter(lastSeen) : false;
 	} else {
 		const previousItemDate = dayjs(previousItem.ts);
 		showUnreadSeparator =
-			(lastOpen && (itemDate.isSame(lastOpen) || itemDate.isAfter(lastOpen)) && previousItemDate.isBefore(lastOpen)) ?? false;
+			(lastSeen && (itemDate.isSame(lastSeen) || itemDate.isAfter(lastSeen)) && previousItemDate.isBefore(lastSeen)) ?? false;
 		if (!itemDate.isSame(previousItem.ts, 'day')) {
 			dateSeparator = item.ts;
 		}

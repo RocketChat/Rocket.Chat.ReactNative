@@ -26,7 +26,7 @@ const makeRoomStore = (): RoomStore =>
 		member: {},
 		roomUserId: null,
 		loading: false,
-		lastOpen: null,
+		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,

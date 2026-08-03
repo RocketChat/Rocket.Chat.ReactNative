@@ -181,8 +181,8 @@ function renderContent(content) {
 						typeof b.content === 'string'
 							? b.content
 							: Array.isArray(b.content)
-							? b.content.map(x => (x?.type === 'image' ? imagePlaceholder(x) : blockText(x) || fenceJson(x))).join('\n\n')
-							: fenceJson(b.content);
+								? b.content.map(x => (x?.type === 'image' ? imagePlaceholder(x) : blockText(x) || fenceJson(x))).join('\n\n')
+								: fenceJson(b.content);
 					return [
 						`<tool-result tool-use-id="${b.tool_use_id ?? ''}" is-error="${!!b.is_error}">`,
 						'',
@@ -264,7 +264,7 @@ function decodeResponse(raw) {
 
 function renderMarkdown(c, audit, responseMd) {
 	const headers = Object.entries(c.headers).map(
-		([k, v]) => `${k}: ${REDACT.has(k.toLowerCase()) ? '[REDACTED]' : Array.isArray(v) ? v.join(', ') : v ?? ''}`
+		([k, v]) => `${k}: ${REDACT.has(k.toLowerCase()) ? '[REDACTED]' : Array.isArray(v) ? v.join(', ') : (v ?? '')}`
 	);
 	const req = c.reqJson;
 	const parts = [

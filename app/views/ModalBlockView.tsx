@@ -158,14 +158,14 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 						<HeaderButton.Container>
 							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
 						</HeaderButton.Container>
-				  )
+					)
 				: undefined,
 			headerRight: submit
 				? () => (
 						<HeaderButton.Container>
 							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
 						</HeaderButton.Container>
-				  )
+					)
 				: undefined
 		});
 	};

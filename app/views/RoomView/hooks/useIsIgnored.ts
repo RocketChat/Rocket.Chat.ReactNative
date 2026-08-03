@@ -6,5 +6,5 @@ import { useRoomStore } from '../stores/RoomStoreContext';
 export const useIsIgnored = (authorId?: string): boolean => {
 	'use memo';
 
-	return useRoomStore(s => (authorId && 'id' in s.room ? s.room.ignored?.includes(authorId) ?? false : false));
+	return useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
 };

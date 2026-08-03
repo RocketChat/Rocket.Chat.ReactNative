@@ -1,4 +1,4 @@
-name: Format Code with Prettier
+name: Format Code with Oxfmt
 
 on:
   push:
@@ -23,11 +23,11 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: Run Prettier
-        run: pnpm exec prettier --write .
+      - name: Run Oxfmt
+        run: pnpm exec oxfmt
 
-      - name: Run ESLint
-        run: pnpm exec eslint . --fix
+      - name: Run Oxlint
+        run: pnpm exec oxlint --fix -A react/exhaustive-deps
         
       - name: Check for changes
         id: changes
@@ -40,7 +40,7 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Commit and push eslint changes
+      - name: Commit and push format changes
         if: steps.changes.outputs.changes == 'true'
         run: |
           git config user.name "${{ github.actor }}"

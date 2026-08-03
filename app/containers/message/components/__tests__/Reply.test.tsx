@@ -52,7 +52,7 @@ const buildItem = (isEncrypted?: boolean) =>
 		id: 'msg-1',
 		t: isEncrypted ? E2E_MESSAGE_TYPE : undefined,
 		e2e: isEncrypted ? E2E_STATUS.PENDING : undefined
-	} as unknown as TAnyMessageModel);
+	}) as unknown as TAnyMessageModel;
 
 const renderReply = ({
 	attachment,

@@ -50802,6 +50802,12 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                             {
                                               "color": "#2F343D",
                                             },
+                                            {
+                                              "backgroundColor": "transparent",
+                                              "fontFamily": "Inter",
+                                              "fontWeight": "700",
+                                              "textAlign": "left",
+                                            },
                                           ]
                                         }
                                       >
@@ -53615,6 +53621,12 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                             },
                                             {
                                               "color": "#2F343D",
+                                            },
+                                            {
+                                              "backgroundColor": "transparent",
+                                              "fontFamily": "Inter",
+                                              "fontWeight": "700",
+                                              "textAlign": "left",
                                             },
                                           ]
                                         }
@@ -91136,6 +91148,12 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                             {
                                               "color": "#2F343D",
                                             },
+                                            {
+                                              "backgroundColor": "transparent",
+                                              "fontFamily": "Inter",
+                                              "fontWeight": "700",
+                                              "textAlign": "left",
+                                            },
                                           ]
                                         }
                                       >
@@ -93167,6 +93185,12 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                             },
                                             {
                                               "color": "#2F343D",
+                                            },
+                                            {
+                                              "backgroundColor": "transparent",
+                                              "fontFamily": "Inter",
+                                              "fontWeight": "700",
+                                              "textAlign": "left",
                                             },
                                           ]
                                         }
@@ -124956,6 +124980,12 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                     {
                                       "color": "#2F343D",
                                     },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontWeight": "700",
+                                      "textAlign": "left",
+                                    },
                                   ]
                                 }
                               >
@@ -126155,6 +126185,12 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                     },
                                     {
                                       "color": "#2F343D",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontWeight": "700",
+                                      "textAlign": "left",
                                     },
                                   ]
                                 }
@@ -144593,6 +144629,12 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                 {
                                                   "color": "#2F343D",
                                                 },
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "fontFamily": "Inter",
+                                                  "fontWeight": "700",
+                                                  "textAlign": "left",
+                                                },
                                               ]
                                             }
                                           >
@@ -145759,6 +145801,12 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                 },
                                                 {
                                                   "color": "#2F343D",
+                                                },
+                                                {
+                                                  "backgroundColor": "transparent",
+                                                  "fontFamily": "Inter",
+                                                  "fontWeight": "700",
+                                                  "textAlign": "left",
                                                 },
                                               ]
                                             }

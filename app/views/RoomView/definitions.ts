@@ -58,7 +58,7 @@ export interface IRoomViewState {
 		[K in TRoomUpdate]?: any;
 	};
 	member: any;
-	lastOpen: Date | null;
+	lastSeen: Date | null;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	readOnly: boolean;
@@ -157,7 +157,7 @@ export interface RoomState {
 	member: IRoomViewState['member'];
 	roomUserId?: string | null;
 	loading: boolean;
-	lastOpen: Date | null;
+	lastSeen: Date | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
 	canReturnQueue: boolean;

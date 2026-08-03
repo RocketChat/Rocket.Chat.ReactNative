@@ -9,7 +9,7 @@ import { mockedStore } from '../../../../reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
-	({ id: 'msg1', tmid: 'thread1', tmsg: 'original reply', ...overrides } as unknown as TAnyMessageModel);
+	({ id: 'msg1', tmid: 'thread1', tmsg: 'original reply', ...overrides }) as unknown as TAnyMessageModel;
 
 const renderRepliedThread = (item: TAnyMessageModel, fetchThreadName?: jest.Mock) =>
 	render(

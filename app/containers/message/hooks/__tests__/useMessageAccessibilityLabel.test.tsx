@@ -24,7 +24,7 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 		u: { _id: 'u1', username: 'alice', name: 'Alice' },
 		unread: false,
 		...overrides
-	} as TAnyMessageModel);
+	}) as TAnyMessageModel;
 
 const renderLabel = (item: TAnyMessageModel, config: Partial<MessageRoomState> = {}, previousItem?: TAnyMessageModel) => {
 	const spy = jest.fn();

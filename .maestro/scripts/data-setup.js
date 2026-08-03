@@ -70,7 +70,7 @@ const createUserWithPasswordChange = () => {
     return createUser({ requirePasswordChange: true });
 }
 
-const deleteCreatedUser = async ({ username: usernameToDelete }) => {
+const deleteCreatedUser = ({ username: usernameToDelete }) => {
     try {
         login(output.account.adminUser, output.account.adminPassword);
 
@@ -81,7 +81,7 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
             }
         });
 
-        const userId = json(result.body)?.data?.user?._id;
+        const userId = json(result.body)?.user?._id;
         postWithRetry(`${data.server}/api/v1/users.delete`, {
             headers: {
                 'Content-Type': 'application/json',

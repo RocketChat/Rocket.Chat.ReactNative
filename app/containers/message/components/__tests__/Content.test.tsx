@@ -48,7 +48,7 @@ const buildItem = (
 		t: isEncrypted ? E2E_MESSAGE_TYPE : undefined,
 		e2e: isEncrypted ? E2E_STATUS.PENDING : undefined,
 		tmid
-	} as unknown as TAnyMessageModel);
+	}) as unknown as TAnyMessageModel;
 
 const tree = (overrides: TOverrides) => {
 	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, isIgnored } = overrides;

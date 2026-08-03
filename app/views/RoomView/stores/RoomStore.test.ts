@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
+import { readMessages } from '../../../lib/methods/readMessages';
 import { getUserInfo } from '../../../lib/services/restApi';
 import { isGroupChat } from '../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
@@ -47,6 +48,7 @@ jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
 const mockGet = database.active.get as jest.Mock;
 const mockGetMessages = getMessages as unknown as jest.Mock;
 const mockLoadThreadMessages = loadThreadMessages as jest.Mock;
+const mockReadMessages = readMessages as jest.Mock;
 const mockGetUserInfo = getUserInfo as jest.Mock;
 const mockIsGroupChat = isGroupChat as jest.Mock;
 const mockIsInviteSubscription = isInviteSubscription as unknown as jest.Mock;
@@ -189,6 +191,38 @@ describe('RoomStore', () => {
 		expect(store.getState().canAutoTranslate).toBe(true);
 	});
 
+	it('loads messages without a read receipt for a route-param room that lacks a subscription row', async () => {
+		setupObserve();
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+
+		await store.getState().init();
+
+		expect(mockGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
+		expect(mockReadMessages).not.toHaveBeenCalled();
+	});
+
+	it('routes a cursor-less subscribed room to the room-history loader directly', async () => {
+		setupObserve();
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+		await store.getState().init();
+
+		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+		expect(mockGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
+		expect(mockReadMessages).toHaveBeenCalledWith('rid-1');
+	});
+
+	it('routes a subscribed room with a cursor to the missed-messages loader', async () => {
+		setupObserve();
+		const roomWithCursor = { ...subRoom, lastOpen: new Date('2026-01-01T00:00:00.000Z') };
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: roomWithCursor });
+
+		await store.getState().init();
+
+		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+		expect(mockGetMessages).toHaveBeenCalledWith({ rid: 'rid-1' });
+	});
+
 	it('runs the thread init path when tmid is set: loads thread messages and fires the callback', async () => {
 		setupObserve();
 		const onThreadMessagesLoaded = jest.fn();
@@ -276,14 +310,14 @@ describe('RoomStore', () => {
 		expect(store.getState().joined).toBe(true);
 	});
 
-	it('markMessageSent() sets lastOpen null', () => {
+	it('markMessageSent() sets lastSeen null', () => {
 		setupObserve();
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-		store.setState({ lastOpen: new Date() });
+		store.setState({ lastSeen: new Date() });
 
 		store.getState().markMessageSent();
 
-		expect(store.getState().lastOpen).toBeNull();
+		expect(store.getState().lastSeen).toBeNull();
 	});
 
 	it('roomAttrsUpdateColumns has exactly one entry per roomAttrsUpdate key', () => {

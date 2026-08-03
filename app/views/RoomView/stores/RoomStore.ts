@@ -57,7 +57,7 @@ const createRoomState =
 		member: {},
 		roomUserId,
 		loading: true,
-		lastOpen: null,
+		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,
@@ -80,16 +80,14 @@ const createRoomState =
 					await loadThreadMessages({ tmid, rid });
 					onThreadMessagesLoaded?.();
 				} else {
-					const newLastOpen = new Date();
 					await getMessages({
 						rid: currentRoom.rid,
-						t: currentRoom.t as RoomType,
-						...('lastOpen' in currentRoom && currentRoom.lastOpen ? { lastOpen: currentRoom.lastOpen } : {})
+						...('lastOpen' in currentRoom && currentRoom.lastOpen ? {} : { t: currentRoom.t as RoomType })
 					});
 
 					if (get().joined && 'id' in currentRoom) {
-						set({ lastOpen: currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null });
-						readMessages(currentRoom.rid, newLastOpen, true).catch(e => log(e));
+						set({ lastSeen: currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null });
+						readMessages(currentRoom.rid).catch(e => log(e));
 					}
 				}
 
@@ -104,7 +102,7 @@ const createRoomState =
 		},
 
 		join: () => set({ joined: true }),
-		markMessageSent: () => set({ lastOpen: null }),
+		markMessageSent: () => set({ lastSeen: null }),
 
 		setJoinCodeTrigger: trigger => set({ joinCodeTrigger: trigger }),
 		joinRoom: () =>

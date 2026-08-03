@@ -12,7 +12,7 @@ const baseContextValue: Partial<MessageRoomState> = {
 };
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
-	({ id: 'msg1', msg: 'hello', tcount: 3, tlm: undefined, tmid: undefined, ...overrides } as unknown as TAnyMessageModel);
+	({ id: 'msg1', msg: 'hello', tcount: 3, tlm: undefined, tmid: undefined, ...overrides }) as unknown as TAnyMessageModel;
 
 const renderThread = (item: TAnyMessageModel) =>
 	render(

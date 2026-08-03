@@ -2,6 +2,8 @@ appId: ${APP_ID}
 name: Share Message
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-9
 

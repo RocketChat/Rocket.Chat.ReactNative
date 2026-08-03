@@ -174,7 +174,7 @@ export const useScroll = ({
 
 	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
 	const reScrollWhenSettled = (targetId: string | null | undefined) => {
-		const settled = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
+		const settled = targetId ? (messagesIds.current?.findIndex(id => id === targetId) ?? -1) : -1;
 		if (settled !== -1) {
 			listRef.current?.scrollToIndex({
 				index: settled,
@@ -259,7 +259,7 @@ export const useScroll = ({
 		setTimeout(() => {
 			// Re-read at fire time so a retry queued by a previous jump can't scroll to a stale index.
 			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
-			const targetIndex = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
+			const targetIndex = targetId ? (messagesIds.current?.findIndex(id => id === targetId) ?? -1) : -1;
 			if (targetIndex === -1) {
 				return;
 			}

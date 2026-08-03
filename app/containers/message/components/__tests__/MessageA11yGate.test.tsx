@@ -50,7 +50,7 @@ const createMockMessage = (overrides: Record<string, any> = {}): TAnyMessageMode
 		groupable: true,
 		experimentalSubscribe: jest.fn(() => jest.fn()),
 		...overrides
-	} as unknown as TAnyMessageModel);
+	}) as unknown as TAnyMessageModel;
 
 const room: Partial<MessageRoomState> = { rid: 'room-1' };
 
