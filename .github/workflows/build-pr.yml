@@ -46,7 +46,7 @@ jobs:
     name: Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
-    needs: [e2e-hold]
+    needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
     with:
       trigger: "pr"
