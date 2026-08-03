@@ -1,5 +1,5 @@
 import { useRef, memo, type ReactElement } from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from 'react-native-reanimated';
 import {
 	Gesture,
 	GestureDetector,
@@ -7,8 +7,8 @@ import {
 	type PanGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets';
+import { KeyboardFocusView } from 'react-native-external-keyboard';
 
-import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { type ITouchableProps } from './interfaces';
@@ -38,6 +38,7 @@ const Touchable = ({
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
+	const pressed = useSharedValue(0);
 	const valueRef = useRef(0);
 
 	const close = () => {
@@ -188,12 +189,33 @@ const Touchable = ({
 			scheduleOnRN(handleRelease, event);
 		});
 
+	const tapGesture = Gesture.Tap()
+		.onBegin(() => {
+			pressed.value = 1;
+		})
+		.onFinalize(() => {
+			pressed.value = 0;
+		})
+		.onEnd((_e, success) => {
+			if (success) {
+				scheduleOnRN(handlePress);
+			}
+		});
+
 	// Use Race instead of Simultaneous to prevent conflicts
 	// Pan gesture will take priority over long press for horizontal swipes
-	const composedGesture = Gesture.Race(panGesture, longPressGesture);
+	const composedGesture = Gesture.Race(panGesture, tapGesture, longPressGesture);
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
+	}));
+
+	const pressAnimatedStyle = useAnimatedStyle(() => ({
+		backgroundColor: interpolateColor(
+			pressed.value,
+			[0, 1],
+			[isFocused ? colors.surfaceTint : colors.surfaceRoom, colors.surfaceNeutral]
+		)
 	}));
 
 	return (
@@ -215,15 +237,9 @@ const Touchable = ({
 					displayMode={displayMode}
 				/>
 				<Animated.View style={animatedStyles}>
-					<Touch
-						onPress={handlePress}
-						onLongPress={handleLongPress}
-						testID={testID}
-						style={{
-							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
-						}}>
-						{children}
-					</Touch>
+					<KeyboardFocusView onPress={handlePress} onLongPress={handleLongPress} testID={testID} style={{ flex: 1 }}>
+						<Animated.View style={pressAnimatedStyle}>{children}</Animated.View>
+					</KeyboardFocusView>
 				</Animated.View>
 			</Animated.View>
 		</GestureDetector>
