@@ -1,0 +1,40 @@
+import { Text, View } from 'react-native';
+
+import MessageActionTouchable from './Touchable/MessageActionTouchable';
+import { CustomIcon } from '../../CustomIcon';
+import styles from '../styles';
+import { BUTTON_HIT_SLOP } from '../utils';
+import I18n from '../../../i18n';
+import { useTheme } from '../../../theme';
+import { useIsOwnMessage, useMessageItem } from '../stores/MessageStore';
+import { useBroadcast, useReplyBroadcast } from '../stores/MessageRoomStore';
+
+const Broadcast = () => {
+	'use memo';
+
+	const item = useMessageItem();
+	const replyBroadcast = useReplyBroadcast();
+	const broadcast = useBroadcast();
+	const { colors } = useTheme();
+	const isOwn = useIsOwnMessage();
+
+	if (broadcast && !isOwn) {
+		return (
+			<View style={styles.buttonContainer}>
+				<MessageActionTouchable
+					onPress={() => replyBroadcast?.(item)}
+					style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
+					hitSlop={BUTTON_HIT_SLOP}
+					testID='message-broadcast-reply'>
+					<View style={styles.buttonInnerContainer}>
+						<CustomIcon name='arrow-back' size={20} color={colors.fontWhite} />
+						<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Reply')}</Text>
+					</View>
+				</MessageActionTouchable>
+			</View>
+		);
+	}
+	return null;
+};
+
+export default Broadcast;

@@ -1,9 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
-import { useCallback, useContext, useLayoutEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { InteractionManager } from 'react-native';
+import { type KeyboardFocus } from 'react-native-external-keyboard';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useIsAccessibilityNavigationEnabled } from '../../../lib/hooks/useIsAccessibilityNavigationEnabled';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { isTablet } from '../../../lib/methods/helpers';
@@ -18,6 +21,8 @@ export const useHeader = () => {
 
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
+	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
+	const drawerButtonRef = useRef<KeyboardFocus>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const isMasterDetail = useMasterDetail();
@@ -101,6 +106,7 @@ export const useHeader = () => {
 		const options = {
 			headerLeft: () => (
 				<HeaderButton.Drawer
+					ref={drawerButtonRef}
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
 					onPress={
@@ -170,6 +176,22 @@ export const useHeader = () => {
 		stopSearch,
 		search
 	]);
+
+	// The rooms list header persists across native-stack navigation, so autoFocus (mount-only)
+	// won't re-fire on back-return or after the list/banner render asynchronously. Re-assert focus
+	// on the drawer button every time the screen is focused so external-keyboard/screen-reader
+	// navigation always starts from a known element. Regular touch users are left untouched.
+	useFocusEffect(
+		useCallback(() => {
+			if (!isAccessibilityNavigationEnabled) {
+				return;
+			}
+			const task = InteractionManager.runAfterInteractions(() => {
+				drawerButtonRef.current?.focus();
+			});
+			return () => task.cancel();
+		}, [isAccessibilityNavigationEnabled])
+	);
 
 	return { options };
 };
