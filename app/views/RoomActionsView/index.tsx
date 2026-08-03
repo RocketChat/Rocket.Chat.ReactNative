@@ -486,8 +486,11 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
+		// member may not be fetched yet; the other user's id is derivable from the subscription
+		const blockedUserId = member._id || getUidDirectMessage(room);
+		if (!blockedUserId) return;
 		try {
-			await toggleBlockUser(rid, member._id as string, !blocker);
+			await toggleBlockUser(rid, blockedUserId as string, !blocker);
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);

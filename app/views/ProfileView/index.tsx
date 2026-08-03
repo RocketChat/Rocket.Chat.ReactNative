@@ -2,6 +2,7 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -58,6 +59,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 	const dispatch = useDispatch();
 	const {
 		Accounts_AllowDeleteOwnAccount,
@@ -292,7 +294,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		<KeyboardView>
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
-					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: colors.surfaceTint, paddingTop: 32 }]}
+					contentContainerStyle={[
+						sharedStyles.containerScrollView,
+						{ backgroundColor: colors.surfaceTint, paddingTop: 32, paddingBottom: bottom }
+					]}
 					testID='profile-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='profile-view-avatar'>

@@ -4,12 +4,16 @@ import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
+import parse from 'url-parse';
 
+import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
+import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import log from '../../lib/methods/helpers/log';
@@ -32,11 +36,9 @@ import {
 	type TMessageModel,
 	type IUrl,
 	type IAttachment,
-	type ISubscription,
+	type IRoomInfoParam,
 	SubscriptionType,
-	type TSubscriptionModel,
-	type TGetCustomEmoji,
-	type ICustomEmoji
+	type TSubscriptionModel
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -51,15 +53,6 @@ interface ISearchMessagesViewState {
 	searchText: string;
 }
 
-export interface IRoomInfoParam {
-	room?: ISubscription;
-	member?: any;
-	rid: string;
-	t: SubscriptionType;
-	joined?: boolean;
-	itsMe?: boolean;
-}
-
 interface INavigationOption {
 	navigation: CompositeNavigationProp<
 		NativeStackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
@@ -72,12 +65,9 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
 	baseUrl: string;
 	serverVersion: string;
-	customEmojis: {
-		[key: string]: ICustomEmoji;
-	};
 	theme: TSupportedThemes;
-	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -207,15 +197,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		await this.getMessages(searchText, true);
 	}, textInputDebounceTime);
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -259,6 +240,25 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		}
 	};
 
+	jumpToMessageByUrl = (messageUrl: string) => {
+		try {
+			const messageId = parse(messageUrl, true).query.msg;
+			if (!messageId) {
+				return;
+			}
+			const { isMasterDetail } = this.props;
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams({
+				rid: this.rid,
+				jumpToMessageId: messageId,
+				t: this.t,
+				room: this.room as TSubscriptionModel
+			});
+		} catch (e) {
+			log(e);
+		}
+	};
+
 	onEndReached = async () => {
 		const { serverVersion } = this.props;
 		const { searchText, messages, loading } = this.state;
@@ -285,46 +285,40 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderItem = ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const message = item as TMessageModel;
-		const { user, baseUrl, theme, useRealName } = this.props;
-		return (
-			<Message
-				item={message}
-				baseUrl={baseUrl}
-				user={user}
-				timeFormat='MMM Do YYYY, h:mm:ss a'
-				isThreadRoom
-				showAttachment={this.showAttachment}
-				getCustomEmoji={this.getCustomEmoji}
-				navToRoomInfo={this.navToRoomInfo}
-				useRealName={useRealName}
-				theme={theme}
-				onPress={() => this.jumpToMessage({ item })}
-				jumpToMessage={() => this.jumpToMessage({ item })}
-				rid={message.rid}
-			/>
-		);
+		return <Message item={message} onPress={() => this.jumpToMessage({ item })} />;
 	};
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme } = this.props;
+		const { theme, user, baseUrl, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
 		}
 
 		return (
-			<FlatList
-				data={messages}
-				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				keyExtractor={item => item._id}
-				onEndReached={this.onEndReached}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				onEndReachedThreshold={0.5}
-				removeClippedSubviews={isIOS}
-				{...scrollPersistTaps}
-			/>
+			<MessageRoomProvider
+				navToRoomInfo={this.navToRoomInfo}
+				showAttachment={this.showAttachment}
+				jumpToMessage={this.jumpToMessageByUrl}
+				user={user}
+				baseUrl={baseUrl}
+				rid={this.rid}
+				isThreadRoom
+				timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+				<FlatList
+					data={messages}
+					renderItem={this.renderItem}
+					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
+					keyExtractor={item => item._id}
+					onEndReached={this.onEndReached}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
+					onEndReachedThreshold={0.5}
+					removeClippedSubviews={isIOS}
+					{...scrollPersistTaps}
+				/>
+			</MessageRoomProvider>
 		);
 	};
 
@@ -352,9 +346,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis
+	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(withMasterDetail(SearchMessagesView)));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

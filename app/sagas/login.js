@@ -42,6 +42,7 @@ import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
 
 import appConfig from '../../app.json';
@@ -262,7 +263,9 @@ const checkVoipPermission = async () => {
 		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
 
 		if (!canUseVoip) {
-			mediaSessionInstance.reset();
+			if (!isInActiveVoipCall()) {
+				mediaSessionInstance.reset();
+			}
 			return;
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {
