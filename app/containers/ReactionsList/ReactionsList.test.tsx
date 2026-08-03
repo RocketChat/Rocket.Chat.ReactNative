@@ -1,7 +1,8 @@
-import type * as React from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import { screen, render, fireEvent, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { Image as ExpoImage } from 'expo-image';
 
 import ReactionsList from './index';
 import { type IReaction } from '../../definitions';
@@ -32,7 +33,6 @@ jest.mock('../../i18n', () => ({
 
 // Mock Avatar component
 jest.mock('../Avatar', () => {
-	const React = require('react');
 	const { View, Text } = require('react-native');
 	return {
 		__esModule: true,
@@ -54,18 +54,19 @@ interface IRoute {
 
 interface ITabViewProps {
 	routes: IRoute[];
-	renderScene: (props: { route: IRoute }) => React.ReactNode;
-	renderTabItem: (route: IRoute, color: string) => React.ReactNode;
+	renderScene: (props: { route: IRoute }) => ReactNode;
+	renderTabItem: (route: IRoute, color: string) => ReactNode;
 }
 
 // Mock TabView to better match the actual implementation
 jest.mock('../TabView', () => {
-	const React = require('react');
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	const { useState } = require('react');
 	const { View, TouchableOpacity } = require('react-native');
 
 	return {
 		TabView: ({ routes, renderScene, renderTabItem }: ITabViewProps) => {
-			const [index, setIndex] = React.useState(0);
+			const [index, setIndex] = useState(0);
 
 			const jumpTo = (key: string) => {
 				const newIndex = routes.findIndex((route: IRoute) => route.key === key);
@@ -105,15 +106,11 @@ const mockStore = createStore(
 			server: {
 				server: 'https://open.rocket.chat',
 				version: '6.0.0'
-			}
+			},
+			customEmojis: {}
 		}
 	) => state
 );
-
-const mockGetCustomEmoji = (emoji: string) => ({
-	name: emoji,
-	extension: 'png'
-});
 
 const mockReactions: IReaction[] = [
 	{
@@ -130,7 +127,7 @@ const mockReactions: IReaction[] = [
 	}
 ];
 
-const renderWithRedux = (component: React.ReactElement) => render(<Provider store={mockStore}>{component}</Provider>);
+const renderWithRedux = (component: ReactElement) => render(<Provider store={mockStore}>{component}</Provider>);
 
 describe('ReactionsList Integration Tests', () => {
 	beforeEach(() => {
@@ -138,13 +135,13 @@ describe('ReactionsList Integration Tests', () => {
 	});
 
 	it('renders empty ReactionsList when no reactions', () => {
-		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={[]} />);
+		renderWithRedux(<ReactionsList reactions={[]} />);
 		expect(screen.getByTestId('reactionsList')).toBeOnTheScreen();
 		expect(screen.getByTestId('reactionsListAllTab')).toBeOnTheScreen();
 	});
 
 	it('renders ReactionsList with reactions and allows navigation between tabs', () => {
-		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={mockReactions} />);
+		renderWithRedux(<ReactionsList reactions={mockReactions} />);
 
 		// Verify All tab content
 		expect(screen.getByText('4 people reacted')).toBeOnTheScreen();
@@ -185,14 +182,15 @@ describe('ReactionsList Integration Tests', () => {
 					server: {
 						server: 'https://open.rocket.chat',
 						version: '6.0.0'
-					}
+					},
+					customEmojis: {}
 				}
 			) => state
 		);
 
 		render(
 			<Provider store={storeWithoutRealNames}>
-				<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={mockReactions} />
+				<ReactionsList reactions={mockReactions} />
 			</Provider>
 		);
 
@@ -218,6 +216,30 @@ describe('ReactionsList Integration Tests', () => {
 	});
 
 	it('handles custom emojis correctly', () => {
+		const storeWithCustomEmoji = createStore(
+			(
+				state = {
+					settings: {
+						UI_Use_Real_Name: true
+					},
+					login: {
+						user: {
+							id: 'user123',
+							username: 'testuser',
+							name: 'Test User'
+						}
+					},
+					server: {
+						server: 'https://open.rocket.chat',
+						version: '6.0.0'
+					},
+					customEmojis: {
+						custom_emoji: { name: 'custom_emoji', extension: 'png' }
+					}
+				}
+			) => state
+		);
+
 		const customReactions: IReaction[] = [
 			{
 				_id: 'reaction3',
@@ -227,11 +249,18 @@ describe('ReactionsList Integration Tests', () => {
 			}
 		];
 
-		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={customReactions} />);
+		render(
+			<Provider store={storeWithCustomEmoji}>
+				<ReactionsList reactions={customReactions} />
+			</Provider>
+		);
 
-		// Verify custom emoji is rendered
 		expect(screen.getByTestId('tab-:custom_emoji:')).toBeOnTheScreen();
 		expect(screen.getByText('1 person reacted')).toBeOnTheScreen();
+
+		// Resolves against the store and renders as a custom emoji image, not the shortname text
+		expect(screen.UNSAFE_getAllByType(ExpoImage).length).toBeGreaterThan(0);
+		expect(screen.queryByText(':custom_emoji:')).toBeNull();
 	});
 });
 

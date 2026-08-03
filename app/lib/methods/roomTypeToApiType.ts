@@ -24,3 +24,5 @@ export const types: { [K in RoomTypes]: ApiTypes<K> } = {
 };
 
 export const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
+
+export const isRoomType = (t: unknown): t is RoomTypes => typeof t === 'string' && t in types;

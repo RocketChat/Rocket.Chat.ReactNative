@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type ReactElement, useState } from 'react';
 import { Alert } from 'react-native';
 
 import * as List from '../../../containers/List';
@@ -10,7 +10,7 @@ import { pushTest } from '../../../lib/services/restApi';
 import { useTheme } from '../../../theme';
 import CustomListSection from './CustomListSection';
 
-export default function PushGatewayConnection(): React.ReactElement | null {
+export default function PushGatewayConnection(): ReactElement | null {
 	const [loading, setLoading] = useState(false);
 	const { colors } = useTheme();
 	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);

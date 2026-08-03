@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import I18n from '../i18n';
 import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackParamList } from '../stacks/types';
 import { type IApplicationState } from '../definitions';
 import { usePermissions } from '../lib/hooks/usePermissions';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
 import { compareServerVersion } from '../lib/methods/helpers';
 import { type TSupportedPermissions } from '../reducers/permissions';
 
@@ -46,7 +47,7 @@ const useAddExistingPermission = (rid: string) => {
 
 const AddChannelTeamView = () => {
 	const navigation = useNavigation<TNavigation>();
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const {
 		params: { teamId, rid, t }
 	} = useRoute<TRoute>();

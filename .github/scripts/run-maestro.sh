@@ -5,9 +5,42 @@ PLATFORM="${1:-${PLATFORM:-android}}"
 SHARD="${2:-${SHARD:-default}}"
 FLOWS_DIR=".maestro/tests"
 MAIN_REPORT="maestro-report.xml"
-MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-3}"
+MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-2}"
 RERUN_REPORT_PREFIX="maestro-rerun"
-export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
+export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-300000}"
+
+# Linux has timeout, macOS has gtimeout (Homebrew coreutils)
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
+
+# Bound each `maestro test` so a wedged CoreSimulator child can't hang the job;
+# 124/137 = timed out, annotated as an environment failure.
+run_maestro_test() {
+  local rc=0
+  if [ -n "$TIMEOUT_BIN" ]; then
+    "$TIMEOUT_BIN" -k 30s 35m maestro test "$@" || rc=$?
+  else
+    maestro test "$@" || rc=$?
+  fi
+  if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
+    echo "::error title=Maestro run timed out::A 'maestro test' invocation exceeded 35m and was terminated (likely a wedged CoreSimulator). This is an environment failure, not an app or test regression."
+  fi
+  return 0
+}
+
+# The deeplink-login flow logs a live session token; scrub it before the logs
+# upload as a public artifact. perl -i works on both Linux and macOS.
+redact_uploaded_logs() {
+  local logs_dir="$HOME/.maestro/tests"
+  [ -d "$logs_dir" ] || return 0
+  find "$logs_dir" -type f -print0 \
+    | xargs -0 perl -pi -e 's/&token=[A-Za-z0-9_-]+/&token=***REDACTED***/g' 2>/dev/null || true
+}
+
+if [ "$PLATFORM" = "android" ]; then
+  APP_ID="chat.rocket.android"
+else
+  APP_ID="chat.rocket.ios"
+fi
 
 if ! command -v maestro >/dev/null 2>&1; then
   echo "ERROR: maestro not found in PATH"
@@ -26,8 +59,24 @@ else
   fi
 fi
 
+# Probe the E2E server up front so an outage surfaces as one clear annotation
+# instead of opaque flow failures. data.js is the source of the server URL.
+E2E_SERVER="$(sed -n "s/^[[:space:]]*server:[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" .maestro/scripts/data.js | head -1)"
+if [ -z "$E2E_SERVER" ]; then
+  echo "::error title=E2E server URL not found::Could not scrape 'server' from .maestro/scripts/data.js — its format may have changed. This is a CI config failure, not an app or test regression."
+  exit 3
+fi
+echo "Preflight: checking E2E server ${E2E_SERVER} ..."
+PREFLIGHT_CODE="$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 --retry 3 --retry-all-errors --retry-delay 5 "${E2E_SERVER}/api/info" || true)"
+if [ "$PREFLIGHT_CODE" != "200" ]; then
+  echo "::error title=E2E server unreachable::${E2E_SERVER}/api/info returned HTTP ${PREFLIGHT_CODE:-000} — the test server is likely down. This is an environment failure, not an app or test regression."
+  exit 3
+fi
+echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
+
 MAPFILE="$(mktemp)"
-trap 'rm -f "$MAPFILE"' EXIT
+# Redact on every exit path, before the always() upload reads the logs
+trap 'rm -f "$MAPFILE"; redact_uploaded_logs' EXIT
 
 while IFS= read -r -d '' file; do
   if grep -qE "^[[:space:]]*-[[:space:]]*['\"]?test-${SHARD}['\"]?([[:space:]]*$|[[:space:]]*,|[[:space:]]*\\])" "$file"; then
@@ -63,30 +112,36 @@ done < "$MAPFILE"
 echo "Main run will execute:"
 printf '  %s\n' "${FLOW_FILES[@]}"
 
-if [ "$PLATFORM" = "android" ]; then
-  adb shell settings put system show_touches 1 || true
-  adb install -r "app-experimental-release.apk" || true
-  adb shell monkey -p "chat.rocket.reactnative" -c android.intent.category.LAUNCHER 1 || true
-  sleep 6
-  adb shell am force-stop "chat.rocket.reactnative" || true
+run_main_suite() {
+  rm -f "$MAIN_REPORT"
+  if [ "$PLATFORM" = "android" ]; then
+    adb shell settings put system show_touches 1 || true
+    adb install -r "app-release.apk" || true
 
-  maestro test "${FLOW_FILES[@]}" \
-    --exclude-tags=util \
-    --include-tags="test-${SHARD}" \
-    --format junit \
-    --output "$MAIN_REPORT" || true
+    run_maestro_test "${FLOW_FILES[@]}" \
+      -e APP_ID="$APP_ID" \
+      --exclude-tags=util \
+      --include-tags="test-${SHARD}" \
+      --exclude-tags=ios-only \
+      --format junit \
+      --output "$MAIN_REPORT"
+  else
+    run_maestro_test "${FLOW_FILES[@]}" \
+      -e APP_ID="$APP_ID" \
+      --exclude-tags=util \
+      --include-tags="test-${SHARD}" \
+      --exclude-tags=android-only \
+      --format junit \
+      --output "$MAIN_REPORT"
+  fi
+}
 
-else
-  maestro test "${FLOW_FILES[@]}" \
-    --exclude-tags=util \
-    --include-tags="test-${SHARD}" \
-    --exclude-tags=android-only \
-    --format junit \
-    --output "$MAIN_REPORT" || true
-fi
+run_main_suite
 
+# No JUnit output = startup failure; go red for a human re-run instead of
+# auto-retrying, which would hide real startup breakage.
 if [ ! -f "$MAIN_REPORT" ]; then
-  echo "Main report not found"
+  echo "::error title=Maestro session produced no report::The Maestro run produced no JUnit output (session/driver-startup failure or a timeout — see the annotation above). Re-run the failed job if this looks transient."
   exit 1
 fi
 
@@ -138,18 +193,21 @@ while [ ${#CURRENT_FAILS[@]} -gt 0 ] && [ "$ROUND" -le "$MAX_RERUN_ROUNDS" ]; do
   RPT="${RERUN_REPORT_PREFIX}-round-${ROUND}.xml"
 
   if [ "$PLATFORM" = "android" ]; then
-    maestro test "${CURRENT_FAILS[@]}" \
+    run_maestro_test "${CURRENT_FAILS[@]}" \
+      -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
+      --exclude-tags=ios-only \
       --format junit \
-      --output "$RPT" || true
+      --output "$RPT"
   else
-    maestro test "${CURRENT_FAILS[@]}" \
+    run_maestro_test "${CURRENT_FAILS[@]}" \
+      -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --exclude-tags=android-only \
       --format junit \
-      --output "$RPT" || true
+      --output "$RPT"
   fi
 
   if [ ! -f "$RPT" ]; then
@@ -197,4 +255,12 @@ done
 
 echo "Retry strategy finished with remaining failures:"
 printf '%s\n' "${CURRENT_FAILS[@]}"
+
+# The server can also blip after preflight; scan the local logs and annotate so
+# an environment failure doesn't read like an app bug.
+SERVER_ERR="$(grep -rhoE "Non-retryable error [0-9]{3}|Connection refused|Failed to connect|UnknownHostException|ConnectException|Read timed out" "$HOME/.maestro/tests/" 2>/dev/null | sort -u | head -5 | paste -sd '; ' - || true)"
+if [ -n "$SERVER_ERR" ]; then
+  echo "::error title=E2E server error during run::A test-setup REST call to ${E2E_SERVER:-the test server} failed mid-run (${SERVER_ERR}). The shard failure is likely a server/environment flake, not an app or test regression."
+fi
+
 exit 1

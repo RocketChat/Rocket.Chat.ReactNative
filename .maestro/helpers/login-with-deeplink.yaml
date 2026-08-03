@@ -1,15 +1,15 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Login with Deeplink
 tags:
   - 'util'
 
 ---
-- stopApp: chat.rocket.reactnative
+- stopApp: ${APP_ID}
 - runFlow:
     when:
       true: CLEAR_STATE
     commands:
-      - clearState: chat.rocket.reactnative
+      - clearState: ${APP_ID}
 - setPermissions:
     permissions:
       all: allow
@@ -27,7 +27,16 @@ tags:
             visible: '.*Pixel Launcher.*'
           commands:
             - tapOn: 'Close App'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view'
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      # Cold-boot emulators can show "System UI isn't responding" over the app
+      - runFlow:
+          when:
+            visible: ".*isn't responding.*"
+          commands:
+            - tapOn: 'Wait'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view'
+          timeout: 60000

@@ -1,7 +1,9 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Ignore User
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-11
 
@@ -84,6 +86,12 @@ tags:
       ROOM: ${output.room.name}
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-01')}
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-02')}
+# wait for the last message to render before tapping the header, otherwise the list
+# is still regrouping rows and the press gets cancelled mid-gesture
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-message-02'
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { themes } from '../../lib/constants/colors';
 import ServerItemComponent, { type IServerItem } from '.';
 import { ThemeContext, type TSupportedThemes } from '../../theme';

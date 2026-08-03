@@ -1,18 +1,15 @@
-import React from 'react';
 import { View } from 'react-native';
 
-import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions';
+import { type ICustomEmojis } from '../../definitions';
 import ReactionsList from '.';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';
+import { setCustomEmojis } from '../../actions/customEmojis';
 
-const getCustomEmoji: TGetCustomEmoji = content => {
-	const customEmoji = {
-		marioparty: { name: content, extension: 'gif' },
-		react_rocket: { name: content, extension: 'png' },
-		nyan_rocket: { name: content, extension: 'png' }
-	}[content] as ICustomEmoji;
-	return customEmoji;
+const customEmojis: ICustomEmojis = {
+	marioparty: { name: 'marioparty', extension: 'gif' },
+	react_rocket: { name: 'react_rocket', extension: 'png' },
+	nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
 };
 
 const reactions = [
@@ -50,18 +47,20 @@ const reactions = [
 
 export const ReactionsListStory = () => {
 	store.dispatch(updateSettings('UI_Use_Real_Name', false));
+	store.dispatch(setCustomEmojis(customEmojis));
 	return (
 		<View style={{ paddingVertical: 10, flex: 1 }}>
-			<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} />
+			<ReactionsList reactions={reactions} />
 		</View>
 	);
 };
 
 export const ReactionsListFullName = () => {
 	store.dispatch(updateSettings('UI_Use_Real_Name', true));
+	store.dispatch(setCustomEmojis(customEmojis));
 	return (
 		<View style={{ paddingVertical: 10, flex: 1 }}>
-			<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} />
+			<ReactionsList reactions={reactions} />
 		</View>
 	);
 };

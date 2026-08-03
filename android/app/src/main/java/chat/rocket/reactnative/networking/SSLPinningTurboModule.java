@@ -41,6 +41,30 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private Promise promise;
     private static String alias;
     private static ReactApplicationContext reactContext;
+    private static OkHttpClient sharedClient;
+
+    public static OkHttpClient getSharedOkHttpClient() {
+        if (sharedClient != null) {
+            return sharedClient;
+        }
+        if (alias != null) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                    .connectTimeout(0, TimeUnit.MILLISECONDS)
+                    .readTimeout(0, TimeUnit.MILLISECONDS)
+                    .writeTimeout(0, TimeUnit.MILLISECONDS)
+                    .cookieJar(new ReactCookieJarContainer());
+
+            SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
+            X509TrustManager trustManager = getTrustManagerFactory();
+            if (sslSocketFactory != null) {
+                builder.sslSocketFactory(sslSocketFactory, trustManager);
+            }
+
+            sharedClient = builder.build();
+            return sharedClient;
+        }
+        return null;
+    }
 
     public SSLPinningTurboModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -61,6 +85,10 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     protected OkHttpClient getOkHttpClient() {
+        OkHttpClient shared = getSharedOkHttpClient();
+        if (shared != null) {
+            return shared;
+        }
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(0, TimeUnit.MILLISECONDS)
                 .readTimeout(0, TimeUnit.MILLISECONDS)
