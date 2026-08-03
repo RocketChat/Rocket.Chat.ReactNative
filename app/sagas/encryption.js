@@ -113,7 +113,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		// If subscribed to a room, read it
 		const subscribedRoom = yield select(state => state.room.subscribedRoom);
 		if (subscribedRoom) {
-			yield readMessages(subscribedRoom, new Date());
+			yield readMessages(subscribedRoom);
 		}
 	} catch (e) {
 		log(e);
