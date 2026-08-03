@@ -43,7 +43,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as ISubscription);
+	}) as ISubscription;
 
 const defaultHandlers = {
 	handleCreateDirectMessage: () => {},

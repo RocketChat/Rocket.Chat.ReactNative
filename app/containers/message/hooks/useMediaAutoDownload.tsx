@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 
 import { type IAttachment, type IUserMessage } from '../../../definitions';
 import { isImageBase64 } from '../../../lib/methods/isImageBase64';
@@ -13,7 +13,8 @@ import {
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
-import MessageContext from '../Context';
+import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
+import { useMessageId } from '../stores/MessageStore';
 import { useFile } from './useFile';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
@@ -48,6 +49,23 @@ const getOriginalURL = (file: IAttachment): string | null => {
 	return null;
 };
 
+export type TDownloadEvent = 'download_started' | 'download_succeeded' | 'download_failed' | 'download_canceled' | 'cache_hit';
+
+export const downloadStatusReducer = (state: TDownloadState, event: TDownloadEvent): TDownloadState => {
+	switch (event) {
+		case 'download_started':
+			return 'loading';
+		case 'download_succeeded':
+		case 'cache_hit':
+			return 'downloaded';
+		case 'download_failed':
+		case 'download_canceled':
+			return 'to-download';
+		default:
+			return state;
+	}
+};
+
 export const useMediaAutoDownload = ({
 	file,
 	author,
@@ -55,20 +73,22 @@ export const useMediaAutoDownload = ({
 }: {
 	file: IAttachment;
 	author?: IUserMessage;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 }) => {
 	'use memo';
 
 	const fileType = getFileType(file) ?? 'image';
-	const { id, baseUrl, user } = useContext(MessageContext);
-	const [status, setStatus] = useState<TDownloadState>('to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id);
+	const id = useMessageId();
+	const baseUrl = useBaseUrl();
+	const user = useMessageUser();
+	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
+	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
-		user.id,
-		user.token,
-		baseUrl,
+		user?.id ?? '',
+		user?.token ?? '',
+		baseUrl ?? '',
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
@@ -88,7 +108,7 @@ export const useMediaAutoDownload = ({
 			}
 		};
 		if (fileType === 'image' && isImageBase64(url)) {
-			setStatus('downloaded');
+			dispatchDownloadEvent('cache_hit');
 		} else {
 			handleCache();
 		}
@@ -103,25 +123,23 @@ export const useMediaAutoDownload = ({
 	}, []);
 
 	const resumeDownload = () => {
-		setStatus('loading');
+		dispatchDownloadEvent('download_started');
 		emitter.on(`downloadMedia${url}`, downloadMediaListener);
 	};
 
 	const tryAutoDownload = async () => {
-		const isCurrentUserAuthor = author?._id === user.id;
+		const isCurrentUserAuthor = author?._id === user?.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
-		} else {
-			setStatus('to-download');
 		}
 	};
 
 	const download = async () => {
 		try {
-			setStatus('loading');
+			dispatchDownloadEvent('download_started');
 			const uri = await downloadMediaFile({
-				messageId: id,
+				messageId: id ?? '',
 				downloadUrl: url,
 				type: fileType,
 				mimeType: getFileProperty(currentFile, fileType, 'type'),
@@ -131,7 +149,7 @@ export const useMediaAutoDownload = ({
 			setDecrypted();
 			updateCurrentFile(uri);
 		} catch (e) {
-			setStatus('to-download');
+			dispatchDownloadEvent('download_failed');
 		}
 	};
 
@@ -139,7 +157,7 @@ export const useMediaAutoDownload = ({
 		setCurrentFile({
 			title_link: uri
 		});
-		setStatus('downloaded');
+		dispatchDownloadEvent('download_succeeded');
 	};
 
 	const setDecrypted = () => {
@@ -165,7 +183,7 @@ export const useMediaAutoDownload = ({
 	const onPress = () => {
 		if (status === 'loading') {
 			cancelDownload(url);
-			setStatus('to-download');
+			dispatchDownloadEvent('download_canceled');
 			return;
 		}
 		if (status === 'to-download') {

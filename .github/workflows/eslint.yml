@@ -1,4 +1,4 @@
-name: Run ESLint and Test
+name: Run Lint and Test
 
 on:
   workflow_call:
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: Run ESLint
+      - name: Run Oxlint
         run: pnpm lint
 
       - name: Run Tests

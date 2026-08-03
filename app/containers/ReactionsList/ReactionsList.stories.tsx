@@ -1,17 +1,16 @@
 import { View } from 'react-native';
 
+import { type ICustomEmojis } from '../../definitions';
 import ReactionsList from '.';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';
 import { setCustomEmojis } from '../../actions/customEmojis';
 
-store.dispatch(
-	setCustomEmojis({
-		marioparty: { name: 'marioparty', extension: 'gif' },
-		react_rocket: { name: 'react_rocket', extension: 'png' },
-		nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
-	})
-);
+const customEmojis: ICustomEmojis = {
+	marioparty: { name: 'marioparty', extension: 'gif' },
+	react_rocket: { name: 'react_rocket', extension: 'png' },
+	nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
+};
 
 const reactions = [
 	{
@@ -48,6 +47,7 @@ const reactions = [
 
 export const ReactionsListStory = () => {
 	store.dispatch(updateSettings('UI_Use_Real_Name', false));
+	store.dispatch(setCustomEmojis(customEmojis));
 	return (
 		<View style={{ paddingVertical: 10, flex: 1 }}>
 			<ReactionsList reactions={reactions} />
@@ -57,6 +57,7 @@ export const ReactionsListStory = () => {
 
 export const ReactionsListFullName = () => {
 	store.dispatch(updateSettings('UI_Use_Real_Name', true));
+	store.dispatch(setCustomEmojis(customEmojis));
 	return (
 		<View style={{ paddingVertical: 10, flex: 1 }}>
 			<ReactionsList reactions={reactions} />
