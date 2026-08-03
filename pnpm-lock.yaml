@@ -85,8 +85,8 @@ importers:
         specifier: 1.0.0-rc.1
         version: 1.0.0-rc.1
       '@rocket.chat/message-parser':
-        specifier: 0.31.31
-        version: 0.31.31
+        specifier: 0.31.36
+        version: 0.31.36
       '@rocket.chat/mobile-crypto':
         specifier: RocketChat/rocket.chat-mobile-crypto#main
         version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -2616,8 +2616,9 @@ packages:
   '@rocket.chat/media-signaling@1.0.0-rc.1':
     resolution: {integrity: sha512-yUMFOyhJfN1XH4IssQF17zAeaamNiSw3riaeuc+pby4XYDd405aN8jh//Lz2nn9c8DeGCCzUbRStlMlmPsbr6g==}
 
-  '@rocket.chat/message-parser@0.31.31':
-    resolution: {integrity: sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==}
+  '@rocket.chat/message-parser@0.31.36':
+    resolution: {integrity: sha512-Z8kmWHKswEYH9dnr6iU61DJG2BAmCTkvhXhZ4dtFHe8/UThgr8cJcFSpSJi/y8Fh7LakzQIsgq+xMZ1OcwZU+g==}
+    engines: {node: 22.16.0}
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c':
     resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c}
@@ -7302,11 +7303,11 @@ packages:
     resolution: {integrity: sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q==}
     engines: {node: '>=14.0.0'}
 
-  tldts-core@5.7.112:
-    resolution: {integrity: sha512-mutrEUgG2sp0e/MIAnv9TbSLR0IPbvmAImpzqul5O/HJ2XM1/I1sajchQ/fbj0fPdA31IiuWde8EUhfwyldY1Q==}
+  tldts-core@6.1.86:
+    resolution: {integrity: sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA==}
 
-  tldts@5.7.112:
-    resolution: {integrity: sha512-6VSJ/C0uBtc2PQlLsp4IT8MIk2UUh6qVeXB1HZtK+0HiXlAPzNcfF3p2WM9RqCO/2X1PIa4danlBLPoC2/Tc7A==}
+  tldts@6.1.86:
+    resolution: {integrity: sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==}
     hasBin: true
 
   tmp@0.2.5:
@@ -10518,9 +10519,9 @@ snapshots:
       '@rocket.chat/emitter': 0.32.0
       ajv: 8.18.0
 
-  '@rocket.chat/message-parser@0.31.31':
+  '@rocket.chat/message-parser@0.31.36':
     dependencies:
-      tldts: 5.7.112
+      tldts: 6.1.86
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -15909,11 +15910,11 @@ snapshots:
 
   tinyspy@4.0.4: {}
 
-  tldts-core@5.7.112: {}
+  tldts-core@6.1.86: {}
 
-  tldts@5.7.112:
+  tldts@6.1.86:
     dependencies:
-      tldts-core: 5.7.112
+      tldts-core: 6.1.86
 
   tmp@0.2.5: {}
 
