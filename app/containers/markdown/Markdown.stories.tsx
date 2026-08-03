@@ -75,6 +75,7 @@ const mentions = [
 	{ _id: 'all', username: 'all', type: 'user' },
 	{ _id: 'team', name: 'team', type: 'team' }
 ];
+const channels = [{ _id: '123', name: 'test-channel' }];
 
 export const Mentions = () => (
 	<ScrollView style={styles.container}>
@@ -83,9 +84,44 @@ export const Mentions = () => (
 	</ScrollView>
 );
 
+export const MentionsWithFormatting = () => (
+	<ScrollView style={styles.container}>
+		<Markdown
+			msg='Normal: @rocket.cat @name1 @all @here #test-channel'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Bold: *@rocket.cat* *@name1* *@all* *@here* *#test-channel*'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Italic: _ @rocket.cat _ _ @name1 _ _ @all _ _ @here _ _ #test-channel _'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Strikethrough: ~@rocket.cat~ ~@name1~ ~@all~ ~@here~ ~#test-channel~'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Italic + Bold + Strikethrough: _~*@rocket.cat*~_ _~*@name1*~_ _~*@all*~_ _~*@here*~_ _~*#test-channel*~_'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+	</ScrollView>
+);
+
 export const Hashtag = () => (
 	<View style={styles.container}>
-		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} />
+		<Markdown msg='#test-channel #unknown' channels={channels} />
 	</View>
 );
 
@@ -128,6 +164,35 @@ export const Headers = () => (
 		<Markdown msg='## Header 2' />
 		<Markdown msg='### Header 3' />
 		<Markdown msg='#### Header 4' />
+	</View>
+);
+
+export const HeadersWithFormatting = () => (
+	<View style={styles.container}>
+		<Markdown
+			msg='# H1 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='## H2 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='### H3 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='#### H4 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
 	</View>
 );
 
@@ -175,7 +240,7 @@ export const TextStyle = () => (
 			textStyle={textStyle}
 		/>
 		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' textStyle={textStyle} />
-		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} textStyle={textStyle} />
+		<Markdown msg='#test-channel #unknown' channels={channels} textStyle={textStyle} />
 		<Markdown
 			msg={`> This is block quote
 this is a normal line`}

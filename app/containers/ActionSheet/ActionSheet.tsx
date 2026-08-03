@@ -41,6 +41,7 @@ const ActionSheet = memo(
 		};
 
 		const hide = () => {
+			if (!isVisible) return;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
