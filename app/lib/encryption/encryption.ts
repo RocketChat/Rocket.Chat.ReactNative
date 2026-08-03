@@ -1,4 +1,4 @@
-import { type Model, Q } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system/legacy';
 import {
@@ -395,25 +395,32 @@ class Encryption {
 				sub => sub.lastMessage?.t === E2E_MESSAGE_TYPE && sub.lastMessage?.e2e !== E2E_STATUS.DONE
 			);
 
-			const preparedSubscriptions: (Model | null)[] = await Promise.all(
-				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => {
-					const newSub = await this.decryptSubscription(sub);
-					try {
-						return sub.prepareUpdate(
-							protectedFunction((m: TSubscriptionModel) => {
-								if (newSub?.lastMessage) {
-									m.lastMessage = newSub.lastMessage;
-								}
-							})
-						);
-					} catch {
-						return null;
-					}
-				})
+			const decryptedSubscriptions = await Promise.all(
+				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => ({
+					sub,
+					newSub: await this.decryptSubscription(sub)
+				}))
 			);
 
+			// Prepare and batch under the writer lock so a concurrent writer can't
+			// call prepareUpdate on a record with pending changes.
 			await db.write(async () => {
-				await db.batch(preparedSubscriptions.filter((record): record is Model => record !== null));
+				const preparedSubscriptions = decryptedSubscriptions
+					.map(({ sub, newSub }) => {
+						try {
+							return sub.prepareUpdate(
+								protectedFunction((m: TSubscriptionModel) => {
+									if (newSub?.lastMessage) {
+										m.lastMessage = newSub.lastMessage;
+									}
+								})
+							);
+						} catch {
+							return null;
+						}
+					})
+					.filter((record): record is TSubscriptionModel => record !== null);
+				await db.batch(preparedSubscriptions);
 			});
 		} catch (e) {
 			log(e);
