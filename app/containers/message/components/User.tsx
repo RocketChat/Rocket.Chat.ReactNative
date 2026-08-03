@@ -1,5 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable as RNPressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable as RNGHPressable } from 'react-native-gesture-handler';
 
+import { isIOS } from '../../../lib/methods/helpers';
 import { type MessageTypesValues, SubscriptionType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
@@ -39,6 +41,8 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	}
 });
+
+const Pressable = (isIOS ? RNPressable : RNGHPressable) as typeof RNPressable;
 
 const User = () => {
 	'use memo';

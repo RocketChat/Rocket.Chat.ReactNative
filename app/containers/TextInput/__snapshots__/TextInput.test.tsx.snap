@@ -570,64 +570,54 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={1}
+              <View
+                accessibilityLabel="Clear input"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
                 collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={-1}
-                handlerType="NativeViewGestureHandler"
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
-                rippleColor="#E4E7EA"
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
-                  [
-                    {
-                      "backgroundColor": undefined,
-                      "borderRadius": undefined,
-                      "margin": undefined,
-                      "marginBottom": undefined,
-                      "marginEnd": undefined,
-                      "marginHorizontal": undefined,
-                      "marginLeft": undefined,
-                      "marginRight": undefined,
-                      "marginStart": undefined,
-                      "marginTop": undefined,
-                      "marginVertical": undefined,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
-                  ]
+                  {
+                    "backgroundColor": undefined,
+                    "borderRadius": undefined,
+                    "margin": undefined,
+                    "marginBottom": undefined,
+                    "marginEnd": undefined,
+                    "marginHorizontal": undefined,
+                    "marginLeft": undefined,
+                    "marginRight": undefined,
+                    "marginStart": undefined,
+                    "marginTop": undefined,
+                    "marginVertical": undefined,
+                    "opacity": 1,
+                  }
                 }
                 testID="clear-text-input"
-                underlayColor="#E4E7EA"
               >
                 <View
-                  collapsable={false}
-                  style={
-                    {
-                      "backgroundColor": "#E4E7EA",
-                      "borderBottomLeftRadius": undefined,
-                      "borderBottomRightRadius": undefined,
-                      "borderRadius": undefined,
-                      "borderTopLeftRadius": undefined,
-                      "borderTopRightRadius": undefined,
-                      "bottom": 0,
-                      "left": 0,
-                      "opacity": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    }
-                  }
-                />
-                <View
-                  accessibilityLabel="Clear input"
-                  accessible={true}
                   style={
                     {
                       "height": 20,
@@ -662,7 +652,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     
                   </Text>
                 </View>
-              </RNGestureHandlerButton>
+              </View>
             </ExternalKeyboardView>
           </View>
         </View>
@@ -1244,63 +1234,53 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={1}
-                collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={-1}
-                handlerType="NativeViewGestureHandler"
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
-                rippleColor="#E4E7EA"
-                style={
-                  [
-                    {
-                      "backgroundColor": undefined,
-                      "borderRadius": undefined,
-                      "margin": undefined,
-                      "marginBottom": undefined,
-                      "marginEnd": undefined,
-                      "marginHorizontal": undefined,
-                      "marginLeft": undefined,
-                      "marginRight": undefined,
-                      "marginStart": undefined,
-                      "marginTop": undefined,
-                      "marginVertical": undefined,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
-                  ]
+              <View
+                accessibilityLabel="Show Password"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
                 }
-                underlayColor="#E4E7EA"
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "backgroundColor": undefined,
+                    "borderRadius": undefined,
+                    "margin": undefined,
+                    "marginBottom": undefined,
+                    "marginEnd": undefined,
+                    "marginHorizontal": undefined,
+                    "marginLeft": undefined,
+                    "marginRight": undefined,
+                    "marginStart": undefined,
+                    "marginTop": undefined,
+                    "marginVertical": undefined,
+                    "opacity": 1,
+                  }
+                }
               >
                 <View
-                  collapsable={false}
-                  style={
-                    {
-                      "backgroundColor": "#E4E7EA",
-                      "borderBottomLeftRadius": undefined,
-                      "borderBottomRightRadius": undefined,
-                      "borderRadius": undefined,
-                      "borderTopLeftRadius": undefined,
-                      "borderTopRightRadius": undefined,
-                      "bottom": 0,
-                      "left": 0,
-                      "opacity": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    }
-                  }
-                />
-                <View
-                  accessibilityLabel="Show Password"
-                  accessible={true}
                   style={{}}
                 >
                   <Text
@@ -1330,7 +1310,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     
                   </Text>
                 </View>
-              </RNGestureHandlerButton>
+              </View>
             </ExternalKeyboardView>
           </A11yIndexView>
         </View>

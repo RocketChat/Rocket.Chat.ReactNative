@@ -11,10 +11,11 @@ import {
 	type TouchableHighlightProps,
 	type TouchableOpacityProps
 } from 'react-native';
+import { Pressable as RNNGHPressable } from 'react-native-gesture-handler';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
-import { isIOS } from '../lib/methods/helpers';
+import { isIOS, isAndroid } from '../lib/methods/helpers';
 
 export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightProps {
 	children: ReactNode;
@@ -32,6 +33,7 @@ export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightPr
 
 const Component = isIOS ? TouchableOpacity : TouchableHighlight;
 const KeyboardComponent = withKeyboardFocus(Component);
+const RNGHKeyboardComponent = withKeyboardFocus(RNNGHPressable) as unknown as typeof KeyboardComponent;
 
 const Touch = forwardRef<View, ITouchProps>(
 	(
@@ -83,10 +85,15 @@ const Touch = forwardRef<View, ITouchProps>(
 			marginStart,
 			marginTop
 		};
-		const touchableProps = isIOS ? {} : { underlayColor: android_rippleColor ?? colors.surfaceNeutral, activeOpacity: 1 };
+		const rippleColor = android_rippleColor ?? colors.surfaceNeutral;
+		const feedbackProps = isAndroid
+			? { android_ripple: { color: rippleColor } }
+			: { underlayColor: rippleColor, activeOpacity: 1 };
+		const touchableProps = isIOS ? {} : feedbackProps;
+		const Wrapper = isAndroid ? RNGHKeyboardComponent : KeyboardComponent;
 
 		return (
-			<KeyboardComponent
+			<Wrapper
 				ref={ref}
 				// Library types componentRef as RefObject<View>, but useRef<View>(null) yields RefObject<View | null>. The lib only reads .current with a null check, so the cast is safe.
 				componentRef={componentRef as RefObject<View>}
@@ -107,7 +114,7 @@ const Touch = forwardRef<View, ITouchProps>(
 				    layout-only container; marking it accessible would create a second sibling node with
 				    the same label, causing double VoiceOver announcements and confusing TalkBack swipe nav. */}
 				<View style={viewStyle}>{children}</View>
-			</KeyboardComponent>
+			</Wrapper>
 		);
 	}
 );
