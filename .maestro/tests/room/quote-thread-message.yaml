@@ -50,10 +50,8 @@ tags:
       id: 'message-content-quotable'
     timeout: 60000
 
-# Reload with a clean local database. Thread replies are only written to the
-# `thread_messages` table when the thread is opened -- loading the room history does
-# not put them in `messages`. Quoting used a messages-only lookup, so after this
-# reload the reply could no longer be resolved and Quote silently did nothing.
+# Reload with a clean local DB so the reply only exists in `thread_messages`, not `messages`.
+# Quoting used a messages-only lookup, so it couldn't resolve the reply and silently did nothing.
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
@@ -107,7 +105,7 @@ tags:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
-      id: 'message-content-quotedinthread'
+      id: 'message-content-.*quotedinthread'
     timeout: 60000
 - extendedWaitUntil:
     visible:
