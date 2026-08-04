@@ -55,11 +55,17 @@ export default class RoomSubscription {
 	private streamReadyListener?: Promise<any>;
 	/** Set on socket close and on a new DDP handshake, so opening a room isn't mistaken for a reconnect. */
 	private hasReconnected: boolean;
+	/**
+	 * Bumped on both socket close and DDP handshake, so a fetch can tell its cycle has ended — only
+	 * compared for equality, it is not a count of reconnects.
+	 */
+	private connectionCycle: number;
 
 	constructor(rid: string) {
 		this.rid = rid;
 		this.isAlive = true;
 		this.hasReconnected = false;
+		this.connectionCycle = 0;
 	}
 
 	subscribe = async () => {
@@ -147,12 +153,14 @@ export default class RoomSubscription {
 
 	handleDisconnection = () => {
 		this.hasReconnected = true;
+		this.connectionCycle += 1;
 		reduxStore.dispatch(clearUserTyping());
 	};
 
 	/** A new DDP handshake also means a reconnect, including reopens that emit no `close`. */
 	handleReconnection = () => {
 		this.hasReconnected = true;
+		this.connectionCycle += 1;
 	};
 
 	/**
@@ -163,8 +171,14 @@ export default class RoomSubscription {
 		if (!this.isAlive || !this.hasReconnected) {
 			return;
 		}
+		const cycle = this.connectionCycle;
+		const isStale = () => !this.isAlive || cycle !== this.connectionCycle;
 		try {
-			await this.fetchMissedMessages();
+			await this.fetchMissedMessages(isStale);
+			if (isStale()) {
+				// A new cycle is already under way and will fetch for itself; this result was dropped.
+				return;
+			}
 			// Kept set until the fetch succeeds, so a failed one is retried on the next ack.
 			this.hasReconnected = false;
 		} catch (e) {
@@ -172,8 +186,11 @@ export default class RoomSubscription {
 		}
 	};
 
-	fetchMissedMessages = async () => {
-		await loadMissedMessages({ rid: this.rid });
+	fetchMissedMessages = async (isStale: () => boolean) => {
+		await loadMissedMessages({ rid: this.rid, isStale });
+		if (isStale()) {
+			return;
+		}
 		this.read();
 	};
 

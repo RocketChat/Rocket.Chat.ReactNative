@@ -76,6 +76,11 @@ export async function loadMissedMessages(args: {
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 	serverTimestamps?: TServerTimestamps;
+	/**
+	 * Checked after every page: a fetch belonging to a connection cycle that has already ended can
+	 * resolve late and overwrite newer rows or lower the cursor, so its result is dropped instead.
+	 */
+	isStale?: () => boolean;
 }): Promise<void> {
 	// A DELETED-only continuation fetches no UPDATED page, so it must not write the cursor again.
 	const fetchedUpdatedPage = !!args.updatedNext || !args.deletedNext;
@@ -84,6 +89,9 @@ export async function loadMissedMessages(args: {
 		updatedNext: args.updatedNext,
 		deletedNext: args.deletedNext
 	});
+	if (args.isStale?.()) {
+		return;
+	}
 	if (data) {
 		const {
 			updated,
@@ -97,12 +105,19 @@ export async function loadMissedMessages(args: {
 		// @ts-ignore // TODO: remove loaderItem obligatoriness
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
+		// Re-checked because the write above awaits: the cycle can end while it runs, and the cursor
+		// has no monotonic clamp, so a stale write would lower it.
+		if (args.isStale?.()) {
+			return;
+		}
+
 		if (deletedNext || updatedNext) {
 			loadMissedMessages({
 				rid: args.rid,
 				updatedNext,
 				deletedNext,
-				serverTimestamps
+				serverTimestamps,
+				isStale: args.isStale
 			}).catch(log);
 		}
 

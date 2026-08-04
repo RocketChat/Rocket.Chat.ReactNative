@@ -115,7 +115,7 @@ describe('closing a room while offline must not advance the sync cursor', () => 
 		await new RoomSubscription(RID).unsubscribe();
 		await Promise.resolve();
 
-		await new RoomSubscription(RID).fetchMissedMessages();
+		await new RoomSubscription(RID).fetchMissedMessages(() => false);
 
 		expect(mockedUpdateMessages).toHaveBeenCalledWith(
 			expect.objectContaining({
