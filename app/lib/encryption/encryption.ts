@@ -335,12 +335,13 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
+			const toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
 				...messagesToDecrypt,
 				...threadsToDecrypt,
 				...threadMessagesToDecrypt
 			];
-			toDecrypt = (await Promise.all(
+
+			const decrypted = await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg, attachments, content } = message;
 					let newMessage: Partial<TMessageModel> = {};
@@ -357,20 +358,25 @@ class Encryption {
 						} as IMessage);
 					}
 
-					try {
-						return message.prepareUpdate(
-							protectedFunction((m: TMessageModel) => {
-								Object.assign(m, newMessage);
-							})
-						);
-					} catch {
-						return null;
-					}
+					return { message, newMessage };
 				})
-			)) as (TThreadModel | TThreadMessageModel)[];
+			);
 
 			await db.write(async () => {
-				await db.batch(toDecrypt);
+				const prepared = decrypted
+					.map(({ message, newMessage }) => {
+						try {
+							return message.prepareUpdate(
+								protectedFunction((m: TMessageModel) => {
+									Object.assign(m, newMessage);
+								})
+							);
+						} catch {
+							return null;
+						}
+					})
+					.filter((record): record is TThreadModel | TThreadMessageModel => record !== null);
+				await db.batch(prepared);
 			});
 		} catch (e) {
 			log(e);

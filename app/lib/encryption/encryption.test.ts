@@ -1,6 +1,7 @@
 // Bypass the global mock of `app/lib/encryption` declared in jest.setup.js by
 // importing directly from the file. We exercise the real `encryptMessage` here.
 import encryption from './encryption';
+import database from '../database';
 
 jest.unmock('./encryption');
 
@@ -48,14 +49,38 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 const mockSubFind = jest.fn();
-jest.mock('../database', () => ({
-	__esModule: true,
-	default: {
-		active: {
-			get: () => ({ find: (rid: string) => mockSubFind(rid) })
+// Rows returned by `collection.query(...).fetch()`, keyed by collection name.
+const mockQueryRows: Record<string, unknown[]> = {};
+const mockDbBatch = jest.fn((...args: any[]) => {
+	// db.batch commits prepared records, clearing their pending state (like the real writer).
+	args.flat().forEach((item: any) => {
+		if (item && typeof item === 'object' && '_preparedState' in item) {
+			item._preparedState = null;
 		}
-	}
-}));
+	});
+	return Promise.resolve(undefined);
+});
+jest.mock('../database', () => {
+	let writerQueue: Promise<unknown> = Promise.resolve();
+	return {
+		__esModule: true,
+		default: {
+			active: {
+				get: (name: string) => ({
+					find: (rid: string) => mockSubFind(rid),
+					query: () => ({ fetch: () => Promise.resolve(mockQueryRows[name] ?? []) })
+				}),
+				// Serialized writer lock, like WatermelonDB's.
+				write: (callback: () => Promise<void>) => {
+					const run = writerQueue.then(() => callback());
+					writerQueue = run.catch(() => undefined);
+					return run;
+				},
+				batch: (...args: unknown[]) => mockDbBatch(...args)
+			}
+		}
+	};
+});
 
 const mockRoomEncrypt = jest.fn();
 const mockHasSessionKey = jest.fn();
@@ -139,5 +164,85 @@ describe('Encryption.encryptMessage', () => {
 
 		expect(result).toBe(baseMessage);
 		expect(mockRoomEncrypt).not.toHaveBeenCalled();
+	});
+});
+
+describe('Encryption.decryptPendingMessages', () => {
+	const rid = 'r1';
+
+	// Mimics a WatermelonDB Model: prepareUpdate throws while a previous prepared
+	// update has not been committed yet.
+	const makeMessageRecord = (id: string) => {
+		const record: any = {
+			id,
+			t: 'e2e',
+			msg: 'cipher',
+			subscription: { id: rid },
+			_preparedState: null as string | null,
+			prepareUpdate(recordUpdater: (m: any) => void) {
+				if (record._preparedState) {
+					throw new Error(`Cannot update a record with pending changes (messages#${id})`);
+				}
+				recordUpdater(record);
+				record._preparedState = 'update';
+				return record;
+			}
+		};
+		return record;
+	};
+
+	const deferred = () => {
+		let resolve: () => void = () => undefined;
+		const promise = new Promise<void>(r => {
+			resolve = r;
+		});
+		return { promise, resolve };
+	};
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockQueryRows.messages = [];
+		mockQueryRows.threads = [];
+		mockQueryRows.thread_messages = [];
+	});
+
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
+
+	it('does not throw "pending changes" when a concurrent writer touches the same message mid-decrypt', async () => {
+		const record = makeMessageRecord('m1');
+		mockQueryRows.messages = [record];
+		jest.spyOn(encryption, 'decryptMessage').mockResolvedValue({ msg: 'plain', e2e: 'done' } as any);
+
+		const db = (database as any).active;
+
+		// Hold the writer lock — as a new incoming message being saved would — and then update
+		// the very record decryptPendingMessages is about to prepare.
+		const concurrentGate = deferred();
+		const concurrentWrite = db.write(async () => {
+			await concurrentGate.promise;
+			await db.batch([
+				record.prepareUpdate((m: any) => {
+					m.msg = 'written by another writer';
+				})
+			]);
+		});
+
+		const decrypting = encryption.decryptPendingMessages(rid);
+
+		// Give an unlocked implementation the chance to prepare now — before the concurrent
+		// writer runs — and hold the record pending until its own batch.
+		await new Promise(resolve => setImmediate(resolve));
+		concurrentGate.resolve();
+
+		await expect(Promise.all([concurrentWrite, decrypting])).resolves.toBeDefined();
+
+		// The decrypted update reached db.batch and nothing was left prepared-but-uncommitted.
+		const committed = mockDbBatch.mock.calls.map(call => call.flat()).some(items => items.includes(record));
+		expect(committed).toBe(true);
+		expect(record.msg).toBe('plain');
+		expect(record.e2e).toBe('done');
+		expect(record._preparedState).toBeNull();
 	});
 });
