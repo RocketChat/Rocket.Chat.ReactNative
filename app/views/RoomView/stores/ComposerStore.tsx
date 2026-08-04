@@ -26,8 +26,6 @@ const useComposerStore = <T,>(selector: (state: ComposerState) => T): T => {
 };
 
 export const ComposerProvider = ({ children, ...state }: { children: ReactNode } & TComposerExternalState): ReactElement => {
-	'use memo';
-
 	const [store] = useState(() => createComposerStore(state));
 
 	// `state` is exactly TComposerExternalState (children is destructured out), so this syncs every

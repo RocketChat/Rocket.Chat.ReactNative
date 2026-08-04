@@ -40,8 +40,6 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
 const RoomInfoView = (): ReactElement => {
-	'use memo';
-
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();

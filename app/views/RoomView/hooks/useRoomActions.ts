@@ -2,8 +2,6 @@ import { type IUseRoomActionsParams, type IUseRoomActionsResult } from '../defin
 import { sendRoomMessage } from '../services/sendRoomMessage';
 
 export function useRoomActions({ rid, tmid, roomStore, userRef, resetAction }: IUseRoomActionsParams): IUseRoomActionsResult {
-	'use memo';
-
 	const handleSendMessage = (message?: string, tshow?: boolean) =>
 		sendRoomMessage({ rid, message, tmid, user: userRef.current, tshow, roomStore, resetAction });
 

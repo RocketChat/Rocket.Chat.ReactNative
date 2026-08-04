@@ -25,8 +25,6 @@ export function useOmnichannelPermissions({
 	livechatAllowManualOnHold,
 	roomStore
 }: IUseOmnichannelPermissionsParams): void {
-	'use memo';
-
 	const [canForwardGuest, canViewCannedResponse] = usePermissions(
 		['transfer-livechat-guest', 'view-canned-responses'],
 		t === 'l' ? rid : undefined

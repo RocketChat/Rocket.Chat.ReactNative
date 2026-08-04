@@ -11,8 +11,6 @@ const styles = StyleSheet.create({
 });
 
 const EmptyRoom = ({ length, rid }: { length: number; rid: string }) => {
-	'use memo';
-
 	const { theme } = useTheme();
 	if (length === 0 || !rid) {
 		return <ImageBackground source={{ uri: `message_empty_${theme === 'dark' ? 'black' : theme}` }} style={styles.image} />;

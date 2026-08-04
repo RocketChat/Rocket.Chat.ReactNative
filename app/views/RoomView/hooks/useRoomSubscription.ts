@@ -13,8 +13,6 @@ const safeSubscribe = (sub?: RoomClass) => {
 };
 
 export function useRoomSubscription(sub?: RoomClass): void {
-	'use memo';
-
 	useEffect(() => {
 		if (!sub) {
 			return;

@@ -21,8 +21,6 @@ export const Autocomplete = ({
 	style: AnimatedStyle<ViewStyle>;
 	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
-	'use memo';
-
 	useAutocompleteA11yAnnounce();
 
 	const rid = useComposerRid();

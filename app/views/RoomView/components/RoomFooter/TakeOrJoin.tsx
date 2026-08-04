@@ -8,8 +8,6 @@ import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
 import styles from './styles';
 
 export const TakeOrJoin = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const room = useRoomWithUpdate();

@@ -14,8 +14,6 @@ import { useRoomStoreByRid } from '../stores/RoomStore';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
 export const useHeader = (): void => {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const route = useRoute<IRoomViewProps['route']>();
 	const rid = route.params?.rid;

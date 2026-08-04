@@ -23,8 +23,6 @@ interface ILeftButtonsProps {
 }
 
 const LeftButtons = ({ rid, tmid }: ILeftButtonsProps): ReactElement | null => {
-	'use memo';
-
 	const { goBack } = useAppNavigation();
 	const goRoomActionsView = useGoRoomActionsView(rid);
 	const isMasterDetail = useMasterDetail();

@@ -29,8 +29,6 @@ export function useRoomInit({
 	messageActionStore,
 	onQuoteInit
 }: IUseRoomInitParams): void {
-	'use memo';
-
 	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);

@@ -5,8 +5,6 @@ import { Quote } from './Quote';
 import { useQuotedMessageIds } from '../../../message/stores/MessageActionStore';
 
 export const Quotes = (): ReactElement | null => {
-	'use memo';
-
 	const selectedMessages = useQuotedMessageIds();
 	const nQuotesRef = useRef(0);
 	const listRef = useRef<FlatList>(null);

@@ -20,8 +20,6 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 
 const ForwardMessageView = () => {
-	'use memo';
-
 	const [rooms, setRooms] = useState<string[]>([]);
 	const [sending, setSending] = useState(false);
 	const navigation = useNavigation();

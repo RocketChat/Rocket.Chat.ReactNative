@@ -7,8 +7,6 @@ import { useRoomWithUpdateFromStore } from '../stores/RoomStoreContext';
 // Callers in the native-stack header render outside RoomView's provider, so they resolve the store
 // by rid from the module registry; the orchestrator can pass its store instance explicitly instead.
 export const useE2EEStatus = (rid?: string, roomStoreOverride?: RoomStore): IUseE2EEStatusResult => {
-	'use memo';
-
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);
 	const room = useRoomWithUpdateFromStore(roomStoreOverride ?? peekRoomStore(rid));
 

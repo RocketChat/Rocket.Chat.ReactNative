@@ -24,8 +24,6 @@ export function useRoomNavigation({
 	listRef,
 	roomUserIdRef
 }: IUseRoomNavigationParams): IUseRoomNavigationResult {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	// navToThread needs cancelJumpToMessage, which useJumpToMessage below produces from navToThread —

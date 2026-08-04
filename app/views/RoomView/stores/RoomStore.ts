@@ -237,8 +237,6 @@ export const peekRoomStore = (rid?: string): RoomStore => (rid ? registry.get(ri
 // Non-owning peek hook: the native-stack header renders outside RoomView's provider tree, so its
 // children read the rid-keyed store from the module registry instead of context.
 export function useRoomStoreByRid<T>(rid: string | undefined, selector: (state: RoomState) => T): T {
-	'use memo';
-
 	const entry = rid ? registry.get(rid) : undefined;
 	if (__DEV__ && rid && !entry) {
 		// With deferred unmount release this never fires on a healthy pop; a live miss is a real bug.

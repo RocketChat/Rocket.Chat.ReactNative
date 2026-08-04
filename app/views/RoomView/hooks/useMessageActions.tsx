@@ -22,8 +22,6 @@ export function useMessageActions({
 	messageActionsRef,
 	messageErrorActionsRef
 }: IUseMessageActionsParams): IUseMessageActionsResult {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	const { resetAction, onReactionClose, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });

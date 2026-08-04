@@ -9,8 +9,6 @@ import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerSt
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
-	'use memo';
-
 	const sharing = useComposerSharing();
 	const { setMarkdownToolbar } = useMessageComposerApi();
 	const { openEmojiKeyboard } = useEmojiKeyboard();

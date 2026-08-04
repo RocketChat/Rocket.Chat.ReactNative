@@ -18,8 +18,6 @@ const handleRoomRemoved = (removedRid: string, rid: string | undefined, isMaster
 };
 
 export function useRoomRemoved(rid: string | undefined, isMasterDetail: boolean): void {
-	'use memo';
-
 	useEffect(() => {
 		const onRoomRemoved = ({ rid: removedRid }: { rid: string }) => handleRoomRemoved(removedRid, rid, isMasterDetail);
 		EventEmitter.addEventListener('ROOM_REMOVED', onRoomRemoved);

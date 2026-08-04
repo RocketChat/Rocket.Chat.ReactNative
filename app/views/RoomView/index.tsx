@@ -66,8 +66,6 @@ const getHideSystemMessages = (room: IRoomViewState['room'], Hide_System_Message
 };
 
 const RoomView = (props: IRoomViewProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 
 	const { route, navigation } = props;

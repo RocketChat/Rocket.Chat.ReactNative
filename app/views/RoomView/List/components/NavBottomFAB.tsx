@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
 });
 
 const NavBottomFAB = ({ visible, onPress }: { visible: boolean; onPress: () => void }): ReactElement | null => {
-	'use memo';
-
 	const { colors } = useTheme();
 
 	if (!visible) {

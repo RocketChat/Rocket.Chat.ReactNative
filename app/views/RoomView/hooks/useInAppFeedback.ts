@@ -20,8 +20,6 @@ const fireHapticFeedback = () => {
 };
 
 export function useInAppFeedback(): void {
-	'use memo';
-
 	const dispatch = useDispatch();
 	const isFocused = useIsFocused();
 	const inAppFeedback = useAppSelector(state => state.inAppFeedback);

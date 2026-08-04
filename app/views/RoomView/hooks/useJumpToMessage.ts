@@ -28,8 +28,6 @@ export function useJumpToMessage({
 	navToRoom,
 	navToThread
 }: IUseJumpToMessageParams): IUseJumpToMessageResult {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const route = useRoute<IRoomViewProps['route']>();
 

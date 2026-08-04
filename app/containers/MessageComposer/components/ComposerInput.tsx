@@ -55,8 +55,6 @@ import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/extern
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
-	'use memo';
-
 	const { colors, theme } = useTheme();
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();

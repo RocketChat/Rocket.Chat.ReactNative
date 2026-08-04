@@ -28,8 +28,6 @@ export const RoomMessageActions = ({
 	onReactionPress,
 	jumpToMessage
 }: IRoomMessageActionsProps) => {
-	'use memo';
-
 	const room = useRoomStore(s => s.room);
 	const readOnly = useReadOnly();
 

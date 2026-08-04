@@ -6,8 +6,6 @@ import { isIOS } from '../../../lib/methods/helpers';
 import { type TSubscriptionModel } from '../../../definitions';
 
 export function useUnreadsCount(rid?: string): number | null {
-	'use memo';
-
 	const [unreadsCount, setUnreadsCount] = useState<number | null>(null);
 
 	useEffect(() => {

@@ -106,8 +106,6 @@ const useFrozenHandlersGuard: (state: MessageRoomState) => void = __DEV__
 	: useFrozenHandlersGuardProd;
 
 const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	'use memo';
-
 	const [store] = useState(() => {
 		// Fold the view-level overrides into the handler bag so selectors read a single path.
 		const { navToRoomInfo, showAttachment, ...rest } = state;
@@ -150,8 +148,6 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 };
 
 const MessageRoomProviderWithSetting = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	'use memo';
-
 	const Message_TimeFormat = useSetting('Message_TimeFormat') as string;
 
 	return (
@@ -162,8 +158,6 @@ const MessageRoomProviderWithSetting = ({ children, ...state }: { children: Reac
 };
 
 export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	'use memo';
-
 	return state.timeFormat != null ? (
 		<MessageRoomStoreProvider {...state}>{children}</MessageRoomStoreProvider>
 	) : (

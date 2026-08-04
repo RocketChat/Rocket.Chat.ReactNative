@@ -11,8 +11,6 @@ export const A11yGateContext = createContext<boolean>(false);
 export const useA11yGate = (): boolean => use(A11yGateContext);
 
 export const A11yGateProvider = ({ children }: { children: ReactNode }): ReactElement => {
-	'use memo';
-
 	const enabled = useIsAccessibilityNavigationEnabled();
 
 	return <A11yGateContext.Provider value={enabled}>{children}</A11yGateContext.Provider>;

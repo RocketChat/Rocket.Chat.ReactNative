@@ -7,8 +7,6 @@ import { TakeOrJoin } from './TakeOrJoin';
 import { useRoomFooterState } from './useRoomFooterState';
 
 export const RoomFooter = ({ messageComposerRef }: IRoomFooterProps) => {
-	'use memo';
-
 	const state = useRoomFooterState();
 
 	switch (state.kind) {

@@ -10,8 +10,6 @@ type IRoomProvidersProps = TComposerExternalState & {
 };
 
 export const RoomProviders = (props: IRoomProvidersProps): ReactElement => {
-	'use memo';
-
 	const { store, children, ...composer } = props;
 
 	return (

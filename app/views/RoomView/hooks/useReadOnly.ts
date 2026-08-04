@@ -8,8 +8,6 @@ import { RoomStoreContext, useRoomWithUpdateFromStore } from '../stores/RoomStor
 import { type RoomStore } from '../definitions';
 
 export const useReadOnlyForStore = (store: RoomStore): boolean => {
-	'use memo';
-
 	const room = useRoomWithUpdateFromStore(store);
 	const user = useAppSelector(getUserSelector);
 	const postReadOnlyPermission = useAppSelector(state => state.permissions['post-readonly']);
@@ -25,8 +23,6 @@ export const useReadOnlyForStore = (store: RoomStore): boolean => {
 // itself, so it cannot consume that same context (it isn't its own descendant) — it must pass the
 // store explicitly. Descendants (e.g. RoomMessageActions) call this with no arguments and rely on context.
 export const useReadOnly = (roomStoreOverride?: RoomStore): boolean => {
-	'use memo';
-
 	const contextStore = useContext(RoomStoreContext);
 	const store = roomStoreOverride ?? contextStore;
 	if (!store) {

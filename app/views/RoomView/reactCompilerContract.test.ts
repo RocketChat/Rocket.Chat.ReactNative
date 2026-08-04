@@ -15,9 +15,14 @@ const EXTRA_FILES: string[] = [
 ];
 
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.
-const KNOWN_SKIPPED: string[] = [];
+const KNOWN_SKIPPED: string[] = [
+	// Disables a React ESLint rule, which makes the compiler bail out.
+	'app/views/RoomView/List/hooks/useMessages.ts',
+	// Reads a variable before its declaration.
+	'app/views/RoomView/components/ReactionPicker.tsx'
+];
 
-const collectUseMemoFiles = (dir: string): string[] => {
+const collectSourceFiles = (dir: string): string[] => {
 	const entries = fs.readdirSync(dir, { withFileTypes: true });
 	const files: string[] = [];
 
@@ -26,15 +31,14 @@ const collectUseMemoFiles = (dir: string): string[] => {
 
 		if (entry.isDirectory()) {
 			if (entry.name === '__snapshots__') continue;
-			files.push(...collectUseMemoFiles(fullPath));
+			files.push(...collectSourceFiles(fullPath));
 			continue;
 		}
 
 		if (!/\.tsx?$/.test(entry.name)) continue;
 		if (entry.name.includes('.test.')) continue;
 
-		const content = fs.readFileSync(fullPath, 'utf8');
-		if (content.includes("'use memo'")) files.push(fullPath);
+		files.push(fullPath);
 	}
 
 	return files;
@@ -48,14 +52,14 @@ const compile = (file: string) =>
 			['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
 			['@babel/preset-react', { runtime: 'automatic' }]
 		],
-		plugins: [['babel-plugin-react-compiler', { compilationMode: 'annotation', panicThreshold: 'all_errors' }]]
+		plugins: [['babel-plugin-react-compiler', { compilationMode: 'infer', panicThreshold: 'all_errors' }]]
 	});
 
 describe('React Compiler contract for RoomView', () => {
-	const absoluteFiles = [...collectUseMemoFiles(ROOM_VIEW_DIR), ...EXTRA_FILES];
+	const absoluteFiles = [...collectSourceFiles(ROOM_VIEW_DIR), ...EXTRA_FILES];
 	const relativeFiles = absoluteFiles.map(file => path.relative(REPO_ROOT, file));
 
-	it("finds the expected set of 'use memo' files", () => {
+	it('finds RoomView source files to compile', () => {
 		expect(relativeFiles.length).toBeGreaterThan(0);
 	});
 

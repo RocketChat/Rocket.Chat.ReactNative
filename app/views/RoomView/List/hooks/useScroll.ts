@@ -51,8 +51,6 @@ export const useScroll = ({
 	setHighTs: (next: number | null) => void;
 	fetchMessages: () => Promise<void>;
 }) => {
-	'use memo';
-
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const pendingJump = useRef<IPendingJump | null>(null);

@@ -12,8 +12,6 @@ import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '../../../../views/RoomView/stores/ComposerStore';
 
 export const ActionsButton = () => {
-	'use memo';
-
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const t = useComposerType();

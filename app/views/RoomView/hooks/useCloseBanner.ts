@@ -2,8 +2,6 @@ import database from '../../../lib/database';
 import { type IRoomViewState } from '../definitions';
 
 export function useCloseBanner(room: IRoomViewState['room']): () => Promise<void> {
-	'use memo';
-
 	return async () => {
 		if ('id' in room) {
 			try {

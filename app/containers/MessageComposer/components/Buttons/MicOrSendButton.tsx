@@ -13,8 +13,6 @@ import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 
 export const MicOrSendButton = (): ReactElement | null => {
-	'use memo';
-
 	const rid = useComposerRid();
 	const sharing = useComposerSharing();
 	const micOrSend = useMicOrSend();

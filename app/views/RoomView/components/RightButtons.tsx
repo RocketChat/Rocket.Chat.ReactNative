@@ -95,8 +95,6 @@ const closeLivechat = async ({
 };
 
 const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null => {
-	'use memo';
-
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>>();
 	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();

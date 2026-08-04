@@ -4,7 +4,5 @@ import { useRoomStore } from '../stores/RoomStoreContext';
 // values on that stable ref. Deriving the boolean inside the selector keeps it fresh per emit
 // and only re-renders the caller when the derived value actually changes.
 export const useIsIgnored = (authorId?: string): boolean => {
-	'use memo';
-
 	return useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
 };

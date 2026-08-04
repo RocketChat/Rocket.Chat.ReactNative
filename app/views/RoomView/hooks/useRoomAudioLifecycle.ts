@@ -5,8 +5,6 @@ import AudioManager from '../../../lib/methods/AudioManager';
 import { type IRoomViewProps } from '../definitions';
 
 export function useRoomAudioLifecycle(rid: string | undefined, tmid: string | undefined): void {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	useEffect(() => {

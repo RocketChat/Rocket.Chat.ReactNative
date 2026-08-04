@@ -6,8 +6,6 @@ import { useTheme } from '../../../../theme';
 import styles from './styles';
 
 export const AirgappedWs = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 

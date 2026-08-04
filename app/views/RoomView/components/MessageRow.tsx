@@ -9,8 +9,6 @@ import { useMessageSeparators } from '../hooks/useMessageSeparators';
 import { type TMessageRowProps } from '../definitions';
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
-	'use memo';
-
 	const room = useRoomStore(s => s.room);
 	const isIgnored = useIsIgnored(item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);

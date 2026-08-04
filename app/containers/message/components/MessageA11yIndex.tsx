@@ -21,8 +21,6 @@ const MessageA11yIndex = ({
 	style,
 	children
 }: IMessageA11yIndexProps): ReactElement => {
-	'use memo';
-
 	const enabled = useA11yGate();
 
 	if (!enabled) {

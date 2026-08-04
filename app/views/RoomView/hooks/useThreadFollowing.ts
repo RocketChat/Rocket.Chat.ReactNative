@@ -4,8 +4,6 @@ import database from '../../../lib/database';
 import { type TMessageModel } from '../../../definitions';
 
 export function useThreadFollowing(tmid?: string, userId?: string): boolean {
-	'use memo';
-
 	const [isFollowingThread, setIsFollowingThread] = useState(true);
 
 	useEffect(() => {

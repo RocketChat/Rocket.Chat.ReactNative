@@ -10,8 +10,6 @@ export type TRoomFooterState =
 	| { kind: 'composer' };
 
 export const useRoomFooterState = (): TRoomFooterState => {
-	'use memo';
-
 	const room = useRoomWithUpdate();
 	const joined = useRoomStore(s => s.joined);
 	const airGappedRestrictionRemainingDays = useAppSelector(

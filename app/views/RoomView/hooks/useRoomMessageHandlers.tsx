@@ -34,8 +34,6 @@ import { sendRoomMessage } from '../services/sendRoomMessage';
 import { useReactionActions } from './useReactionActions';
 
 export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();

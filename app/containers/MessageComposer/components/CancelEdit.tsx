@@ -4,8 +4,6 @@ import { useMessageAction } from '../../message/stores/MessageActionStore';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
-	'use memo';
-
 	const editCancel = useEditCancel();
 	const action = useMessageAction();
 

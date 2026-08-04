@@ -9,8 +9,6 @@ import { type IRoomViewProps } from '../definitions';
 import { useRoomStoreByRid } from '../stores/RoomStore';
 
 export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackParamList) => void) => {
-	'use memo';
-
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const route = useRoute<IRoomViewProps['route']>();
 	const t = route.params?.t;

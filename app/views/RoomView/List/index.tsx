@@ -10,8 +10,6 @@ import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
-		'use memo';
-
 		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
 			rid,
 			tmid,

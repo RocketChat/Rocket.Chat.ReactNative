@@ -6,8 +6,6 @@ import { type IFooterPreviewProps } from '../../definitions';
 import styles from './styles';
 
 export const Preview = ({ message }: IFooterPreviewProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 

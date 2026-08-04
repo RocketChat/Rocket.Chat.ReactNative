@@ -23,8 +23,6 @@ const getFederatedFooterDescription = (
 };
 
 export const useFooterMessage = (): string | null => {
-	'use memo';
-
 	const room = useRoomWithUpdate();
 	const readOnly = useReadOnly();
 	const isFederationEnabled = useAppSelector(

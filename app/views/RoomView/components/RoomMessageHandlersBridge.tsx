@@ -8,8 +8,6 @@ import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 // container -> views import inversion is gone. Published in the reactive tail (not FROZEN_KEYS): the
 // bag closes over rid/room/roomUserId/navigation/tmid, which shift when a thread reuses the mount.
 export const RoomMessageHandlersBridge = ({ children }: { children: ReactNode }): ReactElement => {
-	'use memo';
-
 	const store = useContext(MessageRoomStoreContext);
 	const handlers = useRoomMessageHandlers();
 

@@ -5,8 +5,6 @@ import { getInvitationData } from '../../../lib/methods/getInvitationData';
 import { InvitedRoom } from './InvitedRoom';
 
 export const InvitedRoomScreen = ({ room }: { room: IInviteSubscription }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { title, description, inviter, accept, reject } = getInvitationData(room);
 

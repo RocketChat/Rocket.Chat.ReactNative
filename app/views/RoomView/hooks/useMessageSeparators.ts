@@ -4,8 +4,6 @@ import { type TAnyMessageModel } from '../../../definitions';
 import { type IUseMessageSeparatorsResult } from '../definitions';
 
 export const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel): IUseMessageSeparatorsResult => {
-	'use memo';
-
 	const lastSeen = useRoomStore(s => s.lastSeen);
 
 	let dateSeparator = null;

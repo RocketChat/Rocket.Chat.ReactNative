@@ -8,8 +8,6 @@ import { ComposerAttachments } from './components/Attachments/ComposerAttachment
 
 export const MessageComposerContainer = forwardRef<IMessageComposerRef, IMessageComposerContainerProps>(
 	({ children = <ComposerAttachments /> }, ref): ReactElement => {
-		'use memo';
-
 		return (
 			<MessageComposerProvider>
 				<EmojiKeyboardProvider>

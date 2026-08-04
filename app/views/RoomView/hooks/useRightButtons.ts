@@ -4,8 +4,6 @@ import { useSubscriptionUnreads } from './useSubscriptionUnreads';
 import { useThreadFollowing } from './useThreadFollowing';
 
 export function useRightButtons({ rid, tmid, userId }: IUseRightButtonsParams): IUseRightButtonsResult {
-	'use memo';
-
 	const isFollowingThread = useThreadFollowing(tmid, userId);
 	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(rid, userId);
 	const [canToggleEncryption] = usePermissions(['toggle-room-e2e-encryption'], rid);

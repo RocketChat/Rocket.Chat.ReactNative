@@ -20,8 +20,6 @@ export function useReactionActions({
 	messageActionStore,
 	hideActionSheet
 }: IUseReactionActionsParams): IUseReactionActionsResult {
-	'use memo';
-
 	const resetAction = () => {
 		messageActionStore.getState().actions.clear();
 	};

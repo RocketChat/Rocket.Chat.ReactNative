@@ -6,8 +6,6 @@ import { type TSubscriptionModel } from '../../../definitions';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
 
 export function useSubscriptionUnreads(rid?: string, userId?: string): IUseSubscriptionUnreadsResult {
-	'use memo';
-
 	const [tunread, setTunread] = useState<string[]>([]);
 	const [tunreadUser, setTunreadUser] = useState<string[]>([]);
 	const [tunreadGroup, setTunreadGroup] = useState<string[]>([]);

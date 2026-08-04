@@ -8,8 +8,6 @@ import { useRoomStore } from '../../stores/RoomStoreContext';
 import styles from './styles';
 
 export const OnHold = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const loading = useRoomStore(s => s.loading);
