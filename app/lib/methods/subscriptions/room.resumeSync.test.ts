@@ -65,7 +65,7 @@ describe('RoomSubscription resume sync', () => {
 		const persistedCursor = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: persistedCursor } as never);
 
-		await new RoomSubscription(RID).handleConnection();
+		await new RoomSubscription(RID).fetchMissedMessages();
 
 		expect(mockedSdkGet).toHaveBeenCalledWith(
 			'chat.syncMessages',
@@ -82,7 +82,7 @@ describe('RoomSubscription resume sync', () => {
 	it('fetches nothing for a room without a sync cursor (null lastOpen): RoomView owns the initial load', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
 
-		await new RoomSubscription(RID).handleConnection();
+		await new RoomSubscription(RID).fetchMissedMessages();
 
 		expect(mockedSdkGet).not.toHaveBeenCalled();
 	});

@@ -53,10 +53,13 @@ export default class RoomSubscription {
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
 	private streamReadyListener?: Promise<any>;
+	/** Set on socket close and on a new DDP handshake, so opening a room isn't mistaken for a reconnect. */
+	private hasReconnected: boolean;
 
 	constructor(rid: string) {
 		this.rid = rid;
 		this.isAlive = true;
+		this.hasReconnected = false;
 	}
 
 	subscribe = async () => {
@@ -78,9 +81,12 @@ export default class RoomSubscription {
 				// do nothing
 			});
 
+		// The catch-up fetch runs on the room stream ready signal, not on the raw socket open:
+		// its snapshot has to overlap the live stream, or messages accepted in between are lost.
+		emitter.on(roomStreamReadyEvent(this.rid), this.handleStreamReadySignal);
 		this.streamReadyListener = sdk.onStreamData('ready', this.handleStreamReady);
-		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.connectedListener = sdk.onStreamData('connected', this.handleReconnection);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleDisconnection);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -103,6 +109,7 @@ export default class RoomSubscription {
 			}
 		}
 		reduxStore.dispatch(clearUserTyping());
+		emitter.off(roomStreamReadyEvent(this.rid), this.handleStreamReadySignal);
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
@@ -138,14 +145,36 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleConnection = async () => {
+	handleDisconnection = () => {
+		this.hasReconnected = true;
+		reduxStore.dispatch(clearUserTyping());
+	};
+
+	/** A new DDP handshake also means a reconnect, including reopens that emit no `close`. */
+	handleReconnection = () => {
+		this.hasReconnected = true;
+	};
+
+	/**
+	 * Fetches the missed messages once the room's stream is live again, so the fetch snapshot and
+	 * the stream overlap. Opening a room also acks the stream, and RoomView owns that initial load.
+	 */
+	handleStreamReadySignal = async () => {
+		if (!this.isAlive || !this.hasReconnected) {
+			return;
+		}
 		try {
-			reduxStore.dispatch(clearUserTyping());
-			await loadMissedMessages({ rid: this.rid });
-			this.read();
+			await this.fetchMissedMessages();
+			// Kept set until the fetch succeeds, so a failed one is retried on the next ack.
+			this.hasReconnected = false;
 		} catch (e) {
 			log(e);
 		}
+	};
+
+	fetchMissedMessages = async () => {
+		await loadMissedMessages({ rid: this.rid });
+		this.read();
 	};
 
 	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
