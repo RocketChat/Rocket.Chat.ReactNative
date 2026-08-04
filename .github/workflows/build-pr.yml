@@ -1,9 +1,5 @@
 name: Build PR
 
-permissions:
-  contents: read
-  pull-requests: write
-
 on:
   pull_request:
     branches:
@@ -13,10 +9,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   run-eslint-and-test:
     name: ESLint and Test
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/eslint.yml
 
   generate-pr-changelog:
@@ -24,6 +24,9 @@ jobs:
     needs: [run-eslint-and-test]
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -45,6 +48,9 @@ jobs:
   android-build-store:
     name: Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
+      pull-requests: write
     uses: ./.github/workflows/build-android.yml
     needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
@@ -54,6 +60,9 @@ jobs:
   ios-build-store:
     name: Build iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
+      pull-requests: write
     uses: ./.github/workflows/build-ios.yml
     needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
@@ -66,6 +75,8 @@ jobs:
   e2e-shards:
     name: E2E Shard Preflight
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.select.outputs.shards }}
@@ -96,6 +107,7 @@ jobs:
     name: E2E Hold
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     needs: [e2e-shards]
+    permissions: {}
     environment: approve_e2e_testing
     runs-on: ubuntu-latest
     steps:
@@ -104,6 +116,8 @@ jobs:
   e2e-build-android:
     name: E2E Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/e2e-build-android.yml
     needs: [e2e-shards, e2e-hold]
     secrets: inherit
@@ -111,6 +125,8 @@ jobs:
   e2e-run-android:
     name: E2E Run Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/maestro-android.yml
     needs: [e2e-build-android, e2e-shards]
     secrets: inherit
@@ -124,6 +140,8 @@ jobs:
   e2e-build-ios:
     name: E2E Build iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/e2e-build-ios.yml
     needs: [e2e-shards, e2e-hold]
     secrets: inherit
@@ -131,6 +149,8 @@ jobs:
   e2e-run-ios:
     name: E2E Run iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/maestro-ios.yml
     needs: [e2e-build-ios, e2e-shards]
     secrets: inherit
@@ -147,6 +167,7 @@ jobs:
     name: E2E Result
     if: ${{ always() && github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     needs: [e2e-shards, e2e-run-android, e2e-run-ios]
+    permissions: {}
     runs-on: ubuntu-latest
     steps:
       - name: Aggregate e2e outcome

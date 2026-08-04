@@ -152,6 +152,7 @@ tags:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
     timeout: 60000
+- evalScript: ${output.data.accounts[0].username = output.user.username + 'username'}
 
 # should change password
 - scrollUntilVisible:

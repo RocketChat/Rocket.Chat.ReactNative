@@ -264,7 +264,7 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 			: {
 					channelId: rid,
 					channelName: name
-			  };
+				};
 	} else {
 		params = {
 			roomId: rid,

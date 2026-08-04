@@ -6,9 +6,9 @@ Maps which event triggers which workflow and how they call each other.
 
 | Workflow | Trigger | What runs |
 |---|---|---|
-| [build-pr.yml](workflows/build-pr.yml) | `pull_request` (all branches) | ESLint + tests, PR changelog, Android + iOS store builds (gated), E2E build + Maestro shards on both platforms (gated; `e2e-shards` narrows to the sniffler-impacted shards, or skips the stage on a confident-zero diff) |
-| [build-develop.yml](workflows/build-develop.yml) | `push: develop` | ESLint + tests, release changelog, Android + iOS store builds, seeds Android AVD + SDK caches for E2E shards |
-| [prettier.yml](workflows/prettier.yml) | `push: * except master, develop, single-server` (main repo) | Auto-formats with Prettier + ESLint and commits any fixes back to the branch |
+| [build-pr.yml](workflows/build-pr.yml) | `pull_request` (all branches) | Lint + tests, PR changelog, Android + iOS store builds (gated), E2E build + Maestro shards on both platforms (gated; `e2e-shards` narrows to the sniffler-impacted shards, or skips the stage on a confident-zero diff) |
+| [build-develop.yml](workflows/build-develop.yml) | `push: develop` | Lint + tests, release changelog, Android + iOS store builds, seeds Android AVD + SDK caches for E2E shards |
+| [prettier.yml](workflows/prettier.yml) | `push: * except master, develop, single-server` (main repo) | Auto-formats with Oxfmt + Oxlint and commits any fixes back to the branch |
 | [organize_translations.yml](workflows/organize_translations.yml) | `push` touching `app/i18n/locales/**.json` | Sorts JSON keys and commits the result |
 
 ## Call graph
