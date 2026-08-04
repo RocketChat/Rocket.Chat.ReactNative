@@ -14,8 +14,6 @@ interface IDatePickerSheetContentProps {
 }
 
 const DatePickerSheetContent = ({ initialDate, onConfirm }: IDatePickerSheetContentProps): ReactElement => {
-	'use memo';
-
 	const [pendingDate, setPendingDate] = useState<Date>(initialDate);
 	const { colors } = useTheme();
 	const { hideActionSheet } = useActionSheet();

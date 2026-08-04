@@ -5,8 +5,6 @@ import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 
 const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall();

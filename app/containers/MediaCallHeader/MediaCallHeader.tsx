@@ -22,8 +22,6 @@ const styles = StyleSheet.create({
 });
 
 const MediaCallHeader = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 	const call = useCallStore(useShallow(state => state.call));
