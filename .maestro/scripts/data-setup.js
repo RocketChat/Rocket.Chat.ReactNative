@@ -70,7 +70,7 @@ const createUserWithPasswordChange = () => {
     return createUser({ requirePasswordChange: true });
 }
 
-const deleteCreatedUser = async ({ username: usernameToDelete }) => {
+const deleteCreatedUser = ({ username: usernameToDelete }) => {
     try {
         login(output.account.adminUser, output.account.adminPassword);
 

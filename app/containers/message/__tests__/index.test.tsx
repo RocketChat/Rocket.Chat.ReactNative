@@ -54,7 +54,7 @@ const createMockMessage = (overrides: Record<string, any> = {}): TAnyMessageMode
 		comment: undefined,
 		experimentalSubscribe: jest.fn(() => jest.fn()),
 		...overrides
-	} as unknown as TAnyMessageModel);
+	}) as unknown as TAnyMessageModel;
 
 const baseProps = {
 	rid: 'room-1'

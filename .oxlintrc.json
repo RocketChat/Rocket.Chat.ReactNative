@@ -1,0 +1,104 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["import", "react", "jest"],
+	"jsPlugins": ["eslint-plugin-react-native"],
+	"categories": {
+		"correctness": "off"
+	},
+	"env": {
+		"builtin": true,
+		"es2024": true
+	},
+	"ignorePatterns": [
+		"**/__tests__",
+		"**/node_modules",
+		"**/coverage",
+		"e2e/docker",
+		"**/android",
+		"**/ios",
+		"**/.worktrees/",
+		".rnstorybook/storybook.requires.ts"
+	],
+	"rules": {
+		"import/extensions": "off",
+		"import/no-cycle": "warn",
+		"react/jsx-fragments": ["error", "syntax"],
+		"react-native/no-single-element-style-arrays": "error",
+		"react-native/no-unused-styles": "error",
+		"no-restricted-imports": [
+			"error",
+			{
+				"paths": [
+					{
+						"name": "react",
+						"importNames": ["default"],
+						"message": "Import specific named exports from React instead."
+					}
+				]
+			}
+		],
+		"no-void": "error",
+		"new-cap": "error",
+		"require-await": "error",
+		"react/exhaustive-deps": "warn",
+		"react/rules-of-hooks": "error",
+		"react/react-compiler": "warn"
+	},
+	"overrides": [
+		{
+			"files": ["**/*.ts", "**/*.tsx"],
+			"rules": {
+				"no-return-assign": "off",
+				"no-dupe-class-members": "error",
+				"no-restricted-imports": [
+					"error",
+					{
+						"paths": [
+							{
+								"name": "react",
+								"importNames": ["default"],
+								"message": "Import specific named exports from React instead."
+							}
+						]
+					}
+				],
+				"no-unused-vars": [
+					"error",
+					{
+						"args": "all",
+						"argsIgnorePattern": "^_",
+						"caughtErrors": "none"
+					}
+				],
+				"no-useless-constructor": "off",
+				"no-use-before-define": "off",
+				"new-cap": "off",
+				"no-empty-function": "off",
+				"typescript/ban-ts-comment": "off",
+				"typescript/ban-types": "off",
+				"typescript/consistent-type-imports": [
+					"error",
+					{
+						"prefer": "type-imports",
+						"disallowTypeAnnotations": true,
+						"fixStyle": "inline-type-imports"
+					}
+				],
+				"typescript/no-explicit-any": "off",
+				"typescript/no-var-requires": "off"
+			},
+			"plugins": ["typescript"]
+		},
+		{
+			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],
+			"rules": {
+				"jest/no-commented-out-tests": "warn",
+				"jest/no-identical-title": "error",
+				"jest/no-focused-tests": "error",
+				"jest/valid-expect": "error",
+				"jest/no-conditional-expect": "error",
+				"jest/expect-expect": "off"
+			}
+		}
+	]
+}
