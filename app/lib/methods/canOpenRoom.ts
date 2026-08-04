@@ -4,16 +4,8 @@ import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';
 import { getRoomByTypeAndName } from '../services/restApi';
 
-const restTypes = {
-	channel: 'channels',
-	direct: 'im',
-	group: 'groups'
-};
-
 async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: string }) {
 	try {
-		const params = rid ? { roomId: rid } : { roomName: name };
-
 		// if it's a direct link without rid we'll create a new dm
 		// if the dm already exists it'll return the existent
 		if (type === ERoomTypes.DIRECT && !rid) {
@@ -27,38 +19,33 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 			}
 		}
 
-		// if it's a group we need to check if you can open
-		if (type === ERoomTypes.GROUP) {
-			try {
-				const response = await getRoomByTypeAndName('p', name);
-				if (!response?._id) {
-					return false;
-				}
+		if (type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) {
+			// The path segment of a deep link may hold either a room name or a room id.
+			// getRoomByTypeAndName resolves both, unlike the REST endpoints, which match
+			// roomName exactly and return "not found" when handed an id.
+			const room = rid ? null : await getRoomByTypeAndName(type === ERoomTypes.GROUP ? 'p' : 'c', name);
+			const roomId = rid || room?._id;
+			if (!roomId) {
+				return false;
+			}
 
-				// RC 0.61.0
-				await sdk.post('groups.open', { roomId: response._id });
-
-				return {
-					...response,
-					rid: response._id
-				};
-			} catch (e: any) {
-				if (!(e.data && /is already open/.test(e.data.error))) {
-					return false;
+			// a group has to be open before it can be read
+			if (type === ERoomTypes.GROUP) {
+				try {
+					// RC 0.61.0
+					await sdk.post('groups.open', { roomId });
+				} catch (e: any) {
+					if (!(e.data && /is already open/.test(e.data.error))) {
+						return false;
+					}
 				}
 			}
-		}
 
-		// if it's a channel or group and the link don't have rid
-		// we'll get info from the room
-		if (type === ERoomTypes.CHANNEL && !rid) {
-			// RC 0.72.0
-			// @ts-ignore
-			const result: any = await sdk.get(`${restTypes[type]}.info`, params);
-			if (result.success) {
-				const room = result[type];
-				room.rid = room._id;
-				return room;
+			if (room) {
+				return {
+					...room,
+					rid: roomId
+				};
 			}
 		}
 

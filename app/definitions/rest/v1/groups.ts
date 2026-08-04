@@ -91,7 +91,7 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.open': {
-		POST: (params: { roomId: string; roomName?: string } | { roomId?: string; roomName: string }) => {
+		POST: (params: { roomId: IServerRoom['_id'] }) => {
 			success: boolean;
 		};
 	};
