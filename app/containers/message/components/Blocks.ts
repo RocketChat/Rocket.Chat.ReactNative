@@ -5,8 +5,6 @@ import { useBlockAction, useRid } from '../stores/MessageRoomStore';
 import { useBlocks } from '../stores/MessageStore';
 
 const Blocks = () => {
-	'use memo';
-
 	const rid = useRid();
 	const blockAction = useBlockAction();
 	const { blocks, id: mid } = useBlocks();

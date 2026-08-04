@@ -5,8 +5,6 @@ import { useMessageUser, useNavToRoomInfo } from '../../stores/MessageRoomStore'
 import ContentWrapper from './ContentWrapper';
 
 const MarkdownContent = () => {
-	'use memo';
-
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const user = useMessageUser();
 	const onLinkPress = useOnLinkPress();

@@ -9,8 +9,6 @@ interface IProps extends PressableProps {
 }
 
 const MessageActionTouchable: FC<IProps> = ({ children, ...props }) => {
-	'use memo';
-
 	const onLongPress = useMessageLongPress();
 
 	return (

@@ -24,8 +24,6 @@ interface ICallButtonConfig {
 }
 
 export const CallButtons = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { layoutMode } = useCallLayoutMode();

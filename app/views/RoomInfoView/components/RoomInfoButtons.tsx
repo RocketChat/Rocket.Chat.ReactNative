@@ -52,8 +52,6 @@ export const RoomInfoButtons = ({
 	serverVersion,
 	itsMe
 }: IRoomInfoButtons): ReactElement => {
-	'use memo';
-
 	const room = roomFromRid || roomFromProps;
 	const { showActionSheet } = useActionSheet();
 	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);

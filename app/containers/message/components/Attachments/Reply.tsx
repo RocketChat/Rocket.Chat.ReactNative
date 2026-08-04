@@ -87,8 +87,6 @@ interface IMessageReply {
 }
 
 const Title = ({ attachment }: { attachment: IAttachment }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const timeFormat = useTimeFormat();
 	const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
@@ -106,8 +104,6 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 };
 
 const Description = ({ attachment }: { attachment: IAttachment }) => {
-	'use memo';
-
 	const user = useMessageUser();
 	const text = attachment.text || attachment.title;
 
@@ -129,8 +125,6 @@ const Description = ({ attachment }: { attachment: IAttachment }) => {
 };
 
 const UrlImage = ({ image }: { image?: string }) => {
-	'use memo';
-
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 
@@ -143,8 +137,6 @@ const UrlImage = ({ image }: { image?: string }) => {
 };
 
 const Fields = ({ attachment }: { attachment: IAttachment }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const user = useMessageUser();
 
@@ -165,8 +157,6 @@ const Fields = ({ attachment }: { attachment: IAttachment }) => {
 };
 
 const Reply = ({ attachment, msg }: IMessageReply) => {
-	'use memo';
-
 	const [loading, setLoading] = useState(false);
 	const { colors, theme } = useTheme();
 	const baseUrl = useBaseUrl();

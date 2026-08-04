@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
 });
 
 const Italic = ({ value }: IItalicProps) => {
-	'use memo';
-
 	return (
 		<Text style={styles.text}>
 			{value.map(block => {

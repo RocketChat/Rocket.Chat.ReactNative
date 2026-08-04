@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
 });
 
 const Bold = ({ value }: IBoldProps) => {
-	'use memo';
-
 	const context = useMarkdownContext({ textStyle: sharedStyles.textBold });
 
 	return (
