@@ -6,8 +6,6 @@ import CustomEmoji from '../../EmojiPicker/CustomEmoji';
 import { type IMessageEmoji } from '../interfaces';
 
 const Emoji = ({ content, standardEmojiStyle, customEmojiStyle }: IMessageEmoji) => {
-	'use memo';
-
 	const getCustomEmoji = useCustomEmoji();
 	const parsedContent = content.replace(/^:|:$/g, '');
 	const emoji = getCustomEmoji(parsedContent);
