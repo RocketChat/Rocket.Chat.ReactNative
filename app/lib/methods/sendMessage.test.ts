@@ -58,7 +58,7 @@ const makeCollection = (name: string): FakeCollection => {
 };
 
 let collections: Record<string, FakeCollection> = {};
-const getCollection = (name: string): FakeCollection => {
+const mockGetCollection = (name: string): FakeCollection => {
 	if (!collections[name]) {
 		collections[name] = makeCollection(name);
 	}
@@ -81,7 +81,7 @@ jest.mock('../database', () => {
 		__esModule: true,
 		default: {
 			active: {
-				get: (name: string) => getCollection(name),
+				get: (name: string) => mockGetCollection(name),
 				// Serialized writer lock, like WatermelonDB's.
 				write: (callback: () => Promise<void>) => {
 					const run = writerQueue.then(() => callback());
@@ -98,12 +98,12 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 	sanitizedRaw: (raw: unknown) => raw
 }));
 
-const encryptionGate: { promise: Promise<void> | null } = { promise: null };
+const mockEncryptionGate: { promise: Promise<void> | null } = { promise: null };
 jest.mock('../encryption', () => ({
 	Encryption: {
 		encryptMessage: jest.fn(async (message: unknown) => {
-			if (encryptionGate.promise) {
-				await encryptionGate.promise;
+			if (mockEncryptionGate.promise) {
+				await mockEncryptionGate.promise;
 			}
 			return message;
 		})
@@ -145,13 +145,13 @@ describe('sendMessage', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		collections = {};
-		encryptionGate.promise = null;
+		mockEncryptionGate.promise = null;
 		mockPost.mockImplementation(() => Promise.resolve({ success: true, message: {} }));
 	});
 
 	describe('sendMessage', () => {
 		it('does not throw "pending changes" when a concurrent writer touches the subscription mid-send', async () => {
-			const subscriptions = getCollection('subscriptions');
+			const subscriptions = mockGetCollection('subscriptions');
 			const room = makeRecord(`subscriptions#${rid}`, { draftMessage: 'a draft' });
 			subscriptions.records.set(rid, room);
 
@@ -169,7 +169,7 @@ describe('sendMessage', () => {
 			});
 
 			const encryption = deferred();
-			encryptionGate.promise = encryption.promise;
+			mockEncryptionGate.promise = encryption.promise;
 
 			const send = sendMessage(rid, 'hello', undefined, user);
 
@@ -197,7 +197,7 @@ describe('sendMessage', () => {
 	describe('changeMessageStatus', () => {
 		it('does not throw "pending changes" when a concurrent writer touches the message mid-status-update', async () => {
 			const tmid = 'threadHeaderId';
-			const messages = getCollection('messages');
+			const messages = mockGetCollection('messages');
 			messages.records.set(
 				tmid,
 				makeRecord(`messages#${tmid}`, {
@@ -208,9 +208,9 @@ describe('sendMessage', () => {
 					attachments: []
 				})
 			);
-			getCollection('threads');
-			getCollection('thread_messages');
-			getCollection('subscriptions');
+			mockGetCollection('threads');
+			mockGetCollection('thread_messages');
+			mockGetCollection('subscriptions');
 
 			// Block the server response so we can set up the race before changeMessageStatus runs.
 			const post = deferred();
@@ -245,7 +245,7 @@ describe('sendMessage', () => {
 
 			expect(loggedPendingChanges()).toBe(false);
 
-			const threadMessageRecord = getCollection('thread_messages').records.get(messageId) as FakeRecord;
+			const threadMessageRecord = mockGetCollection('thread_messages').records.get(messageId) as FakeRecord;
 			expect(messageRecord.status).toBe(messagesStatus.SENT);
 			expect(threadMessageRecord.status).toBe(messagesStatus.SENT);
 
