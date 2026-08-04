@@ -15,8 +15,6 @@ export const HeaderCallButton = ({
 	disabled: boolean;
 	accessibilityLabel: string;
 }): ReactElement | null => {
-	'use memo';
-
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 	const { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
 

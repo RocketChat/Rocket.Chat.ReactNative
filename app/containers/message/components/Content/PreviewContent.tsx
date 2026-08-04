@@ -5,8 +5,6 @@ import { useAutoTranslate } from '../../stores/MessageRoomStore';
 import ContentWrapper from './ContentWrapper';
 
 const PreviewContent = () => {
-	'use memo';
-
 	const { messageText } = useMessageText();
 	const attachments = useAttachments();
 	const { autoTranslateLanguage } = useAutoTranslate();

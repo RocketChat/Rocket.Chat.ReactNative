@@ -14,8 +14,6 @@ interface IDialpadButton {
 }
 
 const DialpadButton = ({ digit, letters, testID }: IDialpadButton): ReactElement => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const setDialpadValue = useCallStore(state => state.setDialpadValue);
 	const { playTone } = useDialpadAudio();

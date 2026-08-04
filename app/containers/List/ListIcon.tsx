@@ -21,8 +21,6 @@ const styles = StyleSheet.create({
 });
 
 const ListIcon = ({ name, color, style, testID, size }: IListIcon): ReactElement => {
-	'use memo';
-
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.icon, style]}>
