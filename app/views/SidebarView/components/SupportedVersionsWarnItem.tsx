@@ -10,8 +10,6 @@ import Navigation from '../../../lib/navigation/appNavigation';
 import { SupportedVersionsWarning } from '../../../containers/SupportedVersions';
 
 const SupportedVersionsWarnItem = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const isMasterDetail = useMasterDetail();

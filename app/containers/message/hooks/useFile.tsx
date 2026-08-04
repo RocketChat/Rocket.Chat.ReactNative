@@ -5,8 +5,6 @@ import { getMessageById } from '../../../lib/database/services/Message';
 import { getThreadMessageById } from '../../../lib/database/services/ThreadMessage';
 
 export const useFile = (file: IAttachment, messageId: string) => {
-	'use memo';
-
 	const [localFile, setLocalFile] = useState(file);
 	const [isMessagePersisted, setIsMessagePersisted] = useState(!!messageId);
 	useEffect(() => {
