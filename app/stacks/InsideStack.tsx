@@ -203,8 +203,6 @@ const ChatsStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -221,8 +219,6 @@ const ProfileStack = createNativeStackNavigator({
 		PickerView: PickerViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -245,8 +241,6 @@ const SettingsStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -257,8 +251,6 @@ const AdminPanelStack = createNativeStackNavigator({
 		AdminPanelView: AdminPanelViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -271,8 +263,6 @@ const AccessibilityStack = createNativeStackNavigator({
 		ThemeView: ThemeViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -293,8 +283,6 @@ const DrawerStack = createDrawerNavigator({
 		AccessibilityStackNavigator: AccessibilityStack
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { colors } = useContext(ThemeContext);
 	return (
 		<Navigator
@@ -314,8 +302,6 @@ const NewMessageStack = createNativeStackNavigator({
 		ForwardMessageView: ForwardMessageViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -327,8 +313,6 @@ const E2ESaveYourPasswordStack = createNativeStackNavigator({
 		E2EHowItWorksView: E2EHowItWorksViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -340,8 +324,6 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator({
 		E2EEncryptionSecurityView: E2EEncryptionSecurityViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -378,8 +360,6 @@ const InsideStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });

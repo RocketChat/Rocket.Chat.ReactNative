@@ -32,8 +32,6 @@ const FooterComponent = ({
 	disabled,
 	onSubmit
 }: IFooterComponentProps): ReactElement => {
-	'use memo';
-
 	return (
 		<View>
 			{supportsStatusExpiry && <ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={onClearAfterChange} />}

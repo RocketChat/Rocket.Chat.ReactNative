@@ -14,8 +14,6 @@ interface IMessageAudioProps {
 }
 
 const MessageAudio = ({ file, author, msg }: IMessageAudioProps) => {
-	'use memo';
-
 	const user = useMessageUser();
 	const id = useMessageId();
 	const rid = useRid();

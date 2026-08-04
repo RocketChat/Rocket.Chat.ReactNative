@@ -21,8 +21,6 @@ export const hitSlop = {
 };
 
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
-	'use memo';
-
 	const { setFocused } = useMessageComposerApi();
 	const { fontScale } = useWindowDimensions();
 	const size = 24 * fontScale;
