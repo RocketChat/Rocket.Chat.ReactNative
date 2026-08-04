@@ -86,16 +86,12 @@ const Touch = forwardRef<View, ITouchProps>(
 			marginTop
 		};
 		const rippleColor = android_rippleColor ?? colors.surfaceNeutral;
-		const feedbackProps = isAndroid
-			? { android_ripple: { color: rippleColor } }
-			: { underlayColor: rippleColor, activeOpacity: 1 };
-		const touchableProps = isIOS ? {} : feedbackProps;
+		const touchableProps = isIOS ? {} : { android_ripple: { color: rippleColor } };
 		const Wrapper = isAndroid ? RNGHKeyboardComponent : KeyboardComponent;
 
 		return (
 			<Wrapper
 				ref={ref}
-				// Library types componentRef as RefObject<View>, but useRef<View>(null) yields RefObject<View | null>. The lib only reads .current with a null check, so the cast is safe.
 				componentRef={componentRef as RefObject<View>}
 				onPress={onPress}
 				accessible={accessible}
@@ -110,9 +106,6 @@ const Touch = forwardRef<View, ITouchProps>(
 				disabled={!enabled}
 				focusable={enabled}
 				canBeFocused={enabled}>
-				{/* The accessibility props live on the focusable Touchable above. The inner View is a
-				    layout-only container; marking it accessible would create a second sibling node with
-				    the same label, causing double VoiceOver announcements and confusing TalkBack swipe nav. */}
 				<View style={viewStyle}>{children}</View>
 			</Wrapper>
 		);
