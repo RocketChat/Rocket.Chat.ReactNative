@@ -149,13 +149,18 @@ describe('Socket.probe', () => {
 		jest.useFakeTimers();
 		const { socket, send } = buildSocket();
 
-		socket.probe();
+		const firstProbe = socket.probe();
 		const first = probeIdFrom(send);
-		socket.probe();
+		const secondProbe = socket.probe();
 		const second = probeIdFrom(send);
 
 		expect(second).not.toBe(first);
+
+		// Both are held and awaited: neither socket is answered, so each must time out to
+		// false, and a rejection fails the test rather than surfacing as an unhandled one.
 		await jest.advanceTimersByTimeAsync(2000);
+		await expect(firstProbe).resolves.toBe(false);
+		await expect(secondProbe).resolves.toBe(false);
 	});
 });
 
