@@ -25,8 +25,17 @@ jest.mock('../../database/services/Message', () => ({
 
 jest.mock('../../store/auxStore', () => ({
 	store: {
-		getState: jest.fn(() => ({ server: { version: '7.4.0' }, settings: {}, login: { user: {} }, room: {} })),
-		dispatch: jest.fn()
+		// A connected, logged-in socket: `handleConnection` waits for login readiness before
+		// syncing, so this state lets the wait resolve at once.
+		getState: jest.fn(() => ({
+			server: { version: '7.4.0' },
+			settings: {},
+			login: { user: {}, isAuthenticated: true },
+			meteor: { connected: true },
+			room: {}
+		})),
+		dispatch: jest.fn(),
+		subscribe: jest.fn(() => () => {})
 	}
 }));
 

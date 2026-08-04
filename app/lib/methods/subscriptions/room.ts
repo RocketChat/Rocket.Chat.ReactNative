@@ -25,13 +25,21 @@ import {
 } from '../../../definitions';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
+import { waitForLoginReady } from '../../services/waitForLoginReady';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
 
+/**
+ * How long a room waits for the resume login before syncing anyway. Generous enough to
+ * cover a slow login round trip, bounded so a socket that never logs in still syncs.
+ */
+const LOGIN_READY_TIMEOUT = 10000;
+
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
+	private recovering = false;
 	private promises?: Promise<TSubscriptionModel[]>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
@@ -92,12 +100,32 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = async () => {
+		// `close` and `connected` both land here, and the wait below makes the two overlap
+		// for seconds rather than milliseconds — without this they would each run their own
+		// identical sync on every reconnect.
+		if (this.recovering) {
+			return;
+		}
+		this.recovering = true;
 		try {
 			reduxStore.dispatch(clearUserTyping());
+			// `connected` fires on the DDP handshake, which is also when the resume login is
+			// dispatched; `subscribeAll()` only re-sends this room's streams once that login
+			// lands. Syncing before then covers nothing for the interval between the sync and
+			// the new subscription — too late for the sync, too early for the stream. Waiting
+			// puts the sync after the resubscribe, so the two overlap instead of leaving a hole.
+			// On timeout we sync anyway: a socket that never finishes logging in is then no
+			// worse off than it was before this wait existed.
+			await waitForLoginReady(LOGIN_READY_TIMEOUT);
+			if (!this.isAlive) {
+				return;
+			}
 			await loadMissedMessages({ rid: this.rid });
 			this.read();
 		} catch (e) {
 			log(e);
+		} finally {
+			this.recovering = false;
 		}
 	};
 
