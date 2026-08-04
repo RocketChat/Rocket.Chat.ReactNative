@@ -18,25 +18,41 @@ import { Encryption } from '../../encryption';
 import {
 	type IMessage,
 	type TMessageModel,
-	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel,
 	type IDeleteMessageBulkParams
 } from '../../../definitions';
+import { emitter, roomStreamReadyEvent } from '../helpers/emitter';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
 
+/** A DDP stream subscription as returned by the SDK — not a WatermelonDB subscription record. */
+interface IStreamSubscription {
+	id: string;
+	name: string;
+	params: any[];
+	unsubscribe: () => Promise<void>;
+}
+
+const MESSAGES_STREAM = 'stream-room-messages';
+
+/** DDP `ready` message: the server acking one or more subscription ids. */
+interface IDDPReadyMessage {
+	subs?: string[];
+}
+
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private promises?: Promise<TSubscriptionModel[]>;
+	private promises?: Promise<(IStreamSubscription | undefined)[]>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
+	private streamReadyListener?: Promise<any>;
 
 	constructor(rid: string) {
 		this.rid = rid;
@@ -49,7 +65,20 @@ export default class RoomSubscription {
 			await this.unsubscribe();
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
+		// The `sub` request resolves on the server's `ready` ack, and the subscription is only
+		// registered on the SDK afterwards — so the first connect is signalled from here, and
+		// every later re-ack from `handleStreamReady`.
+		this.promises
+			.then(subscriptions => {
+				if (this.isAlive && subscriptions?.some(subscription => subscription?.name === MESSAGES_STREAM)) {
+					emitter.emit(roomStreamReadyEvent(this.rid));
+				}
+			})
+			.catch(() => {
+				// do nothing
+			});
 
+		this.streamReadyListener = sdk.onStreamData('ready', this.handleStreamReady);
 		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
 		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
@@ -68,7 +97,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}
@@ -78,6 +107,24 @@ export default class RoomSubscription {
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
+		this.removeListener(this.streamReadyListener);
+	};
+
+	/**
+	 * The subscription is re-sent with its original id after each reconnect, so the acked ids are
+	 * resolved against the SDK's live subscriptions instead of an id captured on the first connect.
+	 */
+	handleStreamReady = (ddpMessage: IDDPReadyMessage) => {
+		if (!this.isAlive) {
+			return;
+		}
+		const isMessagesStream = ddpMessage?.subs?.some(id => {
+			const subscription = sdk.getSubscriptionById(id);
+			return subscription?.name === MESSAGES_STREAM && subscription?.params?.[0] === this.rid;
+		});
+		if (isMessagesStream) {
+			emitter.emit(roomStreamReadyEvent(this.rid));
+		}
 	};
 
 	removeListener = async (promise?: Promise<any>): Promise<void> => {

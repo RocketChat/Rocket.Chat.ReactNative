@@ -197,12 +197,13 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Server & Connection
 
-| Term               | Definition                                                                                                               | Aliases to avoid                                                 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| **Server**         | A Rocket.Chat server instance the app connects to, with version, settings, and enterprise modules                        | Workspace (used by web but not consistently in mobile), instance |
-| **Server History** | List of previously connected Servers for quick reconnection                                                              | Recent servers                                                   |
-| **Meteor Connect** | The WebSocket connection to the Server's DDP (Distributed Data Protocol) endpoint                                        | Socket, connection                                               |
-| **Socket Health**  | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead | Staleness (stale/gray/fresh), socket probe                       |
+| Term                  | Definition                                                                                                                                                                    | Aliases to avoid                                                 |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Server**            | A Rocket.Chat server instance the app connects to, with version, settings, and enterprise modules                                                                             | Workspace (used by web but not consistently in mobile), instance |
+| **Server History**    | List of previously connected Servers for quick reconnection                                                                                                                   | Recent servers                                                   |
+| **Meteor Connect**    | The WebSocket connection to the Server's DDP (Distributed Data Protocol) endpoint                                                                                             | Socket, connection                                               |
+| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead                                                      | Staleness (stale/gray/fresh), socket probe                       |
+| **Room Stream Ready** | The moment the Server acks a Room's `stream-room-messages` subscription, meaning live Messages for that Room are flowing again; fires on first connect and on every reconnect | Connected, subscribed                                            |
 
 ## Navigation & Layout
 

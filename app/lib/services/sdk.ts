@@ -181,6 +181,11 @@ class Sdk {
 		]);
 	}
 
+	/** Look up a live DDP subscription by the id the server acks in a `ready` message. */
+	getSubscriptionById(id: string) {
+		return this.current?.ddp?.subscriptions?.[id];
+	}
+
 	unsubscribe(subscription: any[]) {
 		return this.current.unsubscribe(subscription);
 	}
