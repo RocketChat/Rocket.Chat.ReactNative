@@ -133,8 +133,6 @@ export const MessageProvider = ({
 	isIgnored?: boolean;
 	children: ReactNode;
 }): ReactElement => {
-	'use memo';
-
 	const [store] = useState(() =>
 		createMessageStore({ item, previousItem, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
 	);
@@ -331,8 +329,6 @@ export const useRevealIgnored = (): (() => void) => useMessageStore(s => s.revea
 // press guard. longPressable drops encrypted messages (tap can still open a thread; the action
 // sheet is suppressed); revealsIgnored is tappable ∧ isIgnored (a tap reveals instead of pressing).
 export const useMessageTouchable = (): { tappable: boolean; longPressable: boolean; revealsIgnored: boolean } => {
-	'use memo';
-
 	const isInfo = useIsInfoMessage();
 	const { hasError, isTemp } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
@@ -348,8 +344,6 @@ export const useMessageTouchable = (): { tappable: boolean; longPressable: boole
 };
 
 export const useMessageLongPress = (): (() => void) => {
-	'use memo';
-
 	const item = useMessageItem();
 	const { longPressable } = useMessageTouchable();
 	const onLongPress = useMessageStore(s => s.onLongPress);
@@ -362,8 +356,6 @@ export const useMessageLongPress = (): (() => void) => {
 };
 
 export const useOnLinkPress = (): ((link: string) => void) => {
-	'use memo';
-
 	const item = useMessageItem();
 	const jumpToMessage = useJumpToMessage();
 	const { theme } = useTheme();
@@ -377,8 +369,6 @@ export const useOnLinkPress = (): ((link: string) => void) => {
 };
 
 export const useMessagePress = (): (() => void) => {
-	'use memo';
-
 	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
 	const onPress = useMessageStore(s => s.onPress);

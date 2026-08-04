@@ -5,8 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { isIOS } from '../../../lib/methods/helpers';
 
 const useIOSBackSwipeHandler = () => {
-	'use memo';
-
 	const navigation = useNavigation();
 	const iOSBackSwipe = useRef<boolean>(false);
 

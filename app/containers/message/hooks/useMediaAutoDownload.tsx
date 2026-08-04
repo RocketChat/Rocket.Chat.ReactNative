@@ -75,8 +75,6 @@ export const useMediaAutoDownload = ({
 	author?: IUserMessage;
 	showAttachment?: (file: IAttachment) => void;
 }) => {
-	'use memo';
-
 	const fileType = getFileType(file) ?? 'image';
 	const id = useMessageId();
 	const baseUrl = useBaseUrl();

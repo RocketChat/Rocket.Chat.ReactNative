@@ -18,8 +18,6 @@ import {
 } from '../../stores/MessageStore';
 
 const MessageTouchable = (props: TMessageProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const isInfo = useIsInfoMessage();

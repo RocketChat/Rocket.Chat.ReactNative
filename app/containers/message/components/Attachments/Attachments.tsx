@@ -14,8 +14,6 @@ import { getMessageFromAttachment } from '../../utils';
 import { getAttachmentKey, isContentAttachment } from './utils';
 
 const Attachments: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
-	'use memo';
-
 	const translateLanguage = useTranslateLanguage();
 	const showAttachment = useShowAttachment();
 	const author = useMessageField(item => item.u);

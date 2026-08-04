@@ -5,8 +5,6 @@ import styles from '../../styles';
 import { useMessageText } from '../../stores/MessageStore';
 
 const Translated = () => {
-	'use memo';
-
 	const { isTranslated } = useMessageText();
 
 	if (!isTranslated) {

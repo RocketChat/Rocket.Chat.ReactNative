@@ -7,8 +7,6 @@ import { useMessageAction } from '../../message/stores/MessageActionStore';
 import { useFocused } from '../context';
 
 export const useAutoSaveDraft = (text = '') => {
-	'use memo';
-
 	const route = useRoute();
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();

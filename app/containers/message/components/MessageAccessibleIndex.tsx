@@ -6,8 +6,6 @@ import { useAutoTranslate } from '../stores/MessageRoomStore';
 import MessageA11yIndex from './MessageA11yIndex';
 
 const MessageAccessibleIndex = ({ style, children }: { style?: StyleProp<ViewStyle>; children: ReactNode }) => {
-	'use memo';
-
 	const { messageText, isTranslated } = useMessageText();
 	const { autoTranslateLanguage } = useAutoTranslate();
 

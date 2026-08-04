@@ -59,8 +59,6 @@ const RoomItem = ({
 	abacAttributes,
 	isInvited
 }: IRoomItemProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(

@@ -28,8 +28,6 @@ export const useChooseMedia = ({
 	tmid?: string;
 	permissionToUpload: boolean;
 }) => {
-	'use memo';
-
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { addAttachments } = useMessageComposerApi();
 	const setQuotesAndText = useSetQuotesAndText();
