@@ -15,6 +15,7 @@ const sdkMock = sdk as unknown as { current: { ddp: unknown } | undefined };
 interface MockDdp {
 	connected?: boolean;
 	lastPing: number;
+	lastPongAt?: number;
 	pingInterval?: number;
 	config?: { ping?: number };
 	reopenNow: jest.Mock<Promise<void>, []>;
@@ -69,6 +70,23 @@ describe('classifySocketHealth', () => {
 
 	it('returns reopen for a closed socket even when lastPing is fresh', () => {
 		const ddp = makeDdp({ connected: false, lastPing: now });
+		expect(classifySocketHealth(ddp)).toBe('reopen');
+	});
+
+	// `lastPing` is refreshed by every inbound frame, so it says "traffic arrived", not
+	// "the server answered us". Only the pong timestamp can age a socket.
+	it('ages against lastPongAt rather than a lastPing refreshed by an unrelated frame', () => {
+		const ddp = makeDdp({ lastPing: now, lastPongAt: now - 170000 });
+		expect(classifySocketHealth(ddp)).toBe('reopen');
+	});
+
+	it('keeps a socket whose pong is recent even if no other frame has arrived since', () => {
+		const ddp = makeDdp({ lastPing: now - 170000, lastPongAt: now - 5000 });
+		expect(classifySocketHealth(ddp)).toBe('round-trip-check');
+	});
+
+	it('falls back to lastPing on a driver without the patched pong timestamp', () => {
+		const ddp = makeDdp({ lastPing: now - 21000, lastPongAt: undefined });
 		expect(classifySocketHealth(ddp)).toBe('reopen');
 	});
 });

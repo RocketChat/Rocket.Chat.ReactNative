@@ -1,8 +1,25 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..068b61e 100644
+index 19d31ae..a7d028a 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -55,6 +55,7 @@ export class Socket extends EventEmitter {
+@@ -45,8 +45,16 @@ const userDisconnectCloseCode = 4000;
+ /** Websocket handler class, manages connections and subscriptions by DDP */
+ export class Socket extends EventEmitter {
+   sent = 0
++  probed = 0
+   host: string
+   lastPing = Date.now()
++  /**
++   * When the server last answered a ping. `lastPing` is refreshed by every inbound
++   * frame, so it measures traffic rather than heartbeat health: a single frame
++   * flushed from the OS buffer after a freeze makes a long-dead socket look young.
++   * This is advanced only by a pong, so it is safe to age a socket against.
++   */
++  lastPongAt = Date.now()
+   subscriptions: { [id: string]: ISubscription } = {}
+   handlers: ISocketMessageHandler[] = []
+   config: ISocketOptions | any
+@@ -55,6 +63,7 @@ export class Socket extends EventEmitter {
    connection?: WebSocket
    session?: string
    logger: ILogger
@@ -10,7 +27,16 @@ index 19d31ae..068b61e 100644
  
    /** Create a websocket handler */
    constructor (
-@@ -82,18 +83,13 @@ export class Socket extends EventEmitter {
+@@ -77,23 +86,22 @@ export class Socket extends EventEmitter {
+       this.send({ msg: 'pong' }).then(this.logger.debug, this.logger.error)
+     })
+ 
++    this.on('pong', () => {
++      this.lastPongAt = Date.now()
++    })
++
+     this.on('result', (data: any) => this.emit(data.id, { id: data.id, result: data.result, error: data.error }))
+     this.on('ready', (data: any) => this.emit(data.subs[0], data))
    }
  
    /**
@@ -33,7 +59,7 @@ index 19d31ae..068b61e 100644
        try {
          connection = new WebSocket(this.host, null, { headers: settings.customHeaders })
          connection.onerror = reject
-@@ -101,14 +97,53 @@ export class Socket extends EventEmitter {
+@@ -101,14 +109,53 @@ export class Socket extends EventEmitter {
          this.logger.error(err)
          return reject(err)
        }
@@ -88,7 +114,17 @@ index 19d31ae..068b61e 100644
    /** Send handshake message to confirm connection, start pinging. */
    onOpen = async (callback: Function) => {
      this.lastPing = Date.now()
-@@ -125,7 +160,14 @@ export class Socket extends EventEmitter {
+@@ -119,13 +166,24 @@ export class Socket extends EventEmitter {
+       support: ['1', 'pre2', 'pre1']
+     })
+     this.session = connected.session
++    // The handshake reply is a server round trip, so it proves liveness exactly as a
++    // pong does. Without this, a freshly opened socket would look stale until its
++    // first ping lands and any foreground event would reopen it for nothing.
++    this.lastPongAt = Date.now()
+     this.ping().catch((err) => this.logger.error(`[ddp] Unable to ping server: ${err.message}`))
+     this.emit('open')
+     return callback(this.connection)
    }
  
    /** Emit close event so it can be used for promise resolve in close() */
@@ -104,7 +140,7 @@ index 19d31ae..068b61e 100644
      this.emit('close', e)
      try {
        if (e?.code !== userDisconnectCloseCode) {
-@@ -201,6 +243,85 @@ export class Socket extends EventEmitter {
+@@ -201,6 +259,103 @@ export class Socket extends EventEmitter {
      }, this.config.reopen);
    }
  
@@ -123,6 +159,9 @@ index 19d31ae..068b61e 100644
 +    this.reopenPromise = new Promise<void>(resolve => {
 +      this.openTimeout && clearTimeout(this.openTimeout as any)
 +      this.lastPing = 0
++      // The socket being replaced must not leave its liveness proof behind for the
++      // new one to inherit.
++      this.lastPongAt = 0
 +      this.emit('disconnected')
 +
 +      let settled = false
@@ -147,7 +186,19 @@ index 19d31ae..068b61e 100644
 +
 +  /**
 +   * Bounded liveness check for a socket in the gray zone. Returns true only if
-+   * the socket is open and the server answers the ping within the deadline.
++   * the socket is open and the server answers *this* ping within the deadline.
++   *
++   * The ping carries an id and only the pong echoing it counts. Without that
++   * correlation any inbound pong passed the check, and after the OS unfreezes a
++   * backgrounded app it flushes the frames buffered during the freeze — so a pong
++   * answering a pre-freeze ping vouched for a session the server had already
++   * dropped, and the socket was never reopened. A timestamp comparison cannot
++   * close this: `onMessage` refreshes `lastPing` for every inbound frame, so it
++   * only proves something arrived, not that the server answered us.
++   *
++   * Note `on`, not `once`: `once` detaches before invoking its listener, so an
++   * uncorrelated pong would consume the registration and the real answer would
++   * arrive with nothing listening.
 +   */
 +  probe = (timeoutMs = 2000): Promise<boolean> => {
 +    return new Promise<boolean>(resolve => {
@@ -155,7 +206,10 @@ index 19d31ae..068b61e 100644
 +        return resolve(false)
 +      }
 +
-+      const lastPingAtStart = this.lastPing
++      // A dedicated counter: probe ids must never collide with the `ddp-N` ids
++      // `send` hands out to subscriptions and method calls.
++      const probeId = `probe-${this.probed}`
++      this.probed += 1
 +
 +      let settled = false
 +      const cleanup = () => {
@@ -165,13 +219,13 @@ index 19d31ae..068b61e 100644
 +        if (timeout) clearTimeout(timeout as any)
 +      }
 +
-+      const onPong = () => {
-+        if (this.lastPing <= lastPingAtStart) return
++      const onPong = (data: any) => {
++        if (data?.id !== probeId) return
 +        cleanup()
 +        resolve(true)
 +      }
 +
-+      this.once('pong', onPong)
++      this.on('pong', onPong)
 +
 +      const timeout = setTimeout(() => {
 +        cleanup()
@@ -179,7 +233,7 @@ index 19d31ae..068b61e 100644
 +      }, timeoutMs)
 +
 +      try {
-+        this.connection.send(JSON.stringify({ msg: 'ping' }))
++        this.connection.send(JSON.stringify({ msg: 'ping', id: probeId }))
 +      } catch {
 +        cleanup()
 +        resolve(false)
@@ -190,7 +244,7 @@ index 19d31ae..068b61e 100644
    /** Check if websocket connected and ready. */
    get connected () {
      return !!(
-@@ -254,7 +375,7 @@ export class Socket extends EventEmitter {
+@@ -254,7 +409,7 @@ export class Socket extends EventEmitter {
          return resolve()
        }
        this.once(listener, (result: any) => {
@@ -199,7 +253,7 @@ index 19d31ae..068b61e 100644
          return (result.error ? reject(result.error) : resolve({ ...(/connect|ping|pong/.test(obj.msg) ? {} : { id }) , ...result }))
        })
      })
-@@ -447,7 +568,7 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -447,7 +602,7 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        ...config,
        ...moreConfigs,
        host: host.replace(/(^\w+:|^)\/\//, ''),
@@ -208,7 +262,7 @@ index 19d31ae..068b61e 100644
  			// reopen: number
  			// ping: number
  			// close: number
-@@ -503,6 +624,22 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -503,6 +658,26 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
      return this.ddp.checkAndReopen()
    }
  
@@ -224,6 +278,10 @@ index 19d31ae..068b61e 100644
 +    return this.ddp.lastPing
 +  }
 +
++  get lastPongAt (): number {
++    return this.ddp.lastPongAt
++  }
++
 +  get pingInterval (): number {
 +    return this.ddp.config.ping
 +  }
@@ -231,7 +289,7 @@ index 19d31ae..068b61e 100644
    subscribe = (topic: string, eventname: string, ...args: any[]): Promise<ISubscription> => {
      this.logger.info(`[DDP driver] Subscribing to ${topic} | ${JSON.stringify(args)}`)
      return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
-@@ -549,10 +686,70 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -549,10 +724,70 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',

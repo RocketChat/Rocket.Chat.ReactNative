@@ -1,5 +1,5 @@
 import sdk from '../sdk';
-import { recoverSocket } from '../socketHealth';
+import { classifySocketHealth, recoverSocket } from '../socketHealth';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { DDPDriver } = require('@rocket.chat/sdk/lib/drivers/ddp') as {
@@ -26,10 +26,13 @@ interface WireFrame {
 interface PatchedDriver {
 	userId: string;
 	pingInterval: number;
+	lastPing: number;
 	reopenNow(): Promise<void>;
+	probe(timeoutMs: number): Promise<boolean>;
 	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
 	ddp: {
 		lastPing: number;
+		lastPongAt: number;
 		pingTimeout?: ReturnType<typeof setTimeout>;
 		openTimeout?: ReturnType<typeof setTimeout>;
 		open(): Promise<void>;
@@ -48,7 +51,9 @@ jest.mock('universal-websocket-client', () =>
 				if (message.msg === 'connect') {
 					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
 				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
+					// A DDP server echoes the ping's id on its pong, which is what lets the
+					// round-trip check tell its own answer from an unrelated frame.
+					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong', id: message.id }) }));
 				} else if (message.msg === 'sub') {
 					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
 				}
@@ -98,8 +103,13 @@ function addMediaSubs(driver: PatchedDriver) {
 	});
 }
 
-function backdateLastPing(driver: PatchedDriver, ageMs: number) {
+/**
+ * Age the socket's heartbeat. Both timestamps move: `lastPing` is what any inbound
+ * frame refreshes, `lastPongAt` is what the health classification ages against.
+ */
+function backdateHeartbeat(driver: PatchedDriver, ageMs: number) {
 	driver.ddp.lastPing = Date.now() - ageMs;
+	driver.ddp.lastPongAt = Date.now() - ageMs;
 }
 
 /** Frames of a given `msg` sent over the wire on one connection. */
@@ -131,7 +141,7 @@ describe('recoverSocket against the real patched socket', () => {
 	});
 
 	it('keeps a doubtful socket when the round trip gets a pong', async () => {
-		backdateLastPing(driver, PING_INTERVAL + 5000);
+		backdateHeartbeat(driver, PING_INTERVAL + 5000);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(0);
@@ -143,7 +153,7 @@ describe('recoverSocket against the real patched socket', () => {
 	});
 
 	it('reopens a doubtful socket when the round trip gets no pong', async () => {
-		backdateLastPing(driver, PING_INTERVAL + 5000);
+		backdateHeartbeat(driver, PING_INTERVAL + 5000);
 		// A zombie socket: still `readyState: 1`, but the server never answers.
 		mockConnections[0].send.mockImplementation(() => undefined);
 
@@ -177,7 +187,7 @@ describe('recoverSocket against the real patched socket', () => {
 	});
 
 	it('reopens a known-dead socket without a round trip', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 2 + 1000);
+		backdateHeartbeat(driver, PING_INTERVAL * 2 + 1000);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(0);
@@ -193,7 +203,7 @@ describe('recoverSocket against the real patched socket', () => {
 	});
 
 	it('shares one reopen with a concurrent direct reopenNow', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		backdateHeartbeat(driver, PING_INTERVAL * 3);
 
 		// The foreground path reopens the dead socket while recovery does the same.
 		const directReopen = driver.reopenNow();
@@ -222,7 +232,7 @@ describe('recoverSocket against the real patched socket', () => {
 		expect(rejected).toBe(false);
 
 		// The socket dies silently after the call went out.
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		backdateHeartbeat(driver, PING_INTERVAL * 3);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(0);
@@ -235,8 +245,89 @@ describe('recoverSocket against the real patched socket', () => {
 		await expect(recovery).resolves.toBe('reopened');
 	});
 
+	/**
+	 * The Android-freeze case: the process is frozen past the ping deadline and the server
+	 * drops the session, then the OS flushes the frames buffered during the freeze. Those
+	 * frames must not vouch for a session that is already gone — if the socket is not
+	 * reopened, no `close` and no `connecting` are emitted, the resume login never runs,
+	 * and the server-side streams stay dead for the rest of the session.
+	 *
+	 * Each test isolates one way a flushed frame used to be mistaken for liveness.
+	 */
+	describe('a frozen socket whose buffered frames are flushed on resume', () => {
+		/** A frame that arrived during the freeze and is only delivered on resume. */
+		const flush = (frame: Record<string, unknown>) => {
+			mockConnections[0].onmessage({ data: JSON.stringify(frame) });
+		};
+
+		beforeEach(() => {
+			// The server dropped this session during the freeze: nothing we send is answered.
+			mockConnections[0].send.mockImplementation(() => undefined);
+			addMediaSubs(driver);
+		});
+
+		it('does not let a flushed data frame make a long-frozen socket look young', async () => {
+			backdateHeartbeat(driver, 170_000);
+
+			// The message the other user sent while we were frozen, delivered on resume.
+			// It refreshes `lastPing`, which is why the classification cannot age against it.
+			flush({ msg: 'changed', collection: 'stream-room-messages', fields: { args: [{ _id: 'm1' }] } });
+
+			expect(classifySocketHealth(driver)).toBe('reopen');
+
+			const recovery = recoverSocket();
+			await jest.advanceTimersByTimeAsync(0);
+
+			// Straight to a reopen: a socket this old is not worth a round trip.
+			expect(mockConnections).toHaveLength(2);
+			expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
+			mockConnections[1].onopen();
+			await jest.advanceTimersByTimeAsync(0);
+			await expect(recovery).resolves.toBe('reopened');
+		});
+
+		it('does not accept a pong that is not the answer to the round trip', async () => {
+			// In the gray zone, so recovery pays for a round trip rather than reopening blind.
+			backdateHeartbeat(driver, PING_INTERVAL + 5000);
+			expect(classifySocketHealth(driver)).toBe('round-trip-check');
+
+			const recovery = recoverSocket();
+			// The OS drains the receive buffer over several ms, so the round trip is already
+			// waiting when the rest of the backlog lands.
+			await jest.advanceTimersByTimeAsync(50);
+
+			// A pong buffered before the freeze — the answer to the periodic ping the ping
+			// loop sent on its way down, carrying no id, not the answer to our round trip.
+			flush({ msg: 'pong' });
+			await jest.advanceTimersByTimeAsync(2000);
+
+			expect(mockConnections).toHaveLength(2);
+			mockConnections[1].onopen();
+			await jest.advanceTimersByTimeAsync(0);
+			await expect(recovery).resolves.toBe('reopened');
+		});
+
+		it('does not accept a pong answering a different round trip', async () => {
+			backdateHeartbeat(driver, PING_INTERVAL + 5000);
+
+			const recovery = recoverSocket();
+			await jest.advanceTimersByTimeAsync(50);
+
+			// An id-carrying pong, but for a different probe — a real possibility once an
+			// earlier round trip has timed out and its ping is answered late. This round
+			// trip is `probe-0`, the first on this socket.
+			flush({ msg: 'pong', id: 'probe-7' });
+			await jest.advanceTimersByTimeAsync(2000);
+
+			expect(mockConnections).toHaveLength(2);
+			mockConnections[1].onopen();
+			await jest.advanceTimersByTimeAsync(0);
+			await expect(recovery).resolves.toBe('reopened');
+		});
+	});
+
 	it('re-sends the media subscriptions on the new socket reusing their ids', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		backdateHeartbeat(driver, PING_INTERVAL * 3);
 		addMediaSubs(driver);
 
 		const recovery = recoverSocket();

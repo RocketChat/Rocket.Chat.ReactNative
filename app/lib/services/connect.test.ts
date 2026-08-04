@@ -1,7 +1,11 @@
+import { type Action } from 'redux';
+
 import { connect, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import { setUser } from '../../actions/login';
+import { LOGIN } from '../../actions/actionsTypes';
+import connectReducer, { type IConnect } from '../../reducers/connect';
 import database from '../database';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
@@ -412,6 +416,75 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
 		expect(mediaSessionInstance.reset).toHaveBeenCalledTimes(1);
+	});
+});
+
+// A silent socket swap (`reopenNow`) emits `connecting` then `connected` and never `close`.
+// The resume login only runs if `meteor.connected` is false by the time `connected` lands,
+// so these drive the real connect reducer rather than hand-feeding the state.
+describe('connect — resume login after a silent socket reopen', () => {
+	const TOKEN = 'resume-token';
+
+	const wireStoreToRealReducer = (initial: IConnect) => {
+		let meteor = initial;
+		mockStoreGetState.mockImplementation(() => ({
+			meteor,
+			login: { user: { token: TOKEN }, isAuthenticated: true },
+			settings: {}
+		}));
+		mockStoreDispatch.mockImplementation(action => {
+			meteor = connectReducer(meteor, action as Action);
+			return action;
+		});
+		return () => meteor;
+	};
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockOnStreamDataStops.length = 0;
+		mockStoreSubscribe.mockImplementation(noopUnsubscribe);
+		pendingHangups.clear();
+	});
+
+	afterEach(() => {
+		mockStoreGetState.mockReset();
+		mockStoreDispatch.mockReset();
+	});
+
+	const dispatchedLoginRequests = () =>
+		mockStoreDispatch.mock.calls
+			.map(([action]) => action as { type: string; credentials?: unknown })
+			.filter(action => action.type === LOGIN.REQUEST);
+
+	it('re-runs the resume login when connecting → connected replaces the socket', async () => {
+		const readMeteor = wireStoreToRealReducer({ connecting: false, connected: true });
+
+		await connect({ server: 'https://example.com' });
+
+		// The order `reopenNow` produces: createConnection emits `connecting`, then the
+		// server's handshake reply emits `connected`. No `close` is ever emitted.
+		getHandlersByEvent('connecting')[0]();
+		expect(readMeteor().connected).toBe(false);
+
+		getHandlersByEvent('connected')[0]();
+		await flushMicrotasks();
+
+		expect(readMeteor().connected).toBe(true);
+		expect(dispatchedLoginRequests()).toHaveLength(1);
+		expect(dispatchedLoginRequests()[0].credentials).toEqual({ resume: TOKEN });
+	});
+
+	it('does not re-run the resume login when connected repeats on the same socket', async () => {
+		wireStoreToRealReducer({ connecting: false, connected: true });
+
+		await connect({ server: 'https://example.com' });
+
+		// First `connected` logs in; a repeat with no intervening socket swap must not.
+		getHandlersByEvent('connected')[0]();
+		getHandlersByEvent('connected')[0]();
+		await flushMicrotasks();
+
+		expect(dispatchedLoginRequests()).toHaveLength(1);
 	});
 });
 

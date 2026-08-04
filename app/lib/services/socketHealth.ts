@@ -9,6 +9,8 @@ import sdk from './sdk';
 interface SocketHealthDdp {
 	connected?: boolean;
 	lastPing: number;
+	/** When the server last answered a ping. Absent on a driver without the patch. */
+	lastPongAt?: number;
 	pingInterval?: number;
 	config?: { ping?: number };
 	reopenNow(): Promise<void>;
@@ -32,7 +34,11 @@ export function classifySocketHealth(ddp: SocketHealthDdp): SocketRecoveryPlan {
 		return 'reopen';
 	}
 	const pingInterval = (ddp.pingInterval ?? ddp.config?.ping) || 10000;
-	const age = Date.now() - ddp.lastPing;
+	// Age against the last pong, not the last frame. `lastPing` is refreshed by every
+	// inbound frame, so after the OS unfreezes a backgrounded app the flushed backlog
+	// makes a socket frozen for minutes look seconds old. `lastPing` stays as the
+	// fallback for a driver without the patched timestamp.
+	const age = Date.now() - (ddp.lastPongAt ?? ddp.lastPing);
 	if (age > pingInterval * 2) {
 		return 'reopen';
 	}

@@ -12,7 +12,8 @@ jest.mock('universal-websocket-client', () => {
 				if (message.msg === 'connect') {
 					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
 				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
+					// A DDP server echoes the ping's id on its pong.
+					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong', id: message.id }) }));
 				}
 			}),
 			close: jest.fn(),
@@ -69,11 +70,17 @@ describe('Socket.probe', () => {
 		jest.useRealTimers();
 	});
 
-	it('resolves true when pong arrives within deadline', async () => {
-		const { socket } = buildSocket();
+	/** The id the probe put on the wire, so a test can answer that exact ping. */
+	const probeIdFrom = (send: jest.Mock): string => {
+		const frame = JSON.parse(send.mock.calls.at(-1)[0]);
+		expect(frame.msg).toBe('ping');
+		return frame.id;
+	};
+
+	it('resolves true when the pong answering its ping arrives within deadline', async () => {
+		const { socket, send } = buildSocket();
 		const probePromise = socket.probe();
-		socket.lastPing += 1;
-		socket.emit('pong');
+		socket.emit('pong', { msg: 'pong', id: probeIdFrom(send) });
 		await expect(probePromise).resolves.toBe(true);
 	});
 
@@ -99,17 +106,56 @@ describe('Socket.probe', () => {
 		await expect(socket.probe()).resolves.toBe(false);
 	});
 
-	it('ignores a stale pong that does not advance lastPing', async () => {
+	// A pong with no id cannot be attributed to anything. On resume the OS flushes the
+	// frames buffered during a freeze, so accepting one would vouch for a session the
+	// server has already dropped.
+	it('ignores an uncorrelated pong', async () => {
 		jest.useFakeTimers();
 		const { socket } = buildSocket();
-		const initialLastPing = Date.now() - 1000;
-		socket.lastPing = initialLastPing;
 
 		const probePromise = socket.probe();
-		socket.emit('pong');
+		socket.emit('pong', { msg: 'pong' });
 
 		await jest.advanceTimersByTimeAsync(2000);
 		await expect(probePromise).resolves.toBe(false);
+	});
+
+	it('ignores a pong carrying a different probe id', async () => {
+		jest.useFakeTimers();
+		const { socket, send } = buildSocket();
+
+		const probePromise = socket.probe();
+		socket.emit('pong', { msg: 'pong', id: `${probeIdFrom(send)}-other` });
+
+		await jest.advanceTimersByTimeAsync(2000);
+		await expect(probePromise).resolves.toBe(false);
+	});
+
+	// `once` detaches before invoking its listener, so registering that way would let an
+	// uncorrelated pong consume the registration and strand the real answer.
+	it('still accepts its own pong after an uncorrelated one arrives first', async () => {
+		jest.useFakeTimers();
+		const { socket, send } = buildSocket();
+
+		const probePromise = socket.probe();
+		const probeId = probeIdFrom(send);
+		socket.emit('pong', { msg: 'pong' });
+		socket.emit('pong', { msg: 'pong', id: probeId });
+
+		await expect(probePromise).resolves.toBe(true);
+	});
+
+	it('gives each round trip its own id', async () => {
+		jest.useFakeTimers();
+		const { socket, send } = buildSocket();
+
+		socket.probe();
+		const first = probeIdFrom(send);
+		socket.probe();
+		const second = probeIdFrom(send);
+
+		expect(second).not.toBe(first);
+		await jest.advanceTimersByTimeAsync(2000);
 	});
 });
 
