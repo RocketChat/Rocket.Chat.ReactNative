@@ -104,7 +104,7 @@ index 19d31ae..068b61e 100644
      this.emit('close', e)
      try {
        if (e?.code !== userDisconnectCloseCode) {
-@@ -201,6 +243,85 @@ export class Socket extends EventEmitter {
+@@ -201,6 +243,105 @@ export class Socket extends EventEmitter {
      }, this.config.reopen);
    }
  
@@ -112,8 +112,8 @@ index 19d31ae..068b61e 100644
 +   * Force an immediate reconnect. Shared across concurrent callers so only one
 +   * new WebSocket is created. Emits 'disconnected' to unblock in-flight sends,
 +   * then creates the connection directly so a concurrent open() cannot tear it
-+   * down. Unhandled creation errors are swallowed because cleanup already runs
-+   * via the open/timeout paths.
++   * down. A reopen that does not produce an open socket re-arms the retry ladder
++   * it cancelled, so the caller never has to schedule its own retry.
 +   */
 +  reopenNow = (): Promise<void> => {
 +    if (this.reopenPromise) {
@@ -121,25 +121,45 @@ index 19d31ae..068b61e 100644
 +    }
 +
 +    this.reopenPromise = new Promise<void>(resolve => {
-+      this.openTimeout && clearTimeout(this.openTimeout as any)
++      if (this.openTimeout) {
++        clearTimeout(this.openTimeout as any)
++        // Drop the id as well as the timer. `reopen()` reads a set `openTimeout` as "a tick
++        // is already scheduled" and returns early, so a cleared-but-still-set id disables
++        // the ladder for the rest of the session -- including the re-arm below and the one
++        // `onClose` attempts for every later close.
++        delete this.openTimeout
++      }
 +      this.lastPing = 0
 +      this.emit('disconnected')
 +
 +      let settled = false
-+      const cleanup = () => {
++      let timeout: NodeJS.Timer | number | undefined
++
++      const cleanup = (opened: boolean) => {
 +        if (settled) return
 +        settled = true
-+        this.off('open', cleanup)
++        this.off('open', onOpen)
 +        if (timeout) clearTimeout(timeout as any)
++        // Drop the shared promise before re-arming, so a ladder tick calling open()
++        // cannot short-circuit onto a reopen that has already settled.
 +        delete this.reopenPromise
++        // Hand control back to the retry ladder cancelled above. Cancelling it buys an
++        // immediate attempt; when that attempt fails — device offline, server
++        // unreachable — nothing is left scheduled and the session stays disconnected
++        // until something else forces a reconnect.
++        if (!opened && !this.connected) {
++          this.reopen()
++        }
 +        resolve()
 +      }
 +
-+      this.once('open', cleanup)
++      const onOpen = () => cleanup(true)
 +
-+      this.createConnection().catch(() => {})
++      this.once('open', onOpen)
 +
-+      const timeout = setTimeout(() => cleanup(), 10000)
++      this.createConnection().catch(() => cleanup(false))
++
++      timeout = setTimeout(() => cleanup(false), 10000)
 +    })
 +
 +    return this.reopenPromise

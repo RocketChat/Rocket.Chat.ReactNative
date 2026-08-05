@@ -206,6 +206,85 @@ describe('Socket.reopenNow', () => {
 		await secondPromise;
 	});
 
+	it('re-arms the reconnect ladder when a forced reopen never opens', async () => {
+		jest.useFakeTimers();
+		const socket = trackSocket(
+			new Socket({
+				logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() },
+				timeout: 10000
+			})
+		);
+
+		const promise = socket.reopenNow();
+		expect(mockConnections).toHaveLength(1);
+
+		// The forced reopen never opens — let its own deadline expire.
+		await jest.advanceTimersByTimeAsync(10000);
+		await promise;
+
+		// `reopenNow` cancelled the ladder to attempt an immediate reconnect, and that
+		// attempt failed. The ladder has to be back, or nothing retries and the session
+		// waits for the next foreground: one `reopen` interval later it tries again.
+		await jest.advanceTimersByTimeAsync(10000);
+
+		expect(mockConnections).toHaveLength(2);
+	});
+
+	it('re-arms the ladder when a ladder tick was already scheduled before the forced reopen', async () => {
+		jest.useFakeTimers();
+		const socket = trackSocket(
+			new Socket({
+				logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() },
+				timeout: 10000
+			})
+		);
+
+		// The real precondition: onClose already armed the ladder before anything forced a
+		// reopen. reopenNow cancels that tick, so it must not leave the field pointing at it.
+		socket.reopen();
+		expect(socket.openTimeout).toBeTruthy();
+
+		const promise = socket.reopenNow();
+		await jest.advanceTimersByTimeAsync(10000);
+		await promise;
+
+		await jest.advanceTimersByTimeAsync(socket.config.reopen);
+
+		expect(mockConnections).toHaveLength(2);
+	});
+
+	it('re-arms the ladder as soon as the attempt errors, without waiting for the deadline', async () => {
+		jest.useFakeTimers();
+		const socket = trackSocket(
+			new Socket({
+				logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() },
+				timeout: 10000
+			})
+		);
+
+		const promise = socket.reopenNow();
+		// How a WebSocket reports a failed connect: onerror is createConnection's reject.
+		mockConnections[0].onerror(new Error('offline'));
+		await promise;
+
+		expect(socket.reopenPromise).toBeUndefined();
+
+		await jest.advanceTimersByTimeAsync(10000);
+
+		expect(mockConnections).toHaveLength(2);
+	});
+
+	it('schedules no ladder tick when the forced reopen opens', async () => {
+		const { socket } = buildSocket();
+
+		const promise = socket.reopenNow();
+		mockConnections[0].onopen();
+		await promise;
+
+		// A reopen that produced a live socket must not leave a redundant tick behind.
+		expect(socket.openTimeout).toBeUndefined();
+	});
+
 	it('forces a reconnect on an already healthy socket', async () => {
 		const { socket } = buildSocket();
 		const initialConnection = socket.connection;
