@@ -7,8 +7,6 @@ import { EmojiKeyboardProvider } from './hooks/useEmojiKeyboard';
 
 export const MessageComposerContainer = forwardRef<IMessageComposerRef, IMessageComposerContainerProps>(
 	({ children }, ref): ReactElement => {
-		'use memo';
-
 		return (
 			<MessageComposerProvider>
 				<EmojiKeyboardProvider>

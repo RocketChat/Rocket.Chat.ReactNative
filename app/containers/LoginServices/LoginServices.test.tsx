@@ -39,7 +39,7 @@ const makeService = (overrides: Partial<IItemService> = {}): IItemService =>
 		clientId: 'client-123',
 		scope: '',
 		...overrides
-	} as IItemService);
+	}) as IItemService;
 
 const buildServices = (count: number, extra: Partial<IItemService> = {}): IServices => {
 	const names = ['github', 'gitlab', 'google', 'facebook', 'linkedin', 'twitter', 'wordpress'] as const;

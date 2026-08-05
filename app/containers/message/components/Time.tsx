@@ -7,8 +7,6 @@ import { useMessageField } from '../stores/MessageStore';
 import { useTimeFormat } from '../stores/MessageRoomStore';
 
 const MessageTime = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const ts = useMessageField(item => item.ts);
 	const timeFormat = useTimeFormat();

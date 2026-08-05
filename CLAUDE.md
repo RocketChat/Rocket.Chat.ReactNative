@@ -19,7 +19,9 @@ Everything else is a standard `package.json` script.
 
 ## Code Style
 
-- **Before committing**: Run `pnpm prettier-lint` and `TZ=UTC pnpm test` for modified files. Nothing enforces this locally — CI is the only gate.
+- **Oxfmt**: config in `.oxfmtrc.json` (tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line)
+- **Oxlint**: config in `.oxlintrc.json` (import, react, jest, typescript plugins; `eslint-plugin-react-native` loaded via `jsPlugins`)
+- **Before committing**: Run `pnpm format-lint` and `TZ=UTC pnpm test` for modified files. Nothing enforces this locally — CI is the only gate.
 
 ## Gotchas
 

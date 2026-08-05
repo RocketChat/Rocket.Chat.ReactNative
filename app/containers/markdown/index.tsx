@@ -67,8 +67,6 @@ const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean
 };
 
 const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
-	'use memo';
-
 	switch (block.type) {
 		case 'BIG_EMOJI':
 			return <BigEmoji value={block.value} />;
@@ -111,8 +109,6 @@ const Markdown: FC<IMarkdownProps> = ({
 	isTranslated,
 	textStyle
 }: IMarkdownProps) => {
-	'use memo';
-
 	let tokens: Root | null = null;
 
 	if (msg) {

@@ -7,8 +7,6 @@ import { useMessageItem, useMessageStatus } from '../../stores/MessageStore';
 import { useErrorActionsShow } from '../../stores/MessageRoomStore';
 
 const MessageError = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const item = useMessageItem();
 	const errorActionsShow = useErrorActionsShow();
