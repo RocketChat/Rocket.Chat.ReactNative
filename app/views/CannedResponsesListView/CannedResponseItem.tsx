@@ -52,7 +52,7 @@ const CannedResponseItem = ({
 							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
 								<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 							</View>
-					  ))
+						))
 					: null}
 			</View>
 		</>

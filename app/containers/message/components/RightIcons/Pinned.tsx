@@ -5,8 +5,6 @@ import styles from '../../styles';
 import { useMessageField, useMessageText } from '../../stores/MessageStore';
 
 const Pinned = (): ReactElement | null => {
-	'use memo';
-
 	const pinned = useMessageField(item => item.pinned);
 	const { messageText } = useMessageText();
 
