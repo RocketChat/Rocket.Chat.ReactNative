@@ -163,14 +163,13 @@ const renderDerived = (
 
 const wrapWithProviders =
 	(item: TAnyMessageModel, config?: Partial<MessageRoomState>) =>
-	({ children }: { children: ReactNode }) =>
-		(
-			<Provider store={mockedStore}>
-				<MessageRoomProvider {...(config ?? {})}>
-					<MessageProvider item={item}>{children}</MessageProvider>
-				</MessageRoomProvider>
-			</Provider>
-		);
+	({ children }: { children: ReactNode }) => (
+		<Provider store={mockedStore}>
+			<MessageRoomProvider {...(config ?? {})}>
+				<MessageProvider item={item}>{children}</MessageProvider>
+			</MessageRoomProvider>
+		</Provider>
+	);
 
 // Like wrapWithProviders, but also forwards the row-level MessageProvider props (onPress,
 // onLongPress, isIgnored) needed by the touch/press/long-press hooks.

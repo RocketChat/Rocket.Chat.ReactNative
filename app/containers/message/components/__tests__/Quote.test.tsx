@@ -41,7 +41,7 @@ jest.mock('expo-image', () => {
 
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 
-const buildItem = () => ({ id: 'msg-1' } as unknown as TAnyMessageModel);
+const buildItem = () => ({ id: 'msg-1' }) as unknown as TAnyMessageModel;
 
 const renderQuote = (attachments: IAttachment[], ctx: Partial<MessageRoomState> = {}) => {
 	const contextValue: Partial<MessageRoomState> = {

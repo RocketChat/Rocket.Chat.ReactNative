@@ -32,8 +32,6 @@ import styles from './styles';
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
-	'use memo';
-
 	useHeader();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
@@ -138,7 +136,6 @@ const RoomsListView = memo(function RoomsListView() {
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
-			removeClippedSubviews={isIOS}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
