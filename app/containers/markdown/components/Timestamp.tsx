@@ -15,7 +15,7 @@ const Timestamp = ({ value }: ITimestampProps): ReactElement => {
 	const { colors } = useTheme();
 
 	const timestampMs = useMemo(() => {
-		const isUnix = /^\d+$/.test(value.timestamp);
+		const isUnix = /^-?\d+$/.test(value.timestamp);
 
 		if (isUnix) {
 			return Number(value.timestamp) * 1000;
