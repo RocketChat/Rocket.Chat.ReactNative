@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
 });
 
 const Strike = ({ value }: IStrikeProps) => {
-	'use memo';
-
 	return (
 		<Text style={styles.text}>
 			{value.map(block => {

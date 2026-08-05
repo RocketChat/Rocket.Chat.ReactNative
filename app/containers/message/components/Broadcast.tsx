@@ -10,8 +10,6 @@ import { useIsOwnMessage, useMessageItem } from '../stores/MessageStore';
 import { useBroadcast, useReplyBroadcast } from '../stores/MessageRoomStore';
 
 const Broadcast = () => {
-	'use memo';
-
 	const item = useMessageItem();
 	const replyBroadcast = useReplyBroadcast();
 	const broadcast = useBroadcast();

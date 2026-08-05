@@ -9,8 +9,6 @@ import Attachments from '../Attachments';
 import { useContentData, useIsInfoMessage, useMessageGrouping, useThreadPosition } from '../../stores/MessageStore';
 
 const CompactMessage = () => {
-	'use memo';
-
 	const isHeader = useMessageGrouping();
 	const { isThreadReply } = useThreadPosition();
 	const isInfo = useIsInfoMessage();

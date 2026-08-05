@@ -14,8 +14,6 @@ const styles = StyleSheet.create({
 });
 
 const Subtitle = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const contact = useCallStore(state => state.contact);
 	const extension = contact.sipExtension;

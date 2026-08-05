@@ -5,8 +5,6 @@ import Urls from '../Urls';
 import { useAttachments } from '../../stores/MessageStore';
 
 export const ContentLayout = () => {
-	'use memo';
-
 	const attachments = useAttachments();
 
 	return (

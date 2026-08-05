@@ -16,8 +16,6 @@ import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 export const SendThreadToChannel = (): ReactElement | null => {
-	'use memo';
-
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setAlsoSendThreadToChannel } = useMessageComposerApi();
 	const { showEmojiSearchbar } = useEmojiKeyboard();

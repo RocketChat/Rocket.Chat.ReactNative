@@ -19,8 +19,6 @@ export const Button = ({
 	accessibilityLabel,
 	accessibilityRole = 'imagebutton'
 }: IMessageButton) => {
-	'use memo';
-
 	return (
 		<MessageActionTouchable
 			accessibilityLabel={accessibilityLabel}

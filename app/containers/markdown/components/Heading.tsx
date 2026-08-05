@@ -20,8 +20,6 @@ interface IHeadingProps {
 }
 
 const Heading = ({ value, level }: IHeadingProps): ReactElement => {
-	'use memo';
-
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 	const context = useMarkdownContext({ textStyle });
