@@ -7,7 +7,7 @@ import log from '../../methods/helpers/log';
 import I18n from '../../../i18n';
 import { type TSubscriptionModel } from '../../../definitions';
 
-const optimisticUpdate = async (rid: string, value: TSubscriptionModel['encrypted']) => {
+const optimisticUpdate = async (rid: string, value: TSubscriptionModel['encrypted']): Promise<void> => {
 	try {
 		const db = database.active;
 
@@ -80,6 +80,13 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 				}
 			}
 		],
-		{ cancelable: true }
+		{
+			cancelable: true,
+			// Android only: tapping outside the alert dismisses it without calling any button's onPress
+			onDismiss: async () => {
+				// Revert to original value
+				await optimisticUpdate(rid, !newValue);
+			}
+		}
 	);
 };

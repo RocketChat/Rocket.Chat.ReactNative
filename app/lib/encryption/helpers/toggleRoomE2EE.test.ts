@@ -1,4 +1,4 @@
-import { Alert, type AlertButton } from 'react-native';
+import { Alert, type AlertButton, type AlertOptions } from 'react-native';
 
 import database from '../../database';
 import { saveRoomSettings } from '../../services/restApi';
@@ -31,22 +31,39 @@ jest.mock('../../methods/helpers/log', () => ({
 const mockGet = database.active.get as jest.Mock;
 const mockSaveRoomSettings = saveRoomSettings as jest.Mock;
 
+interface IFakeRow {
+	encrypted: boolean;
+	version: number;
+}
+
+interface IFakeRecord {
+	readonly encrypted: boolean;
+	update: (recipe: (record: { encrypted: boolean }) => void) => void;
+}
+
+interface IFakeStore {
+	store: IFakeRow;
+	updateErrors: Error[];
+	/** Simulates a stream event updating the row while the user stares at the alert */
+	concurrentWrite: () => void;
+}
+
 /**
  * Minimal stand-in for a WatermelonDB row plus the staleness check the real one performs:
  * a record handle remembers the version it was fetched at, and updating it after another
  * writer touched the row throws, the same way WatermelonDB rejects diverged records.
  */
-const createStore = (encrypted: boolean) => {
-	const store = { encrypted, version: 0 };
+const createStore = (encrypted: boolean): IFakeStore => {
+	const store: IFakeRow = { encrypted, version: 0 };
 	const updateErrors: Error[] = [];
 
-	const find = jest.fn(() => {
+	const find = jest.fn((): IFakeRecord => {
 		const fetchedAtVersion = store.version;
 		return {
-			get encrypted() {
+			get encrypted(): boolean {
 				return store.encrypted;
 			},
-			update: (recipe: (record: { encrypted: boolean }) => void) => {
+			update: (recipe: (record: { encrypted: boolean }) => void): void => {
 				if (store.version !== fetchedAtVersion) {
 					const error = new Error('record has pending changes');
 					updateErrors.push(error);
@@ -62,21 +79,29 @@ const createStore = (encrypted: boolean) => {
 
 	mockGet.mockReturnValue({ find });
 
-	// Simulates a stream event updating the row while the user stares at the alert
-	const concurrentWrite = () => {
+	const concurrentWrite = (): void => {
 		store.version += 1;
 	};
 
 	return { store, updateErrors, concurrentWrite };
 };
 
-const getAlertButton = (text: string): AlertButton => {
+const pressAlertButton = async (text: string): Promise<void> => {
 	const buttons = (Alert.alert as jest.Mock).mock.calls[0][2] as AlertButton[];
 	const button = buttons.find(b => b.text === text);
 	if (!button) {
 		throw new Error(`Alert button "${text}" not found`);
 	}
-	return button;
+	await (button.onPress as (() => Promise<void>) | undefined)?.();
+};
+
+/** Android: tapping outside the alert only fires the options' onDismiss */
+const dismissAlert = async (): Promise<void> => {
+	const options = (Alert.alert as jest.Mock).mock.calls[0][3] as AlertOptions | undefined;
+	if (!options?.onDismiss) {
+		throw new Error('Alert has no onDismiss handler');
+	}
+	await (options.onDismiss as () => Promise<void>)();
 };
 
 describe('toggleRoomE2EE', () => {
@@ -97,7 +122,34 @@ describe('toggleRoomE2EE', () => {
 
 		concurrentWrite();
 
-		await getAlertButton('Cancel').onPress?.();
+		await pressAlertButton('Cancel');
+
+		expect(store.encrypted).toBe(false);
+		expect(updateErrors).toHaveLength(0);
+	});
+
+	it('reverts when the alert is dismissed by tapping outside it', async () => {
+		const { store, updateErrors } = createStore(false);
+
+		await toggleRoomE2EE('rid-1');
+		expect(store.encrypted).toBe(true);
+
+		await dismissAlert();
+
+		expect(store.encrypted).toBe(false);
+		expect(updateErrors).toHaveLength(0);
+		expect(mockSaveRoomSettings).not.toHaveBeenCalled();
+	});
+
+	it('reverts on an outside dismissal even when a concurrent writer updated the record', async () => {
+		const { store, updateErrors, concurrentWrite } = createStore(false);
+
+		await toggleRoomE2EE('rid-1');
+		expect(store.encrypted).toBe(true);
+
+		concurrentWrite();
+
+		await dismissAlert();
 
 		expect(store.encrypted).toBe(false);
 		expect(updateErrors).toHaveLength(0);
@@ -113,7 +165,7 @@ describe('toggleRoomE2EE', () => {
 		await toggleRoomE2EE('rid-1');
 		expect(store.encrypted).toBe(true);
 
-		await getAlertButton('Enable').onPress?.();
+		await pressAlertButton('Enable');
 
 		expect(store.encrypted).toBe(false);
 		expect(updateErrors).toHaveLength(0);
@@ -124,7 +176,7 @@ describe('toggleRoomE2EE', () => {
 		mockSaveRoomSettings.mockResolvedValue({ result: true });
 
 		await toggleRoomE2EE('rid-1');
-		await getAlertButton('Enable').onPress?.();
+		await pressAlertButton('Enable');
 
 		expect(store.encrypted).toBe(true);
 		expect(mockSaveRoomSettings).toHaveBeenCalledWith('rid-1', { encrypted: true });
