@@ -1,7 +1,6 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { SubscriptionType } from '../../../../definitions/ISubscription';
 import { type RoomState, type RoomStore } from '../../definitions';
 import { useHeader } from '../useHeader';
 
@@ -25,12 +24,9 @@ jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 
 const mockSetOptions = jest.fn();
 const mockNavigation = { setOptions: mockSetOptions };
-const defaultRouteParams = { rid: 'rid-1', tmid: undefined, t: SubscriptionType.CHANNEL, name: 'general' };
-let mockRouteParams: typeof defaultRouteParams = { ...defaultRouteParams };
 
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => mockNavigation,
-	useRoute: () => ({ params: mockRouteParams })
+	useNavigation: () => mockNavigation
 }));
 
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
@@ -60,12 +56,11 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockRouteParams = { ...defaultRouteParams };
 		mockTestStore = makeRoomStore();
 	});
 
 	it('sets headerLeft, headerTitle and headerRight when rid is present', () => {
-		renderHook(() => useHeader());
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
 
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 		const sideOptions = mockSetOptions.mock.calls[0][0];
@@ -76,9 +71,7 @@ describe('useHeader', () => {
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
-		mockRouteParams = { ...defaultRouteParams, rid: undefined as unknown as string };
-
-		renderHook(() => useHeader());
+		renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general' }));
 
 		expect(mockSetOptions).toHaveBeenCalledTimes(1);
 		const options = mockSetOptions.mock.calls[0][0];
@@ -90,7 +83,7 @@ describe('useHeader', () => {
 	it('re-fires the title effect when a rendered field changes even though the room reference is stable', () => {
 		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'old' } });
 
-		renderHook(() => useHeader());
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
@@ -103,7 +96,7 @@ describe('useHeader', () => {
 	it('does not re-fire the title effect when only lastMessage changes', () => {
 		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'same', lastMessage: { msg: 'old' } } });
 
-		renderHook(() => useHeader());
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
@@ -112,8 +105,24 @@ describe('useHeader', () => {
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 	});
 
+	it('keeps the thread title from the passed name when the observed room name changes', () => {
+		const { getRoomTitle } = jest.requireMock('../../../../lib/methods/helpers');
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread name' }));
+
+		const titleOptions = mockSetOptions.mock.calls[1][0];
+		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
+		// the parent channel's name only feeds parentTitle
+		expect(getRoomTitle).toHaveBeenCalled();
+
+		act(() => {
+			mockTestStore.setState({ room: { rid: 'rid-1', t: 'c', name: 'parent-channel' }, roomUpdate: { topic: 'new' } });
+		});
+		const nextTitleOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
+		expect(nextTitleOptions.headerTitle().props.title).toBe('Thread name');
+	});
+
 	it('renders each header callback without throwing', () => {
-		renderHook(() => useHeader());
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
 
 		const sideOptions = mockSetOptions.mock.calls[0][0];
 		const titleOptions = mockSetOptions.mock.calls[1][0];

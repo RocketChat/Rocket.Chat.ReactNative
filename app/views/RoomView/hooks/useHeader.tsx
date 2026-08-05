@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
 
 import RoomHeader from '../../../containers/RoomHeader';
@@ -13,12 +13,17 @@ import { type IRoomViewProps } from '../definitions';
 import { useRoomStoreByRid } from '../stores/RoomStore';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
-export const useHeader = (): void => {
+interface IUseHeaderParams {
+	rid?: string;
+	tmid?: string;
+	/** Thread name on a thread; only read when `tmid` is set, since the room title is derived from the room. */
+	name?: string;
+}
+
+// rid/tmid/name come from the screen's mount-time snapshot: route.params can be wiped to undefined
+// while this RoomView is retained below the stack top, which would break the header permanently.
+export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
-	const route = useRoute<IRoomViewProps['route']>();
-	const rid = route.params?.rid;
-	const tmid = route.params?.tmid;
-	const roomName = route.params?.name;
 
 	const room = useRoomStoreByRid(rid, s => s.room);
 	// last_message re-emits on every incoming message; exclude it so the title effect only re-fires

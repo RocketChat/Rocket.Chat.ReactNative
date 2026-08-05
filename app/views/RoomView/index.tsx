@@ -93,6 +93,8 @@ const RoomView = (props: IRoomViewProps) => {
 	 * Use `tmid` as thread id.
 	 */
 	const [tmid] = useState(() => route.params?.tmid);
+	// On a thread this is the thread name, which the observed subscription row never carries.
+	const [name] = useState(() => route.params?.name);
 
 	const [messageActionStore] = useState(() => {
 		const quoteMessageId = route.params?.messageId;
@@ -102,7 +104,7 @@ const RoomView = (props: IRoomViewProps) => {
 	const [initialRoom] = useState<IRoomViewState['room']>(() => ({
 		rid: rid as string,
 		t: t as string,
-		name: route.params?.name,
+		name,
 		fname: route.params?.fname,
 		prid: route.params?.prid,
 		visitor: route.params?.visitor,
@@ -215,7 +217,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
 
-	useHeader();
+	useHeader({ rid, tmid, name });
 
 	// Early returns below swap component types at this render position, so accepting an invite or
 	// resolving the E2EE key remounts the room tree. Intentional: the blocked screens hold no state

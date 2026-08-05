@@ -1,4 +1,4 @@
-import { type NavigatorScreenParams, useNavigation, useRoute } from '@react-navigation/native';
+import { type NavigatorScreenParams, useNavigation } from '@react-navigation/native';
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
@@ -10,10 +10,10 @@ import { useRoomStoreByRid } from '../stores/RoomStore';
 
 export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackParamList) => void) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
-	const route = useRoute<IRoomViewProps['route']>();
-	const t = route.params?.t;
 	const isMasterDetail = useMasterDetail();
+	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
 	const room = useRoomStoreByRid(rid, s => s.room);
+	const t = room.t;
 	const member = useRoomStoreByRid(rid, s => s.member);
 	const joined = useRoomStoreByRid(rid, s => s.joined);
 	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);

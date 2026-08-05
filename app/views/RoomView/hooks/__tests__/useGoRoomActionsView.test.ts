@@ -4,12 +4,10 @@ import { useGoRoomActionsView } from '../useGoRoomActionsView';
 
 const mockNavigate = jest.fn();
 const mockPush = jest.fn();
-let mockRouteParams: Record<string, unknown> = { t: 'l' };
 let mockIsMasterDetail = false;
 
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => ({ navigate: mockNavigate, push: mockPush }),
-	useRoute: () => ({ params: mockRouteParams })
+	useNavigation: () => ({ navigate: mockNavigate, push: mockPush })
 }));
 jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => mockIsMasterDetail
@@ -21,7 +19,7 @@ jest.mock('../../../../lib/methods/helpers/log', () => ({
 }));
 
 const mockState = {
-	room: { rid: 'rid-1', t: 'l' },
+	room: { rid: 'rid-1', t: 'l' } as { rid: string; t: string },
 	member: { _id: 'm1' },
 	joined: true,
 	canForwardGuest: true,
@@ -37,8 +35,17 @@ jest.mock('../../stores/RoomStore', () => ({
 describe('useGoRoomActionsView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockRouteParams = { t: 'l' };
 		mockIsMasterDetail = false;
+		mockState.room = { rid: 'rid-1', t: 'l' };
+	});
+
+	it('sources t from the room store rather than the route params', () => {
+		mockState.room = { rid: 'rid-1', t: 'c' };
+		const { result } = renderHook(() => useGoRoomActionsView('rid-1'));
+
+		result.current();
+
+		expect(mockPush).toHaveBeenCalledWith('RoomActionsView', expect.objectContaining({ t: 'c' }));
 	});
 
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
