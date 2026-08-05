@@ -164,8 +164,6 @@ const ChatsStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -250,8 +248,6 @@ const ModalStack = createNativeStackNavigator({
 		AccessibilityAndAppearanceView
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 	return (
@@ -294,8 +290,6 @@ const InsideStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });

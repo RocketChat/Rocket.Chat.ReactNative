@@ -15,8 +15,6 @@ interface IListContainer extends ScrollViewProps {
 	testID?: string;
 }
 const ListContainer = ({ children, ...props }: IListContainer) => {
-	'use memo';
-
 	const { bottom } = useSafeAreaInsets();
 
 	return (

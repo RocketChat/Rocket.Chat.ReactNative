@@ -5,8 +5,6 @@ import { View } from 'react-native';
 import { useTheme } from '../../../../theme';
 
 export const AutocompleteItemLoading = ({ preview = false }: { preview?: boolean }): ReactElement => {
-	'use memo';
-
 	const { colors } = useTheme();
 	if (preview) {
 		return (

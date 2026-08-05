@@ -41,8 +41,6 @@ const styles = StyleSheet.create({
 });
 
 const User = () => {
-	'use memo';
-
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();

@@ -42,8 +42,6 @@ export const MessageComposer = ({
 	forwardedRef: Ref<IMessageComposerRef>;
 	children?: ReactElement | null;
 }): ReactElement | null => {
-	'use memo';
-
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',

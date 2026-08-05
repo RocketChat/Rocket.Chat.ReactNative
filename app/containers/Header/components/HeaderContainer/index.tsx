@@ -12,8 +12,6 @@ interface IHeaderContainer extends ViewProps {
 }
 
 const HeaderContainer = memo(({ isMasterDetail = false, customRightIcon, customLeftIcon, children }: IHeaderContainer) => {
-	'use memo';
-
 	const insets = useSafeAreaInsets();
 	const { colors } = useTheme();
 	const paddingTop = 4;
