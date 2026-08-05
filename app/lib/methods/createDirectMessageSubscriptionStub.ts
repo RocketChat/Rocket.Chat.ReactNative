@@ -74,9 +74,9 @@ export const createDirectMessageSubscriptionStub = async ({
 				s.ro = false;
 				s.archived = false;
 				s.f = false;
-				// No server-owned timestamp is invented here: `ls` anchors the unread separator and
-				// `ts`/`roomUpdatedAt` feed sync cursors, so a device clock value poisons them until
-				// the real doc arrives and overwrites them wholesale.
+				// No timestamps here. They belong to the server, and we'd only be guessing from the
+				// device clock: `ls` places the unread separator and `ts`/`roomUpdatedAt` feed sync
+				// cursors, so a wrong value breaks them until the real subscription arrives.
 			});
 		});
 	} catch (e) {

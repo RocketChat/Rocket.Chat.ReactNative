@@ -98,7 +98,7 @@ describe('createDirectMessageSubscriptionStub', () => {
 		expect(created.archived).toBe(false);
 		expect(created.f).toBe(false);
 		expect(created.ro).toBe(false);
-		// No server-owned timestamp is invented from the device clock.
+		// We don't guess timestamps from the device clock.
 		expect(created.ts).toBeUndefined();
 		expect(created.ls).toBeUndefined();
 		expect(created.roomUpdatedAt).toBeUndefined();

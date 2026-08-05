@@ -120,8 +120,8 @@ export async function loadMessagesForRoom(args: {
 	latest?: Date;
 	loaderItem?: TMessageModel;
 	/**
-	 * Checked before the writes: a load belonging to a connection cycle that has already ended can
-	 * resolve late and overwrite newer rows or lower `lastOpen`, so its result is dropped instead.
+	 * Checked before we save anything. A load from a connection that already dropped can come back
+	 * late and overwrite newer messages or push `lastOpen` backwards, so we throw its result away.
 	 */
 	isStale?: () => boolean;
 }): Promise<void> {
@@ -151,8 +151,8 @@ export async function loadMessagesForRoom(args: {
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}
 
-		// Re-checked because the write above awaits: the cycle can end while it runs, and `lastOpen`
-		// has no monotonic clamp, so a stale write would lower it.
+		// Checked again because the save above is async: the connection can drop while it runs, and
+		// nothing stops `lastOpen` from moving backwards, so a late write would lower it.
 		if (args.isStale?.()) {
 			return;
 		}

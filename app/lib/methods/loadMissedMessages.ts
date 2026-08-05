@@ -12,10 +12,9 @@ import { isRoomType } from './roomTypeToApiType';
 const count = 50;
 
 /**
- * The walk pages backwards with no natural floor, so an unbounded recursion can mass-insert a
- * room's whole history. Hitting the cap ends the walk with the cursor unadvanced, so the next
- * cycle re-walks the same pages — bounded work per cycle, at the cost of no forward progress
- * for a room whose gap exceeds the cap.
+ * Nothing stops this walk on its own, so without a cap it can pull down a room's entire history.
+ * When we hit the cap we stop without saving the cursor, so the next reconnect starts over from
+ * the same place. That means a room further behind than 10 pages never catches up here.
  */
 const MAX_PAGES = 10;
 
@@ -71,12 +70,11 @@ async function load({
 	}
 	const cursor = sub.lastOpen;
 
-	// No cursor to sync from, and no page pending: the sync walk cannot build a request at all, so
-	// the room's missed messages are delegated to the room history load. That path is batch-capped
-	// and emits a loader row for what it could not reach, and it seeds `lastOpen` from the server
-	// timestamps it fetched, so the next reconnect syncs from a real cursor.
-	// `sub.t` also carries values that are not room types ('e2e', 'thread'), which the history
-	// endpoints cannot be resolved from, so an unrecognised one recovers nothing.
+	// Without a cursor there is nothing to sync from, so we fall back to loading the room's recent
+	// history instead. That load stops after a few batches and leaves a "load more" row behind for
+	// whatever it didn't reach, and it saves a real cursor so the next reconnect can sync normally.
+	// `sub.t` can also hold things that aren't rooms ('e2e', 'thread'); there's no history endpoint
+	// for those, so we skip them.
 	if (!cursor && !updatedNext && !deletedNext) {
 		if (isRoomType(sub.t)) {
 			await loadMessagesForRoom({ rid: roomId, t: sub.t, isStale });
@@ -106,7 +104,7 @@ export async function loadMissedMessages(args: {
 	 * resolve late and overwrite newer rows or lower the cursor, so its result is dropped instead.
 	 */
 	isStale?: () => boolean;
-	/** 1-based index of the page being fetched, used to stop the walk at `MAX_PAGES`. */
+	/** Which page we're on, starting at 1. Only used to stop the walk once it reaches `MAX_PAGES`. */
 	page?: number;
 }): Promise<void> {
 	const page = args.page ?? 1;

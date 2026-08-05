@@ -74,12 +74,12 @@ describe('loadMissedMessages', () => {
 		await loadMissedMessages({ rid: RID });
 
 		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'p' });
-		// The sync walk cannot build a request without a cursor, so it must not issue one.
+		// Without a cursor there's no request to make, so it must not try.
 		expect(mockedSdkGet).not.toHaveBeenCalled();
 		expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
 	});
 
-	// Guards the short-circuit: reaching the legacy branch without a cursor sends `lastUpdate: undefined`.
+	// If we ever let a cursorless room reach the legacy branch, it sends `lastUpdate: undefined`.
 	it('short-circuits the legacy branch on a server below 7.1.0 when there is no cursor', async () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '7.0.0' } });
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
@@ -129,7 +129,7 @@ describe('loadMissedMessages', () => {
 
 	it('stops the sync walk at the batch cap instead of paging unbounded history', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: new Date(Date.UTC(2024, 0, 1)), t: 'c' } as never);
-		// Every page hands back another cursor, so only the cap can end the walk.
+		// Every page hands back another cursor, so nothing but the cap can end this.
 		mockedSdkGet.mockResolvedValue({
 			result: { updated: [], deleted: [], cursor: { next: Date.UTC(2024, 0, 1, 11, 0, 0) } }
 		} as never);
@@ -139,7 +139,7 @@ describe('loadMissedMessages', () => {
 			await new Promise(resolve => setImmediate(resolve));
 		}
 
-		// 10 pages, each fetching an UPDATED and a DELETED request — and then it stops.
+		// 10 pages, one UPDATED and one DELETED request each, and then it stops.
 		expect(mockedSdkGet).toHaveBeenCalledTimes(20);
 		expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
 	});
