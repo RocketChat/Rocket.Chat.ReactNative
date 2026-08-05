@@ -45,8 +45,6 @@ const styles = StyleSheet.create({
 });
 
 const UrlContent = ({ title, description }: { title: string; description: string }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	return (
 		<View style={styles.textContainer}>
@@ -118,8 +116,6 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 };
 
 const Url = ({ url }: { url: IUrl }) => {
-	'use memo';
-
 	const { colors, theme } = useTheme();
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
@@ -183,8 +179,6 @@ const Url = ({ url }: { url: IUrl }) => {
 	);
 };
 const Urls = (): ReactElement[] | null => {
-	'use memo';
-
 	const urls = useUrls();
 
 	if (!urls || urls.length === 0) {

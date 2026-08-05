@@ -19,8 +19,6 @@ interface IMessageContainerProps {
 }
 
 const MessageContainer = (props: IMessageContainerProps) => {
-	'use memo';
-
 	const { item, previousItem, dateSeparator, showUnreadSeparator } = props;
 	return (
 		<MessageProvider

@@ -92,7 +92,7 @@ jest.mock('../../lib/database/services/Message', () => ({
 						{
 							description: `Attachment description for ${messageId}`
 						}
-				  ]
+					]
 				: []
 	})
 }));

@@ -24,8 +24,6 @@ const Outside = createNativeStackNavigator({
 		LegalView: createNativeStackScreen({ screen: LegalView, options: defaultHeader })
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -42,8 +40,6 @@ const OutsideModal = createNativeStackNavigator({
 		AuthenticationWebView: createNativeStackScreen({ screen: AuthenticationWebView, options: defaultHeader })
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });

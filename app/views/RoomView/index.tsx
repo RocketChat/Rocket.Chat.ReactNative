@@ -9,7 +9,7 @@ import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 import { type NavigatorScreenParams } from '@react-navigation/native';
 
-import { type TNavigation } from 'stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
 import {
@@ -1234,7 +1234,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			let name = '';
 			let jumpToMessageId = '';
 			if ('id' in item) {
-				name = 'tmsg' in item ? item.tmsg ?? '' : '';
+				name = 'tmsg' in item ? (item.tmsg ?? '') : '';
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
