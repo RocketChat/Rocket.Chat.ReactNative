@@ -44,8 +44,8 @@ export interface ISubscription {
 	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType; // TODO: we need to review this type later
-	ts: string | Date;
-	ls: Date;
+	ts?: string | Date;
+	ls?: Date;
 	name: string;
 	fname?: string;
 	sanitizedFname?: string;
@@ -61,7 +61,7 @@ export interface ISubscription {
 	tunread: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
-	roomUpdatedAt: Date | number;
+	roomUpdatedAt?: Date | number;
 	ro: boolean;
 	lastOpen?: Date;
 	description?: string;

@@ -55,7 +55,6 @@ export const createDirectMessageSubscriptionStub = async ({
 
 		const db = database.active;
 		const subCollection = db.get(SUBSCRIPTIONS_TABLE);
-		const now = new Date();
 
 		await db.write(async () => {
 			await subCollection.create((s: any) => {
@@ -75,9 +74,9 @@ export const createDirectMessageSubscriptionStub = async ({
 				s.ro = false;
 				s.archived = false;
 				s.f = false;
-				s.ts = now;
-				s.ls = now;
-				s.roomUpdatedAt = now;
+				// No server-owned timestamp is invented here: `ls` anchors the unread separator and
+				// `ts`/`roomUpdatedAt` feed sync cursors, so a device clock value poisons them until
+				// the real doc arrives and overwrites them wholesale.
 			});
 		});
 	} catch (e) {

@@ -199,7 +199,7 @@ describe('RoomSubscription reconnect catch-up fetch', () => {
 		expect(mockedSdkGet).not.toHaveBeenCalled();
 	});
 
-	it('fetches nothing for a room without a sync cursor: RoomView owns the initial load', async () => {
+	it('recovers a room without a sync cursor through the room history load', async () => {
 		await openRoom();
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
 
@@ -207,7 +207,7 @@ describe('RoomSubscription reconnect catch-up fetch', () => {
 		ackRoomStream();
 		await flush();
 
-		expect(mockedSdkGet).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledWith('channels.history', expect.objectContaining({ roomId: RID }));
 	});
 
 	it('retries on the next ack when the fetch fails', async () => {

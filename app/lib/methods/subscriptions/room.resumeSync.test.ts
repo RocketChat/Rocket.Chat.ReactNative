@@ -79,12 +79,13 @@ describe('RoomSubscription resume sync', () => {
 		);
 	});
 
-	it('fetches nothing for a room without a sync cursor (null lastOpen): RoomView owns the initial load', async () => {
+	it('recovers a room without a sync cursor (null lastOpen) through the room history load', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
 
 		await new RoomSubscription(RID).fetchMissedMessages(() => false);
 
-		expect(mockedSdkGet).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledWith('channels.history', expect.objectContaining({ roomId: RID }));
+		expect(mockedSdkGet).not.toHaveBeenCalledWith('chat.syncMessages', expect.anything());
 	});
 
 	it('writes nothing to the subscription when the room is closed', async () => {

@@ -119,6 +119,11 @@ export async function loadMessagesForRoom(args: {
 	t: RoomTypes;
 	latest?: Date;
 	loaderItem?: TMessageModel;
+	/**
+	 * Checked before the writes: a load belonging to a connection cycle that has already ended can
+	 * resolve late and overwrite newer rows or lower `lastOpen`, so its result is dropped instead.
+	 */
+	isStale?: () => boolean;
 }): Promise<void> {
 	let uiLoaderId: string | null = null;
 	try {
@@ -128,6 +133,9 @@ export async function loadMessagesForRoom(args: {
 				uiLoaderId = id;
 			}
 		});
+		if (args.isStale?.()) {
+			return;
+		}
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
 			const lastMessageRecord = await getMessageById(lastMessage._id as string);
@@ -143,6 +151,11 @@ export async function loadMessagesForRoom(args: {
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}
 
+		// Re-checked because the write above awaits: the cycle can end while it runs, and `lastOpen`
+		// has no monotonic clamp, so a stale write would lower it.
+		if (args.isStale?.()) {
+			return;
+		}
 		if (!args.latest && !args.loaderItem) {
 			await updateLastOpen(args.rid, serverTimestamps);
 		}

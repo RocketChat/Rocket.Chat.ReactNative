@@ -686,7 +686,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				// if room is joined
 				if (joined && 'id' in room) {
 					if (room.alert || room.unread || room.userMentions) {
-						this.setLastSeen(room.ls);
+						this.setLastSeen(room.ls ?? null);
 					} else {
 						this.setLastSeen(null);
 					}

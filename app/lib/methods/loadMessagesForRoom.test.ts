@@ -170,6 +170,21 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 	});
 
+	it('writes nothing when the connection cycle it belongs to has already ended', async () => {
+		const partialBatch = Array.from({ length: 5 }, (_, index) =>
+			buildMessage({
+				id: `stale-${index + 1}`,
+				ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 5 - index)).toISOString()
+			})
+		);
+		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: partialBatch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', isStale: () => true });
+
+		expect(mockedUpdateMessages).not.toHaveBeenCalled();
+		expect(updateLastOpen).not.toHaveBeenCalled();
+	});
+
 	it('pops the ui loader when a recursive batch fetch fails after the loader was pushed', async () => {
 		const firstBatch = buildHiddenBatch('first', 50);
 		const networkError = new Error('boom');

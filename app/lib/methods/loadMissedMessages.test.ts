@@ -3,6 +3,7 @@ import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { updateLastOpen } from './updateLastOpen';
+import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { store } from '../store/auxStore';
 
 jest.mock('../services/sdk', () => ({
@@ -24,6 +25,7 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 jest.mock('./updateMessages', () => jest.fn());
+jest.mock('./loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
 jest.mock('./updateLastOpen', () => ({
 	...jest.requireActual('./updateLastOpen'),
 	updateLastOpen: jest.fn()
@@ -34,6 +36,7 @@ const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
 const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
+const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
 
 const RID = 'ROOM_ID';
 
@@ -65,12 +68,80 @@ describe('loadMissedMessages', () => {
 		);
 	});
 
-	it('fetches nothing when the subscription has no cursor', async () => {
+	it('recovers through the room history load when the subscription has no cursor', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
 
 		await loadMissedMessages({ rid: RID });
 
+		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'p' });
+		// The sync walk cannot build a request without a cursor, so it must not issue one.
 		expect(mockedSdkGet).not.toHaveBeenCalled();
+		expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
+	});
+
+	// Guards the short-circuit: reaching the legacy branch without a cursor sends `lastUpdate: undefined`.
+	it('short-circuits the legacy branch on a server below 7.1.0 when there is no cursor', async () => {
+		(store.getState as jest.Mock).mockReturnValue({ server: { version: '7.0.0' } });
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
+
+		await loadMissedMessages({ rid: RID });
+
+		expect(mockedSdkGet).not.toHaveBeenCalled();
+		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c' });
+	});
+
+	it('recovers nothing when the subscription type is not a room type', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'thread' } as never);
+
+		await loadMissedMessages({ rid: RID });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).not.toHaveBeenCalled();
+	});
+
+	it('passes the staleness guard into the recovery so a superseded cycle writes nothing', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
+		const isStale = () => true;
+
+		await loadMissedMessages({ rid: RID, isStale });
+
+		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c', isStale });
+	});
+
+	it('keeps a healthy cursor on the sync walk instead of delegating', async () => {
+		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c' } as never);
+		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+
+		await loadMissedMessages({ rid: RID });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledWith('chat.syncMessages', expect.objectContaining({ next: CURSOR.getTime() }));
+	});
+
+	it('does not throw when the response carries no cursor', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: new Date(Date.UTC(2024, 0, 1)), t: 'c' } as never);
+		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [] } } as never);
+
+		await expect(loadMissedMessages({ rid: RID })).resolves.toBeUndefined();
+		expect(mockedUpdateLastOpen).toHaveBeenCalledWith(RID, []);
+	});
+
+	it('stops the sync walk at the batch cap instead of paging unbounded history', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: new Date(Date.UTC(2024, 0, 1)), t: 'c' } as never);
+		// Every page hands back another cursor, so only the cap can end the walk.
+		mockedSdkGet.mockResolvedValue({
+			result: { updated: [], deleted: [], cursor: { next: Date.UTC(2024, 0, 1, 11, 0, 0) } }
+		} as never);
+
+		await loadMissedMessages({ rid: RID });
+		for (let i = 0; i < 30; i += 1) {
+			await new Promise(resolve => setImmediate(resolve));
+		}
+
+		// 10 pages, each fetching an UPDATED and a DELETED request — and then it stops.
+		expect(mockedSdkGet).toHaveBeenCalledTimes(20);
+		expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
 	});
 
 	describe('last open', () => {
