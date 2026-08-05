@@ -7,12 +7,17 @@ import log from '../../methods/helpers/log';
 import I18n from '../../../i18n';
 import { type TSubscriptionModel } from '../../../definitions';
 
-const optimisticUpdate = async (room: TSubscriptionModel, value: TSubscriptionModel['encrypted']) => {
+const optimisticUpdate = async (rid: string, value: TSubscriptionModel['encrypted']) => {
 	try {
 		const db = database.active;
 
 		// Instantly feedback to the user
 		await db.write(async () => {
+			// Fetch the room again: a stream event may have updated the record while the alert was open or while the request was in flight
+			const room = await getSubscriptionByRoomId(rid);
+			if (!room) {
+				return;
+			}
 			await room.update(r => {
 				r.encrypted = value;
 			});
@@ -37,7 +42,7 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 	const newValue = !room.encrypted;
 
 	// Instantly feedback to the user
-	await optimisticUpdate(room, newValue);
+	await optimisticUpdate(rid, newValue);
 
 	Alert.alert(
 		title,
@@ -48,7 +53,7 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 				style: 'cancel',
 				onPress: async () => {
 					// Revert to original value
-					await optimisticUpdate(room, !newValue);
+					await optimisticUpdate(rid, !newValue);
 				}
 			},
 			{
@@ -68,7 +73,7 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 						}
 
 						// If something goes wrong we go back to the previous value
-						await optimisticUpdate(room, !newValue);
+						await optimisticUpdate(rid, !newValue);
 					} catch (e) {
 						log(e);
 					}
