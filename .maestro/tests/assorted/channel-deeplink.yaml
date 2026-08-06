@@ -1,0 +1,57 @@
+appId: ${APP_ID}
+name: Channel Deeplink
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-12
+
+---
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
+
+# open group using name
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/discussion-with-name')}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-discussion-with-name'
+    timeout: 60000
+
+# open group using id
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/6a74cb92d09f52225dd8f0af')}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-discussion-with-id'
+    timeout: 60000
+
+# open channel using name
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=channel/general')}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-general'
+    timeout: 60000
+
+# open channel using id
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=channel/8Lhm98suz3bGKMuK2')}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-detox-public'
+    timeout: 60000
