@@ -4,8 +4,6 @@ import CallButton from '../CallButton';
 import MessageTime from '../Time';
 
 const JitsiLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
-	'use memo';
-
 	return (
 		<>
 			<User />

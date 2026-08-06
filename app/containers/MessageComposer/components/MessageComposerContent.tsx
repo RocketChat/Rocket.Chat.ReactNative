@@ -26,8 +26,6 @@ interface MessageComposerContentProps {
 
 export const MessageComposerContent = memo<MessageComposerContentProps>(
 	({ recordingAudio, action, showEmojiSearchbar, composerInputComponentRef, composerInputRef, children, onLayout }) => {
-		'use memo';
-
 		const { colors } = useTheme();
 		const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
