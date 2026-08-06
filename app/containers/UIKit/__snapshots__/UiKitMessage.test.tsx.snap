@@ -1084,6 +1084,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1183,6 +1189,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1351,6 +1363,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1450,6 +1468,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1618,6 +1642,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1784,6 +1814,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1962,6 +1998,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2061,6 +2103,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#C1C7D0",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2229,6 +2277,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2328,6 +2382,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#C1C7D0",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2496,6 +2556,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2662,6 +2728,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#C1C7D0",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2840,6 +2912,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2939,6 +3017,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#E4E7EA",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3107,6 +3191,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3206,6 +3296,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             },
                             {
                               "color": "#E4E7EA",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3374,6 +3470,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3541,6 +3643,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3663,6 +3771,12 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
                     ]
                   }
                 >
@@ -3762,6 +3876,12 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       },
                       {
                         "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
                       },
                     ]
                   }
@@ -3863,6 +3983,12 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
                     ]
                   }
                 >
@@ -3962,6 +4088,12 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       },
                       {
                         "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
                       },
                     ]
                   }
@@ -5594,6 +5726,12 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
                   },
                 ]
               }

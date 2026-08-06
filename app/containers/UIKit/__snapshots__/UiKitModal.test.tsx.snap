@@ -880,6 +880,12 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -1759,6 +1765,12 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -1803,6 +1815,12 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -3801,6 +3819,12 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -4995,6 +5019,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -5087,6 +5117,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -5178,6 +5214,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5335,6 +5377,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -5469,6 +5517,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5605,6 +5659,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -5739,6 +5799,12 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5879,6 +5945,12 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -6095,6 +6167,12 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -6224,6 +6302,12 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -6368,6 +6452,12 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
                   ]
                 }
               >
@@ -6497,6 +6587,12 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
