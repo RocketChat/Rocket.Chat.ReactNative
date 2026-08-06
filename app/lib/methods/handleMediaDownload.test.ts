@@ -34,6 +34,30 @@ describe('matchDownloadUrl', () => {
 			matchDownloadUrl({ image_url: '/file-upload/abc/photo.jpg' }, 'https://server.com/file-upload/abc/audio.mp3')
 		).toBeFalsy();
 	});
+
+	it('matches a raw attachment url against an encoded downloadUrl', () => {
+		expect(
+			matchDownloadUrl(
+				{ video_url: '/file-upload/abc/Screen Recording.mov' },
+				'https://server.com/file-upload/abc/Screen%20Recording.mov'
+			)
+		).toBeTruthy();
+	});
+
+	it('matches an encoded attachment url against an encoded downloadUrl', () => {
+		expect(
+			matchDownloadUrl(
+				{ video_url: '/file-upload/abc/Screen%20Recording.mov' },
+				'https://server.com/file-upload/abc/Screen%20Recording.mov'
+			)
+		).toBeTruthy();
+	});
+
+	it('still compares when the attachment url has a malformed escape', () => {
+		expect(
+			matchDownloadUrl({ image_url: '/file-upload/abc/%ZZ.jpg' }, 'https://server.com/file-upload/abc/%ZZ.jpg')
+		).toBeTruthy();
+	});
 });
 
 describe('Test the getFilename', () => {

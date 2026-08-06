@@ -13,9 +13,18 @@ describe('encodeAttachmentUrl', () => {
 		);
 	});
 
-	it('leaves an escaped reserved character untouched', () => {
+	it('leaves an already-escaped reserved character in the path', () => {
 		expect(encodeAttachmentUrl('https://open.rocket.chat/file-upload/1/a%20video%20%232.mov')).toBe(
 			'https://open.rocket.chat/file-upload/1/a%20video%20%232.mov'
+		);
+	});
+
+	// Known limitation, not a regression: `#` is the fragment delimiter per the URL spec, so a raw one ends the
+	// path and the rest becomes the fragment — which HTTP drops, so the server sees a truncated path. The previous
+	// encodeURI behaved identically (it leaves `#` unescaped too). Only reachable if the server sends a raw `#`.
+	it('treats a raw reserved `#` in the path as a fragment', () => {
+		expect(encodeAttachmentUrl('https://open.rocket.chat/file-upload/1/a video #2.mov')).toBe(
+			'https://open.rocket.chat/file-upload/1/a%20video%20#2.mov'
 		);
 	});
 
