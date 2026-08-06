@@ -7,8 +7,6 @@ import { getUserSelector } from '../../../selectors/login';
 import { type TAnyMessageModel } from '../../../definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
-	'use memo';
-
 	const { user, baseUrl } = useAppSelector(
 		state => ({
 			user: getUserSelector(state),

@@ -12,8 +12,6 @@ import { useFetchThreadName } from '../stores/MessageRoomStore';
 import { useIsEncrypted, useRepliedThreadData } from '../stores/MessageStore';
 
 const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const fetchThreadName = useFetchThreadName();
 	const { tmid, tmsg, id } = useRepliedThreadData();

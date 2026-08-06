@@ -9,8 +9,6 @@ import { getAttachmentKey, isQuoteAttachment } from './utils';
 import { useTranslateLanguage } from '../../stores/MessageStore';
 
 const Quote: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
-	'use memo';
-
 	const translateLanguage = useTranslateLanguage();
 
 	const quotes = attachments?.filter(isQuoteAttachment);

@@ -51,7 +51,7 @@ export const merge = (
 			// @ts-ignore Same as above scenario
 			mergedSubscription.roomUpdatedAt = mergedSubscription.lr
 				? // @ts-ignore Same as above scenario
-				  Math.max(new Date(mergedSubscription.lr), new Date(lastRoomUpdate))
+					Math.max(new Date(mergedSubscription.lr), new Date(lastRoomUpdate))
 				: lastRoomUpdate;
 		}
 		mergedSubscription.ro = room?.ro ?? false;

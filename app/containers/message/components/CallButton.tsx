@@ -9,8 +9,6 @@ import { useTheme } from '../../../theme';
 import { useHandleEnterCall } from '../stores/MessageRoomStore';
 
 const CallButton = () => {
-	'use memo';
-
 	const handleEnterCall = useHandleEnterCall();
 	const { colors } = useTheme();
 	return (
