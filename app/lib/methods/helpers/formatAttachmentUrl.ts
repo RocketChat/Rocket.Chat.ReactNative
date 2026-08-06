@@ -32,7 +32,7 @@ export const formatAttachmentUrl = (
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
 		if (_originalUrl && !_originalUrl.startsWith(server)) {
-			return _originalUrl;
+			return encodeAttachmentUrl(_originalUrl);
 		}
 
 		if (attachmentUrl.includes('rc_token')) {

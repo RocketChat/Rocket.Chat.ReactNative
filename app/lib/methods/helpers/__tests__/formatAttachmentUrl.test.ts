@@ -25,9 +25,15 @@ describe('encodeAttachmentUrl', () => {
 		);
 	});
 
+	// WHATWG URL passes a malformed escape through rather than throwing, so this exercises the try branch.
 	it('returns the raw url when it has a malformed escape', () => {
 		expect(encodeAttachmentUrl('https://open.rocket.chat/file-upload/1/%ZZ.mov')).toBe(
 			'https://open.rocket.chat/file-upload/1/%ZZ.mov'
 		);
+	});
+
+	// A non-absolute url is what actually throws — reachable when the server/CDN prefix is empty.
+	it('returns the raw url when it is not absolute', () => {
+		expect(encodeAttachmentUrl('/file-upload/1/Screen Recording.mov')).toBe('/file-upload/1/Screen Recording.mov');
 	});
 });

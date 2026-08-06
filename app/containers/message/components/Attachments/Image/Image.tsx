@@ -69,7 +69,7 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
