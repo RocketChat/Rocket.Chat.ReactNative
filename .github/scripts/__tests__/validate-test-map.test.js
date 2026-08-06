@@ -52,6 +52,19 @@ describe('validate-test-map', () => {
 		expect(stdout).toContain('::error file=app/nonexistent-global.txt::Stale global');
 	});
 
+	// runAllWhenChanged entries may be globs — sniffler matches them as patterns,
+	// so an existsSync check would wrongly condemn every glob as stale.
+	it('accepts a runAllWhenChanged glob that matches at least one file', () => {
+		const { stdout } = runValidator('stale-global');
+		expect(stdout).not.toContain('file=patches/**');
+	});
+
+	it('flags a runAllWhenChanged glob that matches nothing on disk', () => {
+		const { status, stdout } = runValidator('stale-global');
+		expect(status).toBe(1);
+		expect(stdout).toContain('::error file=native/**::Stale global');
+	});
+
 	it('flags a decoupled gap: a saga file anchored in neither a dependsOn glob nor runAllWhenChanged', () => {
 		const { status, stdout } = runValidator('decoupled-gap');
 		expect(status).toBe(1);
