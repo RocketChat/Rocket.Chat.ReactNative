@@ -12,8 +12,6 @@ import Admin from './components/Admin';
 import Profile from './components/Profile';
 
 const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	'use memo';
-
 	const [currentScreen, setCurrentScreen] = useState<string | null>(null);
 
 	useEffect(() => {

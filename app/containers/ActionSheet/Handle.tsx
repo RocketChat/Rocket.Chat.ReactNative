@@ -8,8 +8,6 @@ import { useTheme } from '../../theme';
 import i18n from '../../i18n';
 
 export const Handle = forwardRef<View, { onPress: () => void }>(({ onPress }, ref) => {
-	'use memo';
-
 	const { theme } = useTheme();
 
 	// We should use RectButton from gesture-handler to avoid issues with the keyboard

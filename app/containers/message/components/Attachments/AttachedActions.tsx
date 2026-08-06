@@ -12,8 +12,6 @@ export type TElement = {
 };
 
 const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
-	'use memo';
-
 	const onAnswerButtonPress = useOnAnswerButtonPress();
 
 	if (!attachment.actions) {
