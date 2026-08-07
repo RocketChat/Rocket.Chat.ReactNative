@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
 });
 
 export const WidthAwareView = ({ children }: { children: ReactElement }) => {
-	'use memo';
-
 	const [width, setWidth] = useState(0);
 
 	return (

@@ -20,8 +20,6 @@ interface IClearAfterPickerProps {
 }
 
 const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProps): ReactElement => {
-	'use memo';
-
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 

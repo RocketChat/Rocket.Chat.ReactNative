@@ -176,7 +176,7 @@ export const FormTextInput = ({
 								inputError
 									? {
 											borderColor: colors.buttonBackgroundDangerDefault
-									  }
+										}
 									: {},
 								inputStyle
 							]}

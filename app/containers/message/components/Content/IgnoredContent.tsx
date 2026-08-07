@@ -7,8 +7,6 @@ import { useMessageText } from '../../stores/MessageStore';
 import ContentWrapper from './ContentWrapper';
 
 const IgnoredContent = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { messageText } = useMessageText();
 

@@ -1,0 +1,45 @@
+{
+	"source": {
+		"roots": ["app"],
+		"ignore": ["**/*.test.*", "**/*.spec.*", "**/__tests__/**", "app/stacks/types.ts", "app/definitions/navigationTypes.ts"]
+	},
+	"tests": {
+		"manifest": ".sniffler/test-map.json",
+		"runAllWhenChanged": [
+			"pnpm-lock.yaml",
+			"package.json",
+			"index.js",
+			"app.json",
+			"babel.config.js",
+			"metro.config.js",
+			"react-native.config.js",
+			"patches/**",
+			"android/**",
+			"ios/**",
+			".maestro/**",
+			".sniffler/**",
+			".github/workflows/**",
+			".github/scripts/**",
+			"app/index.tsx",
+			"app/lib/notifications/push.ts",
+			"app/lib/notifications/index.ts",
+			"app/lib/services/connect.ts",
+			"app/lib/methods/subscriptions/rooms.ts",
+			"app/lib/methods/getUsersPresence.ts",
+			"app/sagas/index.js",
+			"app/sagas/init.js",
+			"app/sagas/state.js",
+			"app/sagas/selectServer.ts",
+			"app/sagas/deepLinking.js",
+			"app/sagas/videoConf.ts",
+			"app/ee/omnichannel/sagas/inquiry.js",
+			"app/AppContainer.tsx",
+			"app/stacks/InsideStack.tsx",
+			"app/stacks/OutsideStack.tsx",
+			"app/stacks/ShareExtensionStack.tsx",
+			"app/stacks/MasterDetailStack/index.tsx",
+			"app/lib/store/index.ts",
+			"app/reducers/index.js"
+		]
+	}
+}

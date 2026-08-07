@@ -454,7 +454,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 							? [
 									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
 									<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
-							  ]
+								]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
 							<SwitchContainer
