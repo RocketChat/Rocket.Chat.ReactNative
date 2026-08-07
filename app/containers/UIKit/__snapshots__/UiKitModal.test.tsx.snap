@@ -171,9 +171,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -880,9 +877,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -908,9 +902,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -984,9 +975,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -1750,9 +1738,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -1778,9 +1763,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                       "flexShrink": 1,
                       "fontSize": 16,
                       "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
                     },
                     [
                       {
@@ -1809,9 +1791,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -1838,9 +1817,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -1866,9 +1842,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -2001,9 +1974,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -2203,9 +2173,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -2401,9 +2368,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -3223,9 +3187,6 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -3700,9 +3661,6 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -3864,9 +3822,6 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -3922,9 +3877,6 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5072,9 +5024,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5100,9 +5049,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5152,9 +5098,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -5181,9 +5124,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5209,9 +5149,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5261,9 +5198,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "fontSize": 14,
                   },
                 ]
@@ -5290,9 +5224,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5318,9 +5249,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5460,9 +5388,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5518,9 +5443,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5609,9 +5531,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5667,9 +5586,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5758,9 +5674,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5816,9 +5729,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5907,9 +5817,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -5965,9 +5872,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -6061,9 +5965,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -6089,9 +5990,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -6158,9 +6056,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -6296,9 +6191,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -6354,9 +6246,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -6440,9 +6329,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -6498,9 +6384,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -6597,9 +6480,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -6655,9 +6535,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -6741,9 +6618,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "fontSize": 14,
@@ -6799,9 +6673,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,

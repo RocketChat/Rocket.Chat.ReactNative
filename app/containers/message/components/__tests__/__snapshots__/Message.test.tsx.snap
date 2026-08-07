@@ -436,9 +436,6 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -898,9 +895,6 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -1496,9 +1490,6 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                                   "flexShrink": 1,
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
-                                                },
-                                                {
-                                                  "color": "#2F343D",
                                                 },
                                               ]
                                             }
@@ -2268,9 +2259,6 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -2912,9 +2900,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -3370,9 +3355,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -3819,9 +3801,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -4286,9 +4265,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -4751,9 +4727,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -5223,9 +5196,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -5680,9 +5650,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -6152,9 +6119,6 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -6609,9 +6573,6 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -7110,9 +7071,6 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -7602,9 +7560,6 @@ Testing block quote"
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -7650,9 +7605,6 @@ Testing block quote"
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -8151,9 +8103,6 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -8643,9 +8592,6 @@ Testing block quote"
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -8691,9 +8637,6 @@ Testing block quote"
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -9162,9 +9105,6 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -9754,9 +9694,6 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -10344,9 +10281,6 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -11062,9 +10996,6 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -11157,9 +11088,6 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -11243,9 +11171,6 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -11308,9 +11233,6 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -11779,9 +11701,6 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -12497,9 +12416,6 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -12592,9 +12508,6 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -12678,9 +12591,6 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -12743,9 +12653,6 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -13214,9 +13121,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -13934,9 +13838,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -14029,9 +13930,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -14114,9 +14012,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -14201,9 +14096,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -14260,9 +14152,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -14321,9 +14210,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -14792,9 +14678,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -15512,9 +15395,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -15607,9 +15487,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -15692,9 +15569,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -15779,9 +15653,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -15838,9 +15709,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -15899,9 +15767,6 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -16498,9 +16363,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -16583,9 +16445,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -16769,9 +16628,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -16854,9 +16710,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -17040,9 +16893,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -17125,9 +16975,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -17730,9 +17577,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -17815,9 +17659,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -18001,9 +17842,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -18086,9 +17924,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -18272,9 +18107,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -18357,9 +18189,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -18943,9 +18772,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -19038,9 +18864,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -19124,9 +18947,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -19189,9 +19009,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -19756,9 +19573,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -19851,9 +19665,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -19936,9 +19747,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -20023,9 +19831,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -20108,9 +19913,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -20195,9 +19997,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -20260,9 +20059,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -20840,9 +20636,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -20935,9 +20728,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -21021,9 +20811,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -21086,9 +20873,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -21653,9 +21437,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -21748,9 +21529,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -21833,9 +21611,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -21920,9 +21695,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -22005,9 +21777,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -22092,9 +21861,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -22157,9 +21923,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -22628,9 +22391,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -23149,9 +22909,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -23411,9 +23168,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -23876,9 +23630,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -24392,9 +24143,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -24862,9 +24610,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -25383,9 +25128,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -25645,9 +25387,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -26110,9 +25849,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -26625,9 +26361,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -31795,9 +31528,6 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -32013,9 +31743,6 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -32564,9 +32291,6 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -32782,9 +32506,6 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -33298,9 +33019,6 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -33769,9 +33487,6 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -36650,9 +36365,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -39569,9 +39281,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -48916,9 +48625,6 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                                   "fontSize": 16,
                                   "lineHeight": 22,
                                 },
-                                {
-                                  "color": "#2F343D",
-                                },
                               ]
                             }
                           >
@@ -49358,9 +49064,6 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                                   "flexShrink": 1,
                                   "fontSize": 16,
                                   "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
                                 },
                               ]
                             }
@@ -49815,9 +49518,6 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                                   "fontSize": 16,
                                   "lineHeight": 22,
                                 },
-                                {
-                                  "color": "#2F343D",
-                                },
                               ]
                             }
                           >
@@ -50257,9 +49957,6 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                                   "flexShrink": 1,
                                   "fontSize": 16,
                                   "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
                                 },
                               ]
                             }
@@ -50864,9 +50561,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -51460,9 +51154,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -52058,9 +51749,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -52623,9 +52311,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -52651,9 +52336,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                                     "lineHeight": 22,
                                                   },
                                                   {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
                                                     "backgroundColor": "transparent",
                                                     "fontFamily": "Inter",
                                                     "fontWeight": "700",
@@ -52673,9 +52355,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                                   "flexShrink": 1,
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
-                                                },
-                                                {
-                                                  "color": "#2F343D",
                                                 },
                                               ]
                                             }
@@ -52737,9 +52416,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -53784,9 +53460,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -54380,9 +54053,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -54978,9 +54648,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -55543,9 +55210,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -55571,9 +55235,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                                     "lineHeight": 22,
                                                   },
                                                   {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
                                                     "backgroundColor": "transparent",
                                                     "fontFamily": "Inter",
                                                     "fontWeight": "700",
@@ -55593,9 +55254,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                                   "flexShrink": 1,
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
-                                                },
-                                                {
-                                                  "color": "#2F343D",
                                                 },
                                               ]
                                             }
@@ -55657,9 +55315,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -56639,9 +56294,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -56782,9 +56434,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -56845,9 +56494,6 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -57317,9 +56963,6 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -57787,9 +57430,6 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -58259,9 +57899,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -58717,9 +58354,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -58935,9 +58569,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -59161,9 +58792,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -59626,9 +59254,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -60098,9 +59723,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -60556,9 +60178,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -60774,9 +60393,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -61000,9 +60616,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -61465,9 +61078,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -66307,9 +65917,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -66379,9 +65986,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -66454,9 +66058,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -66958,9 +66559,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -67044,9 +66642,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -67545,9 +67140,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -67805,9 +67397,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -68318,9 +67907,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -68390,9 +67976,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -68465,9 +68048,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -68969,9 +68549,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -69055,9 +68632,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -69556,9 +69130,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "fontSize": 16,
                                               "lineHeight": 22,
                                             },
-                                            {
-                                              "color": "#2F343D",
-                                            },
                                           ]
                                         }
                                       >
@@ -69816,9 +69387,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                                               "flexShrink": 1,
                                               "fontSize": 16,
                                               "lineHeight": 22,
-                                            },
-                                            {
-                                              "color": "#2F343D",
                                             },
                                           ]
                                         }
@@ -70296,9 +69864,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -70791,9 +70356,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -71284,9 +70846,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -72227,9 +71786,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                                   "fontSize": 16,
                                   "lineHeight": 22,
                                 },
-                                {
-                                  "color": "#2F343D",
-                                },
                               ]
                             }
                           >
@@ -72711,9 +72267,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -75445,9 +74998,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -75939,9 +75489,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -76432,9 +75979,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -77375,9 +76919,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                                   "fontSize": 16,
                                   "lineHeight": 22,
                                 },
-                                {
-                                  "color": "#2F343D",
-                                },
                               ]
                             }
                           >
@@ -77859,9 +77400,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -80612,9 +80150,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -80648,9 +80183,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -80682,9 +80214,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -80718,9 +80247,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -80753,9 +80279,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -81249,9 +80772,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -81285,9 +80805,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -81319,9 +80836,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -81355,9 +80869,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -81390,9 +80901,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -81881,9 +81389,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -81917,9 +81422,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -81951,9 +81453,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -81987,9 +81486,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -82022,9 +81518,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -82518,9 +82011,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -82554,9 +82044,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -82588,9 +82075,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -82624,9 +82108,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -82659,9 +82140,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -83541,9 +83019,6 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -84294,9 +83769,6 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -84475,9 +83947,6 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -85100,9 +84569,6 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -85920,9 +85386,6 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -86629,9 +86092,6 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -87563,9 +87023,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -87781,9 +87238,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -88309,9 +87763,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -88527,9 +87978,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -89068,9 +88516,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -89286,9 +88731,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -89814,9 +89256,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -90032,9 +89471,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -90650,9 +90086,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -90713,9 +90146,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -91280,9 +90710,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -91488,9 +90915,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -91590,9 +91014,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -91650,9 +91071,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -92109,9 +91527,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -92290,9 +91705,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -92916,9 +92328,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -93098,9 +92507,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -93158,9 +92564,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -93956,9 +93359,6 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -94541,9 +93941,6 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -94569,9 +93966,6 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                                     "lineHeight": 22,
                                                   },
                                                   {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
                                                     "backgroundColor": "transparent",
                                                     "fontFamily": "Inter",
                                                     "fontWeight": "700",
@@ -94591,9 +93985,6 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                                   "flexShrink": 1,
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
-                                                },
-                                                {
-                                                  "color": "#2F343D",
                                                 },
                                               ]
                                             }
@@ -94655,9 +94046,6 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -95424,9 +94812,6 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -96054,9 +95439,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -96639,9 +96021,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -96667,9 +96046,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                                     "lineHeight": 22,
                                                   },
                                                   {
-                                                    "color": "#2F343D",
-                                                  },
-                                                  {
                                                     "backgroundColor": "transparent",
                                                     "fontFamily": "Inter",
                                                     "fontWeight": "700",
@@ -96689,9 +96065,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                                   "flexShrink": 1,
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
-                                                },
-                                                {
-                                                  "color": "#2F343D",
                                                 },
                                               ]
                                             }
@@ -96753,9 +96126,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -97522,9 +96892,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -97979,9 +97346,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -98799,9 +98163,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -99508,9 +98869,6 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -100519,9 +99877,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -100582,9 +99937,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -101149,9 +100501,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -101256,9 +100605,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -101715,9 +101061,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -101896,9 +101239,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -102522,9 +101862,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -102704,9 +102041,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
                                                     },
-                                                    {
-                                                      "color": "#2F343D",
-                                                    },
                                                   ]
                                                 }
                                               >
@@ -102764,9 +102098,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -103403,9 +102734,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -108158,9 +107486,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -112911,9 +112236,6 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -113977,9 +113299,6 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -115042,9 +114361,6 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -116152,9 +115468,6 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -116370,9 +115683,6 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -116909,9 +116219,6 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -117127,9 +116434,6 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -117635,9 +116939,6 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -118637,9 +117938,6 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -120109,9 +119407,6 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -121110,9 +120405,6 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -122582,9 +121874,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -124363,9 +123652,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -128967,9 +128253,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -129519,9 +128802,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -129545,9 +128825,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                           {
                                             "backgroundColor": "transparent",
@@ -129614,9 +128891,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -129668,9 +128942,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -130212,9 +129483,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -130765,9 +130033,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -130791,9 +130056,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                           {
                                             "backgroundColor": "transparent",
@@ -130860,9 +130122,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -130914,9 +130173,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -131456,9 +130712,6 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -131926,9 +131179,6 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -145070,9 +144320,6 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -145536,9 +144783,6 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -146115,9 +145359,6 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -146218,9 +145459,6 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -146797,9 +146035,6 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -146900,9 +146135,6 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -147372,9 +146604,6 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -147842,9 +147071,6 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -148350,9 +147576,6 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -148856,9 +148079,6 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -149436,9 +148656,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -149530,9 +148747,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -149786,9 +149000,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -149880,9 +149091,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -149978,9 +149186,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                                         "lineHeight": 22,
                                                       },
                                                       {
-                                                        "color": "#2F343D",
-                                                      },
-                                                      {
                                                         "backgroundColor": "transparent",
                                                         "fontFamily": "Inter",
                                                         "fontWeight": "700",
@@ -150049,9 +149254,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -150629,9 +149831,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -150723,9 +149922,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -150979,9 +150175,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -151073,9 +150266,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                       "flexShrink": 1,
                                                       "fontSize": 16,
                                                       "lineHeight": 22,
-                                                    },
-                                                    {
-                                                      "color": "#2F343D",
                                                     },
                                                   ]
                                                 }
@@ -151171,9 +150361,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                                         "lineHeight": 22,
                                                       },
                                                       {
-                                                        "color": "#2F343D",
-                                                      },
-                                                      {
                                                         "backgroundColor": "transparent",
                                                         "fontFamily": "Inter",
                                                         "fontWeight": "700",
@@ -151242,9 +150429,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -152307,9 +151491,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -155675,9 +154856,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -156551,9 +155729,6 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -157618,9 +156793,6 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -158683,9 +157855,6 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -159782,9 +158951,6 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -160258,9 +159424,6 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -160749,9 +159912,6 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -161225,9 +160385,6 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -161706,9 +160863,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -162209,9 +161363,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -162663,9 +161814,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -163615,9 +162763,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -164613,9 +163758,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -165105,9 +164247,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -165340,9 +164479,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -166206,9 +165342,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -166511,9 +165644,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -167586,9 +166716,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -167643,9 +166770,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -167995,9 +167119,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -168052,9 +167173,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -168237,9 +167355,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -168294,9 +167409,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -168905,9 +168017,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -168962,9 +168071,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -169314,9 +168420,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                                   "fontSize": 16,
                                                   "lineHeight": 22,
                                                 },
-                                                {
-                                                  "color": "#2F343D",
-                                                },
                                               ]
                                             }
                                           >
@@ -169371,9 +168474,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -169904,9 +169004,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -170569,9 +169666,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -170638,9 +169732,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -170906,9 +169997,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -171732,9 +170820,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -172530,9 +171615,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -173204,9 +172286,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -173594,9 +172673,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -174221,9 +173297,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -175020,9 +174093,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -175694,9 +174764,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                             "fontSize": 16,
                                             "lineHeight": 22,
                                           },
-                                          {
-                                            "color": "#2F343D",
-                                          },
                                         ]
                                       }
                                     >
@@ -176086,9 +175153,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -176671,9 +175735,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }
@@ -177414,9 +176475,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                             "flexShrink": 1,
                                             "fontSize": 16,
                                             "lineHeight": 22,
-                                          },
-                                          {
-                                            "color": "#2F343D",
                                           },
                                         ]
                                       }
@@ -178570,9 +177628,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -179064,9 +178119,6 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
                                           "fontSize": 16,
                                           "lineHeight": 22,
                                         },
-                                        {
-                                          "color": "#2F343D",
-                                        },
                                       ]
                                     }
                                   >
@@ -179302,9 +178354,6 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
                                           "flexShrink": 1,
                                           "fontSize": 16,
                                           "lineHeight": 22,
-                                        },
-                                        {
-                                          "color": "#2F343D",
                                         },
                                       ]
                                     }

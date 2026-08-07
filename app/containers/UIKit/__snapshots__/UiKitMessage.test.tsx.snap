@@ -1081,9 +1081,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#2F343D",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -1191,9 +1188,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
                             },
                             [
                               {
@@ -1370,9 +1364,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#2F343D",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -1480,9 +1471,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
                             },
                             [
                               {
@@ -1659,9 +1647,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#2F343D",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -1836,9 +1821,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
                             },
                             [
                               {
@@ -2025,9 +2007,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#C1C7D0",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -2135,9 +2114,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
                             },
                             [
                               {
@@ -2314,9 +2290,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#C1C7D0",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -2424,9 +2397,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
                             },
                             [
                               {
@@ -2603,9 +2573,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#C1C7D0",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -2780,9 +2747,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
                             },
                             [
                               {
@@ -2969,9 +2933,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#E4E7EA",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -3079,9 +3040,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
                             },
                             [
                               {
@@ -3258,9 +3216,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#E4E7EA",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -3368,9 +3323,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "flexShrink": 1,
                               "fontSize": 16,
                               "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
                             },
                             [
                               {
@@ -3547,9 +3499,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#E4E7EA",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -3725,9 +3674,6 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "fontSize": 16,
                               "lineHeight": 22,
                             },
-                            {
-                              "color": "#E4E7EA",
-                            },
                             [
                               {
                                 "fontSize": 14,
@@ -3858,9 +3804,6 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "color": "#2F343D",
-                      },
                       [
                         {
                           "fontSize": 14,
@@ -3968,9 +3911,6 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontSize": 16,
                         "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
                       },
                       [
                         {
@@ -4080,9 +4020,6 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "color": "#2F343D",
-                      },
                       [
                         {
                           "fontSize": 14,
@@ -4190,9 +4127,6 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontSize": 16,
                         "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
                       },
                       [
                         {
@@ -4948,9 +4882,6 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
                   "lineHeight": 22,
                 },
                 {
-                  "color": "#2F343D",
-                },
-                {
                   "fontSize": 14,
                 },
               ]
@@ -5029,9 +4960,6 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
                 {
                   "fontSize": 14,
@@ -5182,9 +5110,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
                 {
                   "fontSize": 14,
@@ -5346,9 +5271,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                   [
                     {
                       "fontSize": 14,
@@ -5374,9 +5296,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
                 {
                   "fontSize": 14,
@@ -5466,9 +5385,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                       "lineHeight": 22,
                     },
                     {
-                      "color": "#2F343D",
-                    },
-                    {
                       "fontSize": 14,
                     },
                   ]
@@ -5550,9 +5466,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5700,9 +5613,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "fontSize": 14,
@@ -5854,9 +5764,6 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
                 {
                   "fontSize": 14,
@@ -6057,9 +5964,6 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
                 {
                   "fontSize": 14,

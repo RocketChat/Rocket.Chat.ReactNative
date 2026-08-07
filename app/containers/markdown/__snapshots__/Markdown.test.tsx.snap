@@ -83,9 +83,6 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -131,9 +128,6 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -199,9 +193,6 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -282,9 +273,6 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -326,9 +314,6 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -369,9 +354,6 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -472,9 +454,6 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -585,9 +564,6 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -623,9 +599,6 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -701,9 +674,6 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -762,9 +732,6 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -822,9 +789,6 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -1054,9 +1018,6 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -1131,9 +1092,6 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
@@ -1180,9 +1138,6 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1233,9 +1188,6 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 20,
@@ -1282,9 +1234,6 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1348,9 +1297,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
@@ -1381,9 +1327,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               [
                 {
@@ -1417,9 +1360,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
@@ -1449,9 +1389,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 24,
@@ -1473,9 +1410,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1507,9 +1441,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 24,
@@ -1531,9 +1462,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1585,9 +1513,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
@@ -1630,9 +1555,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1684,9 +1606,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 24,
@@ -1734,9 +1653,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1815,9 +1731,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 22,
@@ -1848,9 +1761,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               [
                 {
@@ -1884,9 +1794,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 22,
@@ -1916,9 +1823,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 22,
@@ -1940,9 +1844,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -1974,9 +1875,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 22,
@@ -1998,9 +1896,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2052,9 +1947,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 22,
@@ -2097,9 +1989,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2151,9 +2040,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 22,
@@ -2201,9 +2087,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2282,9 +2165,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 20,
@@ -2315,9 +2195,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               [
                 {
@@ -2351,9 +2228,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 20,
@@ -2383,9 +2257,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 20,
@@ -2407,9 +2278,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2441,9 +2309,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 20,
@@ -2465,9 +2330,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2519,9 +2381,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 20,
@@ -2564,9 +2423,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2618,9 +2474,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 20,
@@ -2668,9 +2521,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2749,9 +2599,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 18,
@@ -2782,9 +2629,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               [
                 {
@@ -2818,9 +2662,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 18,
@@ -2850,9 +2691,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 18,
@@ -2874,9 +2712,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2908,9 +2743,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 18,
@@ -2932,9 +2764,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -2986,9 +2815,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 18,
@@ -3031,9 +2857,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -3085,9 +2908,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "lineHeight": 22,
             },
             {
-              "color": "#2F343D",
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 18,
@@ -3135,9 +2955,6 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
               "flexShrink": 1,
               "fontSize": 16,
               "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
             },
             {
               "backgroundColor": "transparent",
@@ -3344,9 +3161,6 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -3445,9 +3259,6 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -3548,9 +3359,6 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -3623,13 +3431,159 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
            and the text continues on the next line
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "700",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Bold"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  },
+                ]
+              }
+            >
+              Bold
+            </Text>
+          </Text>
+           
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="italic"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                ]
+              }
+            >
+              italic
+            </Text>
+          </Text>
+           
+          <Text
+            style={
+              {
+                "textDecorationLine": "line-through",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="strike"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                ]
+              }
+            >
+              strike
+            </Text>
+          </Text>
+           Plain
+        </Text>
+        <Text
+          accessibilityLabel=" and the text continues with default style"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+            ]
+          }
+        >
+           and the text continues with default style
         </Text>
       </Text>
     </Text>
@@ -3716,9 +3670,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -3842,9 +3793,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -3888,9 +3836,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -3983,9 +3928,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4168,9 +4110,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       "lineHeight": 22,
                     },
                     {
-                      "color": "#2F343D",
-                    },
-                    {
                       "backgroundColor": "transparent",
                       "fontFamily": "Inter",
                       "fontWeight": "700",
@@ -4190,9 +4129,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4271,9 +4207,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                   ]
                 }
               >
@@ -4288,9 +4221,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4369,9 +4299,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                   ]
                 }
               >
@@ -4386,9 +4313,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4478,9 +4402,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         "lineHeight": 22,
                       },
                       {
-                        "color": "#2F343D",
-                      },
-                      {
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontWeight": "700",
@@ -4501,9 +4422,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4593,9 +4511,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         "lineHeight": 22,
                       },
                       {
-                        "color": "#2F343D",
-                      },
-                      {
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontWeight": "700",
@@ -4616,9 +4531,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4704,9 +4616,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         "fontSize": 16,
                         "lineHeight": 22,
                       },
-                      {
-                        "color": "#2F343D",
-                      },
                     ]
                   }
                 >
@@ -4722,9 +4631,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -4819,9 +4725,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                           "flexShrink": 1,
                           "fontSize": 16,
                           "lineHeight": 22,
-                        },
-                        {
-                          "color": "#2F343D",
                         },
                         {
                           "backgroundColor": "transparent",
@@ -4919,9 +4822,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -4955,9 +4855,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -4989,9 +4886,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5025,9 +4919,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5060,9 +4951,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5153,9 +5041,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5189,9 +5074,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5223,9 +5105,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5259,9 +5138,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5294,9 +5170,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5383,9 +5256,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5418,9 +5288,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5455,9 +5322,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5490,9 +5354,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5524,9 +5385,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5599,9 +5457,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5651,9 +5506,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5705,9 +5557,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5757,9 +5606,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5808,9 +5654,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -5900,9 +5743,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -5923,9 +5763,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -5960,9 +5797,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -5977,9 +5811,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6001,9 +5832,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -6038,9 +5866,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -6055,9 +5880,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6079,9 +5901,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -6115,9 +5934,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -6132,9 +5948,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6156,9 +5969,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -6192,9 +6002,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                 ]
               }
             >
@@ -6209,9 +6016,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6233,9 +6037,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -6269,9 +6070,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -6326,9 +6124,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -6369,9 +6164,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6414,9 +6206,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -6457,9 +6246,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -6499,9 +6285,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6582,9 +6365,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -6650,9 +6430,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -6720,9 +6497,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -6788,9 +6562,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -6855,9 +6626,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
               ]
             }
@@ -7128,9 +6896,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -7203,9 +6968,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -7258,9 +7020,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -7305,9 +7064,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -7351,9 +7107,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7405,9 +7158,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7467,9 +7217,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -7521,9 +7268,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7577,9 +7321,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -7605,9 +7346,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   "lineHeight": 22,
                 },
                 {
-                  "color": "#2F343D",
-                },
-                {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontWeight": "700",
@@ -7627,9 +7365,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7652,9 +7387,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -7669,9 +7401,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7694,9 +7423,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   "fontSize": 16,
                   "lineHeight": 22,
                 },
-                {
-                  "color": "#2F343D",
-                },
               ]
             }
           >
@@ -7711,9 +7437,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7747,9 +7470,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontWeight": "700",
@@ -7770,9 +7490,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7806,9 +7523,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontWeight": "700",
@@ -7829,9 +7543,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7872,9 +7583,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                       "lineHeight": 22,
                     },
                     {
-                      "color": "#2F343D",
-                    },
-                    {
                       "backgroundColor": "transparent",
                       "fontFamily": "Inter",
                       "fontWeight": "700",
@@ -7896,9 +7604,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -7927,9 +7632,6 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                 ]
               }
@@ -7999,9 +7701,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "color": "red",
                 "fontSize": 10,
               },
@@ -8028,9 +7727,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   "flexShrink": 1,
                   "fontSize": 16,
                   "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
                 },
                 [
                   {
@@ -8060,9 +7756,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "color": "red",
                 "fontSize": 10,
               },
@@ -8088,9 +7781,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   "lineHeight": 22,
                 },
                 {
-                  "color": "#2F343D",
-                },
-                {
                   "color": "red",
                   "fontSize": 10,
                 },
@@ -8108,9 +7798,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8138,9 +7825,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   "lineHeight": 22,
                 },
                 {
-                  "color": "#2F343D",
-                },
-                {
                   "color": "red",
                   "fontSize": 10,
                 },
@@ -8158,9 +7842,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8197,9 +7878,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                   [
                     {
                       "color": "red",
@@ -8227,9 +7905,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8266,9 +7941,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "fontSize": 16,
                     "lineHeight": 22,
                   },
-                  {
-                    "color": "#2F343D",
-                  },
                   [
                     {
                       "color": "red",
@@ -8296,9 +7968,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8342,9 +8011,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    {
-                      "color": "#2F343D",
-                    },
                     [
                       {
                         "color": "red",
@@ -8373,9 +8039,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8408,9 +8071,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "flexShrink": 1,
                     "fontSize": 16,
                     "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
                   },
                   {
                     "color": "red",
@@ -8494,9 +8154,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "color": "red",
                 "fontSize": 10,
               },
@@ -8536,9 +8193,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8581,9 +8235,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "lineHeight": 22,
               },
               {
-                "color": "#2F343D",
-              },
-              {
                 "color": "red",
                 "fontSize": 10,
               },
@@ -8622,9 +8273,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8666,9 +8314,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8770,9 +8415,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -8883,9 +8525,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "lineHeight": 22,
                   },
                   {
-                    "color": "#2F343D",
-                  },
-                  {
                     "color": "red",
                     "fontSize": 10,
                   },
@@ -8934,9 +8573,6 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
               {
                 "color": "red",
@@ -9012,6 +8648,176 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
       </Text>
     </Text>
   </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "red",
+                "fontSize": 10,
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "700",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Bold"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  [
+                    {
+                      "color": "red",
+                      "fontSize": 10,
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
+                  ],
+                ]
+              }
+            >
+              Bold
+            </Text>
+          </Text>
+           
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="italic"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "red",
+                    "fontSize": 10,
+                  },
+                ]
+              }
+            >
+              italic
+            </Text>
+          </Text>
+           
+          <Text
+            style={
+              {
+                "textDecorationLine": "line-through",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="strike"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "red",
+                    "fontSize": 10,
+                  },
+                ]
+              }
+            >
+              strike
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=" the text with default style"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "red",
+                "fontSize": 10,
+              },
+            ]
+          }
+        >
+           the text with default style
+        </Text>
+      </Text>
+    </Text>
+  </View>
 </View>
 `;
 
@@ -9068,9 +8874,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -9143,9 +8946,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -9216,9 +9016,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -9291,9 +9088,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -9364,9 +9158,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
@@ -9439,9 +9230,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
-              {
-                "color": "#2F343D",
-              },
             ]
           }
         >
@@ -9512,9 +9300,6 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
                 "flexShrink": 1,
                 "fontSize": 16,
                 "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
               },
             ]
           }
