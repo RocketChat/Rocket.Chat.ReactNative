@@ -15,8 +15,6 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
 
-	// Serialize reads, prepares and the batch under the writer lock so a concurrent write on the
-	// same records can't leave them prepared-but-stale by the time we commit.
 	try {
 		await db.write(async () => {
 			const successBatch: Model[] = [];
@@ -113,8 +111,6 @@ export async function sendMessage(
 
 		const messageDate = new Date();
 
-		// Serialize reads, prepares and the batch under the writer lock so a concurrent write on the
-		// same records can't leave them prepared-but-stale by the time we commit.
 		try {
 			await db.write(async () => {
 				const batch: Model[] = [];
