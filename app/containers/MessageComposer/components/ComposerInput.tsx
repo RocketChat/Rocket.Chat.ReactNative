@@ -59,6 +59,10 @@ export const ComposerInput = memo(
 		const textRef = useRef('');
 		const firstRender = useRef(true);
 		const selectionRef = useRef<IInputSelection>(defaultSelection);
+		// Displays the readable fname for discussion-style rooms, but the server only resolves
+		// channel mentions by the room `name`, so the composer translates the title back to it
+		// when sending. Keyed by the exact title text inserted into the composer.
+		const mentionRoomTokensRef = useRef<Record<string, string>>({});
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
@@ -169,6 +173,14 @@ export const ComposerInput = memo(
 			getSelection: () => selectionRef.current,
 			setInput,
 			onAutocompleteItemSelected,
+			resolveMentionRoomTokens: text => {
+				let resolved = text;
+				for (const [title, name] of Object.entries(mentionRoomTokensRef.current)) {
+					const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+					resolved = resolved.replace(new RegExp(`#${escaped}(?=\\s|$)`, 'g'), `#${name}`);
+				}
+				return resolved;
+			},
 			focus
 		}));
 
@@ -278,7 +290,12 @@ export const ComposerInput = memo(
 					mention = fetchIsAllOrHere(item) ? item.title : item.subtitle || item.title;
 					break;
 				case '#':
-					mention = item.subtitle ? item.subtitle : '';
+					mention = item.title || item.subtitle || '';
+					// Discussions carry an ID-like `name`; matching room name is in `subtitle`.
+					// Remember the pair so we can resolve the token on send.
+					if (item.subtitle && item.subtitle !== item.title) {
+						mentionRoomTokensRef.current[item.title] = item.subtitle;
+					}
 					break;
 				case ':':
 					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;

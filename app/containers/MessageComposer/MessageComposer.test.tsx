@@ -572,6 +572,27 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).toHaveBeenCalledWith('#general', false);
 		});
 
+		test('select # discussion shows fname in composer but sends the room name so it resolves as a mention', async () => {
+			const onSendMessage = jest.fn();
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [{ rid: 'r1', name: 'aBcD123xyz', fname: 'My Discussion', t: 'p' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-My Discussion')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-My Discussion'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('#aBcD123xyz', false);
+		});
+
 		test('select : emoji inserts emoji and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
 			render(<Render context={{ onSendMessage }} />);

@@ -28,6 +28,7 @@ export interface IComposerInput {
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
 	onAutocompleteItemSelected: (item: TAutocompleteItem) => void;
+	resolveMentionRoomTokens: (text: string) => string;
 	focus: () => void;
 }
 
