@@ -27,8 +27,14 @@ export const formatAttachmentUrl = (
 ): string => {
 	const protectFiles = store.getState().settings.FileUpload_ProtectFiles;
 
-	if ((attachmentUrl && isImageBase64(attachmentUrl)) || attachmentUrl?.startsWith('file://')) {
+	// A data: uri is already its own encoding — running it through the parser would corrupt the payload.
+	if (attachmentUrl && isImageBase64(attachmentUrl)) {
 		return attachmentUrl;
+	}
+	// Cache filenames keep unicode letters (sanitizeLikeString only strips `[^\p{L}\p{Nd}]`), so `vídeo.mov` reaches
+	// here verbatim and the native players reject the unescaped path. Encode local uris too.
+	if (attachmentUrl?.startsWith('file://')) {
+		return encodeAttachmentUrl(attachmentUrl);
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
 		if (_originalUrl && !_originalUrl.startsWith(server)) {

@@ -45,4 +45,17 @@ describe('encodeAttachmentUrl', () => {
 	it('returns the raw url when it is not absolute', () => {
 		expect(encodeAttachmentUrl('/file-upload/1/Screen Recording.mov')).toBe('/file-upload/1/Screen Recording.mov');
 	});
+
+	// Cache filenames keep unicode letters, so local uris need encoding before they reach the native players.
+	it('encodes unicode letters in a local file uri', () => {
+		expect(encodeAttachmentUrl('file:///var/app/Documents/server/msg1/vídeo.mov')).toBe(
+			'file:///var/app/Documents/server/msg1/v%C3%ADdeo.mov'
+		);
+	});
+
+	it('leaves an already-encoded local file uri untouched', () => {
+		expect(encodeAttachmentUrl('file:///var/app/Documents/server/msg1/v%C3%ADdeo.mov')).toBe(
+			'file:///var/app/Documents/server/msg1/v%C3%ADdeo.mov'
+		);
+	});
 });
