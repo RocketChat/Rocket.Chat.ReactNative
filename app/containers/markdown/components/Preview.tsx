@@ -3,6 +3,7 @@ import { type StyleProp, Text, type TextStyle } from 'react-native';
 import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';
 import usePreviewFormatText from '../../../lib/hooks/usePreviewFormatText';
+import { type IUserChannel } from '../interfaces';
 import styles from '../styles';
 
 interface IMarkdownPreview {
@@ -10,11 +11,12 @@ interface IMarkdownPreview {
 	numberOfLines?: number;
 	testID?: string;
 	style?: StyleProp<TextStyle>;
+	channels?: IUserChannel[];
 }
 
-const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdownPreview) => {
+const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID, channels }: IMarkdownPreview) => {
 	const { theme } = useTheme();
-	const formattedText = usePreviewFormatText(msg ?? '');
+	const formattedText = usePreviewFormatText(msg ?? '', channels);
 
 	if (!msg) {
 		return null;

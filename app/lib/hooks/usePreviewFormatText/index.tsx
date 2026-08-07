@@ -3,11 +3,14 @@ import removeMarkdown from 'remove-markdown';
 import useShortnameToUnicode from '../useShortnameToUnicode';
 import { formatText } from '../../helpers/formatText';
 import { formatHyperlink } from '../../helpers/formatHyperlink';
+import { formatChannelMentions, type TMentionableChannel } from '../../methods/helpers/formatChannelMentions';
 
-const usePreviewFormatText = (msg: string) => {
+const usePreviewFormatText = (msg: string, channels?: TMentionableChannel[]) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 
-	let m = formatText(msg);
+	// Resolved before the markdown is stripped, so the mention is still `#name` at this point
+	let m = formatChannelMentions(msg, channels);
+	m = formatText(m);
 	m = formatHyperlink(m);
 	m = formatShortnameToUnicode(m);
 	// Removes sequential empty spaces before to use removeMarkdown,

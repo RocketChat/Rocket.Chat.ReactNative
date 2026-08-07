@@ -3,6 +3,7 @@ import translationLanguages from '../../../lib/constants/translationLanguages';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
 import { getInfoMessage } from '../utils';
 import { type IUserChannel, type IUserMention } from '../../../definitions';
+import { formatChannelMentions } from '../../../lib/methods/helpers/formatChannelMentions';
 import {
 	useContentData,
 	useIsEncrypted,
@@ -23,12 +24,7 @@ const stripMentions = (label: string, mentions: IUserMention[] = [], channels: I
 			result = result.replaceAll(`@${item.username}`, item.username);
 		}
 	});
-	channels?.forEach(item => {
-		if (item?.name) {
-			result = result.replaceAll(`#${item.name}`, item.fname || item.name);
-		}
-	});
-	return result;
+	return formatChannelMentions(result, channels, true);
 };
 
 export const useMessageAccessibilityLabel = (): string => {

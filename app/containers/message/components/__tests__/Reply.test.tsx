@@ -10,6 +10,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { getMessageById } from '../../../../lib/database/services/Message';
 
 jest.mock('../../../markdown', () => {
 	const React = require('react');
@@ -20,6 +21,10 @@ jest.mock('../../../markdown', () => {
 		MarkdownPreview: ({ msg }: { msg?: string }) => <Text testID='reply-markdown-preview'>{msg}</Text>
 	};
 });
+
+jest.mock('../../../../lib/database/services/Message', () => ({
+	getMessageById: jest.fn(() => Promise.resolve(null))
+}));
 
 jest.mock('../../../../lib/methods/helpers', () => ({
 	fileDownloadAndPreview: jest.fn(() => Promise.resolve())
@@ -44,6 +49,7 @@ jest.mock('expo-image', () => {
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 const mockOpenLink = openLink as jest.Mock;
 const mockFormatAttachmentUrl = formatAttachmentUrl as jest.Mock;
+const mockGetMessageById = getMessageById as jest.Mock;
 
 const buildItem = (isEncrypted?: boolean) =>
 	({
@@ -84,6 +90,38 @@ describe('Reply', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockFormatAttachmentUrl.mockImplementation((url: string) => `formatted:${url}`);
+		mockGetMessageById.mockResolvedValue(null);
+	});
+
+	// A quote attachment carries the quoted text but not its channels, so they are read back off the
+	// cached message. The label is plain text: a quote is not a live, tappable mention.
+	describe('quoted discussion mentions', () => {
+		const quote: IAttachment = {
+			author_name: 'Alice',
+			text: 'see #aBcD123xyz',
+			message_link: 'https://open.rocket.chat/channel/general?msg=quoted-1'
+		};
+
+		it('renders the discussion name instead of the room id', async () => {
+			mockGetMessageById.mockResolvedValue({ channels: [{ _id: 'c1', name: 'aBcD123xyz', fname: 'My Discussion' }] });
+
+			const { getByTestId } = renderReply({ attachment: quote });
+
+			await waitFor(() => expect(getByTestId('reply-markdown')).toHaveTextContent('see #My Discussion'));
+		});
+
+		it('keeps the room id when the quoted message is not cached', async () => {
+			const { getByTestId } = renderReply({ attachment: quote });
+
+			await waitFor(() => expect(mockGetMessageById).toHaveBeenCalledWith('quoted-1'));
+			expect(getByTestId('reply-markdown')).toHaveTextContent('see #aBcD123xyz');
+		});
+
+		it('does not hit the database when the quoted text has no mention', () => {
+			renderReply({ attachment: { ...quote, text: 'plain quoted text' } });
+
+			expect(mockGetMessageById).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('null gate', () => {
