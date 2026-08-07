@@ -36,8 +36,6 @@ const BottomSheetContent = memo(
 		contentMinHeight,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
-		'use memo';
-
 		const { colors } = useTheme();
 		const { bottom } = useSafeAreaInsets();
 		const height = useActionSheetItemHeight();

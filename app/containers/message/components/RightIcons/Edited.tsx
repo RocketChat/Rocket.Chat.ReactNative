@@ -5,8 +5,6 @@ import styles from '../../styles';
 import { useIsEdited, useMessageText } from '../../stores/MessageStore';
 
 const Edited = () => {
-	'use memo';
-
 	const isEdited = useIsEdited();
 	const { messageText } = useMessageText();
 

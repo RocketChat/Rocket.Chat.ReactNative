@@ -98,8 +98,6 @@ export const MessageInnerContext = createContext<TMessageInnerContext>({
 });
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
-	'use memo';
-
 	const [store] = useState(createComposerStore);
 
 	return <ComposerStoreContext.Provider value={store}>{children}</ComposerStoreContext.Provider>;

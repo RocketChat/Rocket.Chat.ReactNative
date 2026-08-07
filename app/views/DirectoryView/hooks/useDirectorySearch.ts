@@ -7,8 +7,6 @@ import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getDirectory } from '../../../lib/services/restApi';
 
 export const useDirectorySearch = (directoryDefaultView: string) => {
-	'use memo';
-
 	const [data, setData] = useState<IServerRoom[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [text, setText] = useState('');

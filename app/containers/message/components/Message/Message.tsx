@@ -8,8 +8,6 @@ export type TMessageProps = {
 };
 
 const Message = (props: TMessageProps) => {
-	'use memo';
-
 	const { isThreadReply, isThreadSequential } = useThreadPosition();
 	const isInfo = useIsInfoMessage();
 	const isIgnored = useMessageIgnored();

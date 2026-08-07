@@ -6,8 +6,6 @@ import { useTheme } from '../../../../theme';
 import ContentWrapper from './ContentWrapper';
 
 const EncryptedContent = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 
 	return (

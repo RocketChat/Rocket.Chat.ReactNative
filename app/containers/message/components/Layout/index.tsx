@@ -8,8 +8,6 @@ import StandardLayout from './StandardLayout';
 import { useBlocks, useMessageField } from '../../stores/MessageStore';
 
 export const Layout = ({ isPreview, isHeader }: { isPreview?: boolean; isHeader: boolean }) => {
-	'use memo';
-
 	const { isLargeFontScale } = useResponsiveLayout();
 	const type = useMessageField(item => item.t);
 	const { blocks } = useBlocks();

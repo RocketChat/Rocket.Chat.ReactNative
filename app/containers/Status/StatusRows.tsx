@@ -43,8 +43,6 @@ const StatusRows = ({
 	rowStyle,
 	expiryRowStyle
 }: IStatusRows): ReactElement => {
-	'use memo';
-
 	const formattedExpiry = formatStatusExpiry(statusExpiresAt);
 	const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
 

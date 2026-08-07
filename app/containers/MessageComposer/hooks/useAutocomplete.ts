@@ -28,7 +28,9 @@ const getCustomEmojis = async (keyword: string): Promise<ICustomEmoji[]> => {
 	}
 	const db = database.active;
 	const customEmojisCollection = db.get('custom_emojis');
-	const customEmojis = await (await customEmojisCollection.query(...whereClause).fetch())
+	const customEmojis = await (
+		await customEmojisCollection.query(...whereClause).fetch()
+	)
 		.slice(0, MENTIONS_COUNT_TO_DISPLAY)
 		.map(emoji => ({
 			name: emoji.name,
