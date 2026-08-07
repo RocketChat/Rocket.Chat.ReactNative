@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import { useEffect, useRef, useState, type ReactElement } from 'react';
-import { requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
+import { requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder } from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
@@ -18,7 +18,7 @@ import log from '../../../../lib/methods/helpers/log';
 import { type IUpload } from '../../../../definitions';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useCanUploadFile } from '../../hooks';
-import { Duration, type IDurationRef } from './Duration';
+import { Duration } from './Duration';
 import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
@@ -26,9 +26,7 @@ import i18n from '../../../../i18n';
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const audioRecorder = useAudioRecorder(RECORDING_SETTINGS);
-	const recorderState = useAudioRecorderState(audioRecorder);
 
-	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
@@ -77,10 +75,6 @@ export const RecordAudio = (): ReactElement | null => {
 			}
 		};
 	}, []);
-
-	useEffect(() => {
-		durationRef.current?.onRecordingStatusUpdate?.(recorderState);
-	}, [recorderState]);
 
 	const cancelRecording = async () => {
 		try {
@@ -134,7 +128,7 @@ export const RecordAudio = (): ReactElement | null => {
 		return (
 			<View style={styles.review}>
 				<View style={styles.audioPlayer}>
-					<AudioPlayer fileUri={recorderState.url ?? ''} rid={rid} downloadState='downloaded' />
+					<AudioPlayer fileUri={audioRecorder.uri ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
 				<View style={styles.buttons}>
 					<CancelButton onPress={cancelRecording} />
@@ -155,7 +149,7 @@ export const RecordAudio = (): ReactElement | null => {
 		<View style={styles.recording}>
 			<View style={styles.duration}>
 				<CustomIcon name='mic' size={24} color={colors.fontDanger} />
-				<Duration ref={durationRef} />
+				<Duration audioRecorder={audioRecorder} />
 			</View>
 			<View style={styles.buttons}>
 				<CancelButton onPress={cancelRecording} cancelAndDelete />

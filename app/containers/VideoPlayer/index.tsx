@@ -38,6 +38,10 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 	});
 
 	useEffect(() => {
+		hasHandledErrorRef.current = false;
+	}, [uri]);
+
+	useEffect(() => {
 		const blurSub = navigation.addListener('blur', () => {
 			player.pause();
 		});
