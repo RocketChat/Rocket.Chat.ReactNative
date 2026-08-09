@@ -12,7 +12,7 @@ import { setUser } from '../../actions/login';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { RootEnum } from '../../definitions';
-import I18n, { isRTL, LANGUAGES } from '../../i18n';
+import I18n, { isRTL, LANGUAGES, setLanguage } from '../../i18n';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { type SettingsStackParamList } from '../../stacks/types';
@@ -47,6 +47,8 @@ const LanguageView = () => {
 
 		// shows loading for at least 300ms
 		await Promise.all([changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
+
+		setLanguage(language);
 
 		if (shouldRestart) {
 			await RNRestart.Restart();
