@@ -39,6 +39,7 @@ export const useSubscriptions = () => {
 	'use memo';
 
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
+	const server = useAppSelector(state => state.server.server);
 	const subscriptionRef = useRef<Subscription>(null);
 	const [subscriptions, setSubscriptions] = useState<TSubscriptionModel[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -123,7 +124,7 @@ export const useSubscriptions = () => {
 		return () => {
 			subscriptionRef.current?.unsubscribe();
 		};
-	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles]);
+	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles, server]);
 
 	return {
 		subscriptions,
