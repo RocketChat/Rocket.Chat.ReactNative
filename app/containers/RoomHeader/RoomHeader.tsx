@@ -171,8 +171,6 @@ const Header = ({
 	disabled,
 	abacAttributes
 }: IRoomHeaderProps) => {
-	'use memo';
-
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
 		prid,

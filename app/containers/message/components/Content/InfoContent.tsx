@@ -8,8 +8,6 @@ import { useInfoData, useMessageAuthor, useMessageText } from '../../stores/Mess
 import User from '../User';
 
 const InfoContent = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { t: type, comment } = useInfoData();
 	const { u: author, role } = useMessageAuthor();

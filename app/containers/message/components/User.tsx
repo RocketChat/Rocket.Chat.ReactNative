@@ -45,8 +45,6 @@ const styles = StyleSheet.create({
 const Pressable = (isIOS ? RNPressable : RNGHPressable) as typeof RNPressable;
 
 const User = () => {
-	'use memo';
-
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const navToRoomInfo = useNavToRoomInfo();
 	const { colors } = useTheme();
