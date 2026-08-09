@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import { useSubscriptions } from './useSubscriptions';
-import database from '../../lib/database';
 
 let queryCallCount = 0;
 
