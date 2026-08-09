@@ -514,3 +514,4 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 }
 
 export default withTheme(MessageContainer);
+export { MessageContainer };
