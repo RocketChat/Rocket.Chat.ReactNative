@@ -7,7 +7,7 @@ import { useSubscriptions } from './useSubscriptions';
 
 let queryCallCount = 0;
 
-jest.mock('../../lib/database', () => ({
+jest.mock('../../../lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
