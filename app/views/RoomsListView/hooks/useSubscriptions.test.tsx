@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act } from '@testing-library/react-native';
+import { render, act, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
@@ -29,7 +29,7 @@ jest.mock('../../lib/database', () => ({
 }));
 
 const baseState = {
-	server: { connecting: false, loading: false, connected: true },
+	server: { server: 'https://open.rocket.chat', connecting: false, loading: false, connected: true },
 	settings: { UI_Use_Real_Name: false },
 	sortPreferences: { sortBy: 'activity', showUnread: false, showFavorites: false, groupByType: false },
 	login: { user: { roles: [] } }
@@ -44,7 +44,7 @@ const Harness = () => {
 };
 
 describe('useSubscriptions', () => {
-	it('does not re-query on connection state changes', () => {
+	it('does not re-query on connection state changes', async () => {
 		const store = createStore(rootReducer, baseState);
 
 		render(
@@ -53,23 +53,27 @@ describe('useSubscriptions', () => {
 			</Provider>
 		);
 
+		await waitFor(() => {
+			expect(queryCallCount).toBeGreaterThanOrEqual(1);
+		});
 		const initialCalls = queryCallCount;
-		expect(initialCalls).toBeGreaterThanOrEqual(1);
 
-		act(() => {
+		await act(async () => {
 			store.dispatch({
 				type: 'UPDATE_SERVER',
-				server: { connecting: true, loading: false, connected: false }
+				server: { server: 'https://open.rocket.chat', connecting: true, loading: false, connected: false }
 			});
 		});
 
-		act(() => {
+		await act(async () => {
 			store.dispatch({
 				type: 'UPDATE_SERVER',
-				server: { connecting: false, loading: true, connected: false }
+				server: { server: 'https://open.rocket.chat', connecting: false, loading: true, connected: false }
 			});
 		});
 
-		expect(queryCallCount).toBe(initialCalls);
+		await waitFor(() => {
+			expect(queryCallCount).toBe(initialCalls);
+		});
 	});
 });
