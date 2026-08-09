@@ -47,10 +47,10 @@ jest.mock('../../lib/services/restApi', () => ({
 jest.mock('../../lib/database', () => ({
 	default: {
 		servers: {
+			write: jest.fn((fn: any) => fn()),
 			get: jest.fn(() => ({
-				write: jest.fn((fn: any) => fn())
-			})),
-			find: jest.fn(() => Promise.resolve({ update: jest.fn() }))
+				find: jest.fn(() => Promise.resolve({ update: jest.fn() }))
+			}))
 		}
 	}
 }));
