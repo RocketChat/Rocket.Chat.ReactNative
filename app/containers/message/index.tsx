@@ -326,7 +326,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	get hasError(): boolean {
 		const { item } = this.props;
-		return item.status === messagesStatus.ERROR;
+		return item.status === messagesStatus.ERROR || item.status === messagesStatus.TEMP;
 	}
 
 	reactionInit = () => {
