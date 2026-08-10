@@ -30,12 +30,12 @@ export const formatAttachmentUrl = (
 			return _originalUrl;
 		}
 
-		// encodeURI leaves `#` raw too, so escape after it rather than feeding it an already-escaped url.
-		if (attachmentUrl.includes('rc_token')) {
-			return escapeFragmentDelimiter(encodeURI(attachmentUrl));
+		const url = escapeFragmentDelimiter(attachmentUrl);
+
+		if (url.includes('rc_token')) {
+			return url;
 		}
 
-		const url = escapeFragmentDelimiter(attachmentUrl);
 		if (protectFiles) return setParamInUrl({ url, token, userId });
 		return url;
 	}

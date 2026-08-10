@@ -21,8 +21,8 @@ describe('formatAttachmentUrl', () => {
 		jest.clearAllMocks();
 	});
 
-	// The server builds the path with `encodeURI(file.name)`, which leaves `#` raw — the url would otherwise be cut
-	// at the fragment and the server would receive `/file-upload/1/a%20video%20`.
+	// The server builds the path with `encodeURI(file.name)`, which encodes the spaces but leaves `#` raw — the url
+	// would otherwise be cut at the fragment and the server would receive `/file-upload/1/a%20video%20`.
 	describe('raw `#` in the filename', () => {
 		const rawUrl = '/file-upload/1/a%20video%20#2.mov';
 		const escapedUrl = `${SERVER}/file-upload/1/a%20video%20%232.mov`;
@@ -42,11 +42,12 @@ describe('formatAttachmentUrl', () => {
 			expect(formatAttachmentUrl(rawUrl, USER_ID, TOKEN, SERVER)).toBe(`${escapedUrl}?rc_token=${TOKEN}&rc_uid=${USER_ID}`);
 		});
 
-		test('escapes it on a url that already carries the auth params', () => {
+		// The `%20`s the server already applied must survive as-is — encoding them again would give `%2520`.
+		test('escapes it without re-encoding the rest of the path', () => {
 			mockSettings();
-			expect(
-				formatAttachmentUrl(`${SERVER}/file-upload/1/video#2.mov?rc_token=${TOKEN}&rc_uid=${USER_ID}`, USER_ID, TOKEN, SERVER)
-			).toBe(`${SERVER}/file-upload/1/video%232.mov?rc_token=${TOKEN}&rc_uid=${USER_ID}`);
+			expect(formatAttachmentUrl(`${SERVER}${rawUrl}?rc_token=${TOKEN}&rc_uid=${USER_ID}`, USER_ID, TOKEN, SERVER)).toBe(
+				`${escapedUrl}?rc_token=${TOKEN}&rc_uid=${USER_ID}`
+			);
 		});
 
 		test('escapes it behind a cdn prefix', () => {
