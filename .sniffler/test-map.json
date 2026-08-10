@@ -158,6 +158,10 @@
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
 	},
 	{
+		"test": ".maestro/tests/onboarding/login/two-factor-login.yaml",
+		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js", "app/containers/TwoFactor/**"]
+	},
+	{
 		"test": ".maestro/tests/onboarding/register/create-account.yaml",
 		"dependsOn": ["app/views/RegisterView/**", "app/sagas/login.js"]
 	},
