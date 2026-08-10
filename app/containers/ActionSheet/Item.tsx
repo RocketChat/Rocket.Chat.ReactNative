@@ -17,8 +17,6 @@ export interface IActionSheetItem {
 }
 
 export const Item = memo(({ item, hide }: IActionSheetItem) => {
-	'use memo';
-
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const height = useActionSheetItemHeight();

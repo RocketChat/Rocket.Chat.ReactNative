@@ -10,8 +10,6 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
-	'use memo';
-
 	const [styles, colors] = useStyle();
 	const { tmid, onRemoveQuoteMessage } = useRoomContext();
 	const message = useMessage(messageId, tmid);

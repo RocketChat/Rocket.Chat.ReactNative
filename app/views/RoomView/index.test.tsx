@@ -103,7 +103,7 @@ const buildProps = (params: Record<string, unknown>): IRoomViewProps =>
 		showActionSheet: jest.fn(),
 		hideActionSheet: jest.fn(),
 		fontScale: 1
-	} as unknown as IRoomViewProps);
+	}) as unknown as IRoomViewProps;
 
 // A WatermelonDB subscription row observes itself; only the fields RoomView reads matter here.
 const buildRow = (overrides: Record<string, unknown> = {}) => {

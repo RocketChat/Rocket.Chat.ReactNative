@@ -69,8 +69,6 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 };
 
 const Video = ({ file, showAttachment, author, msg }: IMessageVideo): ReactElement | null => {
-	'use memo';
-
 	const user = useMessageUser();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 

@@ -30,8 +30,10 @@ export interface ILoggedUser {
 	requirePasswordChange?: boolean;
 }
 
-export interface ILoggedUserResultFromServer
-	extends Omit<ILoggedUser, 'enableMessageParserEarlyAdoption' | 'showMessageInMainThread'> {
+export interface ILoggedUserResultFromServer extends Omit<
+	ILoggedUser,
+	'enableMessageParserEarlyAdoption' | 'showMessageInMainThread'
+> {
 	settings: IUserSettings;
 }
 
