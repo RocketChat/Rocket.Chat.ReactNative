@@ -60,7 +60,8 @@ const RenderContent = ({
 
 	if (attachment.image_url) {
 		const uri = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
-		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(uri);
+		// `#` is escaped to `%23` before it reaches here, so both spellings can follow the extension.
+		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|#|%23|$)/i.test(uri);
 		return (
 			<ImageViewer
 				uri={uri}
