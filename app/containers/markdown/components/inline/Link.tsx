@@ -9,6 +9,7 @@ import { LISTENER } from '../../../Toast';
 import { useTheme } from '../../../../theme';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import EventEmitter from '../../../../lib/methods/helpers/events';
+import { claimInlineTextPress, releaseInlineTextPress } from '../../../../lib/methods/helpers/inlineTextPressClaim';
 import { themes } from '../../../../lib/constants/colors';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
@@ -51,7 +52,9 @@ const Link = ({ value }: ILinkProps) => {
 		<Text
 			style={[styles.link, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontInfo }]}
 			onPress={handlePress}
-			onLongPress={onLongPress}>
+			onLongPress={onLongPress}
+			onPressIn={claimInlineTextPress}
+			onPressOut={releaseInlineTextPress}>
 			{(block => {
 				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {

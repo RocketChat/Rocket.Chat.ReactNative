@@ -787,7 +787,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -1139,7 +1146,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}

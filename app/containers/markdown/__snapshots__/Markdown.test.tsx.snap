@@ -1754,6 +1754,8 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       <Text
         onLongPress={[Function]}
         onPress={[Function]}
+        onPressIn={[Function]}
+        onPressOut={[Function]}
         style={
           [
             {
@@ -2221,6 +2223,8 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       <Text
         onLongPress={[Function]}
         onPress={[Function]}
+        onPressIn={[Function]}
+        onPressOut={[Function]}
         style={
           [
             {
@@ -2688,6 +2692,8 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       <Text
         onLongPress={[Function]}
         onPress={[Function]}
+        onPressIn={[Function]}
+        onPressOut={[Function]}
         style={
           [
             {
@@ -3155,6 +3161,8 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       <Text
         onLongPress={[Function]}
         onPress={[Function]}
+        onPressIn={[Function]}
+        onPressOut={[Function]}
         style={
           [
             {
@@ -3318,6 +3326,8 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
+          onPressIn={[Function]}
+          onPressOut={[Function]}
           style={
             [
               {
@@ -3420,6 +3430,8 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
+          onPressIn={[Function]}
+          onPressOut={[Function]}
           style={
             [
               {
@@ -3522,6 +3534,8 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
+          onPressIn={[Function]}
+          onPressOut={[Function]}
           style={
             [
               {
@@ -3597,6 +3611,8 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
+          onPressIn={[Function]}
+          onPressOut={[Function]}
           style={
             [
               {
@@ -3784,6 +3800,8 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
             <Text
               onLongPress={[Function]}
               onPress={[Function]}
+              onPressIn={[Function]}
+              onPressOut={[Function]}
               style={
                 [
                   {
@@ -4065,6 +4083,8 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
             <Text
               onLongPress={[Function]}
               onPress={[Function]}
+              onPressIn={[Function]}
+              onPressOut={[Function]}
               style={
                 [
                   {
@@ -7139,6 +7159,8 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
+          onPressIn={[Function]}
+          onPressOut={[Function]}
           style={
             [
               {
@@ -8988,6 +9010,8 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
+          onPressIn={[Function]}
+          onPressOut={[Function]}
           style={
             [
               {

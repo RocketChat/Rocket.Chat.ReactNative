@@ -1,6 +1,7 @@
 import { A11y } from 'react-native-a11y-order';
 
 import { useTheme } from '../../../../theme';
+import { hasInlineTextPressClaim } from '../../../../lib/methods/helpers/inlineTextPressClaim';
 import Touch from '../../../Touch';
 import Message, { type TMessageProps } from '../Message/Message';
 import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
@@ -48,6 +49,12 @@ const MessageTouchable = (props: TMessageProps) => {
 	}
 
 	const handleLongPress = () => {
+		// An inline markdown link already handled this long press. On Android the row is a gesture-handler
+		// Pressable and the link is a plain <Text onLongPress>, and the two gesture systems cannot arbitrate,
+		// so without this both fire and the action sheet lands on top of the "copied to clipboard" toast.
+		if (hasInlineTextPressClaim()) {
+			return;
+		}
 		markAsLastFocused();
 		onLongPress();
 	};

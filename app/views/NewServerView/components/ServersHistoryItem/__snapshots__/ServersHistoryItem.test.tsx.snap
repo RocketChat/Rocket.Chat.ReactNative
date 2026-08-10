@@ -122,7 +122,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -430,7 +437,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -738,7 +752,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -1051,7 +1072,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -1359,7 +1387,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -1672,7 +1707,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -1980,7 +2022,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#262931",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
@@ -2288,7 +2337,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={[Function]}
+      style={
+        [
+          [Function],
+          {
+            "backgroundColor": "#0d0d0d",
+          },
+        ]
+      }
     >
       <ExternalKeyboardView
         canBeFocused={true}
