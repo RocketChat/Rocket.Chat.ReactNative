@@ -194,7 +194,7 @@ const SwipeableDeleteTouchable = ({
 					onDeletePress={handleDeletePress}
 					testID={`${testID}-delete`}
 				/>
-				<Animated.View style={animatedStyles}>
+				<Animated.View style={[animatedStyles, { backgroundColor: backgroundColor || colors.surfaceLight }]}>
 					<Touch
 						onPress={handlePress}
 						testID={testID}
