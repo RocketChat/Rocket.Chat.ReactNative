@@ -21,8 +21,6 @@ interface IMessageReaction {
 }
 
 const AddReaction = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const reactionInit = useReactionInit();
 	const id = useMessageId();
@@ -46,8 +44,6 @@ const AddReaction = () => {
 };
 
 const Reaction = ({ reaction }: IMessageReaction) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const item = useMessageItem();
 	const id = useMessageId();
@@ -79,8 +75,6 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 };
 
 const Reactions = () => {
-	'use memo';
-
 	const reactions = useReactions();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {

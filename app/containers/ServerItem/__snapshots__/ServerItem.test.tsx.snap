@@ -708,13 +708,12 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 80,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -727,15 +726,13 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 390,
-            },
-            {
-              "height": 80,
             },
             [Function],
           ]
@@ -1070,13 +1067,12 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 80,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -1089,15 +1085,13 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 390,
-            },
-            {
-              "height": 80,
             },
             [Function],
           ]

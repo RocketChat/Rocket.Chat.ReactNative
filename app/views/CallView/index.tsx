@@ -12,8 +12,6 @@ import { isIOS } from '../../lib/methods/helpers';
 import NativeVoipModule from '../../lib/native/NativeVoip';
 
 const CallView = (): ReactElement | null => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
 	const callState = useCallStore(state => state.callState);
