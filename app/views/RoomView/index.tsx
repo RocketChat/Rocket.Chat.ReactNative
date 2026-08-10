@@ -137,11 +137,6 @@ const RoomView = (props: IRoomViewProps) => {
 		};
 	}, [rid]);
 
-	// Register the JoinCode modal opener once per store; joinRoom pulls it from the store at call time.
-	useEffect(() => {
-		roomStore.getState().setJoinCodeTrigger(() => joinCodeRef.current?.show());
-	}, [roomStore]);
-
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
 	const joined = useStore(roomStore, s => s.joined);
@@ -296,7 +291,7 @@ const RoomView = (props: IRoomViewProps) => {
 							</RoomMessageHandlersBridge>
 						</MessageRoomProvider>
 					</A11yGateProvider>
-					<RoomFooter messageComposerRef={messageComposerRef} />
+					<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
 					<RoomMessageActions
 						tmid={tmid}
 						user={user}

@@ -71,7 +71,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve()),
-		setJoinCodeTrigger: jest.fn(),
 		...overrides
 	}));
 
@@ -79,7 +78,7 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore()) =>
 	render(
 		<Provider store={reduxStore}>
 			<RoomStoreContext.Provider value={roomStore}>
-				<RoomFooter messageComposerRef={{ current: null }} />
+				<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} />
 			</RoomStoreContext.Provider>
 		</Provider>
 	);

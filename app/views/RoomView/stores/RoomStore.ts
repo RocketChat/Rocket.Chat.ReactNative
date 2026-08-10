@@ -104,11 +104,12 @@ const createRoomState =
 		join: () => set({ joined: true }),
 		markMessageSent: () => set({ lastSeen: null }),
 
-		setJoinCodeTrigger: trigger => set({ joinCodeTrigger: trigger }),
-		joinRoom: () =>
+		// The join-code modal is per-screen state: two RoomViews (room + thread) share this rid-keyed
+		// store, so the caller passes its own trigger instead of registering one here.
+		joinRoom: requestJoinCode =>
 			joinRoomImpl(get().room, {
 				serverVersion: reduxStore.getState().server.version,
-				requestJoinCode: get().joinCodeTrigger,
+				requestJoinCode,
 				onJoin: get().join
 			}),
 		resumeRoom: () => resumeRoomImpl(get().room, { onJoin: get().join })

@@ -43,19 +43,18 @@ const makeStore = (room: IRoomViewState['room']) => {
 describe('RoomStore join/resume actions', () => {
 	beforeEach(() => jest.clearAllMocks());
 
-	it('joinRoom fires the registered join-code trigger for a protected room and does not auto-join', async () => {
+	it('joinRoom fires the caller-supplied join-code trigger for a protected room and does not auto-join', async () => {
 		const store = makeStore({ rid: 'rid-1', t: 'c', joinCodeRequired: true });
 		const trigger = jest.fn();
-		store.getState().setJoinCodeTrigger(trigger);
 
-		await store.getState().joinRoom();
+		await store.getState().joinRoom(trigger);
 
 		expect(trigger).toHaveBeenCalledTimes(1);
 		expect(mockJoinRoomService).not.toHaveBeenCalled();
 		expect(store.getState().join).not.toHaveBeenCalled();
 	});
 
-	it('joinRoom no-ops silently for a protected room when no trigger is registered', async () => {
+	it('joinRoom no-ops silently for a protected room when no trigger is passed', async () => {
 		const store = makeStore({ rid: 'rid-1', t: 'c', joinCodeRequired: true });
 
 		await expect(store.getState().joinRoom()).resolves.toBeUndefined();

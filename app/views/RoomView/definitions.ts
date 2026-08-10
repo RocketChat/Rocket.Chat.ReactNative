@@ -28,6 +28,11 @@ export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'sho
 
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
+	joinCodeRef: RefObject<IJoinCode | null>;
+}
+
+export interface ITakeOrJoinProps {
+	joinCodeRef: RefObject<IJoinCode | null>;
 }
 
 export interface IFooterPreviewProps {
@@ -166,10 +171,8 @@ export interface RoomState {
 	init: (params?: IRoomStoreInitParams) => Promise<void>;
 	join: () => void;
 	markMessageSent: () => void;
-	joinRoom: () => Promise<void>;
+	joinRoom: (requestJoinCode?: () => void) => Promise<void>;
 	resumeRoom: () => Promise<void>;
-	joinCodeTrigger?: () => void;
-	setJoinCodeTrigger: (trigger: () => void) => void;
 }
 
 export interface IJoinRoomContext {

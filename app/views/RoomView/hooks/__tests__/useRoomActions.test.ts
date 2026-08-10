@@ -37,8 +37,7 @@ const makeRoomStore = (): RoomStore =>
 		join: jest.fn(),
 		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
-		resumeRoom: jest.fn(() => Promise.resolve()),
-		setJoinCodeTrigger: jest.fn()
+		resumeRoom: jest.fn(() => Promise.resolve())
 	}));
 
 const renderRoomActions = (overrides: Partial<IUseRoomActionsParams> = {}, roomStore = makeRoomStore()) => {
