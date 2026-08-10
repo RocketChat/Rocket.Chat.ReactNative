@@ -43,6 +43,58 @@ const getRoomMember = async (get: () => RoomState, set: StoreApi<RoomState>['set
 
 const EMPTY_ROOM: IRoomViewState['room'] = { rid: '', t: '' };
 
+const isEmptyRoom = (room: IRoomViewState['room']): boolean => room.rid === EMPTY_ROOM.rid;
+
+const INIT_MAX_ATTEMPTS = 3;
+const INIT_RETRY_DELAY = 1000;
+
+interface ILoadRoomResult {
+	failed: boolean;
+	lastSeen: IRoomViewState['lastSeen'];
+}
+
+// One load attempt. `lastSeen` is per-screen: room and thread mount two RoomViews on one rid-keyed
+// store, so the unread divider anchor is returned to the caller instead of written to the shared
+// state. `failed` tells `init` whether the attempt is worth repeating.
+const loadRoom = async (
+	rid: string,
+	get: () => RoomState,
+	set: StoreApi<RoomState>['setState'],
+	{ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams
+): Promise<ILoadRoomResult> => {
+	let lastSeen: IRoomViewState['lastSeen'] = null;
+	try {
+		const currentRoom = get().room;
+		if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
+			return { failed: false, lastSeen: null };
+		}
+
+		if (tmid) {
+			await loadThreadMessages({ tmid, rid });
+			onThreadMessagesLoaded?.();
+		} else {
+			await getMessages({
+				rid: currentRoom.rid,
+				...('lastOpen' in currentRoom && currentRoom.lastOpen ? {} : { t: currentRoom.t as RoomType })
+			});
+
+			if (get().joined && 'id' in currentRoom) {
+				lastSeen = currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null;
+				readMessages(currentRoom.rid).catch(e => log(e));
+			}
+		}
+
+		const nextCanAutoTranslate = canAutoTranslateMethod();
+		const nextMember = await getRoomMember(get, set);
+
+		set({ canAutoTranslate: nextCanAutoTranslate, member: nextMember });
+	} catch (e) {
+		log(e);
+		return { failed: true, lastSeen: null };
+	}
+	return { failed: false, lastSeen };
+};
+
 const createRoomState =
 	(
 		rid: string | undefined,
@@ -62,42 +114,29 @@ const createRoomState =
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
 
-		// `lastSeen` is per-screen: room and thread mount two RoomViews on one rid-keyed store, so the
-		// unread divider anchor is returned to the caller instead of written to the shared state.
+		// A transient failure retries a couple of times instead of leaving the screen empty until the
+		// user navigates away and back. The loop lives here so the caller's single `loading` window
+		// spans the whole retry stretch: no per-attempt `loading` write, no loaded-but-empty flash.
 		init: async ({ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams = {}) => {
 			if (!rid) {
 				return null;
 			}
-			let lastSeen: IRoomViewState['lastSeen'] = null;
-			try {
-				const currentRoom = get().room;
-				if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
+			const startedEmpty = isEmptyRoom(get().room);
+			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
+				const { failed, lastSeen } = await loadRoom(rid, get, set, { tmid, onThreadMessagesLoaded });
+				if (!failed || attempt === INIT_MAX_ATTEMPTS) {
+					return failed ? null : lastSeen;
+				}
+				await new Promise(resolve => {
+					setTimeout(resolve, INIT_RETRY_DELAY);
+				});
+				// A store that started empty can be filled by the subscription observer mid-retry; once
+				// the room has arrived there is nothing transient left to wait for.
+				if (startedEmpty && !isEmptyRoom(get().room)) {
 					return null;
 				}
-
-				if (tmid) {
-					await loadThreadMessages({ tmid, rid });
-					onThreadMessagesLoaded?.();
-				} else {
-					await getMessages({
-						rid: currentRoom.rid,
-						...('lastOpen' in currentRoom && currentRoom.lastOpen ? {} : { t: currentRoom.t as RoomType })
-					});
-
-					if (get().joined && 'id' in currentRoom) {
-						lastSeen = currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null;
-						readMessages(currentRoom.rid).catch(e => log(e));
-					}
-				}
-
-				const nextCanAutoTranslate = canAutoTranslateMethod();
-				const nextMember = await getRoomMember(get, set);
-
-				set({ canAutoTranslate: nextCanAutoTranslate, member: nextMember });
-			} catch (e) {
-				log(e);
 			}
-			return lastSeen;
+			return null;
 		},
 
 		join: () => set({ joined: true }),

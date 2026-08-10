@@ -256,32 +256,78 @@ describe('RoomStore', () => {
 		expect(store.getState().roomUserId).toBe('uid-1');
 	});
 
-	it('does not schedule a retry when init throws', async () => {
-		jest.useFakeTimers();
-		setupObserve();
-		mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+	describe('init retry', () => {
+		beforeEach(() => {
+			jest.useFakeTimers();
+		});
 
-		await store.getState().init();
+		afterEach(() => {
+			jest.useRealTimers();
+		});
 
-		expect(mockGetMessages).toHaveBeenCalledTimes(1);
+		it('logs the error when an attempt throws', async () => {
+			setupObserve();
+			const error = new Error('boom');
+			mockGetMessages.mockRejectedValueOnce(error);
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
-		jest.advanceTimersByTime(10000);
-		await Promise.resolve();
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(1000);
+			await initPromise;
 
-		expect(mockGetMessages).toHaveBeenCalledTimes(1);
-		jest.useRealTimers();
-	});
+			expect(mockLog).toHaveBeenCalledWith(error);
+		});
 
-	it('logs the error when init throws', async () => {
-		setupObserve();
-		const error = new Error('boom');
-		mockGetMessages.mockRejectedValueOnce(error);
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		it('retries after a failed attempt and resolves with the lastSeen of the successful one', async () => {
+			setupObserve();
+			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-01-01T00:00:00.000Z') };
+			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: unreadRoom });
 
-		await store.getState().init();
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(1000);
 
-		expect(mockLog).toHaveBeenCalledWith(error);
+			await expect(initPromise).resolves.toBe(unreadRoom.ls);
+			expect(mockGetMessages).toHaveBeenCalledTimes(2);
+		});
+
+		it('gives up after three attempts and resolves with a null lastSeen', async () => {
+			setupObserve();
+			mockGetMessages.mockRejectedValue(new Error('boom'));
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(10000);
+
+			await expect(initPromise).resolves.toBeNull();
+			expect(mockGetMessages).toHaveBeenCalledTimes(3);
+		});
+
+		it('stops retrying once the subscription observer fills a store that started empty', async () => {
+			const { emit } = setupObserve();
+			mockGetMessages.mockRejectedValue(new Error('boom'));
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: { rid: '', t: '' } });
+
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(0);
+			emit([subRoom]);
+			await jest.advanceTimersByTimeAsync(10000);
+
+			await expect(initPromise).resolves.toBeNull();
+			expect(mockGetMessages).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not retry an invite subscription', async () => {
+			setupObserve();
+			mockIsInviteSubscription.mockReturnValue(true);
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(10000);
+
+			await expect(initPromise).resolves.toBeNull();
+			expect(mockGetMessages).not.toHaveBeenCalled();
+		});
 	});
 
 	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
