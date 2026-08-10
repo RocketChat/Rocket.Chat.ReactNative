@@ -35,6 +35,14 @@ tags:
       id: message-composer-input
     timeout: 60000
 - inputText: ':joy'
+# Typing ':' alone lists every emoji, and 'joy' is already among the first ones, so waiting on
+# autocomplete-item-joy alone can match that unfiltered list, where the row sits outside the
+# visible area of the list and the tap lands on the keyboard instead. 'joystick' only shows up
+# once the debounced search for 'joy' resolves, so it tells us the list is the one we want.
+- extendedWaitUntil:
+    visible:
+      id: autocomplete-item-joystick
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: autocomplete-item-joy
@@ -161,7 +169,13 @@ tags:
 - tapOn:
     id: emoji-searchbar-input
 - inputText: 'laughing'
-- hideKeyboard
+# iOS already dismisses the keyboard when the search results show up, and hideKeyboard fails
+# when there's no keyboard to dismiss
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - hideKeyboard
 - extendedWaitUntil:
     visible:
       id: emoji-laughing
