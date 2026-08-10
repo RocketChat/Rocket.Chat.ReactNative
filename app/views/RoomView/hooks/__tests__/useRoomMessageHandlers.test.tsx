@@ -9,6 +9,7 @@ import { sendMessage } from '../../../../lib/methods/sendMessage';
 import { getUserSelector } from '../../../../selectors/login';
 import { type RoomState, type RoomStore } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { LastSeenContext } from '../../stores/LastSeenContext';
 import { createMessageActionStore, MessageActionStoreContext } from '../../../../containers/message/stores/MessageActionStore';
 import { MessageRoomProvider } from '../../../../containers/message/stores/MessageRoomStore';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
@@ -78,7 +79,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,
@@ -86,7 +86,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		canPlaceLivechatOnHold: false,
 		init: jest.fn(),
 		join: jest.fn(),
-		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve()),
 		...overrides
@@ -95,20 +94,23 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, tmid?: string) => {
 	const roomStore = makeRoomStore(roomStoreOverrides);
 	const messageActionStore = createMessageActionStore();
+	const clearLastSeen = jest.fn();
 
 	const { result } = renderHook(() => useRoomMessageHandlers(), {
 		wrapper: ({ children }) => (
 			<RoomStoreContext.Provider value={roomStore}>
-				<MessageActionStoreContext.Provider value={messageActionStore}>
-					<MessageRoomProvider tmid={tmid} timeFormat='h:mm A'>
-						{children}
-					</MessageRoomProvider>
-				</MessageActionStoreContext.Provider>
+				<LastSeenContext.Provider value={{ lastSeen: null, clearLastSeen }}>
+					<MessageActionStoreContext.Provider value={messageActionStore}>
+						<MessageRoomProvider tmid={tmid} timeFormat='h:mm A'>
+							{children}
+						</MessageRoomProvider>
+					</MessageActionStoreContext.Provider>
+				</LastSeenContext.Provider>
 			</RoomStoreContext.Provider>
 		)
 	});
 
-	return { result, roomStore, messageActionStore };
+	return { result, roomStore, messageActionStore, clearLastSeen };
 };
 
 // MessageRoomProvider stays mounted (useRoomTmid throws without it); the store contexts are the ones left absent.
@@ -201,11 +203,10 @@ describe('useRoomMessageHandlers', () => {
 	});
 
 	describe('onAnswerButtonPress', () => {
-		it('sends the message, marks it sent and reports a positive review event', async () => {
+		it('sends the message, clears the unread divider and reports a positive review event', async () => {
 			mockSendMessage.mockResolvedValue(undefined);
-			const { result, roomStore, messageActionStore } = renderRoomMessageHandlers({}, 'thread-1');
+			const { result, clearLastSeen, messageActionStore } = renderRoomMessageHandlers({}, 'thread-1');
 			messageActionStore.getState().actions.startEditing('msg-1');
-			const markMessageSentSpy = roomStore.getState().markMessageSent as jest.Mock;
 
 			await act(async () => {
 				result.current.onAnswerButtonPress('hello', true);
@@ -213,7 +214,7 @@ describe('useRoomMessageHandlers', () => {
 			});
 
 			expect(mockSendMessage).toHaveBeenCalledWith('rid-1', 'hello', 'thread-1', mockUser, true);
-			expect(markMessageSentSpy).toHaveBeenCalledTimes(1);
+			expect(clearLastSeen).toHaveBeenCalledTimes(1);
 			expect(Review.pushPositiveEvent).toHaveBeenCalledTimes(1);
 			expect(messageActionStore.getState().action).toBeNull();
 		});

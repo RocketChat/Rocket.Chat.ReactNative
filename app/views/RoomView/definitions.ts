@@ -47,7 +47,6 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-export type TStateAttrsUpdate = keyof IRoomViewState;
 export type TRoomUpdate = keyof TSubscriptionModel;
 
 export interface IRoomViewState {
@@ -157,6 +156,15 @@ export interface IListContainerProps {
 	serverVersion: string | null;
 }
 
+export interface ILastSeenContextValue {
+	lastSeen: IRoomViewState['lastSeen'];
+	clearLastSeen: () => void;
+}
+
+export interface IUseRoomInitResult extends ILastSeenContextValue {
+	loading: boolean;
+}
+
 export interface IRoomStoreInitParams {
 	tmid?: string;
 	onThreadMessagesLoaded?: () => void;
@@ -169,15 +177,14 @@ export interface RoomState {
 	subscribed: boolean;
 	member: IRoomViewState['member'];
 	roomUserId?: string | null;
-	lastSeen: Date | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
 	canReturnQueue: boolean;
 	canViewCannedResponse: boolean;
 	canPlaceLivechatOnHold: boolean;
-	init: (params?: IRoomStoreInitParams) => Promise<void>;
+	// Resolves with the screen's unread divider anchor; see the store's `init` comment.
+	init: (params?: IRoomStoreInitParams) => Promise<IRoomViewState['lastSeen']>;
 	join: () => void;
-	markMessageSent: () => void;
 	joinRoom: (requestJoinCode?: () => void) => Promise<void>;
 	resumeRoom: () => Promise<void>;
 }
@@ -251,6 +258,7 @@ export interface IUseRoomActionsParams {
 	roomStore: RoomStore;
 	userRef: RefObject<TRoomViewUser>;
 	resetAction: () => void;
+	onMessageSent: () => void;
 }
 
 export interface IUseRoomActionsResult {

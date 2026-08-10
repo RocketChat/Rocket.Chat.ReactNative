@@ -24,7 +24,6 @@ const makeRoomStore = (): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,
@@ -32,7 +31,6 @@ const makeRoomStore = (): RoomStore =>
 		canPlaceLivechatOnHold: false,
 		init: jest.fn(),
 		join: jest.fn(),
-		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve())
 	}));

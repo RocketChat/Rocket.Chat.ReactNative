@@ -26,15 +26,13 @@ const makeRoomStore = (): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
-		init: jest.fn(() => Promise.resolve()),
+		init: jest.fn(() => Promise.resolve(null)),
 		join: jest.fn(),
-		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve())
 	}));
@@ -46,6 +44,7 @@ const renderRoomActions = (overrides: Partial<IUseRoomActionsParams> = {}, roomS
 		roomStore,
 		userRef: { current: { id: 'user-1', token: 'token-1', username: 'user1', showMessageInMainThread: false } },
 		resetAction: jest.fn(),
+		onMessageSent: jest.fn(),
 		...overrides
 	};
 	const { result } = renderHook((props: IUseRoomActionsParams) => useRoomActions(props), { initialProps: defaultProps });
@@ -68,10 +67,10 @@ describe('useRoomActions', () => {
 		expect(resetAction).not.toHaveBeenCalled();
 	});
 
-	it('handleSendMessage sends the message, marks it sent and resets the composer action', async () => {
+	it('handleSendMessage sends the message, clears the unread divider and resets the composer action', async () => {
 		const resetAction = jest.fn();
-		const roomStore = makeRoomStore();
-		const { result } = renderRoomActions({ tmid: 'tmid-1', resetAction }, roomStore);
+		const onMessageSent = jest.fn();
+		const { result } = renderRoomActions({ tmid: 'tmid-1', resetAction, onMessageSent });
 
 		result.current.handleSendMessage('hello', true);
 
@@ -87,7 +86,7 @@ describe('useRoomActions', () => {
 		await Promise.resolve();
 		await Promise.resolve();
 
-		expect(roomStore.getState().markMessageSent).toHaveBeenCalledTimes(1);
+		expect(onMessageSent).toHaveBeenCalledTimes(1);
 		expect(mockPushPositiveEvent).toHaveBeenCalledTimes(1);
 	});
 });

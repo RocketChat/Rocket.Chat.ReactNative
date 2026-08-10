@@ -35,6 +35,7 @@ import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
+import { LastSeenContext } from './stores/LastSeenContext';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
@@ -184,7 +185,7 @@ const RoomView = (props: IRoomViewProps) => {
 		messageErrorActionsRef
 	});
 
-	const loading = useRoomInit({
+	const { loading, lastSeen, clearLastSeen } = useRoomInit({
 		rid,
 		tmid,
 		isAuthenticated,
@@ -202,7 +203,8 @@ const RoomView = (props: IRoomViewProps) => {
 		tmid,
 		roomStore,
 		userRef,
-		resetAction
+		resetAction,
+		onMessageSent: clearLastSeen
 	});
 
 	useInAppFeedback();
@@ -252,71 +254,73 @@ const RoomView = (props: IRoomViewProps) => {
 
 	return (
 		<RoomStoreContext.Provider value={roomStore}>
-			<RoomProviders
-				store={messageActionStore}
-				rid={room.rid}
-				t={room.t}
-				room={room}
-				roomUpdate={roomUpdate}
-				tmid={tmid}
-				sharing={false}
-				onRemoveQuoteMessage={onRemoveQuoteMessage}
-				editCancel={onEditCancel}
-				editRequest={onEditRequest}
-				onSendMessage={handleSendMessage}
-				setQuotesAndText={setQuotesAndText}
-				getText={getText}>
-				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
-					{!tmid ? (
-						<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
-					) : null}
-					<A11yGateProvider>
-						<MessageRoomProvider
-							jumpToMessage={jumpToMessageByUrl}
-							closeEmojiAndAction={handleCloseEmoji}
-							reactionInit={onReactionInit}
-							errorActionsShow={errorActionsShow}
-							archived={'id' in room && room.archived}
-							isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-							rid={room.rid}
-							broadcast={'id' in room && room.broadcast}
-							isThreadRoom={!!tmid}
+			<LastSeenContext.Provider value={{ lastSeen, clearLastSeen }}>
+				<RoomProviders
+					store={messageActionStore}
+					rid={room.rid}
+					t={room.t}
+					room={room}
+					roomUpdate={roomUpdate}
+					tmid={tmid}
+					sharing={false}
+					onRemoveQuoteMessage={onRemoveQuoteMessage}
+					editCancel={onEditCancel}
+					editRequest={onEditRequest}
+					onSendMessage={handleSendMessage}
+					setQuotesAndText={setQuotesAndText}
+					getText={getText}>
+					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
+						{!tmid ? (
+							<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
+						) : null}
+						<A11yGateProvider>
+							<MessageRoomProvider
+								jumpToMessage={jumpToMessageByUrl}
+								closeEmojiAndAction={handleCloseEmoji}
+								reactionInit={onReactionInit}
+								errorActionsShow={errorActionsShow}
+								archived={'id' in room && room.archived}
+								isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
+								rid={room.rid}
+								broadcast={'id' in room && room.broadcast}
+								isThreadRoom={!!tmid}
+								tmid={tmid}
+								Message_GroupingPeriod={Message_GroupingPeriod}
+								autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+								autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
+								<RoomMessageHandlersBridge>
+									<List
+										ref={listRef}
+										flatListRef={flatListRef}
+										rid={room.rid}
+										t={room.t as RoomType}
+										tmid={tmid}
+										onLongPress={onMessageLongPress}
+										hideSystemMessages={hideSystemMessages}
+										showMessageInMainThread={user.showMessageInMainThread ?? false}
+										serverVersion={serverVersion}
+									/>
+								</RoomMessageHandlersBridge>
+							</MessageRoomProvider>
+						</A11yGateProvider>
+						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} loading={loading} />
+						<RoomMessageActions
 							tmid={tmid}
-							Message_GroupingPeriod={Message_GroupingPeriod}
-							autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-							autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-							<RoomMessageHandlersBridge>
-								<List
-									ref={listRef}
-									flatListRef={flatListRef}
-									rid={room.rid}
-									t={room.t as RoomType}
-									tmid={tmid}
-									onLongPress={onMessageLongPress}
-									hideSystemMessages={hideSystemMessages}
-									showMessageInMainThread={user.showMessageInMainThread ?? false}
-									serverVersion={serverVersion}
-								/>
-							</RoomMessageHandlersBridge>
-						</MessageRoomProvider>
-					</A11yGateProvider>
-					<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} loading={loading} />
-					<RoomMessageActions
-						tmid={tmid}
-						user={user}
-						messageActionsRef={messageActionsRef}
-						messageErrorActionsRef={messageErrorActionsRef}
-						editInit={onEditInit}
-						replyInit={onReplyInit}
-						quoteInit={onQuoteInit}
-						reactionInit={onReactionInit}
-						onReactionPress={onReactionPress}
-						jumpToMessage={jumpToMessageByUrl}
-					/>
-					<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
-					<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
-				</SafeAreaView>
-			</RoomProviders>
+							user={user}
+							messageActionsRef={messageActionsRef}
+							messageErrorActionsRef={messageErrorActionsRef}
+							editInit={onEditInit}
+							replyInit={onReplyInit}
+							quoteInit={onQuoteInit}
+							reactionInit={onReactionInit}
+							onReactionPress={onReactionPress}
+							jumpToMessage={jumpToMessageByUrl}
+						/>
+						<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
+						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
+					</SafeAreaView>
+				</RoomProviders>
+			</LastSeenContext.Provider>
 		</RoomStoreContext.Provider>
 	);
 };

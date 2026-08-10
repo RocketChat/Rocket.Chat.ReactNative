@@ -1,16 +1,4 @@
-import { type TRoomUpdate, type TStateAttrsUpdate } from './definitions';
-
-export const stateAttrsUpdate = [
-	'joined',
-	'lastSeen',
-	'canAutoTranslate',
-	'loading',
-	'readOnly',
-	'member',
-	'canForwardGuest',
-	'canReturnQueue',
-	'canViewCannedResponse'
-] as TStateAttrsUpdate[];
+import { type TRoomUpdate } from './definitions';
 
 export const roomAttrsUpdate = [
 	'f',

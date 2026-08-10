@@ -287,7 +287,7 @@ describe('RoomStore', () => {
 	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
 		const store = peekOrCreateRoomStore({ initialRoom: stubRoom });
 
-		await expect(store.getState().init()).resolves.toBeUndefined();
+		await expect(store.getState().init()).resolves.toBeNull();
 
 		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
@@ -302,16 +302,6 @@ describe('RoomStore', () => {
 		store.getState().join();
 
 		expect(store.getState().joined).toBe(true);
-	});
-
-	it('markMessageSent() sets lastSeen null', () => {
-		setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-		store.setState({ lastSeen: new Date() });
-
-		store.getState().markMessageSent();
-
-		expect(store.getState().lastSeen).toBeNull();
 	});
 
 	it('roomAttrsUpdateColumns has exactly one entry per roomAttrsUpdate key', () => {

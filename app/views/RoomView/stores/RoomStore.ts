@@ -56,21 +56,23 @@ const createRoomState =
 		subscribed: 'id' in initialRoom,
 		member: {},
 		roomUserId,
-		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
 
+		// `lastSeen` is per-screen: room and thread mount two RoomViews on one rid-keyed store, so the
+		// unread divider anchor is returned to the caller instead of written to the shared state.
 		init: async ({ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams = {}) => {
 			if (!rid) {
-				return;
+				return null;
 			}
+			let lastSeen: IRoomViewState['lastSeen'] = null;
 			try {
 				const currentRoom = get().room;
 				if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
-					return;
+					return null;
 				}
 
 				if (tmid) {
@@ -83,7 +85,7 @@ const createRoomState =
 					});
 
 					if (get().joined && 'id' in currentRoom) {
-						set({ lastSeen: currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null });
+						lastSeen = currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null;
 						readMessages(currentRoom.rid).catch(e => log(e));
 					}
 				}
@@ -95,10 +97,10 @@ const createRoomState =
 			} catch (e) {
 				log(e);
 			}
+			return lastSeen;
 		},
 
 		join: () => set({ joined: true }),
-		markMessageSent: () => set({ lastSeen: null }),
 
 		// The join-code modal is per-screen state: two RoomViews (room + thread) share this rid-keyed
 		// store, so the caller passes its own trigger instead of registering one here.

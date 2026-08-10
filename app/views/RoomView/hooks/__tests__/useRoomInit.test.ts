@@ -27,35 +27,33 @@ const makeRoomStore = (): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
-		init: jest.fn(() => Promise.resolve()),
+		init: jest.fn(() => Promise.resolve(null)),
 		join: jest.fn(),
-		markMessageSent: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve())
 	}));
 
 // A store whose init() only resolves when the test says so, so an in-flight init can be observed.
 const makeDeferredRoomStore = () => {
-	const resolvers: (() => void)[] = [];
+	const resolvers: ((lastSeen: Date | null) => void)[] = [];
 	const roomStore = makeRoomStore();
 	roomStore.setState({
 		init: jest.fn(
 			() =>
-				new Promise<void>(resolve => {
+				new Promise<Date | null>(resolve => {
 					resolvers.push(resolve);
 				})
 		)
 	});
 	return {
 		roomStore,
-		resolveInit: async (call = 0) => {
-			await act(async () => resolvers[call]());
+		resolveInit: async (call = 0, lastSeen: Date | null = null) => {
+			await act(async () => resolvers[call](lastSeen));
 		}
 	};
 };
@@ -155,25 +153,39 @@ describe('useRoomInit', () => {
 	// init() resolves on the invite early-return and on failure alike, so both land here: the footer
 	// must not stay stuck in a loading state on either path.
 	it.each([
-		['resolves', () => Promise.resolve()],
+		['resolves', () => Promise.resolve(null)],
 		['rejects', () => Promise.reject(new Error('boom'))]
 	])('clears loading once init %s', async (_case, init) => {
 		const roomStore = makeRoomStore();
 		roomStore.setState({ init: jest.fn(init) });
 		const { result } = renderRoomInit({}, roomStore);
 
-		await waitFor(() => expect(result.current).toBe(false));
+		await waitFor(() => expect(result.current.loading).toBe(false));
 	});
 
 	it('keeps loading true while init is in flight', async () => {
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result } = renderRoomInit({}, roomStore);
 
-		expect(result.current).toBe(true);
+		expect(result.current.loading).toBe(true);
 
 		await resolveInit();
 
-		expect(result.current).toBe(false);
+		expect(result.current.loading).toBe(false);
+	});
+
+	it('keeps the lastSeen returned by init and clears it on demand', async () => {
+		const lastSeen = new Date('2026-01-01T00:00:00.000Z');
+		const { roomStore, resolveInit } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInit(0, lastSeen);
+
+		expect(result.current.lastSeen).toBe(lastSeen);
+
+		act(() => result.current.clearLastSeen());
+
+		expect(result.current.lastSeen).toBeNull();
 	});
 
 	it('does not clear loading after unmount', async () => {
@@ -183,6 +195,6 @@ describe('useRoomInit', () => {
 		unmount();
 		await resolveInit();
 
-		expect(result.current).toBe(true);
+		expect(result.current.loading).toBe(true);
 	});
 });

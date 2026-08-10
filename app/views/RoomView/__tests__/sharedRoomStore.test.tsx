@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
@@ -38,7 +38,29 @@ jest.mock('../components/JoinCode', () => {
 	};
 });
 
-jest.mock('../List', () => ({ __esModule: true, default: 'List' }));
+// The List mock is the screen's probe: it reads this RoomView's `lastSeen` and sends through this
+// RoomView's composer, so a per-screen value can be asserted per screen.
+jest.mock('../List', () => {
+	const { createElement } = require('react');
+	const { Pressable, View } = require('react-native');
+	const { useLastSeen } = require('../stores/LastSeenContext');
+	const { useComposerTmid, useOnSendMessage } = require('../stores/ComposerStore');
+	return {
+		__esModule: true,
+		default: () => {
+			const { lastSeen } = useLastSeen();
+			const tmid = useComposerTmid();
+			const onSendMessage = useOnSendMessage();
+			const screenName = tmid ? 'thread' : 'room';
+			return createElement(View, null, [
+				createElement(View, { key: 'seen', testID: `last-seen-${screenName}`, accessibilityLabel: String(lastSeen) }),
+				createElement(Pressable, { key: 'send', testID: `send-${screenName}`, onPress: () => onSendMessage?.('hello') })
+			]);
+		}
+	};
+});
+// The composer itself is out of scope here; the List probe is what sends through the screen's store.
+jest.mock('../../../containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));
 jest.mock('../components/RoomMessageHandlersBridge', () => ({
@@ -51,7 +73,7 @@ jest.mock('../hooks/useRoomRemoved', () => ({ useRoomRemoved: jest.fn() }));
 jest.mock('../hooks/useInAppFeedback', () => ({ useInAppFeedback: jest.fn() }));
 jest.mock('../hooks/useOmnichannelPermissions', () => ({ useOmnichannelPermissions: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({ useE2EEStatus: jest.fn(() => ({})) }));
-jest.mock('../hooks/useMessageActions', () => ({ useMessageActions: jest.fn(() => ({})) }));
+jest.mock('../hooks/useMessageActions', () => ({ useMessageActions: jest.fn(() => ({ resetAction: jest.fn() })) }));
 jest.mock('../hooks/useRoomNavigation', () => ({ useRoomNavigation: jest.fn(() => ({})) }));
 jest.mock('../../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() })
@@ -73,15 +95,27 @@ jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscrip
 jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
 jest.mock('../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('../../../lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../lib/methods/helpers/review', () => ({ Review: { pushPositiveEvent: jest.fn() } }));
 jest.mock('../../../lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
 jest.mock('../../../ee/omnichannel/lib', () => ({
 	takeInquiry: jest.fn(() => Promise.resolve()),
 	takeResume: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/store/auxStore', () => ({ store: { getState: () => ({ server: { version: '6.1.0' } }) } }));
+jest.mock('../../../lib/store/auxStore', () => ({
+	store: {
+		getState: () => ({
+			server: { version: '6.1.0' },
+			settings: {},
+			login: { user: { id: 'u1', username: 'tester' } }
+		})
+	}
+}));
 
-// No subscription row for this rid: the observer emits an empty result, which drops `joined` to
-// false and puts both screens in the preview (Join) footer state.
+// Rows the subscription observer emits on store creation. Default: none for this rid, which drops
+// `joined` to false and puts both screens in the preview (Join) footer state.
+const mockSubscriptionRows: { current: unknown[] } = { current: [] };
+
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
 	default: {
@@ -90,7 +124,7 @@ jest.mock('../../../lib/database', () => ({
 				query: () => ({
 					observeWithColumns: () => ({
 						subscribe: (next: (rows: unknown[]) => void) => {
-							next([]);
+							next(mockSubscriptionRows.current);
 							return { unsubscribe: jest.fn() };
 						}
 					})
@@ -122,9 +156,9 @@ const makeProps = (params: Record<string, unknown>): IRoomViewProps =>
  * Renders the room screen plus, optionally, a thread screen on the same rid — the pair a user
  * gets after opening a thread. Re-render with `withThread: false` to unmount the thread screen.
  */
-const renderRoomAndThread = ({ startWithThread = true }: { startWithThread?: boolean } = {}) => {
+const renderRoomAndThread = ({ startWithThread = true, rid = RID }: { startWithThread?: boolean; rid?: string } = {}) => {
 	const reduxStore = makeReduxStore();
-	const roomParams = { rid: RID, t: 'c', name: 'general', joinCodeRequired: true };
+	const roomParams = { rid, t: 'c', name: 'general', joinCodeRequired: true };
 	const Screens = ({ withThread }: { withThread: boolean }) => (
 		<Provider store={reduxStore}>
 			<RoomView {...makeProps(roomParams)} />
@@ -141,6 +175,7 @@ const renderRoomAndThread = ({ startWithThread = true }: { startWithThread?: boo
 describe('RoomView screens sharing one rid-keyed store', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockSubscriptionRows.current = [];
 		jest.mocked(loadThreadMessages).mockResolvedValue(undefined);
 	});
 
@@ -172,5 +207,23 @@ describe('RoomView screens sharing one rid-keyed store', () => {
 		const [roomButton, threadButton] = screen.getAllByTestId('room-view-join-button');
 		expect(roomButton).toBeEnabled();
 		expect(threadButton).toBeDisabled();
+	});
+
+	// `lastSeen` (the unread divider anchor) is per-screen: replying in a thread must not erase the
+	// room screen's unread separator.
+	it('keeps the room screen lastSeen when the thread screen sends a message', async () => {
+		const ls = new Date('2026-01-01T00:00:00.000Z');
+		const rid = 'rid-last-seen';
+		// A joined room with unread activity: init() resolves with `ls` as the room screen's anchor.
+		mockSubscriptionRows.current = [{ id: 'sub-1', rid, t: 'c', alert: true, ls }];
+		renderRoomAndThread({ rid });
+
+		await waitFor(() => expect(screen.getByTestId('last-seen-room').props.accessibilityLabel).toBe(String(ls)));
+
+		fireEvent.press(screen.getByTestId('send-thread'));
+		await act(async () => {});
+
+		expect(screen.getByTestId('last-seen-thread').props.accessibilityLabel).toBe('null');
+		expect(screen.getByTestId('last-seen-room').props.accessibilityLabel).toBe(String(ls));
 	});
 });

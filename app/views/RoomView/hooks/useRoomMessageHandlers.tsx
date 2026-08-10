@@ -26,6 +26,7 @@ import { MessageActionStoreContext } from '../../../containers/message/stores/Me
 import { useRoomTmid } from '../../../containers/message/stores/MessageRoomStore';
 import { type IRoomViewProps } from '../definitions';
 import { RoomStoreContext, useRoomStore } from '../stores/RoomStoreContext';
+import { useLastSeen } from '../stores/LastSeenContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../services/toggleFollowThread';
@@ -43,6 +44,7 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	const roomStore = useContext(RoomStoreContext);
 	const messageActionStore = useContext(MessageActionStoreContext);
 	const tmid = useRoomTmid();
+	const { clearLastSeen } = useLastSeen();
 	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);
 	const roomUserId = useRoomStore(s => s.roomUserId);
@@ -132,7 +134,7 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	};
 
 	const onAnswerButtonPress = (message?: string, tshow?: boolean) =>
-		sendRoomMessage({ rid, message, tmid, user, tshow, roomStore, resetAction });
+		sendRoomMessage({ rid, message, tmid, user, tshow, onMessageSent: clearLastSeen, resetAction });
 
 	return {
 		blockAction,

@@ -4,7 +4,7 @@ import { InteractionManager } from 'react-native';
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import log from '../../../lib/methods/helpers/log';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
-import { type IRoomViewState, type RoomStore } from '../definitions';
+import { type IRoomViewState, type IUseRoomInitResult, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
 	rid?: string;
@@ -22,18 +22,22 @@ const runInit = (roomStore: RoomStore, tmid: string | undefined, onLoadedRef: Re
 
 // Raises the screen's loading flag for the duration of one init() run. init() resolves on the invite
 // early-return and on failure alike, so the finally is the only place that clears it; awaiting it is
-// what keeps the footer from flickering. The ref guards the write against a screen that went away.
+// what keeps the footer from flickering. The ref guards the writes against a screen that went away.
 const runInitWithLoading = async (
 	roomStore: RoomStore,
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
 	cancelledRef: RefObject<boolean>,
-	setLoading: (loading: boolean) => void
+	setLoading: (loading: boolean) => void,
+	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void
 ): Promise<void> => {
 	cancelledRef.current = false;
 	setLoading(true);
 	try {
-		await runInit(roomStore, tmid, onLoadedRef);
+		const nextLastSeen = await runInit(roomStore, tmid, onLoadedRef);
+		if (!cancelledRef.current) {
+			setLastSeen(nextLastSeen);
+		}
 	} catch (e) {
 		log(e);
 	} finally {
@@ -52,7 +56,7 @@ export function useRoomInit({
 	onThreadMessagesLoaded,
 	messageActionStore,
 	onQuoteInit
-}: IUseRoomInitParams): boolean {
+}: IUseRoomInitParams): IUseRoomInitResult {
 	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
@@ -61,12 +65,17 @@ export function useRoomInit({
 	// `loading` is per-screen: room and thread mount two RoomViews on one rid-keyed store, so it lives
 	// here instead of the store. The ref guards every write against a screen that already went away.
 	const [loading, setLoading] = useState(true);
+	// `lastSeen` (the unread divider anchor) is per-screen for the same reason: a send from the thread
+	// screen clears its own anchor and leaves the room screen's divider where it was.
+	const [lastSeen, setLastSeen] = useState<IRoomViewState['lastSeen']>(null);
 	const cancelledRef = useRef(false);
 
 	const initWithLoading = useCallback(
-		() => runInitWithLoading(roomStore, tmid, onLoadedRef, cancelledRef, setLoading),
+		() => runInitWithLoading(roomStore, tmid, onLoadedRef, cancelledRef, setLoading, setLastSeen),
 		[roomStore, tmid, onLoadedRef]
 	);
+
+	const clearLastSeen = useCallback(() => setLastSeen(null), []);
 
 	useEffect(() => {
 		if (!rid || !isAuthenticated) {
@@ -99,5 +108,5 @@ export function useRoomInit({
 		prevStatusRef.current = roomUpdate.status;
 	}, [roomUpdate.status, initWithLoading]);
 
-	return loading;
+	return { loading, lastSeen, clearLastSeen };
 }
