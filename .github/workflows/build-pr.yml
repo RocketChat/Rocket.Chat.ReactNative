@@ -77,6 +77,7 @@ jobs:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     permissions:
       contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.select.outputs.shards }}
@@ -94,10 +95,26 @@ jobs:
         id: full
         run: bash .github/scripts/assert-maestro-shards.sh
 
+      # Read labels live rather than from the event payload: the payload is frozen
+      # at push time (a label added afterwards, or a re-run, would never see it),
+      # and `contains()` over an array is an exact element match — it would miss
+      # the decorated label name ("💎 release").
+      - name: Detect release label
+        id: label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name' | grep -qi 'release'; then
+            echo "release=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "release=false" >>"$GITHUB_OUTPUT"
+          fi
+
       - name: Select impacted shards
         id: select
         env:
-          IS_RELEASE_LANE: ${{ github.event.pull_request.base.ref == 'master' || contains(github.event.pull_request.labels.*.name, 'release') }}
+          IS_RELEASE_LANE: ${{ github.event.pull_request.base.ref == 'master' || steps.label.outputs.release == 'true' }}
           BASE_REF: ${{ github.event.pull_request.base.ref }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           FULL_SHARDS: ${{ steps.full.outputs.shards }}
