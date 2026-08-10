@@ -7,14 +7,24 @@ import { getMessageById } from '../../../lib/database/services/Message';
 export const useMessage = (messageId: string, tmid?: string): IMessage | undefined => {
 	const [message, setMessage] = useState<IMessage>();
 	useEffect(() => {
+		let cancelled = false;
 		const load = async () => {
-			const result = await getMessageById(messageId, tmid);
-			if (result) {
-				setMessage(result);
+			try {
+				const result = await getMessageById(messageId, tmid);
+				if (!cancelled) {
+					setMessage(result || undefined);
+				}
+			} catch {
+				if (!cancelled) {
+					setMessage(undefined);
+				}
 			}
 		};
 		load();
-	}, [messageId]);
+		return () => {
+			cancelled = true;
+		};
+	}, [messageId, tmid]);
 
 	return message;
 };
