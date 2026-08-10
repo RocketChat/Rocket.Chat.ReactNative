@@ -16,6 +16,7 @@ import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
 import { isIOS, isAndroid } from '../lib/methods/helpers';
+import { useResponderLongPress } from '../lib/hooks/useResponderLongPress';
 
 export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightProps {
 	children: ReactNode;
@@ -29,6 +30,13 @@ export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightPr
 	enabled?: boolean;
 	android_rippleColor?: string;
 	componentRef?: RefObject<View | null>;
+	/**
+	 * Android only. Detects onLongPress through the JS responder system rather than gesture-handler, so
+	 * nested press targets that live in that system win by depth. Set it when the subtree contains RN press
+	 * targets that must beat this one — markdown links inside a message, say — and leave it off when the
+	 * subtree instead competes with gesture-handler gestures, such as a row inside a Swipeable.
+	 */
+	longPressViaResponder?: boolean;
 }
 
 const Component = isIOS ? TouchableOpacity : TouchableHighlight;
@@ -50,11 +58,17 @@ const Touch = forwardRef<View, ITouchProps>(
 			rectButtonStyle,
 			enabled = true,
 			componentRef,
+			longPressViaResponder,
+			onLongPress,
 			...props
 		},
 		ref
 	) => {
 		const { colors } = useTheme();
+		// When routed through the responder system, onLongPress is handled by the inner View instead of the
+		// gesture-handler Pressable below, so the two are mutually exclusive.
+		const useResponder = isAndroid && !!longPressViaResponder;
+		const responderProps = useResponderLongPress(useResponder ? onLongPress : undefined, enabled);
 		// The background color must be applied to the RectButton, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
 		const flattenedStyle = StyleSheet.flatten(style) || {};
@@ -94,6 +108,7 @@ const Touch = forwardRef<View, ITouchProps>(
 				ref={ref}
 				componentRef={componentRef as RefObject<View>}
 				onPress={onPress}
+				onLongPress={useResponder ? undefined : onLongPress}
 				accessible={accessible}
 				accessibilityRole={props.accessibilityRole}
 				accessibilityLabel={accessibilityLabel}
@@ -106,7 +121,9 @@ const Touch = forwardRef<View, ITouchProps>(
 				disabled={!enabled}
 				focusable={enabled}
 				canBeFocused={enabled}>
-				<View style={viewStyle}>{children}</View>
+				<View style={viewStyle} {...responderProps}>
+					{children}
+				</View>
 			</Wrapper>
 		);
 	}

@@ -1,7 +1,6 @@
 import { A11y } from 'react-native-a11y-order';
 
 import { useTheme } from '../../../../theme';
-import { isNestedPressActive } from '../../../../lib/methods/helpers/nestedPress';
 import Touch from '../../../Touch';
 import Message, { type TMessageProps } from '../Message/Message';
 import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
@@ -49,13 +48,6 @@ const MessageTouchable = (props: TMessageProps) => {
 	}
 
 	const handleLongPress = () => {
-		// A nested press target — an inline markdown link — already handled this long press. On Android the
-		// row is a gesture-handler Pressable and the link is a plain <Text onLongPress>, and the two gesture
-		// systems cannot arbitrate, so without this both fire and the action sheet lands on top of the
-		// "copied to clipboard" toast.
-		if (isNestedPressActive()) {
-			return;
-		}
 		markAsLastFocused();
 		onLongPress();
 	};
@@ -66,6 +58,10 @@ const MessageTouchable = (props: TMessageProps) => {
 				<Touch
 					componentRef={touchRef}
 					onLongPress={handleLongPress}
+					// Inline markdown links are plain <Text onLongPress> and cannot cancel a gesture-handler
+					// ancestor, so a long press on a link used to fire the link's handler and open the action
+					// sheet. Detecting it in the responder system instead lets the link win by depth.
+					longPressViaResponder
 					onPress={onPressAction}
 					disabled={!tappable}
 					style={{ backgroundColor }}

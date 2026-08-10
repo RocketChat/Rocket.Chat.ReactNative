@@ -1441,8 +1441,6 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                           <Text
                                             onLongPress={[Function]}
                                             onPress={[Function]}
-                                            onPressIn={[Function]}
-                                            onPressOut={[Function]}
                                             style={
                                               [
                                                 {
@@ -2204,8 +2202,6 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                           <Text
                                             onLongPress={[Function]}
                                             onPress={[Function]}
-                                            onPressIn={[Function]}
-                                            onPressOut={[Function]}
                                             style={
                                               [
                                                 {
@@ -146767,8 +146763,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                               <Text
                                                 onLongPress={[Function]}
                                                 onPress={[Function]}
-                                                onPressIn={[Function]}
-                                                onPressOut={[Function]}
                                                 style={
                                                   [
                                                     {
@@ -147952,8 +147946,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                               <Text
                                                 onLongPress={[Function]}
                                                 onPress={[Function]}
-                                                onPressIn={[Function]}
-                                                onPressOut={[Function]}
                                                 style={
                                                   [
                                                     {
