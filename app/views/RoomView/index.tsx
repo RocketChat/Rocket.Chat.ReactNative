@@ -184,7 +184,16 @@ const RoomView = (props: IRoomViewProps) => {
 		messageErrorActionsRef
 	});
 
-	useRoomInit({ rid, tmid, isAuthenticated, roomStore, roomUpdate, onThreadMessagesLoaded, messageActionStore, onQuoteInit });
+	const loading = useRoomInit({
+		rid,
+		tmid,
+		isAuthenticated,
+		roomStore,
+		roomUpdate,
+		onThreadMessagesLoaded,
+		messageActionStore,
+		onQuoteInit
+	});
 	useRoomSubscription(sub);
 	useRoomAudioLifecycle(rid, tmid);
 	useRoomRemoved(rid, isMasterDetail);
@@ -291,7 +300,7 @@ const RoomView = (props: IRoomViewProps) => {
 							</RoomMessageHandlersBridge>
 						</MessageRoomProvider>
 					</A11yGateProvider>
-					<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
+					<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} loading={loading} />
 					<RoomMessageActions
 						tmid={tmid}
 						user={user}

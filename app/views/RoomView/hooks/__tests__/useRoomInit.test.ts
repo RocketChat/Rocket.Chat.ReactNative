@@ -1,10 +1,12 @@
 import { InteractionManager } from 'react-native';
 import { createStore } from 'zustand';
-import { renderHook } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
 import { type RoomState, type RoomStore } from '../../definitions';
 import { useRoomInit } from '../useRoomInit';
+
+jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 interface IRenderRoomInitParams {
 	rid?: string;
@@ -25,7 +27,6 @@ const makeRoomStore = (): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		loading: false,
 		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
@@ -39,6 +40,26 @@ const makeRoomStore = (): RoomStore =>
 		resumeRoom: jest.fn(() => Promise.resolve())
 	}));
 
+// A store whose init() only resolves when the test says so, so an in-flight init can be observed.
+const makeDeferredRoomStore = () => {
+	const resolvers: (() => void)[] = [];
+	const roomStore = makeRoomStore();
+	roomStore.setState({
+		init: jest.fn(
+			() =>
+				new Promise<void>(resolve => {
+					resolvers.push(resolve);
+				})
+		)
+	});
+	return {
+		roomStore,
+		resolveInit: async (call = 0) => {
+			await act(async () => resolvers[call]());
+		}
+	};
+};
+
 const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStore = makeRoomStore()) => {
 	const defaultProps: IRenderRoomInitParams = {
 		rid: 'rid-1',
@@ -51,10 +72,14 @@ const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStor
 		onQuoteInit: jest.fn(),
 		...overrides
 	};
-	const { rerender } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), { initialProps: defaultProps });
+	const { rerender, result, unmount } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), {
+		initialProps: defaultProps
+	});
 
 	return {
 		roomStore,
+		result,
+		unmount,
 		rerender: (next: Partial<IRenderRoomInitParams> = {}) => rerender({ ...defaultProps, ...next })
 	};
 };
@@ -125,5 +150,39 @@ describe('useRoomInit', () => {
 		renderRoomInit({ onQuoteInit, messageActionStore: createMessageActionStore() });
 
 		expect(onQuoteInit).not.toHaveBeenCalled();
+	});
+
+	// init() resolves on the invite early-return and on failure alike, so both land here: the footer
+	// must not stay stuck in a loading state on either path.
+	it.each([
+		['resolves', () => Promise.resolve()],
+		['rejects', () => Promise.reject(new Error('boom'))]
+	])('clears loading once init %s', async (_case, init) => {
+		const roomStore = makeRoomStore();
+		roomStore.setState({ init: jest.fn(init) });
+		const { result } = renderRoomInit({}, roomStore);
+
+		await waitFor(() => expect(result.current).toBe(false));
+	});
+
+	it('keeps loading true while init is in flight', async () => {
+		const { roomStore, resolveInit } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		expect(result.current).toBe(true);
+
+		await resolveInit();
+
+		expect(result.current).toBe(false);
+	});
+
+	it('does not clear loading after unmount', async () => {
+		const { roomStore, resolveInit } = makeDeferredRoomStore();
+		const { result, unmount } = renderRoomInit({}, roomStore);
+
+		unmount();
+		await resolveInit();
+
+		expect(result.current).toBe(true);
 	});
 });

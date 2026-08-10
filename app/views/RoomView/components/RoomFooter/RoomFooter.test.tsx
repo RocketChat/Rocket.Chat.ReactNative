@@ -59,7 +59,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		loading: false,
 		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
@@ -74,11 +73,11 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		...overrides
 	}));
 
-const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore()) =>
+const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loading = false) =>
 	render(
 		<Provider store={reduxStore}>
 			<RoomStoreContext.Provider value={roomStore}>
-				<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} />
+				<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} loading={loading} />
 			</RoomStoreContext.Provider>
 		</Provider>
 	);
@@ -93,7 +92,7 @@ describe('RoomFooter', () => {
 	});
 
 	it('disables the resume button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ room: { rid: 'rid-1', t: 'c', onHold: true }, loading: true }));
+		renderFooter(makeRoomStore({ room: { rid: 'rid-1', t: 'c', onHold: true } }), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-chat-on-hold-button')).toBeDisabled();
 	});
@@ -113,7 +112,7 @@ describe('RoomFooter', () => {
 	});
 
 	it('disables the join button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'c' }, loading: true }));
+		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'c' } }), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-join-button')).toBeDisabled();
 	});

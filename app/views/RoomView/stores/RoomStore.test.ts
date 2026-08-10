@@ -107,7 +107,6 @@ describe('RoomStore', () => {
 		expect(store.getState().joined).toBe(true);
 		expect(store.getState().subscribed).toBe(false);
 		expect(store.getState().member).toEqual({});
-		expect(store.getState().loading).toBe(true);
 	});
 
 	it('marks subscribed and joined when the subscription observable emits a row', () => {
@@ -179,14 +178,13 @@ describe('RoomStore', () => {
 		expect(observeWithColumns).toHaveBeenCalledWith(Object.values(roomAttrsUpdateColumns));
 	});
 
-	it('runs the main init path: fetches messages, ends loading, sets member and canAutoTranslate', async () => {
+	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
 		setupObserve();
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 		await store.getState().init();
 
 		expect(mockGetMessages).toHaveBeenCalledWith(expect.objectContaining({ rid: 'rid-1', t: 'c' }));
-		expect(store.getState().loading).toBe(false);
 		expect(store.getState().member).toEqual({});
 		expect(store.getState().canAutoTranslate).toBe(true);
 	});
@@ -233,7 +231,6 @@ describe('RoomStore', () => {
 		expect(mockLoadThreadMessages).toHaveBeenCalledWith({ tmid: 'tmid-1', rid: 'rid-1' });
 		expect(mockGetMessages).not.toHaveBeenCalled();
 		expect(onThreadMessagesLoaded).toHaveBeenCalledTimes(1);
-		expect(store.getState().loading).toBe(false);
 	});
 
 	it('early-returns without fetching messages when the room is an invite subscription', async () => {
@@ -244,7 +241,6 @@ describe('RoomStore', () => {
 		await store.getState().init();
 
 		expect(mockGetMessages).not.toHaveBeenCalled();
-		expect(store.getState().loading).toBe(false);
 	});
 
 	it('fetches the DM member and sets roomUserId on success', async () => {
@@ -260,7 +256,7 @@ describe('RoomStore', () => {
 		expect(store.getState().roomUserId).toBe('uid-1');
 	});
 
-	it('ends loading without scheduling a retry when init throws', async () => {
+	it('does not schedule a retry when init throws', async () => {
 		jest.useFakeTimers();
 		setupObserve();
 		mockGetMessages.mockRejectedValueOnce(new Error('boom'));
@@ -268,7 +264,6 @@ describe('RoomStore', () => {
 
 		await store.getState().init();
 
-		expect(store.getState().loading).toBe(false);
 		expect(mockGetMessages).toHaveBeenCalledTimes(1);
 
 		jest.advanceTimersByTime(10000);
@@ -286,16 +281,15 @@ describe('RoomStore', () => {
 
 		await store.getState().init();
 
-		expect(store.getState().loading).toBe(false);
 		expect(mockLog).toHaveBeenCalledWith(error);
 	});
 
-	it('resolves without throwing or changing loading when init runs on a rid-less store', async () => {
+	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
 		const store = peekOrCreateRoomStore({ initialRoom: stubRoom });
 
 		await expect(store.getState().init()).resolves.toBeUndefined();
 
-		expect(store.getState().loading).toBe(true);
+		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
 
 	it('join() sets joined true', () => {

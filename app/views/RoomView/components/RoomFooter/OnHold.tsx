@@ -4,13 +4,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Touch from '../../../../containers/Touch';
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
+import { type IOnHoldProps } from '../../definitions';
 import { useRoomStore } from '../../stores/RoomStoreContext';
 import styles from './styles';
 
-export const OnHold = () => {
+export const OnHold = ({ loading }: IOnHoldProps) => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
-	const loading = useRoomStore(s => s.loading);
 	const resumeRoom = useRoomStore(s => s.resumeRoom);
 
 	return (

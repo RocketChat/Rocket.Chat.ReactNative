@@ -8,11 +8,10 @@ import { type ITakeOrJoinProps } from '../../definitions';
 import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
 import styles from './styles';
 
-export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps) => {
+export const TakeOrJoin = ({ joinCodeRef, loading }: ITakeOrJoinProps) => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const room = useRoomWithUpdate();
-	const loading = useRoomStore(s => s.loading);
 	const joinRoom = useRoomStore(s => s.joinRoom);
 
 	// The join-code modal lives on this screen, so the trigger is handed to joinRoom per call.

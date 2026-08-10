@@ -1,7 +1,8 @@
-import { type RefObject, useEffect, useRef } from 'react';
+import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
+import log from '../../../lib/methods/helpers/log';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import { type IRoomViewState, type RoomStore } from '../definitions';
 
@@ -19,6 +20,29 @@ interface IUseRoomInitParams {
 const runInit = (roomStore: RoomStore, tmid: string | undefined, onLoadedRef: RefObject<() => void>) =>
 	roomStore.getState().init({ tmid, onThreadMessagesLoaded: () => onLoadedRef.current?.() });
 
+// Raises the screen's loading flag for the duration of one init() run. init() resolves on the invite
+// early-return and on failure alike, so the finally is the only place that clears it; awaiting it is
+// what keeps the footer from flickering. The ref guards the write against a screen that went away.
+const runInitWithLoading = async (
+	roomStore: RoomStore,
+	tmid: string | undefined,
+	onLoadedRef: RefObject<() => void>,
+	cancelledRef: RefObject<boolean>,
+	setLoading: (loading: boolean) => void
+): Promise<void> => {
+	cancelledRef.current = false;
+	setLoading(true);
+	try {
+		await runInit(roomStore, tmid, onLoadedRef);
+	} catch (e) {
+		log(e);
+	} finally {
+		if (!cancelledRef.current) {
+			setLoading(false);
+		}
+	}
+};
+
 export function useRoomInit({
 	rid,
 	tmid,
@@ -28,19 +52,32 @@ export function useRoomInit({
 	onThreadMessagesLoaded,
 	messageActionStore,
 	onQuoteInit
-}: IUseRoomInitParams): void {
+}: IUseRoomInitParams): boolean {
 	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
 	const onQuoteInitRef = useLiveRef(onQuoteInit);
 
+	// `loading` is per-screen: room and thread mount two RoomViews on one rid-keyed store, so it lives
+	// here instead of the store. The ref guards every write against a screen that already went away.
+	const [loading, setLoading] = useState(true);
+	const cancelledRef = useRef(false);
+
+	const initWithLoading = useCallback(
+		() => runInitWithLoading(roomStore, tmid, onLoadedRef, cancelledRef, setLoading),
+		[roomStore, tmid, onLoadedRef]
+	);
+
 	useEffect(() => {
 		if (!rid || !isAuthenticated) {
 			return;
 		}
-		const task = InteractionManager.runAfterInteractions(() => runInit(roomStore, tmid, onLoadedRef));
-		return () => task.cancel();
-	}, [rid, isAuthenticated, roomStore, tmid, onLoadedRef]);
+		const task = InteractionManager.runAfterInteractions(() => initWithLoading());
+		return () => {
+			cancelledRef.current = true;
+			task.cancel();
+		};
+	}, [rid, isAuthenticated, initWithLoading]);
 
 	// messageActionStore is useState-stable, so this fires once per screen.
 	useEffect(() => {
@@ -57,8 +94,10 @@ export function useRoomInit({
 	const prevStatusRef = useRef(roomUpdate.status);
 	useEffect(() => {
 		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			runInit(roomStore, tmid, onLoadedRef);
+			initWithLoading();
 		}
 		prevStatusRef.current = roomUpdate.status;
-	}, [roomUpdate.status, roomStore, tmid, onLoadedRef]);
+	}, [roomUpdate.status, initWithLoading]);
+
+	return loading;
 }

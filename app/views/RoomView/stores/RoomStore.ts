@@ -56,7 +56,6 @@ const createRoomState =
 		subscribed: 'id' in initialRoom,
 		member: {},
 		roomUserId,
-		loading: true,
 		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
@@ -68,11 +67,9 @@ const createRoomState =
 			if (!rid) {
 				return;
 			}
-			set({ loading: true });
 			try {
 				const currentRoom = get().room;
 				if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
-					set({ loading: false });
 					return;
 				}
 
@@ -94,10 +91,9 @@ const createRoomState =
 				const nextCanAutoTranslate = canAutoTranslateMethod();
 				const nextMember = await getRoomMember(get, set);
 
-				set({ canAutoTranslate: nextCanAutoTranslate, member: nextMember, loading: false });
+				set({ canAutoTranslate: nextCanAutoTranslate, member: nextMember });
 			} catch (e) {
 				log(e);
-				set({ loading: false });
 			}
 		},
 

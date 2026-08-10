@@ -26,7 +26,6 @@ const makeRoomStore = (): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		loading: false,
 		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,

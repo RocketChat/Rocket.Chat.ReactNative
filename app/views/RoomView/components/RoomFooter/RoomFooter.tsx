@@ -6,14 +6,14 @@ import { Preview } from './Preview';
 import { TakeOrJoin } from './TakeOrJoin';
 import { useRoomFooterState } from './useRoomFooterState';
 
-export const RoomFooter = ({ messageComposerRef, joinCodeRef }: IRoomFooterProps) => {
+export const RoomFooter = ({ messageComposerRef, joinCodeRef, loading }: IRoomFooterProps) => {
 	const state = useRoomFooterState();
 
 	switch (state.kind) {
 		case 'onHold':
-			return <OnHold />;
+			return <OnHold loading={loading} />;
 		case 'takeOrJoin':
-			return <TakeOrJoin joinCodeRef={joinCodeRef} />;
+			return <TakeOrJoin joinCodeRef={joinCodeRef} loading={loading} />;
 		case 'airgapped':
 			return <AirgappedWs />;
 		case 'preview':

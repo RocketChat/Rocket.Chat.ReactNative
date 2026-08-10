@@ -1,10 +1,11 @@
 import { type ReactNode } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import RoomView from '../index';
 import { type IRoomViewProps } from '../definitions';
+import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 
 // A thread mounts a second RoomView on the parent's rid, so both screens share one rid-keyed store.
 // This harness mounts that pair and is reusable by any test about per-screen vs per-room state.
@@ -44,14 +45,6 @@ jest.mock('../components/RoomMessageHandlersBridge', () => ({
 	RoomMessageHandlersBridge: ({ children }: { children: ReactNode }) => children
 }));
 jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
-// Real init is out of scope; it only has to clear `loading`, which gates the Join button.
-jest.mock('../hooks/useRoomInit', () => {
-	const { useEffect } = require('react');
-	return {
-		useRoomInit: ({ roomStore }: { roomStore: { setState: (state: { loading: boolean }) => void } }) =>
-			useEffect(() => roomStore.setState({ loading: false }), [roomStore])
-	};
-});
 jest.mock('../hooks/useRoomSubscription', () => ({ useRoomSubscription: jest.fn() }));
 jest.mock('../hooks/useRoomAudioLifecycle', () => ({ useRoomAudioLifecycle: jest.fn() }));
 jest.mock('../hooks/useRoomRemoved', () => ({ useRoomRemoved: jest.fn() }));
@@ -129,7 +122,7 @@ const makeProps = (params: Record<string, unknown>): IRoomViewProps =>
  * Renders the room screen plus, optionally, a thread screen on the same rid — the pair a user
  * gets after opening a thread. Re-render with `withThread: false` to unmount the thread screen.
  */
-const renderRoomAndThread = () => {
+const renderRoomAndThread = ({ startWithThread = true }: { startWithThread?: boolean } = {}) => {
 	const reduxStore = makeReduxStore();
 	const roomParams = { rid: RID, t: 'c', name: 'general', joinCodeRequired: true };
 	const Screens = ({ withThread }: { withThread: boolean }) => (
@@ -138,12 +131,18 @@ const renderRoomAndThread = () => {
 			{withThread ? <RoomView {...makeProps({ ...roomParams, tmid: 'tmid-1', name: 'thread' })} /> : null}
 		</Provider>
 	);
-	const { rerender } = render(<Screens withThread />);
-	return { closeThread: () => rerender(<Screens withThread={false} />) };
+	const { rerender } = render(<Screens withThread={startWithThread} />);
+	return {
+		openThread: () => rerender(<Screens withThread />),
+		closeThread: () => rerender(<Screens withThread={false} />)
+	};
 };
 
 describe('RoomView screens sharing one rid-keyed store', () => {
-	beforeEach(() => jest.clearAllMocks());
+	beforeEach(() => {
+		jest.clearAllMocks();
+		jest.mocked(loadThreadMessages).mockResolvedValue(undefined);
+	});
 
 	it('mounts a room screen and a thread screen on the same rid', () => {
 		renderRoomAndThread();
@@ -151,12 +150,27 @@ describe('RoomView screens sharing one rid-keyed store', () => {
 		expect(screen.getAllByTestId('room-view-join-button')).toHaveLength(2);
 	});
 
-	it('still opens the join-code modal from the room screen after the thread screen unmounts', () => {
+	it('still opens the join-code modal from the room screen after the thread screen unmounts', async () => {
 		const { closeThread } = renderRoomAndThread();
 
 		closeThread();
+		await waitFor(() => expect(screen.getByTestId('room-view-join-button')).toBeEnabled());
 		fireEvent.press(screen.getByTestId('room-view-join-button'));
 
 		expect(screen.getByTestId('join-code')).toBeOnTheScreen();
+	});
+
+	// `loading` is per-screen: a thread mounting mid-load must not disable the room screen's button.
+	it('keeps the room screen footer enabled while a freshly mounted thread screen is still loading', async () => {
+		// The thread's init never settles, so its screen stays in the loading state for the assertion.
+		jest.mocked(loadThreadMessages).mockReturnValue(new Promise<void>(() => {}));
+		const { openThread } = renderRoomAndThread({ startWithThread: false });
+		await waitFor(() => expect(screen.getByTestId('room-view-join-button')).toBeEnabled());
+
+		openThread();
+
+		const [roomButton, threadButton] = screen.getAllByTestId('room-view-join-button');
+		expect(roomButton).toBeEnabled();
+		expect(threadButton).toBeDisabled();
 	});
 });

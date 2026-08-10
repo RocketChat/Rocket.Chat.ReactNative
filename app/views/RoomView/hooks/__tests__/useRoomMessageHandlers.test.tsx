@@ -78,7 +78,6 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		subscribed: true,
 		member: {},
 		roomUserId: null,
-		loading: false,
 		lastSeen: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
