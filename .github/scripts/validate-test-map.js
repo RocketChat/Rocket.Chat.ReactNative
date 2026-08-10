@@ -73,9 +73,13 @@ for (const dir of uncovered) {
 	warnCount++;
 }
 
-// Stale runAllWhenChanged paths: missing on disk.
+// Stale runAllWhenChanged paths: missing on disk. Entries may be globs (sniffler
+// matches them as patterns), so a glob is fresh when it matches at least one file.
 const runAll = config.tests?.runAllWhenChanged || [];
-const staleGlobals = runAll.filter(p => !fs.existsSync(path.join(ROOT, p)));
+const isGlob = p => /[*?[\]{}]/.test(p);
+const staleGlobals = runAll.filter(p =>
+	isGlob(p) ? fg.sync(p, { cwd: ROOT, dot: true }).length === 0 : !fs.existsSync(path.join(ROOT, p))
+);
 for (const p of staleGlobals) {
 	ann('error', p, `Stale global: "${p}" in runAllWhenChanged does not exist — will silently never fire.`);
 	errorCount++;

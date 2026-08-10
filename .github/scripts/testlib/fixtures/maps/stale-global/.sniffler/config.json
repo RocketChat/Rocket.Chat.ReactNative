@@ -1,5 +1,5 @@
 {
 	"tests": {
-		"runAllWhenChanged": ["app/nonexistent-global.txt"]
+		"runAllWhenChanged": ["app/nonexistent-global.txt", "patches/**", "native/**"]
 	}
 }
