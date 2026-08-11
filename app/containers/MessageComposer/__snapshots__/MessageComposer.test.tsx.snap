@@ -166,6 +166,9 @@ exports[`MessageComposer Audio tap record 1`] = `
               "color": "#6C727A",
               "fontFamily": "Inter",
               "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -386,6 +389,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -566,6 +572,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 14,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "700",
                       "lineHeight": 20,
                       "paddingRight": 4,
@@ -580,6 +589,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                       "color": "#9EA2A8",
                       "fontFamily": "Inter",
                       "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "lineHeight": 16,
                       "textAlign": "left",
@@ -668,6 +680,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -681,6 +696,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "color": "#2F343D",
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 20,
                     "textAlign": "left",
@@ -836,6 +854,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -1017,6 +1038,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 14,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "700",
                       "lineHeight": 20,
                       "paddingRight": 4,
@@ -1031,6 +1055,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "color": "#9EA2A8",
                       "fontFamily": "Inter",
                       "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "lineHeight": 16,
                       "textAlign": "left",
@@ -1119,6 +1146,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -1132,6 +1162,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "color": "#2F343D",
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 20,
                     "textAlign": "left",
@@ -1200,6 +1233,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 14,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "700",
                       "lineHeight": 20,
                       "paddingRight": 4,
@@ -1214,6 +1250,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "color": "#9EA2A8",
                       "fontFamily": "Inter",
                       "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "lineHeight": 16,
                       "textAlign": "left",
@@ -1302,6 +1341,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -1315,6 +1357,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "color": "#2F343D",
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 20,
                     "textAlign": "left",
@@ -1470,6 +1515,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -1651,6 +1699,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 14,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "700",
                       "lineHeight": 20,
                       "paddingRight": 4,
@@ -1665,6 +1716,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "color": "#9EA2A8",
                       "fontFamily": "Inter",
                       "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "lineHeight": 16,
                       "textAlign": "left",
@@ -1753,6 +1807,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -1766,6 +1823,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "color": "#2F343D",
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 20,
                     "textAlign": "left",
@@ -1834,6 +1894,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 14,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "700",
                       "lineHeight": 20,
                       "paddingRight": 4,
@@ -1848,6 +1911,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "color": "#9EA2A8",
                       "fontFamily": "Inter",
                       "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "lineHeight": 16,
                       "textAlign": "left",
@@ -1936,6 +2002,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -1949,6 +2018,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "color": "#2F343D",
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 20,
                     "textAlign": "left",
@@ -2023,6 +2095,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -2649,6 +2724,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -3275,6 +3353,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -3901,6 +3982,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -4527,6 +4611,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -5153,6 +5240,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -5779,6 +5869,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -6405,6 +6498,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -7031,6 +7127,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -7657,6 +7756,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -8283,6 +8385,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -8909,6 +9014,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -9379,6 +9487,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
@@ -11294,6 +11405,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               "flex": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "maxHeight": 200,
