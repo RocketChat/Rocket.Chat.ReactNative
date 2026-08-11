@@ -256,6 +256,45 @@ describe('RoomStore', () => {
 		expect(store.getState().roomUserId).toBe('uid-1');
 	});
 
+	it('leaves roomUserId untouched until getUserInfo resolves', async () => {
+		setupObserve();
+		let resolveUserInfo: (value: unknown) => void = () => {};
+		mockGetUserInfo.mockReturnValue(
+			new Promise(resolve => {
+				resolveUserInfo = resolve;
+			})
+		);
+		const dmRoom = { ...subRoom, t: 'd' };
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'd', initialRoom: dmRoom });
+
+		const initPromise = store.getState().init();
+		await Promise.resolve();
+		await Promise.resolve();
+
+		expect(mockGetUserInfo).toHaveBeenCalledWith('uid-1');
+		expect(store.getState().roomUserId).toBeNull();
+
+		resolveUserInfo({ success: true, user: { _id: 'uid-1', username: 'alice' } });
+		await initPromise;
+
+		expect(store.getState().roomUserId).toBe('uid-1');
+	});
+
+	it('applies nothing to the store when the run is aborted during a successful attempt', async () => {
+		setupObserve();
+		const controller = new AbortController();
+		mockGetMessages.mockImplementation(() => {
+			controller.abort();
+			return Promise.resolve();
+		});
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+		await store.getState().init({ signal: controller.signal });
+
+		expect(store.getState().canAutoTranslate).toBe(false);
+		expect(mockReadMessages).not.toHaveBeenCalled();
+	});
+
 	describe('init retry', () => {
 		beforeEach(() => {
 			jest.useFakeTimers();
@@ -303,9 +342,9 @@ describe('RoomStore', () => {
 			expect(mockGetMessages).toHaveBeenCalledTimes(3);
 		});
 
-		it('stops retrying once the subscription observer fills a store that started empty', async () => {
+		it('retries against the room the observer delivered after the first attempt failed on an empty store', async () => {
 			const { emit } = setupObserve();
-			mockGetMessages.mockRejectedValue(new Error('boom'));
+			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
 			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: { rid: '', t: '' } });
 
 			const initPromise = store.getState().init();
@@ -313,8 +352,24 @@ describe('RoomStore', () => {
 			emit([subRoom]);
 			await jest.advanceTimersByTimeAsync(10000);
 
-			await expect(initPromise).resolves.toEqual({ status: 'failed' });
-			expect(mockGetMessages).toHaveBeenCalledTimes(1);
+			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: null });
+			expect(mockGetMessages).toHaveBeenCalledTimes(2);
+			// The retry used the room the observer delivered, not the empty snapshot init started with.
+			expect(mockGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1', t: 'c' });
+		});
+
+		it('anchors the unread divider on the room read at the retry, not the one the run started with', async () => {
+			const { emit } = setupObserve();
+			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-02-02T00:00:00.000Z') };
+			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(0);
+			emit([unreadRoom]);
+			await jest.advanceTimersByTimeAsync(10000);
+
+			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: unreadRoom.ls });
 		});
 
 		it('does not retry an invite subscription', async () => {

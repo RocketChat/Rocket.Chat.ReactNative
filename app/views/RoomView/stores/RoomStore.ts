@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { InteractionManager } from 'react-native';
-import { createStore, useStore, type StateCreator, type StoreApi } from 'zustand';
+import { createStore, useStore, type StateCreator } from 'zustand';
 
 import database from '../../../lib/database';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
@@ -24,26 +24,32 @@ import { store as reduxStore } from '../../../lib/store/auxStore';
 
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
 
-const getRoomMember = async (get: () => RoomState, set: StoreApi<RoomState>['setState']): Promise<IRoomViewState['member']> => {
-	const currentRoom = get().room;
-	if ('id' in currentRoom && currentRoom.t === 'd' && !isGroupChat(currentRoom)) {
+interface IRoomMemberResult {
+	// Absent for anything that is not a one-to-one DM: the caller leaves the current value alone
+	// instead of clearing a roomUserId it was seeded with.
+	roomUserId?: string;
+	member: IRoomViewState['member'];
+}
+
+// Pure read: resolves the DM counterpart without touching the store, so nothing lands in state
+// until the caller decides the run is still current.
+const getRoomMember = async (room: IRoomViewState['room']): Promise<IRoomMemberResult> => {
+	if ('id' in room && room.t === 'd' && !isGroupChat(room)) {
+		const roomUserId = getUidDirectMessage(room);
 		try {
-			const nextRoomUserId = getUidDirectMessage(currentRoom);
-			set({ roomUserId: nextRoomUserId });
-			const result = await getUserInfo(nextRoomUserId);
+			const result = await getUserInfo(roomUserId);
 			if (result.success) {
-				return result.user;
+				return { roomUserId, member: result.user };
 			}
 		} catch (e) {
 			log(e);
 		}
+		return { roomUserId, member: {} };
 	}
-	return {};
+	return { member: {} };
 };
 
 const EMPTY_ROOM: IRoomViewState['room'] = { rid: '', t: '' };
-
-const isEmptyRoom = (room: IRoomViewState['room']): boolean => room.rid === EMPTY_ROOM.rid;
 
 const INIT_MAX_ATTEMPTS = 3;
 const INIT_RETRY_DELAY = 1000;
@@ -53,21 +59,30 @@ interface ILoadRoomResult {
 	// An invite subscription is not loaded, it is declined work: `init` reports it as `skipped`.
 	skipped?: boolean;
 	lastSeen: IRoomViewState['lastSeen'];
+	// The read receipt the attempt earned. `init` fires it, so a superseded run never marks a room
+	// read on the user's behalf.
+	markRead?: boolean;
+	// What the attempt wants written. `init` applies it, so an aborted run can drop it wholesale.
+	patch?: Partial<IRoomViewState>;
 }
 
-// One load attempt. `lastSeen` is per-screen: room and thread mount two RoomViews on one rid-keyed
-// store, so the unread divider anchor is returned to the caller instead of written to the shared
-// state. `failed` tells `init` whether the attempt is worth repeating.
+// One load attempt, over a `room` snapshot the caller read for this attempt. It reads nothing from
+// the store and writes nothing to it directly: everything it learned comes back in the result. It
+// still writes to the database, which the subscription observer turns into a store write — that
+// indirect path is exactly what lets a retry pick up a room the first attempt did not have.
+// `lastSeen` is
+// per-screen (room and thread mount two RoomViews on one rid-keyed store), so the unread divider
+// anchor is returned rather than shared. `failed` tells `init` whether to repeat the attempt.
 const loadRoom = async (
 	rid: string,
-	get: () => RoomState,
-	set: StoreApi<RoomState>['setState'],
+	room: IRoomViewState['room'],
+	joined: boolean,
 	{ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams
 ): Promise<ILoadRoomResult> => {
 	let lastSeen: IRoomViewState['lastSeen'] = null;
+	let markRead = false;
 	try {
-		const currentRoom = get().room;
-		if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
+		if ('id' in room && isInviteSubscription(room)) {
 			return { failed: false, skipped: true, lastSeen: null };
 		}
 
@@ -76,25 +91,29 @@ const loadRoom = async (
 			onThreadMessagesLoaded?.();
 		} else {
 			await getMessages({
-				rid: currentRoom.rid,
-				...('lastOpen' in currentRoom && currentRoom.lastOpen ? {} : { t: currentRoom.t as RoomType })
+				rid: room.rid,
+				...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
 			});
 
-			if (get().joined && 'id' in currentRoom) {
-				lastSeen = currentRoom.alert || currentRoom.unread || currentRoom.userMentions ? currentRoom.ls : null;
-				readMessages(currentRoom.rid).catch(e => log(e));
+			if (joined && 'id' in room) {
+				lastSeen = room.alert || room.unread || room.userMentions ? room.ls : null;
+				markRead = true;
 			}
 		}
 
-		const nextCanAutoTranslate = canAutoTranslateMethod();
-		const nextMember = await getRoomMember(get, set);
+		const canAutoTranslate = canAutoTranslateMethod();
+		const { roomUserId, member } = await getRoomMember(room);
 
-		set({ canAutoTranslate: nextCanAutoTranslate, member: nextMember });
+		return {
+			failed: false,
+			lastSeen,
+			markRead,
+			patch: { canAutoTranslate, member, ...(roomUserId ? { roomUserId } : {}) }
+		};
 	} catch (e) {
 		log(e);
 		return { failed: true, lastSeen: null };
 	}
-	return { failed: false, lastSeen };
 };
 
 const createRoomState =
@@ -123,10 +142,16 @@ const createRoomState =
 			if (!rid) {
 				return { status: 'skipped' };
 			}
-			const startedEmpty = isEmptyRoom(get().room);
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
-				const { failed, skipped, lastSeen } = await loadRoom(rid, get, set, { tmid, onThreadMessagesLoaded });
-				// The caller superseded this run while the attempt was in flight; its result is stale.
+				// Read the room fresh for every attempt: the subscription observer can fill an
+				// initially-empty store between attempts, and that later attempt is the one that loads it.
+				const { room, joined } = get();
+				const { failed, skipped, lastSeen, markRead, patch } = await loadRoom(rid, room, joined, {
+					tmid,
+					onThreadMessagesLoaded
+				});
+				// The caller superseded this run while the attempt was in flight, so its result is stale:
+				// drop the patch and the read receipt rather than writing over the run that replaced it.
 				if (signal?.aborted) {
 					return { status: 'skipped' };
 				}
@@ -134,6 +159,12 @@ const createRoomState =
 					return { status: 'skipped' };
 				}
 				if (!failed) {
+					if (patch) {
+						set(patch);
+					}
+					if (markRead) {
+						readMessages(room.rid).catch(e => log(e));
+					}
 					return { status: 'loaded', lastSeen };
 				}
 				if (attempt === INIT_MAX_ATTEMPTS) {
@@ -144,11 +175,6 @@ const createRoomState =
 				});
 				if (signal?.aborted) {
 					return { status: 'skipped' };
-				}
-				// A store that started empty can be filled by the subscription observer mid-retry; once
-				// the room has arrived there is nothing transient left to wait for.
-				if (startedEmpty && !isEmptyRoom(get().room)) {
-					return { status: 'failed' };
 				}
 			}
 			return { status: 'failed' };
