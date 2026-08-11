@@ -42,9 +42,10 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	}
 
 	const date = ts ? formatLongDate(ts) : null;
-	const unreadLine = { backgroundColor: themes[theme].strokeError };
+	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
 	const unreadText = { color: themes[theme].fontDanger };
-	const line = { backgroundColor: themes[theme].strokeLight };
+	const lineBackground = { backgroundColor: themes[theme].strokeLight };
+	
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
@@ -57,12 +58,12 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={[styles.line, line]} />
+				<View style={[styles.line, lineBackground]} />
 				<View
 					style={[styles.label, styles.marginHorizontal, { backgroundColor: themes[theme].buttonBackgroundSecondaryDefault }]}>
 					<Text style={[styles.text, { color: themes[theme].buttonFontSecondary }]}>{date}</Text>
 				</View>
-				<View style={[styles.line, line]} />
+				<View style={[styles.line, lineBackground]} />
 			</View>
 		);
 	}
