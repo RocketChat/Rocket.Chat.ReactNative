@@ -69,8 +69,6 @@ interface IMessageReply {
 }
 
 const AttText = ({ text }: IMessageAttText) => {
-	'use memo';
-
 	const user = useMessageUser();
 
 	if (!text) {
@@ -81,8 +79,6 @@ const AttText = ({ text }: IMessageAttText) => {
 };
 
 const Fields = ({ attachment }: IMessageFields) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const user = useMessageUser();
 
@@ -105,8 +101,6 @@ const Fields = ({ attachment }: IMessageFields) => {
 };
 
 const CollapsibleQuote = ({ attachment }: IMessageReply) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 

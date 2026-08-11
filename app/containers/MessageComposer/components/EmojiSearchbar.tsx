@@ -19,8 +19,6 @@ import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
 export const EmojiSearchbar = (): ReactElement => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 	const { closeEmojiSearchbar } = useEmojiKeyboard();
