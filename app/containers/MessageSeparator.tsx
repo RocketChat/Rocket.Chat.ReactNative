@@ -45,7 +45,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
 	const unreadText = { color: themes[theme].fontDanger };
 	const lineBackground = { backgroundColor: themes[theme].strokeLight };
-	
+
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
