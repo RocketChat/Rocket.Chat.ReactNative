@@ -59,9 +59,6 @@ export const ComposerInput = memo(
 		const textRef = useRef('');
 		const firstRender = useRef(true);
 		const selectionRef = useRef<IInputSelection>(defaultSelection);
-		// Displays the readable fname for discussion-style rooms, but the server only resolves
-		// channel mentions by the room `name`, so the composer translates the title back to it
-		// when sending. Keyed by the exact title text inserted into the composer.
 		const mentionRoomTokensRef = useRef<Record<string, string>>({});
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
@@ -291,8 +288,6 @@ export const ComposerInput = memo(
 					break;
 				case '#':
 					mention = item.title || item.subtitle || '';
-					// Discussions carry an ID-like `name`; matching room name is in `subtitle`.
-					// Remember the pair so we can resolve the token on send.
 					if (item.subtitle && item.subtitle !== item.title) {
 						mentionRoomTokensRef.current[item.title] = item.subtitle;
 					}
