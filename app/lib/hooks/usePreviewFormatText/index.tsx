@@ -5,7 +5,7 @@ import { formatText } from '../../helpers/formatText';
 import { formatHyperlink } from '../../helpers/formatHyperlink';
 import { formatChannelMentions, type TMentionableChannel } from '../../methods/helpers/formatChannelMentions';
 
-const usePreviewFormatText = (msg: string, channels?: TMentionableChannel[]) => {
+const usePreviewFormatText = (msg: string, channels?: TMentionableChannel[]): string => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 
 	// Resolved before the markdown is stripped, so the mention is still `#name` at this point

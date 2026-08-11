@@ -24,9 +24,14 @@ export const useQuotedMessageChannels = (messageLink?: string, enabled = true): 
 			if (!messageId || !enabled) {
 				return;
 			}
-			const message = await getMessageById(messageId);
-			if (isActive && message?.channels?.length) {
-				setChannels(message.channels);
+			try {
+				// Reads through to the database, which has no active instance while servers switch
+				const message = await getMessageById(messageId);
+				if (isActive && message?.channels?.length) {
+					setChannels(message.channels);
+				}
+			} catch {
+				// Leaving `channels` unset falls back to the raw room id, which beats crashing the quote
 			}
 		};
 		load();

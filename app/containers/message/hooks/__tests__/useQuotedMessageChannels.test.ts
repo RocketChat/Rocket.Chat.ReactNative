@@ -47,4 +47,14 @@ describe('useQuotedMessageChannels', () => {
 
 		await waitFor(() => expect(result.current).toBeUndefined());
 	});
+
+	// The lookup reaches the database, which has no active instance while servers switch
+	it('leaves the channels unset when the lookup rejects', async () => {
+		mockGetMessageById.mockRejectedValue(new Error('no active database'));
+
+		const { result } = renderHook(() => useQuotedMessageChannels(permalink('quoted-1')));
+
+		await waitFor(() => expect(mockGetMessageById).toHaveBeenCalledWith('quoted-1'));
+		expect(result.current).toBeUndefined();
+	});
 });
