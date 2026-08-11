@@ -47,8 +47,14 @@ const SwipeableDeleteTouchable = ({
 	const rowOffSet = useSharedValue(0);
 	const rowState = useSharedValue(0);
 	const valueRef = useRef(0);
+	const panActivated = useSharedValue(false);
 
 	const handlePress = () => {
+		if (panActivated.value) {
+			panActivated.value = false;
+			return;
+		}
+
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -150,6 +156,12 @@ const SwipeableDeleteTouchable = ({
 	const panGesture = Gesture.Pan()
 		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
+		.onBegin(() => {
+			panActivated.value = false;
+		})
+		.onStart(() => {
+			panActivated.value = true;
+		})
 		.onUpdate(event => {
 			const newValue = event.translationX + rowOffSet.value;
 
