@@ -17,31 +17,36 @@ interface IUseRoomInitParams {
 	onQuoteInit: (messageId: string) => void;
 }
 
-const runInit = (roomStore: RoomStore, tmid: string | undefined, onLoadedRef: RefObject<() => void>) =>
-	roomStore.getState().init({ tmid, onThreadMessagesLoaded: () => onLoadedRef.current?.() });
-
 // Raises the screen's loading flag for the duration of one init() run. init() resolves on the invite
 // early-return and on failure alike, so the finally is the only place that clears it; awaiting it is
-// what keeps the footer from flickering. The ref guards the writes against a screen that went away.
+// what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
+// lower a try/finally inside a hook body (see reactCompilerContract.test.ts).
+//
+// `controller` belongs to this run alone and is never reset by a later one: once a newer run aborts
+// it, this run stops writing for a screen that has already moved on.
 const runInitWithLoading = async (
 	roomStore: RoomStore,
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
-	cancelledRef: RefObject<boolean>,
+	controller: AbortController,
 	setLoading: (loading: boolean) => void,
 	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void
 ): Promise<void> => {
-	cancelledRef.current = false;
 	setLoading(true);
 	try {
-		const nextLastSeen = await runInit(roomStore, tmid, onLoadedRef);
-		if (!cancelledRef.current) {
-			setLastSeen(nextLastSeen);
+		const result = await roomStore.getState().init({
+			tmid,
+			onThreadMessagesLoaded: () => onLoadedRef.current?.(),
+			signal: controller.signal
+		});
+		// Only a loaded run carries an anchor; `failed` and `skipped` leave the current one alone.
+		if (!controller.signal.aborted && result.status === 'loaded') {
+			setLastSeen(result.lastSeen);
 		}
 	} catch (e) {
 		log(e);
 	} finally {
-		if (!cancelledRef.current) {
+		if (!controller.signal.aborted) {
 			setLoading(false);
 		}
 	}
@@ -68,12 +73,16 @@ export function useRoomInit({
 	// `lastSeen` (the unread divider anchor) is per-screen for the same reason: a send from the thread
 	// screen clears its own anchor and leaves the room screen's divider where it was.
 	const [lastSeen, setLastSeen] = useState<IRoomViewState['lastSeen']>(null);
-	const cancelledRef = useRef(false);
+	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
+	// still-in-flight predecessor can no longer un-cancel itself and write for a screen that moved on.
+	const initControllerRef = useRef<AbortController | null>(null);
 
-	const initWithLoading = useCallback(
-		() => runInitWithLoading(roomStore, tmid, onLoadedRef, cancelledRef, setLoading, setLastSeen),
-		[roomStore, tmid, onLoadedRef]
-	);
+	const initWithLoading = useCallback(() => {
+		initControllerRef.current?.abort();
+		const controller = new AbortController();
+		initControllerRef.current = controller;
+		return runInitWithLoading(roomStore, tmid, onLoadedRef, controller, setLoading, setLastSeen);
+	}, [roomStore, tmid, onLoadedRef]);
 
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
 
@@ -83,7 +92,7 @@ export function useRoomInit({
 		}
 		const task = InteractionManager.runAfterInteractions(() => initWithLoading());
 		return () => {
-			cancelledRef.current = true;
+			initControllerRef.current?.abort();
 			task.cancel();
 		};
 	}, [rid, isAuthenticated, initWithLoading]);

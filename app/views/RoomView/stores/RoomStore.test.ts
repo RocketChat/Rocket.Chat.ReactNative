@@ -238,7 +238,7 @@ describe('RoomStore', () => {
 		mockIsInviteSubscription.mockReturnValue(true);
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
-		await store.getState().init();
+		await expect(store.getState().init()).resolves.toEqual({ status: 'skipped' });
 
 		expect(mockGetMessages).not.toHaveBeenCalled();
 	});
@@ -287,11 +287,11 @@ describe('RoomStore', () => {
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(1000);
 
-			await expect(initPromise).resolves.toBe(unreadRoom.ls);
+			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: unreadRoom.ls });
 			expect(mockGetMessages).toHaveBeenCalledTimes(2);
 		});
 
-		it('gives up after three attempts and resolves with a null lastSeen', async () => {
+		it('gives up after three attempts and resolves as failed', async () => {
 			setupObserve();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
 			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
@@ -299,7 +299,7 @@ describe('RoomStore', () => {
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
 
-			await expect(initPromise).resolves.toBeNull();
+			await expect(initPromise).resolves.toEqual({ status: 'failed' });
 			expect(mockGetMessages).toHaveBeenCalledTimes(3);
 		});
 
@@ -313,7 +313,7 @@ describe('RoomStore', () => {
 			emit([subRoom]);
 			await jest.advanceTimersByTimeAsync(10000);
 
-			await expect(initPromise).resolves.toBeNull();
+			await expect(initPromise).resolves.toEqual({ status: 'failed' });
 			expect(mockGetMessages).toHaveBeenCalledTimes(1);
 		});
 
@@ -325,15 +325,42 @@ describe('RoomStore', () => {
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
 
-			await expect(initPromise).resolves.toBeNull();
+			await expect(initPromise).resolves.toEqual({ status: 'skipped' });
 			expect(mockGetMessages).not.toHaveBeenCalled();
+		});
+
+		it('stops retrying and reports skipped once the run signal aborts', async () => {
+			setupObserve();
+			mockGetMessages.mockRejectedValue(new Error('boom'));
+			const controller = new AbortController();
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+			const initPromise = store.getState().init({ signal: controller.signal });
+			await jest.advanceTimersByTimeAsync(0);
+			controller.abort();
+			await jest.advanceTimersByTimeAsync(10000);
+
+			await expect(initPromise).resolves.toEqual({ status: 'skipped' });
+			expect(mockGetMessages).toHaveBeenCalledTimes(1);
+		});
+
+		it('reports skipped instead of loaded when the signal aborts during a successful attempt', async () => {
+			setupObserve();
+			const controller = new AbortController();
+			mockGetMessages.mockImplementation(() => {
+				controller.abort();
+				return Promise.resolve();
+			});
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+
+			await expect(store.getState().init({ signal: controller.signal })).resolves.toEqual({ status: 'skipped' });
 		});
 	});
 
 	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
 		const store = peekOrCreateRoomStore({ initialRoom: stubRoom });
 
-		await expect(store.getState().init()).resolves.toBeNull();
+		await expect(store.getState().init()).resolves.toEqual({ status: 'skipped' });
 
 		expect(mockGetMessages).not.toHaveBeenCalled();
 	});

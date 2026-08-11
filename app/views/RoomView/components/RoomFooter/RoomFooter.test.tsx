@@ -4,7 +4,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { createStore as createZustandStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { RoomFooter } from './RoomFooter';
 
@@ -64,7 +64,7 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
-		init: jest.fn(() => Promise.resolve(null)),
+		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve()),

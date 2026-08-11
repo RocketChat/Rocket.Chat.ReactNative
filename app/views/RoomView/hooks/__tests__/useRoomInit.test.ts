@@ -3,7 +3,7 @@ import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
 import { useRoomInit } from '../useRoomInit';
 
 jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
@@ -32,7 +32,7 @@ const makeRoomStore = (): RoomStore =>
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
-		init: jest.fn(() => Promise.resolve(null)),
+		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve())
@@ -40,12 +40,12 @@ const makeRoomStore = (): RoomStore =>
 
 // A store whose init() only resolves when the test says so, so an in-flight init can be observed.
 const makeDeferredRoomStore = () => {
-	const resolvers: ((lastSeen: Date | null) => void)[] = [];
+	const resolvers: ((result: TRoomInitResult) => void)[] = [];
 	const roomStore = makeRoomStore();
 	roomStore.setState({
 		init: jest.fn(
 			() =>
-				new Promise<Date | null>(resolve => {
+				new Promise<TRoomInitResult>(resolve => {
 					resolvers.push(resolve);
 				})
 		)
@@ -53,7 +53,10 @@ const makeDeferredRoomStore = () => {
 	return {
 		roomStore,
 		resolveInit: async (call = 0, lastSeen: Date | null = null) => {
-			await act(async () => resolvers[call](lastSeen));
+			await act(async () => resolvers[call]({ status: 'loaded', lastSeen }));
+		},
+		resolveInitWith: async (call: number, result: TRoomInitResult) => {
+			await act(async () => resolvers[call](result));
 		}
 	};
 };
@@ -153,7 +156,7 @@ describe('useRoomInit', () => {
 	// init() resolves on the invite early-return and on failure alike, so both land here: the footer
 	// must not stay stuck in a loading state on either path.
 	it.each([
-		['resolves', () => Promise.resolve(null)],
+		['resolves', () => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })],
 		['rejects', () => Promise.reject(new Error('boom'))]
 	])('clears loading once init %s', async (_case, init) => {
 		const roomStore = makeRoomStore();
@@ -186,6 +189,44 @@ describe('useRoomInit', () => {
 		act(() => result.current.clearLastSeen());
 
 		expect(result.current.lastSeen).toBeNull();
+	});
+
+	// Each run owns its own cancel token, so a superseded run that resolves late is inert: only the
+	// run that replaced it may write lastSeen and clear loading.
+	it('ignores a superseded init run that resolves after a later one started', async () => {
+		const stale = new Date('2026-01-01T00:00:00.000Z');
+		const fresh = new Date('2026-02-02T00:00:00.000Z');
+		const { roomStore, resolveInit } = makeDeferredRoomStore();
+		const { result, rerender } = renderRoomInit({ roomUpdate: { status: 'INVITED' } }, roomStore);
+
+		// The INVITED transition starts a second run while the mount run is still in flight.
+		rerender({ roomUpdate: { status: 'READY' } });
+		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
+
+		await resolveInit(0, stale);
+
+		expect(result.current.loading).toBe(true);
+		expect(result.current.lastSeen).toBeNull();
+
+		await resolveInit(1, fresh);
+
+		expect(result.current.lastSeen).toBe(fresh);
+		expect(result.current.loading).toBe(false);
+	});
+
+	it.each([['failed'], ['skipped']] as const)('leaves lastSeen untouched when init reports %s', async status => {
+		const loaded = new Date('2026-01-01T00:00:00.000Z');
+		const { roomStore, resolveInit, resolveInitWith } = makeDeferredRoomStore();
+		const { result, rerender } = renderRoomInit({ roomUpdate: { status: 'INVITED' } }, roomStore);
+
+		await resolveInit(0, loaded);
+		expect(result.current.lastSeen).toBe(loaded);
+
+		rerender({ roomUpdate: { status: 'READY' } });
+		await resolveInitWith(1, { status });
+
+		expect(result.current.lastSeen).toBe(loaded);
+		expect(result.current.loading).toBe(false);
 	});
 
 	it('does not clear loading after unmount', async () => {

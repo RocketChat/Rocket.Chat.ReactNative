@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-native';
 
 import { sendMessage } from '../../../../lib/methods/sendMessage';
 import { Review } from '../../../../lib/methods/helpers/review';
-import { type IUseRoomActionsParams, type RoomState, type RoomStore } from '../../definitions';
+import { type IUseRoomActionsParams, type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
 import { useRoomActions } from '../useRoomActions';
 
 jest.mock('../../../../lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));
@@ -31,7 +31,7 @@ const makeRoomStore = (): RoomStore =>
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
-		init: jest.fn(() => Promise.resolve(null)),
+		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve())

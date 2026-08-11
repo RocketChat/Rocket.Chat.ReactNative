@@ -50,6 +50,8 @@ const INIT_RETRY_DELAY = 1000;
 
 interface ILoadRoomResult {
 	failed: boolean;
+	// An invite subscription is not loaded, it is declined work: `init` reports it as `skipped`.
+	skipped?: boolean;
 	lastSeen: IRoomViewState['lastSeen'];
 }
 
@@ -66,7 +68,7 @@ const loadRoom = async (
 	try {
 		const currentRoom = get().room;
 		if ('id' in currentRoom && isInviteSubscription(currentRoom)) {
-			return { failed: false, lastSeen: null };
+			return { failed: false, skipped: true, lastSeen: null };
 		}
 
 		if (tmid) {
@@ -117,26 +119,39 @@ const createRoomState =
 		// A transient failure retries a couple of times instead of leaving the screen empty until the
 		// user navigates away and back. The loop lives here so the caller's single `loading` window
 		// spans the whole retry stretch: no per-attempt `loading` write, no loaded-but-empty flash.
-		init: async ({ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams = {}) => {
+		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}) => {
 			if (!rid) {
-				return null;
+				return { status: 'skipped' };
 			}
 			const startedEmpty = isEmptyRoom(get().room);
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
-				const { failed, lastSeen } = await loadRoom(rid, get, set, { tmid, onThreadMessagesLoaded });
-				if (!failed || attempt === INIT_MAX_ATTEMPTS) {
-					return failed ? null : lastSeen;
+				const { failed, skipped, lastSeen } = await loadRoom(rid, get, set, { tmid, onThreadMessagesLoaded });
+				// The caller superseded this run while the attempt was in flight; its result is stale.
+				if (signal?.aborted) {
+					return { status: 'skipped' };
+				}
+				if (skipped) {
+					return { status: 'skipped' };
+				}
+				if (!failed) {
+					return { status: 'loaded', lastSeen };
+				}
+				if (attempt === INIT_MAX_ATTEMPTS) {
+					return { status: 'failed' };
 				}
 				await new Promise(resolve => {
 					setTimeout(resolve, INIT_RETRY_DELAY);
 				});
+				if (signal?.aborted) {
+					return { status: 'skipped' };
+				}
 				// A store that started empty can be filled by the subscription observer mid-retry; once
 				// the room has arrived there is nothing transient left to wait for.
 				if (startedEmpty && !isEmptyRoom(get().room)) {
-					return null;
+					return { status: 'failed' };
 				}
 			}
-			return null;
+			return { status: 'failed' };
 		},
 
 		join: () => set({ joined: true }),
