@@ -60,7 +60,6 @@ const Touch = forwardRef<View, ITouchProps>(
 			componentRef,
 			longPressViaResponder,
 			onLongPress,
-			testID,
 			...props
 		},
 		ref
@@ -122,7 +121,7 @@ const Touch = forwardRef<View, ITouchProps>(
 				disabled={!enabled}
 				focusable={enabled}
 				canBeFocused={enabled}>
-				<View testID={testID} style={viewStyle} {...responderProps}>
+				<View style={viewStyle} {...responderProps}>
 					{children}
 				</View>
 			</Wrapper>
