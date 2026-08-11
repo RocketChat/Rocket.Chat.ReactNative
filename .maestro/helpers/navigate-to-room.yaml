@@ -8,6 +8,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'rooms-list-view-item-${ROOM}'
+    timeout: 60000
 - waitForAnimationToEnd
 - tapOn:
     id: 'rooms-list-view-item-${ROOM}'
