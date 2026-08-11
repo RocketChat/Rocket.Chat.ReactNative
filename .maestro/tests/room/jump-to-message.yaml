@@ -15,7 +15,6 @@ tags:
       PASSWORD: ${output.account.adminPassword}
 
 # should jump to an old message and load its surroundings
-# Search instead of scroll: this fixture keeps sinking in the activity-sorted list
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
