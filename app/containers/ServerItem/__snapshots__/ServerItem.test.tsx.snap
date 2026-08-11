@@ -71,10 +71,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           "opacity": 1,
         }
       }
-      testID="server-item-https://open.rocket.chat/"
     >
       <View
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={
@@ -291,10 +291,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           "opacity": 1,
         }
       }
-      testID="server-item-https://superlongservername.tologintoasuperlongservername/"
     >
       <View
         style={{}}
+        testID="server-item-https://superlongservername.tologintoasuperlongservername/"
       >
         <View
           style={
@@ -511,10 +511,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           "opacity": 1,
         }
       }
-      testID="server-item-https://stable.rocket.chat/"
     >
       <View
         style={{}}
+        testID="server-item-https://stable.rocket.chat/"
       >
         <View
           style={
@@ -870,10 +870,10 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="server-item-https://open.rocket.chat/"
         >
           <View
             style={{}}
+            testID="server-item-https://open.rocket.chat/"
           >
             <View
               style={
@@ -1226,10 +1226,10 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="server-item-https://example.com/"
         >
           <View
             style={{}}
+            testID="server-item-https://example.com/"
           >
             <View
               style={
@@ -1453,10 +1453,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           "opacity": 1,
         }
       }
-      testID="server-item-https://open.rocket.chat/"
     >
       <View
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={
@@ -1673,10 +1673,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           "opacity": 1,
         }
       }
-      testID="server-item-https://open.rocket.chat/"
     >
       <View
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={
@@ -1893,10 +1893,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           "opacity": 1,
         }
       }
-      testID="server-item-https://open.rocket.chat/"
     >
       <View
         style={{}}
+        testID="server-item-https://open.rocket.chat/"
       >
         <View
           style={

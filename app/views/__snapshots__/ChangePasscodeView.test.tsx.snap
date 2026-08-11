@@ -461,7 +461,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-1"
                   >
                     <View
                       style={
@@ -472,6 +471,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-1"
                     >
                       <Text
                         style={
@@ -574,7 +574,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-2"
                   >
                     <View
                       style={
@@ -585,6 +584,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-2"
                     >
                       <Text
                         style={
@@ -687,7 +687,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-3"
                   >
                     <View
                       style={
@@ -698,6 +697,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-3"
                     >
                       <Text
                         style={
@@ -812,7 +812,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-4"
                   >
                     <View
                       style={
@@ -823,6 +822,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-4"
                     >
                       <Text
                         style={
@@ -925,7 +925,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-5"
                   >
                     <View
                       style={
@@ -936,6 +935,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-5"
                     >
                       <Text
                         style={
@@ -1038,7 +1038,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-6"
                   >
                     <View
                       style={
@@ -1049,6 +1048,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-6"
                     >
                       <Text
                         style={
@@ -1163,7 +1163,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-7"
                   >
                     <View
                       style={
@@ -1174,6 +1173,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-7"
                     >
                       <Text
                         style={
@@ -1276,7 +1276,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-8"
                   >
                     <View
                       style={
@@ -1287,6 +1286,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-8"
                     >
                       <Text
                         style={
@@ -1389,7 +1389,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-9"
                   >
                     <View
                       style={
@@ -1400,6 +1399,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-9"
                     >
                       <Text
                         style={
@@ -1527,7 +1527,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-0"
                   >
                     <View
                       style={
@@ -1538,6 +1537,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-0"
                     >
                       <Text
                         style={
@@ -1640,7 +1640,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-backspace"
                   >
                     <View
                       style={
@@ -1651,6 +1650,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-backspace"
                     >
                       <Text
                         allowFontScaling={false}
@@ -2295,7 +2295,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-1"
                   >
                     <View
                       style={
@@ -2306,6 +2305,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-1"
                     >
                       <Text
                         style={
@@ -2408,7 +2408,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-2"
                   >
                     <View
                       style={
@@ -2419,6 +2418,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-2"
                     >
                       <Text
                         style={
@@ -2521,7 +2521,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-3"
                   >
                     <View
                       style={
@@ -2532,6 +2531,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-3"
                     >
                       <Text
                         style={
@@ -2646,7 +2646,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-4"
                   >
                     <View
                       style={
@@ -2657,6 +2656,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-4"
                     >
                       <Text
                         style={
@@ -2759,7 +2759,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-5"
                   >
                     <View
                       style={
@@ -2770,6 +2769,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-5"
                     >
                       <Text
                         style={
@@ -2872,7 +2872,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-6"
                   >
                     <View
                       style={
@@ -2883,6 +2882,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-6"
                     >
                       <Text
                         style={
@@ -2997,7 +2997,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-7"
                   >
                     <View
                       style={
@@ -3008,6 +3007,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-7"
                     >
                       <Text
                         style={
@@ -3110,7 +3110,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-8"
                   >
                     <View
                       style={
@@ -3121,6 +3120,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-8"
                     >
                       <Text
                         style={
@@ -3223,7 +3223,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-9"
                   >
                     <View
                       style={
@@ -3234,6 +3233,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-9"
                     >
                       <Text
                         style={
@@ -3361,7 +3361,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-0"
                   >
                     <View
                       style={
@@ -3372,6 +3371,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-0"
                     >
                       <Text
                         style={
@@ -3474,7 +3474,6 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                         "opacity": 1,
                       }
                     }
-                    testID="passcode-button-backspace"
                   >
                     <View
                       style={
@@ -3485,6 +3484,7 @@ exports[`Story Snapshots: Forced should match snapshot 1`] = `
                           "width": 78,
                         }
                       }
+                      testID="passcode-button-backspace"
                     >
                       <Text
                         allowFontScaling={false}

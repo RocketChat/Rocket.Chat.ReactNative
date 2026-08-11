@@ -205,10 +205,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://open.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -517,10 +517,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
           >
             <View
               style={
@@ -829,10 +829,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://stable.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://stable.rocket.chat"
           >
             <View
               style={
@@ -1146,10 +1146,10 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://open.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -1458,10 +1458,10 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://example.com"
         >
           <View
             style={{}}
+            testID="servers-history-https://example.com"
           >
             <View
               style={
@@ -1775,10 +1775,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://open.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -2087,10 +2087,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://open.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={
@@ -2399,10 +2399,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "opacity": 1,
             }
           }
-          testID="servers-history-https://open.rocket.chat"
         >
           <View
             style={{}}
+            testID="servers-history-https://open.rocket.chat"
           >
             <View
               style={

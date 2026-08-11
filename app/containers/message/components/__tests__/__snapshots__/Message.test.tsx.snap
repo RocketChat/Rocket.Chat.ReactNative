@@ -32438,10 +32438,10 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                 "opacity": 1,
               }
             }
-            testID="message-editing-editing-message"
           >
             <View
               style={{}}
+              testID="message-editing-editing-message"
             >
               <View
                 style={
@@ -32900,10 +32900,10 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                 "opacity": 1,
               }
             }
-            testID="message-editing-editing-message"
           >
             <View
               style={{}}
+              testID="message-editing-editing-message"
             >
               <View
                 style={
@@ -102041,10 +102041,10 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                                         "opacity": 1,
                                       }
                                     }
-                                    testID="thread-follow"
                                   >
                                     <View
                                       style={{}}
+                                      testID="thread-follow"
                                     >
                                       <Text
                                         allowFontScaling={false}
@@ -106688,10 +106688,10 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                                         "opacity": 1,
                                       }
                                     }
-                                    testID="thread-follow"
                                   >
                                     <View
                                       style={{}}
+                                      testID="thread-follow"
                                     >
                                       <Text
                                         allowFontScaling={false}
@@ -120886,10 +120886,10 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                                         "opacity": 1,
                                       }
                                     }
-                                    testID="thread-follow"
                                   >
                                     <View
                                       style={{}}
+                                      testID="thread-follow"
                                     >
                                       <Text
                                         allowFontScaling={false}
@@ -122620,10 +122620,10 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                                         "opacity": 1,
                                       }
                                     }
-                                    testID="thread-follow"
                                   >
                                     <View
                                       style={{}}
+                                      testID="thread-follow"
                                     >
                                       <Text
                                         allowFontScaling={false}
