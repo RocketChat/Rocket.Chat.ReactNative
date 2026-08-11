@@ -18,7 +18,6 @@ export interface ISwipeableDeleteTouchableProps {
 	children: ReactElement;
 	testID: string;
 	width: number;
-	rowHeight: number;
 	actionWidth: number;
 	longSwipe: number;
 	smallSwipe: number;
@@ -33,7 +32,6 @@ const SwipeableDeleteTouchable = ({
 	width,
 	children,
 	testID,
-	rowHeight,
 	actionWidth,
 	longSwipe,
 	smallSwipe,
@@ -188,7 +186,6 @@ const SwipeableDeleteTouchable = ({
 				<DeleteAction
 					width={width}
 					transX={transX}
-					rowHeight={rowHeight}
 					actionWidth={actionWidth}
 					longSwipe={longSwipe}
 					onDeletePress={handleDeletePress}
