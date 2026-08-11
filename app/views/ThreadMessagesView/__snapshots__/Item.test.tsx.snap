@@ -82,10 +82,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -470,10 +470,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -590,10 +590,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -978,10 +978,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -1098,10 +1098,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -1486,10 +1486,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -1593,10 +1593,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       >
         <View
           style={{}}
-          testID="thread-messages-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         >
           <View
             style={
@@ -1981,10 +1981,10 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -2121,10 +2121,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -2493,10 +2493,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -2613,10 +2613,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       >
         <View
           style={{}}
-          testID="thread-messages-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         >
           <View
             style={
@@ -2985,10 +2985,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -3105,10 +3105,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -3477,10 +3477,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -3597,10 +3597,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-"
       >
         <View
           style={{}}
-          testID="thread-messages-view-"
         >
           <View
             style={
@@ -3969,10 +3969,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -4089,10 +4089,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -4461,10 +4461,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -4601,10 +4601,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -4989,10 +4989,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -5096,10 +5096,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -5484,10 +5484,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}
@@ -5591,10 +5591,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "opacity": 1,
           }
         }
+        testID="thread-messages-view-Message content"
       >
         <View
           style={{}}
-          testID="thread-messages-view-Message content"
         >
           <View
             style={
@@ -5979,10 +5979,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           "opacity": 1,
                         }
                       }
+                      testID="thread-follow"
                     >
                       <View
                         style={{}}
-                        testID="thread-follow"
                       >
                         <Text
                           allowFontScaling={false}

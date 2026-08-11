@@ -5047,10 +5047,10 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
               "opacity": 1,
             }
           }
+          testID="thread-follow"
         >
           <View
             style={{}}
-            testID="thread-follow"
           >
             <Text
               allowFontScaling={false}

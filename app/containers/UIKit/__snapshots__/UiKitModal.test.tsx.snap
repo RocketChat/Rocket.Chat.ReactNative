@@ -4621,6 +4621,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                       "opacity": 1,
                     }
                   }
+                  testID="multi-select-chip-1"
                 >
                   <View
                     style={
@@ -4631,7 +4632,6 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                         "paddingHorizontal": 4,
                       }
                     }
-                    testID="multi-select-chip-1"
                   >
                     <Text
                       numberOfLines={1}

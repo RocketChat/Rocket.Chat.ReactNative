@@ -615,6 +615,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "opacity": 1,
                   }
                 }
+                testID="clear-text-input"
               >
                 <View
                   style={
@@ -623,7 +624,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "width": 20,
                     }
                   }
-                  testID="clear-text-input"
                 >
                   <Text
                     allowFontScaling={false}

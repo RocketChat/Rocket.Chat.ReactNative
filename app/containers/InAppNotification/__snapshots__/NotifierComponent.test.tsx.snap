@@ -100,6 +100,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           "opacity": 1,
         }
       }
+      testID="in-app-notification-Hey! How are you doing?"
     >
       <View
         style={
@@ -108,7 +109,6 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             "flexDirection": "row",
           }
         }
-        testID="in-app-notification-Hey! How are you doing?"
       >
         <View
           accessibilityLabel="rocket.cat's avatar"
@@ -428,6 +428,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           "opacity": 1,
         }
       }
+      testID="in-app-notification-Hey! How are you doing?"
     >
       <View
         style={
@@ -436,7 +437,6 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             "flexDirection": "row",
           }
         }
-        testID="in-app-notification-Hey! How are you doing?"
       >
         <View
           accessibilityLabel="diego.mello's avatar"
@@ -756,6 +756,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           "opacity": 1,
         }
       }
+      testID="in-app-notification-Hey! How are you doing?"
     >
       <View
         style={
@@ -764,7 +765,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             "flexDirection": "row",
           }
         }
-        testID="in-app-notification-Hey! How are you doing?"
       >
         <View
           accessibilityLabel="rocket.cat's avatar"
@@ -1084,6 +1084,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           "opacity": 1,
         }
       }
+      testID="in-app-notification-Hey! How are you doing?"
     >
       <View
         style={
@@ -1092,7 +1093,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             "flexDirection": "row",
           }
         }
-        testID="in-app-notification-Hey! How are you doing?"
       >
         <View
           accessibilityLabel="rocket.cat's avatar"
