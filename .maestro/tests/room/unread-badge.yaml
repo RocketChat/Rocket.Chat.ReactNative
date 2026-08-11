@@ -34,6 +34,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    notVisible:
+      id: 'in-app-notification-.*'
+    timeout: 15000
 - tapOn:
     id: header-back
     retryTapIfNoChange: true
@@ -62,6 +66,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    notVisible:
+      id: 'in-app-notification-.*'
+    timeout: 15000
 - tapOn:
     id: header-back
     retryTapIfNoChange: true
@@ -91,6 +99,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    notVisible:
+      id: 'in-app-notification-.*'
+    timeout: 15000
 - tapOn:
     id: header-back
     retryTapIfNoChange: true
@@ -120,6 +132,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    notVisible:
+      id: 'in-app-notification-.*'
+    timeout: 15000
 - tapOn:
     id: header-back
     retryTapIfNoChange: true
