@@ -22711,7 +22711,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       >
-        November 10, 2017
+        November 10th, 2017
       </Text>
     </View>
     <A11yOrderView
@@ -23922,27 +23922,42 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       />
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#6C727A",
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
             },
             {
               "marginHorizontal": 14,
             },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
           ]
         }
       >
-        November 10, 2017
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          November 10th, 2017
+        </Text>
+      </View>
       <View
         style={
           [
@@ -24945,7 +24960,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       >
-        November 10, 2017
+        November 10th, 2017
       </Text>
     </View>
     <A11yOrderView
@@ -26156,27 +26171,42 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       />
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#6C727A",
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
             },
             {
               "marginHorizontal": 14,
             },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
           ]
         }
       >
-        November 10, 2017
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          November 10th, 2017
+        </Text>
+      </View>
       <View
         style={
           [

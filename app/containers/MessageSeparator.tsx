@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import dayjs from '../lib/dayjs';
+import { formatLongDate } from '../lib/dayjs';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants/colors';
@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
 	},
 	marginHorizontal: {
 		marginHorizontal: 14
+	},
+	label: {
+		paddingHorizontal: 8,
+		paddingVertical: 2,
+		borderRadius: 16
 	}
 });
 
@@ -36,9 +41,11 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 		return null;
 	}
 
-	const date = ts ? dayjs(ts).format('LL') : null;
+	const date = ts ? formatLongDate(ts) : null;
 	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
 	const unreadText = { color: themes[theme].fontDanger };
+	const lineBackground = { backgroundColor: themes[theme].strokeLight };
+
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
@@ -51,9 +58,12 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
-				<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo }, styles.marginHorizontal]}>{date}</Text>
-				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
+				<View style={[styles.line, lineBackground]} />
+				<View
+					style={[styles.label, styles.marginHorizontal, { backgroundColor: themes[theme].buttonBackgroundSecondaryDefault }]}>
+					<Text style={[styles.text, { color: themes[theme].buttonFontSecondary }]}>{date}</Text>
+				</View>
+				<View style={[styles.line, lineBackground]} />
 			</View>
 		);
 	}
