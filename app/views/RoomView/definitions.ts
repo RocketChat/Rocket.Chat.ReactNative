@@ -29,19 +29,9 @@ export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'sho
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
 	joinCodeRef: RefObject<IJoinCode | null>;
-	// Per-screen state: a thread mounts its own RoomView on the same rid, so `loading` travels as a
-	// prop from each screen's useRoomInit instead of the shared rid-keyed store.
-	loading: boolean;
 }
 
-export interface ITakeOrJoinProps {
-	joinCodeRef: RefObject<IJoinCode | null>;
-	loading: boolean;
-}
-
-export interface IOnHoldProps {
-	loading: boolean;
-}
+export type ITakeOrJoinProps = Pick<IRoomFooterProps, 'joinCodeRef'>;
 
 export interface IFooterPreviewProps {
 	message: string;
@@ -156,13 +146,11 @@ export interface IListContainerProps {
 	serverVersion: string | null;
 }
 
-export interface ILastSeenContextValue {
+// The screen's own state, carried by RoomScreenContext — see that module for why it is per-screen.
+export interface IRoomScreenContextValue {
+	loading: boolean;
 	lastSeen: IRoomViewState['lastSeen'];
 	clearLastSeen: () => void;
-}
-
-export interface IUseRoomInitResult extends ILastSeenContextValue {
-	loading: boolean;
 }
 
 export interface IRoomStoreInitParams {

@@ -9,7 +9,7 @@ import { sendMessage } from '../../../../lib/methods/sendMessage';
 import { getUserSelector } from '../../../../selectors/login';
 import { type RoomState, type RoomStore } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
-import { LastSeenContext } from '../../stores/LastSeenContext';
+import { RoomScreenContext } from '../../stores/RoomScreenContext';
 import { createMessageActionStore, MessageActionStoreContext } from '../../../../containers/message/stores/MessageActionStore';
 import { MessageRoomProvider } from '../../../../containers/message/stores/MessageRoomStore';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
@@ -99,13 +99,13 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	const { result } = renderHook(() => useRoomMessageHandlers(), {
 		wrapper: ({ children }) => (
 			<RoomStoreContext.Provider value={roomStore}>
-				<LastSeenContext.Provider value={{ lastSeen: null, clearLastSeen }}>
+				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen }}>
 					<MessageActionStoreContext.Provider value={messageActionStore}>
 						<MessageRoomProvider tmid={tmid} timeFormat='h:mm A'>
 							{children}
 						</MessageRoomProvider>
 					</MessageActionStoreContext.Provider>
-				</LastSeenContext.Provider>
+				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
 		)
 	});
@@ -113,7 +113,7 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	return { result, roomStore, messageActionStore, clearLastSeen };
 };
 
-// MessageRoomProvider stays mounted (useRoomTmid throws without it); the store contexts are the ones left absent.
+// MessageRoomProvider stays mounted (useRoomTmid throws without it); the screen and room contexts are the ones left absent.
 const renderWithoutStores = () =>
 	renderHook(() => useRoomMessageHandlers(), {
 		wrapper: ({ children }) => <MessageRoomProvider timeFormat='h:mm A'>{children}</MessageRoomProvider>
@@ -239,8 +239,8 @@ describe('useRoomMessageHandlers', () => {
 			consoleErrorSpy.mockRestore();
 		});
 
-		it('throws when the store contexts are absent', () => {
-			expect(() => renderWithoutStores()).toThrow('must be used within a RoomStoreContext.Provider');
+		it('throws when the screen and room contexts are absent', () => {
+			expect(() => renderWithoutStores()).toThrow(/must be used within a Room(Screen|Store)Context\.Provider/);
 		});
 	});
 });

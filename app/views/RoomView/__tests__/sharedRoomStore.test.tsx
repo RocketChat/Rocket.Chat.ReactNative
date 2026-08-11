@@ -43,12 +43,12 @@ jest.mock('../components/JoinCode', () => {
 jest.mock('../List', () => {
 	const { createElement } = require('react');
 	const { Pressable, View } = require('react-native');
-	const { useLastSeen } = require('../stores/LastSeenContext');
+	const { useRoomScreen } = require('../stores/RoomScreenContext');
 	const { useComposerTmid, useOnSendMessage } = require('../stores/ComposerStore');
 	return {
 		__esModule: true,
 		default: () => {
-			const { lastSeen } = useLastSeen();
+			const { lastSeen } = useRoomScreen();
 			const tmid = useComposerTmid();
 			const onSendMessage = useOnSendMessage();
 			const screenName = tmid ? 'thread' : 'room';

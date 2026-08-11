@@ -2,6 +2,7 @@ import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
 import { peekOrCreateRoomStore, releaseRoomStore } from '../stores/RoomStore';
+import { RoomScreenContext } from '../stores/RoomScreenContext';
 import { RoomStoreContext } from '../stores/RoomStoreContext';
 import { MessageRow } from './MessageRow';
 
@@ -80,7 +81,9 @@ describe('MessageRow', () => {
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<MessageRow item={item} previousItem={undefined as any} onLongPress={jest.fn()} />
+				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen: jest.fn() }}>
+					<MessageRow item={item} previousItem={undefined as any} onLongPress={jest.fn()} />
+				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
 		);
 

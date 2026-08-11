@@ -70,9 +70,8 @@ interface ILoadRoomResult {
 // the store and writes nothing to it directly: everything it learned comes back in the result. It
 // still writes to the database, which the subscription observer turns into a store write — that
 // indirect path is exactly what lets a retry pick up a room the first attempt did not have.
-// `lastSeen` is
-// per-screen (room and thread mount two RoomViews on one rid-keyed store), so the unread divider
-// anchor is returned rather than shared. `failed` tells `init` whether to repeat the attempt.
+// The unread divider anchor is returned rather than written to the store, because it is per-screen
+// (see stores/RoomScreenContext). `failed` tells `init` whether to repeat the attempt.
 const loadRoom = async (
 	rid: string,
 	room: IRoomViewState['room'],

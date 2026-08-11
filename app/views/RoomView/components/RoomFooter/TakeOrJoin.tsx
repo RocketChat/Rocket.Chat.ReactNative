@@ -5,13 +5,15 @@ import Touch from '../../../../containers/Touch';
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
 import { type ITakeOrJoinProps } from '../../definitions';
+import { useRoomScreen } from '../../stores/RoomScreenContext';
 import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
 import styles from './styles';
 
-export const TakeOrJoin = ({ joinCodeRef, loading }: ITakeOrJoinProps) => {
+export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps) => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const room = useRoomWithUpdate();
+	const { loading } = useRoomScreen();
 	const joinRoom = useRoomStore(s => s.joinRoom);
 
 	// The join-code modal lives on this screen, so the trigger is handed to joinRoom per call.

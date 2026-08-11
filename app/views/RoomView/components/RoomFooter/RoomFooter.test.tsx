@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore as createZustandStore } from 'zustand';
 
 import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
+import { RoomScreenContext } from '../../stores/RoomScreenContext';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { RoomFooter } from './RoomFooter';
 
@@ -75,7 +76,9 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loadi
 	render(
 		<Provider store={reduxStore}>
 			<RoomStoreContext.Provider value={roomStore}>
-				<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} loading={loading} />
+				<RoomScreenContext.Provider value={{ loading, lastSeen: null, clearLastSeen: jest.fn() }}>
+					<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} />
+				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
 		</Provider>
 	);

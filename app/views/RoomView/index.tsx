@@ -35,7 +35,7 @@ import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
-import { LastSeenContext } from './stores/LastSeenContext';
+import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useHeader } from './hooks/useHeader';
 import { useMessageActions } from './hooks/useMessageActions';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
@@ -185,7 +185,7 @@ const RoomView = (props: IRoomViewProps) => {
 		messageErrorActionsRef
 	});
 
-	const { loading, lastSeen, clearLastSeen } = useRoomInit({
+	const roomScreen = useRoomInit({
 		rid,
 		tmid,
 		isAuthenticated,
@@ -204,7 +204,7 @@ const RoomView = (props: IRoomViewProps) => {
 		roomStore,
 		userRef,
 		resetAction,
-		onMessageSent: clearLastSeen
+		onMessageSent: roomScreen.clearLastSeen
 	});
 
 	useInAppFeedback();
@@ -254,7 +254,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	return (
 		<RoomStoreContext.Provider value={roomStore}>
-			<LastSeenContext.Provider value={{ lastSeen, clearLastSeen }}>
+			<RoomScreenContext.Provider value={roomScreen}>
 				<RoomProviders
 					store={messageActionStore}
 					rid={room.rid}
@@ -303,7 +303,7 @@ const RoomView = (props: IRoomViewProps) => {
 								</RoomMessageHandlersBridge>
 							</MessageRoomProvider>
 						</A11yGateProvider>
-						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} loading={loading} />
+						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
 						<RoomMessageActions
 							tmid={tmid}
 							user={user}
@@ -320,7 +320,7 @@ const RoomView = (props: IRoomViewProps) => {
 						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
 					</SafeAreaView>
 				</RoomProviders>
-			</LastSeenContext.Provider>
+			</RoomScreenContext.Provider>
 		</RoomStoreContext.Provider>
 	);
 };

@@ -4,7 +4,7 @@ import { InteractionManager } from 'react-native';
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import log from '../../../lib/methods/helpers/log';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
-import { type IRoomViewState, type IUseRoomInitResult, type RoomStore } from '../definitions';
+import { type IRoomScreenContextValue, type IRoomViewState, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
 	rid?: string;
@@ -17,22 +17,22 @@ interface IUseRoomInitParams {
 	onQuoteInit: (messageId: string) => void;
 }
 
-// Raises the screen's loading flag for the duration of one init() run. init() resolves on the invite
-// early-return and on failure alike, so the finally is the only place that clears it; awaiting it is
+// Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
+// early-return and on failure alike, so the finally is the only place that settles it; awaiting it is
 // what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
 // lower a try/finally inside a hook body (see reactCompilerContract.test.ts).
 //
 // `controller` belongs to this run alone and is never reset by a later one: once a newer run aborts
 // it, this run stops writing for a screen that has already moved on.
-const runInitWithLoading = async (
+const runInit = async (
 	roomStore: RoomStore,
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
 	controller: AbortController,
-	setLoading: (loading: boolean) => void,
+	setSettled: (settled: boolean) => void,
 	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void
 ): Promise<void> => {
-	setLoading(true);
+	setSettled(false);
 	try {
 		const result = await roomStore.getState().init({
 			tmid,
@@ -47,7 +47,7 @@ const runInitWithLoading = async (
 		log(e);
 	} finally {
 		if (!controller.signal.aborted) {
-			setLoading(false);
+			setSettled(true);
 		}
 	}
 };
@@ -61,41 +61,47 @@ export function useRoomInit({
 	onThreadMessagesLoaded,
 	messageActionStore,
 	onQuoteInit
-}: IUseRoomInitParams): IUseRoomInitResult {
+}: IUseRoomInitParams): IRoomScreenContextValue {
 	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
 	const onQuoteInitRef = useLiveRef(onQuoteInit);
 
-	// `loading` is per-screen: room and thread mount two RoomViews on one rid-keyed store, so it lives
-	// here instead of the store. The ref guards every write against a screen that already went away.
-	const [loading, setLoading] = useState(true);
-	// `lastSeen` (the unread divider anchor) is per-screen for the same reason: a send from the thread
-	// screen clears its own anchor and leaves the room screen's divider where it was.
+	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
 	const [lastSeen, setLastSeen] = useState<IRoomViewState['lastSeen']>(null);
+	// `settled` tracks the init run, and only the init run. A screen that has no rid or no auth never
+	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
+	const [settled, setSettled] = useState(false);
+	const hasInitWork = !!rid && isAuthenticated;
+	const loading = hasInitWork && !settled;
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
 	// still-in-flight predecessor can no longer un-cancel itself and write for a screen that moved on.
 	const initControllerRef = useRef<AbortController | null>(null);
 
-	const initWithLoading = useCallback(() => {
+	const init = useCallback(() => {
 		initControllerRef.current?.abort();
 		const controller = new AbortController();
 		initControllerRef.current = controller;
-		return runInitWithLoading(roomStore, tmid, onLoadedRef, controller, setLoading, setLastSeen);
+		return runInit(roomStore, tmid, onLoadedRef, controller, setSettled, setLastSeen);
 	}, [roomStore, tmid, onLoadedRef]);
 
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
 
 	useEffect(() => {
-		if (!rid || !isAuthenticated) {
+		if (!hasInitWork) {
 			return;
 		}
-		const task = InteractionManager.runAfterInteractions(() => initWithLoading());
+		// Settle down synchronously, before the deferred run starts: a rid swap commits its render
+		// before this effect, so leaving the previous run's `settled` in place would show an enabled
+		// footer for one frame on a room that has not loaded yet.
+		setSettled(false);
+		const task = InteractionManager.runAfterInteractions(() => init());
 		return () => {
 			initControllerRef.current?.abort();
 			task.cancel();
 		};
-	}, [rid, isAuthenticated, initWithLoading]);
+		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
+	}, [rid, isAuthenticated, hasInitWork, init]);
 
 	// messageActionStore is useState-stable, so this fires once per screen.
 	useEffect(() => {
@@ -112,10 +118,10 @@ export function useRoomInit({
 	const prevStatusRef = useRef(roomUpdate.status);
 	useEffect(() => {
 		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			initWithLoading();
+			init();
 		}
 		prevStatusRef.current = roomUpdate.status;
-	}, [roomUpdate.status, initWithLoading]);
+	}, [roomUpdate.status, init]);
 
 	return { loading, lastSeen, clearLastSeen };
 }

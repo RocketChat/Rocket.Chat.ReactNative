@@ -1,11 +1,10 @@
 import dayjs from '../../../lib/dayjs';
-import { useLastSeen } from '../stores/LastSeenContext';
+import { useRoomScreen } from '../stores/RoomScreenContext';
 import { type TAnyMessageModel } from '../../../definitions';
 import { type IUseMessageSeparatorsResult } from '../definitions';
 
 export const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel): IUseMessageSeparatorsResult => {
-	// Per-screen: the unread divider anchor comes from this RoomView, not the shared rid-keyed store.
-	const { lastSeen } = useLastSeen();
+	const { lastSeen } = useRoomScreen();
 
 	let dateSeparator = null;
 	let showUnreadSeparator = false;

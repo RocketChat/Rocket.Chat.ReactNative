@@ -166,6 +166,19 @@ describe('useRoomInit', () => {
 		await waitFor(() => expect(result.current.loading).toBe(false));
 	});
 
+	// A screen with no init run to wait on is idle, not loading: `loading` is derived from having work
+	// AND that work being unsettled, so the Join/Resume button can never be stuck disabled.
+	it.each([
+		['there is no rid', { rid: undefined }],
+		['the user is not authenticated', { isAuthenticated: false }]
+	])('does not report loading when %s', (_case, overrides) => {
+		const roomStore = makeRoomStore();
+		const { result } = renderRoomInit(overrides, roomStore);
+
+		expect(roomStore.getState().init).not.toHaveBeenCalled();
+		expect(result.current.loading).toBe(false);
+	});
+
 	it('keeps loading true while init is in flight', async () => {
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result } = renderRoomInit({}, roomStore);
