@@ -74,7 +74,7 @@ const buildLocalSubscription = (over: Partial<ISearch> = {}): TSearch =>
 		t: 'd',
 		encrypted: false,
 		...over
-	} as ISearchLocal);
+	}) as ISearchLocal;
 
 describe('searchRemote', () => {
 	beforeEach(() => {

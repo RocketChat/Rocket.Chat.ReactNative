@@ -33,6 +33,7 @@ import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { useMessageAction } from '../../message/stores/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
@@ -50,7 +51,8 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText, room } = useRoomContext();
+		const { rid, tmid, sharing, setQuotesAndText, room } = useRoomContext();
+		const action = useMessageAction();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
@@ -92,18 +94,18 @@ export const ComposerInput = memo(
 				}
 			};
 
-			if (action !== 'edit' && firstRender.current) {
+			if (action?.kind !== 'edit' && firstRender.current) {
 				firstRender.current = false;
 				setDraftMessage();
 			}
 			if (sharing) return;
 			if (usedCannedResponse) setInput(usedCannedResponse);
-		}, [action, rid, tmid, usedCannedResponse]);
+		}, [action?.kind, rid, tmid, usedCannedResponse]);
 
 		// Edit/quote
 		useEffect(() => {
-			const fetchMessageAndSetInput = async () => {
-				const message = await getMessageById(selectedMessages[0]);
+			const fetchMessageAndSetInput = async (messageId: string) => {
+				const message = await getMessageById(messageId);
 				if (message) {
 					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
 				}
@@ -111,19 +113,19 @@ export const ComposerInput = memo(
 
 			if (sharing) return;
 
-			if (prevAction === 'edit' && action !== 'edit') {
+			if (prevAction?.kind === 'edit' && action?.kind !== 'edit') {
 				setInput('');
 				return;
 			}
-			if (action === 'edit' && selectedMessages[0]) {
+			if (action?.kind === 'edit') {
 				focus();
-				fetchMessageAndSetInput();
+				fetchMessageAndSetInput(action.messageId);
 				return;
 			}
-			if (action === 'quote' && selectedMessages.length) {
+			if (action?.kind === 'quote' && action.messageIds.length) {
 				focus();
 			}
-		}, [action, selectedMessages]);
+		}, [action]);
 
 		useFocusEffect(
 			useCallback(() => {

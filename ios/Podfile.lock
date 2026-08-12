@@ -248,7 +248,7 @@ PODS:
   - MMKV (2.2.4):
     - MMKVCore (~> 2.2.4)
   - MMKVCore (2.2.4)
-  - MobileCrypto (0.3.0):
+  - MobileCrypto (0.4.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -4054,7 +4054,7 @@ SPEC CHECKSUMS:
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MMKV: 1a8e7dbce7f9cad02c52e1b1091d07bd843aefaf
   MMKVCore: f2dd4c9befea04277a55e84e7812f930537993df
-  MobileCrypto: 382f541e04405f45c323b11a404d3cc4546d0669
+  MobileCrypto: cbe4be11a33b5888e77861de9346fa5d3fccc8ac
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   NitroMmkv: 4a2d747ce97a4ae740b3cb3a3853366813faf831
   NitroModules: 18e41c298d86fc753fc754969fa9f84044e70711
@@ -4168,6 +4168,6 @@ SPEC CHECKSUMS:
   Yoga: 1e91d83a5286cfd3b725eade59274c92270540d4
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: d05b9b865205e9c845b4e7c288577d4b4ae403ab
+PODFILE CHECKSUM: 9ef0d302aac0150cec49089c7c416db32bb9d3ec
 
 COCOAPODS: 1.15.2

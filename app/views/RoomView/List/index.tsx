@@ -8,8 +8,6 @@ import { useMessages, useScroll } from './hooks';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
-		'use memo';
-
 		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
 			rid,
 			tmid,
@@ -57,7 +55,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 							: {
 									minIndexForVisible: 0,
 									autoscrollToTopThreshold: 0
-							  }
+								}
 					}
 				/>
 			</>

@@ -39,7 +39,6 @@ const AvatarWithEdit = ({
 	type,
 	children,
 	onPress,
-	getCustomEmoji,
 	isStatic,
 	rid,
 	handleEdit,
@@ -62,7 +61,6 @@ const AvatarWithEdit = ({
 				borderRadius={borderRadius}
 				type={type}
 				onPress={onPress}
-				getCustomEmoji={getCustomEmoji}
 				isStatic={isStatic}
 				rid={rid}>
 				{children}

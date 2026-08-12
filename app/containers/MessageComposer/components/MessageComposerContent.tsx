@@ -1,7 +1,7 @@
 import { memo, type ReactElement, type RefObject } from 'react';
 import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { type TMessageAction } from '../../../views/RoomView/context';
+import { type TMessageAction } from '../../../definitions';
 import { type IComposerInput } from '../interfaces';
 import { useTheme } from '../../../theme';
 import { RecordAudio } from './RecordAudio';
@@ -26,8 +26,6 @@ interface MessageComposerContentProps {
 
 export const MessageComposerContent = memo<MessageComposerContentProps>(
 	({ recordingAudio, action, showEmojiSearchbar, composerInputComponentRef, composerInputRef, children, onLayout }) => {
-		'use memo';
-
 		const { colors } = useTheme();
 		const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 

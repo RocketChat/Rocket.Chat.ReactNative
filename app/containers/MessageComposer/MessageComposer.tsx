@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
+import { useMessageAction } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import {
@@ -41,8 +42,6 @@ export const MessageComposer = ({
 	forwardedRef: Ref<IMessageComposerRef>;
 	children?: ReactElement | null;
 }): ReactElement | null => {
-	'use memo';
-
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -54,7 +53,8 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 	useCloseKeyboardWhenOrientationChanges();
-	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
+	const { rid, tmid, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
+	const action = useMessageAction();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
@@ -108,13 +108,13 @@ export const MessageComposer = ({
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
-		if (action === 'edit') {
+		if (action?.kind === 'edit') {
 			const updatedAttachments = attachments.length
 				? attachments.map(({ description, altText, fileId, filename }) =>
 						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
-				  )
+					)
 				: undefined;
-			editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid, attachments: updatedAttachments });
+			editRequest?.({ id: action.messageId, msg: textFromInput, rid, attachments: updatedAttachments });
 			clearAttachments();
 			return;
 		}
@@ -122,8 +122,8 @@ export const MessageComposer = ({
 		if (attachments.length) {
 			let quotedMessage: string | undefined;
 
-			if (action === 'quote') {
-				quotedMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
+			if (action?.kind === 'quote') {
+				quotedMessage = await prepareQuoteMessage(textFromInput, action.messageIds);
 			}
 
 			try {
@@ -146,8 +146,8 @@ export const MessageComposer = ({
 			}
 		}
 
-		if (action === 'quote') {
-			const quoteMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
+		if (action?.kind === 'quote') {
+			const quoteMessage = await prepareQuoteMessage(textFromInput, action.messageIds);
 			onSendMessage?.(quoteMessage);
 			return;
 		}
@@ -245,7 +245,7 @@ export const MessageComposer = ({
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
-				action={action}
+				action={action?.kind ?? null}
 				showEmojiSearchbar={showEmojiSearchbar}
 				composerInputComponentRef={composerInputComponentRef}
 				composerInputRef={composerInputRef}

@@ -39,6 +39,8 @@ const ITEM_MARGIN = 8;
 
 const styles = StyleSheet.create({
 	container: {
+		height: HEADER_HEIGHT,
+		justifyContent: 'center',
 		alignItems: 'center',
 		marginHorizontal: CONTAINER_MARGIN,
 		paddingBottom: 16

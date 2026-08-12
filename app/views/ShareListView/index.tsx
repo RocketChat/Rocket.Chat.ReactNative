@@ -1,11 +1,12 @@
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
 import database from '../../lib/database';
@@ -61,9 +62,13 @@ interface IShareListViewProps extends INavigationOption {
 	airGappedRestrictionRemainingDays: number | undefined;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
+	insets: EdgeInsets;
 }
 
-const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (_data: any, index: number) => {
+	const rowHeight = PixelRatio.roundToNearestPixel(ROW_HEIGHT * PixelRatio.getFontScale());
+	return { length: rowHeight, offset: (rowHeight + StyleSheet.hairlineWidth) * index, index };
+};
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
 class ShareListView extends Component<IShareListViewProps, IState> {
@@ -445,7 +450,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -486,6 +491,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}
@@ -513,4 +519,4 @@ const mapStateToProps = ({ login, server, share, settings }: IApplicationState) 
 			: undefined
 });
 
-export default connect(mapStateToProps)(withTheme(ShareListView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ShareListView)));
