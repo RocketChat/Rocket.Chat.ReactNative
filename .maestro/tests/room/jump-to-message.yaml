@@ -237,10 +237,11 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*quoted.*'
+      id: '.*reply-.*-quoted.*'
     timeout: 60000
 - longPressOn:
-    text: 'quoted'
+    id: '.*reply-.*-quoted.*'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
