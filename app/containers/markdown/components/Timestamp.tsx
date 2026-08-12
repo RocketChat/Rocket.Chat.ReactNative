@@ -15,13 +15,13 @@ const Timestamp = ({ value }: ITimestampProps): ReactElement => {
 	const { colors } = useTheme();
 
 	const timestampMs = useMemo(() => {
-		const isUnix = /^-?\d+$/.test(value.timestamp);
+		const ts = value.timestamp;
 
-		if (isUnix) {
-			return Number(value.timestamp) * 1000;
-		}
+		// RC API returns Unix timestamps in seconds; dayjs expects milliseconds
+		if (/^-?\d{10}$/.test(ts)) return Number(ts) * 1000;
+		if (/^-?\d{13}$/.test(ts)) return Number(ts);
 
-		return dayjs(value.timestamp).valueOf();
+		return dayjs(ts).valueOf();
 	}, [value.timestamp]);
 
 	const formatDate = useMemo(() => {
