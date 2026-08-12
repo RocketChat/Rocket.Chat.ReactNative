@@ -24,51 +24,60 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <View
         style={
           {
@@ -97,89 +106,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           Load more
         </Text>
       </View>
-    </View>
-  </ExternalKeyboardView>,
-  <ExternalKeyboardView
-    canBeFocused={false}
-    enableA11yFocus={false}
-    enableContextMenu={false}
-    group={false}
-    haloEffect={true}
-    hasKeyDownPress={false}
-    hasKeyUpPress={true}
-    hasOnFocusChanged={true}
-    lockFocus={0}
-    onContextMenuPress={[Function]}
-    onFocusChange={[Function]}
-    onKeyUpPress={[Function]}
-    orderIndex={-1}
-    screenAutoA11yFocusDelay={300}
-    style={
-      [
-        undefined,
-        undefined,
-      ]
-    }
-  >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": true,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={false}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
-      >
-        <ActivityIndicator
-          color="#6C727A"
-        />
-      </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -203,51 +130,151 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={2}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <ActivityIndicator
+          color="#6C727A"
+        />
+      </View>
+    </RNGestureHandlerButton>
+  </ExternalKeyboardView>,
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    enableContextMenu={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
+    style={
+      [
+        undefined,
+        undefined,
+      ]
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={1}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
+      style={
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      underlayColor="#E4E7EA"
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <View
         style={
           {
@@ -276,7 +303,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           Load older
         </Text>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -300,51 +327,60 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <View
         style={
           {
@@ -373,7 +409,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           Load newer
         </Text>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
 ]
 `;
@@ -409,51 +445,60 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#16181a"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -482,7 +527,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             Load older
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«r0»"
@@ -515,63 +560,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -647,53 +705,63 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#16181a"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#16181a"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#16181a",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -735,7 +803,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -928,7 +996,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -963,63 +1031,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -1154,7 +1235,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -1189,63 +1270,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Older message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Older message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -1380,7 +1474,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -1406,51 +1500,60 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#16181a"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -1479,7 +1582,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             Load newer
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <ExternalKeyboardView
       canBeFocused={true}
@@ -1503,51 +1606,60 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#16181a"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -1576,7 +1688,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             Load more
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«r3»"
@@ -1609,63 +1721,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -1741,53 +1866,63 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#16181a"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#16181a"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#16181a",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -1829,7 +1964,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -2022,7 +2157,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -2057,63 +2192,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -2248,7 +2396,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -2283,63 +2431,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -2474,7 +2635,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -2509,63 +2670,76 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#16181a"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#16181a"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#16181a",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -2641,53 +2815,63 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#16181a"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#16181a"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#16181a",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -2729,7 +2913,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -2922,7 +3106,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -2961,51 +3145,60 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#2D3039"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -3034,7 +3227,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             Load older
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«r7»"
@@ -3067,63 +3260,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -3199,53 +3405,63 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#2D3039"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#2D3039"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#2D3039",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -3287,7 +3503,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -3480,7 +3696,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -3515,63 +3731,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -3706,7 +3935,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -3741,63 +3970,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Older message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Older message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -3932,7 +4174,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -3958,51 +4200,60 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#2D3039"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -4031,7 +4282,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             Load newer
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <ExternalKeyboardView
       canBeFocused={true}
@@ -4055,51 +4306,60 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#2D3039"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -4128,7 +4388,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             Load more
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«ra»"
@@ -4161,63 +4421,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -4293,53 +4566,63 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#2D3039"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#2D3039"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#2D3039",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -4381,7 +4664,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -4574,7 +4857,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -4609,63 +4892,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -4800,7 +5096,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -4835,63 +5131,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -5026,7 +5335,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -5061,63 +5370,76 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#2D3039"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#2D3039"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#2D3039",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -5193,53 +5515,63 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#2D3039"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#2D3039"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#2D3039",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -5281,7 +5613,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -5474,7 +5806,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -5513,51 +5845,60 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#E4E7EA"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -5586,7 +5927,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             Load older
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«re»"
@@ -5619,63 +5960,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -5751,53 +6105,63 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#E4E7EA"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#E4E7EA"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -5839,7 +6203,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -6032,7 +6396,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -6067,63 +6431,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -6258,7 +6635,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -6293,63 +6670,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Older message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Older message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -6484,7 +6874,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -6510,51 +6900,60 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#E4E7EA"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -6583,7 +6982,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             Load newer
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <ExternalKeyboardView
       canBeFocused={true}
@@ -6607,51 +7006,60 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         ]
       }
     >
-      <View
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-            "opacity": 1,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
+        underlayColor="#E4E7EA"
       >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
         <View
           style={
             {
@@ -6680,7 +7088,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             Load more
           </Text>
         </View>
-      </View>
+      </RNGestureHandlerButton>
     </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«rh»"
@@ -6713,63 +7121,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -6845,53 +7266,63 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#E4E7EA"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#E4E7EA"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -6933,7 +7364,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -7126,7 +7557,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -7161,63 +7592,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -7352,7 +7796,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -7387,63 +7831,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -7578,7 +8035,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
@@ -7613,63 +8070,76 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             ]
           }
         >
-          <View
-            accessibilityActions={
+          <RNGestureHandlerButton
+            accessibilityRole="button"
+            activeOpacity={1}
+            collapsable={false}
+            delayLongPress={600}
+            enabled={true}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            innerRef={{"current":"Component"}}
+            longPressViaResponder={true}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onLongPress={[Function]}
+            onPress={[Function]}
+            rippleColor="#E4E7EA"
+            style={
               [
                 {
-                  "label": "Show message actions",
-                  "name": "showActions",
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "cursor": undefined,
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
+            underlayColor="#E4E7EA"
           >
             <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "#E4E7EA",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -7745,53 +8215,63 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             ]
                           }
                         >
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessibilityState={
-                              {
-                                "busy": undefined,
-                                "checked": undefined,
-                                "disabled": false,
-                                "expanded": undefined,
-                                "selected": undefined,
-                              }
-                            }
-                            accessibilityValue={
-                              {
-                                "max": undefined,
-                                "min": undefined,
-                                "now": undefined,
-                                "text": undefined,
-                              }
-                            }
-                            accessible={true}
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
-                            focusable={true}
-                            onClick={[Function]}
-                            onResponderGrant={[Function]}
-                            onResponderMove={[Function]}
-                            onResponderRelease={[Function]}
-                            onResponderTerminate={[Function]}
-                            onResponderTerminationRequest={[Function]}
-                            onStartShouldSetResponder={[Function]}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#E4E7EA"
                             style={
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                                "opacity": 1,
-                              }
+                              [
+                                {
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
                             }
+                            underlayColor="#E4E7EA"
                           >
                             <View
+                              collapsable={false}
+                              style={
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                }
+                              }
+                            />
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
                               style={{}}
                             >
                               <ViewManagerAdapter_ExpoImage
@@ -7833,7 +8313,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 width={36}
                               />
                             </View>
-                          </View>
+                          </RNGestureHandlerButton>
                         </ExternalKeyboardView>
                       </View>
                     </View>
@@ -8026,7 +8506,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 </A11yIndexView>
               </View>
             </View>
-          </View>
+          </RNGestureHandlerButton>
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>

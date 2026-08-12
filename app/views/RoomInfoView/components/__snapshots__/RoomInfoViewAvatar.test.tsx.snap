@@ -49,9 +49,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       source={
         [
           {
-            "headers": {
-              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-            },
+            "headers": undefined,
             "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
           },
         ]
@@ -119,9 +117,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       source={
         [
           {
-            "headers": {
-              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-            },
+            "headers": undefined,
             "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
           },
         ]

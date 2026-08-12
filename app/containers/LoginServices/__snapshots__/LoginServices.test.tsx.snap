@@ -351,53 +351,63 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Github"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Github"
+        accessible={true}
         style={{}}
       >
         <View
@@ -477,7 +487,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -501,53 +511,63 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Gitlab"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Gitlab"
+        accessible={true}
         style={{}}
       >
         <View
@@ -627,7 +647,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -651,53 +671,63 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Google"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Google"
+        accessible={true}
         style={{}}
       >
         <View
@@ -777,7 +807,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
 ]
 `;
@@ -876,53 +906,63 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Github"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Github"
+        accessible={true}
         style={{}}
       >
         <View
@@ -1002,7 +1042,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1026,53 +1066,63 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Gitlab"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Gitlab"
+        accessible={true}
         style={{}}
       >
         <View
@@ -1152,7 +1202,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1176,53 +1226,63 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Google"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Google"
+        accessible={true}
         style={{}}
       >
         <View
@@ -1302,7 +1362,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1326,53 +1386,63 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityLabel="Continue with Apple"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessibilityLabel="Continue with Apple"
+        accessible={true}
         style={{}}
       >
         <View
@@ -1452,7 +1522,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
 ]
 `;
@@ -1481,52 +1551,62 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessible={true}
         style={{}}
       >
         <View
@@ -1606,7 +1686,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1630,52 +1710,62 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessible={true}
         style={{}}
       >
         <View
@@ -1755,7 +1845,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1779,52 +1869,62 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessible={true}
         style={{}}
       >
         <View
@@ -1904,7 +2004,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1928,52 +2028,62 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
       ]
     }
   >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={0.5}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
-          "margin": undefined,
-          "marginBottom": 10,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": 10,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#FFFFFF"
     >
       <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        accessible={true}
         style={{}}
       >
         <View
@@ -2053,7 +2163,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </ExternalKeyboardView>,
 ]
 `;
