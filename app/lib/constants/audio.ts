@@ -4,7 +4,7 @@ export const RECORDING_EXTENSION = '.aac';
 
 export const RECORDING_SETTINGS: RecordingOptions = {
 	extension: RECORDING_EXTENSION,
-	sampleRate: 16000,
+	sampleRate: 44100,
 	numberOfChannels: 1,
 	bitRate: 64000,
 	android: {
