@@ -103,6 +103,7 @@ import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLin
 import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
+import { connectSuccess } from '../../actions/connect';
 import { APP, LOGIN } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
@@ -134,6 +135,19 @@ function setupStore(preloadedState?: PreloadedState) {
 	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
 	sagaMiddleware.run(deepLinkingRoot);
 	return store;
+}
+
+/** Same as setupStore, plus an `actions` array recording everything dispatched. */
+function setupRecordingStore(preloadedState?: PreloadedState) {
+	const sagaMiddleware = createSagaMiddleware();
+	const actions: any[] = [];
+	const recorder = () => (next: any) => (action: any) => {
+		actions.push(action);
+		return next(action);
+	};
+	const store = createStore(reducers, preloadedState, applyMiddleware(recorder, sagaMiddleware));
+	sagaMiddleware.run(deepLinkingRoot);
+	return { store, actions };
 }
 
 // ─── Factories ────────────────────────────────────────────────────────────────
@@ -221,6 +235,10 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		// Saga is now waiting for METEOR.SUCCESS — loginRequest is gated on the socket.
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		// Saga is now waiting for LOGIN.SUCCESS
@@ -405,6 +423,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
@@ -437,6 +458,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		// Dispatch LOGIN.SUCCESS AND APP.START(ROOT_INSIDE) synchronously before any flush.
 		// The reducer processes both dispatches before the saga's select runs,
 		// so the select sees ROOT_INSIDE and skips the take.
@@ -464,6 +488,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
@@ -499,6 +526,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
