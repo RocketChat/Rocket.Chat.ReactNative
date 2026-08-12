@@ -13,8 +13,6 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { username, name } = useAppSelector(getUserSelector, shallowEqual);

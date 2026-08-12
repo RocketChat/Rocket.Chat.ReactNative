@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useContext, useEffect } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -32,8 +32,6 @@ import styles from './styles';
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
-	'use memo';
-
 	useHeader();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
@@ -45,6 +43,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
+	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
@@ -132,11 +131,11 @@ const RoomsListView = memo(function RoomsListView() {
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+			contentContainerStyle={{ paddingBottom: bottom }}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
 			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
-			removeClippedSubviews={isIOS}
 			keyboardShouldPersistTaps='always'
 			initialNumToRender={INITIAL_NUM_TO_RENDER}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}

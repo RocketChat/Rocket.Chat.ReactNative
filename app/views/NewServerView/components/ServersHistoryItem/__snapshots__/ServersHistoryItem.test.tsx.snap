@@ -10,13 +10,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -29,15 +28,13 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -218,12 +215,16 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -324,13 +325,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -343,15 +343,13 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -532,12 +530,16 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -638,13 +640,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -657,15 +658,13 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -846,12 +845,16 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -957,13 +960,12 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -976,15 +978,13 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -1165,12 +1165,16 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -1271,13 +1275,12 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -1290,15 +1293,13 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -1479,12 +1480,16 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -1590,13 +1595,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#EC0D2A",
@@ -1609,15 +1613,13 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -1798,12 +1800,16 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -1904,13 +1910,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#BB3E4E",
@@ -1923,15 +1928,13 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -2112,12 +2115,16 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage
@@ -2218,13 +2225,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       style={
         [
           {
+            "bottom": 0,
             "flexDirection": "row",
             "left": 0,
             "position": "absolute",
             "right": 0,
-          },
-          {
-            "height": 68,
+            "top": 0,
           },
           {
             "backgroundColor": "#BB3E4E",
@@ -2237,15 +2243,13 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           [
             {
               "alignItems": "flex-end",
+              "bottom": 0,
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
               "width": 350,
-            },
-            {
-              "height": 68,
             },
             [Function],
           ]
@@ -2426,12 +2430,16 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           >
             <View
               style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "minHeight": 56,
-                  "padding": 12,
-                }
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "padding": 12,
+                  },
+                  {
+                    "height": 68,
+                  },
+                ]
               }
             >
               <ViewManagerAdapter_ExpoImage

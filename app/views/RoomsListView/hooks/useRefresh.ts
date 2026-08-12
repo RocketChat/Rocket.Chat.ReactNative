@@ -5,8 +5,6 @@ import { roomsRequest } from '../../../actions/rooms';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 export const useRefresh = ({ searching }: { searching: boolean }) => {
-	'use memo';
-
 	const refreshing = useAppSelector(state => state.rooms.refreshing);
 	const dispatch = useDispatch();
 

@@ -102,7 +102,6 @@ import createSagaMiddleware from 'redux-saga';
 import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
 import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
-import { connectSuccess } from '../../actions/connect';
 import { appStart } from '../../actions/app';
 import { APP, LOGIN } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
@@ -117,8 +116,8 @@ import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
 import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
-import EventEmitter from '../../lib/methods/helpers/events';
 import database from '../../lib/database';
+import EventEmitter from '../../lib/methods/helpers/events';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -135,19 +134,6 @@ function setupStore(preloadedState?: PreloadedState) {
 	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
 	sagaMiddleware.run(deepLinkingRoot);
 	return store;
-}
-
-/** setupStore that also records dispatched actions (incl. saga puts) for assertions. */
-function setupRecordingStore(preloadedState?: PreloadedState) {
-	const actions: { type: string }[] = [];
-	const recorder = () => (next: (a: any) => any) => (action: any) => {
-		actions.push(action);
-		return next(action);
-	};
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(reducers, preloadedState, applyMiddleware(recorder, sagaMiddleware));
-	sagaMiddleware.run(deepLinkingRoot);
-	return { store, actions };
 }
 
 // ─── Factories ────────────────────────────────────────────────────────────────
@@ -235,11 +221,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-		await flushSagaMicrotasks();
-
-		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
-		// loginRequest, so it never logs in on a still-connecting socket.
-		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		// Saga is now waiting for LOGIN.SUCCESS
@@ -424,11 +405,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
-		// loginRequest, so it never logs in on a still-connecting socket.
-		store.dispatch(connectSuccess());
-		await flushSagaMicrotasks();
-
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
@@ -461,11 +437,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
-		// loginRequest, so it never logs in on a still-connecting socket.
-		store.dispatch(connectSuccess());
-		await flushSagaMicrotasks();
-
 		// Dispatch LOGIN.SUCCESS AND APP.START(ROOT_INSIDE) synchronously before any flush.
 		// The reducer processes both dispatches before the saga's select runs,
 		// so the select sees ROOT_INSIDE and skips the take.
@@ -493,11 +464,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-		await flushSagaMicrotasks();
-
-		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
-		// loginRequest, so it never logs in on a still-connecting socket.
-		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
@@ -533,11 +499,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-		await flushSagaMicrotasks();
-
-		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
-		// loginRequest, so it never logs in on a still-connecting socket.
-		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
@@ -656,7 +617,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 	});
 });
 
-// ─── handleClickCallPush (OPEN_VIDEO_CONF) — new server + token ──────────────────
+// ─── handleClickCallPush (OPEN_VIDEO_CONF) — new server + token ───────────────
 
 describe('deepLinking saga — handleClickCallPush (new server + token + call room)', () => {
 	/** Call-push params: host + token + the rid handleNavigateCallRoom looks up. */
@@ -671,7 +632,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		jest.mocked(navigateToRoom).mockReset();
 		jest.mocked(database.active.get).mockReset();
 
-		// Unknown server with a token → reaches the SELECT_SUCCESS/METEOR.SUCCESS gate.
+		// Unknown server with a token → reaches the SELECT_SUCCESS gate.
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
 			if (key === 'currentServer') return 'https://other.server.com';
 			return null;
@@ -689,9 +650,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		jest.useRealTimers();
 	});
 
-	// Ordering race (call-push path): socket connects before SERVER.SELECT_SUCCESS;
-	// the guard must skip the already-fired METEOR.SUCCESS take instead of hanging.
-	it('completes the call-room chain when METEOR.SUCCESS fires before SERVER.SELECT_SUCCESS', async () => {
+	it('navigates to the call room once after SELECT_SUCCESS and LOGIN.SUCCESS', async () => {
 		const store = setupStore();
 
 		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
@@ -699,36 +658,9 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		await jest.advanceTimersByTimeAsync(1000);
 		await flushSagaMicrotasks();
 
-		// Socket connects first — before SERVER.SELECT_SUCCESS is dispatched.
-		store.dispatch(connectSuccess());
-		await flushSagaMicrotasks();
-
-		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-		await flushSagaMicrotasks();
-
-		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
-		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
-
-		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
-	});
-
-	// Happy path: full chain in normal order navigates once.
-	it('navigates to the call room once after the full chain completes', async () => {
-		const store = setupStore();
-
-		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
-		await flushSagaMicrotasks();
-		await jest.advanceTimersByTimeAsync(1000);
-		await flushSagaMicrotasks();
-
-		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-		await flushSagaMicrotasks();
-
-		// Still parked at the METEOR.SUCCESS gate — no navigation yet.
 		expect(jest.mocked(navigateToRoom)).not.toHaveBeenCalled();
 
-		store.dispatch(connectSuccess());
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
@@ -736,29 +668,6 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
-	});
-
-	// loginRequest must not fire until the socket is connected (locks the gate).
-	it('does not dispatch loginRequest until METEOR.SUCCESS', async () => {
-		const { store, actions } = setupRecordingStore();
-		const loginRequested = () => actions.some(a => a.type === LOGIN.REQUEST);
-
-		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
-		await flushSagaMicrotasks();
-		await jest.advanceTimersByTimeAsync(1000);
-		await flushSagaMicrotasks();
-
-		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
-		await flushSagaMicrotasks();
-
-		// Server selected but socket not connected yet → still parked at the gate.
-		expect(loginRequested()).toBe(false);
-
-		store.dispatch(connectSuccess());
-		await flushSagaMicrotasks();
-
-		// Socket connected → gate released, loginRequest dispatched.
-		expect(loginRequested()).toBe(true);
 	});
 });
 

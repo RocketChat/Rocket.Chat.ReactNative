@@ -5,8 +5,6 @@ import I18n from '../../../../i18n';
 import { useStyle } from './styles';
 
 export const AutocompleteSlashCommand = ({ item }: { item: IAutocompleteSlashCommand }) => {
-	'use memo';
-
 	const [styles] = useStyle();
 	return (
 		<View style={styles.slashItem}>

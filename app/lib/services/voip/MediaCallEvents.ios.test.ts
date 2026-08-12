@@ -80,17 +80,14 @@ jest.mock('../../native/NativeVoip', () => ({
 jest.mock('./MediaSessionInstance', () => ({
 	mediaSessionInstance: {
 		endCall: jest.fn(),
-		applyRestStateSignals: jest.fn(() => Promise.resolve())
+		applyRestStateSignals: jest.fn(() => Promise.resolve()),
+		acceptNativeCallWithReadiness: jest.fn(() => Promise.resolve())
 	}
 }));
 
 jest.mock('../restApi', () => ({
 	registerPushToken: jest.fn(() => Promise.resolve())
 }));
-
-jest.mock('../connect', () => require('./MediaCallEvents.testHelpers').createConnectMock());
-
-jest.mock('../sdk', () => require('./MediaCallEvents.testHelpers').createSdkMock());
 
 jest.mock('./MediaCallLogger', () => {
 	const log = jest.fn();
@@ -288,7 +285,7 @@ describe('getInitialMediaCallEvents — iOS cold start', () => {
 
 		expect(result).toBe(true);
 		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith(callId);
-		expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalled();
+		expect(mediaSessionInstance.acceptNativeCallWithReadiness).toHaveBeenCalledWith(callId);
 		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 	});
 

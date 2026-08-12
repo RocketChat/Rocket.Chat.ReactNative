@@ -222,38 +222,39 @@ const mapAttachments = ({
 		e2e: encryption ? 'done' : undefined
 	}));
 
-const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
+export const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
 	const db = database.active;
-	const batch: Model[] = [];
-	const messageRecord = await getMessageById(messageId);
-	if (messageRecord) {
-		batch.push(
-			messageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	const threadRecord = await getThreadById(messageId);
-	if (threadRecord) {
-		batch.push(
-			threadRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	const threadMessageRecord = await getThreadMessageById(messageId);
-	if (threadMessageRecord) {
-		batch.push(
-			threadMessageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	if (batch.length) {
-		await db.write(async () => {
+
+	await db.write(async () => {
+		const batch: Model[] = [];
+		const messageRecord = await getMessageById(messageId);
+		if (messageRecord) {
+			batch.push(
+				messageRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		const threadRecord = await getThreadById(messageId);
+		if (threadRecord) {
+			batch.push(
+				threadRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		const threadMessageRecord = await getThreadMessageById(messageId);
+		if (threadMessageRecord) {
+			batch.push(
+				threadMessageRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		if (batch.length) {
 			await db.batch(batch);
-		});
-	}
+		}
+	});
 };
 
 export function downloadMediaFile({

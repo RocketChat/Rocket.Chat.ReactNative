@@ -60,7 +60,7 @@ const msg = (overrides: Partial<TAnyMessageModel> & { id: string }): TAnyMessage
 	({
 		ts: new Date('2024-01-01'),
 		...overrides
-	} as TAnyMessageModel);
+	}) as TAnyMessageModel;
 
 describe('useMessages', () => {
 	let emittedRows: TAnyMessageModel[];

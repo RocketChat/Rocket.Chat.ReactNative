@@ -1,11 +1,11 @@
 import i18n from '../../../i18n';
-import { type IMessageThread } from '../interfaces';
+import { useIsThreadRoom } from '../stores/MessageRoomStore';
+import { useThreadData } from '../stores/MessageStore';
 
-export const useMessageAccessibilityHint = (
-	props: Pick<IMessageThread, 'tlm' | 'tcount' | 'isThreadRoom'>
-): string | undefined => {
-	'use memo';
+export const useMessageAccessibilityHint = (): string | undefined => {
+	const { tlm, tcount } = useThreadData();
+	const isThreadRoom = useIsThreadRoom();
 
-	const hasThread = !!props.tlm && !props.isThreadRoom && props.tcount !== null;
+	const hasThread = !!tlm && !isThreadRoom && tcount !== null;
 	return hasThread ? i18n.t('A11y_press_to_view_thread') : undefined;
 };

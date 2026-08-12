@@ -7,7 +7,7 @@ FLOWS_DIR=".maestro/tests"
 MAIN_REPORT="maestro-report.xml"
 MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-2}"
 RERUN_REPORT_PREFIX="maestro-rerun"
-export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
+export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-300000}"
 
 # Linux has timeout, macOS has gtimeout (Homebrew coreutils)
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
