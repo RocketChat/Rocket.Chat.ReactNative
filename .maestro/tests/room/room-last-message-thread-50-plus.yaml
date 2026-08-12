@@ -13,7 +13,6 @@ tags:
       PASSWORD: ${output.account.adminPassword}
 
 # should open a room where the last message is a thread containing more than 50 messages.
-# Search instead of scroll: this fixture keeps sinking in the activity-sorted list
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
