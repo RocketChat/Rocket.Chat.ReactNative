@@ -37,6 +37,10 @@ tags:
 - inputText: ':joy'
 - extendedWaitUntil:
     visible:
+      id: autocomplete-item-joystick
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
       id: autocomplete-item-joy
     timeout: 60000
 - tapOn:
@@ -161,7 +165,11 @@ tags:
 - tapOn:
     id: emoji-searchbar-input
 - inputText: 'laughing'
-- hideKeyboard
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - hideKeyboard
 - extendedWaitUntil:
     visible:
       id: emoji-laughing
