@@ -247,6 +247,15 @@
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
 	},
 	{
+		"test": ".maestro/tests/room/quote-thread-message.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/containers/MessageActions/**",
+			"app/sagas/room.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/reaction-picker-small-screen.yaml",
 		"dependsOn": ["app/containers/EmojiPicker/**", "app/containers/ReactionsList/**"]
 	},
