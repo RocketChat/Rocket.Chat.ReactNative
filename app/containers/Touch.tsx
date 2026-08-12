@@ -15,8 +15,9 @@ import { Pressable as RNNGHPressable } from 'react-native-gesture-handler';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
-import { isIOS, isAndroid } from '../lib/methods/helpers';
+import { isIOS, isAndroid } from '../lib/methods/helpers/deviceInfo';
 import { useResponderLongPress } from '../lib/hooks/useResponderLongPress';
+import { isExternalKeyboardConnected } from '../lib/methods/helpers/externalInput';
 
 export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightProps {
 	children: ReactNode;
@@ -41,7 +42,8 @@ export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightPr
 
 const Component = isIOS ? TouchableOpacity : TouchableHighlight;
 const KeyboardComponent = withKeyboardFocus(Component);
-const RNGHKeyboardComponent = withKeyboardFocus(RNNGHPressable) as unknown as typeof KeyboardComponent;
+const usingRNGHPressable = isAndroid && !isExternalKeyboardConnected();
+const RNGHComponent = RNNGHPressable as unknown as typeof KeyboardComponent;
 
 const Touch = forwardRef<View, ITouchProps>(
 	(
@@ -100,8 +102,12 @@ const Touch = forwardRef<View, ITouchProps>(
 			marginTop
 		};
 		const rippleColor = android_rippleColor ?? colors.surfaceNeutral;
-		const touchableProps = isIOS ? {} : { android_ripple: { color: rippleColor } };
-		const Wrapper = isAndroid ? RNGHKeyboardComponent : KeyboardComponent;
+		const touchableProps = isIOS
+			? {}
+			: usingRNGHPressable
+				? { android_ripple: { color: rippleColor } }
+				: { underlayColor: rippleColor };
+		const Wrapper = usingRNGHPressable ? RNGHComponent : KeyboardComponent;
 
 		return (
 			<Wrapper
