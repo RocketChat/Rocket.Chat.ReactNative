@@ -87,6 +87,17 @@
 		"dependsOn": ["app/views/ProfileView/**", "app/views/ChangePasswordView/**"]
 	},
 	{
+		"test": ".maestro/tests/assorted/screen-lock.yaml",
+		"dependsOn": [
+			"app/views/ScreenLockConfigView.tsx",
+			"app/views/ScreenLockedView.tsx",
+			"app/views/ChangePasscodeView.tsx",
+			"app/views/SecurityPrivacyView.tsx",
+			"app/containers/Passcode/**",
+			"app/lib/methods/helpers/localAuthentication.ts"
+		]
+	},
+	{
 		"test": ".maestro/tests/assorted/setting.yaml",
 		"dependsOn": [
 			"app/views/SettingsView/**",

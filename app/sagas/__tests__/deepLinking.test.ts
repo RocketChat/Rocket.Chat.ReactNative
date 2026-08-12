@@ -132,6 +132,19 @@ function setupStore(preloadedState?: PreloadedState) {
 	return store;
 }
 
+/** Same as setupStore, plus an `actions` array recording everything dispatched. */
+function setupRecordingStore(preloadedState?: PreloadedState) {
+	const sagaMiddleware = createSagaMiddleware();
+	const actions: any[] = [];
+	const recorder = () => (next: any) => (action: any) => {
+		actions.push(action);
+		return next(action);
+	};
+	const store = createStore(reducers, preloadedState, applyMiddleware(recorder, sagaMiddleware));
+	sagaMiddleware.run(deepLinkingRoot);
+	return { store, actions };
+}
+
 // ─── Factories ────────────────────────────────────────────────────────────────
 
 const HOST = 'https://open.rocket.chat';

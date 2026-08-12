@@ -141,8 +141,7 @@ Because `enroll()` sets the marker, any post-feature user always has `marker = t
 
 ```ts
 type BiometricTrustOutcome =
-	| { unlocked: true }
-	| { unlocked: false; modal: { hasBiometry: boolean; reason?: 'enrollmentChanged' } };
+	{ unlocked: true } | { unlocked: false; modal: { hasBiometry: boolean; reason?: 'enrollmentChanged' } };
 ```
 
 | `verify()` kind      | Side effects                        | Outcome                                                                            |
