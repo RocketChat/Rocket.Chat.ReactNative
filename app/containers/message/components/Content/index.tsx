@@ -9,8 +9,6 @@ import { useIsThreadRoom } from '../../stores/MessageRoomStore';
 // isInfo forces InfoContent regardless of useIsInfoMessage — jitsi_call_started is deliberately
 // excluded there (it isn't a compact/non-touchable info row) but still needs the info-style body.
 const Content = ({ isInfo: isInfoProp }: { isInfo?: boolean } = {}) => {
-	'use memo';
-
 	const isInfoMessage = useIsInfoMessage();
 	const isInfo = isInfoProp ?? isInfoMessage;
 	const isIgnored = useMessageIgnored();

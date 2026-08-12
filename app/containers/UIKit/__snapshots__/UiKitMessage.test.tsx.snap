@@ -1085,7 +1085,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#2F343D",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1188,7 +1191,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#2F343D",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1358,7 +1364,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#2F343D",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1461,7 +1470,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#2F343D",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1631,7 +1643,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#2F343D",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1801,7 +1816,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#2F343D",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -1981,7 +1999,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#C1C7D0",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2084,7 +2105,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#C1C7D0",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2254,7 +2278,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#C1C7D0",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2357,7 +2384,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#C1C7D0",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2527,7 +2557,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#C1C7D0",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2697,7 +2730,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#C1C7D0",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2877,7 +2913,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#E4E7EA",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -2980,7 +3019,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#E4E7EA",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3150,7 +3192,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#E4E7EA",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3253,7 +3298,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#E4E7EA",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3423,7 +3471,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#E4E7EA",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3593,7 +3644,10 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                               "color": "#E4E7EA",
                             },
                             {
-                              "fontSize": 14,
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontWeight": "700",
+                              "textAlign": "left",
                             },
                           ]
                         }
@@ -3718,7 +3772,10 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "fontSize": 14,
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
                       },
                     ]
                   }
@@ -3821,7 +3878,10 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "fontSize": 14,
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
                       },
                     ]
                   }
@@ -3924,7 +3984,10 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "fontSize": 14,
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
                       },
                     ]
                   }
@@ -4027,7 +4090,10 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "fontSize": 14,
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontWeight": "700",
+                        "textAlign": "left",
                       },
                     ]
                   }
@@ -4774,9 +4840,6 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
-                {
-                  "fontSize": 14,
-                },
               ]
             }
           >
@@ -4856,9 +4919,6 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5010,9 +5070,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
-                {
-                  "fontSize": 14,
-                },
               ]
             }
           >
@@ -5095,6 +5152,503 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
+<View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Regular message: the reference font size"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Regular message: the reference font size
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Section mrkdwn: must match the message above"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Section mrkdwn: must match the message above
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="		changes: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          		changes: 
+        </Text>
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="	"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          	
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="		changes: "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              		changes: 
+            </Text>
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="	"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              	
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
 <View
   style={
@@ -5174,7 +5728,10 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "fontSize": 14,
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
                   },
                 ]
               }
@@ -5193,9 +5750,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5284,9 +5838,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
-                    {
-                      "fontSize": 14,
-                    },
                   ]
                 }
               >
@@ -5369,9 +5920,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5519,9 +6067,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5673,9 +6218,6 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5876,9 +6418,6 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }

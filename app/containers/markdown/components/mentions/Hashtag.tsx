@@ -12,19 +12,16 @@ import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
 import MarkdownContext from '../../contexts/MarkdownContext';
 
 interface IHashtag {
 	hashtag: string;
-	navToRoomInfo?: Function;
-	channels?: IUserChannel[];
 }
 
-const Hashtag = memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
+const Hashtag = memo(({ hashtag }: IHashtag) => {
 	const { theme } = useTheme();
-	const { textStyle } = useContext(MarkdownContext);
+	const { textStyle, channels, navToRoomInfo } = useContext(MarkdownContext);
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useMasterDetail();
 	const preffix = roomsWithHashTagSymbol ? '#' : '';

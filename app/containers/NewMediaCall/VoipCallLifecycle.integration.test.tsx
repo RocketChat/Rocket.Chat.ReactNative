@@ -24,6 +24,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
+import { acceptNativeCallWithReadiness } from '../../lib/services/voip/acceptNativeCall';
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
@@ -157,6 +158,15 @@ jest.mock('../../lib/services/voip/getPeerAutocompleteOptions', () => ({
 jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
+// Gate boundary mock: the DDP listener now routes accepted signals through
+// acceptNativeCallWithReadiness rather than calling answerCall directly. The
+// gate's own unit tests cover readiness orchestration; this file asserts the
+// lifecycle/navigation contract, so the gate is short-circuited to answerCall.
+jest.mock('../../lib/services/voip/acceptNativeCall', () => ({
+	acceptNativeCallWithReadiness: jest.fn(async (_callId: string, mediaSession: any) => {
+		await mediaSession.answerCall(_callId);
+	})
+}));
 // playCallEndedSound → expo-av → Audio.Sound constructor not present in this test boundary.
 jest.mock('../../lib/services/voip/playCallEndedSound', () => ({
 	playCallEndedSound: jest.fn()
@@ -216,57 +226,58 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
-	MediaSignalingSession: jest
-		.fn()
-		.mockImplementation(function MockMediaSignalingSession(this: MockMediaSignalingSession, config: { userId: string }) {
-			const handlers: Record<string, ((payload: unknown) => void)[]> = {};
+	MediaSignalingSession: jest.fn().mockImplementation(function MockMediaSignalingSession(
+		this: MockMediaSignalingSession,
+		config: { userId: string }
+	) {
+		const handlers: Record<string, ((payload: unknown) => void)[]> = {};
 
-			this.userId = config.userId;
-			this.endSession = jest.fn();
+		this.userId = config.userId;
+		this.endSession = jest.fn();
 
-			this.on = jest.fn().mockImplementation((event: string, handler: (payload: unknown) => void) => {
-				if (!handlers[event]) handlers[event] = [];
-				handlers[event].push(handler);
-			});
+		this.on = jest.fn().mockImplementation((event: string, handler: (payload: unknown) => void) => {
+			if (!handlers[event]) handlers[event] = [];
+			handlers[event].push(handler);
+		});
 
-			this.emit = (event: string, payload: unknown) => {
-				handlers[event]?.forEach(h => h(payload));
-			};
+		this.emit = (event: string, payload: unknown) => {
+			handlers[event]?.forEach(h => h(payload));
+		};
 
-			this.processSignal = jest.fn().mockResolvedValue(undefined);
-			this.setIceGatheringTimeout = jest.fn();
+		this.processSignal = jest.fn().mockResolvedValue(undefined);
+		this.setIceGatheringTimeout = jest.fn();
 
-			// Integration seam: startCall fires 'newCall' with a synthetic outgoing call.
-			// eslint-disable-next-line @typescript-eslint/no-this-alias
-			const self = this;
-			this.startCall = jest.fn().mockImplementation((_actor: string, userId: string) => {
-				const call: IClientMediaCall = {
-					callId: `call-${userId}`,
-					hidden: false,
-					state: 'ringing',
-					localParticipant: {
-						local: true,
-						role: 'caller',
-						muted: false,
-						held: false,
-						contact: {},
-						setMuted: jest.fn(),
-						setHeld: jest.fn()
-					},
-					remoteParticipants: [{ local: false, role: 'callee', muted: false, held: false, contact: {} }],
-					reject: jest.fn(),
-					hangup: jest.fn(),
-					sendDTMF: jest.fn(),
-					emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
-				} as unknown as IClientMediaCall;
-				self.emit('newCall', { call });
-				return Promise.resolve();
-			});
+		// Integration seam: startCall fires 'newCall' with a synthetic outgoing call.
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		const self = this;
+		this.startCall = jest.fn().mockImplementation((_actor: string, userId: string) => {
+			const call: IClientMediaCall = {
+				callId: `call-${userId}`,
+				hidden: false,
+				state: 'ringing',
+				localParticipant: {
+					local: true,
+					role: 'caller',
+					muted: false,
+					held: false,
+					contact: {},
+					setMuted: jest.fn(),
+					setHeld: jest.fn()
+				},
+				remoteParticipants: [{ local: false, role: 'callee', muted: false, held: false, contact: {} }],
+				reject: jest.fn(),
+				hangup: jest.fn(),
+				sendDTMF: jest.fn(),
+				emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
+			} as unknown as IClientMediaCall;
+			self.emit('newCall', { call });
+			return Promise.resolve();
+		});
 
-			this.getCallData = jest.fn();
-			Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
-			createdSessions.push(this);
-		})
+		this.getCallData = jest.fn();
+		Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
+		createdSessions.push(this);
+	})
 }));
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -541,6 +552,9 @@ describe('VoIP call lifecycle (integration)', () => {
 	});
 
 	// ── MediaSessionInstance contract: answerCall ────────────────────────────
+	// Incoming accepted signals now flow through acceptNativeCallWithReadiness
+	// (readiness gate). The gate module is mocked here to delegate straight to
+	// answerCall; gate readiness is covered by acceptNativeCall.test.ts.
 
 	describe('MediaSessionInstance contract: answerCall', () => {
 		it('A1: DDP accepted signal with native pre-accept → answerCall navigates to CallView', async () => {
@@ -566,6 +580,9 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('incoming-1');
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
+			// The DDP listener now funnels accepted signals through the readiness
+			// gate instead of invoking answerCall directly.
+			expect(acceptNativeCallWithReadiness).toHaveBeenCalledWith('incoming-1', mediaSessionInstance);
 		});
 
 		it('A2: accepted signal but call not found → RNCallKeep.endCall, no navigate', async () => {
@@ -590,6 +607,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
+			expect(acceptNativeCallWithReadiness).toHaveBeenCalledWith('missing-1', mediaSessionInstance);
 			// Tighten: confirm the known-noise allowlist entry was actually triggered.
 			expect(consoleErrorSpy).toHaveBeenCalledWith(
 				expect.objectContaining({ message: '[VoIP] Call not found after accept: missing-1' })

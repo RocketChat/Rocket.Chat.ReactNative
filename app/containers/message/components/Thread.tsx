@@ -9,8 +9,6 @@ import { useMessageItem, useMessageText, useReplies, useThreadBadgeColor, useThr
 import { useIsThreadRoom, useMessageUser, useOnThreadPress, useToggleFollowThread } from '../stores/MessageRoomStore';
 
 const Thread = () => {
-	'use memo';
-
 	const { theme, colors } = useTheme();
 	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();

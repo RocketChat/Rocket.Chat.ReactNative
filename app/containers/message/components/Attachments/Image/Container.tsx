@@ -13,8 +13,6 @@ import { useAltTextSupported } from '../../../../../lib/hooks/useAltTextSupporte
 import I18n from '../../../../../i18n';
 
 const ImageContainer = ({ file, showAttachment, author, msg, imagePreview, imageType }: IImageContainer): ReactElement | null => {
-	'use memo';
-
 	const user = useMessageUser();
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 	const isAltTextSupported = useAltTextSupported();
