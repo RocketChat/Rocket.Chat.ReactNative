@@ -96,7 +96,7 @@ tags:
 # Background the app, wait past the auto-lock interval, relaunch.
 # RUNNING_E2E_TESTS shortens the auto-lock threshold to 5s (see localAuthentication.ts).
 - pressKey: Home
-- evalScript: ${output.utils.sleep(10000)}
+- evalScript: ${output.utils.sleep(7000)}
 - launchApp:
     appId: ${APP_ID}
 
@@ -238,7 +238,7 @@ tags:
 # Background the app, wait past the auto-lock interval, relaunch.
 # RUNNING_E2E_TESTS shortens the auto-lock threshold to 5s (see localAuthentication.ts).
 - pressKey: Home
-- evalScript: ${output.utils.sleep(10000)}
+- evalScript: ${output.utils.sleep(7000)}
 - launchApp:
     appId: ${APP_ID}
 
