@@ -148,8 +148,9 @@ tags:
       ROOM: ${output.toBeConverted}
 - scrollUntilVisible:
     element:
-      text: 'Convert to channel'
-- tapOn: 'Convert to channel'
+      id: 'room-actions-convert-to-channel'
+- tapOn:
+    id: 'room-actions-convert-to-channel'
 - extendedWaitUntil:
     visible:
       text: '.*Converting team to channel.*'
