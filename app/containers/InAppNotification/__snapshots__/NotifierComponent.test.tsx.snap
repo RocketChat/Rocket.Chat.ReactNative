@@ -191,6 +191,9 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 17,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 20,
                   "textAlign": "left",
@@ -211,6 +214,9 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 17,
                   "textAlign": "left",
@@ -537,6 +543,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 17,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 20,
                   "textAlign": "left",
@@ -557,6 +566,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 17,
                   "textAlign": "left",
@@ -883,6 +895,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 17,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 20,
                   "textAlign": "left",
@@ -903,6 +918,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 17,
                   "textAlign": "left",
@@ -1229,6 +1247,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 17,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "500",
                   "lineHeight": 20,
                   "textAlign": "left",
@@ -1249,6 +1270,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 17,
                   "textAlign": "left",
