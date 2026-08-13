@@ -13,7 +13,6 @@ const optimisticUpdate = async (rid: string, value: TSubscriptionModel['encrypte
 
 		// Instantly feedback to the user
 		await db.write(async () => {
-			// Fetch the room again: a stream event may have updated the record while the alert was open or while the request was in flight
 			const room = await getSubscriptionByRoomId(rid);
 			if (!room) {
 				return;
