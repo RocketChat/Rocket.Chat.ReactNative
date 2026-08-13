@@ -5,6 +5,13 @@ import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import database from '../../database';
 import log from '../helpers/log';
+import {
+	commitPreparedRecords,
+	deferred,
+	flush,
+	loggedPendingChanges,
+	makeFakeRecord
+} from '../../database/__tests__/mockedWatermelonDB';
 
 const mockSubscribeRoom = jest.fn<Promise<unknown[]>, [string]>(() => Promise.resolve([]));
 const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: unknown[]) => void]>(() =>
@@ -82,7 +89,8 @@ jest.mock('../../encryption', () => ({
 const mockDbBatch = jest.fn().mockResolvedValue(undefined);
 const mockDbGet = jest.fn();
 jest.mock('../../database', () => {
-	let writerQueue: Promise<unknown> = Promise.resolve();
+	const { createWriterLock } = require('../../database/__tests__/mockedWatermelonDB');
+	const write = createWriterLock();
 	const mockModel = {
 		prepareCreate: jest.fn(() => ({})),
 		prepareUpdate: jest.fn(() => ({})),
@@ -94,11 +102,7 @@ jest.mock('../../database', () => {
 		default: {
 			active: {
 				get: (...args: unknown[]) => mockDbGet(...args) ?? mockModel,
-				write: jest.fn((callback: () => Promise<void>) => {
-					const run = writerQueue.then(() => callback());
-					writerQueue = run.catch(() => undefined);
-					return run;
-				}),
+				write: jest.fn(write),
 				batch: (...args: unknown[]) => mockDbBatch(...args)
 			}
 		}
@@ -141,76 +145,23 @@ describe('RoomSubscription', () => {
 	});
 
 	describe('updateMessage concurrency', () => {
-		const makeRecord = (debugName: string) => ({
-			_preparedState: null as string | null,
-			prepareUpdate(recordUpdater: (m: any) => void) {
-				if (this._preparedState) {
-					throw new Error(`Cannot update a record with pending changes (${debugName})`);
-				}
-				recordUpdater(this);
-				this._preparedState = 'update';
-				return this;
-			}
-		});
-
 		it('does not throw "pending changes" when two stream events for the same message id arrive concurrently', async () => {
 			const _id = 'KXse45i7gGYE8j4Xb';
-			const messageRecord = makeRecord(`messages#${_id}`);
-			const threadRecord = makeRecord(`threads#${_id}`);
+			const messageRecord = makeFakeRecord(`messages#${_id}`);
+			const threadRecord = makeFakeRecord(`threads#${_id}`);
 			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
 			(getThreadById as jest.Mock).mockResolvedValue(threadRecord);
-			// db.batch commits prepared records, clearing their pending state (like the real writer).
-			mockDbBatch.mockImplementation((...items: any[]) => {
-				items.forEach(item => {
-					if (item && typeof item === 'object' && '_preparedState' in item) {
-						item._preparedState = null;
-					}
-				});
-				return Promise.resolve(undefined);
-			});
+			mockDbBatch.mockImplementation(commitPreparedRecords);
 
 			const message = { _id, rid, tlm: { $date: 1 } } as any;
 
 			await Promise.all([sub.updateMessage({ ...message }), sub.updateMessage({ ...message })]);
 
-			const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([err]) => /pending changes/.test(err?.message));
-			expect(loggedPendingChanges).toBe(false);
+			expect(loggedPendingChanges(log)).toBe(false);
 		});
 	});
 
 	describe('deleteMessage concurrency', () => {
-		// Mimics a WatermelonDB Model: both prepare* calls throw while a previous
-		// prepared change has not been committed yet.
-		const makeDeletableRecord = (debugName: string) => {
-			const record: any = {
-				_preparedState: null as string | null,
-				prepareUpdate(recordUpdater: (m: any) => void) {
-					if (record._preparedState) {
-						throw new Error(`Cannot update a record with pending changes (${debugName})`);
-					}
-					recordUpdater(record);
-					record._preparedState = 'update';
-					return record;
-				},
-				prepareDestroyPermanently() {
-					if (record._preparedState) {
-						throw new Error(`Cannot destroy permanently record with pending changes (${debugName})`);
-					}
-					record._preparedState = 'destroyPermanently';
-					return record;
-				}
-			};
-			return record;
-		};
-
-		const deferred = () => {
-			let resolve: () => void = () => undefined;
-			const promise = new Promise<void>(r => {
-				resolve = r;
-			});
-			return { promise, resolve };
-		};
-
 		let interactionTask: Promise<unknown> | null = null;
 
 		beforeEach(() => {
@@ -220,14 +171,7 @@ describe('RoomSubscription', () => {
 				interactionTask = task();
 				return { then: () => undefined, done: () => undefined, cancel: () => undefined } as any;
 			});
-			mockDbBatch.mockImplementation((...items: any[]) => {
-				items.flat().forEach(item => {
-					if (item && typeof item === 'object' && '_preparedState' in item) {
-						item._preparedState = null;
-					}
-				});
-				return Promise.resolve(undefined);
-			});
+			mockDbBatch.mockImplementation(commitPreparedRecords);
 		});
 
 		afterEach(() => {
@@ -236,9 +180,9 @@ describe('RoomSubscription', () => {
 
 		it('does not throw "pending changes" when a concurrent writer touches a message being deleted', async () => {
 			const _id = 'KXse45i7gGYE8j4Xb';
-			const messageRecord = makeDeletableRecord(`messages#${_id}`);
-			const threadRecord = makeDeletableRecord(`threads#${_id}`);
-			const threadMessageRecord = makeDeletableRecord(`thread_messages#${_id}`);
+			const messageRecord = makeFakeRecord(`messages#${_id}`);
+			const threadRecord = makeFakeRecord(`threads#${_id}`);
+			const threadMessageRecord = makeFakeRecord(`thread_messages#${_id}`);
 			const collections: Record<string, unknown> = {
 				messages: { find: () => Promise.resolve(messageRecord) },
 				threads: { find: () => Promise.resolve(threadRecord) },
@@ -266,13 +210,12 @@ describe('RoomSubscription', () => {
 
 			// Give an unlocked implementation the chance to prepare now — before the concurrent
 			// writer runs — and hold the records pending until its own batch.
-			await new Promise(resolve => setImmediate(resolve));
+			await flush();
 			concurrentGate.resolve();
 
 			await expect(Promise.all([concurrentWrite, interactionTask])).resolves.toBeDefined();
 
-			const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([err]) => /pending changes/.test(err?.message));
-			expect(loggedPendingChanges).toBe(false);
+			expect(loggedPendingChanges(log)).toBe(false);
 
 			// The whole delete batch committed together and nothing was left prepared.
 			const deleteBatch = mockDbBatch.mock.calls
