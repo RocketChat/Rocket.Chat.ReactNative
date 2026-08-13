@@ -7,7 +7,7 @@ import { biometricTrustStore } from './index';
 // existed. Runs at app init.
 //
 // State machine:
-//   !migrated && flag && !sentinel → enroll(), mark migrated, force relock.  (grandfather upgrade path)
+//   !migrated && flag && !sentinel → force relock, then enroll().  (grandfather upgrade path)
 //    migrated && flag && !sentinel → clear flag, force relock, do NOT enroll().  (reconciliation, e.g.
 //                                                                      a crash between disenroll() and
 //                                                                      the flag-clear during an
@@ -16,7 +16,8 @@ import { biometricTrustStore } from './index';
 //   !flag                           → no-op.
 //
 // On enroll() failure the marker is intentionally left unset so the next boot retries; the flag is
-// left as-is so the next unlock falls into the `unavailable` branch and asks for the passcode.
+// left as-is so the next unlock falls into the `unavailable` branch and asks for the passcode. The
+// relock marker armed up front is left set — it is self-clearing on the next forced unlock.
 export const runBiometricTrustMigration = async (): Promise<void> => {
 	try {
 		const biometryEnabled = biometricTrustStore.isEnabled();
@@ -32,11 +33,10 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 		const migrated = UserPreferences.getBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE) ?? false;
 
 		if (!migrated) {
+			// Arm the relock debt before enroll() binds the baseline, so a crash in between can't strand a trusted baseline with no debt recorded.
+			biometricTrustStore.setRelockPending(true);
 			const result = await biometricTrustStore.enroll();
-			if (result.kind === 'success') {
-				UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
-				biometricTrustStore.setRelockPending(true);
-			} else if (result.kind === 'error') {
+			if (result.kind === 'error') {
 				log(result.cause);
 			}
 			return;

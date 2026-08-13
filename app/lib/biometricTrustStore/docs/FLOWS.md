@@ -178,13 +178,14 @@ flowchart TD
     B -- yes --> C{sentinel exists?}
     C -- yes --> Z
     C -- no --> D{marker set?}
-    D -- "no (pre-feature user)" --> E[enroll]
+    D -- "no (pre-feature user)" --> E0[setRelockPending true<br/>armed before the baseline is bound]
+    E0 --> E[enroll<br/>sets marker itself]
     E --> F{enroll ok?}
-    F -- yes --> G[set marker = true<br/>setRelockPending true]
-    F -- no --> H[leave marker, flag & relock<br/>next boot retries; unlock asks passcode]
+    F -- yes --> G[marker set, relock armed]
+    F -- no --> H[leave marker & flag; relock stays armed<br/>next boot retries; unlock asks passcode]
     D -- "yes (post-feature desync)" --> I[setEnabled false<br/>clear the flag<br/>setRelockPending true]
 ```
 
 The grandfather branch (`marker = no`) is reachable only by users who enabled biometry before the sentinel feature existed. Every app-driven `enroll()` sets the marker, so post-feature users with a missing sentinel always reach the reconciliation branch instead — closing the silent re-bind.
 
-Both the grandfather and reconciliation branches set the **relock marker**. The freshly-bound grandfather baseline is untrusted — there was no prior enrollment to compare against, so an attacker who altered the enrollment before this first upgrade would otherwise be silently trusted (on Android the native probe can't catch this either: with no key yet, `isEnrollmentValid()` just creates a fresh baseline and reports valid). The migration runs **before** `localAuthenticate`, so it persists the relock marker; the next unlock (§3) reads it (OR-ed with the live enrollment-change check), forces the passcode regardless of the auto-lock window, and clears it once the modal is shown. That forced unlock routes through the same `enrollmentChanged` branch as a real change, so it also tears the migration-bound sentinel back down (`disenroll()`) and clears the biometry flag (`setEnabled(false)`) — the grandfather baseline is never trusted, and the user re-opts into biometry from settings afterward. See ARCHITECTURE.md, "Why the grandfather path forces a passcode."
+Both the grandfather and reconciliation branches set the **relock marker** — and the grandfather branch sets it _first_, before `enroll()` binds anything, so a crash can never leave a trusted baseline with no debt recorded (see ARCHITECTURE.md, "Ordering is load-bearing"). The freshly-bound grandfather baseline is untrusted — there was no prior enrollment to compare against, so an attacker who altered the enrollment before this first upgrade would otherwise be silently trusted (on Android the native probe can't catch this either: with no key yet, `isEnrollmentValid()` just creates a fresh baseline and reports valid). The migration runs **before** `localAuthenticate`, so it persists the relock marker; the next unlock (§3) reads it (OR-ed with the live enrollment-change check), forces the passcode regardless of the auto-lock window, and clears it once the modal is shown. That forced unlock routes through the same `enrollmentChanged` branch as a real change, so it also tears the migration-bound sentinel back down (`disenroll()`) and clears the biometry flag (`setEnabled(false)`) — the grandfather baseline is never trusted, and the user re-opts into biometry from settings afterward. See ARCHITECTURE.md, "Why the grandfather path forces a passcode."

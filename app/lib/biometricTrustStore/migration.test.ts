@@ -54,7 +54,7 @@ describe('runBiometricTrustMigration', () => {
 		jest.clearAllMocks();
 	});
 
-	it('upgrade path: !migrated && flag && !sentinel → enroll() once, mark migrated, force relock', async () => {
+	it('upgrade path: !migrated && flag && !sentinel → force relock, enroll() once', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
@@ -62,14 +62,35 @@ describe('runBiometricTrustMigration', () => {
 		await runBiometricTrustMigration();
 
 		expect(mockedEnroll).toHaveBeenCalledTimes(1);
-		expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+		// The migration marker is enroll()'s to persist (see index.ts), not the migration's.
+		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		// The grandfathered enrollment is untrusted (no prior baseline to compare against), so the
 		// freshly-bound baseline must be confirmed by a passcode on the next unlock before it is trusted.
 		expect(mockedSetRelockPending).toHaveBeenCalledWith(true);
 	});
 
-	it('grandfather enroll() failure → no relock forced (baseline was not established)', async () => {
+	// The relock debt must be durable before enroll() makes the baseline trustable: enroll() persists the
+	// sentinel and the migration marker before it resolves, so a kill after it but before the marker would
+	// strand a trusted, possibly attacker-inclusive baseline that no later run forces a passcode for.
+	it('grandfather path: relock is armed before enroll() binds the baseline', async () => {
+		setPrefs({ biometryEnabled: true, migrated: false });
+		mockedHasEnrollment.mockResolvedValueOnce(false);
+		// Recorded rather than asserted inside the mock: the migration wraps everything in a try/catch, so
+		// a failing expect() thrown from enroll() would be swallowed and the test would pass either way.
+		const order: string[] = [];
+		mockedSetRelockPending.mockImplementationOnce(() => order.push('relock'));
+		mockedEnroll.mockImplementationOnce(() => {
+			order.push('enroll');
+			return Promise.resolve({ kind: 'success' });
+		});
+
+		await runBiometricTrustMigration();
+
+		expect(order).toEqual(['relock', 'enroll']);
+	});
+
+	it('grandfather enroll() failure → relock stays armed (self-clears on the next forced unlock)', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 		mockedEnroll.mockResolvedValueOnce({ kind: 'error', cause: new Error('keychain unavailable') });
@@ -77,7 +98,7 @@ describe('runBiometricTrustMigration', () => {
 		await runBiometricTrustMigration();
 
 		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
-		expect(mockedSetRelockPending).not.toHaveBeenCalled();
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(true);
 	});
 
 	it('reconciliation path: migrated && flag && !sentinel → clear flag, mark relock pending, no enroll()', async () => {
