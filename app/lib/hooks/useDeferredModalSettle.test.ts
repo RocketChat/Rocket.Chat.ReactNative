@@ -64,4 +64,31 @@ describe('useDeferredModalSettle', () => {
 		expect(submit).toHaveBeenCalledTimes(1);
 		expect(cancel).not.toHaveBeenCalled();
 	});
+
+	it('keeps the first settle when a second lands before the modal hid', () => {
+		const { result } = renderHook(() => useDeferredModalSettle<IRequest>());
+		const submit = jest.fn();
+		const cancel = jest.fn();
+
+		result.current.onShow({ submit, cancel });
+		result.current.defer(submit);
+		// Same-batch second settle (last passcode digit + close button pressed together).
+		result.current.defer(cancel);
+
+		result.current.onModalHide();
+		expect(submit).toHaveBeenCalledTimes(1);
+		expect(cancel).not.toHaveBeenCalled();
+	});
+
+	it('does not let a null second settle strand the caller', () => {
+		const { result } = renderHook(() => useDeferredModalSettle<IRequest>());
+		const submit = jest.fn();
+
+		result.current.onShow({ submit });
+		result.current.defer(submit);
+		result.current.defer(null);
+
+		result.current.onModalHide();
+		expect(submit).toHaveBeenCalledTimes(1);
+	});
 });

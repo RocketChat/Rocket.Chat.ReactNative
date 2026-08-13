@@ -21,6 +21,10 @@ export const useDeferredModalSettle = <T extends ISettleableRequest>() => {
 	// Call when the user settles the modal; `settle` runs once the modal has animated out.
 	const defer = (settle: (() => void) | null) => {
 		activeRequest.current = null;
+		// First settle wins: two can land in one batch, and overwriting drops the one that already won.
+		if (pendingSettle.current) {
+			return;
+		}
 		pendingSettle.current = settle;
 	};
 
