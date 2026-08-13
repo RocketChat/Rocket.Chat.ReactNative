@@ -2,6 +2,14 @@ import database from '../database';
 import log from './helpers/log';
 import { messagesStatus } from '../constants/messagesStatus';
 import { sendMessage } from './sendMessage';
+import {
+	createBatchMock,
+	createWriterLock,
+	deferred,
+	flush,
+	loggedPendingChanges,
+	makeFakeRecord
+} from '../database/__tests__/mockedWatermelonDB';
 
 type FakeRecord = Record<string, any>;
 
@@ -12,24 +20,7 @@ interface FakeCollection {
 	prepareCreate: (updater: (m: FakeRecord) => void) => FakeRecord;
 }
 
-// Mirrors WatermelonDB's invariant: prepareUpdate on a record that already has a prepared change
-// throws `Cannot update a record with pending changes` (Model/index.js).
-const makeRecord = (debugName: string, fields: FakeRecord = {}): FakeRecord => {
-	const record: FakeRecord = {
-		...fields,
-		__debugName: debugName,
-		_preparedState: null,
-		prepareUpdate(updater: (m: FakeRecord) => void) {
-			if (record._preparedState) {
-				throw new Error(`Cannot update a record with pending changes (${debugName})`);
-			}
-			updater(record);
-			record._preparedState = 'update';
-			return record;
-		}
-	};
-	return record;
-};
+const makeRecord = (debugName: string, fields: FakeRecord = {}): FakeRecord => makeFakeRecord(debugName, fields);
 
 const makeCollection = (name: string): FakeCollection => {
 	const collection: FakeCollection = {
@@ -49,6 +40,7 @@ const makeCollection = (name: string): FakeCollection => {
 			// sanitizedRaw is mocked to identity below, so `_raw.id` is the client-generated id.
 			const id = record._raw?.id;
 			if (id) {
+				record.id = id;
 				collection.records.set(id, record);
 			}
 			return record;
@@ -65,34 +57,19 @@ const mockGetCollection = (name: string): FakeCollection => {
 	return collections[name];
 };
 
-// db.batch commits prepared records, clearing their pending state (like the real writer).
-const mockDbBatch = jest.fn((...args: any[]) => {
-	args.flat().forEach((item: FakeRecord) => {
-		if (item && typeof item === 'object' && '_preparedState' in item) {
-			item._preparedState = null;
-		}
-	});
-	return Promise.resolve(undefined);
-});
+const mockDbBatch = createBatchMock();
+const mockDbWrite = createWriterLock();
 
-jest.mock('../database', () => {
-	let writerQueue: Promise<unknown> = Promise.resolve();
-	return {
-		__esModule: true,
-		default: {
-			active: {
-				get: (name: string) => mockGetCollection(name),
-				// Serialized writer lock, like WatermelonDB's.
-				write: (callback: () => Promise<void>) => {
-					const run = writerQueue.then(() => callback());
-					writerQueue = run.catch(() => undefined);
-					return run;
-				},
-				batch: (...args: unknown[]) => mockDbBatch(...args)
-			}
+jest.mock('../database', () => ({
+	__esModule: true,
+	default: {
+		active: {
+			get: (name: string) => mockGetCollection(name),
+			write: (callback: () => Promise<void>) => mockDbWrite(callback),
+			batch: (...args: unknown[]) => mockDbBatch(...args)
 		}
-	};
-});
+	}
+}));
 
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 	sanitizedRaw: (raw: unknown) => raw
@@ -124,19 +101,6 @@ jest.mock('./helpers/log', () => ({
 }));
 
 const db = (database as any).active;
-
-const deferred = () => {
-	let resolve: () => void = () => undefined;
-	const promise = new Promise<void>(r => {
-		resolve = r;
-	});
-	return { promise, resolve };
-};
-
-// Let every already-queued microtask/promise chain settle.
-const flush = () => new Promise(resolve => setImmediate(resolve));
-
-const loggedPendingChanges = () => (log as jest.Mock).mock.calls.some(([error]) => /pending changes/.test(error?.message ?? ''));
 
 describe('sendMessage', () => {
 	const rid = 'GENERAL';
@@ -181,7 +145,7 @@ describe('sendMessage', () => {
 
 			await expect(Promise.all([concurrentWrite, send])).resolves.toBeDefined();
 
-			expect(loggedPendingChanges()).toBe(false);
+			expect(loggedPendingChanges(log)).toBe(false);
 			const created = mockDbBatch.mock.calls
 				.flat(2)
 				.find((item: FakeRecord) => item?.status === messagesStatus.TEMP || item?.status === messagesStatus.SENT);
@@ -243,7 +207,7 @@ describe('sendMessage', () => {
 
 			await expect(Promise.all([concurrentWrite, send])).resolves.toBeDefined();
 
-			expect(loggedPendingChanges()).toBe(false);
+			expect(loggedPendingChanges(log)).toBe(false);
 
 			const threadMessageRecord = mockGetCollection('thread_messages').records.get(messageId) as FakeRecord;
 			expect(messageRecord.status).toBe(messagesStatus.SENT);
