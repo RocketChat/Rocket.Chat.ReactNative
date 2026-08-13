@@ -18,6 +18,17 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/assorted/channel-deeplink.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/views/RoomsListView/**",
+			"app/sagas/deepLinking.js",
+			"app/sagas/room.js",
+			"app/sagas/login.js",
+			"app/sagas/rooms.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/assorted/change-avatar.yaml",
 		"dependsOn": ["app/views/ChangeAvatarView/**", "app/views/ProfileView/**"]
 	},
