@@ -41,16 +41,16 @@ export const classifyError = (e: unknown): TrustResult => {
 	const message = err?.message ?? '';
 	const blob = `${code} ${name} ${message}`;
 
-	// -128 (errSecUserCanceled) is matched against the code only — testing it against the whole blob
-	// would misclassify any unrelated failure that happens to mention "-128" in its message as a
-	// benign cancel.
+	// Numeric OSStatus values are matched against the code only — testing them against the whole blob
+	// would misclassify any unrelated failure that happens to mention the number in its message. That
+	// matters most for -25300, whose branch drives invalidate() and would silently disable biometry.
 	if (code === '-128' || /errSecUserCancel|UserCancel|user.?cancel|AuthenticationCanceled/i.test(blob)) {
 		return { kind: 'canceled' };
 	}
 	if (/KeyPermanentlyInvalidatedException/i.test(blob)) {
 		return { kind: 'enrollmentChanged' };
 	}
-	if (/errSecItemNotFound|-25300/i.test(blob)) {
+	if (code === '-25300' || /errSecItemNotFound/i.test(blob)) {
 		return { kind: 'enrollmentChanged' };
 	}
 	return { kind: 'error', cause: e };
