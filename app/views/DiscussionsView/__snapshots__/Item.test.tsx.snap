@@ -186,6 +186,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -204,6 +207,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -233,6 +239,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -312,6 +321,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -366,6 +378,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -569,6 +584,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -587,6 +605,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -616,6 +637,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -695,6 +719,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -749,6 +776,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -952,6 +982,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -970,6 +1003,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -999,6 +1035,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1078,6 +1117,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -1134,6 +1176,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -1337,6 +1382,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -1355,6 +1403,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -1384,6 +1435,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1463,6 +1517,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -1517,6 +1574,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -1720,6 +1780,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -1738,6 +1801,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -1767,6 +1833,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1846,6 +1915,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -1900,6 +1972,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -2123,6 +2198,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -2141,6 +2219,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -2170,6 +2251,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2249,6 +2333,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -2303,6 +2390,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -2493,6 +2583,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -2511,6 +2604,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -2540,6 +2636,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2619,6 +2718,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -2673,6 +2775,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -2863,6 +2968,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 18,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "500",
                         "textAlign": "left",
                       },
@@ -2881,6 +2989,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "marginLeft": 4,
                         "textAlign": "left",
@@ -2910,6 +3021,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2989,6 +3103,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",
@@ -3043,6 +3160,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "backgroundColor": "transparent",
                             "fontFamily": "Inter",
                             "fontSize": 10,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "600",
                             "marginLeft": 2,
                             "textAlign": "left",

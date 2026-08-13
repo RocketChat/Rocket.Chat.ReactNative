@@ -134,6 +134,9 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 18,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "lineHeight": 26,
               "textAlign": "left",
@@ -295,6 +298,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 18,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 26,
                 "textAlign": "left",
@@ -518,6 +524,9 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 18,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 26,
                 "textAlign": "left",
@@ -741,6 +750,9 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 18,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 26,
                 "textAlign": "left",
