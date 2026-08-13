@@ -5,6 +5,7 @@ import MessageErrorActions, { type IMessageErrorActions } from './MessageErrorAc
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import { type TMessageModel } from '../definitions';
+import { FakeDatabase, type FakeModel } from '../lib/database/__tests__/mockedWatermelonDB';
 
 jest.mock('../lib/database', () => ({
 	__esModule: true,
@@ -24,114 +25,6 @@ const mockShowActionSheet = jest.fn();
 jest.mock('./ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
-
-const tick = () => Promise.resolve();
-
-/**
- * Minimal WatermelonDB stand-in that reproduces the invariants we care about:
- * - a record can only hold one prepared change at a time ("pending changes")
- * - batch() only accepts records whose prepared change is still pending
- * - batch() must run inside a writer
- * - write() serializes writers (the writer lock)
- */
-class FakeModel {
-	id: string;
-	table: string;
-	tcount: number | null = null;
-	tlm: Date | null = null;
-	_preparedState: string | null = null;
-	_db: FakeDatabase;
-
-	constructor(db: FakeDatabase, table: string, id: string, props: Partial<FakeModel> = {}) {
-		this._db = db;
-		this.table = table;
-		this.id = id;
-		Object.assign(this, props);
-	}
-
-	get _debugName() {
-		return `${this.table}#${this.id}`;
-	}
-
-	prepareDestroyPermanently() {
-		this._db.prepareLog.push({ record: this._debugName, op: 'destroyPermanently', insideWriter: this._db.insideWriter });
-		if (this._preparedState) {
-			throw new Error(`Cannot destroy permanently record with pending changes (${this._debugName})`);
-		}
-		this._preparedState = 'destroyPermanently';
-		return this;
-	}
-
-	prepareUpdate(updater: (m: FakeModel) => void = () => {}) {
-		this._db.prepareLog.push({ record: this._debugName, op: 'update', insideWriter: this._db.insideWriter });
-		if (this._preparedState) {
-			throw new Error(`Cannot update a record with pending changes (${this._debugName})`);
-		}
-		updater(this);
-		this._preparedState = 'update';
-		return this;
-	}
-}
-
-class FakeDatabase {
-	insideWriter = false;
-	prepareLog: { record: string; op: string; insideWriter: boolean }[] = [];
-	findLog: { record: string; insideWriter: boolean }[] = [];
-	batches: string[][] = [];
-	collections: Record<string, Map<string, FakeModel>> = {
-		messages: new Map(),
-		threads: new Map(),
-		thread_messages: new Map()
-	};
-	_queue: Promise<unknown> = Promise.resolve();
-
-	add(table: string, id: string, props: Partial<FakeModel> = {}) {
-		const record = new FakeModel(this, table, id, props);
-		this.collections[table].set(id, record);
-		return record;
-	}
-
-	get(table: string) {
-		return {
-			find: async (id: string) => {
-				this.findLog.push({ record: `${table}#${id}`, insideWriter: this.insideWriter });
-				await tick();
-				const record = this.collections[table].get(id);
-				if (!record) {
-					throw new Error(`Record ${table}#${id} not found`);
-				}
-				return record;
-			}
-		};
-	}
-
-	write<T>(work: () => Promise<T>): Promise<T> {
-		const run = this._queue.then(async () => {
-			this.insideWriter = true;
-			try {
-				return await work();
-			} finally {
-				this.insideWriter = false;
-			}
-		});
-		this._queue = run.catch(() => {});
-		return run;
-	}
-
-	async batch(records: FakeModel[]) {
-		if (!this.insideWriter) {
-			throw new Error('Database.batch() can only be called from inside of a Writer');
-		}
-		await tick();
-		this.batches.push(records.map(r => `${r._debugName}:${r._preparedState}`));
-		records.forEach(record => {
-			if (!record._preparedState) {
-				throw new Error("Cannot batch a record that doesn't have a prepared create/update/delete");
-			}
-			record._preparedState = null;
-		});
-	}
-}
 
 const renderComponent = (tmid?: string) => {
 	const ref = createRef<IMessageErrorActions>();
