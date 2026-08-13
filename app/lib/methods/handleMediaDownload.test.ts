@@ -3,29 +3,18 @@ import database from '../database';
 import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
+import { createBatchMock, deferred, flush, makeFakeRecord } from '../database/__tests__/mockedWatermelonDB';
 
-const mockDbBatch = jest.fn((...args: any[]) => {
-	// db.batch commits prepared records, clearing their pending state (like the real writer).
-	args.flat().forEach((item: any) => {
-		if (item && typeof item === 'object' && '_preparedState' in item) {
-			item._preparedState = null;
-		}
-	});
-	return Promise.resolve(undefined);
-});
+const mockDbBatch = createBatchMock();
 jest.mock('../database', () => {
-	let writerQueue: Promise<unknown> = Promise.resolve();
+	const { createWriterLock } = require('../database/__tests__/mockedWatermelonDB');
+	const write = createWriterLock();
 	return {
 		__esModule: true,
 		default: {
 			active: {
 				get: jest.fn(),
-				// Serialized writer lock, like WatermelonDB's.
-				write: (callback: () => Promise<void>) => {
-					const run = writerQueue.then(() => callback());
-					writerQueue = run.catch(() => undefined);
-					return run;
-				},
+				write,
 				batch: (...args: unknown[]) => mockDbBatch(...args)
 			}
 		}
@@ -153,31 +142,8 @@ describe('persistMessage', () => {
 	const downloadUrl = 'https://server.com/file-upload/abc/photo.jpg';
 	const uri = 'file:///local/photo.jpg';
 
-	// Mimics a WatermelonDB Model: prepareUpdate throws while a previous prepared
-	// update has not been committed yet.
-	const makeRecord = (debugName: string) => {
-		const record: any = {
-			attachments: [{ image_url: '/file-upload/abc/photo.jpg' }],
-			_preparedState: null as string | null,
-			prepareUpdate(recordUpdater: (m: any) => void) {
-				if (record._preparedState) {
-					throw new Error(`Cannot update a record with pending changes (${debugName})`);
-				}
-				recordUpdater(record);
-				record._preparedState = 'update';
-				return record;
-			}
-		};
-		return record;
-	};
-
-	const deferred = () => {
-		let resolve: () => void = () => undefined;
-		const promise = new Promise<void>(r => {
-			resolve = r;
-		});
-		return { promise, resolve };
-	};
+	const makeRecord = (debugName: string) =>
+		makeFakeRecord(debugName, { attachments: [{ image_url: '/file-upload/abc/photo.jpg' }] });
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -209,7 +175,7 @@ describe('persistMessage', () => {
 
 		// Give an unlocked implementation the chance to prepare now — before the concurrent
 		// writer runs — and hold the records pending until its own batch.
-		await new Promise(resolve => setImmediate(resolve));
+		await flush();
 		concurrentGate.resolve();
 
 		await expect(Promise.all([concurrentWrite, persisting])).resolves.toBeDefined();
