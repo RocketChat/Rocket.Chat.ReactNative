@@ -62,6 +62,7 @@ const Touch = forwardRef<View, ITouchProps>(
 			componentRef,
 			longPressViaResponder,
 			onLongPress,
+			underlayColor,
 			...props
 		},
 		ref
@@ -106,7 +107,7 @@ const Touch = forwardRef<View, ITouchProps>(
 			? {}
 			: usingRNGHPressable
 				? { android_ripple: { color: rippleColor } }
-				: { underlayColor: rippleColor };
+				: { underlayColor: underlayColor ?? rippleColor };
 		const Wrapper = usingRNGHPressable ? RNGHComponent : KeyboardComponent;
 
 		return (
