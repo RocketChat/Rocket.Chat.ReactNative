@@ -48,9 +48,32 @@ Because the Android sentinel **survives** an enrollment change (the key is inval
 
 On **iOS** there is no native counterpart: `enrollProbe`/`disenrollProbe` are no-ops and `isEnrollmentValid()` resolves `true`, because the sentinel deletion already covers enrollment changes for free.
 
+### Why the sentinel read can't prove presence
+
+On iOS a successful `verify()` proves two things at once: the enrollment is unchanged **and** a live user just authenticated. On Android it only proves the first, so `biometryAuth` (in `localAuthentication.ts`) does **not** use `verify()` there.
+
+`react-native-keychain` builds the sentinel's keystore key with a 5-second auth window that accepts device credentials, not only biometrics (`CipherStorageKeystoreAesGcm.getKeyGenSpecBuilder`):
+
+```kotlin
+setUserAuthenticationParameters(5, KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL)
+```
+
+and `CipherStorageKeystoreAesGcm.decrypt()` tries the cipher first, reaching the `BiometricPrompt` **only** from its `UserNotAuthenticatedException` catch branch. Inside the window no exception is raised, so the decrypt simply succeeds and the prompt is never shown. Concretely: unlock the phone with the **PIN**, open the app within 5s, and a bare `verify()` returns `success` with nothing on screen. (The prompt is also handed to `BiometricPrompt.authenticate(promptInfo)` without a `CryptoObject`, so even when it does appear it authorizes nothing cryptographically.)
+
+Android therefore splits the two concerns, keeping the total at one OS prompt:
+
+| Concern             | Android mechanism                                                    |
+| ------------------- | -------------------------------------------------------------------- |
+| Enrollment unchanged | `isEnrollmentValid()` — the silent probe key above                   |
+| Live user present    | `LocalAuthentication.authenticateAsync({ disableDeviceFallback: true })` |
+
+This costs nothing on the detection side: `KeyPermanentlyInvalidatedException` is raised at key extraction regardless of the auth window, so the enrollment signal was never dependent on the prompt firing. It also means the Android sentinel's only remaining job is "is trust initialized" (`hasEnrollment()`, a silent existence check) — the probe key carries the enrollment binding and `authenticateAsync` carries presence.
+
+The same reasoning applies to the first-passcode consent prompt: `checkBiometry` captures consent through `biometryAuth(true)` rather than `verify()`, because a prompt that never appeared is not consent.
+
 ### Cancel signal
 
-A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style error, mapped to `canceled` — the biometry button is kept for manual retry, matching iOS's `errSecUserCancel` / `-128`.
+On iOS a dismissed prompt surfaces as an `errSecUserCancel` / `-128` error from the keychain read, mapped to `canceled`. On Android it comes back as an `expo-local-authentication` result with `success: false` and `error: 'user_cancel'` (or `app_cancel` / `system_cancel` / `user_fallback` / `authentication_failed`), mapped to `canceled` by `classifyPresenceError`. Either way the biometry button is kept for manual retry. `not_enrolled` / `not_available` map to `unavailable` (fail closed, tear trust down); anything else is a real `error`.
 
 ## Quick comparison
 
@@ -59,8 +82,9 @@ A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style er
 | Enrollment change on the item                   | item **deleted**                              | key **invalidated**, not deleted                       |
 | Usual `verify()` kind after a change            | `unavailable` (silent existence check)        | `enrollmentChanged` (read raises exception)            |
 | Native signal classified to `enrollmentChanged` | `errSecItemNotFound` / `-25300` (post-prompt) | `KeyPermanentlyInvalidatedException`                   |
-| Cancel signal                                   | `errSecUserCancel` / `-128`                   | `AuthenticationCanceled` / `UserCancel`                |
+| Cancel signal                                   | `errSecUserCancel` / `-128`                   | expo `error: 'user_cancel'` (and friends)              |
 | Silent at-rest enrollment check                 | `hasEnrollment()` (item deleted on change)    | native probe key `isEnrollmentValid()` (`cipher.init`) |
+| What proves a live user (`biometryAuth`)        | `verify()` — the sentinel read itself         | `authenticateAsync({ disableDeviceFallback: true })`   |
 | Sentinel survives device migration?             | no (`THIS_DEVICE_ONLY`)                       | no (`THIS_DEVICE_ONLY`)                                |
 
 In all cases the user-facing result is the same fail-closed behaviour: biometric unlock is dropped and the passcode is required.

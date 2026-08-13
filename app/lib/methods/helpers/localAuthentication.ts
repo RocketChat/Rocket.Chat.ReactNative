@@ -95,8 +95,48 @@ const buildPromptCopy = (force?: boolean): BiometricPromptCopy => ({
 	cancel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback')
 });
 
-export const biometryAuth = (force?: boolean): Promise<TrustResult> =>
-	biometricTrustStore.verify({ promptCopy: buildPromptCopy(force) });
+const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationError): TrustResult => {
+	switch (error) {
+		case 'user_cancel':
+		case 'app_cancel':
+		case 'system_cancel':
+		case 'user_fallback':
+		case 'authentication_failed':
+			return { kind: 'canceled' };
+		case 'not_enrolled':
+		case 'not_available':
+			return { kind: 'unavailable' };
+		default:
+			return { kind: 'error', cause: error };
+	}
+};
+
+// Proves presence, not just an unchanged enrollment: iOS gets both from the sentinel read, Android
+// can't (its keystore key accepts a 5s device-credential window) — see PLATFORMS.md.
+export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
+	const promptCopy = buildPromptCopy(force);
+
+	if (isIOS) {
+		return biometricTrustStore.verify({ promptCopy });
+	}
+
+	try {
+		if (!(await biometricTrustStore.hasEnrollment())) {
+			return { kind: 'unavailable' };
+		}
+		if (!(await biometricTrustStore.isEnrollmentValid())) {
+			return { kind: 'enrollmentChanged' };
+		}
+		const presence = await LocalAuthentication.authenticateAsync({
+			disableDeviceFallback: true,
+			cancelLabel: promptCopy.cancel,
+			promptMessage: promptCopy.title
+		});
+		return presence.success ? { kind: 'success' } : classifyPresenceError(presence.error);
+	} catch (e) {
+		return { kind: 'error', cause: e };
+	}
+};
 
 /*
  * It'll help us to get the permission to use FaceID
@@ -112,7 +152,8 @@ const checkBiometry = async () => {
 		return false;
 	}
 
-	const consent = await biometricTrustStore.verify({ promptCopy: buildPromptCopy(true) });
+	// Via biometryAuth, not verify(): a prompt that never appeared isn't consent.
+	const consent = await biometryAuth(true);
 	const isBiometryEnabled = consent.kind === 'success';
 	if (!isBiometryEnabled) {
 		await biometricTrustStore.disenroll();

@@ -6,7 +6,7 @@ import UserPreferences from '../userPreferences';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
 import { store as reduxStore } from '../../store/auxStore';
-import { checkHasPasscode, handleLocalAuthentication, localAuthenticate } from './localAuthentication';
+import { biometryAuth, checkHasPasscode, handleLocalAuthentication, localAuthenticate } from './localAuthentication';
 import { biometricTrustStore } from '../../biometricTrustStore';
 import { CHANGE_PASSCODE_EMITTER, LOCAL_AUTHENTICATE_EMITTER } from '../../constants/localAuthentication';
 
@@ -66,6 +66,18 @@ jest.mock('../../biometricTrustStore', () => ({
 jest.mock('./events', () => ({
 	__esModule: true,
 	default: { emit: jest.fn(), addEventListener: jest.fn(), removeListener: jest.fn() }
+}));
+
+// biometryAuth branches on platform (verify() proves presence on iOS only), so the flag has to be
+// switchable per test. A getter keeps it live — the module reads `isIOS` at call time, not import time.
+let mockIsIOS = true;
+jest.mock('./deviceInfo', () => ({
+	get isIOS() {
+		return mockIsIOS;
+	},
+	get isAndroid() {
+		return !mockIsIOS;
+	}
 }));
 
 const mockedEmit = EventEmitter.emit as jest.Mock;
@@ -379,6 +391,185 @@ describe('checkHasPasscode → biometry consent on first passcode', () => {
 
 		expect(mockedVerify).not.toHaveBeenCalled();
 		expect(mockedDisenroll).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+	});
+});
+
+// biometryAuth must prove a live user is present, not merely that the biometric enrollment is
+// unchanged. On iOS the sentinel read does both. On Android it does not: react-native-keychain builds
+// the sentinel's keystore key with setUserAuthenticationParameters(5, AUTH_BIOMETRIC_STRONG or
+// AUTH_DEVICE_CREDENTIAL) and only shows the BiometricPrompt from decrypt()'s
+// UserNotAuthenticatedException branch, so within 5s of a *PIN* unlock verify() resolves success with
+// no prompt at all. These tests pin the platform split that closes that hole.
+const mockedAuthenticateAsync = LocalAuthentication.authenticateAsync as jest.Mock;
+
+describe('biometryAuth', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockIsIOS = true;
+		mockedHasEnrollment.mockResolvedValue(true);
+		mockedIsEnrollmentValid.mockResolvedValue(true);
+	});
+
+	describe('iOS', () => {
+		it('delegates to verify() — the keychain read is itself the biometric evaluation', async () => {
+			mockedVerify.mockResolvedValueOnce({ kind: 'success' });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'success' });
+
+			expect(mockedVerify).toHaveBeenCalledTimes(1);
+			expect(mockedVerify).toHaveBeenCalledWith({
+				promptCopy: { title: 'Local_authentication_biometry_title', cancel: 'Local_authentication_biometry_fallback' }
+			});
+			// No second prompt: iOS gets presence for free from the same read.
+			expect(mockedAuthenticateAsync).not.toHaveBeenCalled();
+		});
+
+		it('uses the "Don\'t activate" cancel label when force is set', async () => {
+			mockedVerify.mockResolvedValueOnce({ kind: 'success' });
+
+			await biometryAuth(true);
+
+			expect(mockedVerify).toHaveBeenCalledWith({
+				promptCopy: { title: 'Local_authentication_biometry_title', cancel: 'Dont_activate' }
+			});
+		});
+
+		it('passes a non-success verify() kind straight through', async () => {
+			mockedVerify.mockResolvedValueOnce({ kind: 'enrollmentChanged' });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'enrollmentChanged' });
+		});
+	});
+
+	describe('Android', () => {
+		beforeEach(() => {
+			mockIsIOS = false;
+		});
+
+		it('never reads the sentinel for presence — demands a fresh biometric instead', async () => {
+			mockedAuthenticateAsync.mockResolvedValueOnce({ success: true });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'success' });
+
+			// The regression this guards: verify() can succeed with no prompt shown, so it must not be
+			// what gates the unlock on Android.
+			expect(mockedVerify).not.toHaveBeenCalled();
+			expect(mockedAuthenticateAsync).toHaveBeenCalledTimes(1);
+			// disableDeviceFallback is the whole point: a device PIN must not satisfy this.
+			expect(mockedAuthenticateAsync).toHaveBeenCalledWith({
+				disableDeviceFallback: true,
+				promptMessage: 'Local_authentication_biometry_title',
+				cancelLabel: 'Local_authentication_biometry_fallback'
+			});
+		});
+
+		it('does not unlock when the biometric prompt fails, even though the sentinel is intact', async () => {
+			mockedAuthenticateAsync.mockResolvedValueOnce({ success: false, error: 'user_cancel' });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'canceled' });
+		});
+
+		it('reports unavailable without prompting when no sentinel exists', async () => {
+			mockedHasEnrollment.mockResolvedValueOnce(false);
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'unavailable' });
+
+			expect(mockedIsEnrollmentValid).not.toHaveBeenCalled();
+			expect(mockedAuthenticateAsync).not.toHaveBeenCalled();
+		});
+
+		it('reports enrollmentChanged from the silent probe without prompting', async () => {
+			mockedIsEnrollmentValid.mockResolvedValueOnce(false);
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'enrollmentChanged' });
+
+			expect(mockedAuthenticateAsync).not.toHaveBeenCalled();
+		});
+
+		it('checks the enrollment binding before prompting, not after', async () => {
+			mockedAuthenticateAsync.mockResolvedValueOnce({ success: true });
+
+			await biometryAuth();
+
+			expect(mockedIsEnrollmentValid.mock.invocationCallOrder[0]).toBeLessThan(
+				mockedAuthenticateAsync.mock.invocationCallOrder[0]
+			);
+		});
+
+		it('maps a removed biometric enrollment to unavailable so trust is torn down', async () => {
+			mockedAuthenticateAsync.mockResolvedValueOnce({ success: false, error: 'not_enrolled' });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'unavailable' });
+		});
+
+		it('maps a lockout to error rather than a user cancel', async () => {
+			mockedAuthenticateAsync.mockResolvedValueOnce({ success: false, error: 'lockout' });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'error', cause: 'lockout' });
+		});
+
+		it('fails closed when the sentinel check throws', async () => {
+			const cause = new Error('keystore unavailable');
+			mockedHasEnrollment.mockRejectedValueOnce(cause);
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'error', cause });
+
+			expect(mockedAuthenticateAsync).not.toHaveBeenCalled();
+		});
+
+		it('fails closed when the OS prompt throws', async () => {
+			const cause = new Error('no activity');
+			mockedAuthenticateAsync.mockRejectedValueOnce(cause);
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'error', cause });
+		});
+	});
+});
+
+// Consent is only consent if a prompt actually appeared. On Android a bare verify() can resolve inside
+// the keystore's 5s auth window with nothing shown, which would enable biometric unlock the user was
+// never asked about — so checkBiometry captures consent through biometryAuth(true).
+describe('checkHasPasscode → biometry consent on Android', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockIsIOS = false;
+		mockedDisenroll.mockResolvedValue(undefined);
+		mockedGetString.mockReturnValue(undefined);
+		mockedHasEnrollment.mockResolvedValue(true);
+		mockedIsEnrollmentValid.mockResolvedValue(true);
+		mockedIsEnrolled.mockResolvedValue(true);
+		mockedEmit.mockImplementation((event, payload) => {
+			if (event === CHANGE_PASSCODE_EMITTER && payload?.submit) {
+				setImmediate(() => payload.submit('1234'));
+			}
+		});
+	});
+
+	afterEach(() => {
+		mockIsIOS = true;
+	});
+
+	it('asks with a real OS prompt, not a sentinel read', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
+		mockedAuthenticateAsync.mockResolvedValueOnce({ success: true });
+
+		await checkHasPasscode({});
+
+		expect(mockedVerify).not.toHaveBeenCalled();
+		expect(mockedAuthenticateAsync).toHaveBeenCalledTimes(1);
+		expect(mockedAuthenticateAsync).toHaveBeenCalledWith(expect.objectContaining({ cancelLabel: 'Dont_activate' }));
+		expect(mockedSetEnabled).toHaveBeenCalledWith(true);
+		expect(mockedDisenroll).not.toHaveBeenCalled();
+	});
+
+	it('declining the prompt disenrolls and leaves biometry disabled', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
+		mockedAuthenticateAsync.mockResolvedValueOnce({ success: false, error: 'user_cancel' });
+
+		await checkHasPasscode({});
+
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 	});
 });

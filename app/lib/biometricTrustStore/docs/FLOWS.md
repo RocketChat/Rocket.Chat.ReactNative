@@ -53,7 +53,7 @@ Note the enable path does **not** prompt for biometrics — writing the sentinel
 
 ## 2. First-passcode opt-in (`checkBiometry`)
 
-When the user sets their first passcode, screen lock asks whether to also enable biometric unlock. Because `enroll()` is silent, consent is captured with a **second** call — a `verify()` prompt — and the sentinel is torn down if the user declines.
+When the user sets their first passcode, screen lock asks whether to also enable biometric unlock. Because `enroll()` is silent, consent is captured with a **second** call — a `biometryAuth(true)` prompt — and the sentinel is torn down if the user declines.
 
 ```mermaid
 sequenceDiagram
@@ -71,24 +71,29 @@ sequenceDiagram
     else enroll succeeds
         Store->>Store: set migration marker = true
         Store-->>LocalAuth: success
-        LocalAuth->>Store: verify({ cancel: "Don't activate" })
-        Store->>OS: getGenericPassword → OS biometric sheet
+        LocalAuth->>LocalAuth: biometryAuth(true) — cancel: "Don't activate"
+        alt iOS
+            LocalAuth->>Store: verify()
+            Store->>OS: getGenericPassword → OS biometric sheet
+        else Android
+            LocalAuth->>Store: hasEnrollment() + isEnrollmentValid() (both silent)
+            LocalAuth->>OS: authenticateAsync({ disableDeviceFallback: true })
+        end
         OS->>User: prompt
         alt user authenticates
             User-->>OS: ok
-            OS-->>Store: sentinel value
-            Store-->>LocalAuth: { kind: 'success' }
+            OS-->>LocalAuth: { kind: 'success' }
             LocalAuth->>Store: setEnabled(true)
         else user taps "Don't activate"
             User-->>OS: cancel
-            Store-->>LocalAuth: { kind: 'canceled' }
+            OS-->>LocalAuth: { kind: 'canceled' }
             LocalAuth->>Store: disenroll() — tear sentinel back down
             LocalAuth->>Store: setEnabled(false)
         end
     end
 ```
 
-The `verify()` here doubles as the consent prompt: succeeding means the user agreed _and_ proved the current enrollment works; declining opts out and cleans up.
+The prompt here doubles as the consent gate: succeeding means the user agreed _and_ proved the current enrollment works; declining opts out and cleans up. It must go through `biometryAuth` rather than `verify()` — on Android a bare `verify()` can resolve inside the keystore's 5s auth window with no prompt shown, which would enable biometric unlock without ever asking. See `PLATFORMS.md`.
 
 ---
 
@@ -107,27 +112,40 @@ sequenceDiagram
 
     LocalAuth->>Passcode: openModal(hasBiometry) — modal now covers the app
     Note over Passcode: on mount, status === ENTER → auto-run biometry()
-    Passcode->>Store: verify({ promptCopy })
-    Store->>OS: hasEnrollment()? (silent)
-    alt sentinel present
-        OS-->>Store: yes
-        Store->>OS: getGenericPassword → OS biometric sheet
-        alt biometric matches & value read back
-            OS-->>Store: 'v1'
-            Store-->>Passcode: { kind: 'success' }
-        else iOS: errSecItemNotFound after prompt
-            OS-->>Store: -25300
-            Store-->>Passcode: { kind: 'enrollmentChanged' }
-        else Android: KeyPermanentlyInvalidatedException
-            OS-->>Store: exception
-            Store-->>Passcode: { kind: 'enrollmentChanged' }
-        else user cancels
-            OS-->>Store: -128
-            Store-->>Passcode: { kind: 'canceled' }
+    Passcode->>Passcode: biometryAuth()
+    alt iOS — the sentinel read is itself the biometric evaluation
+        Passcode->>Store: verify({ promptCopy })
+        Store->>OS: hasEnrollment()? (silent)
+        alt sentinel present
+            OS-->>Store: yes
+            Store->>OS: getGenericPassword → OS biometric sheet
+            alt biometric matches & value read back
+                OS-->>Passcode: { kind: 'success' }
+            else errSecItemNotFound after prompt (-25300)
+                OS-->>Passcode: { kind: 'enrollmentChanged' }
+            else user cancels (-128)
+                OS-->>Passcode: { kind: 'canceled' }
+            end
+        else sentinel absent (iOS often lands here first — see PLATFORMS.md)
+            OS-->>Passcode: { kind: 'unavailable' }
         end
-    else sentinel absent (iOS often lands here first — see PLATFORMS.md)
-        OS-->>Store: no
-        Store-->>Passcode: { kind: 'unavailable' }
+    else Android — the sentinel read can't prove presence (5s device-credential window)
+        Passcode->>Store: hasEnrollment() (silent)
+        alt sentinel absent
+            Store-->>Passcode: { kind: 'unavailable' }
+        else sentinel present
+            Passcode->>Store: isEnrollmentValid() — silent probe-key cipher.init()
+            alt probe key invalidated
+                Store-->>Passcode: { kind: 'enrollmentChanged' }
+            else enrollment intact
+                Passcode->>OS: authenticateAsync({ disableDeviceFallback: true })
+                alt biometric matches
+                    OS-->>Passcode: { kind: 'success' }
+                else user_cancel / authentication_failed / …
+                    OS-->>Passcode: { kind: 'canceled' }
+                end
+            end
+        end
     end
 
     Passcode->>Resolve: resolveBiometricTrust(result)
