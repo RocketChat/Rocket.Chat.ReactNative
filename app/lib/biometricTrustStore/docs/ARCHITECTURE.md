@@ -31,6 +31,8 @@ It is written with two keychain options that together make it a tripwire (`index
 
 Writing and probing the sentinel are **silent** (no biometric prompt). Only _reading the value back_ (`verify()`) presents the OS biometric sheet. This distinction drives the whole API design — see "Why writing the sentinel is not consent" below.
 
+On **Android** that read is not a reliable prompt either: the keystore key behind it carries a 5-second auth window that accepts device credentials, so it can resolve silently. `verify()` is consequently an **iOS-only** presence check; Android proves presence with `expo-local-authentication` instead. `biometryAuth` owns that split — see `PLATFORMS.md`, "Why the sentinel read can't prove presence".
+
 ---
 
 ## The `TrustResult` union
@@ -72,7 +74,7 @@ The `biometricTrustStore` singleton (`index.ts`) implements:
 | `isEnrollmentValid()`                       | no              | Silent check that the _current_ enrollment still matches what trust was bound to. iOS always returns `true` (the sentinel already covers changes); Android consults the native probe key. Returns `false` only on a detected Android enrollment change. See `PLATFORMS.md`. |
 | `isEnabled()` / `setEnabled(b)`             | no              | Own the persisted `BIOMETRY_ENABLED_KEY` flag so callers never touch `UserPreferences` directly.                                                                                                                                                                            |
 | `isRelockPending()` / `setRelockPending(b)` | no              | Own the persisted relock marker (see "persisted state" below). Set when an enrollment change is detected at a point that cannot show the passcode itself (the init migration), so the next unlock is forced to demand it regardless of the auto-lock window.                |
-| `setBiometryEnabled(b)`                     | yes if enabling | One-shot toggle: enroll+enable or disenroll+disable, keeping keychain state and the flag in sync. Returns the enroll `TrustResult` so the caller can roll back its UI on failure.                                                                                           |
+| `setBiometryEnabled(b)`                     | no              | One-shot toggle: enroll+enable or disenroll+disable, keeping keychain state and the flag in sync. Returns the enroll `TrustResult` so the caller can roll back its UI on failure — a failure is a keychain error, not a user decision, since neither `enroll()` nor `disenroll()` prompts. |
 
 ### Pieces of persisted state
 
@@ -98,7 +100,9 @@ On iOS these helpers are no-ops that resolve `true` (the sentinel already covers
 
 ### Why writing the sentinel is not consent
 
-`enroll()` writes the sentinel silently — no biometric prompt — so it **cannot** double as proof the user agreed to biometric unlock. Callers that need real consent (the first-passcode opt-in in `checkBiometry`) must follow `enroll()` with a `verify()` prompt and tear the sentinel back down if the user declines. This is why `enroll` and the consent prompt are separate steps rather than one call. See `FLOWS.md` §2.
+`enroll()` writes the sentinel silently — no biometric prompt — so it **cannot** double as proof the user agreed to biometric unlock. Callers that need real consent (the first-passcode opt-in in `checkBiometry`) must follow `enroll()` with a `biometryAuth(true)` prompt and tear the sentinel back down if the user declines. This is why `enroll` and the consent prompt are separate steps rather than one call. See `FLOWS.md` §2.
+
+The consent step goes through `biometryAuth`, not `verify()` directly, for the Android reason above: a `verify()` that resolves inside the keystore's auth window shows no prompt, which would silently enable biometric unlock the user was never asked about.
 
 ---
 
@@ -161,7 +165,7 @@ If a crash happens between the two, the surviving state is _flag set, sentinel g
 
 ## Invariants summary
 
-1. **Writing/probing the sentinel never prompts; only `verify()` does.** Consent requires a `verify()`, not an `enroll()`.
+1. **Writing/probing the sentinel never prompts, and presence is proved per platform.** Consent requires a prompt, so it requires `biometryAuth(true)`, not an `enroll()`. `verify()` proves presence on **iOS only**; Android uses `authenticateAsync({ disableDeviceFallback: true })`, because the sentinel's keystore key accepts a 5s device-credential window and can resolve with no prompt at all.
 2. **Every successful `enroll()` sets the migration marker.** Keeps app-driven enrolls out of the grandfather branch.
 3. **On invalidation, `disenroll()` precedes `setEnabled(false)`.** Keeps a crash recoverable by reconciliation.
 4. **Flag and sentinel are kept in lockstep.** `setBiometryEnabled`, `checkBiometry`, and `resolveBiometricTrust` never leave one set without the other (the migration is the safety net for crashes that break this). On Android the native probe key is bound/torn down in lockstep with the sentinel inside `enroll()`/`disenroll()`.

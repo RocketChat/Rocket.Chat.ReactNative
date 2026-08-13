@@ -26,11 +26,12 @@ export const resolveBiometricTrust = async (result: TrustResult): Promise<Biomet
 		case 'unavailable':
 			await biometricTrustStore.invalidate();
 			return { unlocked: false, modal: { hasBiometry: false } };
+		// No `default:` — the switch is exhaustive over TrustResult, so a new variant must fail the build
+		// rather than silently land on "keep biometry, stay locked".
 		case 'canceled':
 		case 'error':
-		default:
-			// Keep the biometry button so the user can retry manually; the upstream verify() already
-			// prompted, so there's no auto-prompt to suppress here.
+			// Keep the biometry button so the user can retry manually; the upstream prompt already
+			// fired, so there's no auto-prompt to suppress here.
 			return { unlocked: false, modal: { hasBiometry: true } };
 	}
 };

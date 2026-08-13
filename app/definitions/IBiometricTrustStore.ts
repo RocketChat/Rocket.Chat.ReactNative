@@ -37,6 +37,7 @@ export interface IBiometricTrustStore {
 	invalidate(): Promise<void>;
 	// Applies a biometry on/off toggle as one operation: enroll/disenroll the sentinel and persist
 	// the flag, keeping the keychain state and flag in sync. Returns the enroll result so callers
-	// can roll back their UI when enrollment fails (e.g. user cancels the OS prompt).
+	// can roll back their UI when enrollment fails (the sentinel write is silent — a failure here is a
+	// keychain error, not a user decision).
 	setBiometryEnabled(enabled: boolean): Promise<TrustResult>;
 }
