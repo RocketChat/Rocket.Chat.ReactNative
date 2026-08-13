@@ -40,7 +40,7 @@ const AdminPanelView = () => {
 				onMessage={() => {}}
 				source={{ uri: `${baseUrl}/admin/info?layout=embedded` }}
 				injectedJavaScript={str}
-				containerStyle={{ paddingBottom: Math.max(insets.bottom, 24) }}
+				containerStyle={{ paddingBottom: insets.bottom }}
 			/>
 		</SafeAreaView>
 	);
