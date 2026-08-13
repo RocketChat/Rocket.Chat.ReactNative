@@ -14,33 +14,34 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
-	const successBatch: Model[] = [];
-	const messageRecord = await msgCollection.find(id);
-	successBatch.push(
-		messageRecord.prepareUpdate(m => {
-			m.status = status;
-			if (message) {
-				m.mentions = message.mentions;
-				m.channels = message.channels;
-			}
-		})
-	);
-
-	if (tmid) {
-		const threadMessageRecord = await threadMessagesCollection.find(id);
-		successBatch.push(
-			threadMessageRecord.prepareUpdate(tm => {
-				tm.status = status;
-				if (message) {
-					tm.mentions = message.mentions;
-					tm.channels = message.channels;
-				}
-			})
-		);
-	}
 
 	try {
 		await db.write(async () => {
+			const successBatch: Model[] = [];
+			const messageRecord = await msgCollection.find(id);
+			successBatch.push(
+				messageRecord.prepareUpdate(m => {
+					m.status = status;
+					if (message) {
+						m.mentions = message.mentions;
+						m.channels = message.channels;
+					}
+				})
+			);
+
+			if (tmid) {
+				const threadMessageRecord = await threadMessagesCollection.find(id);
+				successBatch.push(
+					threadMessageRecord.prepareUpdate(tm => {
+						tm.status = status;
+						if (message) {
+							tm.mentions = message.mentions;
+							tm.channels = message.channels;
+						}
+					})
+				);
+			}
+
 			await db.batch(successBatch);
 		});
 	} catch (error) {
@@ -99,7 +100,6 @@ export async function sendMessage(
 		const threadCollection = db.get('threads');
 		const threadMessagesCollection = db.get('thread_messages');
 		const messageId = random(17);
-		const batch: Model[] = [];
 
 		const message = await Encryption.encryptMessage({
 			_id: messageId,
@@ -110,120 +110,122 @@ export async function sendMessage(
 		} as IMessage);
 
 		const messageDate = new Date();
-		let tMessageRecord: TMessageModel;
 
-		// If it's replying to a thread
-		if (tmid) {
-			try {
-				// Find thread message header in Messages collection
-				tMessageRecord = await msgCollection.find(tmid);
+		try {
+			await db.write(async () => {
+				const batch: Model[] = [];
+				let tMessageRecord: TMessageModel;
+
+				// If it's replying to a thread
+				if (tmid) {
+					try {
+						// Find thread message header in Messages collection
+						tMessageRecord = await msgCollection.find(tmid);
+						batch.push(
+							tMessageRecord.prepareUpdate(m => {
+								m.tlm = messageDate;
+								if (m.tcount) {
+									m.tcount += 1;
+								}
+							})
+						);
+
+						try {
+							// Find thread message header in Threads collection
+							await threadCollection.find(tmid);
+						} catch (error) {
+							// If there's no record, create one
+							batch.push(
+								threadCollection.prepareCreate(tm => {
+									tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
+									if (tm.subscription) {
+										tm.subscription.id = rid;
+									}
+									tm.tmid = tmid;
+									tm.msg = tMessageRecord.msg;
+									tm.ts = tMessageRecord.ts;
+									tm._updatedAt = messageDate;
+									tm.status = messagesStatus.SENT; // Original message was sent already
+									tm.u = tMessageRecord.u;
+									tm.t = message?.t as MessageType;
+									tm.attachments = tMessageRecord.attachments;
+									if (message?.t === E2E_MESSAGE_TYPE) {
+										tm.e2e = E2E_STATUS.DONE as E2EType;
+									}
+								})
+							);
+						}
+
+						// Create the message sent in ThreadMessages collection
+						batch.push(
+							threadMessagesCollection.prepareCreate(tm => {
+								tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
+								if (tm.subscription) {
+									tm.subscription.id = rid;
+								}
+								tm.rid = tmid;
+								tm.msg = msg;
+								tm.ts = messageDate;
+								tm._updatedAt = messageDate;
+								tm.status = messagesStatus.TEMP;
+								tm.u = {
+									_id: user.id || '1',
+									username: user.username,
+									name: user.name
+								};
+								tm.t = message?.t as MessageType;
+								if (message?.t === E2E_MESSAGE_TYPE) {
+									tm.e2e = E2E_STATUS.DONE as E2EType;
+								}
+							})
+						);
+					} catch (e) {
+						log(e);
+					}
+				}
+
+				// Create the message sent in Messages collection
 				batch.push(
-					tMessageRecord.prepareUpdate(m => {
-						m.tlm = messageDate;
-						if (m.tcount) {
-							m.tcount += 1;
+					msgCollection.prepareCreate(m => {
+						m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
+						if (m.subscription) {
+							m.subscription.id = rid;
+						}
+						m.msg = msg;
+						m.ts = messageDate;
+						m._updatedAt = messageDate;
+						m.status = messagesStatus.TEMP;
+						m.u = {
+							_id: user.id || '1',
+							username: user.username,
+							name: user.name
+						};
+						if (tmid && tMessageRecord) {
+							m.tmid = tmid;
+							// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...
+							m.tmsg = tMessageRecord.msg;
+							m.tshow = tshow;
+						}
+						m.t = message?.t as MessageType;
+						if (message?.t === E2E_MESSAGE_TYPE) {
+							m.e2e = E2E_STATUS.DONE as E2EType;
 						}
 					})
 				);
 
 				try {
-					// Find thread message header in Threads collection
-					await threadCollection.find(tmid);
-				} catch (error) {
-					// If there's no record, create one
-					batch.push(
-						threadCollection.prepareCreate(tm => {
-							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
-							if (tm.subscription) {
-								tm.subscription.id = rid;
-							}
-							tm.tmid = tmid;
-							tm.msg = tMessageRecord.msg;
-							tm.ts = tMessageRecord.ts;
-							tm._updatedAt = messageDate;
-							tm.status = messagesStatus.SENT; // Original message was sent already
-							tm.u = tMessageRecord.u;
-							tm.t = message?.t as MessageType;
-							tm.attachments = tMessageRecord.attachments;
-							if (message?.t === E2E_MESSAGE_TYPE) {
-								tm.e2e = E2E_STATUS.DONE as E2EType;
-							}
-						})
-					);
+					const room = await subsCollection.find(rid);
+					if (room.draftMessage) {
+						batch.push(
+							room.prepareUpdate(r => {
+								r.draftMessage = null;
+							})
+						);
+					}
+				} catch (e) {
+					// Do nothing
 				}
 
-				// Create the message sent in ThreadMessages collection
-				batch.push(
-					threadMessagesCollection.prepareCreate(tm => {
-						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
-						if (tm.subscription) {
-							tm.subscription.id = rid;
-						}
-						tm.rid = tmid;
-						tm.msg = msg;
-						tm.ts = messageDate;
-						tm._updatedAt = messageDate;
-						tm.status = messagesStatus.TEMP;
-						tm.u = {
-							_id: user.id || '1',
-							username: user.username,
-							name: user.name
-						};
-						tm.t = message?.t as MessageType;
-						if (message?.t === E2E_MESSAGE_TYPE) {
-							tm.e2e = E2E_STATUS.DONE as E2EType;
-						}
-					})
-				);
-			} catch (e) {
-				log(e);
-			}
-		}
-
-		// Create the message sent in Messages collection
-		batch.push(
-			msgCollection.prepareCreate(m => {
-				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
-				if (m.subscription) {
-					m.subscription.id = rid;
-				}
-				m.msg = msg;
-				m.ts = messageDate;
-				m._updatedAt = messageDate;
-				m.status = messagesStatus.TEMP;
-				m.u = {
-					_id: user.id || '1',
-					username: user.username,
-					name: user.name
-				};
-				if (tmid && tMessageRecord) {
-					m.tmid = tmid;
-					// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...
-					m.tmsg = tMessageRecord.msg;
-					m.tshow = tshow;
-				}
-				m.t = message?.t as MessageType;
-				if (message?.t === E2E_MESSAGE_TYPE) {
-					m.e2e = E2E_STATUS.DONE as E2EType;
-				}
-			})
-		);
-
-		try {
-			const room = await subsCollection.find(rid);
-			if (room.draftMessage) {
-				batch.push(
-					room.prepareUpdate(r => {
-						r.draftMessage = null;
-					})
-				);
-			}
-		} catch (e) {
-			// Do nothing
-		}
-
-		try {
-			await db.write(async () => {
 				await db.batch(batch);
 			});
 		} catch (e) {
