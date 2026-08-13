@@ -226,57 +226,58 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
-	MediaSignalingSession: jest
-		.fn()
-		.mockImplementation(function MockMediaSignalingSession(this: MockMediaSignalingSession, config: { userId: string }) {
-			const handlers: Record<string, ((payload: unknown) => void)[]> = {};
+	MediaSignalingSession: jest.fn().mockImplementation(function MockMediaSignalingSession(
+		this: MockMediaSignalingSession,
+		config: { userId: string }
+	) {
+		const handlers: Record<string, ((payload: unknown) => void)[]> = {};
 
-			this.userId = config.userId;
-			this.endSession = jest.fn();
+		this.userId = config.userId;
+		this.endSession = jest.fn();
 
-			this.on = jest.fn().mockImplementation((event: string, handler: (payload: unknown) => void) => {
-				if (!handlers[event]) handlers[event] = [];
-				handlers[event].push(handler);
-			});
+		this.on = jest.fn().mockImplementation((event: string, handler: (payload: unknown) => void) => {
+			if (!handlers[event]) handlers[event] = [];
+			handlers[event].push(handler);
+		});
 
-			this.emit = (event: string, payload: unknown) => {
-				handlers[event]?.forEach(h => h(payload));
-			};
+		this.emit = (event: string, payload: unknown) => {
+			handlers[event]?.forEach(h => h(payload));
+		};
 
-			this.processSignal = jest.fn().mockResolvedValue(undefined);
-			this.setIceGatheringTimeout = jest.fn();
+		this.processSignal = jest.fn().mockResolvedValue(undefined);
+		this.setIceGatheringTimeout = jest.fn();
 
-			// Integration seam: startCall fires 'newCall' with a synthetic outgoing call.
-			// eslint-disable-next-line @typescript-eslint/no-this-alias
-			const self = this;
-			this.startCall = jest.fn().mockImplementation((_actor: string, userId: string) => {
-				const call: IClientMediaCall = {
-					callId: `call-${userId}`,
-					hidden: false,
-					state: 'ringing',
-					localParticipant: {
-						local: true,
-						role: 'caller',
-						muted: false,
-						held: false,
-						contact: {},
-						setMuted: jest.fn(),
-						setHeld: jest.fn()
-					},
-					remoteParticipants: [{ local: false, role: 'callee', muted: false, held: false, contact: {} }],
-					reject: jest.fn(),
-					hangup: jest.fn(),
-					sendDTMF: jest.fn(),
-					emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
-				} as unknown as IClientMediaCall;
-				self.emit('newCall', { call });
-				return Promise.resolve();
-			});
+		// Integration seam: startCall fires 'newCall' with a synthetic outgoing call.
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		const self = this;
+		this.startCall = jest.fn().mockImplementation((_actor: string, userId: string) => {
+			const call: IClientMediaCall = {
+				callId: `call-${userId}`,
+				hidden: false,
+				state: 'ringing',
+				localParticipant: {
+					local: true,
+					role: 'caller',
+					muted: false,
+					held: false,
+					contact: {},
+					setMuted: jest.fn(),
+					setHeld: jest.fn()
+				},
+				remoteParticipants: [{ local: false, role: 'callee', muted: false, held: false, contact: {} }],
+				reject: jest.fn(),
+				hangup: jest.fn(),
+				sendDTMF: jest.fn(),
+				emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
+			} as unknown as IClientMediaCall;
+			self.emit('newCall', { call });
+			return Promise.resolve();
+		});
 
-			this.getCallData = jest.fn();
-			Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
-			createdSessions.push(this);
-		})
+		this.getCallData = jest.fn();
+		Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
+		createdSessions.push(this);
+	})
 }));
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

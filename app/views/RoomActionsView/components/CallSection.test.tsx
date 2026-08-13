@@ -76,7 +76,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionMo
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as TSubscriptionModel);
+	}) as TSubscriptionModel;
 
 describe('CallSection', () => {
 	beforeEach(() => {
