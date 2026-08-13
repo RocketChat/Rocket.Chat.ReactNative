@@ -115,7 +115,7 @@ const Touch = forwardRef<View, ITouchProps>(
 				componentRef={componentRef as RefObject<View>}
 				onPress={onPress}
 				onLongPress={useResponder ? undefined : onLongPress}
-				accessible={accessible}
+				accessible={process.env.RUNNING_E2E_TESTS === 'true' ? false : accessible}
 				accessibilityRole={props.accessibilityRole}
 				accessibilityLabel={accessibilityLabel}
 				accessibilityHint={accessibilityHint}
