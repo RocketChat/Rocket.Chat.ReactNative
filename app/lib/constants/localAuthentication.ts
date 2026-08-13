@@ -3,9 +3,7 @@ export const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
 export const ATTEMPTS_KEY = 'kAttempts';
 export const BIOMETRY_ENABLED_KEY = 'kBiometryEnabled';
 export const BIOMETRIC_TRUST_MIGRATION_V1_DONE = 'kBiometricTrustMigrationV1Done';
-// Set when a biometric enrollment change is reconciled away by the init migration (which runs before
-// localAuthenticate and would otherwise consume the signal). Forces the next unlock to demand the
-// passcode regardless of the auto-lock window; cleared once that forced passcode modal is shown.
+// Set when the init migration consumes an enrollment change; forces a passcode on the next unlock.
 export const BIOMETRIC_PENDING_RELOCK_KEY = 'kBiometricPendingRelock';
 
 // Keychain sentinel used by the biometric trust store to detect enrollment changes.
@@ -22,6 +20,5 @@ export const TIME_TO_LOCK = 30000;
 
 export const DEFAULT_AUTO_LOCK = 1800;
 
-// During E2E runs we shorten the auto-lock threshold so tests don't have to wait
-// past the smallest user-facing option (60s) to trigger the screen lock.
+// Shortened for E2E so tests don't wait past the smallest user-facing option (60s).
 export const E2E_TESTS_AUTO_LOCK_TIME = 5;

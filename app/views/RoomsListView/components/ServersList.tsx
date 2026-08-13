@@ -91,7 +91,6 @@ const ServersList = () => {
 				try {
 					await localAuthenticate(serverParam);
 				} catch {
-					// Unlock canceled or superseded by another lock request — keep the current server.
 					return;
 				}
 				dispatch(selectServerRequest(serverParam, version, true, true));

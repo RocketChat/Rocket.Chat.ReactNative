@@ -34,9 +34,7 @@ const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 	useEffect(() => {
 		const unlock = async () => {
 			try {
-				// Await the storage clear before flipping status: PasscodeEnter's readStorage re-seeds
-				// the attempts counter from ATTEMPTS_KEY on the status change, so the key must already
-				// be gone or the user would re-lock after a single wrong attempt.
+				// Clear before flipping status, or PasscodeEnter's readStorage re-seeds the old attempts count.
 				await resetAttempts();
 			} catch (e) {
 				log(e);

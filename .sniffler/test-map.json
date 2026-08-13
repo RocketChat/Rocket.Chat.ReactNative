@@ -94,7 +94,11 @@
 			"app/views/ChangePasscodeView.tsx",
 			"app/views/SecurityPrivacyView.tsx",
 			"app/containers/Passcode/**",
-			"app/lib/methods/helpers/localAuthentication.ts"
+			"app/lib/methods/helpers/localAuthentication.ts",
+			"app/lib/biometricTrustStore/**",
+			"app/lib/native/NativeBiometricEnrollment.ts",
+			"app/definitions/IBiometricTrustStore.ts",
+			"android/app/src/main/java/chat/rocket/reactnative/biometric/**"
 		]
 	},
 	{

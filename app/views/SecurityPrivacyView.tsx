@@ -62,7 +62,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 			try {
 				await handleLocalAuthentication(true);
 			} catch {
-				// User dismissed the unlock modal — stay on this screen.
 				return;
 			}
 		}

@@ -50,10 +50,9 @@ const restore = function* restore() {
 			try {
 				yield localAuthenticate(server);
 			} catch (e) {
-				// A concurrent unlock (cold-boot deep-link/push race) superseded this one. The newer
-				// modal will gate the screen — keep booting instead of ejecting to the login screen.
+				// A superseded unlock still has a newer modal gating the screen, so keep booting.
 				if (!(e instanceof UserCanceledError)) {
-					throw e; // real failure → outer catch → ROOT_OUTSIDE
+					throw e;
 				}
 			}
 			const serverRecord = yield getServerById(server);

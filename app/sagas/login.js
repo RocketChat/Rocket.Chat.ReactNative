@@ -92,8 +92,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			try {
 				yield localAuthenticate(server);
 			} catch (e) {
-				// Login already succeeded; a concurrent unlock superseded this gate. Proceed to
-				// loginSuccess instead of falling through to loginFailure. Real errors still propagate.
+				// Login already succeeded, so a superseded unlock shouldn't fall through to loginFailure.
 				if (!(e instanceof UserCanceledError)) {
 					throw e;
 				}

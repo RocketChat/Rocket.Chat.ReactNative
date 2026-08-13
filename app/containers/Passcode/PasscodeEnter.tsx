@@ -26,9 +26,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	const attempts = useRef(0);
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
-	// Mirror hasBiometry/reason locally so an enrollment-change invalidation triggered from the
-	// biometry button immediately hides the button within the same modal session, without
-	// re-emitting LOCAL_AUTHENTICATE_EMITTER (which would orphan the upstream openModal promise).
+	// Mirrored locally so an invalidation hides the biometry button within the same modal session.
 	const [hasBiometry, setHasBiometry] = useState<boolean>(initialHasBiometry);
 	const [reason, setReason] = useState<BiometricInvalidationReason | undefined>(initialReason);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
@@ -50,9 +48,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	};
 
 	const readStorage = async () => {
-		// Seed the counter from storage: a remount mid-session must not grant a fresh attempt
-		// budget, and a lockout expiry (Locked awaits resetAttempts(), clearing the key, before
-		// flipping status back to ENTER) must land here as 0.
+		// Seed from storage so a remount mid-session doesn't grant a fresh attempt budget.
 		const storedAttempts = await getAttempts();
 		attempts.current = storedAttempts ? parseInt(storedAttempts, 10) : 0;
 		const lockedUntil = await getLockedUntil();
@@ -68,8 +64,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 		} else {
 			setStatus(TYPE.ENTER);
 		}
-		// Auto-prompt biometry from behind this modal so the app content stays covered during the OS
-		// prompt. biometry() no-ops unless hasBiometry and status === ENTER.
+		// Auto-prompt from behind this modal so app content stays covered during the OS prompt.
 		biometry();
 	};
 

@@ -156,8 +156,6 @@ const handleShareExtension = function* handleOpen({ params }) {
 	try {
 		yield localAuthenticate(server);
 	} catch {
-		// Unlock canceled or superseded by another lock request — restart the normal flow instead
-		// of leaving the share extension stuck on the loading root.
 		yield put(appInit());
 		return;
 	}
@@ -213,7 +211,6 @@ const handleOpen = function* handleOpen({ params }) {
 			try {
 				yield localAuthenticate(host);
 			} catch {
-				// Unlock canceled or superseded by another lock request — drop the deep link.
 				return;
 			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
@@ -231,7 +228,6 @@ const handleOpen = function* handleOpen({ params }) {
 				return;
 			}
 		} catch {
-			// Unlock canceled or superseded by another lock request — drop the deep link.
 			return;
 		}
 		// if deep link is from a different server
@@ -329,7 +325,6 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			try {
 				yield localAuthenticate(host);
 			} catch {
-				// Unlock canceled or superseded by another lock request — drop the call navigation.
 				return;
 			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
@@ -341,7 +336,6 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			try {
 				yield localAuthenticate(host);
 			} catch {
-				// Unlock canceled or superseded by another lock request — drop the call navigation.
 				return;
 			}
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
