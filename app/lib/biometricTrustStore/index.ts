@@ -2,6 +2,7 @@ import * as Keychain from 'react-native-keychain';
 
 import { type BiometricPromptCopy, type IBiometricTrustStore, type TrustResult } from '../../definitions';
 import UserPreferences from '../methods/userPreferences';
+import { isAndroid } from '../methods/helpers/deviceInfo';
 import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
 import {
 	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
@@ -12,10 +13,8 @@ import {
 	BIOMETRY_ENABLED_KEY
 } from '../constants/localAuthentication';
 
-// BIOMETRY_CURRENT_SET binds the item to the *current* biometric enrollment on both platforms; iOS
-// invalidates the keychain entry when the enrollment set changes (errSecItemNotFound on read), and
-// Android raises KeyPermanentlyInvalidatedException. That invalidation signal is the security
-// primitive this whole module exists for.
+// BIOMETRY_CURRENT_SET binds the item to the current enrollment, which is the invalidation signal this
+// module is built on.
 const writeOptions = (): Keychain.SetOptions => ({
 	service: SENTINEL_SERVICE,
 	accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
@@ -30,10 +29,15 @@ const readOptions = (promptCopy: BiometricPromptCopy): Keychain.GetOptions => ({
 	}
 });
 
-// errSecUserCancel — biometric prompt dismissed by the user.
-// errSecItemNotFound (-25300) when raised *after* the OS prompt indicates the keychain item was
-// invalidated by an enrollment change on iOS.
-// KeyPermanentlyInvalidatedException is the Android signal for the same condition.
+// Android silently falls back to a non-authenticated storage when no strong (Class 3) biometric is
+// enrolled; iOS reports 'keychain' and has no such fallback.
+const AUTH_BACKED_ANDROID_STORAGES: string[] = [Keychain.STORAGE_TYPE.AES_GCM, Keychain.STORAGE_TYPE.RSA];
+
+const isAuthBackedStorage = (storage: string | undefined): boolean =>
+	!isAndroid || (storage != null && AUTH_BACKED_ANDROID_STORAGES.includes(storage));
+
+// -128/errSecUserCancel = dismissed; -25300/errSecItemNotFound (iOS) and
+// KeyPermanentlyInvalidatedException (Android) = enrollment changed.
 export const classifyError = (e: unknown): TrustResult => {
 	const err = e as { code?: string | number; name?: string; message?: string } | null | undefined;
 	const code = err?.code != null ? String(err.code) : '';
@@ -41,9 +45,8 @@ export const classifyError = (e: unknown): TrustResult => {
 	const message = err?.message ?? '';
 	const blob = `${code} ${name} ${message}`;
 
-	// Numeric OSStatus values are matched against the code only — testing them against the whole blob
-	// would misclassify any unrelated failure that happens to mention the number in its message. That
-	// matters most for -25300, whose branch drives invalidate() and would silently disable biometry.
+	// OSStatus numbers are matched on the code only: a message that merely mentions -25300 must not
+	// reach the invalidate() branch.
 	if (code === '-128' || /errSecUserCancel|UserCancel|user.?cancel|AuthenticationCanceled/i.test(blob)) {
 		return { kind: 'canceled' };
 	}
@@ -59,15 +62,20 @@ export const classifyError = (e: unknown): TrustResult => {
 export const biometricTrustStore: IBiometricTrustStore = {
 	async enroll() {
 		try {
-			await Keychain.setGenericPassword(SENTINEL_USERNAME, SENTINEL_VALUE, writeOptions());
-			// Writing the sentinel means this install is trust-initialized, so persist the migration
-			// marker. Without it, an app-driven enroll (settings toggle or first-passcode setup) leaves
-			// migrated=false; a later enrollment-change invalidation (flag set, sentinel gone) would then
-			// hit the migration's grandfather path and be silently re-bound to the new biometrics on the
-			// next launch instead of forcing the user to re-enable. See runBiometricTrustMigration.
+			const written = await Keychain.setGenericPassword(SENTINEL_USERNAME, SENTINEL_VALUE, writeOptions());
+			if (!written) {
+				return { kind: 'unavailable' };
+			}
+			// A sentinel in a non-authenticated storage detects no enrollment change, so it is not a
+			// success. Tear it down before the migration marker is set.
+			if (!isAuthBackedStorage(written.storage)) {
+				await biometricTrustStore.disenroll();
+				return { kind: 'unavailable' };
+			}
+			// Marks the install trust-initialized so a later invalidation can't fall into the migration's
+			// grandfather path and be silently re-bound. See runBiometricTrustMigration.
 			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
-			// Bind the Android native probe key to the current enrollment in lockstep with the sentinel.
-			// No-op on iOS (the sentinel alone detects changes there). Best effort — see nativeEnrollmentProbe.
+			// Binds the Android probe key in lockstep with the sentinel. Best effort; no-op on iOS.
 			await enrollProbe();
 			return { kind: 'success' };
 		} catch (e) {
@@ -81,7 +89,6 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		} catch {
 			// best-effort delete; sentinel may already be absent
 		}
-		// Tear down the Android native probe key alongside the sentinel. No-op on iOS.
 		await disenrollProbe();
 	},
 
@@ -107,9 +114,8 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		return !!result;
 	},
 
+	// Android: silent keystore cipher.init() probe. iOS: always true, the sentinel covers it.
 	isEnrollmentValid() {
-		// iOS: nativeEnrollmentProbe resolves true (the sentinel already covers enrollment changes).
-		// Android: silent keystore cipher.init() probe — false only when the enrollment changed.
 		return isEnrollmentValid();
 	},
 

@@ -3,11 +3,26 @@ import * as Keychain from 'react-native-keychain';
 import { biometricTrustStore, classifyError } from './index';
 import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
 import UserPreferences from '../methods/userPreferences';
-import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
+import {
+	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
+	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE
+} from '../constants/localAuthentication';
 
 jest.mock('../methods/userPreferences', () => ({
 	__esModule: true,
 	default: { getBool: jest.fn(), setBool: jest.fn(), getString: jest.fn(), setString: jest.fn() }
+}));
+
+// Getter, not a literal: the storage downgrade guard is Android-only, and the platform has to be
+// switchable per test.
+let mockIsAndroid = false;
+jest.mock('../methods/helpers/deviceInfo', () => ({
+	get isAndroid() {
+		return mockIsAndroid;
+	},
+	get isIOS() {
+		return !mockIsAndroid;
+	}
 }));
 
 jest.mock('./nativeEnrollmentProbe', () => ({
@@ -106,6 +121,51 @@ describe('biometricTrustStore', () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
 			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'canceled' });
 			expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+		});
+
+		it('reports unavailable when the write resolves false', async () => {
+			mockedKeychain.setGenericPassword.mockResolvedValueOnce(false as any);
+
+			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'unavailable' });
+			expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+			expect(mockedEnrollProbe).not.toHaveBeenCalled();
+		});
+
+		// Android with no strong biometric: react-native-keychain writes to a non-authenticated storage
+		// instead of failing, producing a sentinel that can never detect an enrollment change.
+		describe('Android storage downgrade', () => {
+			beforeEach(() => {
+				mockIsAndroid = true;
+			});
+			afterEach(() => {
+				mockIsAndroid = false;
+			});
+
+			it.each([Keychain.STORAGE_TYPE.AES_CBC, Keychain.STORAGE_TYPE.AES_GCM_NO_AUTH])(
+				'rejects a sentinel written to %s and tears it back down',
+				async storage => {
+					mockedKeychain.setGenericPassword.mockResolvedValueOnce({ service: SENTINEL_SERVICE, storage } as any);
+
+					expect(await biometricTrustStore.enroll()).toEqual({ kind: 'unavailable' });
+					expect(mockedKeychain.resetGenericPassword).toHaveBeenCalledTimes(1);
+					expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+					expect(mockedEnrollProbe).not.toHaveBeenCalled();
+				}
+			);
+
+			it.each([Keychain.STORAGE_TYPE.AES_GCM, Keychain.STORAGE_TYPE.RSA])('accepts an auth-backed %s sentinel', async storage => {
+				mockedKeychain.setGenericPassword.mockResolvedValueOnce({ service: SENTINEL_SERVICE, storage } as any);
+
+				expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
+				expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+				expect(mockedEnrollProbe).toHaveBeenCalledTimes(1);
+			});
+		});
+
+		it("accepts iOS's 'keychain' storage, which has no downgrade fallback", async () => {
+			mockedKeychain.setGenericPassword.mockResolvedValueOnce({ service: SENTINEL_SERVICE, storage: 'keychain' } as any);
+
+			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
 		});
 	});
 

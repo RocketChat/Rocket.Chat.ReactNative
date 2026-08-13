@@ -333,6 +333,12 @@ jest.mock('react-native-keychain', () => ({
 	ACCESS_CONTROL: { BIOMETRY_CURRENT_SET: 'BiometryCurrentSet' },
 	ACCESSIBLE: { WHEN_UNLOCKED_THIS_DEVICE_ONLY: 'AccessibleWhenUnlockedThisDeviceOnly' },
 	AUTHENTICATION_TYPE: { BIOMETRICS: 'Biometrics' },
+	STORAGE_TYPE: {
+		AES_CBC: 'KeystoreAESCBC',
+		AES_GCM_NO_AUTH: 'KeystoreAESGCM_NoAuth',
+		AES_GCM: 'KeystoreAESGCM',
+		RSA: 'KeystoreRSAECB'
+	},
 	setGenericPassword: jest.fn(() => Promise.resolve(true)),
 	getGenericPassword: jest.fn(() => Promise.resolve(false)),
 	resetGenericPassword: jest.fn(() => Promise.resolve(true)),

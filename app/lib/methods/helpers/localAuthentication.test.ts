@@ -17,8 +17,10 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 jest.mock('expo-local-authentication', () => ({
 	authenticateAsync: jest.fn(),
 	isEnrolledAsync: jest.fn(() => Promise.resolve(true)),
+	getEnrolledLevelAsync: jest.fn(() => Promise.resolve(3)),
 	supportedAuthenticationTypesAsync: jest.fn(() => Promise.resolve([2])),
-	AuthenticationType: { FINGERPRINT: 1, FACIAL_RECOGNITION: 2, IRIS: 3 }
+	AuthenticationType: { FINGERPRINT: 1, FACIAL_RECOGNITION: 2, IRIS: 3 },
+	SecurityLevel: { NONE: 0, SECRET: 1, BIOMETRIC_WEAK: 2, BIOMETRIC_STRONG: 3 }
 }));
 
 jest.mock('react-native-bootsplash', () => ({ hide: jest.fn(() => Promise.resolve()) }));
@@ -340,11 +342,25 @@ describe('checkHasPasscode → biometry consent on first passcode', () => {
 		// localAuthenticate block above (otherwise checkHasPasscode early-returns and never enrolls).
 		mockedGetString.mockReturnValue(undefined);
 		(LocalAuthentication.isEnrolledAsync as jest.Mock).mockResolvedValue(true);
+		(LocalAuthentication.getEnrolledLevelAsync as jest.Mock).mockResolvedValue(3);
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === CHANGE_PASSCODE_EMITTER && payload?.submit) {
 				setImmediate(() => payload.submit('1234'));
 			}
 		});
+	});
+
+	// Class 2 face unlock passes isEnrolledAsync but the keystore can't bind a user-auth key to it, so
+	// enrolling would only produce a sentinel we'd immediately have to revoke.
+	it('weak-only biometry → never enrolls, never prompts, biometry left disabled', async () => {
+		(LocalAuthentication.getEnrolledLevelAsync as jest.Mock).mockResolvedValue(2);
+
+		await checkHasPasscode({});
+
+		expect(mockedEnroll).not.toHaveBeenCalled();
+		expect(mockedVerify).not.toHaveBeenCalled();
+		expect(LocalAuthentication.authenticateAsync).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 	});
 
 	it('enroll succeeds and user consents → prompts once, biometry enabled, no disenroll', async () => {

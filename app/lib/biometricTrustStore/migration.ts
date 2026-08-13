@@ -3,21 +3,8 @@ import log from '../methods/helpers/log';
 import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
 import { biometricTrustStore } from './index';
 
-// One-shot upgrade migration for users who had biometry enabled before the trust-store sentinel
-// existed. Runs at app init.
-//
-// State machine:
-//   !migrated && flag && !sentinel → force relock, then enroll().  (grandfather upgrade path)
-//    migrated && flag && !sentinel → clear flag, force relock, do NOT enroll().  (reconciliation, e.g.
-//                                                                      a crash between disenroll() and
-//                                                                      the flag-clear during an
-//                                                                      invalidation)
-//    flag && sentinel               → no-op.
-//   !flag                           → no-op.
-//
-// On enroll() failure the marker is intentionally left unset so the next boot retries; the flag is
-// left as-is so the next unlock falls into the `unavailable` branch and asks for the passcode. The
-// relock marker armed up front is left set — it is self-clearing on the next forced unlock.
+// One-shot upgrade for users who had biometry enabled before the sentinel existed. Runs at app init.
+// Truth table and rationale in docs/ARCHITECTURE.md.
 export const runBiometricTrustMigration = async (): Promise<void> => {
 	try {
 		const biometryEnabled = biometricTrustStore.isEnabled();
@@ -42,11 +29,8 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 			return;
 		}
 
-		// migrated && flag && !sentinel: the OS dropped the sentinel because the enrollment set changed
-		// (or a deliberate disable crashed mid-way). Clear the flag — and because this migration runs
-		// *before* localAuthenticate on cold launch, it would otherwise swallow the enrollment-change
-		// signal entirely. Persist a relock marker so the next unlock is forced to demand the passcode
-		// regardless of the auto-lock window. See handleLocalAuthentication.
+		// Sentinel gone with the marker set means the enrollment changed. This runs before
+		// localAuthenticate, so persist the signal rather than swallowing it.
 		biometricTrustStore.setEnabled(false);
 		biometricTrustStore.setRelockPending(true);
 	} catch (e) {

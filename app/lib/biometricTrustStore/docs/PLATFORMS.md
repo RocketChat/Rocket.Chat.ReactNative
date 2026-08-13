@@ -48,6 +48,13 @@ Because the Android sentinel **survives** an enrollment change (the key is inval
 
 On **iOS** there is no native counterpart: `enrollProbe`/`disenrollProbe` are no-ops and `isEnrollmentValid()` resolves `true`, because the sentinel deletion already covers enrollment changes for free.
 
+### Weak (Class 2) biometrics
+
+The keystore only binds a user-auth key to a **strong (Class 3)** biometric, so a device whose only enrollment is Class 2 (much mid-range Android face unlock) can hold no real sentinel. Two places have to know this, because neither fails loudly on its own:
+
+- **`hasSupportedBiometry()`** (`localAuthentication.ts`) requires `getEnrolledLevelAsync() === BIOMETRIC_STRONG`. `isEnrolledAsync()` alone is a `BIOMETRIC_WEAK` query — it resolves `true` on a Class 2 device, which would offer an opt-in that has to be revoked moments later. `checkBiometry` gates on this before writing anything. (iOS reports any biometry as `BIOMETRIC_STRONG`; the Swift module hardcodes `case biometric = 3`, so this is an Android-only narrowing.)
+- **`enroll()`** (`index.ts`) rejects a sentinel that landed in a non-authenticated cipher storage. Asking for `BIOMETRY_CURRENT_SET` does **not** guarantee one: `getCipherStorageForCurrentAPILevel` ANDs the requested access control with `isStrongBiometricAuthAvailable`, and on a Class 2 device skips every auth-backed storage and falls back to a plain one. The write then *succeeds* — leaving a sentinel with no user-auth requirement and no enrollment binding, which `hasEnrollment()` would happily report as trust. `enroll()` therefore checks the returned `storage` against `KeystoreAESGCM`/`KeystoreRSAECB`, tears the entry down, and returns `unavailable` before the migration marker is set.
+
 ### Why the sentinel read can't prove presence
 
 On iOS a successful `verify()` proves two things at once: the enrollment is unchanged **and** a live user just authenticated. On Android it only proves the first, so `biometryAuth` (in `localAuthentication.ts`) does **not** use `verify()` there.

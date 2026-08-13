@@ -56,8 +56,7 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-// Typed rejection reason for the modal promises so catch blocks can tell a benign user-cancel
-// (or a request superseded by a newer one) apart from a real failure like a storage write throwing.
+// Lets catch blocks tell a benign cancel/supersede apart from a real failure.
 export class UserCanceledError extends Error {
 	constructor() {
 		super('User canceled local authentication');
@@ -138,14 +137,33 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	}
 };
 
+// Class 3 only: isEnrolledAsync() is a BIOMETRIC_WEAK query on Android, and the keystore won't bind a
+// user-auth key to a weak biometric. iOS reports any biometry as strong.
+const hasSupportedBiometry = async (): Promise<boolean> => {
+	try {
+		if (!(await LocalAuthentication.isEnrolledAsync())) {
+			return false;
+		}
+		const level = await LocalAuthentication.getEnrolledLevelAsync();
+		return level === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG;
+	} catch {
+		return false;
+	}
+};
+
 /*
  * It'll help us to get the permission to use FaceID
  * and enable/disable the biometry when user put their first passcode
  */
 const checkBiometry = async () => {
-	// Writing the sentinel is silent on both platforms, so it can't double as consent. Enroll, then
-	// prompt once to ask the user to opt in to biometric unlock — tapping "Don't activate" (the cancel
-	// label from buildPromptCopy(true)) opts out, and we tear the sentinel back down.
+	// Without a strong biometric enroll() can only produce a downgraded sentinel, so don't offer the
+	// opt-in at all rather than offering and revoking it.
+	if (!(await hasSupportedBiometry())) {
+		biometricTrustStore.setEnabled(false);
+		return false;
+	}
+
+	// The sentinel write is silent, so it can't double as consent: enroll, then prompt once to opt in.
 	const enrollResult = await biometricTrustStore.enroll();
 	if (enrollResult.kind !== 'success') {
 		biometricTrustStore.setEnabled(false);
@@ -180,68 +198,39 @@ const hideSplashScreen = async () => {
 	}
 };
 
-const hasSupportedBiometry = async (): Promise<boolean> => {
-	try {
-		return await LocalAuthentication.isEnrolledAsync();
-	} catch {
-		return false;
-	}
-};
-
-// Non-prompting detection of a biometric enrollment change. This is the security primitive that lets
-// an enrollment change FORCE the passcode even inside the auto-lock window: without it, re-enrolling a
-// face/fingerprint and returning before the window elapses would keep the session unlocked — the very
-// bypass screen lock exists to prevent.
-//
-// Two platform signals, neither of which shows an OS prompt:
-//   - iOS: BIOMETRY_CURRENT_SET binds the sentinel to the current enrollment, so the OS drops it when
-//     the enrollment set changes → a missing sentinel means re-enrollment.
-//   - Android: the sentinel survives an enrollment change (the keystore key is only invalidated, not
-//     deleted), so the sentinel check can't see it. A native keystore probe does a silent cipher.init()
-//     that throws only when the enrollment changed; isEnrollmentValid() returns false in that case.
+// Non-prompting. Lets an enrollment change force the passcode even inside the auto-lock window.
 const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 	if (!biometricTrustStore.isEnabled()) {
 		return false;
 	}
-	// Fail closed: a rejecting keychain/probe read forces the passcode rather than leaving the session
-	// unlocked (warm-resume callers only log the throw).
+	// Fail closed: a rejecting read forces the passcode rather than leaving the session unlocked.
 	try {
-		// iOS path: sentinel gone → changed.
+		// iOS: sentinel gone → changed.
 		if (!(await biometricTrustStore.hasEnrollment())) {
 			return true;
 		}
-		// Android path: sentinel present but the native probe key was invalidated → changed. Always valid
-		// on iOS, so this never produces a false positive there.
+		// Android: sentinel survives, so consult the probe key.
 		return !(await biometricTrustStore.isEnrollmentValid());
 	} catch {
 		return true;
 	}
 };
 
-// A biometric enrollment change reaches us two ways:
-//  - warm foreground: the flag is still enabled but the sentinel was dropped → the live check catches it.
-//  - cold launch: the init migration already reconciled the flag off (it runs before us) and left a
-//    relock marker, since it would otherwise have consumed the signal silently.
-// Either signal must force the lock screen, so both lock checks share this predicate.
+// Warm foreground surfaces the change live; cold launch gets it from the marker the init migration
+// left behind. Both must force the lock screen.
 const isEnrollmentRelockRequired = async (): Promise<boolean> =>
 	(await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
-	// Check the cheap persisted flag first; passcode-only users shouldn't pay the native capability
-	// check on every lock event.
+	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
-	// Surface an enrollment change explicitly (see isEnrollmentRelockRequired): tear down any remaining
-	// trust state and force the lock screen instead of unlocking.
 	const enrollmentChanged = await isEnrollmentRelockRequired();
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
-			// invalidate() arms the relock debt AND tears down trust (disenroll → clear flag) in the
-			// security-critical order — see its contract.
 			await biometricTrustStore.invalidate();
 		} else {
-			// Cold launch: the migration already cleared the flag and armed the marker. Re-affirm it so
-			// the clear below is balanced regardless of which path armed the debt.
+			// Migration already cleared the flag; re-affirm the marker so the clear below stays balanced.
 			biometricTrustStore.setRelockPending(true);
 		}
 		await openModal(false, canCloseModal, 'enrollmentChanged');
@@ -251,10 +240,8 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 
 	const hasBiometry = biometryEnabled && (await hasSupportedBiometry());
 
-	// Open the passcode modal first so it covers the app, then let PasscodeEnter prompt biometry from
-	// behind it (its mount-time auto-biometry). Prompting here as an upstream preflight would fire the
-	// OS biometric sheet with the app content still visible underneath, defeating screen lock — so the
-	// verify()/invalidation flow lives in PasscodeEnter's biometry() for both the auto and button paths.
+	// Modal first so it covers the app; PasscodeEnter prompts biometry from behind it. Prompting here
+	// would show the OS sheet over visible app content.
 	await openModal(hasBiometry, canCloseModal);
 	biometricTrustStore.setRelockPending(false);
 };
@@ -278,12 +265,8 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// Check if the app has passcode
 		const result = await checkHasPasscode({});
 
-		// The session timestamp we persist below. Defaults to the `timesync` captured above, but if
-		// the lock modal is shown it's refreshed to the moment authentication actually completes —
-		// the user may sit on the lock screen longer than the auto-lock window, and persisting the
-		// stale pre-modal `timesync` would let the next lock check (e.g. a late localAuthenticate
-		// from the login/connect flow) see a gap >= autoLockTime and immediately re-lock a session
-		// the user just unlocked.
+		// Refreshed after the modal: persisting the stale pre-modal timesync would immediately re-lock a
+		// session the user just unlocked.
 		let authenticatedTimesync = timesync;
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
@@ -294,10 +277,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			// During E2E runs we use a shorter threshold so tests don't have to wait past the smallest user-facing option (60s)
 			const autoLockTime = process.env.RUNNING_E2E_TESTS === 'true' ? E2E_TESTS_AUTO_LOCK_TIME : serverRecord?.autoLockTime;
 
-			// A biometric enrollment change must force the lock screen regardless of how recently the user
-			// authenticated — otherwise re-enrolling a face/fingerprint inside the auto-lock window would
-			// bypass authentication entirely. handleLocalAuthentication re-detects it and shows the passcode
-			// with biometry disabled and the enrollment-changed notice.
+			// Must force the lock screen regardless of how recently the user authenticated.
 			const enrollmentChanged = await isEnrollmentRelockRequired();
 
 			// if it was not possible to get `timesync` from server, the biometric enrollment changed, or the last authenticated session is older than the configured auto lock time, authentication is required
@@ -312,8 +292,6 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 				// set isLocalAuthenticated to true
 				store.dispatch(setLocalAuthenticated(true));
 
-				// Re-read the clock now that the user has authenticated, so the persisted session
-				// reflects the unlock moment rather than when this check started.
 				authenticatedTimesync = await getServerTimeSync(server);
 			}
 		}
