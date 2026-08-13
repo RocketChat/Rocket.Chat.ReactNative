@@ -9,7 +9,7 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	urlObj.searchParams.set('rc_uid', userId);
 	return urlObj.toString();
 }
-// Idempotent encode: the server already sends encoded paths, and a plain encodeURI would turn `%20` into `%2520`.
+
 export const encodeAttachmentUrl = (url: string): string => {
 	try {
 		return new URL(url).toString();

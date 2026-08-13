@@ -59,7 +59,6 @@ const RenderContent = ({
 	}, [navigation]);
 
 	if (attachment.image_url) {
-		// formatAttachmentUrl already encodes the url; encoding again would turn `%20` into `%2520`.
 		const uri = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(uri);
 		return (

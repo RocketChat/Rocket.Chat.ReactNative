@@ -262,7 +262,6 @@ const persistMessage = async (messageId: string, uri: string, encryption: boolea
 		);
 	}
 	if (!batch.length) {
-		// Expected when the attachment has no message row (forwarded, attachment lists); useFile keeps the local uri.
 		console.log('[handleMediaDownload] no message row for attachment, cached uri not persisted');
 		return;
 	}
