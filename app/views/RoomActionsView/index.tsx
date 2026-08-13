@@ -1002,6 +1002,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 									event: this.convertTeamToChannel
 								})
 							}
+							testID='room-actions-convert-to-channel'
 							left={() => <List.Icon name='channel-public' />}
 							showActionIndicator
 						/>
