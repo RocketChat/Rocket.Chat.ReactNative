@@ -148,34 +148,34 @@ export default class RoomSubscription {
 						const msgCollection = db.get('messages');
 						const threadsCollection = db.get('threads');
 						const threadMessagesCollection = db.get('thread_messages');
-						let deleteMessage: TMessageModel;
-						let deleteThread: TThreadModel;
-						let deleteThreadMessage: TThreadMessageModel;
-
-						// Delete message
-						try {
-							const m = await msgCollection.find(_id);
-							deleteMessage = m.prepareDestroyPermanently();
-						} catch (e) {
-							// Do nothing
-						}
-
-						// Delete thread
-						try {
-							const m = await threadsCollection.find(_id);
-							deleteThread = m.prepareDestroyPermanently();
-						} catch (e) {
-							// Do nothing
-						}
-
-						// Delete thread message
-						try {
-							const m = await threadMessagesCollection.find(_id);
-							deleteThreadMessage = m.prepareDestroyPermanently();
-						} catch (e) {
-							// Do nothing
-						}
 						await db.write(async () => {
+							let deleteMessage: TMessageModel | undefined;
+							let deleteThread: TThreadModel | undefined;
+							let deleteThreadMessage: TThreadMessageModel | undefined;
+
+							// Delete message
+							try {
+								const m = await msgCollection.find(_id);
+								deleteMessage = m.prepareDestroyPermanently();
+							} catch (e) {
+								// Do nothing
+							}
+
+							// Delete thread
+							try {
+								const m = await threadsCollection.find(_id);
+								deleteThread = m.prepareDestroyPermanently();
+							} catch (e) {
+								// Do nothing
+							}
+
+							// Delete thread message
+							try {
+								const m = await threadMessagesCollection.find(_id);
+								deleteThreadMessage = m.prepareDestroyPermanently();
+							} catch (e) {
+								// Do nothing
+							}
 							await db.batch(deleteMessage, deleteThread, deleteThreadMessage);
 						});
 					} catch (e) {
