@@ -99,17 +99,6 @@ const mockedSetRelockPending = biometricTrustStore.setRelockPending as jest.Mock
 const mockedInvalidate = biometricTrustStore.invalidate as jest.Mock;
 const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
 
-// invalidate() is the single teardown primitive (see index.ts). Its internal ordering is covered in
-// biometricTrustStore/index.test.ts; here we give the mock a faithful delegating implementation so the
-// behavioral assertions below (disenroll before flag-clear, relock debt armed) still exercise the real
-// sequence the callers depend on.
-const wireInvalidate = () =>
-	mockedInvalidate.mockImplementation(async () => {
-		biometricTrustStore.setRelockPending(true);
-		await biometricTrustStore.disenroll();
-		biometricTrustStore.setEnabled(false);
-	});
-
 const lastEmitPayload = () => {
 	const calls = mockedEmit.mock.calls.filter(([event]) => event === LOCAL_AUTHENTICATE_EMITTER);
 	return calls.length ? calls[calls.length - 1][1] : null;
@@ -130,7 +119,7 @@ describe('handleLocalAuthentication', () => {
 		mockedIsEnrollmentValid.mockResolvedValue(true);
 		mockedIsRelockPending.mockReturnValue(false);
 		mockedDisenroll.mockResolvedValue(undefined);
-		wireInvalidate();
+		mockedInvalidate.mockResolvedValue(undefined);
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.submit) {
 				setImmediate(() => payload.submit());
@@ -164,11 +153,9 @@ describe('handleLocalAuthentication', () => {
 
 		// Modal opens with biometry hidden and the enrollment-changed notice...
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		// ...trust state torn down (disenroll before clearing the flag), no prompt.
-		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
-		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
-		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(1, true);
-		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(2, false);
+		// ...trust state torn down, and the relock debt cleared once the passcode came back.
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(false);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
@@ -180,8 +167,7 @@ describe('handleLocalAuthentication', () => {
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
-		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
@@ -192,8 +178,7 @@ describe('handleLocalAuthentication', () => {
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
-		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
@@ -205,8 +190,7 @@ describe('handleLocalAuthentication', () => {
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
-		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
@@ -218,8 +202,8 @@ describe('handleLocalAuthentication', () => {
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		// Flag already cleared by the migration, so no disenroll here.
-		expect(mockedDisenroll).not.toHaveBeenCalled();
+		// Flag already cleared by the migration, so no teardown here.
+		expect(mockedInvalidate).not.toHaveBeenCalled();
 		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(1, true);
 		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(2, false);
 		expect(mockedVerify).not.toHaveBeenCalled();
@@ -243,7 +227,9 @@ describe('handleLocalAuthentication', () => {
 
 		expect(settled).toBe(false);
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(mockedSetRelockPending).toHaveBeenCalledWith(true);
+		// invalidate() arms the debt (see biometricTrustStore/index.test.ts); what matters here is that
+		// nothing clears it while the modal is still up.
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
 		expect(mockedSetRelockPending).not.toHaveBeenCalledWith(false);
 	});
 
@@ -290,7 +276,7 @@ describe('localAuthenticate', () => {
 		mockedIsRelockPending.mockReturnValue(false);
 		mockedIsEnrolled.mockResolvedValue(true);
 		mockedDisenroll.mockResolvedValue(undefined);
-		wireInvalidate();
+		mockedInvalidate.mockResolvedValue(undefined);
 		mockedGetServerTimeSync.mockResolvedValueOnce(1_000_000).mockResolvedValueOnce(1_000_001);
 		mockedServersGet.mockReturnValue({ find: mockedFindServer });
 		mockedServersWrite.mockImplementation(callback => callback());

@@ -170,12 +170,10 @@ describe('biometricTrustStore', () => {
 
 		it('still clears the flag when disenroll rejects (best-effort teardown must complete)', async () => {
 			jest.spyOn(biometricTrustStore, 'setRelockPending').mockImplementation(() => {});
-			// disenroll() itself swallows keychain errors, but guard the contract: a rejecting disenroll must
-			// not skip setEnabled(false).
-			jest.spyOn(biometricTrustStore, 'disenroll').mockResolvedValueOnce();
+			jest.spyOn(biometricTrustStore, 'disenroll').mockRejectedValueOnce(new Error('boom'));
 			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
 
-			await biometricTrustStore.invalidate();
+			await expect(biometricTrustStore.invalidate()).rejects.toThrow('boom');
 
 			expect(setEnabled).toHaveBeenCalledWith(false);
 			jest.restoreAllMocks();

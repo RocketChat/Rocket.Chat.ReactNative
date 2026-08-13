@@ -62,9 +62,9 @@ and `CipherStorageKeystoreAesGcm.decrypt()` tries the cipher first, reaching the
 
 Android therefore splits the two concerns, keeping the total at one OS prompt:
 
-| Concern             | Android mechanism                                                    |
-| ------------------- | -------------------------------------------------------------------- |
-| Enrollment unchanged | `isEnrollmentValid()` — the silent probe key above                   |
+| Concern              | Android mechanism                                                        |
+| -------------------- | ------------------------------------------------------------------------ |
+| Enrollment unchanged | `isEnrollmentValid()` — the silent probe key above                       |
 | Live user present    | `LocalAuthentication.authenticateAsync({ disableDeviceFallback: true })` |
 
 This costs nothing on the detection side: `KeyPermanentlyInvalidatedException` is raised at key extraction regardless of the auth window, so the enrollment signal was never dependent on the prompt firing. It also means the Android sentinel's only remaining job is "is trust initialized" (`hasEnrollment()`, a silent existence check) — the probe key carries the enrollment binding and `authenticateAsync` carries presence.

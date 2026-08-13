@@ -132,8 +132,11 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	async invalidate() {
 		biometricTrustStore.setRelockPending(true);
 
-		await biometricTrustStore.disenroll();
-		biometricTrustStore.setEnabled(false);
+		try {
+			await biometricTrustStore.disenroll();
+		} finally {
+			biometricTrustStore.setEnabled(false);
+		}
 	},
 
 	async setBiometryEnabled(enabled: boolean) {
