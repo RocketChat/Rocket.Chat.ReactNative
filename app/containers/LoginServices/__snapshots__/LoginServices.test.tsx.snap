@@ -62,6 +62,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -102,6 +105,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "marginHorizontal": 12,
             "textAlign": "left",
@@ -188,6 +194,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -228,6 +237,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "marginHorizontal": 12,
             "textAlign": "left",
@@ -319,6 +331,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -461,6 +476,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -477,6 +495,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -621,6 +642,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -637,6 +661,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -781,6 +808,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -797,6 +827,9 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -874,6 +907,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -1016,6 +1052,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1032,6 +1071,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -1176,6 +1218,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1192,6 +1237,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -1336,6 +1384,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1352,6 +1403,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -1496,6 +1550,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1512,6 +1569,9 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -1660,6 +1720,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1676,6 +1739,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -1819,6 +1885,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1835,6 +1904,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -1978,6 +2050,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -1994,6 +2069,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
@@ -2137,6 +2215,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -2153,6 +2234,9 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "600",
                   "textAlign": "left",
                 }
