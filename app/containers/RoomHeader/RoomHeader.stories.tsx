@@ -100,3 +100,61 @@ export const Themes = () => (
 		<ThemeStory theme='black' />
 	</>
 );
+
+export const DM_Status = () => {
+	const futureExpiry = '2030-06-15T19:00:00.000Z';
+	const now = new Date().getTime();
+	const hourLaterExpiry = new Date(now + 3600000).toISOString();
+	const expiredExpiry = new Date(now - 3600000).toISOString();
+	return (
+		<>
+			<HeaderExample
+				title={() => <RoomHeader title='John Doe' type='d' roomUserId='user1' subtitle='Online' status='online' />}
+			/>
+			<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user2' subtitle='Away' status='away' />} />
+			<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user3' subtitle='Busy' status='busy' />} />
+			<HeaderExample
+				title={() => <RoomHeader title='John Doe' type='d' roomUserId='user4' subtitle='Offline' status='offline' />}
+			/>
+			<HeaderExample
+				title={() => <RoomHeader title='John Doe' type='d' roomUserId='user5' subtitle='In a meeting' status='online' />}
+			/>
+			<HeaderExample
+				title={() => (
+					<RoomHeader
+						title='John Doe'
+						type='d'
+						roomUserId='user6'
+						subtitle='In a meeting'
+						status='online'
+						statusExpiresAt={futureExpiry}
+					/>
+				)}
+			/>
+			<HeaderExample
+				title={() => (
+					<RoomHeader
+						title='John Doe'
+						type='d'
+						roomUserId='user9'
+						subtitle='having lunch (clock icon should be visible)'
+						status='away'
+						statusExpiresAt={hourLaterExpiry}
+					/>
+				)}
+			/>
+			<HeaderExample
+				title={() => (
+					<RoomHeader
+						title='John Doe'
+						type='d'
+						roomUserId='user8'
+						subtitle='In a meeting (past expiry — clock icon should be hidden)'
+						status='online'
+						statusExpiresAt={expiredExpiry}
+					/>
+				)}
+			/>
+		</>
+	);
+};

@@ -6,14 +6,12 @@ import { type TActionSheetOptionsItem, useActionSheet } from '../../../ActionShe
 import { MessageInnerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const ActionsButton = () => {
-	'use memo';
-
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
@@ -24,7 +22,7 @@ export const ActionsButton = () => {
 		permissionToUpload
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 
 	const createDiscussion = async () => {
 		if (!rid) return;

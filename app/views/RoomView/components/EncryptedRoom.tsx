@@ -7,8 +7,8 @@ import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption/constants';
 import I18n from '../../../i18n';
 import { type TNavigation } from '../../../stacks/stackType';
 
@@ -23,7 +23,7 @@ export const EncryptedRoom = ({
 }): ReactElement => {
 	const { colors } = useTheme();
 	const styles = useStyle();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 
 	const navigate = () => {
 		if (isMasterDetail) {

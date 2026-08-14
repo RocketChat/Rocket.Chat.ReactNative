@@ -16,7 +16,7 @@ import UserInfo from './UserInfo';
 import styles from './styles';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { reportUser } from '../../lib/services/restApi';
@@ -41,7 +41,7 @@ const schema = yup.object().shape({
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
 	const navigation = useNavigation<TReportUserViewNavigationProp>();
-	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
+	const isMasterDetail = useMasterDetail();
 	const {
 		params: { username, userId, name }
 	} = useRoute<TReportUserViewRouteProp>();

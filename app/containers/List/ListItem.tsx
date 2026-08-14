@@ -1,6 +1,7 @@
 import { useMemo, memo, type ReactElement } from 'react';
 import {
 	I18nManager,
+	PixelRatio,
 	type StyleProp,
 	StyleSheet,
 	Text,
@@ -70,8 +71,6 @@ const styles = StyleSheet.create({
 interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
 
 const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: IListTitle) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	switch (typeof title) {
 		case 'string':
@@ -133,8 +132,6 @@ const Content = memo(
 		accessibilityLabel,
 		numberOfLines
 	}: IListItemContent) => {
-		'use memo';
-
 		const { fontScale } = useResponsiveLayout();
 		const { colors } = useTheme();
 
@@ -172,7 +169,11 @@ const Content = memo(
 
 		return (
 			<View
-				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
+				style={[
+					styles.container,
+					disabled && styles.disabled,
+					{ height: PixelRatio.roundToNearestPixel((heightContainer || BASE_HEIGHT) * fontScale) }
+				]}
 				testID={testID}
 				accessible={!shouldDisableAccessibility}
 				accessibilityLabel={handleAcessibilityLabel}
@@ -226,8 +227,6 @@ interface IListItemButton {
 }
 
 const Button = memo(({ onPress, backgroundColor, underlayColor, style, ...props }: IListButtonPress) => {
-	'use memo';
-
 	const { colors } = useTheme();
 
 	const handlePress = () => {
@@ -256,8 +255,6 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 }
 
 const ListItem = memo(({ ...props }: IListItem) => {
-	'use memo';
-
 	const { colors } = useTheme();
 
 	if (props.onPress) {

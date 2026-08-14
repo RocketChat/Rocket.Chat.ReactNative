@@ -2,6 +2,7 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -33,6 +34,7 @@ import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
@@ -57,6 +59,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 	const dispatch = useDispatch();
 	const {
 		Accounts_AllowDeleteOwnAccount,
@@ -66,12 +69,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		Accounts_AllowUserAvatarChange,
 		Accounts_AllowUsernameChange,
 		Accounts_CustomFields,
-		isMasterDetail,
 		serverVersion,
 		user
 	} = useAppSelector(state => ({
 		user: getUserSelector(state),
-		isMasterDetail: state.app.isMasterDetail,
 		Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
 		Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
 		Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
@@ -81,6 +82,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		serverVersion: state.server.version,
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
+	const isMasterDetail = useMasterDetail();
 	const {
 		control,
 		handleSubmit,
@@ -280,7 +282,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		);
 
 		navigation.setOptions(options);
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -292,7 +294,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		<KeyboardView>
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
-					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: colors.surfaceTint, paddingTop: 32 }]}
+					contentContainerStyle={[
+						sharedStyles.containerScrollView,
+						{ backgroundColor: colors.surfaceTint, paddingTop: 32, paddingBottom: bottom }
+					]}
 					testID='profile-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='profile-view-avatar'>

@@ -1,8 +1,12 @@
 import { StyleSheet } from 'react-native';
 
+import { setCustomEmojis } from '../../actions/customEmojis';
+import { mockedStore } from '../../reducers/mockedStore';
 import Status from '../Status/Status';
 import sharedStyles from '../../views/Styles';
 import Avatar from './Avatar';
+
+mockedStore.dispatch(setCustomEmojis({ troll: { name: 'troll', extension: 'jpg' } }));
 
 const styles = StyleSheet.create({
 	custom: {
@@ -40,9 +44,7 @@ export const WithETag = () => (
 
 export const WithoutETag = () => <Avatar type='d' text='djorkaeff.alexandre' server={server} size={56} />;
 
-export const Emoji = () => (
-	<Avatar emoji='troll' getCustomEmoji={() => ({ name: 'troll', extension: 'jpg' })} server={server} size={56} />
-);
+export const Emoji = () => <Avatar emoji='troll' server={server} size={56} />;
 
 export const Direct = () => <Avatar text='diego.mello' server={server} type='d' size={56} />;
 
@@ -67,15 +69,13 @@ export const Children = () => (
 	</Avatar>
 );
 
-export const WrongServer = () => <Avatar text='Avatar' server='https://google.com' size={56} />;
-
-export const CustomStyle = () => <Avatar text='Avatar' server={server} size={56} style={styles.custom} />;
-
+// serverVersion < 6.12.0: server lacks the avatar proxy, so the external URL is built client-side
 export const AvatarExternalProviderUrl = () => (
 	<Avatar
 		text='Avatar'
 		server={server}
 		size={56}
+		serverVersion='6.11.0'
 		avatarExternalProviderUrl={
 			'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*'
 		}
@@ -93,3 +93,7 @@ export const RoomAvatarExternalProviderUrl = () => (
 		rid='devWBbYr7inwupPqK'
 	/>
 );
+
+export const WrongServer = () => <Avatar text='Avatar' server='https://google.com' size={56} />;
+
+export const CustomStyle = () => <Avatar text='Avatar' server={server} size={56} style={styles.custom} />;

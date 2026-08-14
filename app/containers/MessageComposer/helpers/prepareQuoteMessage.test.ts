@@ -81,7 +81,7 @@ describe('prepareQuoteMessage', () => {
 
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
 
-			expect(mockGetMessageById).toHaveBeenCalledWith('message1');
+			expect(mockGetMessageById).toHaveBeenCalledWith('message1', undefined);
 			expect(mockGetPermalinkMessage).toHaveBeenCalledWith(mockMessage);
 			expect(result).toBe(`[ ](${permalink}) \nMy reply`);
 		});
@@ -159,6 +159,47 @@ describe('prepareQuoteMessage', () => {
 
 			// Should throw the error
 			await expect(prepareQuoteMessage(textFromInput, selectedMessages)).rejects.toThrow('Network error');
+		});
+	});
+
+	describe('inside a thread', () => {
+		const mockThreadMessage = {
+			id: 'message1',
+			msg: 'Test thread message',
+			u: { username: 'testuser' },
+			ts: new Date()
+		};
+
+		test('should forward tmid so the thread message can be resolved', async () => {
+			const permalink = 'https://example.com/message/message1';
+
+			mockGetMessageById.mockResolvedValue(mockThreadMessage as any);
+			mockGetPermalinkMessage.mockResolvedValue(permalink);
+
+			const result = await prepareQuoteMessage('My reply', ['message1'], 'thread-id');
+
+			expect(mockGetMessageById).toHaveBeenCalledWith('message1', 'thread-id');
+			expect(mockGetPermalinkMessage).toHaveBeenCalledWith(mockThreadMessage);
+			expect(result).toBe(`[ ](${permalink}) \nMy reply`);
+		});
+
+		test('should forward tmid for every selected message', async () => {
+			mockGetMessageById.mockResolvedValue(mockThreadMessage as any);
+			mockGetPermalinkMessage.mockResolvedValue('https://example.com/link');
+
+			await prepareQuoteMessage('My reply', ['message1', 'message2'], 'thread-id');
+
+			expect(mockGetMessageById).toHaveBeenNthCalledWith(1, 'message1', 'thread-id');
+			expect(mockGetMessageById).toHaveBeenNthCalledWith(2, 'message2', 'thread-id');
+		});
+
+		test('should pass no tmid when the composer is not in a thread', async () => {
+			mockGetMessageById.mockResolvedValue(mockThreadMessage as any);
+			mockGetPermalinkMessage.mockResolvedValue('https://example.com/link');
+
+			await prepareQuoteMessage('My reply', ['message1']);
+
+			expect(mockGetMessageById).toHaveBeenCalledWith('message1', undefined);
 		});
 	});
 

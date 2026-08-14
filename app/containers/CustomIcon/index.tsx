@@ -14,7 +14,7 @@ const glyphMap = IconSet.getRawGlyphMap
 	: icoMoonConfig.icons?.reduce((map: Record<string, string | number>, glyph: any) => {
 			map[glyph.icon.name] = glyph.icon.code;
 			return map;
-	  }, {}) || {};
+		}, {}) || {};
 
 export const hasIcon = (name: string) => Object.prototype.hasOwnProperty.call(glyphMap, name);
 

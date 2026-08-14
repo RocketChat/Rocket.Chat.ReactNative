@@ -9,9 +9,11 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
+import { CustomIcon } from '../CustomIcon';
 import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { type IUsersTyping } from '../../reducers/usersTyping';
 
@@ -45,12 +47,16 @@ const styles = StyleSheet.create({
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
+	},
+	clockIcon: {
+		marginRight: 4
 	}
 });
 
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
+	formattedStatusExpiry?: string;
 	renderFunc?: () => ReactElement;
 	scale: number;
 };
@@ -66,6 +72,7 @@ type TRoomHeaderHeaderTitle = {
 interface IRoomHeader {
 	title?: string;
 	subtitle?: string;
+	statusExpiresAt?: string;
 	type: string;
 	width: number;
 	height: number;
@@ -87,7 +94,7 @@ interface IRoomHeader {
 
 type IRoomHeaderProps = IRoomHeader;
 
-const SubTitle = memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -113,6 +120,14 @@ const SubTitle = memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeader
 
 	// subtitle
 	if (subtitle) {
+		if (formattedStatusExpiry) {
+			return (
+				<View style={styles.titleContainer}>
+					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={styles.clockIcon} />
+					<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />
+				</View>
+			);
+		}
 		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
@@ -138,6 +153,7 @@ const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeade
 const Header = ({
 	title,
 	subtitle,
+	statusExpiresAt,
 	parentTitle,
 	type,
 	status,
@@ -155,8 +171,6 @@ const Header = ({
 	disabled,
 	abacAttributes
 }: IRoomHeaderProps) => {
-	'use memo';
-
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
 		prid,
@@ -169,12 +183,19 @@ const Header = ({
 	const { fontScale } = useWindowDimensions();
 	const portrait = height > width;
 	let scale = 1;
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	// Only move focus to the header for accessibility navigation (screen reader or physical
 	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
 	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
+	const formattedStatusExpiry = formatStatusExpiry(statusExpiresAt);
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
+	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
+		? `${subtitleAccessibilityLabel || ''}, ${formattedStatusExpiry}`
+		: subtitleAccessibilityLabel || '';
+	const accessibilityLabel =
+		type === 'd' && subtitleAccessibilityLabel === statusAccessibilityLabel
+			? `${title}. ${fullSubtitleAccessibilityLabel}.`
+			: `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel}.`;
 
 	if (!portrait && !tmid && !isMasterDetail) {
 		if (usersTyping.length > 0 || subtitle) {
@@ -231,7 +252,13 @@ const Header = ({
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>
-				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+				<SubTitle
+					usersTyping={tmid ? [] : usersTyping}
+					subtitle={subtitle}
+					formattedStatusExpiry={formattedStatusExpiry}
+					renderFunc={renderFunc}
+					scale={scale}
+				/>
 			</TouchableOpacity>
 		</KeyboardFocusView>
 	);

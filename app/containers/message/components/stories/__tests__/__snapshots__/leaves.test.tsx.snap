@@ -1,0 +1,5702 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 4,
+        "left": 4,
+        "right": 4,
+        "top": 4,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        {
+          "backgroundColor": "#1D74F5",
+        },
+      ]
+    }
+    testID="message-broadcast-reply"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "600",
+              "lineHeight": 16,
+              "textAlign": "left",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        Reply
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: BroadcastOwn should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: CallButton should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 4,
+        "left": 4,
+        "right": 4,
+        "top": 4,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        {
+          "backgroundColor": "#1D74F5",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            [
+              {
+                "lineHeight": 16,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "600",
+              "lineHeight": 16,
+              "textAlign": "left",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        Click to join!
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Content should match snapshot 1`] = `
+<View
+  style={false}
+  testID="message-content-This is a plain text message"
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="This is a plain text message"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          This is a plain text message
+        </Text>
+      </Text>
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Default should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "minHeight": 200,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "borderColor": "#CBCED1",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "overflow": "hidden",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "borderWidth": 0,
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "position": "absolute",
+        },
+      ]
+    }
+  >
+    <ActivityIndicator
+      color="#6C727A"
+      size={54}
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 16,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "bottom": 8,
+        "flexDirection": "row",
+        "gap": 8,
+        "position": "absolute",
+        "right": 8,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Discussion should match snapshot 1`] = `
+<View
+  style={
+    {
+      "gap": 4,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontStyle": "italic",
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 20,
+          "textAlign": "left",
+        },
+        {
+          "color": "#6C727A",
+        },
+      ]
+    }
+  >
+    Started a discussion:
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 20,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+        },
+      ]
+    }
+  >
+    Discussion topic message
+  </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+        },
+        {
+          "gap": 8,
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={
+        {
+          "bottom": 4,
+          "left": 4,
+          "right": 4,
+          "top": 4,
+        }
+      }
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          },
+          {
+            "backgroundColor": "#1D74F5",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#FFFFFF",
+                "fontSize": 16,
+              },
+              [
+                {
+                  "lineHeight": 16,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          5 messages
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 18,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      January 1, 2024
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Edited should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingLeft": 5,
+    }
+  }
+  testID="Edited message-edited"
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#2F343D",
+          "fontSize": 16,
+        },
+        [
+          {
+            "lineHeight": 16,
+          },
+          undefined,
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: EditedHidden should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: Emoji should match snapshot 1`] = `
+<Text
+  style={
+    {
+      "fontSize": 30,
+    }
+  }
+>
+  😀
+</Text>
+`;
+
+exports[`Story Snapshots: EmojiCustom should match snapshot 1`] = `
+<ViewManagerAdapter_ExpoImage
+  containerViewRef={{"current":"Object"}}
+  contentFit="contain"
+  contentPosition={
+    {
+      "left": "50%",
+      "top": "50%",
+    }
+  }
+  height={30}
+  nativeViewRef={{"current":"NativeComponent"}}
+  onError={[Function]}
+  onLoad={[Function]}
+  onLoadStart={[Function]}
+  onProgress={[Function]}
+  placeholder={[]}
+  source={
+    [
+      {
+        "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+      },
+    ]
+  }
+  style={
+    {
+      "height": 30,
+      "width": 30,
+    }
+  }
+  transition={null}
+  width={30}
+/>
+`;
+
+exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  hitSlop={
+    {
+      "bottom": 4,
+      "left": 4,
+      "right": 4,
+      "top": 4,
+    }
+  }
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "paddingLeft": 5,
+    }
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#2F343D",
+          "fontSize": 16,
+        },
+        [
+          {
+            "lineHeight": 16,
+          },
+          undefined,
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: EncryptedHidden should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: GIF should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "minHeight": 200,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "borderColor": "#CBCED1",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "overflow": "hidden",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "borderWidth": 0,
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "position": "absolute",
+        },
+      ]
+    }
+  >
+    <ActivityIndicator
+      color="#6C727A"
+      size={54}
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 16,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "bottom": 8,
+        "flexDirection": "row",
+        "gap": 8,
+        "position": "absolute",
+        "right": 8,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "padding": 4,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "textAlign": "left",
+            },
+            {
+              "color": "#1F2329",
+            },
+          ]
+        }
+      >
+        GIF
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Item should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 4,
+        "left": 4,
+        "right": 4,
+        "top": 4,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "minHeight": 40,
+        },
+        undefined,
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderBottomColor": "#EBECEF",
+          "borderLeftColor": "#CBCED1",
+          "borderLeftWidth": 2,
+          "borderRightColor": "#EBECEF",
+          "borderTopColor": "#EBECEF",
+        },
+      ]
+    }
+    testID="collapsibleQuoteTouchable-Engineering (9 today)"
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "borderRadius": 4,
+            "flex": 1,
+            "padding": 8,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Engineering (9 today)
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "height": 20,
+            "justifyContent": "center",
+            "right": 8,
+            "top": 8,
+            "width": 20,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#9EA2A8",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Loading should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "minHeight": 200,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "borderColor": "#CBCED1",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "overflow": "hidden",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "borderWidth": 0,
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "position": "absolute",
+        },
+      ]
+    }
+  >
+    <ActivityIndicator
+      color="#6C727A"
+      size={54}
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 16,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "bottom": 8,
+        "flexDirection": "row",
+        "gap": 8,
+        "position": "absolute",
+        "right": 8,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "flex-end",
+      "width": 36,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "height": 36,
+          "width": 36,
+        },
+        {
+          "marginTop": 4,
+        },
+      ]
+    }
+    testID="avatar"
+  >
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={{}}
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: MessageError should match snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  hitSlop={
+    {
+      "bottom": 4,
+      "left": 4,
+      "right": 4,
+      "top": 4,
+    }
+  }
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "paddingLeft": 5,
+    }
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#EC0D2A",
+          "fontSize": 16,
+        },
+        [
+          {
+            "lineHeight": 16,
+          },
+          undefined,
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: MessageErrorHidden should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+      "width": 350,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 4,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Image 1"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Alternative text"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 4,
+              "bottom": 12,
+              "height": 20,
+              "justifyContent": "center",
+              "paddingHorizontal": 4,
+              "position": "absolute",
+              "right": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "lineHeight": 20,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          ALT
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Image 2"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Alternative text"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 4,
+              "bottom": 12,
+              "height": 20,
+              "justifyContent": "center",
+              "paddingHorizontal": 4,
+              "position": "absolute",
+              "right": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "lineHeight": 20,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          ALT
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Image 3"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Alternative text"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 4,
+              "bottom": 12,
+              "height": 20,
+              "justifyContent": "center",
+              "paddingHorizontal": 4,
+              "position": "absolute",
+              "right": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "lineHeight": 20,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          ALT
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Image 4"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Alternative text"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 4,
+              "bottom": 12,
+              "height": 20,
+              "justifyContent": "center",
+              "paddingHorizontal": 4,
+              "position": "absolute",
+              "right": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "lineHeight": 20,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          ALT
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Image 5"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Alternative text"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 4,
+              "bottom": 12,
+              "height": 20,
+              "justifyContent": "center",
+              "paddingHorizontal": 4,
+              "position": "absolute",
+              "right": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "lineHeight": 20,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          ALT
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+      "width": 350,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 4,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Image 1"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Image 1
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Image without description"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Image 2"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Image 2
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Image without description"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Image 3"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Image 3
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Image without description"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Image 4"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Image 4
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Image without description"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Pinned should match snapshot 1`] = `
+<Text
+  allowFontScaling={false}
+  selectable={false}
+  style={
+    [
+      {
+        "color": "#2F343D",
+        "fontSize": 16,
+      },
+      [
+        {
+          "lineHeight": 16,
+        },
+        {
+          "paddingLeft": 5,
+        },
+      ],
+      {
+        "fontFamily": "custom",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      {},
+    ]
+  }
+  testID="Pinned message-pinned"
+>
+  
+</Text>
+`;
+
+exports[`Story Snapshots: PinnedHidden should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: Reactions should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flexDirection": "row",
+      "flexWrap": "wrap",
+      "gap": 4,
+    }
+  }
+>
+  <View
+    accessibilityLabel=":joy:, 2"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": true,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 4,
+        "left": 4,
+        "right": 4,
+        "top": 4,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "borderRadius": 4,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+    testID="message-reaction-:joy:"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "gap": 4,
+            "justifyContent": "center",
+            "minWidth": 46.3,
+            "paddingHorizontal": 4,
+          },
+          {
+            "borderColor": "#1D74F5",
+            "height": 28,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#ffffff",
+            "fontSize": 13,
+          }
+        }
+      >
+        😂
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "600",
+              "lineHeight": 18,
+              "textAlign": "left",
+            },
+            {
+              "color": "#1D74F5",
+            },
+          ]
+        }
+      >
+        2
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityLabel=":heart:, 1"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": false,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 4,
+        "left": 4,
+        "right": 4,
+        "top": 4,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "borderRadius": 4,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+    testID="message-reaction-:heart:"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "gap": 4,
+            "justifyContent": "center",
+            "minWidth": 46.3,
+            "paddingHorizontal": 4,
+          },
+          {
+            "borderColor": "#CBCED1",
+            "height": 28,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#ffffff",
+            "fontSize": 13,
+          }
+        }
+      >
+        ❤️
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "600",
+              "lineHeight": 18,
+              "textAlign": "left",
+            },
+            {
+              "color": "#1D74F5",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityLabel="Add reaction"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    hitSlop={
+      {
+        "bottom": 4,
+        "left": 4,
+        "right": 4,
+        "top": 4,
+      }
+    }
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "borderRadius": 4,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+    testID="message-add-reaction"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "gap": 4,
+            "justifyContent": "center",
+            "minWidth": 46.3,
+            "paddingHorizontal": 4,
+          },
+          {
+            "borderColor": "#CBCED1",
+            "height": 28,
+          },
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#1D74F5",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ReadReceipt should match snapshot 1`] = `
+<Text
+  allowFontScaling={false}
+  selectable={false}
+  style={
+    [
+      {
+        "color": "#095AD2",
+        "fontSize": 25,
+      },
+      [
+        {
+          "lineHeight": 25,
+        },
+        {
+          "marginTop": -5,
+          "paddingLeft": 5,
+        },
+      ],
+      {
+        "fontFamily": "custom",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      {},
+    ]
+  }
+  testID="read-receipt-read"
+>
+  
+</Text>
+`;
+
+exports[`Story Snapshots: ReadReceiptHidden should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: ReadReceiptUnread should match snapshot 1`] = `
+<Text
+  allowFontScaling={false}
+  selectable={false}
+  style={
+    [
+      {
+        "color": "#9EA2A8",
+        "fontSize": 25,
+      },
+      [
+        {
+          "lineHeight": 25,
+        },
+        {
+          "marginTop": -5,
+          "paddingLeft": 5,
+        },
+      ],
+      {
+        "fontFamily": "custom",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      {},
+    ]
+  }
+  testID="read-receipt-unread"
+>
+  
+</Text>
+`;
+
+exports[`Story Snapshots: RepliedThread should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "gap": 10,
+    }
+  }
+  testID="message-thread-replied-on-Original thread message"
+>
+  <View
+    style={
+      {
+        "alignItems": "flex-end",
+        "width": 36,
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#095AD2",
+            "fontSize": 20,
+          },
+          [
+            {
+              "lineHeight": 20,
+            },
+            undefined,
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <Text
+    accessibilityLabel="Original thread message"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+        {
+          "backgroundColor": "transparent",
+          "flex": 1,
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "textAlign": "left",
+        },
+        {
+          "color": "#095AD2",
+        },
+      ]
+    }
+    testID="markdown-preview-Original thread message"
+  >
+    Original thread message
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "marginLeft": 4,
+        "marginRight": 4,
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 20,
+          },
+          [
+            {
+              "lineHeight": 20,
+            },
+            undefined,
+          ],
+          {
+            "fontFamily": "custom",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: SingleImageNewServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+      "width": 350,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 4,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="A wavy orange and black pattern, designed to be used as a wallpaper"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Alternative text"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 4,
+              "bottom": 12,
+              "height": 20,
+              "justifyContent": "center",
+              "paddingHorizontal": 4,
+              "position": "absolute",
+              "right": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "lineHeight": 20,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          ALT
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: SingleImageNoAlt should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+      "width": 350,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 4,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="Image without description"
+      accessibilityRole="imagebutton"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "borderRadius": 4,
+          "flexDirection": "column",
+        }
+      }
+    >
+      <View
+        onLayout={[Function]}
+        style={
+          {
+            "flex": 1,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "minHeight": 200,
+                "overflow": "hidden",
+                "width": "100%",
+              },
+              {
+                "borderColor": "#CBCED1",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "overflow": "hidden",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            [
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ],
+              {
+                "borderWidth": 0,
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            [
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ],
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+                "position": "absolute",
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 54,
+                },
+                [
+                  {
+                    "lineHeight": 54,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "bottom": 8,
+              "flexDirection": "row",
+              "gap": 8,
+              "position": "absolute",
+              "right": 8,
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: SingleImageOldServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+      "width": 350,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 4,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "gap": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="A wavy orange and black pattern, designed to be used as a wallpaper"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              A wavy orange and black pattern, designed to be used as a wallpaper
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Image without description"
+        accessibilityRole="imagebutton"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderRadius": 4,
+            "flexDirection": "column",
+          }
+        }
+      >
+        <View
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "minHeight": 200,
+                  "overflow": "hidden",
+                  "width": "100%",
+                },
+                {
+                  "borderColor": "#CBCED1",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "overflow": "hidden",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "borderWidth": 0,
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              [
+                [
+                  {
+                    "borderRadius": 4,
+                    "minHeight": 200,
+                    "overflow": "hidden",
+                    "width": "100%",
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "overflow": "hidden",
+                  },
+                ],
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 54,
+                  },
+                  [
+                    {
+                      "lineHeight": 54,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "bottom": 8,
+                "flexDirection": "row",
+                "gap": 8,
+                "position": "absolute",
+                "right": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Thread should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+    }
+  }
+>
+  <View
+    accessibilityLabel="View thread"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 4,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+    testID="message-thread-button-Thread parent message"
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "lineHeight": 16,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      View thread
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+        },
+        {
+          "flex": 1,
+          "marginLeft": 12,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "marginRight": 8,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 10,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "marginLeft": 2,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="thread-count-3"
+        >
+          3
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "marginRight": 8,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 10,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "marginLeft": 2,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          3
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={1}
+          collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
+          style={
+            [
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <View
+            accessibilityLabel="Follow thread"
+            style={{}}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Time should match snapshot 1`] = `
+<Text
+  style={
+    [
+      {
+        "backgroundColor": "transparent",
+        "fontFamily": "Inter",
+        "fontSize": 13,
+        "fontVariant": [
+          "tabular-nums",
+        ],
+        "fontWeight": "400",
+        "lineHeight": 18,
+        "textAlign": "left",
+      },
+      {
+        "color": "#6C727A",
+      },
+    ]
+  }
+>
+  10:20 AM
+</Text>
+`;
+
+exports[`Story Snapshots: Translated should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingLeft": 5,
+    }
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#2F343D",
+          "fontSize": 16,
+        },
+        [
+          {
+            "lineHeight": 16,
+          },
+          undefined,
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: TranslatedHidden should match snapshot 1`] = `null`;
+
+exports[`Story Snapshots: Urls should match snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+        "flexDirection": "column",
+        "gap": 4,
+      },
+      {
+        "backgroundColor": "#F7F8FA",
+        "borderColor": "#CBCED1",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "overflow": "hidden",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "flex-start",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "flex-start",
+        "padding": 12,
+      }
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "500",
+            "textAlign": "left",
+          },
+          {
+            "color": "#095AD2",
+          },
+        ]
+      }
+    >
+      Rocket.Chat
+    </Text>
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Have your own chat service on-premises or in the cloud
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: User should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "flexShrink": 1,
+        "gap": 4,
+      }
+    }
+    testID="username-header-rocket.cat"
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      rocket.cat
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 18,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      10:20 AM
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: WithAltTextNewServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "minHeight": 200,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "borderColor": "#CBCED1",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "overflow": "hidden",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "borderWidth": 0,
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "position": "absolute",
+        },
+      ]
+    }
+  >
+    <ActivityIndicator
+      color="#6C727A"
+      size={54}
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 16,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "bottom": 8,
+        "flexDirection": "row",
+        "gap": 8,
+        "position": "absolute",
+        "right": 8,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: WithAltTextOldServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "minHeight": 200,
+          "overflow": "hidden",
+          "width": "100%",
+        },
+        {
+          "borderColor": "#CBCED1",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "overflow": "hidden",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "borderWidth": 0,
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "borderRadius": 4,
+            "minHeight": 200,
+            "overflow": "hidden",
+            "width": "100%",
+          },
+          {
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "overflow": "hidden",
+          },
+        ],
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "position": "absolute",
+        },
+      ]
+    }
+  >
+    <ActivityIndicator
+      color="#6C727A"
+      size={54}
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 16,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "bottom": 8,
+        "flexDirection": "row",
+        "gap": 8,
+        "position": "absolute",
+        "right": 8,
+      }
+    }
+  />
+</View>
+`;

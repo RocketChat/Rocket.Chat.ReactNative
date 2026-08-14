@@ -16,6 +16,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -79,6 +82,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -140,6 +146,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -156,6 +165,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -172,9 +184,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -263,6 +272,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                 "color": "#6C727A",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -390,6 +402,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                 "color": "#6C727A",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -517,6 +532,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                 "color": "#6C727A",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -644,6 +662,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                 "color": "#6C727A",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -708,6 +729,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -772,6 +796,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -840,6 +867,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -856,6 +886,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -866,6 +899,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -884,7 +920,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -904,9 +946,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -922,6 +961,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -947,6 +989,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -963,6 +1008,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -979,9 +1027,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -1071,6 +1116,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1143,6 +1191,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1215,6 +1266,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1287,6 +1341,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1359,6 +1416,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1438,6 +1498,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1517,6 +1580,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1596,6 +1662,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -1667,6 +1736,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -1711,6 +1783,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1727,6 +1802,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -1744,9 +1822,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -1757,6 +1832,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -1775,7 +1853,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -1795,9 +1879,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -1808,6 +1889,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -1826,7 +1910,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -1845,9 +1935,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -1882,6 +1969,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -1948,6 +2038,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1964,6 +2057,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -1980,9 +2076,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -2148,6 +2241,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -2164,6 +2260,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -2180,9 +2279,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -2348,6 +2444,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -2364,6 +2463,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -2380,9 +2482,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -2532,6 +2631,9 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 14,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "600",
           "marginVertical": 10,
           "textAlign": "left",
@@ -2647,6 +2749,9 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -2698,6 +2803,9 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 14,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "marginTop": 8,
           "textAlign": "center",
@@ -2773,6 +2881,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -2814,6 +2925,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -2877,6 +2991,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -2910,6 +3027,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "textAlign": "left",
           },
@@ -2936,6 +3056,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -3051,6 +3174,9 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 14,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "textAlign": "left",
                   },
@@ -3119,6 +3245,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -3168,6 +3297,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -3184,6 +3316,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -3200,9 +3335,6 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -3273,6 +3405,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -3315,6 +3450,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -3334,6 +3472,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 15,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "marginBottom": 10,
             "textAlign": "left",
@@ -3398,6 +3539,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -3433,6 +3577,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "textAlign": "left",
           },
@@ -3444,6 +3591,492 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     >
       Please take the time to compose something short
     </Text>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
+[
+  <View
+    accessibilityLabel="Image without description"
+    accessibilityRole="imagebutton"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "borderRadius": 4,
+        "flexDirection": "column",
+      }
+    }
+  >
+    <View
+      onLayout={[Function]}
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "minHeight": 200,
+              "overflow": "hidden",
+              "width": "100%",
+            },
+            {
+              "borderColor": "#CBCED1",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "overflow": "hidden",
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          [
+            [
+              {
+                "borderRadius": 4,
+                "minHeight": 200,
+                "overflow": "hidden",
+                "width": "100%",
+              },
+              {
+                "borderColor": "#CBCED1",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "overflow": "hidden",
+              },
+            ],
+            {
+              "borderWidth": 0,
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          [
+            [
+              {
+                "borderRadius": 4,
+                "minHeight": 200,
+                "overflow": "hidden",
+                "width": "100%",
+              },
+              {
+                "borderColor": "#CBCED1",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "overflow": "hidden",
+              },
+            ],
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "position": "absolute",
+            },
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 54,
+              },
+              [
+                {
+                  "lineHeight": 54,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "bottom": 8,
+            "flexDirection": "row",
+            "gap": 8,
+            "position": "absolute",
+            "right": 8,
+          }
+        }
+      />
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="How could be the life in Mars?"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              How could be the life in Mars?
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "minHeight": 36,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "marginRight": 8,
+        }
+      }
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={2}
+        containerViewRef={{"current":"Object"}}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
+        }
+        height={20}
+        nativeViewRef={{"current":"NativeComponent"}}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        source={
+          [
+            {
+              "uri": "https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 2,
+            "height": 20,
+            "width": 20,
+          }
+        }
+        transition={null}
+        width={20}
+      />
+    </View>
+    <Text
+      accessibilityLabel="November 25, 2019"
+      numberOfLines={0}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+            "lineHeight": undefined,
+          },
+        ]
+      }
+      testID="markdown-preview-November 25, 2019"
+    >
+      November 25, 2019
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Next stop, Mars!"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
+                  ]
+                }
+              >
+                Next stop, Mars!
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl."
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl.
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
   </View>,
 ]
 `;
@@ -3464,6 +4097,9 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -3527,6 +4163,9 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -3568,6 +4207,9 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -3631,6 +4273,9 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -3734,6 +4379,9 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 14,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "600",
           "marginVertical": 10,
           "textAlign": "left",
@@ -3797,6 +4445,9 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -3830,6 +4481,9 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 14,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "marginTop": 8,
           "textAlign": "center",
@@ -3861,6 +4515,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -3980,6 +4637,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingLeft": 6,
                     "textAlign": "left",
@@ -4032,6 +4692,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "textAlign": "left",
           },
@@ -4058,6 +4721,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "marginVertical": 10,
             "textAlign": "left",
@@ -4276,6 +4942,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                             "flexShrink": 1,
                             "fontFamily": "Inter",
                             "fontSize": 14,
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
                             "fontWeight": "500",
                             "paddingHorizontal": 8,
                             "textAlign": "left",
@@ -4358,6 +5027,9 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "textAlign": "left",
           },
@@ -4388,6 +5060,9 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 14,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "600",
           "marginVertical": 10,
           "textAlign": "left",
@@ -4452,6 +5127,9 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -4487,6 +5165,9 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 14,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "marginTop": 8,
           "textAlign": "center",
@@ -4538,6 +5219,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4554,6 +5238,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -4564,6 +5251,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -4582,7 +5272,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -4602,9 +5298,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -4619,6 +5312,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4635,6 +5331,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -4652,9 +5351,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -4665,6 +5361,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -4683,7 +5382,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -4703,9 +5408,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -4720,6 +5422,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4736,6 +5441,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -4753,9 +5461,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -4766,6 +5471,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -4784,7 +5492,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -4803,9 +5517,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -4902,6 +5613,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4918,6 +5632,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -4928,6 +5645,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -4946,7 +5666,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -4963,6 +5689,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4979,6 +5708,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -4995,9 +5727,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5043,6 +5772,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5059,6 +5791,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5069,6 +5804,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -5087,7 +5825,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5104,6 +5848,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5120,6 +5867,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5136,9 +5886,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5184,6 +5931,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5200,6 +5950,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5210,6 +5963,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -5228,7 +5984,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5245,6 +6007,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5261,6 +6026,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5277,9 +6045,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5325,6 +6090,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5341,6 +6109,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5351,6 +6122,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -5369,7 +6143,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5386,6 +6166,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5402,6 +6185,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5418,9 +6204,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5471,6 +6254,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5487,6 +6273,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5497,6 +6286,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -5515,7 +6307,13 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5535,9 +6333,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -5553,6 +6348,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
@@ -5571,6 +6369,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5587,6 +6388,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5604,9 +6408,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  {
-                    "fontSize": 14,
-                  },
                 ]
               }
             >
@@ -5619,12 +6420,12 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                   {
                     "color": "#2F343D",
@@ -5698,6 +6499,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5714,6 +6518,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5724,6 +6531,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -5742,7 +6552,13 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5759,6 +6575,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5775,6 +6594,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5791,9 +6613,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5834,6 +6653,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5850,6 +6672,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5860,6 +6685,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -5878,7 +6706,13 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -5895,6 +6729,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5911,6 +6748,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5927,9 +6767,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5983,6 +6820,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5999,6 +6839,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -6009,6 +6852,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -6027,7 +6873,13 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -6044,6 +6896,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -6060,6 +6915,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -6076,9 +6934,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -6119,6 +6974,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -6135,6 +6993,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -6145,6 +7006,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 {
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "700",
                   "textAlign": "left",
                 }
@@ -6163,7 +7027,13 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "fontSize": 14,
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
                     },
                   ]
                 }
@@ -6180,6 +7050,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -6196,6 +7069,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -6212,9 +7088,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }

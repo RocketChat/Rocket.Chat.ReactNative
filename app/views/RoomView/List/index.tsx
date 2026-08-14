@@ -8,7 +8,7 @@ import { useMessages, useScroll } from './hooks';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
-		const [messages, messagesIds, fetchMessages] = useMessages({
+		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -16,14 +16,15 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			t,
 			serverVersion
 		});
-		const {
-			jumpToBottom,
-			jumpToMessage,
-			cancelJumpToMessage,
-			viewabilityConfigCallbackPairs,
-			handleScrollToIndexFailed,
-			highlightedMessageId
-		} = useScroll({ listRef, messagesIds });
+		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
+			useScroll({
+				listRef,
+				messages,
+				messagesIds,
+				highTs,
+				setHighTs,
+				fetchMessages
+			});
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
@@ -31,7 +32,8 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 
 		useImperativeHandle(ref, () => ({
 			jumpToMessage,
-			cancelJumpToMessage
+			cancelJumpToMessage,
+			isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
 		}));
 
 		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
@@ -45,12 +47,16 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					renderItem={renderItem}
 					onEndReached={onEndReached}
 					onScrollToIndexFailed={handleScrollToIndexFailed}
-					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 					jumpToBottom={jumpToBottom}
-					maintainVisibleContentPosition={{
-						minIndexForVisible: 0,
-						autoscrollToTopThreshold: 0
-					}}
+					isAnchored={highTs != null}
+					maintainVisibleContentPosition={
+						isReleasing
+							? undefined
+							: {
+									minIndexForVisible: 0,
+									autoscrollToTopThreshold: 0
+								}
+					}
 				/>
 			</>
 		);

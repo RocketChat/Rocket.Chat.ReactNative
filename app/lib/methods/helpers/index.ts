@@ -9,6 +9,8 @@ export * from './info';
 export * from './isReadOnly';
 export * from './media';
 export * from './normalizeDeepLinkingServerHost';
+export * from './normalizeStatusExpiresAt';
+export * from './onAbort';
 export * from './room';
 export * from './server';
 export * from './isSsl';

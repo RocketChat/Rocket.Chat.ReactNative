@@ -248,7 +248,7 @@ PODS:
   - MMKV (2.2.4):
     - MMKVCore (~> 2.2.4)
   - MMKVCore (2.2.4)
-  - MobileCrypto (0.2.2):
+  - MobileCrypto (0.4.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3130,7 +3130,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNImageCropPicker (0.51.0):
+  - RNImageCropPicker (0.51.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -3157,11 +3157,11 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNImageCropPicker/QBImagePickerController (= 0.51.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.51.1)
     - SocketRocket
-    - TOCropViewController (~> 2.7.4)
+    - TOCropViewController (~> 2.8.0)
     - Yoga
-  - RNImageCropPicker/QBImagePickerController (0.51.0):
+  - RNImageCropPicker/QBImagePickerController (0.51.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -3189,7 +3189,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - SocketRocket
-    - TOCropViewController (~> 2.7.4)
+    - TOCropViewController (~> 2.8.0)
     - Yoga
   - RNLocalize (2.1.1):
     - React-Core
@@ -3531,7 +3531,7 @@ PODS:
     - SDWebImage/Core (~> 5.17)
   - simdjson (3.9.4)
   - SocketRocket (0.7.1)
-  - TOCropViewController (2.7.4)
+  - TOCropViewController (2.8.0)
   - WatermelonDB (0.28.1-0):
     - React
     - simdjson
@@ -4023,7 +4023,7 @@ SPEC CHECKSUMS:
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MMKV: 1a8e7dbce7f9cad02c52e1b1091d07bd843aefaf
   MMKVCore: f2dd4c9befea04277a55e84e7812f930537993df
-  MobileCrypto: 41cd66d5588e979cf95d1ff6ae2eec88eb284ef1
+  MobileCrypto: cbe4be11a33b5888e77861de9346fa5d3fccc8ac
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   NitroMmkv: 4a2d747ce97a4ae740b3cb3a3853366813faf831
   NitroModules: 18e41c298d86fc753fc754969fa9f84044e70711
@@ -4118,7 +4118,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
   RNFileViewer: f9424017fa643c115c1444e11292e84fb16ddd68
   RNGestureHandler: b8d2e75c2e88fc2a1f6be3b3beeeed80b88fa37d
-  RNImageCropPicker: 0a63af4b79e514c1edd6c3152f19300c5ed85312
+  RNImageCropPicker: 5432d75a3bc7209dc8b6ab189fcfe19bd6339fb9
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNReanimated: e1690cdd7f215cfb96a3b7986b81889867dfdb4f
   RNScreens: ccfcc2f7d9c0d458b7fc41b3f4f0bea054602b3a
@@ -4131,11 +4131,11 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
+  TOCropViewController: 797deaf39c90e6e9ddd848d88817f6b9a8a09888
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
   Yoga: 1e91d83a5286cfd3b725eade59274c92270540d4
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: d05b9b865205e9c845b4e7c288577d4b4ae403ab
+PODFILE CHECKSUM: 9ef0d302aac0150cec49089c7c416db32bb9d3ec
 
 COCOAPODS: 1.15.2
