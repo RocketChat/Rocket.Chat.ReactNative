@@ -132,12 +132,10 @@ describe('StatusView', () => {
 
 			renderStatusView();
 
-			const submit = screen.getByTestId('status-view-submit');
-			// RectButton uses enabled prop — toBeDisabled() doesn't work with the mock
-			expect(submit.props.enabled).toBe(false);
+			expect(screen.getByTestId('status-view-submit')).toBeDisabled();
 		});
 
-		it('should be enabled when status is changed', () => {
+		it('should be enabled when status is changed', async () => {
 			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
 			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
 			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
@@ -146,10 +144,10 @@ describe('StatusView', () => {
 
 			fireEvent.press(screen.getByTestId('status-view-busy'));
 
-			expect(screen.getByTestId('status-view-submit')).not.toBeDisabled();
+			await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
 		});
 
-		it('should be enabled when status text is changed', () => {
+		it('should be enabled when status text is changed', async () => {
 			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
 			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
 			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
@@ -158,12 +156,12 @@ describe('StatusView', () => {
 
 			fireEvent.changeText(screen.getByTestId('status-view-input'), 'New status');
 
-			expect(screen.getByTestId('status-view-submit')).not.toBeDisabled();
+			await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
 		});
 	});
 
 	describe('submit action', () => {
-		it('should call setUserStatus with status and statusText', () => {
+		it('should call setUserStatus with status and statusText', async () => {
 			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
 			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
 			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
@@ -172,12 +170,13 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			fireEvent.press(screen.getByTestId('status-view-busy'));
+			await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
 			fireEvent.press(screen.getByTestId('status-view-submit'));
 
 			expect(mockSetUserStatus).toHaveBeenCalledWith('busy', '', undefined);
 		});
 
-		it('should call setUserStatus on modern server with status change', () => {
+		it('should call setUserStatus on modern server with status change', async () => {
 			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
 			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
 			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
@@ -186,7 +185,7 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			fireEvent.press(screen.getByTestId('status-view-busy'));
-
+			await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
 			fireEvent.press(screen.getByTestId('status-view-submit'));
 
 			expect(mockSetUserStatus).toHaveBeenCalledWith('busy', '', undefined);
@@ -217,6 +216,7 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			fireEvent.press(screen.getByTestId('status-view-busy'));
+			await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
 			fireEvent.press(screen.getByTestId('status-view-submit'));
 
 			await waitFor(() => expect(mockShowErrorAlertWithEMessage).toHaveBeenCalledWith(error));
@@ -234,7 +234,7 @@ describe('StatusView', () => {
 			expect(screen.getByTestId('status-view-clear-after')).toBeOnTheScreen();
 		});
 
-		it('should not pass statusExpiresAt on submit when picker was not touched', () => {
+		it('should not pass statusExpiresAt on submit when picker was not touched', async () => {
 			mockedStore.dispatch(
 				setUser({
 					id: 'user-id',
@@ -251,12 +251,13 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			fireEvent.press(screen.getByTestId('status-view-online'));
+			await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled());
 			fireEvent.press(screen.getByTestId('status-view-submit'));
 
 			expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', undefined);
 		});
 
-		it('should pass expiresAt on submit when picker is interacted with', () => {
+		it('should pass expiresAt on submit when picker is interacted with', async () => {
 			jest.useFakeTimers();
 			jest.setSystemTime(new Date('2026-06-22T12:00:00.000Z'));
 			try {
@@ -274,6 +275,7 @@ describe('StatusView', () => {
 				const { onConfirm } = children.props;
 				act(() => onConfirm('30', null));
 
+				await waitFor(() => expect(screen.getByTestId('status-view-submit')).not.toBeDisabled(), { interval: 0 });
 				fireEvent.press(screen.getByTestId('status-view-submit'));
 
 				expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', '2026-06-22T12:30:00.000Z');
