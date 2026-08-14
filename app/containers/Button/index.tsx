@@ -1,12 +1,11 @@
 import { type FC } from 'react';
-import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { Pressable, type PressableProps, type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
+interface IButtonProps extends Omit<PressableProps, 'children' | 'disabled'> {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -66,6 +65,7 @@ const Button: FC<IButtonProps> = ({
 	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
 	const isDisabled = disabled || loading;
+	const rippleColor = isPrimary ? colors.buttonBackgroundPrimaryPress : colors.buttonBackgroundSecondaryPress;
 
 	const defaultBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault;
 	const disabledBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDisabled : colors.buttonBackgroundSecondaryDisabled;
@@ -88,15 +88,16 @@ const Button: FC<IButtonProps> = ({
 	];
 
 	return (
-		<RectButton
+		<Pressable
 			onPress={onPress}
-			enabled={!isDisabled}
+			disabled={isDisabled}
+			android_ripple={{ color: rippleColor }}
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</RectButton>
+		</Pressable>
 	);
 };
 

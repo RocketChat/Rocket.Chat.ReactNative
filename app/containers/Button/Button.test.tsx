@@ -63,7 +63,7 @@ describe('ButtonTests', () => {
 	test('disabled button is in disabled state', async () => {
 		const { findByTestId } = render(<TestButton disabled={true} />);
 		const button = await findByTestId(testProps.testID);
-		expect(button.props.enabled).toBe(false);
+		expect(button.props.accessibilityState.disabled).toBe(true);
 	});
 
 	test('should trigger onPress function on button press', async () => {

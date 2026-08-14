@@ -126790,56 +126790,57 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                 </Text>
                               </Text>
                             </View>
-                            <RNGestureHandlerButton
+                            <View
                               accessibilityLabel="Text button"
                               accessibilityRole="button"
-                              activeOpacity={0.105}
+                              accessibilityState={
+                                {
+                                  "busy": undefined,
+                                  "checked": undefined,
+                                  "disabled": undefined,
+                                  "expanded": undefined,
+                                  "selected": undefined,
+                                }
+                              }
+                              accessibilityValue={
+                                {
+                                  "max": undefined,
+                                  "min": undefined,
+                                  "now": undefined,
+                                  "text": undefined,
+                                }
+                              }
+                              accessible={true}
                               collapsable={false}
-                              delayLongPress={600}
-                              enabled={true}
-                              handlerTag={-1}
-                              handlerType="NativeViewGestureHandler"
-                              innerRef={null}
-                              onActiveStateChange={[Function]}
-                              onGestureHandlerEvent={[Function]}
-                              onGestureHandlerStateChange={[Function]}
-                              onPress={[Function]}
+                              focusable={true}
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
                               style={
                                 [
                                   {
-                                    "backgroundColor": "#156FF5",
-                                    "borderRadius": 4,
                                     "justifyContent": "center",
-                                    "marginBottom": 12,
                                     "paddingHorizontal": 16,
                                     "paddingVertical": 14,
                                   },
                                   {
-                                    "cursor": undefined,
+                                    "borderRadius": 4,
+                                    "marginBottom": 12,
                                   },
+                                  {
+                                    "backgroundColor": "#156FF5",
+                                  },
+                                  {},
+                                  undefined,
                                 ]
                               }
-                              underlayColor="black"
                             >
-                              <View
-                                collapsable={false}
-                                style={
-                                  {
-                                    "backgroundColor": "black",
-                                    "borderBottomLeftRadius": undefined,
-                                    "borderBottomRightRadius": undefined,
-                                    "borderRadius": 4,
-                                    "borderTopLeftRadius": undefined,
-                                    "borderTopRightRadius": undefined,
-                                    "bottom": 0,
-                                    "left": 0,
-                                    "opacity": 0,
-                                    "position": "absolute",
-                                    "right": 0,
-                                    "top": 0,
-                                  }
-                                }
-                              />
                               <Text
                                 style={
                                   [
@@ -126859,7 +126860,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                               >
                                 Text button
                               </Text>
-                            </RNGestureHandlerButton>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -127482,56 +127483,57 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                                 </Text>
                               </Text>
                             </View>
-                            <RNGestureHandlerButton
+                            <View
                               accessibilityLabel="Text button"
                               accessibilityRole="button"
-                              activeOpacity={0.105}
+                              accessibilityState={
+                                {
+                                  "busy": undefined,
+                                  "checked": undefined,
+                                  "disabled": undefined,
+                                  "expanded": undefined,
+                                  "selected": undefined,
+                                }
+                              }
+                              accessibilityValue={
+                                {
+                                  "max": undefined,
+                                  "min": undefined,
+                                  "now": undefined,
+                                  "text": undefined,
+                                }
+                              }
+                              accessible={true}
                               collapsable={false}
-                              delayLongPress={600}
-                              enabled={true}
-                              handlerTag={-1}
-                              handlerType="NativeViewGestureHandler"
-                              innerRef={null}
-                              onActiveStateChange={[Function]}
-                              onGestureHandlerEvent={[Function]}
-                              onGestureHandlerStateChange={[Function]}
-                              onPress={[Function]}
+                              focusable={true}
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
                               style={
                                 [
                                   {
-                                    "backgroundColor": "#156FF5",
-                                    "borderRadius": 4,
                                     "justifyContent": "center",
-                                    "marginBottom": 12,
                                     "paddingHorizontal": 16,
                                     "paddingVertical": 14,
                                   },
                                   {
-                                    "cursor": undefined,
+                                    "borderRadius": 4,
+                                    "marginBottom": 12,
                                   },
+                                  {
+                                    "backgroundColor": "#156FF5",
+                                  },
+                                  {},
+                                  undefined,
                                 ]
                               }
-                              underlayColor="black"
                             >
-                              <View
-                                collapsable={false}
-                                style={
-                                  {
-                                    "backgroundColor": "black",
-                                    "borderBottomLeftRadius": undefined,
-                                    "borderBottomRightRadius": undefined,
-                                    "borderRadius": 4,
-                                    "borderTopLeftRadius": undefined,
-                                    "borderTopRightRadius": undefined,
-                                    "bottom": 0,
-                                    "left": 0,
-                                    "opacity": 0,
-                                    "position": "absolute",
-                                    "right": 0,
-                                    "top": 0,
-                                  }
-                                }
-                              />
                               <Text
                                 style={
                                   [
@@ -127551,7 +127553,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                               >
                                 Text button
                               </Text>
-                            </RNGestureHandlerButton>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -128016,56 +128018,57 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                 </Text>
                               </Text>
                             </View>
-                            <RNGestureHandlerButton
+                            <View
                               accessibilityLabel="Text button"
                               accessibilityRole="button"
-                              activeOpacity={0.105}
+                              accessibilityState={
+                                {
+                                  "busy": undefined,
+                                  "checked": undefined,
+                                  "disabled": undefined,
+                                  "expanded": undefined,
+                                  "selected": undefined,
+                                }
+                              }
+                              accessibilityValue={
+                                {
+                                  "max": undefined,
+                                  "min": undefined,
+                                  "now": undefined,
+                                  "text": undefined,
+                                }
+                              }
+                              accessible={true}
                               collapsable={false}
-                              delayLongPress={600}
-                              enabled={true}
-                              handlerTag={-1}
-                              handlerType="NativeViewGestureHandler"
-                              innerRef={null}
-                              onActiveStateChange={[Function]}
-                              onGestureHandlerEvent={[Function]}
-                              onGestureHandlerStateChange={[Function]}
-                              onPress={[Function]}
+                              focusable={true}
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
                               style={
                                 [
                                   {
-                                    "backgroundColor": "#156FF5",
-                                    "borderRadius": 4,
                                     "justifyContent": "center",
-                                    "marginBottom": 12,
                                     "paddingHorizontal": 16,
                                     "paddingVertical": 14,
                                   },
                                   {
-                                    "cursor": undefined,
+                                    "borderRadius": 4,
+                                    "marginBottom": 12,
                                   },
+                                  {
+                                    "backgroundColor": "#156FF5",
+                                  },
+                                  {},
+                                  undefined,
                                 ]
                               }
-                              underlayColor="black"
                             >
-                              <View
-                                collapsable={false}
-                                style={
-                                  {
-                                    "backgroundColor": "black",
-                                    "borderBottomLeftRadius": undefined,
-                                    "borderBottomRightRadius": undefined,
-                                    "borderRadius": 4,
-                                    "borderTopLeftRadius": undefined,
-                                    "borderTopRightRadius": undefined,
-                                    "bottom": 0,
-                                    "left": 0,
-                                    "opacity": 0,
-                                    "position": "absolute",
-                                    "right": 0,
-                                    "top": 0,
-                                  }
-                                }
-                              />
                               <Text
                                 style={
                                   [
@@ -128085,7 +128088,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                               >
                                 Text button
                               </Text>
-                            </RNGestureHandlerButton>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -128708,56 +128711,57 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                                 </Text>
                               </Text>
                             </View>
-                            <RNGestureHandlerButton
+                            <View
                               accessibilityLabel="Text button"
                               accessibilityRole="button"
-                              activeOpacity={0.105}
+                              accessibilityState={
+                                {
+                                  "busy": undefined,
+                                  "checked": undefined,
+                                  "disabled": undefined,
+                                  "expanded": undefined,
+                                  "selected": undefined,
+                                }
+                              }
+                              accessibilityValue={
+                                {
+                                  "max": undefined,
+                                  "min": undefined,
+                                  "now": undefined,
+                                  "text": undefined,
+                                }
+                              }
+                              accessible={true}
                               collapsable={false}
-                              delayLongPress={600}
-                              enabled={true}
-                              handlerTag={-1}
-                              handlerType="NativeViewGestureHandler"
-                              innerRef={null}
-                              onActiveStateChange={[Function]}
-                              onGestureHandlerEvent={[Function]}
-                              onGestureHandlerStateChange={[Function]}
-                              onPress={[Function]}
+                              focusable={true}
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
                               style={
                                 [
                                   {
-                                    "backgroundColor": "#156FF5",
-                                    "borderRadius": 4,
                                     "justifyContent": "center",
-                                    "marginBottom": 12,
                                     "paddingHorizontal": 16,
                                     "paddingVertical": 14,
                                   },
                                   {
-                                    "cursor": undefined,
+                                    "borderRadius": 4,
+                                    "marginBottom": 12,
                                   },
+                                  {
+                                    "backgroundColor": "#156FF5",
+                                  },
+                                  {},
+                                  undefined,
                                 ]
                               }
-                              underlayColor="black"
                             >
-                              <View
-                                collapsable={false}
-                                style={
-                                  {
-                                    "backgroundColor": "black",
-                                    "borderBottomLeftRadius": undefined,
-                                    "borderBottomRightRadius": undefined,
-                                    "borderRadius": 4,
-                                    "borderTopLeftRadius": undefined,
-                                    "borderTopRightRadius": undefined,
-                                    "bottom": 0,
-                                    "left": 0,
-                                    "opacity": 0,
-                                    "position": "absolute",
-                                    "right": 0,
-                                    "top": 0,
-                                  }
-                                }
-                              />
                               <Text
                                 style={
                                   [
@@ -128777,7 +128781,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                               >
                                 Text button
                               </Text>
-                            </RNGestureHandlerButton>
+                            </View>
                           </View>
                         </View>
                       </View>
