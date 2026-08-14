@@ -27,32 +27,26 @@ export const formatAttachmentUrl = (
 ): string => {
 	const protectFiles = store.getState().settings.FileUpload_ProtectFiles;
 
-	// A data: uri is already its own encoding — running it through the parser would corrupt the payload.
-	if (attachmentUrl && isImageBase64(attachmentUrl)) {
+	if ((attachmentUrl && isImageBase64(attachmentUrl)) || attachmentUrl?.startsWith('file://')) {
 		return attachmentUrl;
-	}
-	// Cache filenames keep unicode letters (sanitizeLikeString only strips `[^\p{L}\p{Nd}]`), so `vídeo.mov` reaches
-	// here verbatim and the native players reject the unescaped path. Encode local uris too.
-	if (attachmentUrl?.startsWith('file://')) {
-		return encodeAttachmentUrl(attachmentUrl);
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
 		if (_originalUrl && !_originalUrl.startsWith(server)) {
-			return encodeAttachmentUrl(_originalUrl);
+			return _originalUrl;
 		}
 
 		if (attachmentUrl.includes('rc_token')) {
 			return encodeAttachmentUrl(attachmentUrl);
 		}
 
-		if (protectFiles) return encodeAttachmentUrl(setParamInUrl({ url: attachmentUrl, token, userId }));
-		return encodeAttachmentUrl(attachmentUrl);
+		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
+		return attachmentUrl;
 	}
 	let cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
 	cdnPrefix = cdnPrefix?.trim();
 	if (cdnPrefix && cdnPrefix.startsWith('http')) {
 		server = cdnPrefix.replace(/\/+$/, '');
 	}
-	if (protectFiles) return encodeAttachmentUrl(setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId }));
-	return encodeAttachmentUrl(`${server}${attachmentUrl}`);
+	if (protectFiles) return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
+	return `${server}${attachmentUrl}`;
 };

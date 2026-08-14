@@ -12,6 +12,7 @@ import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
+import { encodeAttachmentUrl } from '../../../../../lib/methods/helpers/formatAttachmentUrl';
 
 export const MessageImage = ({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	const { colors } = useTheme();
@@ -69,7 +70,7 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri }} contentFit='cover' />
+					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeAttachmentUrl(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (

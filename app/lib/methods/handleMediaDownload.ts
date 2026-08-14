@@ -200,22 +200,10 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
-// decodeURIComponent throws on a malformed escape (`%ZZ`); fall back to the raw value so the comparison still runs.
-const decodeUrl = (url: string) => {
-	try {
-		return decodeURIComponent(url);
-	} catch {
-		return url;
-	}
-};
-
-// `downloadUrl` has been through formatAttachmentUrl (so spaces are `%20`) while the attachment rows carry the
-// server value verbatim. Compare decoded so both forms line up regardless of which one the server sent.
-export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) => {
-	const target = decodeUrl(downloadUrl);
-	const matches = (attachmentUrl?: string) => !!attachmentUrl && target.includes(decodeUrl(attachmentUrl));
-	return matches(att.image_url) || matches(att.audio_url) || matches(att.video_url);
-};
+export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) =>
+	(att.image_url && downloadUrl.includes(att.image_url)) ||
+	(att.audio_url && downloadUrl.includes(att.audio_url)) ||
+	(att.video_url && downloadUrl.includes(att.video_url));
 
 const mapAttachments = ({
 	attachments,
