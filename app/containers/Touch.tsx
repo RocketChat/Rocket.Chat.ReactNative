@@ -1,18 +1,21 @@
-import { forwardRef, type ReactNode } from 'react';
-import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { forwardRef, type ReactNode, type RefObject } from 'react';
 import {
 	View,
 	StyleSheet,
+	TouchableOpacity,
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
-	type AccessibilityActionInfo
+	type AccessibilityActionInfo,
+	type TouchableOpacityProps,
+	type TouchableHighlightProps
 } from 'react-native';
-import { withKeyboardFocus } from 'react-native-external-keyboard';
+import { Pressable, withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 
-export interface ITouchProps extends RectButtonProps {
+export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightProps {
 	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
@@ -21,17 +24,22 @@ export interface ITouchProps extends RectButtonProps {
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
-	disabled?: boolean;
+	enabled?: boolean;
+	android_rippleColor?: string;
+	rippleColor?: string;
+	componentRef?: RefObject<View | null>;
 }
 
-const KeyboardRectButton = withKeyboardFocus(RectButton);
+const KeyboardTouchableOpacity = withKeyboardFocus(TouchableOpacity);
+const Wrapper = (isIOS ? KeyboardTouchableOpacity : Pressable) as unknown as typeof KeyboardTouchableOpacity;
 
-const Touch = forwardRef<any, ITouchProps>(
+const Touch = forwardRef<View, ITouchProps>(
 	(
 		{
 			children,
 			onPress,
-			underlayColor,
+			android_rippleColor,
+			rippleColor,
 			accessible,
 			accessibilityLabel,
 			accessibilityHint,
@@ -39,13 +47,16 @@ const Touch = forwardRef<any, ITouchProps>(
 			onAccessibilityAction,
 			style,
 			rectButtonStyle,
+			enabled = true,
 			disabled,
+			componentRef,
+			onLongPress,
 			...props
 		},
 		ref
 	) => {
 		const { colors } = useTheme();
-		// The background color must be applied to the RectButton, not the View.
+		// The background color must be applied to the pressable, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
 		const flattenedStyle = StyleSheet.flatten(style) || {};
 		const {
@@ -63,7 +74,7 @@ const Touch = forwardRef<any, ITouchProps>(
 			...viewStyle
 		} = flattenedStyle;
 		// The margin should be applied to the parent component.
-		// If set on the View, it will create an internal margin inside the RectButton.
+		// If set on the View, it will create an internal margin inside the pressable.
 		const marginStyles = {
 			margin,
 			marginBottom,
@@ -75,29 +86,28 @@ const Touch = forwardRef<any, ITouchProps>(
 			marginStart,
 			marginTop
 		};
+		const ripple = android_rippleColor ?? rippleColor ?? colors.surfaceNeutral;
+
 		return (
-			<KeyboardRectButton
+			<Wrapper
 				ref={ref}
+				componentRef={componentRef as RefObject<View>}
 				onPress={onPress}
-				activeOpacity={1}
-				underlayColor={underlayColor || colors.surfaceNeutral}
-				rippleColor={colors.surfaceNeutral}
-				focusable={!disabled}
-				canBeFocused={!disabled}
+				onLongPress={onLongPress}
+				accessible={process.env.RUNNING_E2E_TESTS === 'true' ? false : accessible}
+				accessibilityRole={props.accessibilityRole}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={accessibilityHint}
+				accessibilityActions={accessibilityActions}
+				onAccessibilityAction={onAccessibilityAction}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
+				{...(isIOS ? {} : { android_ripple: { color: ripple } })}
 				{...props}
-				enabled={!disabled}>
-				<View
-					accessible={accessible}
-					accessibilityRole={props.accessibilityRole}
-					accessibilityLabel={accessibilityLabel}
-					accessibilityHint={accessibilityHint}
-					accessibilityActions={accessibilityActions}
-					onAccessibilityAction={onAccessibilityAction}
-					style={viewStyle}>
-					{children}
-				</View>
-			</KeyboardRectButton>
+				disabled={disabled === true || !enabled}
+				focusable={enabled}
+				canBeFocused={enabled}>
+				<View style={viewStyle}>{children}</View>
+			</Wrapper>
 		);
 	}
 );

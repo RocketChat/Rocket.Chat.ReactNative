@@ -47,7 +47,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -62,7 +62,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -500,7 +500,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -515,7 +515,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -41130,7 +41130,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -41145,7 +41145,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -45484,7 +45484,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -45499,7 +45499,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -62072,7 +62072,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -62087,7 +62087,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -62595,7 +62595,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -62610,7 +62610,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -141923,7 +141923,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -141938,7 +141938,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
@@ -142380,7 +142380,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -142395,7 +142395,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
             }
             accessible={true}
             collapsable={false}
-            focusable={true}
+            focusable={false}
             onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
