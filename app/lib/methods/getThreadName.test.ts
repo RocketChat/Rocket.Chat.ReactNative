@@ -45,10 +45,20 @@ const mockedLog = log as jest.MockedFunction<typeof log>;
 
 // mimics watermelon rejecting an update prepared on a record another writer already touched
 const buildMessageRecord = (id: string) => {
-	const record: { id: string; tmsg: string | undefined; stale: boolean; prepareUpdate: jest.Mock } = {
+	const record: {
+		id: string;
+		tmsg: string | undefined;
+		stale: boolean;
+		prepareUpdate: jest.Mock;
+		update: jest.Mock;
+	} = {
 		id,
 		tmsg: undefined,
 		stale: false,
+		update: jest.fn(async (updater: (m: any) => void) => {
+			updater(record);
+			return record;
+		}),
 		prepareUpdate: jest.fn((updater: (m: any) => void) => {
 			if (record.stale) {
 				throw new Error('Cannot update a record with pending changes');
@@ -99,5 +109,72 @@ describe('getThreadName', () => {
 		expect(batch).toHaveBeenCalledTimes(1);
 		// the message is read again only after the network and decryption work
 		expect(mockedGetMessageById).toHaveBeenCalledTimes(2);
+	});
+
+	it('updates the message when the local thread name differs from the cached tmsg', async () => {
+		const record = buildMessageRecord('MESSAGE_ID');
+		record.tmsg = 'old name';
+		mockedGetMessageById.mockResolvedValue(record as any);
+		mockedGetThreadById.mockResolvedValue({ msg: 'new name' } as any);
+
+		const tmsg = await getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_ID');
+
+		expect(tmsg).toBe('new name');
+		expect(record.update).toHaveBeenCalledTimes(1);
+		expect(record.tmsg).toBe('new name');
+		expect(mockedGetSingleMessage).not.toHaveBeenCalled();
+		expect(batch).not.toHaveBeenCalled();
+	});
+
+	it('does not write when the cached tmsg already matches the local thread', async () => {
+		const record = buildMessageRecord('MESSAGE_ID');
+		record.tmsg = 'same name';
+		mockedGetMessageById.mockResolvedValue(record as any);
+		mockedGetThreadById.mockResolvedValue({ msg: 'same name' } as any);
+
+		const tmsg = await getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_ID');
+
+		expect(tmsg).toBe('same name');
+		expect((database.active as any).write).not.toHaveBeenCalled();
+		expect(record.update).not.toHaveBeenCalled();
+	});
+
+	it('falls back to the first attachment title when the local thread has no msg', async () => {
+		const record = buildMessageRecord('MESSAGE_ID');
+		mockedGetMessageById.mockResolvedValue(record as any);
+		mockedGetThreadById.mockResolvedValue({ msg: undefined, attachments: [{ title: 'attachment title' }] } as any);
+
+		const tmsg = await getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_ID');
+
+		expect(tmsg).toBe('attachment title');
+		expect(record.tmsg).toBe('attachment title');
+	});
+
+	it('skips creating the thread when another writer created it during the network gap', async () => {
+		const record = buildMessageRecord('MESSAGE_ID');
+		mockedGetMessageById.mockResolvedValue(record as any);
+		mockedGetThreadById.mockResolvedValueOnce(null as any).mockResolvedValueOnce({ msg: 'thread name' } as any);
+		mockedGetSingleMessage.mockResolvedValue({ _id: 'THREAD_ID', msg: 'thread name' } as any);
+		mockedDecryptMessage.mockImplementation((message: any) => Promise.resolve(message));
+
+		const tmsg = await getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_ID');
+
+		expect(tmsg).toBe('thread name');
+		expect((database.active as any).write).not.toHaveBeenCalled();
+		expect(batch).not.toHaveBeenCalled();
+		expect(threadCollection.prepareCreate).not.toHaveBeenCalled();
+	});
+
+	it('logs and resolves undefined when fetching the remote thread fails', async () => {
+		const error = new Error('network down');
+		mockedGetMessageById.mockResolvedValue(buildMessageRecord('MESSAGE_ID') as any);
+		mockedGetThreadById.mockResolvedValue(null as any);
+		mockedGetSingleMessage.mockRejectedValue(error);
+
+		const tmsg = await getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_ID');
+
+		expect(tmsg).toBeUndefined();
+		expect(mockedLog).toHaveBeenCalledWith(error);
+		expect(batch).not.toHaveBeenCalled();
 	});
 });
