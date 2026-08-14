@@ -263,11 +263,9 @@ export const persistMessage = async (messageId: string, uri: string, encryption:
 				})
 			);
 		}
-		if (!batch.length) {
-			console.log('[handleMediaDownload] no message row for attachment, cached uri not persisted');
-			return;
+		if (batch.length) {
+			await db.batch(batch);
 		}
-		await db.batch(batch);
 	});
 };
 
