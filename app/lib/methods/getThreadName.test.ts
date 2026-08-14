@@ -55,7 +55,7 @@ const buildMessageRecord = (id: string) => {
 		id,
 		tmsg: undefined,
 		stale: false,
-		update: jest.fn(async (updater: (m: any) => void) => {
+		update: jest.fn((updater: (m: any) => void) => {
 			updater(record);
 			return record;
 		}),
