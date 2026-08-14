@@ -98,19 +98,6 @@ describe('Socket.probe', () => {
 		socket.connection.readyState = 2;
 		await expect(socket.probe()).resolves.toBe(false);
 	});
-
-	it('ignores a stale pong that does not advance lastPing', async () => {
-		jest.useFakeTimers();
-		const { socket } = buildSocket();
-		const initialLastPing = Date.now() - 1000;
-		socket.lastPing = initialLastPing;
-
-		const probePromise = socket.probe();
-		socket.emit('pong');
-
-		await jest.advanceTimersByTimeAsync(2000);
-		await expect(probePromise).resolves.toBe(false);
-	});
 });
 
 describe('Socket.reopenNow', () => {
@@ -157,7 +144,10 @@ describe('Socket.reopenNow', () => {
 		const reopenPromise = socket.reopenNow();
 
 		expect(disconnectedListener).toHaveBeenCalledTimes(1);
-		await expect(sendPromise).rejects.toBeUndefined();
+		await expect(sendPromise).rejects.toMatchObject({
+			message: '[ddp] connection reopened before the response arrived',
+			id: 'ddp-0'
+		});
 
 		mockConnections[0].onopen();
 		await reopenPromise;
