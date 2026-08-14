@@ -234,7 +234,7 @@ const mapAttachments = ({
 		e2e: encryption ? 'done' : undefined
 	}));
 
-const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
+export const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
 	const db = database.active;
 	const batch: Model[] = [];
 	const messageRecord = await getMessageById(messageId);
