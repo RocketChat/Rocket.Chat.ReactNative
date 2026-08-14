@@ -15,7 +15,7 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 	try {
 		const db = database.active;
 		const threadCollection = db.get('threads');
-		const messageRecord = await getMessageById(messageId);
+		let messageRecord = await getMessageById(messageId);
 		let threadRecord = await getThreadById(tmid);
 		if (threadRecord) {
 			tmsg = buildThreadName(threadRecord);
@@ -34,14 +34,14 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 			threadRecord = await getThreadById(tmid);
 			if (!threadRecord) {
 				await db.write(async () => {
-					const freshMessageRecord = await getMessageById(messageId);
+					messageRecord = await getMessageById(messageId);
 					await db.batch(
 						threadCollection?.prepareCreate((t: TThreadModel) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 							if (t.subscription) t.subscription.id = rid;
 							Object.assign(t, { ...thread, ...decryptedThread });
 						}),
-						freshMessageRecord?.prepareUpdate(m => {
+						messageRecord?.prepareUpdate(m => {
 							m.tmsg = tmsg;
 						})
 					);
