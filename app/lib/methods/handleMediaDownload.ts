@@ -236,36 +236,37 @@ const mapAttachments = ({
 
 export const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
 	const db = database.active;
-	const batch: Model[] = [];
-	const messageRecord = await getMessageById(messageId);
-	if (messageRecord) {
-		batch.push(
-			messageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	const threadRecord = await getThreadById(messageId);
-	if (threadRecord) {
-		batch.push(
-			threadRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	const threadMessageRecord = await getThreadMessageById(messageId);
-	if (threadMessageRecord) {
-		batch.push(
-			threadMessageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	if (!batch.length) {
-		console.log('[handleMediaDownload] no message row for attachment, cached uri not persisted');
-		return;
-	}
+
 	await db.write(async () => {
+		const batch: Model[] = [];
+		const messageRecord = await getMessageById(messageId);
+		if (messageRecord) {
+			batch.push(
+				messageRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		const threadRecord = await getThreadById(messageId);
+		if (threadRecord) {
+			batch.push(
+				threadRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		const threadMessageRecord = await getThreadMessageById(messageId);
+		if (threadMessageRecord) {
+			batch.push(
+				threadMessageRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		if (!batch.length) {
+			console.log('[handleMediaDownload] no message row for attachment, cached uri not persisted');
+			return;
+		}
 		await db.batch(batch);
 	});
 };
