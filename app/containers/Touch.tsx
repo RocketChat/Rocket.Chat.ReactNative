@@ -1,24 +1,18 @@
-import { forwardRef, type ReactNode, type RefObject } from 'react';
+import { forwardRef, type ReactNode } from 'react';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 import {
 	View,
 	StyleSheet,
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
-	type AccessibilityActionInfo,
-	TouchableOpacity,
-	TouchableHighlight,
-	type TouchableHighlightProps,
-	type TouchableOpacityProps
+	type AccessibilityActionInfo
 } from 'react-native';
-import { Pressable as RNNGHPressable } from 'react-native-gesture-handler';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
-import { isIOS, isAndroid } from '../lib/methods/helpers/deviceInfo';
-import { isExternalKeyboardConnected } from '../lib/methods/helpers/externalInput';
 
-export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightProps {
+export interface ITouchProps extends RectButtonProps {
 	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
@@ -27,22 +21,17 @@ export interface ITouchProps extends TouchableOpacityProps, TouchableHighlightPr
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
-	enabled?: boolean;
-	android_rippleColor?: string;
-	componentRef?: RefObject<View | null>;
+	disabled?: boolean;
 }
 
-const Component = isIOS ? TouchableOpacity : TouchableHighlight;
-const KeyboardComponent = withKeyboardFocus(Component);
-const usingRNGHPressable = isAndroid && !isExternalKeyboardConnected();
-const RNGHComponent = RNNGHPressable as unknown as typeof KeyboardComponent;
+const KeyboardRectButton = withKeyboardFocus(RectButton);
 
-const Touch = forwardRef<View, ITouchProps>(
+const Touch = forwardRef<any, ITouchProps>(
 	(
 		{
 			children,
 			onPress,
-			android_rippleColor,
+			underlayColor,
 			accessible,
 			accessibilityLabel,
 			accessibilityHint,
@@ -50,10 +39,7 @@ const Touch = forwardRef<View, ITouchProps>(
 			onAccessibilityAction,
 			style,
 			rectButtonStyle,
-			enabled = true,
-			componentRef,
-			onLongPress,
-			underlayColor,
+			disabled,
 			...props
 		},
 		ref
@@ -89,34 +75,29 @@ const Touch = forwardRef<View, ITouchProps>(
 			marginStart,
 			marginTop
 		};
-		const rippleColor = android_rippleColor ?? colors.surfaceNeutral;
-		const touchableProps = isIOS
-			? {}
-			: usingRNGHPressable
-				? { android_ripple: { color: rippleColor } }
-				: { underlayColor: underlayColor ?? rippleColor };
-		const Wrapper = usingRNGHPressable ? RNGHComponent : KeyboardComponent;
-
 		return (
-			<Wrapper
+			<KeyboardRectButton
 				ref={ref}
-				componentRef={componentRef as RefObject<View>}
 				onPress={onPress}
-				onLongPress={onLongPress}
-				accessible={process.env.RUNNING_E2E_TESTS === 'true' ? false : accessible}
-				accessibilityRole={props.accessibilityRole}
-				accessibilityLabel={accessibilityLabel}
-				accessibilityHint={accessibilityHint}
-				accessibilityActions={accessibilityActions}
-				onAccessibilityAction={onAccessibilityAction}
+				activeOpacity={1}
+				underlayColor={underlayColor || colors.surfaceNeutral}
+				rippleColor={colors.surfaceNeutral}
+				focusable={!disabled}
+				canBeFocused={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
-				{...touchableProps}
 				{...props}
-				disabled={!enabled}
-				focusable={enabled}
-				canBeFocused={enabled}>
-				<View style={viewStyle}>{children}</View>
-			</Wrapper>
+				enabled={!disabled}>
+				<View
+					accessible={accessible}
+					accessibilityRole={props.accessibilityRole}
+					accessibilityLabel={accessibilityLabel}
+					accessibilityHint={accessibilityHint}
+					accessibilityActions={accessibilityActions}
+					onAccessibilityAction={onAccessibilityAction}
+					style={viewStyle}>
+					{children}
+				</View>
+			</KeyboardRectButton>
 		);
 	}
 );

@@ -3,7 +3,6 @@ import { A11y } from 'react-native-a11y-order';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../Touch';
 import Message, { type TMessageProps } from '../Message/Message';
-import { useLastFocusedMessageRef } from '../../../../lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from '../../hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from '../../hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from '../../hooks/useMessageAccessibilityHint';
@@ -19,7 +18,6 @@ import {
 
 const MessageTouchable = (props: TMessageProps) => {
 	const { colors } = useTheme();
-	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const isInfo = useIsInfoMessage();
 	const { hasError } = useMessageStatus();
 	const { tappable } = useMessageTouchable();
@@ -48,7 +46,6 @@ const MessageTouchable = (props: TMessageProps) => {
 	}
 
 	const handleLongPress = () => {
-		markAsLastFocused();
 		onLongPress();
 	};
 
@@ -56,7 +53,6 @@ const MessageTouchable = (props: TMessageProps) => {
 		<A11y.Order>
 			<A11y.Index index={1}>
 				<Touch
-					componentRef={touchRef}
 					onLongPress={handleLongPress}
 					onPress={onPressAction}
 					disabled={!tappable}
