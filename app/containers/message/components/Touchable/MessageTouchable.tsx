@@ -58,10 +58,6 @@ const MessageTouchable = (props: TMessageProps) => {
 				<Touch
 					componentRef={touchRef}
 					onLongPress={handleLongPress}
-					// Inline markdown links are plain <Text onLongPress> and cannot cancel a gesture-handler
-					// ancestor, so a long press on a link used to fire the link's handler and open the action
-					// sheet. Detecting it in the responder system instead lets the link win by depth.
-					longPressViaResponder
 					onPress={onPressAction}
 					disabled={!tappable}
 					style={{ backgroundColor }}
