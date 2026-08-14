@@ -367,19 +367,18 @@ class Encryption {
 			}
 
 			await db.write(async () => {
-				const prepared = decrypted
-					.map(({ message, newMessage }) => {
-						try {
-							return message.prepareUpdate(
-								protectedFunction((m: TMessageModel) => {
-									Object.assign(m, newMessage);
-								})
-							);
-						} catch (e) {
-							log(e);
-							return null;
-						}
-					});
+				const prepared = decrypted.map(({ message, newMessage }) => {
+					try {
+						return message.prepareUpdate(
+							protectedFunction((m: TMessageModel) => {
+								Object.assign(m, newMessage);
+							})
+						);
+					} catch (e) {
+						log(e);
+						return null;
+					}
+				});
 				await db.batch(...prepared);
 			});
 		} catch (e) {
