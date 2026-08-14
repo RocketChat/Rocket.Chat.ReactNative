@@ -245,4 +245,21 @@ describe('Encryption.decryptPendingMessages', () => {
 		expect(record.e2e).toBe('done');
 		expect(record._preparedState).toBeNull();
 	});
+
+	it('skips a record whose prepareUpdate throws and still commits the others', async () => {
+		const failing = makeMessageRecord('m1');
+		// Already prepared by someone else, so prepareUpdate throws for this one.
+		failing._preparedState = 'update';
+		const healthy = makeMessageRecord('m2');
+		mockQueryRows.messages = [failing, healthy];
+		jest.spyOn(encryption, 'decryptMessage').mockResolvedValue({ msg: 'plain', e2e: 'done' } as any);
+
+		await encryption.decryptPendingMessages(rid);
+
+		const batched = mockDbBatch.mock.calls.flatMap(call => call.flat());
+		expect(batched).toContain(healthy);
+		expect(batched).not.toContain(failing);
+		expect(healthy.msg).toBe('plain');
+		expect(failing.msg).toBe('cipher');
+	});
 });
