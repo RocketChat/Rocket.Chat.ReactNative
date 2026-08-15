@@ -22,6 +22,12 @@ module.exports = {
 		}
 	],
 	env: {
+		// Jest's CommonJS runtime rejects the SDK's dynamic `import('../drivers/ddp')`
+		// as long as babel-preset-expo (caller "metro") leaves it native. Rewrite it to
+		// a synchronous require in the test env only.
+		test: {
+			plugins: ['@babel/plugin-transform-dynamic-import']
+		},
 		production: {
 			plugins: ['transform-remove-console']
 		}
