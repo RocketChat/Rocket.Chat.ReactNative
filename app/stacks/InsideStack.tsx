@@ -98,9 +98,6 @@ const ProfileViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavig
 const ChangePasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ChangePasswordView as any) as any;
 const UserPreferencesViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(UserPreferencesView as any) as any;
 const SecurityPrivacyViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(SecurityPrivacyView as any) as any;
-const ScreenLockConfigViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(
-	ScreenLockConfigView as any
-) as any;
 const CreateDiscussionViewScreen = withNavigation(CreateDiscussionView as any) as any;
 const E2EEnterYourPasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(
 	E2EEnterYourPasswordView as any
@@ -235,10 +232,7 @@ const SettingsStack = createNativeStackNavigator({
 		MediaAutoDownloadView: MediaAutoDownloadViewScreen,
 		GetHelpView: GetHelpViewScreen,
 		LegalView: LegalViewScreen,
-		ScreenLockConfigView: createNativeStackScreen({
-			screen: ScreenLockConfigViewScreen,
-			options: (): NativeStackNavigationOptions => (ScreenLockConfigView as any).navigationOptions()
-		})
+		ScreenLockConfigView
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);

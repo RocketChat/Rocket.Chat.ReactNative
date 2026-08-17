@@ -10570,7 +10570,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-           a year ago 
+           an hour ago 
         </Text>
       </Text>
     </Text>

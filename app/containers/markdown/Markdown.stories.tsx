@@ -220,17 +220,21 @@ export const Lists = () => (
 	</View>
 );
 
-export const Timestamp = () => (
-	<View style={styles.container}>
-		<Markdown msg='t: <t:1735732800:t>' />
-		<Markdown msg='T: <t:1735732800:T>' />
-		<Markdown msg='d: <t:1735732800:d>' />
-		<Markdown msg='D: <t:1735732800:D>' />
-		<Markdown msg='f: <t:1735732800:f>' />
-		<Markdown msg='F: <t:1735732800:F>' />
-		<Markdown msg='R: <t:1735732800:R>' />
-	</View>
-);
+export const Timestamp = () => {
+	// Relative format drifts with wall clock, so anchor it at render time to keep snapshots stable
+	const relativeEpoch = Math.floor(Date.now() / 1000) - 3600;
+	return (
+		<View style={styles.container}>
+			<Markdown msg='t: <t:1735732800:t>' />
+			<Markdown msg='T: <t:1735732800:T>' />
+			<Markdown msg='d: <t:1735732800:d>' />
+			<Markdown msg='D: <t:1735732800:D>' />
+			<Markdown msg='f: <t:1735732800:f>' />
+			<Markdown msg='F: <t:1735732800:F>' />
+			<Markdown msg={`R: <t:${relativeEpoch}:R>`} />
+		</View>
+	);
+};
 
 const textStyle = { fontSize: 10, color: 'red' };
 export const TextStyle = () => (
