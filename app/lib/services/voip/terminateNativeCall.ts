@@ -11,13 +11,9 @@ export function terminateNativeCall(callId: string): void {
 	}
 	if (Platform.OS === 'android') {
 		try {
-			// The Telecom connection is created natively, so it must be disconnectable natively too:
-			// RNCallKeep.endCall silently no-ops whenever its JS-side setup() didn't run, which strands
-			// the connection in ACTIVE and makes every later incoming push get rejected as busy.
+			// RNCallKeep.endCall no-ops when its JS-side setup() didn't run, stranding the connection
 			NativeVoipModule.disconnectNativeCall(callId);
-		} catch {
-			// bridge unavailable pre-boot
-		}
+		} catch {}
 		try {
 			NativeVoipModule.stopVoipCallService();
 		} catch {
