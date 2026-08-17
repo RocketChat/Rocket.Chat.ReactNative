@@ -32,6 +32,7 @@ jest.mock('../../lib/native/NativeVoip', () => ({
 		getLastVoipToken: jest.fn(() => ''),
 		stopNativeDDPClient: jest.fn(),
 		stopVoipCallService: jest.fn(),
+		disconnectNativeCall: jest.fn(),
 		setSpeakerOn: jest.fn(() => Promise.resolve(true)),
 		startAudioRouteSync: jest.fn(() => Promise.resolve()),
 		stopAudioRouteSync: jest.fn(() => Promise.resolve()),

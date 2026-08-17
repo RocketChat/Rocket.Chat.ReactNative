@@ -57,6 +57,17 @@ export interface Spec extends TurboModule {
 	stopVoipCallService(): void;
 
 	/**
+	 * Disconnects the Telecom connection for a call without going through CallKeep.
+	 * iOS: No-op (CallKit teardown goes through RNCallKeep).
+	 * Android: Calls onDisconnect() on the VoiceConnection registered for `callId`, or no-ops when
+	 *   there is none. The connection is created natively (VoipNotification.registerCallWithTelecomManager),
+	 *   so teardown must not depend on RNCallKeep's JS-side module state being initialized — otherwise a
+	 *   failed/absent setup() strands the connection in ACTIVE and every later push is rejected as busy.
+	 *   Also covers a push arriving before JS has booted.
+	 */
+	disconnectNativeCall(callId: string): void;
+
+	/**
 	 * Routes call audio between speakerphone and earpiece.
 	 * Android: API 31+ uses AudioManager.setCommunicationDevice(SPEAKER) for on,
 	 *   clearCommunicationDevice() for off. Pre-31 falls back to MODE_IN_COMMUNICATION + setSpeakerphoneOn.
@@ -106,6 +117,7 @@ const NativeVoipModule =
 		stopNativeDDPClient: () => undefined,
 		startVoipCallService: () => Promise.resolve(),
 		stopVoipCallService: () => undefined,
+		disconnectNativeCall: () => undefined,
 		setSpeakerOn: () => Promise.resolve(false),
 		startAudioRouteSync: () => Promise.resolve(),
 		stopAudioRouteSync: () => Promise.resolve(),

@@ -53,6 +53,7 @@ jest.mock('../../native/NativeVoip', () => ({
 		getLastVoipToken: jest.fn(() => ''),
 		stopNativeDDPClient: jest.fn(),
 		stopVoipCallService: jest.fn(),
+		disconnectNativeCall: jest.fn(),
 		addListener: jest.fn(),
 		removeListeners: jest.fn()
 	}
