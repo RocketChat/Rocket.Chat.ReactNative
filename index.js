@@ -22,10 +22,7 @@ if (process.env.USE_STORYBOOK) {
 
 	LogBox.ignoreAllLogs();
 
-	// Do not gate this on a PackageManager feature: FEATURE_TELECOM is only declared from API 33,
-	// so gating skipped setup() on every older device, leaving endCall and the CallKeep event
-	// listeners dead. Devices without the Telecom subsystem are handled natively — registerPhoneAccount
-	// bails on !FEATURE_TELECOM (see patches/react-native-callkeep+4.3.16.patch).
+	// Never gate on FEATURE_TELECOM (API 33+): non-Telecom devices bail natively in registerPhoneAccount
 	if (Platform.OS === 'android') {
 		const options = {
 			android: {
