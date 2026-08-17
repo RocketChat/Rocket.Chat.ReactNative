@@ -2,8 +2,8 @@ import sdk from '../sdk';
 import { recoverSocket } from '../socketHealth';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { DDPDriver } = require('@rocket.chat/sdk/lib/drivers/ddp') as {
-	DDPDriver: new (options: { host: string; logger: unknown }) => PatchedDriver;
+const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
+	Driver: new (options: { host: string; logger: unknown }) => PatchedDriver;
 };
 
 interface MockConnection {
@@ -75,9 +75,9 @@ const PING_INTERVAL = 10000;
 
 const logger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
 
-/** Real patched DDPDriver over a mocked WebSocket, connected and logged in. */
+/** Real patched Driver over a mocked WebSocket, connected and logged in. */
 async function buildConnectedDriver() {
-	const driver = new DDPDriver({ host: 'localhost:3000', logger });
+	const driver = new Driver({ host: 'localhost:3000', logger });
 	driver.userId = USER_ID;
 	const openPromise = driver.ddp.open();
 	mockConnections[0].onopen();
