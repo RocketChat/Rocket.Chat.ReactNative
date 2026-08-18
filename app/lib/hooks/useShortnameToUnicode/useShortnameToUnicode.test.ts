@@ -109,3 +109,10 @@ test('convert ascii when convertAsciiEmoji = true and isEmojiPicker = true', () 
 	const unicodeEmoji = renderShortnameToUnicode(':(', true);
 	expect(unicodeEmoji).toBe('😞');
 });
+
+test('render newer unicode emojis (e.g. saluting_face, melting_face)', () => {
+	expect(renderShortnameToUnicode(':saluting_face:')).toBe('🫡');
+	expect(renderShortnameToUnicode(':melting_face:')).toBe('🫠');
+	expect(renderShortnameToUnicode(':heart_hands:')).toBe('🫶');
+	expect(renderShortnameToUnicode('Nice work! :saluting_face: 1')).toBe('Nice work! 🫡 1');
+});
