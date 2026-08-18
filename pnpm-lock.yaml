@@ -91,8 +91,8 @@ importers:
         specifier: RocketChat/rocket.chat-mobile-crypto#main
         version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@rocket.chat/sdk':
-        specifier: RocketChat/Rocket.Chat.js.SDK#1ccb76a663c0d0f6d4359873d30c73ce217779c8
-        version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8
+        specifier: RocketChat/Rocket.Chat.js.SDK#383e457b3bb31598daacf2572d20644c795f58d2
+        version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/383e457b3bb31598daacf2572d20644c795f58d2
       '@rocket.chat/ui-kit':
         specifier: ^0.39.0
         version: 0.39.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@7.0.2)
@@ -368,9 +368,6 @@ importers:
         specifier: ~7.25.9
         version: 7.25.9
       '@babel/plugin-proposal-decorators':
-        specifier: ~7.25.9
-        version: 7.25.9(@babel/core@7.25.9)
-      '@babel/plugin-transform-dynamic-import':
         specifier: ~7.25.9
         version: 7.25.9(@babel/core@7.25.9)
       '@babel/plugin-transform-named-capturing-groups-regex':
@@ -2636,8 +2633,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8}
+  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/383e457b3bb31598daacf2572d20644c795f58d2':
+    resolution: {gitHosted: true, integrity: sha512-in4lCtRYlY6PcCN3JfEtO3zVqyVjdic9BXxScWiD2y/BwwBqijgRFKckYm44v9GOwMllav92e9Dsfz8GyuBfhw==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/383e457b3bb31598daacf2572d20644c795f58d2}
     version: 1.3.3-mobile
 
   '@rocket.chat/ui-kit@0.39.0':
@@ -10520,7 +10517,7 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
 
-  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8':
+  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/383e457b3bb31598daacf2572d20644c795f58d2':
     dependencies:
       js-sha256: 0.9.0
       tiny-events: 1.0.1

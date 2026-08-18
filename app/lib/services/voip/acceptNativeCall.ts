@@ -1,6 +1,6 @@
 import log from '../../methods/helpers/log';
 import { onAbort } from '../../methods/helpers/onAbort';
-import sdk from '../sdk';
+import sdk, { type TDriver } from '../sdk';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';
 import { terminateNativeCall } from './terminateNativeCall';
@@ -13,28 +13,19 @@ export interface NativeCallMediaSession {
 	isInitialized(): boolean;
 }
 
-/** The slice of the patched DDP driver the accept path reads: Media Signal subscription readiness. */
-interface MediaSignalDdp {
-	waitForNotifyUserMediaSubs(timeoutMs: number): Promise<boolean>;
-}
-
 const activeGates = new Map<string, AbortController>();
 
-async function waitForMediaSignalSubs(ddp: MediaSignalDdp, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
-	if (typeof ddp.waitForNotifyUserMediaSubs !== 'function') {
-		return false;
-	}
+async function waitForMediaSignalSubs(ddp: TDriver, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
 	if (abortSignal?.aborted) {
 		return false;
 	}
 
-	const ready = ddp.waitForNotifyUserMediaSubs(timeoutMs);
 	const aborted = new Promise<boolean>(resolve => {
 		onAbort(abortSignal, () => resolve(false));
 	});
 
 	try {
-		return await Promise.race([ready, aborted]);
+		return await Promise.race([ddp.waitForNotifyUserMediaSubs(timeoutMs), aborted]);
 	} catch (error) {
 		log(error);
 		return false;
@@ -74,7 +65,7 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			return;
 		}
 
-		const ddp = sdk.current?.ddp as MediaSignalDdp | undefined;
+		const ddp = sdk.current?.ddp;
 		if (!ddp) {
 			return handleFailure(callId, mediaSession);
 		}

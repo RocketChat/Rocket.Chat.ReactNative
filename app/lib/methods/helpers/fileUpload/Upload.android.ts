@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-import { type IFormData, type TUploadHeaders } from './definitions';
+import { type IFormData } from './definitions';
 
 export class Upload {
 	private uploadUrl: string;
@@ -26,14 +26,13 @@ export class Upload {
 		this.isCancelled = false;
 	}
 
-	public setupRequest(url: string, headers: TUploadHeaders, progressCallback?: (loaded: number, total: number) => void): void {
+	public setupRequest(
+		url: string,
+		headers: Record<string, string>,
+		progressCallback?: (loaded: number, total: number) => void
+	): void {
 		this.uploadUrl = url;
-		Object.keys(headers).forEach(key => {
-			const value = headers[key];
-			if (value !== undefined) {
-				this.headers[key] = value;
-			}
-		});
+		this.headers = headers;
 		this.progressCallback = progressCallback;
 	}
 

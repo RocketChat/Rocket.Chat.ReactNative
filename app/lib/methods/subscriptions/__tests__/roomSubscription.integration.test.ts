@@ -1,6 +1,5 @@
 import type { Store } from 'redux';
 
-// The repo auto-applies `__mocks__/@rocket.chat/sdk.js` (an empty class). Drive the real SDK.
 jest.unmock('@rocket.chat/sdk');
 
 jest.mock('universal-websocket-client', () =>
@@ -203,7 +202,6 @@ afterEach(() => {
 	jest.useRealTimers();
 });
 
-/** Build a real SDK client, open its socket, and settle the handshake. */
 async function connectDriver() {
 	sdk.initialize('https://example.com');
 	const connectPromise = (sdk.current as unknown as { connect(): Promise<unknown> }).connect();
@@ -261,7 +259,6 @@ describe('RoomSubscription over the real SDK', () => {
 		expect(redux.store.dispatch).toHaveBeenCalledWith(unsubscribeRoom('room-rid'));
 		expect(redux.store.dispatch).toHaveBeenCalledWith(clearUserTyping());
 
-		// A frame on the room stream after unsubscribe no longer reaches the handler.
 		receiveFrame(mockConnections[0], {
 			msg: 'changed',
 			collection: 'stream-room-messages',
