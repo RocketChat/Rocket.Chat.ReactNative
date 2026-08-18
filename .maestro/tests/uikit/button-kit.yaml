@@ -1,0 +1,42 @@
+appId: ${APP_ID}
+name: UIKit Button Kit
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-15
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# here send /uikit-test command
+- tapOn:
+    id: message-composer-input
+- inputText:
+    text: '/uikit-test'
+- extendedWaitUntil:
+    visible:
+      id: autocomplete-item-uikit-test
+    timeout: 10000
+- tapOn:
+    id: autocomplete-item-uikit-test
+- tapOn:
+    id: 'message-composer-send'
+- tapOn: Tap Me
+- extendedWaitUntil:
+    visible:
+      text: '.*Button tap received! This reply is private to you*.'
+    timeout: 10000
