@@ -14,7 +14,8 @@ import {
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
 import { FormTextInput } from '../TextInput';
-import { textParser, useBlockContext } from './utils';
+import { useBlockContext, textParser, useKitAppId } from './utils';
+import { translateText } from './translate';
 import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { Divider } from './Divider';
@@ -41,10 +42,10 @@ import {
 	type IInfoCard,
 	type IInputIndex,
 	type IParser,
-	type ISection
+	type ISection,
+	type IText
 } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
-import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	input: {
@@ -64,7 +65,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-const plainText = ({ text } = { text: '' }) => text;
+const plainText = (text?: IText, appId?: string) => translateText(text, appId);
+
+// options and placeholder are consumed outside the KitContext tree (ActionSheet),
+// so resolve them here where the appId context is available
+const translateElement = (element: IElement, appId?: string): IElement => ({
+	...element,
+	...(element.placeholder ? { placeholder: { ...element.placeholder, text: translateText(element.placeholder, appId) } } : {}),
+	...(element.options
+		? {
+				options: element.options.map(option => ({ ...option, text: { ...option.text, text: translateText(option.text, appId) } }))
+			}
+		: {})
+});
 
 class MessageParser extends UiKitParserMessage<ReactElement> {
 	constructor() {
@@ -80,30 +93,33 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 
 	plain_text(element: PlainText, context: BlockContext): ReactElement {
 		const { theme } = useContext(ThemeContext);
+		const text = translateText(element as IText, useKitAppId());
 
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
-			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
+			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
-		return <Text style={[styles.text, { color: themes[theme].fontDefault }]}>{element.text}</Text>;
+		return <Text style={[styles.text, { color: themes[theme].fontDefault }]}>{text}</Text>;
 	}
 
 	mrkdwn(element: IMarkdown, context: BlockContext): ReactElement {
+		const text = translateText(element as IText, useKitAppId());
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
-			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
+			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
-		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} />;
+		return <Markdown msg={text} />;
 	}
 
 	button(element: IButton, context: BlockContext): ReactElement {
 		const { text, value, actionId, style } = element;
 		const [{ loading }, action] = useBlockContext(element, context);
+		const appId = useKitAppId();
 		return (
 			<Button
 				key={actionId}
 				type={style}
-				title={textParser([text])}
+				title={textParser([text], element.appId || appId)}
 				loading={loading}
 				onPress={() => action({ value })}
 				style={styles.button}
@@ -141,9 +157,10 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 			{ ...element, actionId: element.actionId || '' },
 			context
 		);
+		const appId = useKitAppId();
 		return (
 			<DatePicker
-				element={element}
+				element={translateElement(element, element.appId || appId)}
 				language={language}
 				value={value}
 				action={action}
@@ -169,18 +186,32 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 
 	multiStaticSelect(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		const valueFiltered = element?.options?.filter(option => value?.includes(option.value));
-		return <MultiSelect {...element} value={valueFiltered} onChange={action} context={context} loading={loading} multiselect />;
+		const appId = useKitAppId();
+		const translated = translateElement(element, element.appId || appId);
+		const valueFiltered = translated?.options?.filter(option => value?.includes(option.value));
+		return (
+			<MultiSelect {...translated} value={valueFiltered} onChange={action} context={context} loading={loading} multiselect />
+		);
 	}
 
 	staticSelect(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		return <Select {...element} value={value} onChange={action} loading={loading} />;
+		const appId = useKitAppId();
+		return <Select {...translateElement(element, element.appId || appId)} value={value} onChange={action} loading={loading} />;
 	}
 
 	selectInput(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} />;
+		const appId = useKitAppId();
+		return (
+			<MultiSelect
+				{...translateElement(element, element.appId || appId)}
+				value={value}
+				onChange={action}
+				context={context}
+				loading={loading}
+			/>
+		);
 	}
 
 	video_conf(element: IElement & { callId: string }): ReactElement {
@@ -210,9 +241,9 @@ class ModalParser extends UiKitParserModal<ReactElement> {
 			<Input
 				parser={this.current}
 				element={{ ...element, appId, blockId }}
-				{...(label && { label: plainText(label) })}
-				{...(description && { description: plainText(description) })}
-				{...(hint && { hint: plainText(hint) })}
+				{...(label && { label: plainText(label, appId) })}
+				{...(description && { description: plainText(description, appId) })}
+				{...(hint && { hint: plainText(hint, appId) })}
 				error={error}
 				theme={theme}
 			/>
@@ -225,11 +256,11 @@ class ModalParser extends UiKitParserModal<ReactElement> {
 
 	plainInput(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value, error }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		const { multiline, actionId, placeholder } = element;
+		const { multiline, actionId, placeholder, appId } = element;
 		return (
 			<FormTextInput
 				key={actionId}
-				{...(placeholder && { placeholder: plainText(placeholder) })}
+				{...(placeholder && { placeholder: plainText(placeholder, appId) })}
 				multiline={multiline}
 				loading={loading}
 				onChangeText={text => action({ value: text })}

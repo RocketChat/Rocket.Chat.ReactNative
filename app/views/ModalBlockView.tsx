@@ -111,7 +111,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { view } = data;
 		const { title } = view;
 		return {
-			title: textParser([title])
+			title: textParser([title], data.appId)
 		};
 	};
 
@@ -154,18 +154,22 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { view } = data;
 		const { title, close, submit } = view;
 		navigation.setOptions({
-			title: textParser([title]),
+			title: textParser([title], data.appId),
 			headerLeft: close
 				? () => (
 						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
+							<HeaderButton.Item title={textParser([close.text], data.appId)} onPress={this.cancel} testID='close-modal-uikit' />
 						</HeaderButton.Container>
 					)
 				: undefined,
 			headerRight: submit
 				? () => (
 						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
+							<HeaderButton.Item
+								title={textParser([submit.text], data.appId)}
+								onPress={this.submit}
+								testID='submit-modal-uikit'
+							/>
 						</HeaderButton.Container>
 					)
 				: undefined

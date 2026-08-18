@@ -173,6 +173,7 @@ export const useAutocomplete = ({
 						id: command.id,
 						title: command.id,
 						subtitle: command.description,
+						appId: command.appId,
 						type
 					}));
 					if (ignore) return;
