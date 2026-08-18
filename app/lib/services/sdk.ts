@@ -1,4 +1,5 @@
 import { Rocketchat } from '@rocket.chat/sdk';
+import { type ICallback, type ISubscription } from '@rocket.chat/sdk/interfaces';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
@@ -14,11 +15,17 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
+export type TStreamDataCallback = (ddpMessage: any) => void;
+
+export interface IStreamDataListener {
+	stop: () => void;
+}
+
 class Sdk {
-	private sdk: typeof Rocketchat;
+	private sdk: Rocketchat | null = null;
 	private code: any;
 
-	private initializeSdk(server: string): typeof Rocketchat {
+	private initializeSdk(server: string): Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
 		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
@@ -30,8 +37,8 @@ class Sdk {
 		return this.sdk;
 	}
 
-	get current() {
-		return this.sdk;
+	get current(): Rocketchat {
+		return this.sdk as Rocketchat;
 	}
 
 	/**
@@ -108,20 +115,20 @@ class Sdk {
 		});
 	}
 
-	methodCall(...args: any[]): Promise<any> {
+	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
 				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
-				const result = await this.current.methodCall(...args, ...(code ? [code] : []));
+				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
 					const { details } = e;
 					try {
 						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-						return resolve(this.methodCall(...args));
+						return resolve(this.methodCall(method, ...args));
 					} catch {
 						// twoFactor was canceled
 						return resolve({});
@@ -152,11 +159,11 @@ class Sdk {
 		return this.methodCall(method, ...parsedParams);
 	}
 
-	subscribe(...args: any[]) {
-		return this.current.subscribe(...args);
+	subscribe(topic: string, ...args: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribe(topic, ...args);
 	}
 
-	subscribeRaw(...args: any[]) {
+	subscribeRaw(...args: any[]): Promise<ISubscription | undefined> {
 		return this.current.subscribeRaw(...args);
 	}
 
@@ -181,12 +188,12 @@ class Sdk {
 		]);
 	}
 
-	unsubscribe(subscription: any[]) {
+	unsubscribe(subscription: ISubscription) {
 		return this.current.unsubscribe(subscription);
 	}
 
-	onStreamData(...args: any[]) {
-		return this.current.onStreamData(...args);
+	onStreamData(event: string, callback: TStreamDataCallback): Promise<IStreamDataListener> {
+		return this.current.onStreamData(event, callback as ICallback);
 	}
 }
 

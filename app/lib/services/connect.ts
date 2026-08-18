@@ -1,4 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { type ICredentials as ISdkCredentials } from '@rocket.chat/sdk/interfaces';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -15,7 +16,7 @@ import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
+import { type ICredentials, type ILoggedUser, type ILoginResultFromServer, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -105,7 +106,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		getSettings();
 
 		sdk.current
-			.connect()
+			.connect({})
 			.then(() => {
 				console.log('connected');
 			})
@@ -199,7 +200,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		// RC 4.1
-		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
+		sdk.current.onStreamData('stream-user-presence', (ddpMessage: any) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
@@ -318,15 +319,15 @@ function stopListener(listener: any): boolean {
 
 async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
-	await sdk.current.login(credentials);
+	await sdk.current.login(credentials as unknown as ISdkCredentials);
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current.currentLogin?.result;
+	const result = sdk.current.currentLogin?.result as unknown as ILoginResultFromServer | undefined;
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
-		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
-		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
+		enableMessageParserEarlyAdoption = result!.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = result!.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
 	if (result) {
@@ -453,7 +454,7 @@ async function getWebsocketInfo({
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {
-		await websocketSdk.connect();
+		await websocketSdk.connect({});
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {

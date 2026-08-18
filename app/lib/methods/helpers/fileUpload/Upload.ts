@@ -1,5 +1,5 @@
 import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-import { type IFormData } from './definitions';
+import { type IFormData, type TUploadHeaders } from './definitions';
 
 export class Upload {
 	private xhr: XMLHttpRequest;
@@ -12,14 +12,10 @@ export class Upload {
 		this.isCancelled = false;
 	}
 
-	public setupRequest(
-		url: string,
-		headers: { [key: string]: string },
-		progressCallback?: (loaded: number, total: number) => void
-	): void {
+	public setupRequest(url: string, headers: TUploadHeaders, progressCallback?: (loaded: number, total: number) => void): void {
 		this.xhr.open('POST', url);
 		Object.keys(headers).forEach(key => {
-			this.xhr.setRequestHeader(key, headers[key]);
+			this.xhr.setRequestHeader(key, headers[key] as string);
 		});
 
 		if (progressCallback) {

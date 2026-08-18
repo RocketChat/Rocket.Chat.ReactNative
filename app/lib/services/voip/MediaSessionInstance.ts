@@ -22,7 +22,7 @@ import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
 import { isSelfUserId } from './isSelfUserId';
 import { store } from '../../store/auxStore';
-import sdk from '../sdk';
+import sdk, { type IStreamDataListener } from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
 import Navigation, { waitForNavigationReady } from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
@@ -43,7 +43,7 @@ const mediaCallLogger = new MediaCallLogger();
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
 	private iceGatheringTimeout: number = 5000;
-	private mediaSignalListener: { stop: () => void } | null = null;
+	private mediaSignalListener: IStreamDataListener | null = null;
 	private instance: MediaSignalingSession | null = null;
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
@@ -150,7 +150,7 @@ class MediaSessionInstance {
 				log(error);
 			}
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal, true);
-		});
+		}) as unknown as IStreamDataListener;
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {

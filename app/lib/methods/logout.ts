@@ -1,4 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { type ICredentials as ISdkCredentials } from '@rocket.chat/sdk/interfaces';
 import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
@@ -68,7 +69,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 
 			try {
 				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume });
+				await sdk.login({ resume } as unknown as ISdkCredentials);
 
 				const token = getDeviceToken();
 				if (token) {
