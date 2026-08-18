@@ -370,6 +370,9 @@ importers:
       '@babel/plugin-proposal-decorators':
         specifier: ~7.25.9
         version: 7.25.9(@babel/core@7.25.9)
+      '@babel/plugin-transform-dynamic-import':
+        specifier: ~7.25.9
+        version: 7.25.9(@babel/core@7.25.9)
       '@babel/plugin-transform-named-capturing-groups-regex':
         specifier: ~7.25.9
         version: 7.25.9(@babel/core@7.25.9)
@@ -2634,7 +2637,7 @@ packages:
       react-native: '*'
 
   '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8':
-    resolution: {gitHosted: true, integrity: sha512-dDi+sfoT51GPCX4Mc67U6Fx6yabJKaCGj70zxWXFgamrCYIIwrkdg67e80mERX25knjXcnk7XK0OFQUNE1yAxw==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1ccb76a663c0d0f6d4359873d30c73ce217779c8}
     version: 1.3.3-mobile
 
   '@rocket.chat/ui-kit@0.39.0':

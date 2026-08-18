@@ -28,7 +28,12 @@ export class Upload {
 
 	public setupRequest(url: string, headers: TUploadHeaders, progressCallback?: (loaded: number, total: number) => void): void {
 		this.uploadUrl = url;
-		this.headers = headers as Record<string, string>;
+		Object.keys(headers).forEach(key => {
+			const value = headers[key];
+			if (value !== undefined) {
+				this.headers[key] = value;
+			}
+		});
 		this.progressCallback = progressCallback;
 	}
 

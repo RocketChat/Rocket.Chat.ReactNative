@@ -15,7 +15,10 @@ export class Upload {
 	public setupRequest(url: string, headers: TUploadHeaders, progressCallback?: (loaded: number, total: number) => void): void {
 		this.xhr.open('POST', url);
 		Object.keys(headers).forEach(key => {
-			this.xhr.setRequestHeader(key, headers[key] as string);
+			const value = headers[key];
+			if (value !== undefined) {
+				this.xhr.setRequestHeader(key, value);
+			}
 		});
 
 		if (progressCallback) {
