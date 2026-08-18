@@ -63,6 +63,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -135,6 +138,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -207,6 +213,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -279,6 +288,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -351,6 +363,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -430,6 +445,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -509,6 +527,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -580,6 +601,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -664,6 +688,9 @@ exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
                 "color": "#6C727A",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -753,6 +780,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -790,6 +820,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -827,6 +860,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -864,6 +900,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -901,6 +940,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -1041,6 +1083,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1057,6 +1102,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1067,6 +1115,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -1084,17 +1135,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1152,6 +1201,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1168,6 +1220,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1178,6 +1233,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -1195,17 +1253,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1330,6 +1386,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1346,6 +1405,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1356,6 +1418,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -1373,17 +1438,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1441,6 +1504,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1457,6 +1523,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1467,6 +1536,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -1484,17 +1556,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1619,6 +1689,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1635,6 +1708,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1645,6 +1721,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -1662,17 +1741,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1797,6 +1874,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1813,6 +1893,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1823,6 +1906,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -1840,17 +1926,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#2F343D",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -1985,6 +2069,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2001,6 +2088,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2011,6 +2101,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2028,17 +2121,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2096,6 +2187,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2112,6 +2206,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2122,6 +2219,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2139,17 +2239,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2274,6 +2372,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2290,6 +2391,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2300,6 +2404,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2317,17 +2424,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2385,6 +2490,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2401,6 +2509,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2411,6 +2522,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2428,17 +2542,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2563,6 +2675,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2579,6 +2694,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2589,6 +2707,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2606,17 +2727,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2741,6 +2860,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2757,6 +2879,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2767,6 +2892,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2784,17 +2912,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#C1C7D0",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -2929,6 +3055,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2945,6 +3074,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2955,6 +3087,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -2972,17 +3107,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3040,6 +3173,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3056,6 +3192,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3066,6 +3205,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -3083,17 +3225,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3218,6 +3358,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3234,6 +3377,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3244,6 +3390,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -3261,17 +3410,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3329,6 +3476,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3345,6 +3495,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3355,6 +3508,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -3372,17 +3528,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3507,6 +3661,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3523,6 +3680,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3533,6 +3693,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -3550,17 +3713,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3685,6 +3846,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3701,6 +3865,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3711,6 +3878,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
@@ -3728,17 +3898,15 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "color": "#E4E7EA",
                             },
-                            [
-                              {
-                                "fontSize": 14,
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ]
                         }
                       >
@@ -3818,6 +3986,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -3834,6 +4005,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -3844,6 +4018,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
@@ -3861,17 +4038,15 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
-                      [
-                        {
-                          "fontSize": 14,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        },
-                      ],
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
                     ]
                   }
                 >
@@ -3929,6 +4104,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -3945,6 +4123,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -3955,6 +4136,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
@@ -3972,17 +4156,15 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
-                      [
-                        {
-                          "fontSize": 14,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        },
-                      ],
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
                     ]
                   }
                 >
@@ -4040,6 +4222,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -4056,6 +4241,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -4066,6 +4254,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
@@ -4083,17 +4274,15 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
-                      [
-                        {
-                          "fontSize": 14,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        },
-                      ],
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
                     ]
                   }
                 >
@@ -4151,6 +4340,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -4167,6 +4359,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -4177,6 +4372,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
@@ -4194,17 +4392,15 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
-                      [
-                        {
-                          "fontSize": 14,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        },
-                      ],
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
                     ]
                   }
                 >
@@ -4274,6 +4470,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4532,6 +4731,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4809,6 +5011,9 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4863,6 +5068,9 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4917,6 +5125,9 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -4933,6 +5144,9 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -4949,9 +5163,6 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5000,6 +5211,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5016,6 +5230,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5032,9 +5249,6 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5105,6 +5319,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -5153,6 +5370,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5169,6 +5389,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5185,9 +5408,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5258,6 +5478,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -5268,6 +5491,557 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
       Select a date
     </Text>
   </RNGestureHandlerButton>
+</View>
+`;
+
+exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
+<View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Regular message: the reference font size"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Regular message: the reference font size
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Section mrkdwn: must match the message above"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Section mrkdwn: must match the message above
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="		changes: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          		changes: 
+        </Text>
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="	"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          	
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="		changes: "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              		changes: 
+            </Text>
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="	"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              	
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
 </View>
 `;
 
@@ -5306,6 +6080,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5322,6 +6099,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5332,6 +6112,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
               {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "700",
                 "textAlign": "left",
               }
@@ -5349,17 +6132,15 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
-                  [
-                    {
-                      "fontSize": 14,
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ],
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  },
                 ]
               }
             >
@@ -5377,9 +6158,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5403,6 +6181,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -5428,6 +6209,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -5436,6 +6220,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -5451,6 +6238,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -5467,9 +6257,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
-                    },
-                    {
-                      "fontSize": 14,
                     },
                   ]
                 }
@@ -5521,6 +6308,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5537,6 +6327,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5553,9 +6346,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5626,6 +6416,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -5671,6 +6464,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5687,6 +6483,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5703,9 +6502,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5776,6 +6572,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -5825,6 +6624,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5841,6 +6643,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5857,9 +6662,6 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -6028,6 +6830,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -6044,6 +6849,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -6060,9 +6868,6 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -6138,6 +6943,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
               "color": "#6C727A",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }

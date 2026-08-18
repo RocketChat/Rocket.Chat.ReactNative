@@ -3,7 +3,7 @@ import { type AccessibilityRole } from 'react-native';
 
 import SwipeableDeleteTouchable from './SwipeableDeleteItem/Touchable';
 import Touch from '../Touch';
-import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, ROW_HEIGHT } from './styles';
+import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { useTheme } from '../../theme';
 
 export interface IServerItemTouchableProps {
@@ -34,7 +34,6 @@ const Touchable = ({
 			<SwipeableDeleteTouchable
 				width={width}
 				testID={testID}
-				rowHeight={ROW_HEIGHT}
 				actionWidth={ACTION_WIDTH}
 				longSwipe={LONG_SWIPE}
 				smallSwipe={SMALL_SWIPE}
