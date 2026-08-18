@@ -15,6 +15,8 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
+export type TDriver = Rocketchat['ddp'];
+
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
 export interface IStreamDataListener {
@@ -22,7 +24,7 @@ export interface IStreamDataListener {
 }
 
 class Sdk {
-	private sdk: Rocketchat | null = null;
+	private sdk!: Rocketchat;
 	private code: any;
 
 	private initializeSdk(server: string): Rocketchat {
@@ -38,7 +40,7 @@ class Sdk {
 	}
 
 	get current(): Rocketchat {
-		return this.sdk as Rocketchat;
+		return this.sdk;
 	}
 
 	/**
@@ -48,6 +50,7 @@ class Sdk {
 	disconnect() {
 		if (this.sdk) {
 			this.sdk.disconnect();
+			// @ts-expect-error
 			this.sdk = null;
 		}
 		return null;
@@ -118,7 +121,6 @@ class Sdk {
 	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
 				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));

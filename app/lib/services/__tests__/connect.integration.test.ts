@@ -1,6 +1,5 @@
 import type { Store } from 'redux';
 
-// The repo auto-applies `__mocks__/@rocket.chat/sdk.js` (an empty class). Drive the real SDK.
 jest.unmock('@rocket.chat/sdk');
 
 import { connect, login, loginWithPassword } from '../connect';
@@ -211,7 +210,6 @@ afterEach(() => {
 	jest.useRealTimers();
 });
 
-/** Connect to a server, resolve the SDK dynamic import, then drive the handshake to completion. */
 async function connectAndDriveHandshake(server = 'https://example.com') {
 	await connect({ server });
 	await flush();
@@ -267,7 +265,6 @@ describe('connect() over the real SDK', () => {
 
 		expect(firstConnection.close).toHaveBeenCalled();
 
-		// A connected frame on the discarded socket no longer reaches the store.
 		firstConnection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'x' }) });
 		await flush();
 

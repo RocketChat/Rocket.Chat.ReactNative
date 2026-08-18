@@ -1,5 +1,4 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import { type ICredentials as ISdkCredentials } from '@rocket.chat/sdk/interfaces';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -13,10 +12,12 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
 import sdk from './sdk';
+import { toLoginResult } from './toLoginResult';
+import { toSdkCredentials } from './toSdkCredentials';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { type ICredentials, type ILoggedUser, type ILoginResultFromServer, STATUSES } from '../../definitions';
+import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -49,6 +50,7 @@ let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
+let userPresenceListener: any;
 let notifyLoggedListener: any;
 let logoutListener: any;
 
@@ -62,41 +64,18 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		store.dispatch(connectRequest());
 
-		if (connectingListener) {
-			connectingListener.then(stopListener);
-		}
-
-		if (connectedListener) {
-			connectedListener.then(stopListener);
-		}
-
-		if (closeListener) {
-			closeListener.then(stopListener);
-		}
-
-		if (pendingHangupsConnectedListener) {
-			pendingHangupsConnectedListener.then(stopListener);
-		}
-
-		if (usersListener) {
-			usersListener.then(stopListener);
-		}
-
-		if (notifyAllListener) {
-			notifyAllListener.then(stopListener);
-		}
-
-		if (rolesListener) {
-			rolesListener.then(stopListener);
-		}
-
-		if (notifyLoggedListener) {
-			notifyLoggedListener.then(stopListener);
-		}
-
-		if (logoutListener) {
-			logoutListener.then(stopListener);
-		}
+		[
+			connectingListener,
+			connectedListener,
+			closeListener,
+			pendingHangupsConnectedListener,
+			usersListener,
+			notifyAllListener,
+			rolesListener,
+			userPresenceListener,
+			notifyLoggedListener,
+			logoutListener
+		].forEach(listener => listener?.then(stopListener));
 
 		unsubscribeRooms();
 
@@ -106,7 +85,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		getSettings();
 
 		sdk.current
-			.connect({})
+			.connect()
 			.then(() => {
 				console.log('connected');
 			})
@@ -200,7 +179,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		// RC 4.1
-		sdk.current.onStreamData('stream-user-presence', (ddpMessage: any) => {
+		userPresenceListener = sdk.current.onStreamData('stream-user-presence', (ddpMessage: any) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
@@ -313,21 +292,21 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 	});
 }
 
-function stopListener(listener: any): boolean {
-	return listener && listener.stop();
+function stopListener(listener: any): void {
+	listener?.stop();
 }
 
 async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
-	await sdk.current.login(credentials as unknown as ISdkCredentials);
+	await sdk.current.login(toSdkCredentials(credentials));
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current.currentLogin?.result as unknown as ILoginResultFromServer | undefined;
+	const result = toLoginResult(sdk.current.currentLogin?.result);
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
-		enableMessageParserEarlyAdoption = result!.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
-		showMessageInMainThread = result!.me.settings?.preferences?.showMessageInMainThread ?? true;
+		enableMessageParserEarlyAdoption = result?.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = result?.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
 	if (result) {
@@ -454,7 +433,7 @@ async function getWebsocketInfo({
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {
-		await websocketSdk.connect({});
+		await websocketSdk.connect();
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {

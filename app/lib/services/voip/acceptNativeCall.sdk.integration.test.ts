@@ -6,7 +6,7 @@ import { waitForLoginReady } from '../waitForLoginReady';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
-	Driver: new (options: { host: string; logger: unknown }) => PatchedDriver;
+	Driver: new (options: { host: string; logger: unknown }) => SdkDriver;
 };
 
 jest.mock('../sdk', () => ({
@@ -41,7 +41,7 @@ interface MockConnection {
 	onclose: () => void;
 }
 
-interface PatchedDriver {
+interface SdkDriver {
 	userId: string;
 	pingInterval: number;
 	reopenNow(): Promise<void>;
@@ -110,7 +110,6 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 	};
 }
 
-/** Real patched Driver over a mocked WebSocket, connected and logged in. */
 async function buildConnectedDriver() {
 	const driver = new Driver({ host: 'localhost:3000', logger });
 	driver.userId = USER_ID;
@@ -121,7 +120,7 @@ async function buildConnectedDriver() {
 	return driver;
 }
 
-function addMediaSubs(driver: PatchedDriver) {
+function addMediaSubs(driver: SdkDriver) {
 	['media-signal', 'media-calls'].forEach((name, index) => {
 		const id = `sub-${index}`;
 		driver.ddp.subscriptions[id] = {
@@ -133,18 +132,22 @@ function addMediaSubs(driver: PatchedDriver) {
 	});
 }
 
-function backdateLastPing(driver: PatchedDriver, ageMs: number) {
+function backdateLastPing(driver: SdkDriver, ageMs: number) {
 	driver.ddp.lastPing = Date.now() - ageMs;
 }
 
-let driver: PatchedDriver;
+function stopAnsweringFrames(connection: MockConnection) {
+	connection.send.mockImplementation(() => undefined);
+}
+
+let driver: SdkDriver;
 
 beforeEach(async () => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
 	mockConnections.length = 0;
 	driver = await buildConnectedDriver();
-	(sdk as unknown as { current: { ddp: PatchedDriver } }).current = { ddp: driver };
+	(sdk as unknown as { current: { ddp: SdkDriver } }).current = { ddp: driver };
 	mockWaitForLoginReady.mockResolvedValue(true);
 	mockGetState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 });
@@ -155,7 +158,7 @@ afterEach(() => {
 	jest.useRealTimers();
 });
 
-describe('acceptNativeCallWithReadiness against the real patched socket', () => {
+describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 	it('answers the call once media subs re-ack on the reopened socket', async () => {
 		const mediaSession = makeMediaSession();
 
@@ -188,9 +191,7 @@ describe('acceptNativeCallWithReadiness against the real patched socket', () => 
 		await jest.advanceTimersByTimeAsync(0);
 		mockConnections[1].onopen();
 
-		// Swallow the re-sub frames before the reopen handshake settles, so the
-		// media ack never arrives while the connect handshake still completes.
-		mockConnections[1].send.mockImplementation(() => undefined);
+		stopAnsweringFrames(mockConnections[1]);
 		await jest.advanceTimersByTimeAsync(0);
 		await jest.advanceTimersByTimeAsync(8000);
 		await accept;
@@ -212,10 +213,8 @@ describe('acceptNativeCallWithReadiness against the real patched socket', () => 
 		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
-		// No media subs registered yet, so the wait polls instead of resolving.
 		await jest.advanceTimersByTimeAsync(100);
 
-		// The subs appear after the poll is already underway.
 		addMediaSubs(driver);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;

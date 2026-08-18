@@ -3,7 +3,7 @@ import { recoverSocket } from '../socketHealth';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
-	Driver: new (options: { host: string; logger: unknown }) => PatchedDriver;
+	Driver: new (options: { host: string; logger: unknown }) => SdkDriver;
 };
 
 interface MockConnection {
@@ -23,7 +23,7 @@ interface WireFrame {
 	params?: string[];
 }
 
-interface PatchedDriver {
+interface SdkDriver {
 	userId: string;
 	pingInterval: number;
 	reopenNow(): Promise<void>;
@@ -72,10 +72,10 @@ jest.mock('../sdk', () => ({
 
 const USER_ID = 'user-id';
 const PING_INTERVAL = 10000;
+const CLOSED = 3;
 
 const logger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
 
-/** Real patched Driver over a mocked WebSocket, connected and logged in. */
 async function buildConnectedDriver() {
 	const driver = new Driver({ host: 'localhost:3000', logger });
 	driver.userId = USER_ID;
@@ -86,7 +86,7 @@ async function buildConnectedDriver() {
 	return driver;
 }
 
-function addMediaSubs(driver: PatchedDriver) {
+function addMediaSubs(driver: SdkDriver) {
 	['media-signal', 'media-calls'].forEach((name, index) => {
 		const id = `sub-${index}`;
 		driver.ddp.subscriptions[id] = {
@@ -98,26 +98,29 @@ function addMediaSubs(driver: PatchedDriver) {
 	});
 }
 
-function backdateLastPing(driver: PatchedDriver, ageMs: number) {
+function backdateLastPing(driver: SdkDriver, ageMs: number) {
 	driver.ddp.lastPing = Date.now() - ageMs;
 }
 
-/** Frames of a given `msg` sent over the wire on one connection. */
+function stopAnsweringFrames(connection: MockConnection) {
+	connection.send.mockImplementation(() => undefined);
+}
+
 function framesOn(connection: MockConnection, msg: string) {
 	return connection.send.mock.calls
 		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
 		.filter(message => message.msg === msg);
 }
 
-describe('recoverSocket against the real patched socket', () => {
-	let driver: PatchedDriver;
+describe('recoverSocket against the real SDK socket', () => {
+	let driver: SdkDriver;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
 		mockConnections.length = 0;
 		driver = await buildConnectedDriver();
-		(sdk as unknown as { current: { ddp: PatchedDriver } }).current = { ddp: driver };
+		(sdk as unknown as { current: { ddp: SdkDriver } }).current = { ddp: driver };
 	});
 
 	afterEach(() => {
@@ -137,20 +140,17 @@ describe('recoverSocket against the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('confirmed-alive');
-		// The round trip pinged the existing socket and the pong kept it alive.
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(1);
 	});
 
 	it('reopens a doubtful socket when the round trip gets no pong', async () => {
 		backdateLastPing(driver, PING_INTERVAL + 5000);
-		// A zombie socket: still `readyState: 1`, but the server never answers.
-		mockConnections[0].send.mockImplementation(() => undefined);
+		stopAnsweringFrames(mockConnections[0]);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(2000);
 
-		// The round trip was actually attempted on the dead socket before reopening.
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(2);
 		mockConnections[1].onopen();
@@ -159,15 +159,12 @@ describe('recoverSocket against the real patched socket', () => {
 		await expect(recovery).resolves.toBe('reopened');
 	});
 
-	it('reopens a frozen socket whose last ping is still young', async () => {
-		// A young `lastPing` proves nothing: `onOpen` refreshes it before the handshake
-		// reply lands, so the timestamp can sit on an unusable session.
-		mockConnections[0].send.mockImplementation(() => undefined);
+	it('reopens a frozen socket whose young lastPing sits on an unusable session', async () => {
+		stopAnsweringFrames(mockConnections[0]);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(2000);
 
-		// The young ping bought a round trip, and the silent socket failed it.
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(2);
 		mockConnections[1].onopen();
@@ -183,7 +180,6 @@ describe('recoverSocket against the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 
 		expect(mockConnections).toHaveLength(2);
-		// No raw round-trip ping was sent on the dead socket.
 		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
 
 		mockConnections[1].onopen();
@@ -195,7 +191,6 @@ describe('recoverSocket against the real patched socket', () => {
 	it('shares one reopen with a concurrent direct reopenNow', async () => {
 		backdateLastPing(driver, PING_INTERVAL * 3);
 
-		// The foreground path reopens the dead socket while recovery does the same.
 		const directReopen = driver.reopenNow();
 		const recovery = recoverSocket();
 
@@ -208,7 +203,6 @@ describe('recoverSocket against the real patched socket', () => {
 		await expect(recovery).resolves.toBe('reopened');
 		expect(mockConnections).toHaveLength(2);
 
-		// No queued third open fires later — the reopen really was shared.
 		await jest.advanceTimersByTimeAsync(60000);
 		expect(mockConnections).toHaveLength(2);
 	});
@@ -221,7 +215,6 @@ describe('recoverSocket against the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		expect(rejected).toBe(false);
 
-		// The socket dies silently after the call went out.
 		backdateLastPing(driver, PING_INTERVAL * 3);
 
 		const recovery = recoverSocket();
@@ -249,7 +242,6 @@ describe('recoverSocket against the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(200);
 		await expect(resubscribed).resolves.toBe(true);
 
-		// Both media subs went out on the new socket reusing their ids.
 		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(0);
 		expect(framesOn(mockConnections[1], 'sub')).toEqual([
 			expect.objectContaining({ id: 'sub-0', name: 'stream-notify-user', params: [`${USER_ID}/media-signal`] }),
@@ -258,8 +250,7 @@ describe('recoverSocket against the real patched socket', () => {
 	});
 
 	it('reopens a closed transport without a round trip even when lastPing is fresh', async () => {
-		// A fresh `lastPing` proves nothing once the transport itself is closed.
-		mockConnections[0].readyState = 3;
+		mockConnections[0].readyState = CLOSED;
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(0);
@@ -282,12 +273,10 @@ describe('recoverSocket against the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		await expect(recovery).resolves.toBe('reopened');
 
-		// No media subs are registered yet, so the wait polls instead of resolving.
 		const resubscribed = driver.waitForNotifyUserMediaSubs(1000);
 		await jest.advanceTimersByTimeAsync(100);
 		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
 
-		// The subs appear after the wait is already polling.
 		addMediaSubs(driver);
 		await jest.advanceTimersByTimeAsync(200);
 
@@ -308,8 +297,7 @@ describe('recoverSocket against the real patched socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		await expect(recovery).resolves.toBe('reopened');
 
-		// The new socket swallows the re-sub frames, so the ack never arrives.
-		mockConnections[1].send.mockImplementation(() => undefined);
+		stopAnsweringFrames(mockConnections[1]);
 
 		const resubscribed = driver.waitForNotifyUserMediaSubs(500);
 		await jest.advanceTimersByTimeAsync(500);

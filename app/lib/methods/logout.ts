@@ -1,5 +1,4 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import { type ICredentials as ISdkCredentials } from '@rocket.chat/sdk/interfaces';
 import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
@@ -9,6 +8,7 @@ import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
+import { toSdkCredentials } from '../services/toSdkCredentials';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
@@ -69,7 +69,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 
 			try {
 				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume } as unknown as ISdkCredentials);
+				await sdk.login(toSdkCredentials({ resume: resume ?? undefined }));
 
 				const token = getDeviceToken();
 				if (token) {
