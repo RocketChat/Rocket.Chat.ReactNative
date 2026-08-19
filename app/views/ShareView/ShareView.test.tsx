@@ -139,7 +139,7 @@ describe('ShareView', () => {
 		const { attachments, selected } = await shareView.getAttachments();
 
 		expect(attachments).toHaveLength(0);
-		expect(selected).toEqual({});
+		expect(selected).toBeUndefined();
 	});
 
 	it('selectFile selects the attachment and opens the alt text action sheet', () => {

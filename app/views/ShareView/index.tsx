@@ -228,7 +228,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		);
 		return {
 			attachments: items,
-			selected: items[0] ?? ({} as IShareAttachment)
+			selected: items[0]
 		};
 	};
 

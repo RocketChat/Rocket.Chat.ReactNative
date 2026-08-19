@@ -118,7 +118,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 							filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
 							description: '',
 							size: file.size,
-							mime: mime.lookup(file.uri),
+							mime: mime.lookup(file.uri) || '',
 							path: file.uri
 						};
 					})

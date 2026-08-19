@@ -32,5 +32,8 @@ describe('Preview', () => {
 		};
 
 		expect(() => render(<Preview item={item as any} theme='light' length={1} />)).not.toThrow();
+
+		const { getByText } = render(<Preview item={item as any} theme='light' length={1} />);
+		expect(getByText('build.prop')).toBeTruthy();
 	});
 });
