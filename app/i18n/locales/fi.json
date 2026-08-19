@@ -737,6 +737,7 @@
   "Settings_succesfully_changed": "Asetukset on muutettu!",
   "Share": "Jaa",
   "Share_Link": "Jaa linkki",
+  "Share_no_valid_attachments": "Jaettua tiedostoa ei löytynyt",
   "Share_this_app": "Jaa tämä sovellus",
   "Sharing": "Jaetaan",
   "Shortcut": "Pikavalinta",

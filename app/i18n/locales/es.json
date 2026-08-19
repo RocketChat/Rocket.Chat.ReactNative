@@ -419,6 +419,7 @@
   "Settings": "Configuración",
   "Settings_succesfully_changed": "¡Configuración cambiada correctamente!",
   "Share": "Compartir",
+  "Share_no_valid_attachments": "No se pudo encontrar el archivo compartido",
   "Share_this_app": "Compartir esta aplicación",
   "Show_message_actions": "Mostrar acciones del mensaje",
   "Show_Password": "Mostrar contraseña",
