@@ -138,7 +138,8 @@ export const onPressAppleLogin = async () => {
 			]
 		});
 		if (!identityToken) {
-			throw new Error('Apple sign-in returned no identity token');
+			logEvent(events.ENTER_WITH_APPLE_F);
+			return;
 		}
 		await loginOAuthOrSso({ fullName: fullName ?? {}, email, identityToken });
 	} catch {
