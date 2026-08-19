@@ -25,6 +25,7 @@ import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocom
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import { acceptNativeCallWithReadiness } from '../../lib/services/voip/acceptNativeCall';
+import { resetTerminateNativeCallForTesting } from '../../lib/services/voip/terminateNativeCall';
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
@@ -397,6 +398,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		unexpectedConsoleErrors = [];
 		usePeerAutocompleteStore.getState().reset();
 		useCallStore.getState().reset();
+		resetTerminateNativeCallForTesting();
 		mediaSessionInstance.reset();
 
 		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
