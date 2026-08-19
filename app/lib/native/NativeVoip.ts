@@ -56,15 +56,7 @@ export interface Spec extends TurboModule {
 	 */
 	stopVoipCallService(): void;
 
-	/**
-	 * Disconnects the Telecom connection for a call without going through CallKeep.
-	 * iOS: No-op (CallKit teardown goes through RNCallKeep).
-	 * Android: Calls onDisconnect() on the VoiceConnection registered for `callId`, or no-ops when
-	 *   there is none. The connection is created natively (VoipNotification.registerCallWithTelecomManager),
-	 *   so teardown must not depend on RNCallKeep's JS-side module state being initialized — otherwise a
-	 *   failed/absent setup() strands the connection in ACTIVE and every later push is rejected as busy.
-	 *   Also covers a push arriving before JS has booted.
-	 */
+	/** Android: disconnects the VoiceConnection for `callId` directly, bypassing RNCallKeep's JS state. iOS: no-op. */
 	disconnectNativeCall(callId: string): void;
 
 	/**
