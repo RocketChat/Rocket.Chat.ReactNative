@@ -7,7 +7,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
-import { twoFactor } from '../../lib/services/twoFactor';
+import { twoFactor, isTwoFactorCancelled } from '../../lib/services/twoFactor';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -146,8 +146,10 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
 					setTwoFactorCode(code as any);
 					return handleSetNewPassword();
-				} catch {
-					// cancelled twoFactor modal
+				} catch (twoFactorError) {
+					if (isTwoFactorCancelled(twoFactorError)) {
+						return;
+					}
 				}
 			}
 
