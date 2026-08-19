@@ -3,21 +3,59 @@ import RNCallKeep from 'react-native-callkeep';
 
 import NativeVoipModule from '../../native/NativeVoip';
 
-export function terminateNativeCall(callId: string): void {
-	try {
-		RNCallKeep.endCall(callId);
-	} catch {
-		// CallKeep may be unavailable; still attempt to stop the Android service below
+// Termination is triggered from several independent paths (useCallStore.endCall,
+// acceptNativeCall, and the MediaSessionInstance event handlers), so the same
+// callId arrives more than once. Bounded because the app is long-lived.
+const MAX_TRACKED_CALL_IDS = 32;
+const terminatedCallIds = new Set<string>();
+
+function markTerminated(callId: string): void {
+	terminatedCallIds.add(callId);
+	while (terminatedCallIds.size > MAX_TRACKED_CALL_IDS) {
+		const oldest = terminatedCallIds.values().next().value;
+		if (oldest === undefined) {
+			break;
+		}
+		terminatedCallIds.delete(oldest);
 	}
+}
+
+export function terminateNativeCall(callId: string): void {
+	if (terminatedCallIds.has(callId)) {
+		return;
+	}
+	markTerminated(callId);
+
+	// The native disconnect runs first: RNCallKeep.endCall removes the connection from
+	// VoiceConnectionService's map, which would leave nothing for this call to find.
 	if (Platform.OS === 'android') {
 		try {
-			// RNCallKeep.endCall no-ops when its JS-side setup() didn't run, stranding the connection
 			NativeVoipModule.disconnectNativeCall(callId);
-		} catch {}
+		} catch {
+			// bridge unavailable pre-boot
+		}
+	}
+
+	try {
+		// No-op when the native disconnect above already tore the connection down.
+		RNCallKeep.endCall(callId);
+	} catch {
+		// CallKeep may be unavailable; still stop the Android service below
+	}
+
+	if (Platform.OS === 'android') {
 		try {
 			NativeVoipModule.stopVoipCallService();
 		} catch {
 			// bridge unavailable pre-boot
 		}
 	}
+}
+
+/**
+ * Resets module-scoped state for testing purposes.
+ * NOT intended for production use.
+ */
+export function resetTerminateNativeCallForTesting(): void {
+	terminatedCallIds.clear();
 }

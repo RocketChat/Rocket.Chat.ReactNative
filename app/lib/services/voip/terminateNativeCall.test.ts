@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 
 import NativeVoipModule from '../../native/NativeVoip';
-import { terminateNativeCall } from './terminateNativeCall';
+import { resetTerminateNativeCallForTesting, terminateNativeCall } from './terminateNativeCall';
 
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
@@ -15,6 +15,7 @@ jest.mock('../../native/NativeVoip', () => ({
 describe('terminateNativeCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		resetTerminateNativeCallForTesting();
 		Platform.OS = 'android';
 	});
 
@@ -26,24 +27,53 @@ describe('terminateNativeCall', () => {
 		expect(NativeVoipModule.stopVoipCallService).toHaveBeenCalled();
 	});
 
-	it('still disconnects natively when RNCallKeep.endCall throws', () => {
-		(RNCallKeep.endCall as jest.Mock).mockImplementationOnce(() => {
-			throw new Error('CallKeep unavailable');
-		});
+	it('disconnects natively before RNCallKeep.endCall removes the connection', () => {
+		const order: string[] = [];
+		(NativeVoipModule.disconnectNativeCall as jest.Mock).mockImplementationOnce(() => order.push('native'));
+		(RNCallKeep.endCall as jest.Mock).mockImplementationOnce(() => order.push('callkeep'));
 
-		terminateNativeCall('call-2');
+		terminateNativeCall('call-order');
 
-		expect(NativeVoipModule.disconnectNativeCall).toHaveBeenCalledWith('call-2');
-		expect(NativeVoipModule.stopVoipCallService).toHaveBeenCalled();
+		expect(order).toEqual(['native', 'callkeep']);
 	});
 
-	it('still stops the foreground service when the native disconnect throws', () => {
+	it('ignores repeat invocations for the same callId', () => {
+		terminateNativeCall('call-dup');
+		terminateNativeCall('call-dup');
+
+		expect(RNCallKeep.endCall).toHaveBeenCalledTimes(1);
+		expect(NativeVoipModule.disconnectNativeCall).toHaveBeenCalledTimes(1);
+		expect(NativeVoipModule.stopVoipCallService).toHaveBeenCalledTimes(1);
+	});
+
+	it('still terminates a different callId after one was already terminated', () => {
+		terminateNativeCall('call-a');
+		terminateNativeCall('call-b');
+
+		expect(RNCallKeep.endCall).toHaveBeenCalledWith('call-a');
+		expect(RNCallKeep.endCall).toHaveBeenCalledWith('call-b');
+		expect(NativeVoipModule.stopVoipCallService).toHaveBeenCalledTimes(2);
+	});
+
+	it('still calls RNCallKeep.endCall when the native disconnect throws', () => {
 		(NativeVoipModule.disconnectNativeCall as jest.Mock).mockImplementationOnce(() => {
 			throw new Error('bridge unavailable');
 		});
 
+		terminateNativeCall('call-2');
+
+		expect(RNCallKeep.endCall).toHaveBeenCalledWith('call-2');
+		expect(NativeVoipModule.stopVoipCallService).toHaveBeenCalled();
+	});
+
+	it('still stops the foreground service when RNCallKeep.endCall throws', () => {
+		(RNCallKeep.endCall as jest.Mock).mockImplementationOnce(() => {
+			throw new Error('CallKeep unavailable');
+		});
+
 		terminateNativeCall('call-3');
 
+		expect(NativeVoipModule.disconnectNativeCall).toHaveBeenCalledWith('call-3');
 		expect(NativeVoipModule.stopVoipCallService).toHaveBeenCalled();
 	});
 
