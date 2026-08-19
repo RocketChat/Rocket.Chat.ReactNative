@@ -16,7 +16,7 @@ import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { type ICredentials } from '../../definitions';
+import { type ILoginCredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
@@ -38,7 +38,7 @@ interface IMethods {
 }
 
 interface EventListenerMethod {
-	params?: ICredentials;
+	params?: ILoginCredentials;
 	method?: keyof IMethods;
 	submit?: (param: string) => void;
 	cancel?: () => void;

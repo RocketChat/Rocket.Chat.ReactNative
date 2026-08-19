@@ -8,5 +8,5 @@ export type {
 	ICredentialsPasswordAPI,
 	ICredentialsSamlAPI,
 	ICredentialsTotpAPI,
-	ILoginCredentials as ICredentials
+	ILoginCredentials
 } from '@rocket.chat/sdk/interfaces';

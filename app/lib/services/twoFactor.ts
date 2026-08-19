@@ -2,12 +2,12 @@ import { settings } from '@rocket.chat/sdk';
 
 import { TWO_FACTOR } from '../../containers/TwoFactor';
 import EventEmitter from '../methods/helpers/events';
-import { type ICredentials } from '../../definitions';
+import { type ILoginCredentials } from '../../definitions';
 
 interface ITwoFactor {
 	method: string;
 	invalid: boolean;
-	params?: ICredentials;
+	params?: ILoginCredentials;
 }
 
 export const twoFactor = ({ method, invalid, params }: ITwoFactor): Promise<{ twoFactorCode: string; twoFactorMethod: string }> =>

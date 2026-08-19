@@ -15,7 +15,13 @@ import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { type ICredentials, type ICredentialsPasswordAPI, type ILoggedUser, STATUSES, type TUserStatus } from '../../definitions';
+import {
+	type ILoginCredentials,
+	type ICredentialsPasswordAPI,
+	type ILoggedUser,
+	STATUSES,
+	type TUserStatus
+} from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -294,11 +300,7 @@ function stopListener(listener: any): void {
 	listener?.stop();
 }
 
-function toUserStatus(status?: string): TUserStatus {
-	return STATUSES.find(known => known === status) ?? 'offline';
-}
-
-async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
+async function login(credentials: ILoginCredentials): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
 	await sdk.current.login(credentials);
 	const serverVersion = store.getState().server.version;
@@ -318,7 +320,7 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 			username: result.me.username,
 			name: result.me.name,
 			language: result.me.language,
-			status: toUserStatus(result.me.status),
+			status: result.me.status as TUserStatus,
 			statusText: result.me.statusText,
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
@@ -336,7 +338,7 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 	}
 }
 
-function toPasswordLogin(params: ICredentials): ICredentialsPasswordAPI | undefined {
+function toPasswordLogin(params: ILoginCredentials): ICredentialsPasswordAPI | undefined {
 	if ('ldap' in params) {
 		return { user: params.username, password: params.ldapPass };
 	}
@@ -348,7 +350,7 @@ function toPasswordLogin(params: ICredentials): ICredentialsPasswordAPI | undefi
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
+function loginTOTP(params: ILoginCredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const result = await login(params);
@@ -392,7 +394,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<
 }
 
 function loginWithPassword({ user, password }: { user: string; password: string }): Promise<ILoggedUser> {
-	let params: ICredentials = { user, password };
+	let params: ILoginCredentials = { user, password };
 	const state = store.getState();
 
 	if (state.settings.LDAP_Enable) {
@@ -413,7 +415,7 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials) {
+async function loginOAuthOrSso(params: ILoginCredentials) {
 	const result = await loginTOTP(params, false);
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
