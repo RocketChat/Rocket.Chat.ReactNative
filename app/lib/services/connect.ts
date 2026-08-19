@@ -11,7 +11,7 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
-import sdk from './sdk';
+import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
@@ -54,7 +54,7 @@ let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
-let userPresenceListener: any;
+let userPresenceListener: Promise<IStreamDataListener> | undefined;
 let notifyLoggedListener: any;
 let logoutListener: any;
 

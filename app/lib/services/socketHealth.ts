@@ -105,12 +105,3 @@ export function recoverSocket(options?: { abortSignal?: AbortSignal }): Promise<
 	});
 	return Promise.race([recovery, abandoned]);
 }
-
-/**
- * Vocabulary:
- * - socket health      — the classification concern (`classifySocketHealth`).
- * - recovery plan      — `SocketRecoveryPlan`, the decision.
- * - round trip         — the liveness check (`driver.probe` stays as the SDK
- *                        method name; our terms say round trip).
- * - recovery outcome   — `SocketRecoveryOutcome`, what callers see.
- */
