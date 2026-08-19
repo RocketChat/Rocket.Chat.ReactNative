@@ -42,7 +42,11 @@ const UIKitButton: FC<IUIKitButtonProps> = ({ title, onPress, type = 'primary', 
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			style={({ pressed }) => [styles.container, { backgroundColor }, style, pressed && styles.pressed]}>
-			{loading ? <ActivityIndicator color={color} style={{ padding: 0 }} /> : <Text style={[styles.text, { color }]}>{title}</Text>}
+			{loading ? (
+				<ActivityIndicator color={color} style={{ padding: 0 }} />
+			) : (
+				<Text style={[styles.text, { color }]}>{title}</Text>
+			)}
 		</Pressable>
 	);
 };
