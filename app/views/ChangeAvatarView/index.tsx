@@ -29,6 +29,7 @@ import ImagePicker, { type Image } from '../../lib/methods/helpers/ImagePicker/I
 import { compareServerVersion, isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -172,6 +173,9 @@ const ChangeAvatarView = () => {
 			}
 			isDirty.current = false;
 		} catch (e: any) {
+			if (isTwoFactorCancelled(e)) {
+				return;
+			}
 			log(e);
 			return showErrorAlert(e.message, I18n.t('Oops'));
 		} finally {
