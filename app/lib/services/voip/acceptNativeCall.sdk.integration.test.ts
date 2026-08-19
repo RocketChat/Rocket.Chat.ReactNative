@@ -3,13 +3,9 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
-import type { MockConnection, SdkDriver } from '../../testUtils/sdkIntegration';
+import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '../../testUtils/sdkIntegration';
+import type { MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
-	Driver: new (options: { host: string; logger: unknown }) => SdkDriver;
-};
 
 jest.mock('../sdk', () => ({
 	__esModule: true,
@@ -50,8 +46,6 @@ const CALL_ID = 'call-uuid';
 const USER_ID = 'user-id';
 const PING_INTERVAL = 10000;
 
-const logger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
-
 interface IMediaSession {
 	applyRestStateSignals: jest.Mock<Promise<void>>;
 	answerCall: jest.Mock<Promise<void>, [string]>;
@@ -69,44 +63,14 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 	};
 }
 
-async function buildConnectedDriver() {
-	const driver = new Driver({ host: 'localhost:3000', logger });
-	driver.userId = USER_ID;
-	const openPromise = driver.socket.open();
-	mockConnections[0].onopen();
-	await jest.advanceTimersByTimeAsync(0);
-	await openPromise;
-	return driver;
-}
-
-function addMediaSubs(driver: SdkDriver) {
-	['media-signal', 'media-calls'].forEach((name, index) => {
-		const id = `sub-${index}`;
-		driver.socket.subscriptions[id] = {
-			id,
-			name: 'stream-notify-user',
-			params: [`${USER_ID}/${name}`],
-			unsubscribe: jest.fn()
-		};
-	});
-}
-
-function backdateLastPing(driver: SdkDriver, ageMs: number) {
-	driver.socket.lastPing = Date.now() - ageMs;
-}
-
-function stopAnsweringFrames(connection: MockConnection) {
-	connection.send.mockImplementation(() => undefined);
-}
-
-let driver: SdkDriver;
+let driver: ISdkDriver;
 
 beforeEach(async () => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
 	mockConnections.length = 0;
-	driver = await buildConnectedDriver();
-	(sdk as unknown as { current: { driver: SdkDriver } }).current = { driver };
+	driver = await buildConnectedDriver(mockConnections, USER_ID);
+	(sdk as unknown as { current: { driver: ISdkDriver } }).current = { driver };
 	mockWaitForLoginReady.mockResolvedValue(true);
 	mockGetState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 });
@@ -122,7 +86,7 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		const mediaSession = makeMediaSession();
 
 		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
+		addMediaSubs(driver, USER_ID);
 
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 		await jest.advanceTimersByTimeAsync(0);
@@ -144,7 +108,7 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		mockGetState.mockReturnValue({ call: null, resetNativeCallId });
 
 		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
+		addMediaSubs(driver, USER_ID);
 
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 		await jest.advanceTimersByTimeAsync(0);
@@ -174,7 +138,7 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 
 		await jest.advanceTimersByTimeAsync(100);
 
-		addMediaSubs(driver);
+		addMediaSubs(driver, USER_ID);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;
 

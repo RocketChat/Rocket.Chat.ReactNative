@@ -183,7 +183,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		// RC 4.1
-		userPresenceListener = sdk.current.onStreamData('stream-user-presence', (ddpMessage: any) => {
+		userPresenceListener = sdk.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;

@@ -2,7 +2,7 @@ import type { Store } from 'redux';
 
 import type { IApplicationState } from '../../definitions';
 
-export interface DdpMessage {
+export interface IDdpMessage {
 	msg: string;
 	id?: string;
 	name?: string;
@@ -12,7 +12,7 @@ export interface DdpMessage {
 
 export class MockConnection {
 	send = jest.fn((data: string) => {
-		const message = JSON.parse(data) as DdpMessage;
+		const message = JSON.parse(data) as IDdpMessage;
 		if (message.msg === 'connect') {
 			setImmediate(() => this.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
 		} else if (message.msg === 'ping') {
@@ -42,7 +42,7 @@ export class MockConnection {
 	}
 }
 
-export interface SdkDriver {
+export interface ISdkDriver {
 	userId: string;
 	pingInterval: number;
 	reopenNow(): Promise<void>;
@@ -57,14 +57,51 @@ export interface SdkDriver {
 	};
 }
 
-export function framesOn(connection: MockConnection, msg: string): DdpMessage[] {
+export function framesOn(connection: MockConnection, msg: string): IDdpMessage[] {
 	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as DdpMessage)
+		.map(([data]: [string]) => JSON.parse(data) as IDdpMessage)
 		.filter(message => message.msg === msg);
 }
 
 export function receiveFrame(connection: MockConnection, frame: Record<string, unknown>): void {
 	connection.onmessage({ data: JSON.stringify(frame) });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
+	Driver: new (options: { host: string; logger: unknown }) => ISdkDriver;
+};
+
+const driverLogger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
+
+export async function buildConnectedDriver(connections: MockConnection[], userId: string): Promise<ISdkDriver> {
+	const driver = new Driver({ host: 'localhost:3000', logger: driverLogger });
+	driver.userId = userId;
+	const openPromise = driver.socket.open();
+	connections[0].onopen();
+	await jest.advanceTimersByTimeAsync(0);
+	await openPromise;
+	return driver;
+}
+
+export function addMediaSubs(driver: ISdkDriver, userId: string): void {
+	['media-signal', 'media-calls'].forEach((name, index) => {
+		const id = `sub-${index}`;
+		driver.socket.subscriptions[id] = {
+			id,
+			name: 'stream-notify-user',
+			params: [`${userId}/${name}`],
+			unsubscribe: jest.fn()
+		};
+	});
+}
+
+export function backdateLastPing(driver: ISdkDriver, ageMs: number): void {
+	driver.socket.lastPing = Date.now() - ageMs;
+}
+
+export function stopAnsweringFrames(connection: MockConnection): void {
+	connection.send.mockImplementation(() => undefined);
 }
 
 export function makeCollection(name: string) {

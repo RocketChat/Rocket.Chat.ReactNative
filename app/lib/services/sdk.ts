@@ -121,6 +121,7 @@ class Sdk {
 	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
+				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
 				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));

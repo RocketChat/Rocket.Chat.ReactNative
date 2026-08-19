@@ -1,13 +1,14 @@
 import sdk from '../sdk';
 import { recoverSocket } from '../socketHealth';
-import { framesOn } from '../../testUtils/sdkIntegration';
-import type { MockConnection, SdkDriver } from '../../testUtils/sdkIntegration';
+import {
+	addMediaSubs,
+	backdateLastPing,
+	buildConnectedDriver,
+	framesOn,
+	stopAnsweringFrames
+} from '../../testUtils/sdkIntegration';
+import type { MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
-	Driver: new (options: { host: string; logger: unknown }) => SdkDriver;
-};
 
 const mockConnections: MockConnection[] = [];
 
@@ -27,47 +28,15 @@ const USER_ID = 'user-id';
 const PING_INTERVAL = 10000;
 const CLOSED = 3;
 
-const logger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
-
-async function buildConnectedDriver() {
-	const driver = new Driver({ host: 'localhost:3000', logger });
-	driver.userId = USER_ID;
-	const openPromise = driver.socket.open();
-	mockConnections[0].onopen();
-	await jest.advanceTimersByTimeAsync(0);
-	await openPromise;
-	return driver;
-}
-
-function addMediaSubs(driver: SdkDriver) {
-	['media-signal', 'media-calls'].forEach((name, index) => {
-		const id = `sub-${index}`;
-		driver.socket.subscriptions[id] = {
-			id,
-			name: 'stream-notify-user',
-			params: [`${USER_ID}/${name}`],
-			unsubscribe: jest.fn()
-		};
-	});
-}
-
-function backdateLastPing(driver: SdkDriver, ageMs: number) {
-	driver.socket.lastPing = Date.now() - ageMs;
-}
-
-function stopAnsweringFrames(connection: MockConnection) {
-	connection.send.mockImplementation(() => undefined);
-}
-
 describe('recoverSocket against the real SDK socket', () => {
-	let driver: SdkDriver;
+	let driver: ISdkDriver;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
 		mockConnections.length = 0;
-		driver = await buildConnectedDriver();
-		(sdk as unknown as { current: { driver: SdkDriver } }).current = { driver };
+		driver = await buildConnectedDriver(mockConnections, USER_ID);
+		(sdk as unknown as { current: { driver: ISdkDriver } }).current = { driver };
 	});
 
 	afterEach(() => {
@@ -177,7 +146,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 	it('re-sends the media subscriptions on the new socket reusing their ids', async () => {
 		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
+		addMediaSubs(driver, USER_ID);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(0);
@@ -224,7 +193,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(100);
 		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
 
-		addMediaSubs(driver);
+		addMediaSubs(driver, USER_ID);
 		await jest.advanceTimersByTimeAsync(200);
 
 		await expect(resubscribed).resolves.toBe(true);
@@ -236,7 +205,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 	it('resolves false when the reopened socket never acks the re-sub', async () => {
 		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver);
+		addMediaSubs(driver, USER_ID);
 
 		const recovery = recoverSocket();
 		await jest.advanceTimersByTimeAsync(0);
