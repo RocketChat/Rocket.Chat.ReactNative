@@ -20,11 +20,18 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		}
 
 		if (type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) {
+			let roomId = rid;
+			let room = null;
+
 			// The path segment of a deep link may hold either a room name or a room id.
 			// getRoomByTypeAndName resolves both, unlike the REST endpoints, which match
 			// roomName exactly and return "not found" when handed an id.
-			const room = rid ? null : await getRoomByTypeAndName(type === ERoomTypes.GROUP ? 'p' : 'c', name);
-			const roomId = rid || room?._id;
+			if (!roomId) {
+				const roomType = type === ERoomTypes.GROUP ? 'p' : 'c';
+				room = await getRoomByTypeAndName(roomType, name);
+				roomId = room?._id;
+			}
+
 			if (!roomId) {
 				return false;
 			}
