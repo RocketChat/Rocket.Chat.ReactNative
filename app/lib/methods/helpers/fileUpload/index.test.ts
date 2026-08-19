@@ -1,5 +1,4 @@
 import FileUpload, { MissingUploadAuthHeadersError } from './index';
-import { Upload } from './Upload';
 
 const mockSetupRequest = jest.fn();
 const mockAppendFile = jest.fn();
@@ -25,12 +24,11 @@ describe('FileUpload', () => {
 		['token missing', { 'X-Auth-Token': undefined, 'X-User-Id': 'user-id' }],
 		['user id missing', { 'X-Auth-Token': 'token', 'X-User-Id': undefined }],
 		['token empty', { 'X-Auth-Token': '', 'X-User-Id': 'user-id' }]
-	])('refuses to build a request when %s', (_, headers) => {
-		expect(() => new FileUpload('https://open.rocket.chat/api/v1/users.setAvatar', headers, formData)).toThrow(
-			MissingUploadAuthHeadersError
-		);
-		expect(Upload).not.toHaveBeenCalled();
-		expect(mockSetupRequest).not.toHaveBeenCalled();
+	])('refuses to send when %s', async (_, headers) => {
+		const upload = new FileUpload('https://open.rocket.chat/api/v1/users.setAvatar', headers, formData);
+
+		await expect(upload.send()).rejects.toThrow(MissingUploadAuthHeadersError);
+		expect(mockSend).not.toHaveBeenCalled();
 	});
 
 	it('sends an authenticated upload keeping optional headers out of the request', async () => {

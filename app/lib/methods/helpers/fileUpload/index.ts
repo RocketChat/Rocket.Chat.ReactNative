@@ -23,20 +23,23 @@ const assertAuthHeaders = (headers: TUploadHeaders): void => {
 class FileUpload {
 	private upload: Upload;
 
+	private headers: TUploadHeaders;
+
 	constructor(
 		url: string,
 		headers: TUploadHeaders,
 		data: IFormData[],
 		progressCallback?: (loaded: number, total: number) => void
 	) {
-		assertAuthHeaders(headers);
+		this.headers = headers;
 		this.upload = new Upload();
 		this.upload.setupRequest(url, dropUndefinedHeaders(headers), progressCallback);
 		data.forEach(item => this.upload.appendFile(item));
 	}
 
-	public send(): Promise<TRoomsMediaResponse> {
-		return this.upload.send();
+	public async send(): Promise<TRoomsMediaResponse> {
+		assertAuthHeaders(this.headers);
+		return await this.upload.send();
 	}
 
 	public cancel(): void {
