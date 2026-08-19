@@ -28,6 +28,7 @@ import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
+import { isTwoFactorCancelled } from '../lib/services/twoFactor';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
@@ -123,8 +124,14 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
-				yield put(setUser({ ...result, ...updatedUser.user }));
+				try {
+					const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
+					yield put(setUser({ ...result, ...updatedUser.user }));
+				} catch (e) {
+					if (!isTwoFactorCancelled(e)) {
+						throw e;
+					}
+				}
 			}
 		}
 	} catch (e) {
