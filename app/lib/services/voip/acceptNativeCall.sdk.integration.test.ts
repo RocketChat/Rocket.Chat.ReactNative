@@ -3,6 +3,8 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
+import type { MockConnection, SdkDriver } from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
@@ -31,55 +33,12 @@ jest.mock('../../methods/helpers/log', () => ({
 	default: jest.fn()
 }));
 
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: () => void;
-}
-
-interface SdkDriver {
-	userId: string;
-	pingInterval: number;
-	reopenNow(): Promise<void>;
-	socket: {
-		lastPing: number;
-		pingTimeout?: ReturnType<typeof setTimeout>;
-		openTimeout?: ReturnType<typeof setTimeout>;
-		open(): Promise<void>;
-		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
-	};
-}
-
 const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				} else if (message.msg === 'unsub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'nosub', id: message.id }) }));
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 

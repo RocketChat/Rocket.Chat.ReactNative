@@ -1,31 +1,9 @@
-import type { Store } from 'redux';
-
 jest.unmock('@rocket.chat/sdk');
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string; method?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				} else if (message.msg === 'unsub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'nosub', id: message.id }) }));
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
@@ -95,83 +73,32 @@ import { getMessageById } from '../../../database/services/Message';
 import buildMessage from '../../helpers/buildMessage';
 import { subscribeRoom, unsubscribeRoom } from '../../../../actions/room';
 import { clearUserTyping } from '../../../../actions/usersTyping';
-import type { IApplicationState } from '../../../../definitions';
+import {
+	flush,
+	framesOn,
+	makeCollection as makeBaseCollection,
+	makeReduxStore,
+	receiveFrame
+} from '../../../testUtils/sdkIntegration';
+import type { MockConnection } from '../../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const database = require('../../../database').default as {
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
 };
 
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: () => void;
-}
-
-interface WireFrame {
-	msg: string;
-	id?: string;
-	name?: string;
-	params?: unknown[];
-}
-
 const mockConnections: MockConnection[] = [];
 
-function makeReduxStore() {
-	const listeners = new Set<() => void>();
-	const state = {
-		login: { user: null as Record<string, unknown> | null, isAuthenticated: false },
-		server: { version: '5.0.0' },
-		settings: {} as Record<string, unknown>,
-		room: { subscribedRoom: 'room-rid' as string | null }
-	};
-	return {
-		state,
-		store: {
-			getState: () => state,
-			dispatch: jest.fn(),
-			subscribe: (listener: () => void) => {
-				listeners.add(listener);
-				return () => listeners.delete(listener);
-			}
-		} as unknown as Store<IApplicationState>
-	};
-}
-
-async function flush(turns = 10) {
-	for (let i = 0; i < turns; i++) {
-		await Promise.resolve();
-		await jest.advanceTimersByTimeAsync(0);
-	}
-}
-
-function framesOn(connection: MockConnection, msg: string) {
-	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
-		.filter(message => message.msg === msg);
-}
-
-function receiveFrame(connection: MockConnection, frame: Record<string, unknown>) {
-	connection.onmessage({ data: JSON.stringify(frame) });
-}
-
 function makeCollection(name: string) {
-	return {
-		name,
-		find: jest.fn(),
-		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })),
-		create: jest.fn(),
-		prepareCreate: jest.fn((fn: (record: Record<string, unknown>) => void) => {
-			const record = { _raw: { id: '' }, subscription: { id: '' } };
-			fn(record);
-			return record;
-		}),
-		schema: { columnArray: [] }
-	};
+	const collection = makeBaseCollection(name);
+	collection.prepareCreate.mockImplementation((fn: (record: Record<string, unknown>) => void) => {
+		const record = { _raw: { id: '' }, subscription: { id: '' } };
+		fn(record);
+		return record;
+	});
+	collection.schema = { columnArray: [] };
+	return collection;
 }
 
 const MESSAGE = {

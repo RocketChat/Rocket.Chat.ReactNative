@@ -1,67 +1,20 @@
 import sdk from '../sdk';
 import { recoverSocket } from '../socketHealth';
+import { framesOn } from '../../testUtils/sdkIntegration';
+import type { MockConnection, SdkDriver } from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
 	Driver: new (options: { host: string; logger: unknown }) => SdkDriver;
 };
 
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: () => void;
-}
-
-interface WireFrame {
-	msg: string;
-	id?: string;
-	name?: string;
-	params?: string[];
-}
-
-interface SdkDriver {
-	userId: string;
-	pingInterval: number;
-	reopenNow(): Promise<void>;
-	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
-	socket: {
-		lastPing: number;
-		pingTimeout?: ReturnType<typeof setTimeout>;
-		openTimeout?: ReturnType<typeof setTimeout>;
-		open(): Promise<void>;
-		send(message: Record<string, unknown>): Promise<unknown>;
-		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
-	};
-}
-
 const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
@@ -104,12 +57,6 @@ function backdateLastPing(driver: SdkDriver, ageMs: number) {
 
 function stopAnsweringFrames(connection: MockConnection) {
 	connection.send.mockImplementation(() => undefined);
-}
-
-function framesOn(connection: MockConnection, msg: string) {
-	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
-		.filter(message => message.msg === msg);
 }
 
 describe('recoverSocket against the real SDK socket', () => {
@@ -238,7 +185,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		await expect(recovery).resolves.toBe('reopened');
 
-		const resubscribed = driver.waitForNotifyUserMediaSubs();
+		const resubscribed = driver.waitForNotifyUserMediaSubs!();
 		await jest.advanceTimersByTimeAsync(200);
 		await expect(resubscribed).resolves.toBe(true);
 
@@ -273,7 +220,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		await expect(recovery).resolves.toBe('reopened');
 
-		const resubscribed = driver.waitForNotifyUserMediaSubs(1000);
+		const resubscribed = driver.waitForNotifyUserMediaSubs!(1000);
 		await jest.advanceTimersByTimeAsync(100);
 		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
 
@@ -299,7 +246,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		stopAnsweringFrames(mockConnections[1]);
 
-		const resubscribed = driver.waitForNotifyUserMediaSubs(500);
+		const resubscribed = driver.waitForNotifyUserMediaSubs!(500);
 		await jest.advanceTimersByTimeAsync(500);
 
 		await expect(resubscribed).resolves.toBe(false);
