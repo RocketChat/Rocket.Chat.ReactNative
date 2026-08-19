@@ -87,12 +87,13 @@ const TwoFactor = memo(() => {
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
 	const params = data?.params;
+	const emailCodeRecipient = params && 'user' in params ? params.user : undefined;
 
 	const sendEmail = async () => {
 		try {
-			if (params?.user) {
+			if (emailCodeRecipient) {
 				clearErrors();
-				const response = await sendEmailCode(params?.user);
+				const response = await sendEmailCode(emailCodeRecipient);
 
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));

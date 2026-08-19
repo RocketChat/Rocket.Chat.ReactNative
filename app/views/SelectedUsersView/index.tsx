@@ -94,7 +94,7 @@ const SelectedUsersView = () => {
 	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
 
 	useEffect(() => {
-		if (isGroupChat()) {
+		if (isGroupChat() && user.username) {
 			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
 		}
 	}, []);

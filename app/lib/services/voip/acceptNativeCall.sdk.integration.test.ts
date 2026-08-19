@@ -45,7 +45,7 @@ interface SdkDriver {
 	userId: string;
 	pingInterval: number;
 	reopenNow(): Promise<void>;
-	ddp: {
+	socket: {
 		lastPing: number;
 		pingTimeout?: ReturnType<typeof setTimeout>;
 		openTimeout?: ReturnType<typeof setTimeout>;
@@ -113,7 +113,7 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 async function buildConnectedDriver() {
 	const driver = new Driver({ host: 'localhost:3000', logger });
 	driver.userId = USER_ID;
-	const openPromise = driver.ddp.open();
+	const openPromise = driver.socket.open();
 	mockConnections[0].onopen();
 	await jest.advanceTimersByTimeAsync(0);
 	await openPromise;
@@ -123,7 +123,7 @@ async function buildConnectedDriver() {
 function addMediaSubs(driver: SdkDriver) {
 	['media-signal', 'media-calls'].forEach((name, index) => {
 		const id = `sub-${index}`;
-		driver.ddp.subscriptions[id] = {
+		driver.socket.subscriptions[id] = {
 			id,
 			name: 'stream-notify-user',
 			params: [`${USER_ID}/${name}`],
@@ -133,7 +133,7 @@ function addMediaSubs(driver: SdkDriver) {
 }
 
 function backdateLastPing(driver: SdkDriver, ageMs: number) {
-	driver.ddp.lastPing = Date.now() - ageMs;
+	driver.socket.lastPing = Date.now() - ageMs;
 }
 
 function stopAnsweringFrames(connection: MockConnection) {
@@ -147,14 +147,14 @@ beforeEach(async () => {
 	jest.useFakeTimers();
 	mockConnections.length = 0;
 	driver = await buildConnectedDriver();
-	(sdk as unknown as { current: { ddp: SdkDriver } }).current = { ddp: driver };
+	(sdk as unknown as { current: { driver: SdkDriver } }).current = { driver };
 	mockWaitForLoginReady.mockResolvedValue(true);
 	mockGetState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 });
 
 afterEach(() => {
-	if (driver.ddp.pingTimeout) clearTimeout(driver.ddp.pingTimeout);
-	if (driver.ddp.openTimeout) clearTimeout(driver.ddp.openTimeout);
+	if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
+	if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
 	jest.useRealTimers();
 });
 

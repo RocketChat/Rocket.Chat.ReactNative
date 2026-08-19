@@ -282,7 +282,8 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
-	const getUserDisplayName = (user: TUserModel) => (useRealName ? user.name : user.username) || user.username;
+	const getUserDisplayName = (user: TUserModel) =>
+		(useRealName ? user.name || user.username : user.username || user.name) || user._id;
 
 	const onPressUser = (selectedUser: TUserModel) => {
 		const { room, roomRoles, members } = state;

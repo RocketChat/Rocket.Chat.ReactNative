@@ -48,8 +48,11 @@ export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, up
 };
 
 export const handleMute = async (user: TUserModel, rid: string) => {
+	if (!user?.username) {
+		return;
+	}
 	try {
-		await toggleMuteUserInRoom(rid, user?.username, user?._id, !user.muted);
+		await toggleMuteUserInRoom(rid, user.username, user._id, !user.muted);
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
 		});
@@ -88,6 +91,9 @@ export const handleModerator = async (
 };
 
 export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): Promise<void> => {
+	if (!item.username) {
+		return;
+	}
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');

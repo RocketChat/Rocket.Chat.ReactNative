@@ -12,12 +12,10 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
 import sdk from './sdk';
-import { toLoginResult } from './toLoginResult';
-import { toSdkCredentials } from './toSdkCredentials';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
+import { type ICredentials, type ICredentialsPasswordAPI, type ILoggedUser, STATUSES, type TUserStatus } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -296,11 +294,15 @@ function stopListener(listener: any): void {
 	listener?.stop();
 }
 
+function toUserStatus(status?: string): TUserStatus {
+	return STATUSES.find(known => known === status) ?? 'offline';
+}
+
 async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
-	await sdk.current.login(toSdkCredentials(credentials));
+	await sdk.current.login(credentials);
 	const serverVersion = store.getState().server.version;
-	const result = toLoginResult(sdk.current.currentLogin?.result);
+	const result = sdk.current.currentLogin?.result;
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
@@ -316,7 +318,7 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 			username: result.me.username,
 			name: result.me.name,
 			language: result.me.language,
-			status: result.me.status,
+			status: toUserStatus(result.me.status),
 			statusText: result.me.statusText,
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
@@ -331,6 +333,18 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 			requirePasswordChange: result.me.requirePasswordChange
 		};
 		return user;
+	}
+}
+
+function toPasswordLogin(params: ICredentials): ICredentialsPasswordAPI | undefined {
+	if ('ldap' in params) {
+		return { user: params.username, password: params.ldapPass };
+	}
+	if ('crowd' in params) {
+		return { user: params.username, password: params.crowdPassword };
+	}
+	if ('password' in params) {
+		return params;
 	}
 }
 
@@ -351,26 +365,17 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<
 						invalid: (details.error || error) === 'totp-invalid'
 					});
 
-					if (loginEmailPassword) {
-						store.dispatch(setUser({ username: params.user || params.username }));
+					const passwordParams = loginEmailPassword ? toPasswordLogin(params) : undefined;
+					if (passwordParams) {
+						store.dispatch(setUser({ username: passwordParams.user || passwordParams.username }));
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = store.getState().server.version;
-						if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
-
-						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(loginTOTP({ ...passwordParams, code: code?.twoFactorCode }, loginEmailPassword));
 					}
 
 					return resolve(
 						loginTOTP({
 							totp: {
-								login: {
-									...params
-								},
+								login: params,
 								code: code?.twoFactorCode
 							}
 						})

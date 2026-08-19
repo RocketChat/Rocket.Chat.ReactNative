@@ -12,10 +12,10 @@ import sdk, { type TDriver } from './sdk';
  */
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
-export function classifySocketHealth(ddp: TDriver): SocketRecoveryPlan {
-	// `ddp.connected` already folds in the ping-age test (transportOpen && alive(),
+export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
+	// `driver.connected` already folds in the ping-age test (transportOpen && alive(),
 	// where alive() is `now - lastPing <= config.ping * 2`), so a stale ping lands here.
-	if (!ddp.connected) {
+	if (!driver.connected) {
 		return 'reopen';
 	}
 	// A connected socket is still verified by a round trip, never trusted outright:
@@ -27,7 +27,7 @@ export function classifySocketHealth(ddp: TDriver): SocketRecoveryPlan {
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — `sdk.current?.ddp` undefined; nothing to recover.
+ * - `'no-socket'`       — `sdk.current?.driver` undefined; nothing to recover.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
@@ -44,20 +44,20 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
 	}
-	const ddp = sdk.current?.ddp;
-	if (!ddp) {
+	const driver = sdk.current?.driver;
+	if (!driver) {
 		return Promise.resolve('no-socket');
 	}
 	const recovery = (async (): Promise<SocketRecoveryOutcome> => {
-		if (classifySocketHealth(ddp) === 'reopen') {
-			await ddp.reopenNow();
+		if (classifySocketHealth(driver) === 'reopen') {
+			await driver.reopenNow();
 			return 'reopened';
 		}
-		const alive = await ddp.probe(2000);
+		const alive = await driver.probe(2000);
 		if (alive) {
 			return 'confirmed-alive';
 		}
-		await ddp.reopenNow();
+		await driver.reopenNow();
 		return 'reopened';
 	})();
 	inFlightRecovery = recovery;
@@ -111,7 +111,7 @@ export function recoverSocket(options?: { abortSignal?: AbortSignal }): Promise<
  * Vocabulary:
  * - socket health      — the classification concern (`classifySocketHealth`).
  * - recovery plan      — `SocketRecoveryPlan`, the decision.
- * - round trip         — the liveness check (`ddp.probe` stays as the SDK
+ * - round trip         — the liveness check (`driver.probe` stays as the SDK
  *                        method name; our terms say round trip).
  * - recovery outcome   — `SocketRecoveryOutcome`, what callers see.
  */
