@@ -1038,7 +1038,6 @@ export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } =
 };
 
 export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
-	// {} when TOTP is enabled
 	unsubscribeRooms();
 
 	// RC 3.6.0
