@@ -282,8 +282,11 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
-	const getUserDisplayName = (user: TUserModel) =>
-		(useRealName ? user.name || user.username : user.username || user.name) || user._id;
+	const getUserDisplayName = (user: TUserModel) => {
+		const preferred = useRealName ? user.name : user.username;
+		const fallback = useRealName ? user.username : user.name;
+		return preferred || fallback || user._id;
+	};
 
 	const onPressUser = (selectedUser: TUserModel) => {
 		const { room, roomRoles, members } = state;

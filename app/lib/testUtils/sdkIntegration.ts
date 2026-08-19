@@ -11,8 +11,8 @@ export interface IDdpMessage {
 }
 
 export class MockConnection {
-	send = jest.fn((data: string) => {
-		const message = JSON.parse(data) as IDdpMessage;
+	send = jest.fn((frame: string) => {
+		const message = JSON.parse(frame) as IDdpMessage;
 		if (message.msg === 'connect') {
 			setImmediate(() => this.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
 		} else if (message.msg === 'ping') {
@@ -59,7 +59,7 @@ export interface ISdkDriver {
 
 export function framesOn(connection: MockConnection, msg: string): IDdpMessage[] {
 	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as IDdpMessage)
+		.map(([frame]: [string]) => JSON.parse(frame) as IDdpMessage)
 		.filter(message => message.msg === msg);
 }
 
