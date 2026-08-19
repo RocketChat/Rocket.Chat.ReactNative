@@ -42,24 +42,9 @@ describe('classifySocketHealth', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('returns reopen when age > 2 * pingInterval', () => {
-		const ddp = makeDdp({ lastPing: now - 21000 });
-		expect(classifySocketHealth(ddp as unknown as Driver)).toBe('reopen');
-	});
-
-	it('returns round-trip-check when age <= 2 * pingInterval', () => {
-		const ddp = makeDdp({ lastPing: now - 15000 });
+	it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
+		const ddp = makeDdp({ connected: true });
 		expect(classifySocketHealth(ddp as unknown as Driver)).toBe('round-trip-check');
-	});
-
-	it('returns round-trip-check for a young ping rather than trusting it outright', () => {
-		const ddp = makeDdp({ lastPing: now - 5000 });
-		expect(classifySocketHealth(ddp as unknown as Driver)).toBe('round-trip-check');
-	});
-
-	it('uses 10000ms default when pingInterval is missing', () => {
-		const ddp = makeDdp({ pingInterval: 0, lastPing: now - 21000 });
-		expect(classifySocketHealth(ddp as unknown as Driver)).toBe('reopen');
 	});
 
 	it('returns reopen for a closed socket even when lastPing is fresh', () => {

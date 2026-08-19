@@ -13,17 +13,13 @@ import sdk, { type TDriver } from './sdk';
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
 export function classifySocketHealth(ddp: TDriver): SocketRecoveryPlan {
-	// Ping age can't vouch for a socket the OS already closed.
+	// `ddp.connected` already folds in the ping-age test (transportOpen && alive(),
+	// where alive() is `now - lastPing <= config.ping * 2`), so a stale ping lands here.
 	if (!ddp.connected) {
 		return 'reopen';
 	}
-	const pingInterval = ddp.pingInterval || 10000;
-	const age = Date.now() - ddp.lastPing;
-	if (age > pingInterval * 2) {
-		return 'reopen';
-	}
-	// Anything younger is verified by a round trip, never trusted outright: onOpen
-	// refreshes lastPing before the handshake reply lands.
+	// A connected socket is still verified by a round trip, never trusted outright:
+	// onOpen refreshes lastPing before the handshake reply lands.
 	return 'round-trip-check';
 }
 
