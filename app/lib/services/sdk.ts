@@ -107,9 +107,8 @@ class Sdk {
 					try {
 						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
 						return resolve(this.post(endpoint, params));
-					} catch {
-						// twoFactor was canceled
-						return resolve({} as any);
+					} catch (twoFactorError) {
+						return reject(twoFactorError);
 					}
 				} else {
 					reject(e);
@@ -131,9 +130,8 @@ class Sdk {
 					try {
 						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
 						return resolve(this.methodCall(method, ...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
+					} catch (twoFactorError) {
+						return reject(twoFactorError);
 					}
 				} else {
 					reject(e);

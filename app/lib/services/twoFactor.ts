@@ -3,6 +3,9 @@ import { settings } from '@rocket.chat/sdk';
 import { TWO_FACTOR } from '../../containers/TwoFactor';
 import EventEmitter from '../methods/helpers/events';
 import { type ICredentials } from '../../definitions';
+import { TwoFactorCancelledError } from './twoFactorCancelled';
+
+export { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactorCancelled';
 
 interface ITwoFactor {
 	method: string;
@@ -16,7 +19,7 @@ export const twoFactor = ({ method, invalid, params }: ITwoFactor): Promise<{ tw
 			method,
 			invalid,
 			params,
-			cancel: () => reject(),
+			cancel: () => reject(new TwoFactorCancelledError()),
 			submit: (code: string) => {
 				settings.customHeaders = {
 					...settings.customHeaders,
