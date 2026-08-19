@@ -56,9 +56,6 @@ export interface Spec extends TurboModule {
 	 */
 	stopVoipCallService(): void;
 
-	/** Android: disconnects the VoiceConnection registered for `callId`, bypassing CallKeep. iOS: no-op. */
-	disconnectNativeCall(callId: string): void;
-
 	/**
 	 * Disconnects the Telecom connection for a call without going through CallKeep.
 	 * iOS: No-op (CallKit teardown goes through RNCallKeep).
