@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -70,6 +70,7 @@ const TwoFactor = memo(() => {
 	const isMasterDetail = useMasterDetail();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
+	const pendingCancel = useRef<EventListenerMethod['cancel']>(undefined);
 	const {
 		control,
 		setValue,
@@ -113,6 +114,8 @@ const TwoFactor = memo(() => {
 	}, [data]);
 
 	const showTwoFactor = (args: EventListenerMethod) => {
+		pendingCancel.current?.();
+		pendingCancel.current = args.cancel;
 		setData(args);
 		if (args.invalid) {
 			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
@@ -128,6 +131,7 @@ const TwoFactor = memo(() => {
 
 	const onCancel = () => {
 		const { cancel } = data;
+		pendingCancel.current = undefined;
 		if (cancel) {
 			cancel();
 		}
@@ -136,6 +140,7 @@ const TwoFactor = memo(() => {
 
 	const onSubmit = () => {
 		const { submit } = data;
+		pendingCancel.current = undefined;
 		if (submit) {
 			const { code } = getValues();
 			if (data.method === 'password') {
