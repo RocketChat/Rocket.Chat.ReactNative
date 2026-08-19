@@ -296,94 +296,82 @@ function stopListener(listener: any): void {
 	listener?.stop();
 }
 
-async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
+async function login(credentials: ICredentials): Promise<ILoggedUser> {
 	// RC 0.64.0
 	await sdk.current.login(toSdkCredentials(credentials));
 	const serverVersion = store.getState().server.version;
 	const result = toLoginResult(sdk.current.currentLogin?.result);
+	if (!result) {
+		throw new Error('Login failed: missing login result');
+	}
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
-		enableMessageParserEarlyAdoption = result?.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
-		showMessageInMainThread = result?.me.settings?.preferences?.showMessageInMainThread ?? true;
+		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
-	if (result) {
-		const user: ILoggedUser = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
-			showMessageInMainThread,
-			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
-			bio: result.me.bio,
-			nickname: result.me.nickname,
-			requirePasswordChange: result.me.requirePasswordChange
-		};
-		return user;
-	}
+	const user: ILoggedUser = {
+		id: result.userId,
+		token: result.authToken,
+		username: result.me.username,
+		name: result.me.name,
+		language: result.me.language,
+		status: result.me.status,
+		statusText: result.me.statusText,
+		customFields: result.me.customFields,
+		statusLivechat: result.me.statusLivechat,
+		emails: result.me.emails,
+		roles: result.me.roles,
+		avatarETag: result.me.avatarETag,
+		showMessageInMainThread,
+		enableMessageParserEarlyAdoption,
+		alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
+		bio: result.me.bio,
+		nickname: result.me.nickname,
+		requirePasswordChange: result.me.requirePasswordChange
+	};
+	return user;
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const result = await login(params);
-			if (result) {
-				return resolve(result);
-			}
-		} catch (e: any) {
-			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-				const { details, error } = e.data;
-				try {
-					const code = await twoFactor({
-						params,
-						method: details?.method || 'totp',
-						invalid: (details.error || error) === 'totp-invalid'
-					});
+async function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
+	try {
+		return await login(params);
+	} catch (e: any) {
+		if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
+			const { details, error } = e.data;
+			const code = await twoFactor({
+				params,
+				method: details?.method || 'totp',
+				invalid: (details.error || error) === 'totp-invalid'
+			});
 
-					if (loginEmailPassword) {
-						store.dispatch(setUser({ username: params.user || params.username }));
+			if (loginEmailPassword) {
+				store.dispatch(setUser({ username: params.user || params.username }));
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = store.getState().server.version;
-						if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
-
-						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
-					}
-
-					return resolve(
-						loginTOTP({
-							totp: {
-								login: {
-									...params
-								},
-								code: code?.twoFactorCode
-							}
-						})
-					);
-				} catch {
-					// twoFactor was canceled
-					return reject();
+				// Force normalized params for 2FA starting RC 3.9.0.
+				const serverVersion = store.getState().server.version;
+				if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
+					const user = params.user ?? params.username;
+					const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+					params = { user, password };
 				}
-			} else {
-				reject(e);
+
+				return loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword);
 			}
+
+			return loginTOTP({
+				totp: {
+					login: {
+						...params
+					},
+					code: code?.twoFactorCode
+				}
+			});
 		}
-	});
+		throw e;
+	}
 }
 
 function loginWithPassword({ user, password }: { user: string; password: string }): Promise<ILoggedUser> {
