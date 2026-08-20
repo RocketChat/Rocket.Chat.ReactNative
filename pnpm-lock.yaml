@@ -6446,7 +6446,7 @@ packages:
       react-native: '*'
 
   react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/47092e8c90550a54d45fe307f7cb2a24c9535ed5:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/47092e8c90550a54d45fe307f7cb2a24c9535ed5}
+    resolution: {gitHosted: true, integrity: sha512-8ZHDglb624R22yARJlIeI6cDX0UjUY3m7Iq5wUI9IhjA4/ZZKHQ8GHiq9k6C/LwjTjoaJ/wXrl1zYQ2LNS9FbQ==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/47092e8c90550a54d45fe307f7cb2a24c9535ed5}
     version: 0.51.1
     peerDependencies:
       react: '*'

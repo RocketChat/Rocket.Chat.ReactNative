@@ -15,7 +15,7 @@ export interface NativeCallMediaSession {
 
 const activeGates = new Map<string, AbortController>();
 
-async function waitForMediaSignalSubs(ddp: TDriver, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
+async function waitForMediaSignalSubs(driver: TDriver, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
 	if (abortSignal?.aborted) {
 		return false;
 	}
@@ -25,7 +25,7 @@ async function waitForMediaSignalSubs(ddp: TDriver, timeoutMs: number, abortSign
 	});
 
 	try {
-		return await Promise.race([ddp.waitForNotifyUserMediaSubs(timeoutMs), aborted]);
+		return await Promise.race([driver.waitForNotifyUserMediaSubs(timeoutMs), aborted]);
 	} catch (error) {
 		log(error);
 		return false;
@@ -65,14 +65,14 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			return;
 		}
 
-		const ddp = sdk.current?.driver;
-		if (!ddp) {
+		const driver = sdk.current?.driver;
+		if (!driver) {
 			return handleFailure(callId, mediaSession);
 		}
 
 		const [loginReady, mediaSubsReady] = await Promise.all([
 			waitForLoginReady(8000, controller.signal),
-			waitForMediaSignalSubs(ddp, 8000, controller.signal)
+			waitForMediaSignalSubs(driver, 8000, controller.signal)
 		]);
 
 		if (controller.signal.aborted) {

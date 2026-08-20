@@ -8,7 +8,6 @@ import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
-import { toSdkCredentials } from '../services/toSdkCredentials';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
@@ -67,18 +66,20 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		if (userId) {
 			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
-			try {
-				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login(toSdkCredentials({ resume: resume ?? undefined }));
+			if (resume) {
+				try {
+					const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+					await sdk.login({ resume });
 
-				const token = getDeviceToken();
-				if (token) {
-					await sdk.del('push.token', { token });
+					const token = getDeviceToken();
+					if (token) {
+						await sdk.del('push.token', { token });
+					}
+
+					await sdk.logout();
+				} catch (e) {
+					log(e);
 				}
-
-				await sdk.logout();
-			} catch (e) {
-				log(e);
 			}
 		}
 
