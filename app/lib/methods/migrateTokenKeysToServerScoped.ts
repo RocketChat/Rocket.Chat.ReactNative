@@ -9,7 +9,8 @@ import UserPreferences from './userPreferences';
 import database from '../database';
 import log from './helpers/log';
 
-const isLegacyUserTokenKey = (key: string): boolean => key.startsWith(`${TOKEN_KEY}-`) && !key.includes('://');
+// A bare alphanumeric suffix is a userId: server ids always carry a dot, a scheme or a path separator.
+const isLegacyUserTokenKey = (key: string): boolean => /^[A-Za-z0-9]+$/.test(key.replace(`${TOKEN_KEY}-`, ''));
 
 export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 	try {
@@ -52,8 +53,15 @@ export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 
 		// Legacy slots whose server has no row left in the database are unreachable above, and the
 		// migrated flag stops the native fallbacks from reading them. Drop them instead of stranding them.
+		const liveKeys = new Set<string>();
+		serversByUserId.forEach((sharing, userId) => {
+			sharing.forEach(server => {
+				liveKeys.add(getServerUserIdKey(server));
+				liveKeys.add(getUserTokenKey(server, userId));
+			});
+		});
 		UserPreferences.getAllKeys()
-			.filter(isLegacyUserTokenKey)
+			.filter(key => key.startsWith(`${TOKEN_KEY}-`) && !liveKeys.has(key) && isLegacyUserTokenKey(key))
 			.forEach(key => UserPreferences.removeItem(key));
 
 		UserPreferences.setBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED, true);

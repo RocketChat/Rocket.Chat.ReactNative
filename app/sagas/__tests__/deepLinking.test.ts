@@ -334,9 +334,10 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(actions.some(a => a.type === LOGIN.REQUEST)).toBe(false);
 		expect(actions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
 		expect(actions.some(a => a.type === APP.START)).toBe(false);
-		// Cold start: normal init takes over instead of the deep link's server.
+		// Cold start: normal init takes over instead of the deep link's server, and there is no
+		// mounted Toast to show a message on.
 		expect(actions.some(a => a.type === APP.INIT)).toBe(true);
-		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_declined');
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_declined');
 		emitSpy.mockRestore();
 	});
 

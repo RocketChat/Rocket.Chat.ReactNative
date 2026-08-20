@@ -145,7 +145,11 @@ const fallbackNavigation = function* fallbackNavigation() {
 };
 
 const declineDeepLinkLogin = function* declineDeepLinkLogin() {
-	showToast(I18n.t('Deep_link_login_declined'));
+	// Only worth a toast while the app is up; on cold start there is no Toast mounted to show it.
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		showToast(I18n.t('Deep_link_login_declined'));
+	}
 	yield fallbackNavigation();
 };
 

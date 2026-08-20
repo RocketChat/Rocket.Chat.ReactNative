@@ -115,6 +115,34 @@ describe('migrateTokenKeysToServerScoped', () => {
 		expect(UserPreferences.getString(`${TOKEN_KEY}-orphan`)).toBeNull();
 	});
 
+	it('preserves keys for a schemeless subpath server', async () => {
+		// completeUrl leaves `example.com/rocketchat` as typed, so these keys carry no scheme.
+		const server = 'example.com/rocketchat';
+		const userId = 'user1';
+		UserPreferences.setString(getServerUserIdKey(server), userId);
+		UserPreferences.setString(`${TOKEN_KEY}-${userId}`, 'legacy-token');
+		setServers([server]);
+
+		await migrateTokenKeysToServerScoped();
+
+		expect(UserPreferences.getString(getServerUserIdKey(server))).toBe(userId);
+		expect(UserPreferences.getString(getUserTokenKey(server, userId))).toBe('legacy-token');
+		expect(UserPreferences.getString(`${TOKEN_KEY}-${userId}`)).toBeNull();
+	});
+
+	it('does not sweep a schemeless server whose row is gone', async () => {
+		const server = 'example.com/rocketchat';
+		const userId = 'user1';
+		UserPreferences.setString(getServerUserIdKey(server), userId);
+		UserPreferences.setString(getUserTokenKey(server, userId), 'scoped-token');
+		setServers([]);
+
+		await migrateTokenKeysToServerScoped();
+
+		expect(UserPreferences.getString(getServerUserIdKey(server))).toBe(userId);
+		expect(UserPreferences.getString(getUserTokenKey(server, userId))).toBe('scoped-token');
+	});
+
 	it('skips servers that have no stored userId', async () => {
 		const server = 'https://open.rocket.chat';
 		setServers([server]);
