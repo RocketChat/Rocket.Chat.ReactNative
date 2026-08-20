@@ -13,7 +13,7 @@ export const useAvatarETag = ({
 	id
 }: {
 	type?: string;
-	username: string;
+	username?: string;
 	text: string;
 	rid?: string;
 	id: string;

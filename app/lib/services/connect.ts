@@ -11,13 +11,17 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
-import sdk from './sdk';
-import { toLoginResult } from './toLoginResult';
-import { toSdkCredentials } from './toSdkCredentials';
+import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
+import {
+	type ILoginCredentials,
+	type ICredentialsPasswordAPI,
+	type ILoggedUser,
+	STATUSES,
+	type TUserStatus
+} from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -50,7 +54,7 @@ let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
-let userPresenceListener: any;
+let userPresenceListener: Promise<IStreamDataListener> | undefined;
 let notifyLoggedListener: any;
 let logoutListener: any;
 
@@ -179,7 +183,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		// RC 4.1
-		userPresenceListener = client.onStreamData('stream-user-presence', (ddpMessage: any) => {
+		userPresenceListener = sdk.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
@@ -296,102 +300,93 @@ function stopListener(listener: any): void {
 	listener?.stop();
 }
 
-async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
+async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
 	const client = sdk.current;
 	if (!client) {
 		throw new Error('Cannot login without an active connection');
 	}
 	// RC 0.64.0
-	await client.login(toSdkCredentials(credentials));
+	await client.login(credentials);
 	const serverVersion = store.getState().server.version;
-	const result = toLoginResult(client.currentLogin?.result);
+	const result = client.currentLogin?.result;
+	if (!result) {
+		throw new Error('Login failed: missing login result');
+	}
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
-		enableMessageParserEarlyAdoption = result?.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
-		showMessageInMainThread = result?.me.settings?.preferences?.showMessageInMainThread ?? true;
+		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
-	if (result) {
-		const user: ILoggedUser = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
-			showMessageInMainThread,
-			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
-			bio: result.me.bio,
-			nickname: result.me.nickname,
-			requirePasswordChange: result.me.requirePasswordChange
-		};
-		return user;
+	const user: ILoggedUser = {
+		id: result.userId,
+		token: result.authToken,
+		username: result.me.username,
+		name: result.me.name,
+		language: result.me.language,
+		status: result.me.status as TUserStatus,
+		statusText: result.me.statusText,
+		customFields: result.me.customFields,
+		statusLivechat: result.me.statusLivechat,
+		emails: result.me.emails,
+		roles: result.me.roles,
+		avatarETag: result.me.avatarETag,
+		showMessageInMainThread,
+		enableMessageParserEarlyAdoption,
+		alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
+		bio: result.me.bio,
+		nickname: result.me.nickname,
+		requirePasswordChange: result.me.requirePasswordChange
+	};
+	return user;
+}
+
+function toPasswordLogin(params: ILoginCredentials): ICredentialsPasswordAPI | undefined {
+	if ('ldap' in params) {
+		return { user: params.username, password: params.ldapPass };
+	}
+	if ('crowd' in params) {
+		return { user: params.username, password: params.crowdPassword };
+	}
+	if ('password' in params) {
+		return params;
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const result = await login(params);
-			if (result) {
-				return resolve(result);
+async function loginTOTP(params: ILoginCredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
+	try {
+		return await login(params);
+	} catch (e: any) {
+		if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
+			const { details, error } = e.data;
+			const code = await twoFactor({
+				params,
+				method: details?.method || 'totp',
+				invalid: (details.error || error) === 'totp-invalid'
+			});
+
+			const passwordParams = loginEmailPassword ? toPasswordLogin(params) : undefined;
+			if (passwordParams) {
+				store.dispatch(setUser({ username: passwordParams.user || passwordParams.username }));
+
+				return loginTOTP({ ...passwordParams, code: code?.twoFactorCode }, loginEmailPassword);
 			}
-		} catch (e: any) {
-			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-				const { details, error } = e.data;
-				try {
-					const code = await twoFactor({
-						params,
-						method: details?.method || 'totp',
-						invalid: (details.error || error) === 'totp-invalid'
-					});
 
-					if (loginEmailPassword) {
-						store.dispatch(setUser({ username: params.user || params.username }));
-
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = store.getState().server.version;
-						if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
-
-						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
-					}
-
-					return resolve(
-						loginTOTP({
-							totp: {
-								login: {
-									...params
-								},
-								code: code?.twoFactorCode
-							}
-						})
-					);
-				} catch {
-					// twoFactor was canceled
-					return reject();
+			return loginTOTP({
+				totp: {
+					login: params,
+					code: code?.twoFactorCode
 				}
-			} else {
-				reject(e);
-			}
+			});
 		}
-	});
+		throw e;
+	}
 }
 
 function loginWithPassword({ user, password }: { user: string; password: string }): Promise<ILoggedUser> {
-	let params: ICredentials = { user, password };
+	let params: ILoginCredentials = { user, password };
 	const state = store.getState();
 
 	if (state.settings.LDAP_Enable) {
@@ -412,7 +407,7 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials) {
+async function loginOAuthOrSso(params: ILoginCredentials) {
 	const result = await loginTOTP(params, false);
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }

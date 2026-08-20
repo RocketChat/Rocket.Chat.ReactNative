@@ -1,16 +1,22 @@
 import sdk from './sdk';
+import { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactor';
 
 const mockInnerMethodCall = jest.fn();
+const mockInnerPost = jest.fn();
 const mockTwoFactor = jest.fn();
 
 jest.mock('@rocket.chat/sdk', () => ({
 	Rocketchat: jest.fn().mockImplementation(() => ({
-		methodCall: (...args: unknown[]) => mockInnerMethodCall(...args)
+		methodCall: (...args: unknown[]) => mockInnerMethodCall(...args),
+		post: (...args: unknown[]) => mockInnerPost(...args)
 	})),
 	settings: { customHeaders: {} }
 }));
 
+jest.mock('../../containers/TwoFactor', () => ({ TWO_FACTOR: 'TWO_FACTOR' }));
+
 jest.mock('./twoFactor', () => ({
+	...jest.requireActual('./twoFactor'),
 	twoFactor: (...args: unknown[]) => mockTwoFactor(...args)
 }));
 
@@ -73,16 +79,53 @@ describe('sdk.methodCall', () => {
 		expect(mockInnerMethodCall.mock.calls[2]).toHaveLength(2);
 	});
 
-	it('twoFactor canceled → resolves to {}', async () => {
+	it('twoFactor cancelled → rejects with TwoFactorCancelledError', async () => {
 		mockInnerMethodCall.mockRejectedValue({
 			error: 'totp-required',
 			details: { method: 'totp' }
 		});
-		mockTwoFactor.mockRejectedValue(new Error('Canceled'));
+		mockTwoFactor.mockRejectedValue(new TwoFactorCancelledError());
 
-		const result = await sdk.methodCall('m');
+		const error = await sdk.methodCall('m').catch(e => e);
 
-		expect(result).toEqual({});
+		expect(isTwoFactorCancelled(error)).toBe(true);
 		expect(mockInnerMethodCall).toHaveBeenCalledTimes(1);
+	});
+
+	it('non-2FA error → rejects with the original error', async () => {
+		const error = { error: 'error-not-allowed' };
+		mockInnerMethodCall.mockRejectedValue(error);
+
+		await expect(sdk.methodCall('m')).rejects.toBe(error);
+		expect(mockTwoFactor).not.toHaveBeenCalled();
+	});
+});
+
+describe('sdk.post', () => {
+	it('twoFactor cancelled → rejects with TwoFactorCancelledError', async () => {
+		mockInnerPost.mockRejectedValue({ data: { errorType: 'totp-required', details: { method: 'totp' } } });
+		mockTwoFactor.mockRejectedValue(new TwoFactorCancelledError());
+
+		const error = await sdk.post('chat.delete' as never, {} as never).catch(e => e);
+
+		expect(isTwoFactorCancelled(error)).toBe(true);
+		expect(mockInnerPost).toHaveBeenCalledTimes(1);
+	});
+
+	it('twoFactor submitted → retries and resolves', async () => {
+		mockInnerPost.mockRejectedValueOnce({ data: { errorType: 'totp-required', details: { method: 'totp' } } });
+		mockInnerPost.mockResolvedValueOnce({ success: true });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: 'CODE', twoFactorMethod: 'totp' });
+
+		await expect(sdk.post('chat.delete' as never, {} as never)).resolves.toEqual({ success: true });
+		expect(mockInnerPost).toHaveBeenCalledTimes(2);
+	});
+
+	it('non-2FA error → rejects with the original error', async () => {
+		const error = { data: { errorType: 'error-not-allowed' } };
+		mockInnerPost.mockRejectedValue(error);
+
+		await expect(sdk.post('chat.delete' as never, {} as never)).rejects.toBe(error);
+		expect(mockTwoFactor).not.toHaveBeenCalled();
 	});
 });
