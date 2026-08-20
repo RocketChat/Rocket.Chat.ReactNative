@@ -237,6 +237,15 @@ const handleOpen = function* handleOpen({ params }) {
 		} catch (e) {
 			// do nothing?
 		}
+		// Consent before touching anything on the deep link's server: a resume token means this
+		// link can sign the user in, so ask while declining is still a no-op.
+		if (params.token) {
+			const confirmed = yield call(confirmDeepLinkLogin, host, params);
+			if (!confirmed) {
+				yield fallbackNavigation();
+				return;
+			}
+		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
 		if (!result.success) {
@@ -258,16 +267,9 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 
 		if (params.token) {
-			const confirmed = yield call(confirmDeepLinkLogin, host, params);
-			if (!confirmed) {
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-				return;
-			}
 			if (!hostAlreadyConnected) {
-				const serverSelected = yield select(state => state.server.server === host && state.server.connected);
-				if (!serverSelected) {
-					yield take(types.SERVER.SELECT_SUCCESS);
-				}
+				yield take(types.SERVER.SELECT_SUCCESS);
+				// SERVER.SELECT_SUCCESS can land after the socket is already connected.
 				const connected = yield select(state => state.meteor.connected);
 				if (!connected) {
 					yield take(types.METEOR.SUCCESS);
@@ -353,6 +355,15 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });
 			return;
+		}
+		// Consent before touching anything on the deep link's server: a resume token means this
+		// link can sign the user in, so ask while declining is still a no-op.
+		if (params.token) {
+			const confirmed = yield call(confirmDeepLinkLogin, host, params);
+			if (!confirmed) {
+				yield fallbackNavigation();
+				return;
+			}
 		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
