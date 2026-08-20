@@ -356,5 +356,9 @@
 			"app/sagas/room.js",
 			"app/sagas/createChannel.js"
 		]
+	},
+	{
+		"test": ".maestro/tests/uikit/button-kit.yaml",
+		"dependsOn": ["app/containers/UIKit/**"]
 	}
 ]
