@@ -15,7 +15,7 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-export type TDriver = Rocketchat['ddp'];
+export type TDriver = Rocketchat['driver'];
 
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
@@ -159,12 +159,12 @@ class Sdk {
 		return this.methodCall(method, ...parsedParams);
 	}
 
-	subscribe(topic: string, ...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribe(topic, ...args);
+	subscribe(topic: string, eventName?: string, ...args: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribe(topic, eventName as string, ...args);
 	}
 
-	subscribeRaw(...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribeRaw(...args);
+	subscribeRaw(name: string, params: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribeRaw(name, params);
 	}
 
 	subscribeRoom(...args: any[]) {

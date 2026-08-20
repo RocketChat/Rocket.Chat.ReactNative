@@ -70,7 +70,7 @@ jest.mock('../sdk', () => ({
 		},
 		get current() {
 			return {
-				ddp: {
+				driver: {
 					reopenNow: jest.fn(() => Promise.resolve()),
 					probe: jest.fn(() => Promise.resolve(true)),
 					lastPing: Date.now(),

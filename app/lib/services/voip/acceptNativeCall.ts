@@ -65,7 +65,7 @@ export async function acceptNativeCallWithReadiness(callId: string, mediaSession
 			return;
 		}
 
-		const ddp = sdk.current?.ddp;
+		const ddp = sdk.current?.driver;
 		if (!ddp) {
 			return handleFailure(callId, mediaSession);
 		}

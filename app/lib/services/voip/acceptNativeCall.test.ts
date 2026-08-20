@@ -9,7 +9,7 @@ const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof wa
 const mockRecoverSocket = recoverSocket as jest.MockedFunction<typeof recoverSocket>;
 const mockGetState = useCallStore.getState as jest.Mock;
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
-const mockDdp = () => sdk.current?.ddp as any;
+const mockDdp = () => sdk.current?.driver as any;
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
@@ -24,7 +24,7 @@ jest.mock('./terminateNativeCall', () => ({
 jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
-		current: { ddp: {} }
+		current: { driver: {} }
 	}
 }));
 
@@ -80,7 +80,7 @@ describe('acceptNativeCallWithReadiness', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
-		(sdk as any).current = { ddp: makeDdp() };
+		(sdk as any).current = { driver: makeDdp() };
 		mockRecoverSocket.mockResolvedValue('confirmed-alive');
 		mockWaitForLoginReady.mockResolvedValue(true);
 		mockGetState.mockReturnValue(makeStoreState());
