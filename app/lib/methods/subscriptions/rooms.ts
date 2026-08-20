@@ -302,7 +302,7 @@ export default function subscribeRooms() {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
-		if (sdk && sdk.current.client && sdk.current.client.host !== subServer) {
+		if (sdk.current?.client && sdk.current.client.host !== subServer) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -435,12 +435,17 @@ export default function subscribeRooms() {
 		roomsSubscription = null;
 	};
 
+	const client = sdk.current;
+	if (!client) {
+		return null;
+	}
+
 	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
 		// set the server that started this task
-		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		subServer = client.client.host;
+		client.subscribeNotifyUser().catch((e: unknown) => console.log(e));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

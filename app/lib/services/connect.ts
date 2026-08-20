@@ -81,10 +81,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-		sdk.initialize(server);
+		const client = sdk.initialize(server);
 		getSettings();
 
-		sdk.current
+		client
 			.connect()
 			.then(() => {
 				console.log('connected');
@@ -93,11 +93,11 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 				console.log('connect error', err);
 			});
 
-		connectingListener = sdk.current.onStreamData('connecting', () => {
+		connectingListener = client.onStreamData('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		connectedListener = sdk.current.onStreamData('connected', () => {
+		connectedListener = client.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -113,12 +113,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
 
-		closeListener = sdk.current.onStreamData('close', () => {
+		closeListener = client.onStreamData('close', () => {
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
+		pendingHangupsConnectedListener = client.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
@@ -130,12 +130,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		usersListener = sdk.current.onStreamData(
+		usersListener = client.onStreamData(
 			'users',
 			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		notifyAllListener = sdk.current.onStreamData(
+		notifyAllListener = client.onStreamData(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -173,13 +173,13 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		rolesListener = sdk.current.onStreamData(
+		rolesListener = client.onStreamData(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
 
 		// RC 4.1
-		userPresenceListener = sdk.current.onStreamData('stream-user-presence', (ddpMessage: any) => {
+		userPresenceListener = client.onStreamData('stream-user-presence', (ddpMessage: any) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
@@ -195,7 +195,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		notifyLoggedListener = sdk.current.onStreamData(
+		notifyLoggedListener = client.onStreamData(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -286,7 +286,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+		logoutListener = client.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
@@ -297,10 +297,14 @@ function stopListener(listener: any): void {
 }
 
 async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
+	const client = sdk.current;
+	if (!client) {
+		throw new Error('Cannot login without an active connection');
+	}
 	// RC 0.64.0
-	await sdk.current.login(toSdkCredentials(credentials));
+	await client.login(toSdkCredentials(credentials));
 	const serverVersion = store.getState().server.version;
-	const result = toLoginResult(sdk.current.currentLogin?.result);
+	const result = toLoginResult(client.currentLogin?.result);
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;

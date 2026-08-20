@@ -24,33 +24,34 @@ export interface IStreamDataListener {
 }
 
 class Sdk {
-	private sdk!: Rocketchat;
+	private sdk: Rocketchat | null = null;
 	private code: any;
+
+	private get activeSdk(): Rocketchat {
+		if (!this.sdk) {
+			throw new Error('Sdk is not initialized');
+		}
+		return this.sdk;
+	}
 
 	private initializeSdk(server: string): Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
 		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
 
-	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
 		this.code = null;
 		this.sdk = this.initializeSdk(server);
 		return this.sdk;
 	}
 
-	get current(): Rocketchat {
+	get current(): Rocketchat | null {
 		return this.sdk;
 	}
 
-	/**
-	 * TODO: evaluate the need for assigning "null" to this.sdk
-	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
-	 */
 	disconnect() {
 		if (this.sdk) {
 			this.sdk.disconnect();
-			// @ts-expect-error
 			this.sdk = null;
 		}
 		return null;
@@ -67,7 +68,7 @@ class Sdk {
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.current.get(endpoint, params);
+		return this.activeSdk.get(endpoint, params);
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -84,7 +85,7 @@ class Sdk {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
-				const result = await this.current.post(endpoint, params);
+				const result = await this.activeSdk.post(endpoint, params);
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -118,12 +119,30 @@ class Sdk {
 		});
 	}
 
+	del<TPath extends PathFor<'DELETE'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'DELETE', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+			'DELETE',
+			MatchPathPattern<TPath>
+		>
+			? void
+			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>>
+	): Promise<Serialized<ResultFor<'DELETE', MatchPathPattern<TPath>>>> {
+		return this.activeSdk.del(endpoint, params);
+	}
+
+	logout() {
+		return this.activeSdk.logout();
+	}
+
 	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
 				const { code } = this;
 				this.code = null;
-				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));
+				const result = await this.activeSdk.methodCall(method, ...args, ...(code ? [code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -162,11 +181,11 @@ class Sdk {
 	}
 
 	subscribe(topic: string, ...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribe(topic, ...args);
+		return this.activeSdk.subscribe(topic, ...args);
 	}
 
 	subscribeRaw(...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribeRaw(...args);
+		return this.activeSdk.subscribeRaw(...args);
 	}
 
 	subscribeRoom(...args: any[]) {
@@ -191,11 +210,11 @@ class Sdk {
 	}
 
 	unsubscribe(subscription: ISubscription) {
-		return this.current.unsubscribe(subscription);
+		return this.activeSdk.unsubscribe(subscription);
 	}
 
 	onStreamData(event: string, callback: TStreamDataCallback): Promise<IStreamDataListener> {
-		return this.current.onStreamData(event, callback as ICallback);
+		return this.activeSdk.onStreamData(event, callback as ICallback);
 	}
 }
 

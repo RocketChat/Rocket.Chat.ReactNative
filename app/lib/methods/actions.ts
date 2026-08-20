@@ -108,12 +108,16 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { currentLogin } = sdk.current;
+		const client = sdk.current;
+		if (!client) {
+			return;
+		}
+		const { currentLogin } = client;
 		if (!currentLogin) {
 			throw new Error('triggerAction requires an authenticated session');
 		}
 		const { userId, authToken } = currentLogin;
-		const { host } = sdk.current.client;
+		const { host } = client.client;
 		const interaction = toUserInteraction({
 			type,
 			actionId,

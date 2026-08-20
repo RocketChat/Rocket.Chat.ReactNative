@@ -14,6 +14,7 @@ export type PushEndpoints = {
 				userId: string;
 			};
 		};
+		DELETE: (params: { token: string }) => void;
 	};
 	'push.info': {
 		GET: () => TPushInfo;

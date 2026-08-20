@@ -23,12 +23,12 @@ const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args
 const mockSdkConnect = jest.fn<Promise<void>, []>(() => Promise.resolve());
 const mockSdkAbort = jest.fn<void, []>();
 const mockSdkDisconnect = jest.fn<void, []>();
-const mockSdkInitialize = jest.fn<void, [string]>();
 const mockSdkCurrent = {
 	onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
 	connect: () => mockSdkConnect(),
 	abort: () => mockSdkAbort()
 };
+const mockSdkInitialize = jest.fn<typeof mockSdkCurrent, [string]>(() => mockSdkCurrent);
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
