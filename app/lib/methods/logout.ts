@@ -13,6 +13,7 @@ import {
 	E2E_PRIVATE_KEY,
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
+	getLegacyUserTokenKey,
 	getServerUserIdKey,
 	getUserTokenKey
 } from '../constants/keys';
@@ -25,6 +26,8 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(getServerUserIdKey(server));
 	if (userId) {
 		UserPreferences.removeItem(getUserTokenKey(server, userId));
+		// A logout before the migration ran leaves a token the native fallbacks would still read.
+		UserPreferences.removeItem(getLegacyUserTokenKey(userId));
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);

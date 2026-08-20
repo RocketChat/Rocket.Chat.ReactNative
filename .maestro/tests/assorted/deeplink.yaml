@@ -318,7 +318,7 @@ tags:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&e2eConfirmPrompt=true')}
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&forceLoginPrompt=true')}
 - extendedWaitUntil:
     visible:
       text: '.*Sign in to this server.*'
@@ -352,7 +352,7 @@ tags:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&e2eConfirmPrompt=true')}
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&forceLoginPrompt=true')}
 - extendedWaitUntil:
     visible:
       text: '.*Sign in to this server.*'

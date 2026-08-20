@@ -40,7 +40,7 @@ const roomTypes = {
 
 const confirmDeepLinkLogin = (host, params = {}) =>
 	new Promise(resolve => {
-		if (process.env.RUNNING_E2E_TESTS === 'true' && params.e2eConfirmPrompt !== 'true') {
+		if (process.env.RUNNING_E2E_TESTS === 'true' && params.forceLoginPrompt !== 'true') {
 			resolve(true);
 			return;
 		}
@@ -144,6 +144,11 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const declineDeepLinkLogin = function* declineDeepLinkLogin() {
+	showToast(I18n.t('Deep_link_login_declined'));
+	yield fallbackNavigation();
+};
+
 let consumedOAuthToken;
 
 const handleOAuth = function* handleOAuth({ params }) {
@@ -242,7 +247,7 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			const confirmed = yield call(confirmDeepLinkLogin, host, params);
 			if (!confirmed) {
-				yield fallbackNavigation();
+				yield declineDeepLinkLogin();
 				return;
 			}
 		}
@@ -361,7 +366,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		if (params.token) {
 			const confirmed = yield call(confirmDeepLinkLogin, host, params);
 			if (!confirmed) {
-				yield fallbackNavigation();
+				yield declineDeepLinkLogin();
 				return;
 			}
 		}

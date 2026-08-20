@@ -1,7 +1,15 @@
-import { TOKEN_KEY_SERVER_SCOPED_MIGRATED, getLegacyUserTokenKey, getServerUserIdKey, getUserTokenKey } from '../constants/keys';
+import {
+	TOKEN_KEY,
+	TOKEN_KEY_SERVER_SCOPED_MIGRATED,
+	getLegacyUserTokenKey,
+	getServerUserIdKey,
+	getUserTokenKey
+} from '../constants/keys';
 import UserPreferences from './userPreferences';
 import database from '../database';
 import log from './helpers/log';
+
+const isLegacyUserTokenKey = (key: string): boolean => key.startsWith(`${TOKEN_KEY}-`) && !key.includes('://');
 
 export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 	try {
@@ -35,15 +43,19 @@ export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 				return;
 			}
 			const newKey = getUserTokenKey(sharing[0], userId);
-			if (UserPreferences.getString(newKey)) {
-				return;
-			}
 			const token = UserPreferences.getString(legacyKey);
-			if (token) {
+			if (token && !UserPreferences.getString(newKey)) {
 				UserPreferences.setString(newKey, token);
-				UserPreferences.removeItem(legacyKey);
 			}
+			UserPreferences.removeItem(legacyKey);
 		});
+
+		// Legacy slots whose server has no row left in the database are unreachable above, and the
+		// migrated flag stops the native fallbacks from reading them. Drop them instead of stranding them.
+		UserPreferences.getAllKeys()
+			.filter(isLegacyUserTokenKey)
+			.forEach(key => UserPreferences.removeItem(key));
+
 		UserPreferences.setBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED, true);
 	} catch (e) {
 		log(e);

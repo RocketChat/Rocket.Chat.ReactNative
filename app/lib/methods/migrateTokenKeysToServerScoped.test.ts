@@ -2,7 +2,7 @@ import { migrateTokenKeysToServerScoped } from './migrateTokenKeysToServerScoped
 import UserPreferences from './userPreferences';
 import database from '../database';
 import log from './helpers/log';
-import { TOKEN_KEY, TOKEN_KEY_SERVER_SCOPED_MIGRATED, getUserTokenKey } from '../constants/keys';
+import { TOKEN_KEY, TOKEN_KEY_SERVER_SCOPED_MIGRATED, getServerUserIdKey, getUserTokenKey } from '../constants/keys';
 
 jest.mock('../database', () => ({
 	__esModule: true,
@@ -85,7 +85,34 @@ describe('migrateTokenKeysToServerScoped', () => {
 		await migrateTokenKeysToServerScoped();
 
 		expect(UserPreferences.getString(getUserTokenKey(server, userId))).toBe('existing-token');
+		expect(UserPreferences.getString(`${TOKEN_KEY}-${userId}`)).toBeNull();
 		expect(UserPreferences.getBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED)).toBe(true);
+	});
+
+	it('drops a legacy slot whose server has no record left in the database', async () => {
+		const orphanUserId = 'orphan';
+		UserPreferences.setString(`${TOKEN_KEY}-${orphanUserId}`, 'orphan-token');
+		setServers([]);
+
+		await migrateTokenKeysToServerScoped();
+
+		expect(UserPreferences.getString(`${TOKEN_KEY}-${orphanUserId}`)).toBeNull();
+		expect(UserPreferences.getBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED)).toBe(true);
+	});
+
+	it('leaves server-scoped keys untouched while dropping orphaned legacy slots', async () => {
+		const server = 'https://open.rocket.chat';
+		const userId = 'user1';
+		UserPreferences.setString(getServerUserIdKey(server), userId);
+		UserPreferences.setString(getUserTokenKey(server, userId), 'scoped-token');
+		UserPreferences.setString(`${TOKEN_KEY}-orphan`, 'orphan-token');
+		setServers([server]);
+
+		await migrateTokenKeysToServerScoped();
+
+		expect(UserPreferences.getString(getServerUserIdKey(server))).toBe(userId);
+		expect(UserPreferences.getString(getUserTokenKey(server, userId))).toBe('scoped-token');
+		expect(UserPreferences.getString(`${TOKEN_KEY}-orphan`)).toBeNull();
 	});
 
 	it('skips servers that have no stored userId', async () => {

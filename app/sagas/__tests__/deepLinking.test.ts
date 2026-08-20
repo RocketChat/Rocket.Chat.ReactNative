@@ -130,6 +130,10 @@ async function flushSagaMicrotasks(): Promise<void> {
 
 type PreloadedState = Parameters<typeof createStore>[1];
 
+/** Messages pushed through showToast, which emits on the Toast LISTENER channel. */
+const toastedMessages = (emitSpy: jest.SpyInstance): string[] =>
+	emitSpy.mock.calls.map(([, payload]: any[]) => payload?.message).filter(Boolean);
+
 function setupStore(preloadedState?: PreloadedState) {
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
@@ -330,11 +334,37 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(actions.some(a => a.type === LOGIN.REQUEST)).toBe(false);
 		expect(actions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
 		expect(actions.some(a => a.type === APP.START)).toBe(false);
+		// Cold start: normal init takes over instead of the deep link's server.
+		expect(actions.some(a => a.type === APP.INIT)).toBe(true);
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_declined');
+		emitSpy.mockRestore();
+	});
+
+	it('leaves a running app where it was when the login confirmation is declined', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		jest.mocked(showConfirmationAlert).mockImplementationOnce(({ onCancel }: any) => onCancel?.());
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+
+		const { store, actions } = setupRecordingStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(actions.some(a => a.type === LOGIN.REQUEST)).toBe(false);
+		expect(actions.some(a => a.type === SERVER.INIT_ADD)).toBe(false);
+		expect(actions.some(a => a.type === APP.START)).toBe(false);
+		expect(actions.some(a => a.type === APP.INIT)).toBe(false);
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_login_declined');
 		emitSpy.mockRestore();
 	});
 
 	// Under RUNNING_E2E_TESTS the prompt is auto-confirmed so most flows don't have to dismiss a
-	// native Alert — except when the deep link carries `e2eConfirmPrompt=true`, which opts a
+	// native Alert — except when the deep link carries `forceLoginPrompt=true`, which opts a
 	// dedicated e2e flow back into the real prompt (see the deeplink.yaml Maestro test).
 	describe('RUNNING_E2E_TESTS auto-confirm gate', () => {
 		const original = process.env.RUNNING_E2E_TESTS;
@@ -346,7 +376,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 			process.env.RUNNING_E2E_TESTS = original;
 		});
 
-		it('auto-confirms without showing the prompt when no e2eConfirmPrompt marker is present', async () => {
+		it('auto-confirms without showing the prompt when no forceLoginPrompt marker is present', async () => {
 			const { store, actions } = setupRecordingStore();
 			const loginRequested = () => actions.some(a => a.type === LOGIN.REQUEST);
 
@@ -364,10 +394,10 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 			expect(loginRequested()).toBe(true);
 		});
 
-		it('shows the real prompt when the deep link carries e2eConfirmPrompt=true', async () => {
+		it('shows the real prompt when the deep link carries forceLoginPrompt=true', async () => {
 			const store = setupStore();
 
-			store.dispatch(deepLinkingOpen(makeParamsWithToken({ e2eConfirmPrompt: 'true' })));
+			store.dispatch(deepLinkingOpen(makeParamsWithToken({ forceLoginPrompt: 'true' })));
 			await flushSagaMicrotasks();
 			await jest.advanceTimersByTimeAsync(1000);
 			await flushSagaMicrotasks();
