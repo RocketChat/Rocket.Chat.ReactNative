@@ -1,5 +1,5 @@
 import log from './helpers/log';
-import { type TMessageModel, type TSubscriptionModel, type SubscriptionType } from '../../definitions';
+import { type TAnyMessageModel, type TSubscriptionModel, type SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
 import { getRoom } from './getRoom';
@@ -18,7 +18,7 @@ const roomTypes = {
 	d: 'direct'
 };
 
-export async function getPermalinkMessage(message: TMessageModel): Promise<string | null> {
+export async function getPermalinkMessage(message: TAnyMessageModel): Promise<string | null> {
 	if (!message.subscription) return null;
 	let room: TSubscriptionModel;
 	try {
