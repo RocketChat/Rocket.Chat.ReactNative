@@ -80,7 +80,7 @@ import {
 	makeReduxStore,
 	receiveFrame
 } from '../../../testUtils/sdkIntegration';
-import type { MockConnection } from '../../../testUtils/sdkIntegration';
+import type { IMockCollection, MockConnection } from '../../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -90,7 +90,7 @@ const database = require('../../../database').default as {
 
 const mockConnections: MockConnection[] = [];
 
-function makeCollection(name: string) {
+function makeCollection(name: string): IMockCollection {
 	const collection = makeBaseCollection(name);
 	collection.prepareCreate.mockImplementation((fn: (record: Record<string, unknown>) => void) => {
 		const record = { _raw: { id: '' }, subscription: { id: '' } };

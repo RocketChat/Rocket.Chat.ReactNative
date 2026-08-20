@@ -9,12 +9,9 @@ export type SamlOrCasRedirect =
 
 export const parseSamlOrCasRedirect = (url: string, authType: string, ssoToken?: string): SamlOrCasRedirect => {
 	const parsedUrl = parse(url, true);
-	if (authType === 'saml' && parsedUrl.query?.saml_idp_credentialToken) {
-		const credentialToken = parsedUrl.query.saml_idp_credentialToken || ssoToken;
-		if (!credentialToken) {
-			return null;
-		}
-		return { kind: 'saml', payload: { credentialToken, saml: true } };
+	const samlCredentialToken = parsedUrl.query?.saml_idp_credentialToken;
+	if (authType === 'saml' && samlCredentialToken) {
+		return { kind: 'saml', payload: { credentialToken: samlCredentialToken, saml: true } };
 	}
 	if (authType === 'cas' && (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket)) {
 		if (!ssoToken) {

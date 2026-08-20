@@ -104,7 +104,16 @@ export function stopAnsweringFrames(connection: MockConnection): void {
 	connection.send.mockImplementation(() => undefined);
 }
 
-export function makeCollection(name: string) {
+export interface IMockCollection {
+	name: string;
+	find: jest.Mock;
+	query: jest.Mock;
+	create: jest.Mock;
+	prepareCreate: jest.Mock;
+	schema: Record<string, unknown>;
+}
+
+export function makeCollection(name: string): IMockCollection {
 	return {
 		name,
 		find: jest.fn(),
@@ -122,14 +131,27 @@ export async function flush(turns = 10): Promise<void> {
 	}
 }
 
-export function makeReduxStore() {
+export interface IMockReduxState {
+	meteor: { connected: boolean };
+	login: { user: Record<string, unknown> | null; isAuthenticated: boolean };
+	server: { version: string };
+	settings: Record<string, unknown>;
+	room: { subscribedRoom: string | null };
+}
+
+export interface IMockReduxStore {
+	state: IMockReduxState;
+	store: Store<IApplicationState> & { dispatch: jest.Mock };
+}
+
+export function makeReduxStore(): IMockReduxStore {
 	const listeners = new Set<() => void>();
-	const state = {
+	const state: IMockReduxState = {
 		meteor: { connected: false },
-		login: { user: null as Record<string, unknown> | null, isAuthenticated: false },
+		login: { user: null, isAuthenticated: false },
 		server: { version: '5.0.0' },
-		settings: {} as Record<string, unknown>,
-		room: { subscribedRoom: null as string | null }
+		settings: {},
+		room: { subscribedRoom: null }
 	};
 	return {
 		state,
