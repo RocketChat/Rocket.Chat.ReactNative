@@ -83,7 +83,7 @@ const IncomingCallHeader = memo(
 							/>
 						</A11y.Index>
 						<View style={styles.row}>
-							<A11y.Index index={3} style={{ flex: 1 }}>
+							<A11y.Index index={3}>
 								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
@@ -91,11 +91,12 @@ const IncomingCallHeader = memo(
 										hideNotification();
 									}}
 									accessibilityLabel={i18n.t('A11y_incoming_call_dismiss')}
-									style={styles.closeButton}>
+									style={styles.closeButton}
+									rectButtonStyle={styles.closeButtonContainer}>
 									<CustomIcon name='close' size={20} />
 								</Touch>
 							</A11y.Index>
-							<A11y.Index index={4} style={{ flex: 1 }}>
+							<A11y.Index index={4} style={styles.buttonWrapper}>
 								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
@@ -103,11 +104,12 @@ const IncomingCallHeader = memo(
 										hideNotification();
 										dispatch(cancelCall({ callId }));
 									}}
-									style={styles.cancelButton}>
+									style={styles.cancelButton}
+									rectButtonStyle={styles.buttonContainer}>
 									<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
 								</Touch>
 							</A11y.Index>
-							<A11y.Index index={5} style={{ flex: 1 }}>
+							<A11y.Index index={5} style={styles.buttonWrapper}>
 								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
@@ -115,7 +117,8 @@ const IncomingCallHeader = memo(
 										hideNotification();
 										dispatch(acceptCall({ callId }));
 									}}
-									style={styles.acceptButton}>
+									style={styles.acceptButton}
+									rectButtonStyle={styles.buttonContainer}>
 									<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 								</Touch>
 							</A11y.Index>
