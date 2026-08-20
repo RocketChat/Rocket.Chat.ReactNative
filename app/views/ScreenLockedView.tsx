@@ -18,7 +18,7 @@ interface IData {
 	submit?: () => void;
 	cancel?: () => void;
 	hasBiometry?: boolean;
-	force?: boolean;
+	canClose?: boolean;
 	reason?: BiometricInvalidationReason;
 }
 
@@ -81,7 +81,7 @@ const ScreenLockedView = () => {
 			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
-				{data?.force ? (
+				{data?.canClose ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />
 					</Touch>

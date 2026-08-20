@@ -9,6 +9,7 @@ type TEventEmitterEmmitArgs =
 	| { method: string }
 	| { invalid: boolean }
 	| { force: boolean }
+	| { canClose: boolean }
 	| { hasBiometry: boolean }
 	| { reason: BiometricInvalidationReason }
 	| { visible: boolean; onCancel?: null | Function }

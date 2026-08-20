@@ -38,8 +38,8 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 		const { colors } = useTheme();
 		const { height } = useResponsiveLayout();
 
-		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
-		// 56 is a fixed number to decrease the height of button numbers.
+		// 206 and 56 are approximate allowances for the header (icon, title, subtitle, dots) and for
+		// trimming the button rows so they don't fill the remaining space.
 		const dinamicHeight = (height - 206 - 56) / 4;
 		const heightButtonRow = { height: dinamicHeight > 102 ? 102 : dinamicHeight };
 

@@ -64,12 +64,12 @@ export class UserCanceledError extends Error {
 	}
 }
 
-const openModal = (hasBiometry: boolean, force?: boolean, reason?: BiometricInvalidationReason) =>
+const openModal = (hasBiometry: boolean, canClose?: boolean, reason?: BiometricInvalidationReason) =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
 			hasBiometry,
-			force,
+			canClose,
 			reason,
 			cancel: () => reject(new UserCanceledError())
 		});
