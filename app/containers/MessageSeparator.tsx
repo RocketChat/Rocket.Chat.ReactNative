@@ -6,6 +6,7 @@ import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
+import DateSeparator from './DateSeparator';
 
 const styles = StyleSheet.create({
 	container: {
@@ -48,14 +49,8 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 			</View>
 		);
 	}
-	if (ts) {
-		return (
-			<View style={styles.container}>
-				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
-				<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo }, styles.marginHorizontal]}>{date}</Text>
-				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
-			</View>
-		);
+	if (ts && date) {
+		return <DateSeparator date={date} />;
 	}
 	return (
 		<View style={styles.container}>

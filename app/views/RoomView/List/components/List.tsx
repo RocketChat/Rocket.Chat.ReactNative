@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
@@ -10,9 +10,11 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
+import FloatingDateSeparator from './FloatingDateSeparator';
 import { type IListProps } from '../definitions';
-import { SCROLL_LIMIT } from '../constants';
+import { HIDE_BUBBLE_DELAY, SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
+import { useFloatingDate } from '../hooks/useFloatingDate';
 
 const styles = StyleSheet.create({
 	list: {
@@ -26,6 +28,9 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
+	const { ts, viewabilityConfigCallbackPairs } = useFloatingDate();
+	const bubbleOpacity = useSharedValue(0);
+
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
@@ -33,6 +38,15 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 			} else {
 				scheduleOnRN(setScrolledPastLimit, false);
 			}
+			bubbleOpacity.set(withTiming(1, { duration: 150 }));
+		},
+		// Same as web: keep the bubble around for a moment after the list settles, then fade it out.
+		// onEndDrag covers releases that don't produce momentum; onScroll re-shows it if momentum follows.
+		onEndDrag: () => {
+			bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
+		},
+		onMomentumEnd: () => {
+			bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
 		}
 	});
 
@@ -66,9 +80,11 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				windowSize={10}
 				scrollEventThrottle={16}
 				onScroll={scrollHandler}
+				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 				{...props}
 				{...scrollPersistTaps}
 			/>
+			<FloatingDateSeparator ts={ts} opacity={bubbleOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);

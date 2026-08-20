@@ -4,3 +4,6 @@ export const MAX_AUTO_LOADS = 10;
 export const SCROLL_LIMIT = 200;
 
 export const EDGE_DISTANCE = 15;
+
+export const BUBBLE_TOP_MARGIN = 8;
+export const HIDE_BUBBLE_DELAY = 1000;
