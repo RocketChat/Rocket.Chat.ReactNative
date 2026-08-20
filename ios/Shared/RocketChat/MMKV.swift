@@ -24,6 +24,11 @@ extension MMKVBridge {
 		if let userToken = string(forKey: "reactnativemeteor_usertoken-\(server)-\(userId)") {
 			return userToken
 		}
+		// The legacy slot is ambiguous across servers sharing a userId, so it is only readable
+		// before migrateTokenKeysToServerScoped (JS) runs.
+		if bool(forKey: "RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED") {
+			return nil
+		}
 		return string(forKey: "reactnativemeteor_usertoken-\(userId)")
 	}
 	

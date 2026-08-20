@@ -24,6 +24,7 @@ class Utils {
 public class Ejson {
     private static final String TAG = "RocketChat.Ejson";
     private static final String TOKEN_KEY = "reactnativemeteor_usertoken-";
+    private static final String TOKEN_KEY_SERVER_SCOPED_MIGRATED = "RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED";
     
     public String host;
     String rid;
@@ -181,6 +182,11 @@ public class Ejson {
      */
     @Deprecated
     private String decodeLegacyUserIdScopedToken(MMKV mmkv, String userId) {
+        // The legacy slot is ambiguous across servers sharing a userId, so it is only readable
+        // before the migration runs.
+        if (mmkv.decodeBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED, false)) {
+            return null;
+        }
         return mmkv.decodeString(TOKEN_KEY.concat(userId));
     }
 
