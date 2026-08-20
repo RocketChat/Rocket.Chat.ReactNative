@@ -6,7 +6,13 @@ import UserPreferences from '../userPreferences';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
 import { store as reduxStore } from '../../store/auxStore';
-import { biometryAuth, checkHasPasscode, handleLocalAuthentication, localAuthenticate } from './localAuthentication';
+import {
+	biometryAuth,
+	checkHasPasscode,
+	enableBiometry,
+	handleLocalAuthentication,
+	localAuthenticate
+} from './localAuthentication';
 import { biometricTrustStore } from '../../biometricTrustStore';
 import { CHANGE_PASSCODE_EMITTER, LOCAL_AUTHENTICATE_EMITTER } from '../../constants/localAuthentication';
 
@@ -392,8 +398,10 @@ describe('checkHasPasscode → biometry consent on first passcode', () => {
 		await checkHasPasscode({});
 
 		expect(mockedVerify).not.toHaveBeenCalled();
-		expect(mockedDisenroll).not.toHaveBeenCalled();
+		// Cleans up before clearing the flag, so a partial enroll can't orphan a sentinel.
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedDisenroll.mock.invocationCallOrder[0]).toBeLessThan(mockedSetEnabled.mock.invocationCallOrder[0]);
 	});
 });
 
@@ -531,7 +539,7 @@ describe('biometryAuth', () => {
 
 // Consent is only consent if a prompt actually appeared. On Android a bare verify() can resolve inside
 // the keystore's 5s auth window with nothing shown, which would enable biometric unlock the user was
-// never asked about — so checkBiometry captures consent through biometryAuth(true).
+// never asked about — so enableBiometry captures consent through biometryAuth(true).
 describe('checkHasPasscode → biometry consent on Android', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -573,5 +581,104 @@ describe('checkHasPasscode → biometry consent on Android', () => {
 
 		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+	});
+});
+
+// Every enable path shares this one, including the settings toggle the grandfathered cohort re-enables
+// from — a silent re-bind there would hand trust back to whatever enrollment is on the device now.
+describe('enableBiometry', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockIsIOS = false;
+		mockedDisenroll.mockResolvedValue(undefined);
+		mockedHasEnrollment.mockResolvedValue(true);
+		mockedIsEnrollmentValid.mockResolvedValue(true);
+		mockedIsEnrolled.mockResolvedValue(true);
+	});
+
+	afterEach(() => {
+		mockIsIOS = true;
+	});
+
+	it('prompts for consent after binding the sentinel', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
+		mockedAuthenticateAsync.mockResolvedValueOnce({ success: true });
+
+		await expect(enableBiometry()).resolves.toEqual({ kind: 'success' });
+
+		expect(mockedEnroll).toHaveBeenCalledTimes(1);
+		expect(mockedAuthenticateAsync).toHaveBeenCalledTimes(1);
+		expect(mockedSetEnabled).toHaveBeenCalledWith(true);
+		expect(mockedDisenroll).not.toHaveBeenCalled();
+	});
+
+	it('tears the fresh sentinel back down when consent is declined', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
+		mockedAuthenticateAsync.mockResolvedValueOnce({ success: false, error: 'user_cancel' });
+
+		await expect(enableBiometry()).resolves.toEqual({ kind: 'canceled' });
+
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+		expect(mockedSetEnabled).not.toHaveBeenCalledWith(true);
+	});
+
+	it('refuses without a strong biometric, before writing anything', async () => {
+		mockedIsEnrolled.mockResolvedValueOnce(false);
+
+		await expect(enableBiometry()).resolves.toEqual({ kind: 'unavailable' });
+
+		expect(mockedEnroll).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+	});
+
+	it('surfaces an enroll failure without prompting', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'unavailable' });
+
+		await expect(enableBiometry()).resolves.toEqual({ kind: 'unavailable' });
+
+		expect(mockedAuthenticateAsync).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
+	});
+});
+
+describe('handleLocalAuthentication relockRequired option', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockedIsEnabled.mockReturnValue(true);
+		mockedIsEnrolled.mockResolvedValue(true);
+		mockedHasEnrollment.mockResolvedValue(true);
+		mockedIsEnrollmentValid.mockResolvedValue(true);
+		mockedIsRelockPending.mockReturnValue(false);
+		mockedEmit.mockImplementation((event, payload) => {
+			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.submit) {
+				setImmediate(() => payload.submit());
+			}
+		});
+	});
+
+	it('trusts an explicit false instead of re-running the check', async () => {
+		await handleLocalAuthentication({ relockRequired: false });
+
+		expect(mockedHasEnrollment).not.toHaveBeenCalled();
+		expect(mockedIsEnrollmentValid).not.toHaveBeenCalled();
+		expect(mockedIsRelockPending).not.toHaveBeenCalled();
+		expect(lastEmitPayload()?.reason).toBeUndefined();
+	});
+
+	it('still computes the check when the option is omitted', async () => {
+		await handleLocalAuthentication();
+
+		expect(mockedHasEnrollment).toHaveBeenCalled();
+	});
+
+	it('forces the enrollment-changed unlock when passed true', async () => {
+		mockedInvalidate.mockResolvedValueOnce(undefined);
+
+		await handleLocalAuthentication({ relockRequired: true });
+
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
+		expect(lastEmitPayload()?.reason).toBe('enrollmentChanged');
+		expect(mockedSetRelockPending).toHaveBeenLastCalledWith(false);
 	});
 });

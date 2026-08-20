@@ -118,8 +118,7 @@ const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationEr
 	}
 };
 
-// Single source for the sentinel-then-probe order. Callers map the state onto their own contract:
-// on iOS the sentinel carries the whole signal and isEnrollmentValid() is always true.
+// Single source for the sentinel-then-probe order; the platform split is in PLATFORMS.md.
 type EnrollmentCheck = { state: 'valid' | 'absent' | 'invalid' } | { state: 'error'; cause: unknown };
 
 const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
@@ -133,8 +132,7 @@ const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
 	}
 };
 
-// Proves presence, not just an unchanged enrollment: iOS gets both from the sentinel read, Android
-// can't (its keystore key accepts a 5s device-credential window) — see PLATFORMS.md.
+// Proves presence, not just an unchanged enrollment. See PLATFORMS.md, "Why the sentinel read can't prove presence".
 export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	const promptCopy = buildPromptCopy(force);
 
@@ -165,8 +163,7 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	}
 };
 
-// Class 3 only: isEnrolledAsync() is a BIOMETRIC_WEAK query on Android, and the keystore won't bind a
-// user-auth key to a weak biometric. iOS reports any biometry as strong.
+// Class 3 only. See PLATFORMS.md, "Weak (Class 2) biometrics".
 export const hasSupportedBiometry = async (): Promise<boolean> => {
 	try {
 		if (!(await LocalAuthentication.isEnrolledAsync())) {
@@ -180,33 +177,40 @@ export const hasSupportedBiometry = async (): Promise<boolean> => {
 };
 
 /*
- * It'll help us to get the permission to use FaceID
- * and enable/disable the biometry when user put their first passcode
+ * Binds the trust sentinel and captures the user's consent for biometric unlock. Every enable path
+ * (first passcode, settings toggle) must go through here: the sentinel write is silent, so it can't
+ * double as consent. See ARCHITECTURE.md, "Why writing the sentinel is not consent".
  */
-const checkBiometry = async () => {
+export const enableBiometry = async (): Promise<TrustResult> => {
 	// Without a strong biometric enroll() can only produce a downgraded sentinel, so don't offer the
 	// opt-in at all rather than offering and revoking it.
 	if (!(await hasSupportedBiometry())) {
 		biometricTrustStore.setEnabled(false);
-		return false;
+		return { kind: 'unavailable' };
 	}
 
-	// The sentinel write is silent, so it can't double as consent: enroll, then prompt once to opt in.
 	const enrollResult = await biometricTrustStore.enroll();
 	if (enrollResult.kind !== 'success') {
+		// disenroll() first: the reverse order can orphan a sentinel a partial enroll left behind.
+		await biometricTrustStore.disenroll();
 		biometricTrustStore.setEnabled(false);
-		return false;
+		return enrollResult;
 	}
 
 	// Via biometryAuth, not verify(): a prompt that never appeared isn't consent.
 	const consent = await biometryAuth(true);
-	const isBiometryEnabled = consent.kind === 'success';
-	if (!isBiometryEnabled) {
+	if (consent.kind !== 'success') {
 		await biometricTrustStore.disenroll();
+		biometricTrustStore.setEnabled(false);
+		return consent;
 	}
-	biometricTrustStore.setEnabled(isBiometryEnabled);
-	return isBiometryEnabled;
+
+	biometricTrustStore.setEnabled(true);
+	return { kind: 'success' };
 };
+
+// Captures the biometry opt-in when the user sets their first passcode.
+const checkBiometry = async () => (await enableBiometry()).kind === 'success';
 
 export const checkHasPasscode = async ({ force = true }: { force?: boolean }): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = UserPreferences.getString(PASSCODE_KEY);
@@ -236,15 +240,13 @@ const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 	return enrollment.state !== 'valid';
 };
 
-// Warm foreground surfaces the change live; cold launch gets it from the marker the init migration
-// left behind. Both must force the lock screen.
+// Warm foreground surfaces the change live; cold launch reads the marker the init migration left.
 const isEnrollmentRelockRequired = async (): Promise<boolean> =>
 	(await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
 
 interface IHandleLocalAuthentication {
 	canCloseModal?: boolean;
-	// Result of a check the caller already ran, so the unlock path doesn't repeat the native probe.
-	// Omit it (direct callers) to compute it here; `false` is a real answer and must not re-trigger it.
+	// Result of a check the caller already ran; omit it to compute here. `false` skips the recheck.
 	relockRequired?: boolean;
 }
 
@@ -252,7 +254,7 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
-	const enrollmentChanged = relockRequired || (await isEnrollmentRelockRequired());
+	const enrollmentChanged = relockRequired ?? (await isEnrollmentRelockRequired());
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
@@ -267,8 +269,7 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 
 	const hasBiometry = biometryEnabled && (await hasSupportedBiometry());
 
-	// Modal first so it covers the app; PasscodeEnter prompts biometry from behind it. Prompting here
-	// would show the OS sheet over visible app content.
+	// Modal first so it covers the app; PasscodeEnter prompts biometry from behind it.
 	await openModal(hasBiometry, canCloseModal);
 	biometricTrustStore.setRelockPending(false);
 };
@@ -292,8 +293,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// Check if the app has passcode
 		const result = await checkHasPasscode({});
 
-		// Refreshed after the modal: persisting the stale pre-modal timesync would immediately re-lock a
-		// session the user just unlocked.
+		// Refreshed after the modal: the stale pre-modal timesync would immediately re-lock the session.
 		let authenticatedTimesync = timesync;
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set

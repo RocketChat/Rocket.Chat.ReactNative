@@ -10,7 +10,7 @@ import {
 	changePasscode,
 	checkHasPasscode,
 	supportedBiometryLabel,
-	hasSupportedBiometry,
+	enableBiometry,
 	handleLocalAuthentication,
 	logUnlessUserCanceled
 } from '../lib/methods/helpers/localAuthentication';
@@ -152,11 +152,8 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 		}
 	};
 
-	// Accepts the Switch's target value so the row onPress (List.Item passes the title string —
-	// any non-boolean arg → flip) and the Switch's onValueChange converge on the same target; the
-	// updater guard makes a double fire from a single tap (row press + switch value-change) a no-op
-	// instead of toggling back, and skips the side effects (checkHasPasscode/save) for the
-	// discarded duplicate.
+	// Takes the Switch's target value; the row onPress passes a non-boolean, so it flips instead. The
+	// updater guard makes a double fire from one tap a no-op rather than a toggle back.
 	toggleAutoLock = (value?: boolean) => {
 		if (this.props.Force_Screen_Lock) {
 			return;
@@ -202,18 +199,11 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 			({ biometry }) => ({ biometry: !biometry, biometryBusy: true }),
 			async () => {
 				const { biometry } = this.state;
-				// Don't rely on the row being hidden: without a strong biometric enroll() can only
-				// produce a downgraded sentinel, so refuse the opt-in here too.
-				if (biometry && !(await hasSupportedBiometry())) {
-					biometricTrustStore.setEnabled(false);
-					this.setState({ biometry: false, biometryBusy: false });
-					showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));
-					return;
-				}
-				const result = await biometricTrustStore.setBiometryEnabled(biometry);
+				// Enabling goes through enableBiometry so a re-bind carries an explicit consent prompt.
+				const result = biometry ? await enableBiometry() : await biometricTrustStore.setBiometryEnabled(false);
 				if (result.kind !== 'success') {
-					// setBiometryEnabled only fails on the enable path and always forces the persisted
-					// flag off, so the correct UI state is unconditionally `false`.
+					// Only the enable path can fail, and it always forces the persisted flag off, so the
+					// correct UI state is unconditionally `false`.
 					this.setState({ biometry: false, biometryBusy: false });
 					if (result.kind === 'unavailable') {
 						showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));
