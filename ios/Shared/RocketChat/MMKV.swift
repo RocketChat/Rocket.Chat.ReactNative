@@ -18,9 +18,8 @@ extension MMKVBridge {
 		return MMKVBridge(id: "default", cryptKey: cryptKey, rootPath: mmkvPath)
 	}
 	
-	// Server-scoped key: reactnativemeteor_usertoken-{server}-{userId}. Keep in sync with
-	// getUserTokenKey() (JS) and Ejson.token() (Android); falls back to the legacy
-	// userId-only slot until the JS migration runs.
+	// Keep in sync with getUserTokenKey() (JS) and Ejson.token() (Android); falls back to the
+	// legacy userId-only slot until the JS migration runs.
 	func userToken(for userId: String, server: String) -> String? {
 		if let userToken = string(forKey: "reactnativemeteor_usertoken-\(server)-\(userId)") {
 			return userToken

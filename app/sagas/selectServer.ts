@@ -151,9 +151,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		// Deep-link and share-extension startup can dispatch selectServerRequest() directly, without
-		// going through appInit(). Run the (idempotent, flag-guarded) token migration here too so the
-		// server-scoped read below finds legacy sessions instead of falling through to a login screen.
 		yield* call(migrateTokenKeysToServerScoped);
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		let user = null;

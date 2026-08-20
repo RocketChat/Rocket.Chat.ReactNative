@@ -23,12 +23,7 @@ export const ALERT_DISPLAY_TYPE_PREFERENCES_KEY = 'RC_ALERT_DISPLAY_TYPE_PREFERE
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
-/**
- * MMKV key for the auth token, scoped to (server, userId). Scoping by userId alone was ambiguous:
- * two servers can share a userId (a malicious one can force it), so lookups could resolve another
- * server's token (token confusion / exfiltration). Keep in sync with `Ejson.token()` on Android
- * and the migration in the init saga.
- */
+// Keep in sync with Ejson.token() (Android) and MMKV.userToken(for:server:) (iOS).
 export const getUserTokenKey = (server: string, userId: string): string => `${TOKEN_KEY}-${server}-${userId}`;
 export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CURRENT_SERVER = 'currentServer';

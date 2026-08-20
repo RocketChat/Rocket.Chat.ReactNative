@@ -25,7 +25,6 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
 		UserPreferences.removeItem(getUserTokenKey(server, userId));
-		// Also remove the legacy non-server-scoped token slot, in case this server predates the migration.
 		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);

@@ -40,8 +40,6 @@ const roomTypes = {
 
 const confirmDeepLinkLogin = (host, params = {}) =>
 	new Promise(resolve => {
-		// Under E2E tests, auto-confirm so flows don't have to dismiss the native Alert.
-		// `e2eConfirmPrompt=true` opts back into the real prompt to test it. Test-only; real users always get the prompt.
 		if (process.env.RUNNING_E2E_TESTS === 'true' && params.e2eConfirmPrompt !== 'true') {
 			resolve(true);
 			return;
@@ -266,14 +264,10 @@ const handleOpen = function* handleOpen({ params }) {
 				return;
 			}
 			if (!hostAlreadyConnected) {
-				// The confirm prompt can sit open for seconds while the NewServer connection
-				// (emitted above) completes, so SERVER.SELECT_SUCCESS may have already fired by
-				// the time we get here. Guard the take instead of hanging on an event that's past.
 				const serverSelected = yield select(state => state.server.server === host && state.server.connected);
 				if (!serverSelected) {
 					yield take(types.SERVER.SELECT_SUCCESS);
 				}
-				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
 				const connected = yield select(state => state.meteor.connected);
 				if (!connected) {
 					yield take(types.METEOR.SUCCESS);

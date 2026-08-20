@@ -149,9 +149,8 @@ public class Ejson {
             return "";
         }
 
-        // Server-scoped key: reactnativemeteor_usertoken-{server}-{userId}.
-        // Keep in sync with getUserTokenKey() on the JS side; falls back to the legacy
-        // userId-only slot until the JS migration runs.
+        // Keep in sync with getUserTokenKey() (JS); falls back to the legacy userId-only slot
+        // until the JS migration runs.
         String token = null;
         if (serverURL != null && !serverURL.isEmpty()) {
             String key = TOKEN_KEY.concat(serverURL).concat("-").concat(userId);
