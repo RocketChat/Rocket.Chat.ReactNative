@@ -1,3 +1,4 @@
+import type * as RocketChatSdk from '@rocket.chat/sdk';
 import type { Store } from 'redux';
 
 import type { IApplicationState } from '../../definitions';
@@ -67,14 +68,12 @@ export function receiveFrame(connection: MockConnection, frame: Record<string, u
 	connection.onmessage({ data: JSON.stringify(frame) });
 }
 
-const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
-	Driver: new (options: { host: string; logger: unknown }) => ISdkDriver;
-};
+const { Rocketchat } = jest.requireActual<typeof RocketChatSdk>('@rocket.chat/sdk');
 
 const driverLogger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
 
 export async function buildConnectedDriver(connections: MockConnection[], userId: string): Promise<ISdkDriver> {
-	const driver = new Driver({ host: 'localhost:3000', logger: driverLogger });
+	const driver = new Rocketchat({ host: 'localhost:3000', logger: driverLogger }).driver as unknown as ISdkDriver;
 	driver.userId = userId;
 	const openPromise = driver.socket.open();
 	connections[0].onopen();
