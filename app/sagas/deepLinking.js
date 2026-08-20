@@ -19,7 +19,7 @@ import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/meth
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -155,7 +155,8 @@ const handleShareExtension = function* handleOpen({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	try {
 		yield localAuthenticate(server);
-	} catch {
+	} catch (e) {
+		logUnlessUserCanceled(e);
 		yield put(appInit());
 		return;
 	}
@@ -210,7 +211,8 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!connected) {
 			try {
 				yield localAuthenticate(host);
-			} catch {
+			} catch (e) {
+				logUnlessUserCanceled(e);
 				return;
 			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
@@ -227,7 +229,8 @@ const handleOpen = function* handleOpen({ params }) {
 				yield completeDeepLinkNavigation(params);
 				return;
 			}
-		} catch {
+		} catch (e) {
+			logUnlessUserCanceled(e);
 			return;
 		}
 		// if deep link is from a different server
@@ -324,7 +327,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		if (!connected) {
 			try {
 				yield localAuthenticate(host);
-			} catch {
+			} catch (e) {
+				logUnlessUserCanceled(e);
 				return;
 			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
@@ -335,7 +339,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		if (user && serverRecord) {
 			try {
 				yield localAuthenticate(host);
-			} catch {
+			} catch (e) {
+				logUnlessUserCanceled(e);
 				return;
 			}
 			yield put(selectServerRequest(host, serverRecord.version, true, true));

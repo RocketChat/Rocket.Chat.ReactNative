@@ -9,8 +9,8 @@ import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
 import { type SettingsStackParamList } from '../stacks/types';
-import { handleLocalAuthentication, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
-import log, {
+import { handleLocalAuthentication, logUnlessUserCanceled } from '../lib/methods/helpers/localAuthentication';
+import {
 	events,
 	getReportAnalyticsEventsValue,
 	getReportCrashErrorsValue,
@@ -62,10 +62,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 			try {
 				await handleLocalAuthentication({ canCloseModal: true });
 			} catch (e) {
-				// A dismissed modal is benign; anything else must not be swallowed as if it were a cancel.
-				if (!(e instanceof UserCanceledError)) {
-					log(e);
-				}
+				logUnlessUserCanceled(e);
 				return;
 			}
 		}

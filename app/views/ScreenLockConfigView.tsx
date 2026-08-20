@@ -12,13 +12,13 @@ import {
 	supportedBiometryLabel,
 	hasSupportedBiometry,
 	handleLocalAuthentication,
-	UserCanceledError
+	logUnlessUserCanceled
 } from '../lib/methods/helpers/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
 import { biometricTrustStore } from '../lib/biometricTrustStore';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
-import log, { events, logEvent } from '../lib/methods/helpers/log';
+import { events, logEvent } from '../lib/methods/helpers/log';
 import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
 import { showErrorAlert } from '../lib/methods/helpers/info';
@@ -140,10 +140,7 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 			try {
 				await handleLocalAuthentication({ canCloseModal: true });
 			} catch (e) {
-				// A dismissed modal is benign; anything else must not be swallowed as if it were a cancel.
-				if (!(e instanceof UserCanceledError)) {
-					log(e);
-				}
+				logUnlessUserCanceled(e);
 				return;
 			}
 		}
@@ -151,11 +148,7 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 		try {
 			await changePasscode({ force });
 		} catch (e) {
-			// A dismissed modal is benign; anything else (e.g. persisting the new passcode failed)
-			// must not be silently swallowed as if it were a cancel.
-			if (!(e instanceof UserCanceledError)) {
-				log(e);
-			}
+			logUnlessUserCanceled(e);
 		}
 	};
 

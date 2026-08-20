@@ -19,7 +19,7 @@ import { removeServer } from '../../../lib/methods/logout';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
-import { localAuthenticate } from '../../../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled } from '../../../lib/methods/helpers/localAuthentication';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import UserPreferences from '../../../lib/methods/userPreferences';
 import { useTheme } from '../../../theme';
@@ -90,7 +90,8 @@ const ServersList = () => {
 			} else {
 				try {
 					await localAuthenticate(serverParam);
-				} catch {
+				} catch (e) {
+					logUnlessUserCanceled(e);
 					return;
 				}
 				dispatch(selectServerRequest(serverParam, version, true, true));

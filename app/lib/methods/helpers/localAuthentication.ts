@@ -25,6 +25,7 @@ import {
 	type TServerModel,
 	type TrustResult
 } from '../../../definitions';
+import log from './log';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
@@ -63,6 +64,13 @@ export class UserCanceledError extends Error {
 		this.name = 'UserCanceledError';
 	}
 }
+
+// A dismissed unlock modal is benign; a real failure must not be swallowed as a cancel.
+export const logUnlessUserCanceled = (e: unknown): void => {
+	if (!(e instanceof UserCanceledError)) {
+		log(e);
+	}
+};
 
 const openModal = (hasBiometry: boolean, canClose?: boolean, reason?: BiometricInvalidationReason) =>
 	new Promise<void>((resolve, reject) => {
