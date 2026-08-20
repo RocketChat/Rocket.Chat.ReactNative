@@ -29,7 +29,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
@@ -152,7 +152,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
 		yield* call(migrateTokenKeysToServerScoped);
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
 		let user = null;
 		if (userId) {
 			// search credentials on database

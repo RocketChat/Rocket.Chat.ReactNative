@@ -11,7 +11,7 @@ import * as List from '../../../containers/List';
 import ServerItem from '../../../containers/ServerItem';
 import { RootEnum, type TServerModel } from '../../../definitions';
 import I18n from '../../../i18n';
-import { TOKEN_KEY } from '../../../lib/constants/keys';
+import { getServerUserIdKey } from '../../../lib/constants/keys';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
@@ -77,7 +77,7 @@ const ServersList = () => {
 		close();
 		if (server !== serverParam) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = UserPreferences.getString(`${TOKEN_KEY}-${serverParam}`);
+			const userId = UserPreferences.getString(getServerUserIdKey(serverParam));
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}

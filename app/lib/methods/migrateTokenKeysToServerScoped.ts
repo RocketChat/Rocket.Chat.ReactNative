@@ -1,4 +1,4 @@
-import { TOKEN_KEY, TOKEN_KEY_SERVER_SCOPED_MIGRATED, getUserTokenKey } from '../constants/keys';
+import { TOKEN_KEY_SERVER_SCOPED_MIGRATED, getLegacyUserTokenKey, getServerUserIdKey, getUserTokenKey } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import database from '../database';
 import log from './helpers/log';
@@ -15,7 +15,7 @@ export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 		const serverCountByUserId: Record<string, number> = {};
 		for (let i = 0; i < servers.length; i += 1) {
 			const server = servers[i].id;
-			const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+			const userId = UserPreferences.getString(getServerUserIdKey(server));
 			if (!userId) {
 				continue;
 			}
@@ -26,7 +26,7 @@ export const migrateTokenKeysToServerScoped = async (): Promise<void> => {
 		const legacyKeys = new Set<string>();
 		for (let i = 0; i < serverUserIds.length; i += 1) {
 			const { server, userId } = serverUserIds[i];
-			const legacyKey = `${TOKEN_KEY}-${userId}`;
+			const legacyKey = getLegacyUserTokenKey(userId);
 			// A userId claimed by more than one server is ambiguous: drop the legacy slot instead of
 			// migrating it, so the session re-authenticates.
 			if (serverCountByUserId[userId] > 1) {

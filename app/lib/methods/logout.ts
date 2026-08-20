@@ -13,7 +13,7 @@ import {
 	E2E_PRIVATE_KEY,
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
-	TOKEN_KEY,
+	getServerUserIdKey,
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
@@ -22,7 +22,7 @@ import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
-	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
+	UserPreferences.removeItem(getServerUserIdKey(server));
 	if (userId) {
 		UserPreferences.removeItem(getUserTokenKey(server, userId));
 	}
@@ -36,7 +36,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -69,7 +69,7 @@ export async function removeServerDatabase({ server }: { server: string }): Prom
 
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
 		if (userId) {
 			const resume = UserPreferences.getString(getUserTokenKey(server, userId));
 

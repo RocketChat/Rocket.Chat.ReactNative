@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { selectServerRequest } from '../actions/server';
@@ -27,7 +27,7 @@ const restore = function* restore() {
 		yield call(migrateTokenKeysToServerScoped);
 
 		const server = UserPreferences.getString(CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		let userId = UserPreferences.getString(getServerUserIdKey(server));
 
 		if (!server) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -40,7 +40,7 @@ const restore = function* restore() {
 			if (servers.length > 0) {
 				for (let i = 0; i < servers.length; i += 1) {
 					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
+					userId = UserPreferences.getString(getServerUserIdKey(newServer));
 					if (userId) {
 						return yield put(selectServerRequest(newServer, newServer.version));
 					}

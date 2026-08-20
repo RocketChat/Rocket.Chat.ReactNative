@@ -10,7 +10,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
@@ -161,7 +161,7 @@ const handleOAuth = function* handleOAuth({ params }) {
 
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
-	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+	const user = UserPreferences.getString(getServerUserIdKey(server));
 
 	if (!user) {
 		yield put(appInit());
@@ -209,7 +209,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
@@ -333,7 +333,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
