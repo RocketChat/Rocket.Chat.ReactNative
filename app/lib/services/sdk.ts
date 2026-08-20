@@ -164,8 +164,8 @@ class Sdk {
 		return this.current.subscribe(topic, eventName as string, ...args);
 	}
 
-	subscribeRaw(...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribeRaw(...args);
+	subscribeRaw(name: string, params: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribeRaw(name, params);
 	}
 
 	subscribeRoom(...args: any[]) {

@@ -91,8 +91,8 @@ importers:
         specifier: RocketChat/rocket.chat-mobile-crypto#main
         version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/69a0a250dd7c6ff0808eb659d7202be1cae7fa1c(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@rocket.chat/sdk':
-        specifier: RocketChat/Rocket.Chat.js.SDK#176bdfe4b5cd2f47370266572cbcb94a5eee7322
-        version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/176bdfe4b5cd2f47370266572cbcb94a5eee7322
+        specifier: RocketChat/Rocket.Chat.js.SDK#4a59115412d75e3e7f62e5416400e27068b4eae3
+        version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/4a59115412d75e3e7f62e5416400e27068b4eae3
       '@rocket.chat/ui-kit':
         specifier: ^0.39.0
         version: 0.39.0(@rocket.chat/icons@0.47.0)(@types/node@25.0.3)(typescript@7.0.2)
@@ -2633,8 +2633,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/176bdfe4b5cd2f47370266572cbcb94a5eee7322':
-    resolution: {gitHosted: true, integrity: sha512-SAkGojmE6QbNMVNqz6Sgq2QDwcZ0S3kMLyJDNrCbTvcE18PJ9INoanXztzek65J9cZuq5Z2faeENVft8wlqZ+A==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/176bdfe4b5cd2f47370266572cbcb94a5eee7322}
+  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/4a59115412d75e3e7f62e5416400e27068b4eae3':
+    resolution: {gitHosted: true, integrity: sha512-sHIAc9rohA38ytCcs8Zm9IoCYWkL1n5IQYd04O7d+Gfjb/2ePpGqLIBuv1XpiBNaiTS5GluBXFzhqhC9CAE1Ew==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/4a59115412d75e3e7f62e5416400e27068b4eae3}
     version: 1.3.3-mobile
 
   '@rocket.chat/ui-kit@0.39.0':
@@ -6446,7 +6446,7 @@ packages:
       react-native: '*'
 
   react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/47092e8c90550a54d45fe307f7cb2a24c9535ed5:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/47092e8c90550a54d45fe307f7cb2a24c9535ed5}
+    resolution: {gitHosted: true, integrity: sha512-8ZHDglb624R22yARJlIeI6cDX0UjUY3m7Iq5wUI9IhjA4/ZZKHQ8GHiq9k6C/LwjTjoaJ/wXrl1zYQ2LNS9FbQ==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/47092e8c90550a54d45fe307f7cb2a24c9535ed5}
     version: 0.51.1
     peerDependencies:
       react: '*'
@@ -10517,7 +10517,7 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
 
-  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/176bdfe4b5cd2f47370266572cbcb94a5eee7322':
+  '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/4a59115412d75e3e7f62e5416400e27068b4eae3':
     dependencies:
       js-sha256: 0.9.0
       tiny-events: 1.0.1
