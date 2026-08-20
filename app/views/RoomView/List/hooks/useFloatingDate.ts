@@ -1,7 +1,14 @@
 import { useState } from 'react';
-import { type ViewToken } from 'react-native';
+import { type FlatListProps, type ViewToken } from 'react-native';
 
 import { type TAnyMessageModel } from '../../../../definitions';
+
+type TViewabilityConfigCallbackPairs = NonNullable<FlatListProps<TAnyMessageModel>['viewabilityConfigCallbackPairs']>;
+
+interface IUseFloatingDate {
+	ts: Date | string | null;
+	viewabilityConfigCallbackPairs: TViewabilityConfigCallbackPairs;
+}
 
 // The list is inverted, so the topmost visible row is the one with the highest index.
 export const getTopVisibleTs = (viewableItems: ViewToken<TAnyMessageModel>[]): Date | string | null => {
@@ -17,13 +24,13 @@ export const getTopVisibleTs = (viewableItems: ViewToken<TAnyMessageModel>[]): D
 	return top?.item.ts || null;
 };
 
-export const useFloatingDate = () => {
+export const useFloatingDate = (): IUseFloatingDate => {
 	const [ts, setTs] = useState<Date | string | null>(null);
 
-	const [viewabilityConfigCallbackPairs] = useState(() => [
+	const [viewabilityConfigCallbackPairs] = useState<TViewabilityConfigCallbackPairs>(() => [
 		{
 			viewabilityConfig: { itemVisiblePercentThreshold: 0 },
-			onViewableItemsChanged: ({ viewableItems }: { viewableItems: ViewToken<TAnyMessageModel>[] }) => {
+			onViewableItemsChanged: ({ viewableItems }) => {
 				const next = getTopVisibleTs(viewableItems);
 				if (next) {
 					setTs(next);

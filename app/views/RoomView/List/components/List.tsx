@@ -80,9 +80,9 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				windowSize={10}
 				scrollEventThrottle={16}
 				onScroll={scrollHandler}
-				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 				{...props}
 				{...scrollPersistTaps}
+				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 			/>
 			<FloatingDateSeparator ts={ts} opacity={bubbleOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
