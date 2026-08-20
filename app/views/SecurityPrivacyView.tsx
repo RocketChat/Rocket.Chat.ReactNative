@@ -60,7 +60,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 	const navigateToScreenLockConfigView = async () => {
 		if (server?.autoLock) {
 			try {
-				await handleLocalAuthentication(true);
+				await handleLocalAuthentication({ canCloseModal: true });
 			} catch {
 				return;
 			}

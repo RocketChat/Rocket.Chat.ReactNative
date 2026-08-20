@@ -110,6 +110,21 @@ const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationEr
 	}
 };
 
+// Single source for the sentinel-then-probe order. Callers map the state onto their own contract:
+// on iOS the sentinel carries the whole signal and isEnrollmentValid() is always true.
+type EnrollmentCheck = { state: 'valid' | 'absent' | 'invalid' } | { state: 'error'; cause: unknown };
+
+const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
+	try {
+		if (!(await biometricTrustStore.hasEnrollment())) {
+			return { state: 'absent' };
+		}
+		return { state: (await biometricTrustStore.isEnrollmentValid()) ? 'valid' : 'invalid' };
+	} catch (cause) {
+		return { state: 'error', cause };
+	}
+};
+
 // Proves presence, not just an unchanged enrollment: iOS gets both from the sentinel read, Android
 // can't (its keystore key accepts a 5s device-credential window) — see PLATFORMS.md.
 export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
@@ -119,13 +134,18 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 		return biometricTrustStore.verify({ promptCopy });
 	}
 
+	const enrollment = await checkBiometricEnrollment();
+	if (enrollment.state === 'absent') {
+		return { kind: 'unavailable' };
+	}
+	if (enrollment.state === 'invalid') {
+		return { kind: 'enrollmentChanged' };
+	}
+	if (enrollment.state === 'error') {
+		return { kind: 'error', cause: enrollment.cause };
+	}
+
 	try {
-		if (!(await biometricTrustStore.hasEnrollment())) {
-			return { kind: 'unavailable' };
-		}
-		if (!(await biometricTrustStore.isEnrollmentValid())) {
-			return { kind: 'enrollmentChanged' };
-		}
 		const presence = await LocalAuthentication.authenticateAsync({
 			disableDeviceFallback: true,
 			cancelLabel: promptCopy.cancel,
@@ -203,17 +223,9 @@ const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 	if (!biometricTrustStore.isEnabled()) {
 		return false;
 	}
-	// Fail closed: a rejecting read forces the passcode rather than leaving the session unlocked.
-	try {
-		// iOS: sentinel gone → changed.
-		if (!(await biometricTrustStore.hasEnrollment())) {
-			return true;
-		}
-		// Android: sentinel survives, so consult the probe key.
-		return !(await biometricTrustStore.isEnrollmentValid());
-	} catch {
-		return true;
-	}
+	// Fail closed: anything but a clean valid read forces the passcode rather than leaving the session unlocked.
+	const enrollment = await checkBiometricEnrollment();
+	return enrollment.state !== 'valid';
 };
 
 // Warm foreground surfaces the change live; cold launch gets it from the marker the init migration
@@ -221,11 +233,18 @@ const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
 const isEnrollmentRelockRequired = async (): Promise<boolean> =>
 	(await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
 
-export const handleLocalAuthentication = async (canCloseModal = false) => {
+interface IHandleLocalAuthentication {
+	canCloseModal?: boolean;
+	// Result of a check the caller already ran, so the unlock path doesn't repeat the native probe.
+	// Omit it (direct callers) to compute it here; `false` is a real answer and must not re-trigger it.
+	relockRequired?: boolean;
+}
+
+export const handleLocalAuthentication = async ({ canCloseModal = false, relockRequired }: IHandleLocalAuthentication = {}) => {
 	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
-	const enrollmentChanged = await isEnrollmentRelockRequired();
+	const enrollmentChanged = relockRequired || await isEnrollmentRelockRequired();
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
@@ -287,7 +306,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
-				await handleLocalAuthentication();
+				await handleLocalAuthentication({ relockRequired: enrollmentChanged });
 
 				// set isLocalAuthenticated to true
 				store.dispatch(setLocalAuthenticated(true));

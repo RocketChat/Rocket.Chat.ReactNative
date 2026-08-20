@@ -138,7 +138,7 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 		const { autoLock } = this.state;
 		if (autoLock) {
 			try {
-				await handleLocalAuthentication(true);
+				await handleLocalAuthentication({ canCloseModal: true });
 			} catch {
 				// User dismissed the unlock modal — abort the passcode change.
 				return;
