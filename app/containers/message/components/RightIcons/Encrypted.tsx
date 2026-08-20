@@ -7,8 +7,6 @@ import { useMessageField } from '../../stores/MessageStore';
 import { useOnEncryptedPress } from '../../stores/MessageRoomStore';
 
 const Encrypted = () => {
-	'use memo';
-
 	const onEncryptedPress = useOnEncryptedPress();
 	const type = useMessageField(item => item.t);
 

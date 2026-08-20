@@ -12,7 +12,7 @@ import {
 } from '@rocket.chat/ui-kit';
 
 import Markdown, { MarkdownPreview } from '../markdown';
-import Button from '../Button';
+import Button from './Button';
 import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
 import { themes } from '../../lib/constants/colors';
@@ -93,7 +93,7 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 		if (isContext) {
 			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
 		}
-		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} textStyle={{ fontSize: 14 }} />;
+		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} />;
 	}
 
 	button(element: IButton, context: BlockContext): ReactElement {

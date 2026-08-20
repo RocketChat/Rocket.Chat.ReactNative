@@ -49,7 +49,7 @@ const buildMessage = ({ id, ts, t }: { id: string; ts: string; t?: string }) =>
 		rid: 'ROOM_ID',
 		ts,
 		...(t ? { t } : {})
-	} as any);
+	}) as any;
 
 describe('loadMessagesForRoom', () => {
 	beforeEach(() => {
@@ -251,7 +251,7 @@ describe('loadMessagesForRoom', () => {
 						ts: new Date(Date.UTC(2024, 0, 1, hour, 0, length - index)).toISOString(),
 						_updatedAt: new Date(Date.UTC(2024, 0, 1, hour, 0, length - index)).toISOString(),
 						t: 'uj'
-					} as any)
+					}) as any
 			);
 
 		it('writes the Last Open from every fetched batch on the initial tail load', async () => {
