@@ -315,6 +315,7 @@
   "License": "Licença",
   "Light": "Luz",
   "Loading": "A carregar",
+  "Local_authentication_biometric_enrollment_changed": "O registo biométrico foi alterado,\nutilize o seu código",
   "Local_authentication_biometry_enable_failed": "Não foi possível ativar o desbloqueio biométrico.",
   "Local_authentication_biometry_unavailable": "Este dispositivo não pode ser utilizado para desbloqueio biométrico.",
   "Logging_out": "A terminar a sessão.",
