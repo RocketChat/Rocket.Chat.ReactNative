@@ -244,7 +244,7 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
-	const enrollmentChanged = relockRequired || await isEnrollmentRelockRequired();
+	const enrollmentChanged = relockRequired || (await isEnrollmentRelockRequired());
 	if (enrollmentChanged) {
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
