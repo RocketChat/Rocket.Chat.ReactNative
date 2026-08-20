@@ -15,7 +15,7 @@ Participants used below:
 
 ## 1. Enable / disable from the settings toggle
 
-`toggleBiometry` routes the whole on/off operation through `setBiometryEnabled`, which keeps the keychain and the flag in sync and reports failure so the switch can roll back.
+`toggleBiometry` enables through `enableBiometry` (the shared enroll-then-consent path, §2) and disables through `setBiometryEnabled(false)`. Either way the keychain and the flag stay in sync, and a failure is reported so the switch can roll back.
 
 ```mermaid
 sequenceDiagram
@@ -26,17 +26,24 @@ sequenceDiagram
     participant OS
 
     User->>Settings: flip biometry switch ON
-    Settings->>Store: setBiometryEnabled(true)
-    Store->>OS: enroll() — setGenericPassword (BIOMETRY_CURRENT_SET, silent)
-    alt write succeeds
-        OS-->>Store: ok
+    Settings->>LocalAuth: enableBiometry()
+    LocalAuth->>OS: hasSupportedBiometry() — strong (Class 3) only
+    LocalAuth->>Store: enroll() — setGenericPassword (BIOMETRY_CURRENT_SET, silent)
+    alt sentinel written
         Store->>Store: set migration marker = true
-        Store->>Store: setEnabled(true)
-        Store-->>Settings: { kind: 'success' }
+        LocalAuth->>OS: biometryAuth(true) — consent prompt
+        alt user confirms
+            OS-->>LocalAuth: success
+            LocalAuth->>Store: setEnabled(true)
+            LocalAuth-->>Settings: { kind: 'success' }
+        else user declines / cancels
+            LocalAuth->>Store: disenroll() + setEnabled(false)
+            LocalAuth-->>Settings: failure TrustResult
+            Settings->>Settings: revert switch to OFF
+        end
     else write fails / unsupported
-        OS-->>Store: error
-        Store->>Store: setEnabled(false)
-        Store-->>Settings: failure TrustResult
+        LocalAuth->>Store: setEnabled(false)
+        LocalAuth-->>Settings: failure TrustResult
         Settings->>Settings: revert switch to OFF
     end
 
@@ -47,11 +54,11 @@ sequenceDiagram
     Store-->>Settings: { kind: 'success' }
 ```
 
-Note the enable path does **not** prompt for biometrics — writing the sentinel is silent. The toggle treats "sentinel written" as enough; explicit consent is only required on the first-passcode opt-in (flow 2), where there is no prior screen-lock context.
+Note the enable path **does** prompt: writing the sentinel is silent, so it cannot stand in for consent. This matters most for the grandfathered cohort, whose baseline was torn down by the migration (flow 4) and who re-enable through exactly this toggle — binding a new baseline without a prompt would hand trust back to whatever enrollment is currently on the device.
 
 ---
 
-## 2. First-passcode opt-in (`checkBiometry`)
+## 2. First-passcode opt-in (`checkBiometry` → `enableBiometry`)
 
 When the user sets their first passcode, screen lock asks whether to also enable biometric unlock. Because `enroll()` is silent, consent is captured with a **second** call — a `biometryAuth(true)` prompt — and the sentinel is torn down if the user declines.
 

@@ -94,7 +94,6 @@ tags:
     id: 'screen-lock-config-view-auto-lock-time-60'
 
 # Background the app, wait past the auto-lock interval, relaunch.
-# RUNNING_E2E_TESTS shortens the auto-lock threshold to 5s (see localAuthentication.ts).
 - pressKey: Home
 - evalScript: ${output.utils.sleep(7000)}
 - launchApp:
@@ -236,7 +235,6 @@ tags:
     id: 'screen-lock-config-view-change-passcode'
 
 # Background the app, wait past the auto-lock interval, relaunch.
-# RUNNING_E2E_TESTS shortens the auto-lock threshold to 5s (see localAuthentication.ts).
 - pressKey: Home
 - evalScript: ${output.utils.sleep(7000)}
 - launchApp:

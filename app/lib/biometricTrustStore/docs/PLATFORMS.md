@@ -52,7 +52,7 @@ On **iOS** there is no native counterpart: `enrollProbe`/`disenrollProbe` are no
 
 The keystore only binds a user-auth key to a **strong (Class 3)** biometric, so a device whose only enrollment is Class 2 (much mid-range Android face unlock) can hold no real sentinel. Two places have to know this, because neither fails loudly on its own:
 
-- **`hasSupportedBiometry()`** (`localAuthentication.ts`) requires `getEnrolledLevelAsync() === BIOMETRIC_STRONG`. `isEnrolledAsync()` alone is a `BIOMETRIC_WEAK` query — it resolves `true` on a Class 2 device, which would offer an opt-in that has to be revoked moments later. `checkBiometry` gates on this before writing anything. (iOS reports any biometry as `BIOMETRIC_STRONG`; the Swift module hardcodes `case biometric = 3`, so this is an Android-only narrowing.)
+- **`hasSupportedBiometry()`** (`localAuthentication.ts`) requires `getEnrolledLevelAsync() === BIOMETRIC_STRONG`. `isEnrolledAsync()` alone is a `BIOMETRIC_WEAK` query — it resolves `true` on a Class 2 device, which would offer an opt-in that has to be revoked moments later. `enableBiometry` gates on this before writing anything. (iOS reports any biometry as `BIOMETRIC_STRONG`; the Swift module hardcodes `case biometric = 3`, so this is an Android-only narrowing.)
 - **`enroll()`** (`index.ts`) rejects a sentinel that landed in a non-authenticated cipher storage. Asking for `BIOMETRY_CURRENT_SET` does **not** guarantee one: `getCipherStorageForCurrentAPILevel` ANDs the requested access control with `isStrongBiometricAuthAvailable`, and on a Class 2 device skips every auth-backed storage and falls back to a plain one. The write then _succeeds_ — leaving a sentinel with no user-auth requirement and no enrollment binding, which `hasEnrollment()` would happily report as trust. `enroll()` therefore checks the returned `storage` against `KeystoreAESGCM`/`KeystoreRSAECB`, tears the entry down, and returns `unavailable` before the migration marker is set.
 
 ### Why the sentinel read can't prove presence
@@ -76,7 +76,7 @@ Android therefore splits the two concerns, keeping the total at one OS prompt:
 
 This costs nothing on the detection side: `KeyPermanentlyInvalidatedException` is raised at key extraction regardless of the auth window, so the enrollment signal was never dependent on the prompt firing. It also means the Android sentinel's only remaining job is "is trust initialized" (`hasEnrollment()`, a silent existence check) — the probe key carries the enrollment binding and `authenticateAsync` carries presence.
 
-The same reasoning applies to the first-passcode consent prompt: `checkBiometry` captures consent through `biometryAuth(true)` rather than `verify()`, because a prompt that never appeared is not consent.
+The same reasoning applies to the consent prompt: `enableBiometry` captures consent through `biometryAuth(true)` rather than `verify()`, because a prompt that never appeared is not consent.
 
 ### Cancel signal
 
