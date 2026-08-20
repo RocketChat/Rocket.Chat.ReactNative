@@ -1,7 +1,7 @@
 jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
-		current: { driver: undefined }
+		driver: undefined
 	}
 }));
 
@@ -10,7 +10,7 @@ import { classifySocketHealth, recoverSocket } from '../socketHealth';
 
 const now = 1_000_000;
 
-const sdkMock = sdk as unknown as { current: { driver: unknown } | undefined };
+const sdkMock = sdk as unknown as { driver: unknown };
 
 interface MockDriver {
 	connected: boolean;
@@ -56,7 +56,7 @@ describe('recoverSocket', () => {
 
 	beforeEach(() => {
 		driver = makeDriver({ lastPing: Date.now() });
-		sdkMock.current = { driver };
+		sdkMock.driver = driver;
 	});
 
 	it('keeps a socket whose round trip answers', async () => {
@@ -83,15 +83,10 @@ describe('recoverSocket', () => {
 	});
 
 	it('reports no-socket when the driver handle is missing', async () => {
-		sdkMock.current = { driver: undefined };
+		sdkMock.driver = undefined;
 		await expect(recoverSocket()).resolves.toBe('no-socket');
 		expect(driver.probe).not.toHaveBeenCalled();
 		expect(driver.reopenNow).not.toHaveBeenCalled();
-	});
-
-	it('reports no-socket when there is no sdk instance', async () => {
-		sdkMock.current = undefined;
-		await expect(recoverSocket()).resolves.toBe('no-socket');
 	});
 
 	it('rejects when the round trip throws', async () => {

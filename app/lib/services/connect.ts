@@ -301,14 +301,13 @@ function stopListener(listener: any): void {
 }
 
 async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
-	const client = sdk.current;
-	if (!client) {
+	if (!sdk.isInitialized) {
 		throw new Error('Cannot login without an active connection');
 	}
 	// RC 0.64.0
-	await client.login(credentials);
+	const currentLogin = await sdk.login(credentials);
 	const serverVersion = store.getState().server.version;
-	const result = client.currentLogin?.result;
+	const result = currentLogin?.result;
 	if (!result) {
 		throw new Error('Login failed: missing login result');
 	}
@@ -413,8 +412,8 @@ async function loginOAuthOrSso(params: ILoginCredentials) {
 }
 
 function abort() {
-	if (sdk.current) {
-		return sdk.current.abort();
+	if (sdk.isInitialized) {
+		return sdk.abort();
 	}
 }
 

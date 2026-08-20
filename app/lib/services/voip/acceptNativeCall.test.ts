@@ -9,7 +9,7 @@ const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof wa
 const mockRecoverSocket = recoverSocket as jest.MockedFunction<typeof recoverSocket>;
 const mockGetState = useCallStore.getState as jest.Mock;
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
-const mockDriver = () => sdk.current?.driver as any;
+const mockDriver = () => sdk.driver as any;
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
@@ -24,7 +24,7 @@ jest.mock('./terminateNativeCall', () => ({
 jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
-		current: { driver: {} }
+		driver: {}
 	}
 }));
 
@@ -80,7 +80,7 @@ describe('acceptNativeCallWithReadiness', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
-		(sdk as any).current = { driver: makeDriver() };
+		(sdk as any).driver = makeDriver();
 		mockRecoverSocket.mockResolvedValue('confirmed-alive');
 		mockWaitForLoginReady.mockResolvedValue(true);
 		mockGetState.mockReturnValue(makeStoreState());
@@ -190,7 +190,7 @@ describe('acceptNativeCallWithReadiness', () => {
 	});
 
 	it('terminates and ends the call when the SDK socket is unavailable for media subscriptions', async () => {
-		(sdk as any).current = {};
+		(sdk as any).driver = null;
 		const mediaSession = makeMediaSession();
 		const resetNativeCallId = jest.fn();
 		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));

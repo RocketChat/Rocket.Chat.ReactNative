@@ -1,5 +1,5 @@
 import { Rocketchat } from '@rocket.chat/sdk';
-import { type ICallback, type ISubscription } from '@rocket.chat/sdk/interfaces';
+import { type ICallback, type ICurrentLogin, type ILoginCredentials, type ISubscription } from '@rocket.chat/sdk/interfaces';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
@@ -45,8 +45,34 @@ class Sdk {
 		return this.sdk;
 	}
 
-	get current(): Rocketchat | null {
-		return this.sdk;
+	get host(): string | null {
+		return this.sdk?.client?.host ?? null;
+	}
+
+	get currentLogin(): ICurrentLogin | null {
+		return this.sdk?.currentLogin ?? null;
+	}
+
+	get driver(): TDriver | null {
+		return this.sdk?.driver ?? null;
+	}
+
+	get isInitialized(): boolean {
+		return this.sdk !== null;
+	}
+
+	async login(credentials: ILoginCredentials): Promise<ICurrentLogin | null> {
+		const client = this.activeSdk;
+		await client.login(credentials);
+		return client.currentLogin ?? null;
+	}
+
+	abort() {
+		return this.activeSdk.abort();
+	}
+
+	subscribeNotifyUser() {
+		return this.activeSdk.subscribeNotifyUser();
 	}
 
 	disconnect() {

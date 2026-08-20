@@ -1139,7 +1139,7 @@ export const registerPushToken = async (): Promise<void> => {
 	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
 	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
 	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
-	if (!sdk.current) {
+	if (!sdk.isInitialized) {
 		return;
 	}
 

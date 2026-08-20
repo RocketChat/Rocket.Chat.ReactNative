@@ -9,7 +9,7 @@ import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 jest.mock('../sdk', () => ({
 	__esModule: true,
-	default: { current: undefined }
+	default: { driver: undefined }
 }));
 
 jest.mock('./useCallStore', () => ({
@@ -70,7 +70,7 @@ beforeEach(async () => {
 	jest.useFakeTimers();
 	mockConnections.length = 0;
 	driver = await buildConnectedDriver(mockConnections, USER_ID);
-	(sdk as unknown as { current: { driver: ISdkDriver } }).current = { driver };
+	(sdk as unknown as { driver: ISdkDriver }).driver = driver;
 	mockWaitForLoginReady.mockResolvedValue(true);
 	mockGetState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 });

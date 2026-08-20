@@ -26,7 +26,7 @@ export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — `sdk.current?.driver` undefined; nothing to recover.
+ * - `'no-socket'`       — `sdk.driver` undefined; nothing to recover.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
@@ -43,7 +43,7 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
 	}
-	const driver = sdk.current?.driver;
+	const driver = sdk.driver;
 	if (!driver) {
 		return Promise.resolve('no-socket');
 	}

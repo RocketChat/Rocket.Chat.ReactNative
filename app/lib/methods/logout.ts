@@ -113,7 +113,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 		log(e);
 	}
 
-	if (sdk.current) {
+	if (sdk.isInitialized) {
 		disconnect();
 	}
 

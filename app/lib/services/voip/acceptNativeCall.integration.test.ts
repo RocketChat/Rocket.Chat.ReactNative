@@ -24,7 +24,7 @@ jest.mock('../socketHealth', () => ({
 
 jest.mock('../sdk', () => ({
 	__esModule: true,
-	default: { current: undefined }
+	default: { driver: undefined }
 }));
 
 jest.mock('../../methods/helpers/log', () => ({
@@ -105,7 +105,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 		initStore(redux.store);
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 		mockRecoverSocket.mockResolvedValue('reopened');
-		(sdk as any).current = { driver: mediaSubsAckAfter(100) };
+		(sdk as any).driver = mediaSubsAckAfter(100);
 	});
 
 	afterEach(() => {
@@ -148,7 +148,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		(sdk as any).current = { driver: mediaSubsNeverAck() };
+		(sdk as any).driver = mediaSubsNeverAck();
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();
