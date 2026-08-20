@@ -452,6 +452,8 @@
   "Local_authentication_auto_lock_60": "1 मिनट के बाद",
   "Local_authentication_auto_lock_900": "15 मिनट के बाद",
   "Local_authentication_biometric_enrollment_changed": "बायोमेट्रिक पंजीकरण बदल गया है,\nकृपया अपना पासकोड उपयोग करें",
+  "Local_authentication_biometry_unavailable": "इस डिवाइस का उपयोग बायोमेट्रिक अनलॉक के लिए नहीं किया जा सकता।",
+  "Local_authentication_biometry_enable_failed": "बायोमेट्रिक अनलॉक सक्षम नहीं किया जा सका।",
   "Local_authentication_biometry_fallback": "पासकोड का उपयोग करें",
   "Local_authentication_biometry_title": "प्रमाणीकरण करें",
   "Local_authentication_change_passcode": "पासकोड बदलें",

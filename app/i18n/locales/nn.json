@@ -248,6 +248,8 @@
   "License": "Tillatelse",
   "Load_More": "Last mer",
   "Loading": "Laster",
+  "Local_authentication_biometry_unavailable": "Denne eininga kan ikkje brukast til biometrisk opplåsing.",
+  "Local_authentication_biometry_enable_failed": "Klarte ikkje å aktivere biometrisk opplåsing.",
   "Logged_out_of_other_clients_successfully": "Logget ut av andre klienter",
   "Login": "Logg inn",
   "Login_has_been_temporarily_blocked_for_this_IP": "Innlogging er midlertidig blokkert for denne IP-adressen",

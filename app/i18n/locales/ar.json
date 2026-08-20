@@ -325,6 +325,8 @@
   "Local_authentication_auto_lock_60": "بعد دقيقة",
   "Local_authentication_auto_lock_900": "بعد 15 دقيقة",
   "Local_authentication_biometric_enrollment_changed": "تم تغيير تسجيل المقاييس الحيوية،\nيرجى استخدام كلمة المرور",
+  "Local_authentication_biometry_unavailable": "لا يمكن استخدام هذا الجهاز لإلغاء القفل باستخدام القياسات الحيوية.",
+  "Local_authentication_biometry_enable_failed": "تعذر تفعيل إلغاء القفل باستخدام القياسات الحيوية.",
   "Local_authentication_biometry_fallback": "استخدم كلمة المرور",
   "Local_authentication_biometry_title": "صادق",
   "Local_authentication_change_passcode": "تغيير كلمة المرور",

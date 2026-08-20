@@ -478,6 +478,8 @@
   "Local_authentication_auto_lock_60": "Etter 1 minutt",
   "Local_authentication_auto_lock_900": "Etter 15 minutter",
   "Local_authentication_biometric_enrollment_changed": "Biometrisk registrering er endret,\nbruk passordet ditt",
+  "Local_authentication_biometry_unavailable": "Denne enheten kan ikke brukes til biometrisk opplåsing.",
+  "Local_authentication_biometry_enable_failed": "Kunne ikke aktivere biometrisk opplåsing.",
   "Local_authentication_biometry_fallback": "Bruk passord",
   "Local_authentication_biometry_title": "Autentiser",
   "Local_authentication_change_passcode": "Endre passord",

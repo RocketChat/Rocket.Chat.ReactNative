@@ -320,6 +320,8 @@
   "License": "ライセンス",
   "Light": "ライト",
   "Loading": "読み込み中",
+  "Local_authentication_biometry_unavailable": "このデバイスは生体認証によるロック解除に使用できません。",
+  "Local_authentication_biometry_enable_failed": "生体認証によるロック解除を有効にできませんでした。",
   "Logged_out_by_server": "サーバーからログアウトします。もう一度ログインしてください。",
   "Logging_out": "ログアウトしています。",
   "Login": "ログイン",

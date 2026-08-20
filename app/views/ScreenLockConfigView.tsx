@@ -10,6 +10,7 @@ import {
 	changePasscode,
 	checkHasPasscode,
 	supportedBiometryLabel,
+	hasSupportedBiometry,
 	handleLocalAuthentication,
 	UserCanceledError
 } from '../lib/methods/helpers/localAuthentication';
@@ -20,6 +21,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 
 const DEFAULT_BIOMETRY = false;
 
@@ -204,11 +206,24 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 			({ biometry }) => ({ biometry: !biometry, biometryBusy: true }),
 			async () => {
 				const { biometry } = this.state;
+				// Don't rely on the row being hidden: without a strong biometric enroll() can only
+				// produce a downgraded sentinel, so refuse the opt-in here too.
+				if (biometry && !(await hasSupportedBiometry())) {
+					biometricTrustStore.setEnabled(false);
+					this.setState({ biometry: false, biometryBusy: false });
+					showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));
+					return;
+				}
 				const result = await biometricTrustStore.setBiometryEnabled(biometry);
 				if (result.kind !== 'success') {
 					// setBiometryEnabled only fails on the enable path and always forces the persisted
 					// flag off, so the correct UI state is unconditionally `false`.
 					this.setState({ biometry: false, biometryBusy: false });
+					if (result.kind === 'unavailable') {
+						showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));
+					} else if (result.kind !== 'canceled') {
+						showErrorAlert(I18n.t('Local_authentication_biometry_enable_failed'), I18n.t('Oops'));
+					}
 					return;
 				}
 				this.setState({ biometryBusy: false });

@@ -139,7 +139,7 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 
 // Class 3 only: isEnrolledAsync() is a BIOMETRIC_WEAK query on Android, and the keystore won't bind a
 // user-auth key to a weak biometric. iOS reports any biometry as strong.
-const hasSupportedBiometry = async (): Promise<boolean> => {
+export const hasSupportedBiometry = async (): Promise<boolean> => {
 	try {
 		if (!(await LocalAuthentication.isEnrolledAsync())) {
 			return false;
