@@ -25,7 +25,6 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
 		UserPreferences.removeItem(getUserTokenKey(server, userId));
-		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
 	}
 	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
