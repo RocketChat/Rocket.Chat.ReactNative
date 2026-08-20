@@ -29,10 +29,9 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 			return;
 		}
 
-		// Sentinel gone with the marker set means the enrollment changed. This runs before
-		// localAuthenticate, so persist the signal rather than swallowing it.
-		biometricTrustStore.setEnabled(false);
+		// Sentinel gone with the marker set means the enrollment changed: arm the relock debt before clearing the enabled flag.
 		biometricTrustStore.setRelockPending(true);
+		biometricTrustStore.setEnabled(false);
 	} catch (e) {
 		log(e);
 	}
