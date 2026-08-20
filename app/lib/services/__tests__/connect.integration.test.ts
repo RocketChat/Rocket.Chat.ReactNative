@@ -1,5 +1,3 @@
-import type { Store } from 'redux';
-
 jest.unmock('@rocket.chat/sdk');
 
 import { connect, login, loginWithPassword } from '../connect';
@@ -11,56 +9,16 @@ import { setActiveUsers } from '../../../actions/activeUsers';
 import { updateSettings } from '../../../actions/settings';
 import { updatePermission } from '../../../actions/permissions';
 import { _activeUsers, _setUserTimer } from '../../methods/setUser';
-import type { IApplicationState } from '../../../definitions';
-
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: (event?: { code?: number }) => void;
-}
-
-interface WireFrame {
-	msg: string;
-	id?: string;
-	name?: string;
-	method?: string;
-	params?: unknown[];
-}
+import { flush, framesOn, makeCollection, makeReduxStore, receiveFrame } from '../../testUtils/sdkIntegration';
+import type { MockConnection } from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 const mockConnections: MockConnection[] = [];
 
-const DDP_LOGIN_RESULT = { id: 'user-id', token: 'auth-token' };
-
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string; method?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				} else if (message.msg === 'method' && message.method === 'login') {
-					setImmediate(() =>
-						connection.onmessage({ data: JSON.stringify({ msg: 'result', id: message.id, result: DDP_LOGIN_RESULT }) })
-					);
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
 
@@ -125,56 +83,6 @@ const REST_LOGIN_ME = {
 	nickname: 'nick',
 	requirePasswordChange: false
 };
-
-function makeReduxStore() {
-	const listeners = new Set<() => void>();
-	const state = {
-		meteor: { connected: false },
-		login: { user: null as Record<string, unknown> | null, isAuthenticated: false },
-		server: { version: '5.0.0' },
-		settings: {} as Record<string, unknown>,
-		room: { subscribedRoom: null as string | null }
-	};
-	return {
-		state,
-		store: {
-			getState: () => state,
-			dispatch: jest.fn(),
-			subscribe: (listener: () => void) => {
-				listeners.add(listener);
-				return () => listeners.delete(listener);
-			}
-		} as unknown as Store<IApplicationState> & { dispatch: jest.Mock }
-	};
-}
-
-async function flush(turns = 10) {
-	for (let i = 0; i < turns; i++) {
-		await Promise.resolve();
-		await jest.advanceTimersByTimeAsync(0);
-	}
-}
-
-function framesOn(connection: MockConnection, msg: string) {
-	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
-		.filter(message => message.msg === msg);
-}
-
-function receiveFrame(connection: MockConnection, frame: Record<string, unknown>) {
-	connection.onmessage({ data: JSON.stringify(frame) });
-}
-
-function makeCollection(name: string) {
-	return {
-		name,
-		find: jest.fn(),
-		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })),
-		create: jest.fn(),
-		prepareCreate: jest.fn(),
-		schema: {}
-	};
-}
 
 let redux: ReturnType<typeof makeReduxStore>;
 let collections: Record<string, ReturnType<typeof makeCollection>>;

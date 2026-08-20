@@ -16,7 +16,7 @@ import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { type ICredentials } from '../../definitions';
+import { type ILoginCredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
@@ -38,7 +38,7 @@ interface IMethods {
 }
 
 interface EventListenerMethod {
-	params?: ICredentials;
+	params?: ILoginCredentials;
 	method?: keyof IMethods;
 	submit?: (param: string) => void;
 	cancel?: () => void;
@@ -88,12 +88,13 @@ const TwoFactor = memo(() => {
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
 	const params = data?.params;
+	const emailCodeRecipient = params && 'user' in params ? params.user : undefined;
 
 	const sendEmail = async () => {
 		try {
-			if (params?.user) {
+			if (emailCodeRecipient) {
 				clearErrors();
-				const response = await sendEmailCode(params?.user);
+				const response = await sendEmailCode(emailCodeRecipient);
 
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));

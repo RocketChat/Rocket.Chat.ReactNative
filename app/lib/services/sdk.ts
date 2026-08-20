@@ -15,7 +15,7 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-export type TDriver = Rocketchat['ddp'];
+export type TDriver = Rocketchat['driver'];
 
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
@@ -120,6 +120,7 @@ class Sdk {
 	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
+				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
 				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));
@@ -159,8 +160,8 @@ class Sdk {
 		return this.methodCall(method, ...parsedParams);
 	}
 
-	subscribe(topic: string, ...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribe(topic, ...args);
+	subscribe(topic: string, eventName?: string, ...args: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribe(topic, eventName as string, ...args);
 	}
 
 	subscribeRaw(...args: any[]): Promise<ISubscription | undefined> {

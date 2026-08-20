@@ -37,6 +37,7 @@ jest.mock('./sdk', () => ({
 	default: {
 		initialize: (server: string) => mockSdkInitialize(server),
 		disconnect: () => mockSdkDisconnect(),
+		onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
 		get current() {
 			return mockSdkCurrent;
 		}
