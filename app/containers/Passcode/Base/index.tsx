@@ -33,14 +33,15 @@ export interface IBase {
 	animate: (animation: Animatable.Animation, duration?: number) => void;
 }
 
+const HEADER_HEIGHT = 206;
+const BUTTON_ROWS_TRIM = 56;
+
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
 		const { colors } = useTheme();
 		const { height } = useResponsiveLayout();
 
-		// 206 and 56 are approximate allowances for the header (icon, title, subtitle, dots) and for
-		// trimming the button rows so they don't fill the remaining space.
-		const dinamicHeight = (height - 206 - 56) / 4;
+		const dinamicHeight = (height - HEADER_HEIGHT - BUTTON_ROWS_TRIM) / 4;
 		const heightButtonRow = { height: dinamicHeight > 102 ? 102 : dinamicHeight };
 
 		const rootRef = useRef<Animatable.View & View>(null);

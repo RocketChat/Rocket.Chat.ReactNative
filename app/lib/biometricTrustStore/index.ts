@@ -13,8 +13,7 @@ import {
 	BIOMETRY_ENABLED_KEY
 } from '../constants/localAuthentication';
 
-// BIOMETRY_CURRENT_SET binds the item to the current enrollment, which is the invalidation signal this
-// module is built on.
+// BIOMETRY_CURRENT_SET binds the item to the current enrollment — the invalidation signal.
 const writeOptions = (): Keychain.SetOptions => ({
 	service: SENTINEL_SERVICE,
 	accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
@@ -29,15 +28,13 @@ const readOptions = (promptCopy: BiometricPromptCopy): Keychain.GetOptions => ({
 	}
 });
 
-// Android silently falls back to a non-authenticated storage when no strong (Class 3) biometric is
-// enrolled; iOS reports 'keychain' and has no such fallback.
+// See PLATFORMS.md, "Weak (Class 2) biometrics".
 const AUTH_BACKED_ANDROID_STORAGES: string[] = [Keychain.STORAGE_TYPE.AES_GCM, Keychain.STORAGE_TYPE.RSA];
 
 const isAuthBackedStorage = (storage: string | undefined): boolean =>
 	!isAndroid || (storage != null && AUTH_BACKED_ANDROID_STORAGES.includes(storage));
 
-// -128/errSecUserCancel = dismissed; -25300/errSecItemNotFound (iOS) and
-// KeyPermanentlyInvalidatedException (Android) = enrollment changed.
+// -128 = dismissed; -25300 (iOS) and KeyPermanentlyInvalidatedException (Android) = enrollment changed.
 export const classifyError = (e: unknown): TrustResult => {
 	const err = e as { code?: string | number; name?: string; message?: string } | null | undefined;
 	const code = err?.code != null ? String(err.code) : '';
@@ -45,8 +42,7 @@ export const classifyError = (e: unknown): TrustResult => {
 	const message = err?.message ?? '';
 	const blob = `${code} ${name} ${message}`;
 
-	// OSStatus numbers are matched on the code only: a message that merely mentions -25300 must not
-	// reach the invalidate() branch.
+	// Matched on the code only: a message that merely mentions -25300 must not reach invalidate().
 	if (code === '-128' || /errSecUserCancel|UserCancel|user.?cancel|AuthenticationCanceled/i.test(blob)) {
 		return { kind: 'canceled' };
 	}
@@ -66,14 +62,12 @@ export const biometricTrustStore: IBiometricTrustStore = {
 			if (!written) {
 				return { kind: 'unavailable' };
 			}
-			// A sentinel in a non-authenticated storage detects no enrollment change, so it is not a
-			// success. Tear it down before the migration marker is set.
+			// A sentinel in non-authenticated storage detects no change, so tear it down before the marker.
 			if (!isAuthBackedStorage(written.storage)) {
 				await biometricTrustStore.disenroll();
 				return { kind: 'unavailable' };
 			}
-			// Marks the install trust-initialized so a later invalidation can't fall into the migration's
-			// grandfather path and be silently re-bound. See runBiometricTrustMigration.
+			// Marks the install trust-initialized so invalidation can't reach the grandfather path.
 			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 			// Binds the Android probe key in lockstep with the sentinel. Best effort; no-op on iOS.
 			await enrollProbe();

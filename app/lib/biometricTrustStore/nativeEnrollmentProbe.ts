@@ -1,9 +1,8 @@
 import NativeBiometricEnrollment from '../native/NativeBiometricEnrollment';
 
-// Android-only: a probe key whose silent cipher.init() detects enrollment changes without prompting.
-// iOS has no counterpart — BIOMETRY_CURRENT_SET already drops the keychain item on enrollment change.
+// Android-only silent enrollment probe; no-op on iOS. See PLATFORMS.md, "The silent enrollment probe key".
 
-// Best effort: on failure the silent path is unavailable and the modal verify() backstop applies.
+// Best effort: on failure the verify() backstop applies.
 export const enrollProbe = async (): Promise<void> => {
 	try {
 		await NativeBiometricEnrollment.enrollProbe();
@@ -21,7 +20,7 @@ export const disenrollProbe = async (): Promise<void> => {
 	}
 };
 
-// The module never rejects, so a throw here means the bridge itself broke: fail closed on this gate.
+// Fail closed: the module never rejects, so a throw means a broken bridge.
 export const isEnrollmentValid = async (): Promise<boolean> => {
 	try {
 		return await NativeBiometricEnrollment.isEnrollmentValid();
