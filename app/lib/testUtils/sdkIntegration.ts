@@ -67,7 +67,6 @@ export function receiveFrame(connection: MockConnection, frame: Record<string, u
 	connection.onmessage({ data: JSON.stringify(frame) });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
 	Driver: new (options: { host: string; logger: unknown }) => ISdkDriver;
 };
