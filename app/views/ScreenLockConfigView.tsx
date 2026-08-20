@@ -41,6 +41,7 @@ interface IScreenLockConfigViewState {
 	autoLockTime?: number | null;
 	biometry: boolean;
 	biometryLabel: string | null;
+	biometryBusy: boolean;
 }
 
 class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
@@ -58,7 +59,8 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 			autoLock: false,
 			autoLockTime: null,
 			biometry: DEFAULT_BIOMETRY,
-			biometryLabel: null
+			biometryLabel: null,
+			biometryBusy: false
 		};
 		this.init();
 	}
@@ -194,18 +196,22 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 	};
 
 	toggleBiometry = () => {
+		if (this.state.biometryBusy) {
+			return;
+		}
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
 		this.setState(
-			({ biometry }) => ({ biometry: !biometry }),
+			({ biometry }) => ({ biometry: !biometry, biometryBusy: true }),
 			async () => {
 				const { biometry } = this.state;
 				const result = await biometricTrustStore.setBiometryEnabled(biometry);
 				if (result.kind !== 'success') {
 					// setBiometryEnabled only fails on the enable path and always forces the persisted
-					// flag off, so the correct UI state is unconditionally `false` — a relative flip
-					// could land on `true` if another toggle interleaved during the await.
-					this.setState({ biometry: false });
+					// flag off, so the correct UI state is unconditionally `false`.
+					this.setState({ biometry: false, biometryBusy: false });
+					return;
 				}
+				this.setState({ biometryBusy: false });
 			}
 		);
 	};
@@ -251,8 +257,8 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 	};
 
 	renderBiometrySwitch = () => {
-		const { biometry } = this.state;
-		return <Switch value={biometry} onValueChange={this.toggleBiometry} />;
+		const { biometry, biometryBusy } = this.state;
+		return <Switch value={biometry} onValueChange={this.toggleBiometry} disabled={biometryBusy} />;
 	};
 
 	renderAutoLockItems = () => {
