@@ -398,7 +398,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 			} else {
 				const loggedInServer = yield call(findLoggedInServer);
 				if (loggedInServer) {
-					yield put(selectServerRequest(loggedInServer.id));
+					yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
 					return;
 				}
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
