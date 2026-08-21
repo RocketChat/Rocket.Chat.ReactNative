@@ -22,7 +22,7 @@ function bootMiddleware() {
 	return { dispatch, notifyAppState };
 }
 
-function setupStore() {
+function bootMiddlewareFromUnknownState() {
 	const booted = bootMiddleware();
 	jest.runOnlyPendingTimers();
 	expect(dispatchedTypes(booted.dispatch)).toEqual([]);
@@ -54,7 +54,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('tells the app it came to the foreground', () => {
-		const { dispatch, notifyAppState } = setupStore();
+		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
 
 		notifyAppState('active');
 
@@ -62,7 +62,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('tells the app it went to the background', () => {
-		const { dispatch, notifyAppState } = setupStore();
+		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
 
 		notifyAppState('background');
 
@@ -70,7 +70,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('keeps the foreground state through a temporary interruption', () => {
-		const { dispatch, notifyAppState } = setupStore();
+		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
 
 		notifyAppState('active');
 		notifyAppState('inactive');
@@ -80,7 +80,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('does not repeat the state already in effect', () => {
-		const { dispatch, notifyAppState } = setupStore();
+		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
 
 		notifyAppState('background');
 		notifyAppState('background');

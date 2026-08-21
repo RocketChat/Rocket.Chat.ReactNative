@@ -113,7 +113,7 @@ import {
 	framesOn,
 	latestConnection,
 	makeCollection,
-	settle,
+	settleUntil,
 	stopAnsweringFrames
 } from '../../lib/testUtils/sdkIntegration';
 import { saveLastLocalAuthenticationSession } from '../../lib/methods/helpers/localAuthentication';
@@ -134,6 +134,10 @@ const ROOM_TOPICS = [
 	`stream-notify-room:${ROOM_ID}/deleteMessageBulk`,
 	`stream-notify-room:${ROOM_ID}/messagesRead`
 ];
+
+function typeOf(action: AnyAction) {
+	return action.type;
+}
 
 function topicsOn(connection: MockConnection) {
 	return framesOn(connection, 'sub').map(frame => `${frame.name}:${frame.params?.[0]}`);
@@ -181,7 +185,7 @@ async function openSignedInSocket() {
 }
 
 function resumedUser() {
-	const resumed = dispatched.find(action => action.type === loginSuccess({} as never).type);
+	const resumed = dispatched.find(action => typeOf(action) === typeOf(loginSuccess({} as never)));
 	return resumed?.user;
 }
 
@@ -239,12 +243,12 @@ describe('foreground resume over the real SDK socket', () => {
 
 		expect(framesOn(frozen, 'ping').length).toBeGreaterThan(pingsBefore);
 		expect(mockConnections).toHaveLength(2);
-		const reopened = mockConnections[1];
+		const reopened = latestConnection(mockConnections);
 
 		expect(loadMissedMessages).not.toHaveBeenCalled();
 
 		reopened.onopen();
-		await settle();
+		await settleUntil(() => resumedUser() !== undefined);
 
 		expect(dispatched).toContainEqual(connectSuccess());
 		expect(dispatched).toContainEqual(loginRequest({ resume: RESUME_TOKEN }, false));
@@ -275,10 +279,12 @@ describe('foreground resume over the real SDK socket', () => {
 		const reopened = latestConnection(mockConnections);
 
 		reopened.onopen();
-		await settle();
+		await settleUntil(() => resumedUser() !== undefined);
 
-		const connectSuccessAt = dispatched.findIndex(action => action.type === connectSuccess().type);
-		const loginRequestAt = dispatched.findIndex(action => action.type === loginRequest({ resume: RESUME_TOKEN }, false).type);
+		const connectSuccessAt = dispatched.findIndex(action => typeOf(action) === typeOf(connectSuccess()));
+		const loginRequestAt = dispatched.findIndex(
+			action => typeOf(action) === typeOf(loginRequest({ resume: RESUME_TOKEN }, false))
+		);
 		expect(connectSuccessAt).toBeGreaterThanOrEqual(0);
 		expect(loginRequestAt).toBeGreaterThan(connectSuccessAt);
 		expect(dispatched[loginRequestAt]).toEqual(loginRequest({ resume: RESUME_TOKEN }, false));
@@ -304,8 +310,8 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(framesOn(alive, 'ping').length).toBeGreaterThan(pingsBefore);
 		expect(mockConnections).toHaveLength(connectionsBefore);
 		expect(framesOn(alive, 'connect')).toHaveLength(connectFramesBefore);
-		expect(dispatched.map(action => action.type)).not.toContain(connectSuccess().type);
-		expect(dispatched.map(action => action.type)).not.toContain(loginRequest({ resume: RESUME_TOKEN }, false).type);
+		expect(dispatched.map(typeOf)).not.toContain(typeOf(connectSuccess()));
+		expect(dispatched.map(typeOf)).not.toContain(typeOf(loginRequest({ resume: RESUME_TOKEN }, false)));
 	});
 
 	it('leaves the socket alone when the app returns to the foreground before anyone is signed in', async () => {
@@ -321,7 +327,7 @@ describe('foreground resume over the real SDK socket', () => {
 
 		expect(framesOn(frozen, 'ping')).toHaveLength(0);
 		expect(mockConnections).toHaveLength(1);
-		expect(dispatched.map(action => action.type)).not.toContain(loginRequest({ resume: RESUME_TOKEN }, false).type);
+		expect(dispatched.map(typeOf)).not.toContain(typeOf(loginRequest({ resume: RESUME_TOKEN }, false)));
 	});
 
 	it('leaves the socket alone when the app returns to the foreground on the Outside Stack', async () => {
@@ -340,7 +346,7 @@ describe('foreground resume over the real SDK socket', () => {
 
 		expect(framesOn(frozen, 'ping')).toHaveLength(pingsBefore);
 		expect(mockConnections).toHaveLength(1);
-		expect(dispatched.map(action => action.type)).not.toContain(loginRequest({ resume: RESUME_TOKEN }, false).type);
+		expect(dispatched.map(typeOf)).not.toContain(typeOf(loginRequest({ resume: RESUME_TOKEN }, false)));
 	});
 
 	it('saves the local authentication session and goes away when the app leaves for the background', async () => {

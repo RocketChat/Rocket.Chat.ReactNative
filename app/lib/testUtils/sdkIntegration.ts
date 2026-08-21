@@ -133,8 +133,8 @@ export async function flush(turns = 10): Promise<void> {
 	}
 }
 
-export async function settle(rounds = 5): Promise<void> {
-	for (let i = 0; i < rounds && jest.getTimerCount() > 0; i++) {
+export async function settleUntil(isSettled: () => boolean, maxRounds = 20): Promise<void> {
+	for (let round = 0; round < maxRounds && !isSettled(); round++) {
 		await jest.runOnlyPendingTimersAsync();
 		await flush();
 	}
