@@ -99,6 +99,7 @@ import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLin
 import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
+import { APP, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
 import deepLinkingRoot from '../deepLinking';
@@ -583,5 +584,70 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenNthCalledWith(2, {
 			oauth: { credentialToken: 'token-second-C', credentialSecret: 'secret-C2' }
 		});
+	});
+});
+
+// ─── Unknown host without a token → add-server flow ───────────────────────────
+
+describe('deepLinking saga — unknown host hands off to the add-server flow', () => {
+	const PREVIOUS_SERVER = 'https://previous.rocket.chat';
+
+	function setupRecordingStore() {
+		const dispatched: Record<string, any>[] = [];
+		const sagaMiddleware = createSagaMiddleware();
+		const store = createStore(
+			reducers,
+			applyMiddleware(
+				() => next => action => {
+					dispatched.push(action);
+					return next(action);
+				},
+				sagaMiddleware
+			)
+		);
+		sagaMiddleware.run(deepLinkingRoot);
+		return { store, dispatched };
+	}
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(EventEmitter.emit as jest.Mock)?.mockReset?.();
+
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return PREVIOUS_SERVER;
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(undefined as any);
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true } as any);
+		jest.mocked(sdk).current.client.host = PREVIOUS_SERVER;
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('starts the outside stack, seeds the previous server, then emits NewServer for the host', async () => {
+		const emit = jest.spyOn(EventEmitter, 'emit').mockImplementation(() => {});
+		const { store, dispatched } = setupRecordingStore();
+
+		store.dispatch(deepLinkingOpen(makeParams() as any));
+		await flushSagaMicrotasks();
+
+		const outsideIndex = dispatched.findIndex(action => action.type === APP.START && action.root === RootEnum.ROOT_OUTSIDE);
+		const initAddIndex = dispatched.findIndex(action => action.type === SERVER.INIT_ADD);
+
+		expect(outsideIndex).toBeGreaterThanOrEqual(0);
+		expect(initAddIndex).toBeGreaterThan(outsideIndex);
+		expect(dispatched[initAddIndex].previousServer).toBe(PREVIOUS_SERVER);
+		expect(emit).not.toHaveBeenCalledWith('NewServer', { server: HOST });
+
+		jest.advanceTimersByTime(1000);
+		await flushSagaMicrotasks();
+
+		expect(emit).toHaveBeenCalledWith('NewServer', { server: HOST });
+		emit.mockRestore();
 	});
 });
