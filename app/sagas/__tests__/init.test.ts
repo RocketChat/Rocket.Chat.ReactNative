@@ -68,6 +68,7 @@ describe('init saga — restore user-facing roots', () => {
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(RNBootSplash.hide).mockClear();
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
+		jest.mocked(AsyncStorage.removeItem).mockClear();
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
 
@@ -125,6 +126,32 @@ describe('init saga — restore user-facing roots', () => {
 
 		expect(dispatchedActions).toContainEqual({ type: DEEP_LINKING.OPEN_VIDEO_CONF, params: { rid: 'room-1' } });
 		expect(store.getState().server.server).toBe(HOST);
+	});
+
+	it('keeps the selected server when the stored push notification payload is malformed', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue('not json' as any);
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().server.server).toBe(HOST);
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_OUTSIDE);
+		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: DEEP_LINKING.OPEN_VIDEO_CONF }));
+	});
+
+	it('drops the pending push notification when the boot lands on ROOT_OUTSIDE', async () => {
+		jest.mocked(getServerById).mockResolvedValue(null);
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+		expect(jest.mocked(AsyncStorage.removeItem)).toHaveBeenCalledWith('pushNotification');
+		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: DEEP_LINKING.OPEN_VIDEO_CONF }));
 	});
 
 	it('selects the stored server and marks the app ready when the record exists', async () => {

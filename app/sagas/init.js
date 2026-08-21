@@ -33,7 +33,6 @@ const restore = function* restore() {
 			const serversCollection = serversDB.get('servers');
 			const servers = yield serversCollection.query().fetch();
 
-			// Check if there're other logged in servers and picks first one
 			const loggedInServer = servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
 			if (loggedInServer) {
 				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
@@ -54,10 +53,13 @@ const restore = function* restore() {
 		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
 		if (pushNotification) {
 			yield call(AsyncStorage.removeItem, 'pushNotification');
-			try {
-				yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
-			} catch (e) {
-				log(e);
+			const root = yield select(state => state.app.root);
+			if (root !== RootEnum.ROOT_OUTSIDE) {
+				try {
+					yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
+				} catch (e) {
+					log(e);
+				}
 			}
 		}
 	} catch (e) {
