@@ -54,7 +54,11 @@ const restore = function* restore() {
 		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
 		if (pushNotification) {
 			yield call(AsyncStorage.removeItem, 'pushNotification');
-			yield call(deepLinkingClickCallPush, JSON.parse(pushNotification));
+			try {
+				yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
+			} catch (e) {
+				log(e);
+			}
 		}
 	} catch (e) {
 		log(e);

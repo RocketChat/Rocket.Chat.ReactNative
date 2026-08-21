@@ -19,10 +19,6 @@ jest.mock('../../lib/methods/userPreferencesMethods', () => ({
 	getSortPreferences: jest.fn(() => ({}))
 }));
 
-jest.mock('../../actions/deepLinking', () => ({
-	deepLinkingClickCallPush: jest.fn()
-}));
-
 jest.mock('react-native-bootsplash', () => ({
 	__esModule: true,
 	default: { hide: jest.fn(() => Promise.resolve()) }
@@ -55,7 +51,7 @@ import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { deepLinkingClickCallPush } from '../../actions/deepLinking';
+import { DEEP_LINKING } from '../../actions/actionsTypes';
 import { TOKEN_KEY } from '../../lib/constants/keys';
 import database from '../../lib/database';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
@@ -71,7 +67,6 @@ describe('init saga — restore user-facing roots', () => {
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(RNBootSplash.hide).mockClear();
-		jest.mocked(deepLinkingClickCallPush).mockClear();
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
@@ -123,12 +118,12 @@ describe('init saga — restore user-facing roots', () => {
 	it('delivers the pending push notification without stranding the boot', async () => {
 		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
-		const { store } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
 
-		expect(jest.mocked(deepLinkingClickCallPush)).toHaveBeenCalledWith({ rid: 'room-1' });
+		expect(dispatchedActions).toContainEqual({ type: DEEP_LINKING.OPEN_VIDEO_CONF, params: { rid: 'room-1' } });
 		expect(store.getState().server.server).toBe(HOST);
 	});
 
