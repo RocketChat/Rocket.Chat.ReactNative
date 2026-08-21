@@ -79,7 +79,7 @@ export function makeSdkMock(): IMockSdk {
 			client = next;
 		},
 		get host() {
-			return client ? (client.host ?? 'localhost:3000') : null;
+			return client?.host ?? null;
 		},
 		get driver() {
 			return client?.driver ?? null;

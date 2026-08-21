@@ -381,7 +381,6 @@ describe('deepLinking saga — server already connected, should skip changing se
 
 	afterEach(() => {
 		jest.useRealTimers();
-		// Reset so other describe blocks see the default disconnected host
 		(sdk as any).host = null;
 	});
 
