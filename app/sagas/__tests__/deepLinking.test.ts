@@ -113,6 +113,7 @@ import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
 import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
+import { createRecordingStore } from '../../lib/testUtils/sagaStore';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -587,34 +588,14 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 });
 
-// ─── Unknown host without a token → add-server flow ───────────────────────────
-
 describe('deepLinking saga — unknown host hands off to the add-server flow', () => {
 	const PREVIOUS_SERVER = 'https://previous.rocket.chat';
-
-	function setupRecordingStore() {
-		const dispatched: Record<string, any>[] = [];
-		const sagaMiddleware = createSagaMiddleware();
-		const store = createStore(
-			reducers,
-			applyMiddleware(
-				() => next => action => {
-					dispatched.push(action);
-					return next(action);
-				},
-				sagaMiddleware
-			)
-		);
-		sagaMiddleware.run(deepLinkingRoot);
-		return { store, dispatched };
-	}
 
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(getServerInfo).mockReset();
-		jest.mocked(EventEmitter.emit as jest.Mock)?.mockReset?.();
 
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
 			if (key === 'currentServer') return PREVIOUS_SERVER;
@@ -631,7 +612,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 
 	it('starts the outside stack, seeds the previous server, then emits NewServer for the host', async () => {
 		const emit = jest.spyOn(EventEmitter, 'emit').mockImplementation(() => {});
-		const { store, dispatched } = setupRecordingStore();
+		const { store, dispatched } = createRecordingStore(deepLinkingRoot);
 
 		store.dispatch(deepLinkingOpen(makeParams() as any));
 		await flushSagaMicrotasks();

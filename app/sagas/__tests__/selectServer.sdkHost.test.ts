@@ -32,22 +32,13 @@ jest.mock('../../lib/services/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-
-import reducers from '../../reducers';
 import selectServerRoot from '../selectServer';
 import { selectServerRequest } from '../../actions/server';
 import { APP, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import sdk from '../../lib/services/sdk';
 import { connect } from '../../lib/services/connect';
-
-async function flushSagaMicrotasks(): Promise<void> {
-	for (let i = 0; i < 20; i += 1) {
-		await new Promise(resolve => setImmediate(resolve));
-	}
-}
+import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 const HOST = 'https://open.rocket.chat';
 
@@ -60,19 +51,7 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 		sdk.initialize(HOST);
 		expect(sdk.current.client.host).toBe(HOST);
 
-		const dispatched: Record<string, any>[] = [];
-		const sagaMiddleware = createSagaMiddleware();
-		const store = createStore(
-			reducers,
-			applyMiddleware(
-				() => next => action => {
-					dispatched.push(action);
-					return next(action);
-				},
-				sagaMiddleware
-			)
-		);
-		sagaMiddleware.run(selectServerRoot);
+		const { store, dispatched } = createRecordingStore(selectServerRoot);
 
 		store.dispatch(selectServerRequest(HOST, '7.0.0', false));
 		await flushSagaMicrotasks();

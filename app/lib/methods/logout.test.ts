@@ -1,7 +1,3 @@
-// Do not mock './userPreferences' here: this test asserts against the real MMKV-backed store
-// (__mocks__/react-native-mmkv.js). Mocking it replaces the state transitions this test exists
-// to prove with spy calls, and the negative columns stop meaning anything.
-
 jest.mock('../database', () => ({
 	__esModule: true,
 	default: {
@@ -68,16 +64,16 @@ function seedServer(server: string, userId?: string) {
 	serverKeys(server).forEach(key => UserPreferences.setString(key, `value-for-${key}`));
 }
 
-function stubServersDB() {
-	const record = { prepareDestroyPermanently: jest.fn(() => ({})) };
-	jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.resolve(record)) } as any);
+function seedServersDBWithServer() {
+	const serverRecord = { prepareDestroyPermanently: jest.fn(() => ({})) };
+	jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.resolve(serverRecord)) } as any);
 }
 
 describe('removeServerData', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		allKeys.forEach(key => UserPreferences.removeItem(key));
-		stubServersDB();
+		seedServersDBWithServer();
 	});
 
 	it('clears every per-server key for the removed server', async () => {

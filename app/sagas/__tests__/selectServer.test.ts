@@ -1,7 +1,3 @@
-// Do not mock '../../lib/methods/userPreferences' here: this test asserts against the real
-// MMKV-backed store (__mocks__/react-native-mmkv.js). Mocking it lets the test wire up whichever
-// key the code happens to ask for, which is exactly the asymmetry these cases exist to catch.
-
 jest.mock('../../lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
 	default: undefined
@@ -66,10 +62,7 @@ jest.mock('../../lib/methods/helpers/log', () => ({
 }));
 
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
 
-import reducers from '../../reducers';
 import selectServerRoot from '../selectServer';
 import { selectServerRequest } from '../../actions/server';
 import { SERVER } from '../../actions/actionsTypes';
@@ -79,34 +72,15 @@ import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import { getLoggedUserById } from '../../lib/database/services/LoggedUser';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { connect } from '../../lib/services/connect';
-
-async function flushSagaMicrotasks(): Promise<void> {
-	for (let i = 0; i < 20; i += 1) {
-		await new Promise(resolve => setImmediate(resolve));
-	}
-}
+import { getServerById } from '../../lib/database/services/Server';
+import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 const OLD_SERVER = 'https://old.rocket.chat';
 const SERVER_URL = 'https://new.rocket.chat';
 const USER_ID = 'user-new';
 const TOKEN = 'token-new';
 
-function setupStore() {
-	const dispatched: Record<string, any>[] = [];
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(
-		reducers,
-		applyMiddleware(
-			() => next => action => {
-				dispatched.push(action);
-				return next(action);
-			},
-			sagaMiddleware
-		)
-	);
-	sagaMiddleware.run(selectServerRoot);
-	return { store, dispatched };
-}
+const setupStore = () => createRecordingStore(selectServerRoot);
 
 const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
 
@@ -140,7 +114,7 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
 		await flushSagaMicrotasks();
 
-		expect(store.getState().login.user).toMatchObject({ token: TOKEN });
+		expect(store.getState().login.user).toEqual({ token: TOKEN });
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_URL);
 	});
 
@@ -184,7 +158,7 @@ describe('selectServer saga — resolving the target workspace user', () => {
 	});
 });
 
-describe('selectServer saga — version fallback when server info is not fetched', () => {
+describe('selectServer saga — version and name fallback', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		keysToClear.forEach(key => UserPreferences.removeItem(key));
@@ -204,7 +178,7 @@ describe('selectServer saga — version fallback when server info is not fetched
 		expect(getServerInfo).not.toHaveBeenCalled();
 	});
 
-	it('reports a server failure, not a select failure, when the server info fetch throws', async () => {
+	it('reports a server failure and the caller-supplied version when the server info fetch throws', async () => {
 		jest.mocked(getServerInfo).mockRejectedValue(new Error('offline'));
 
 		const { store, dispatched } = setupStore();
@@ -214,5 +188,20 @@ describe('selectServer saga — version fallback when server info is not fetched
 		const types = dispatched.map(action => action.type);
 		expect(types).toContain(SERVER.FAILURE);
 		expect(types).not.toContain(SERVER.SELECT_FAILURE);
+
+		const success = dispatched.find(action => action.type === SERVER.SELECT_SUCCESS);
+		expect(success).toMatchObject({ server: SERVER_URL, version: '7.4.0', name: 'Rocket.Chat' });
+	});
+
+	it('reports the stored record version when the server info fetch is unsuccessful', async () => {
+		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
+		jest.mocked(getServerById).mockResolvedValue({ version: '6.9.0', name: 'Stored A' } as any);
+
+		const { store, dispatched } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', true));
+		await flushSagaMicrotasks();
+
+		const success = dispatched.find(action => action.type === SERVER.SELECT_SUCCESS);
+		expect(success).toMatchObject({ server: SERVER_URL, version: '6.9.0', name: 'Stored A' });
 	});
 });

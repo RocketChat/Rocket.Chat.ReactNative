@@ -1,7 +1,3 @@
-// Do not mock '../../lib/methods/userPreferences' here: this test asserts against the real
-// MMKV-backed store (__mocks__/react-native-mmkv.js). Mocking it turns the assertions into
-// spy checks and the test stops proving that no credential was persisted.
-
 jest.mock('../../lib/methods/getPermissions', () => ({
 	getPermissions: jest.fn()
 }));
@@ -99,31 +95,19 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-
-import reducers from '../../reducers';
 import loginRoot from '../login';
 import { loginSuccess } from '../../actions/login';
 import { selectServerRequest, selectServerSuccess } from '../../actions/server';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import { getPermissions } from '../../lib/methods/getPermissions';
-
-async function flushSagaMicrotasks(): Promise<void> {
-	for (let i = 0; i < 20; i += 1) {
-		await new Promise(resolve => setImmediate(resolve));
-	}
-}
-
-type PreloadedState = Parameters<typeof createStore>[1];
+import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 const runningTasks: { cancel: () => void }[] = [];
 
-function setupStore(preloadedState?: PreloadedState) {
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
-	runningTasks.push(sagaMiddleware.run(loginRoot));
+function setupStore() {
+	const { store, task } = createRecordingStore(loginRoot);
+	runningTasks.push(task);
 	return store;
 }
 
@@ -168,6 +152,7 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 
 		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER_A}`)).toBeNull();
 		expect(UserPreferences.getString(`${TOKEN_KEY}-${USER_B.id}`)).toBeNull();
+		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
 	});
 
 	it('persists the credentials when no switch interrupts the bootstrap', async () => {
@@ -181,5 +166,6 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 
 		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER_A}`)).toBe(USER_B.id);
 		expect(UserPreferences.getString(`${TOKEN_KEY}-${USER_B.id}`)).toBe(USER_B.token);
+		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_A);
 	});
 });
