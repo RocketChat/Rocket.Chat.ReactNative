@@ -28,10 +28,6 @@ const USER_ID = 'user-id';
 const PING_INTERVAL = 10000;
 const CLOSED = 3;
 
-function latestConnection() {
-	return mockConnections[mockConnections.length - 1];
-}
-
 describe('recoverSocket against the real SDK socket', () => {
 	let driver: ISdkDriver;
 
@@ -73,7 +69,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(2);
-		latestConnection().onopen();
+		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -87,7 +83,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(2);
-		latestConnection().onopen();
+		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -102,7 +98,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		expect(mockConnections).toHaveLength(2);
 		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
 
-		latestConnection().onopen();
+		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -116,7 +112,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		await jest.advanceTimersByTimeAsync(0);
 		expect(mockConnections).toHaveLength(2);
-		latestConnection().onopen();
+		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await directReopen;
@@ -178,7 +174,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		expect(mockConnections).toHaveLength(2);
 		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
 
-		latestConnection().onopen();
+		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -233,7 +229,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 
 		expect(mockConnections).toHaveLength(2);
-		latestConnection().onopen();
+		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(first).resolves.toBe('reopened');

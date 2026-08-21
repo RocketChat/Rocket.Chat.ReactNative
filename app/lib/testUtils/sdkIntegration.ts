@@ -58,6 +58,10 @@ export interface ISdkDriver {
 	};
 }
 
+export function latestConnection(connections: MockConnection[]): MockConnection {
+	return connections[connections.length - 1];
+}
+
 export function framesOn(connection: MockConnection, msg: string): IDdpMessage[] {
 	return connection.send.mock.calls
 		.map(([frame]: [string]) => JSON.parse(frame) as IDdpMessage)
@@ -126,6 +130,13 @@ export async function flush(turns = 10): Promise<void> {
 	for (let i = 0; i < turns; i++) {
 		await Promise.resolve();
 		await jest.advanceTimersByTimeAsync(0);
+	}
+}
+
+export async function settle(rounds = 5): Promise<void> {
+	for (let i = 0; i < rounds && jest.getTimerCount() > 0; i++) {
+		await jest.runOnlyPendingTimersAsync();
+		await flush();
 	}
 }
 

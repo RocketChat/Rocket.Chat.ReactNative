@@ -14,14 +14,19 @@ import { AppState } from 'react-native';
 import applyAppStateMiddleware from '../appStateMiddleware';
 import { APP_STATE } from '../../../actions/actionsTypes';
 
-function setupStore() {
+function bootMiddleware() {
 	const dispatch = jest.fn();
 	const createStore = jest.fn(() => ({ dispatch }));
 	applyAppStateMiddleware()(createStore)();
 	const [, notifyAppState] = (AppState.addEventListener as jest.Mock).mock.calls[0];
-	jest.runOnlyPendingTimers();
-	dispatch.mockClear();
 	return { dispatch, notifyAppState };
+}
+
+function setupStore() {
+	const booted = bootMiddleware();
+	jest.runOnlyPendingTimers();
+	expect(dispatchedTypes(booted.dispatch)).toEqual([]);
+	return booted;
 }
 
 function dispatchedTypes(dispatch: jest.Mock) {
@@ -32,10 +37,20 @@ describe('appStateMiddleware', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.clearAllMocks();
+		AppState.currentState = 'unknown';
 	});
 
 	afterEach(() => {
 		jest.useRealTimers();
+	});
+
+	it('reports the state the app booted into', () => {
+		AppState.currentState = 'active';
+		const { dispatch } = bootMiddleware();
+
+		jest.runOnlyPendingTimers();
+
+		expect(dispatchedTypes(dispatch)).toEqual([APP_STATE.FOREGROUND]);
 	});
 
 	it('tells the app it came to the foreground', () => {

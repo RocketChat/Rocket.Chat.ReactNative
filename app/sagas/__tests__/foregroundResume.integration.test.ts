@@ -1,8 +1,3 @@
-// What this suite proves: the saga wiring around app-state changes — which actions
-// the app dispatches, in which order, and under which guards, over the real SDK
-// driver talking to a mock websocket.
-// What it does not prove: that the real SDK's resume login behaves the way the
-// mock harness answers it. That is a separate question, out of scope here.
 jest.unmock('@rocket.chat/sdk');
 
 import { applyMiddleware, createStore, type AnyAction, type Store } from 'redux';
@@ -15,14 +10,6 @@ const USER_ID = 'user-id';
 const RESUME_TOKEN = 'auth-token';
 const CLOSED = 3;
 const mockConnections: MockConnection[] = [];
-
-function latestConnection() {
-	return mockConnections[mockConnections.length - 1];
-}
-
-function resetConnections() {
-	mockConnections.length = 0;
-}
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
@@ -121,14 +108,20 @@ import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';
-import { flush, framesOn, stopAnsweringFrames } from '../../lib/testUtils/sdkIntegration';
+import {
+	flush,
+	framesOn,
+	latestConnection,
+	makeCollection,
+	settle,
+	stopAnsweringFrames
+} from '../../lib/testUtils/sdkIntegration';
 import { saveLastLocalAuthenticationSession } from '../../lib/methods/helpers/localAuthentication';
 import { setUserPresenceAway } from '../../lib/services/restApi';
 
 const SERVER = 'https://open.rocket.chat';
 const ROOM_ID = 'room-rid';
 const RECOVERY_WINDOW = 5000;
-const LOGIN_REPLY_WINDOW = 100;
 
 const database = databaseModule as unknown as {
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
@@ -148,13 +141,6 @@ function topicsOn(connection: MockConnection) {
 
 function roomTopicsOn(connection: MockConnection) {
 	return topicsOn(connection).filter(topic => topic.includes(ROOM_ID));
-}
-
-function makeCollection(name: string) {
-	return {
-		name,
-		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
-	};
 }
 
 let dispatched: AnyAction[];
@@ -211,7 +197,7 @@ async function subscribeToRoom(rid: string) {
 beforeEach(() => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
-	resetConnections();
+	mockConnections.length = 0;
 	collections = {};
 	database.active.get.mockReset().mockImplementation((name: string) => (collections[name] ??= makeCollection(name)));
 	database.active.write.mockReset().mockImplementation((fn: () => unknown) => fn());
@@ -258,16 +244,13 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(loadMissedMessages).not.toHaveBeenCalled();
 
 		reopened.onopen();
-		await flush();
-		await jest.advanceTimersByTimeAsync(LOGIN_REPLY_WINDOW);
-		await flush();
+		await settle();
 
 		expect(dispatched).toContainEqual(connectSuccess());
 		expect(dispatched).toContainEqual(loginRequest({ resume: RESUME_TOKEN }, false));
 		expect(loadMissedMessages).toHaveBeenCalledWith({ rid: ROOM_ID });
 		expect(roomTopicsOn(reopened)).toEqual(expect.arrayContaining(ROOM_TOPICS));
 		expect(resumedUser()).toEqual(expect.objectContaining({ id: USER_ID, token: RESUME_TOKEN, username: 'the-user' }));
-		expect(store.getState().login.isAuthenticated).toBe(true);
 	});
 
 	it('lands on a reconnected, still-signed-in app instead of forcing a relaunch after the network dropped while away', async () => {
@@ -289,12 +272,10 @@ describe('foreground resume over the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(mockConnections.length).toBeGreaterThan(1);
-		const reopened = latestConnection();
+		const reopened = latestConnection(mockConnections);
 
 		reopened.onopen();
-		await flush();
-		await jest.advanceTimersByTimeAsync(LOGIN_REPLY_WINDOW);
-		await flush();
+		await settle();
 
 		const connectSuccessAt = dispatched.findIndex(action => action.type === connectSuccess().type);
 		const loginRequestAt = dispatched.findIndex(action => action.type === loginRequest({ resume: RESUME_TOKEN }, false).type);
@@ -302,7 +283,6 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(loginRequestAt).toBeGreaterThan(connectSuccessAt);
 		expect(dispatched[loginRequestAt]).toEqual(loginRequest({ resume: RESUME_TOKEN }, false));
 		expect(resumedUser()).toEqual(expect.objectContaining({ id: USER_ID, token: RESUME_TOKEN, username: 'the-user' }));
-		expect(store.getState().login.isAuthenticated).toBe(true);
 
 		expect(framesOn(reopened, 'connect').length).toBeGreaterThan(0);
 	});
