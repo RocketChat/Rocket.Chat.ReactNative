@@ -61,7 +61,7 @@ const setupStore = (): RecordingStore => createRecordingStore(initRoot);
 
 const HOST = 'https://open.rocket.chat';
 
-describe('init saga — restore terminal roots', () => {
+describe('init saga — restore user-facing roots', () => {
 	beforeEach(() => {
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
