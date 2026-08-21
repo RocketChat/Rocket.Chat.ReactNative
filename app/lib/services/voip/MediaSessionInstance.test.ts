@@ -70,9 +70,6 @@ jest.mock('../sdk', () => ({
 		},
 		methodCall: (...args: unknown[]) => {
 			mockMethodCall(...args);
-			if (!mockSdkHasClient) {
-				return Promise.reject(new Error('Sdk is not initialized'));
-			}
 			return Promise.resolve();
 		}
 	}
