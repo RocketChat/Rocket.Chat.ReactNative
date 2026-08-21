@@ -35,7 +35,7 @@ jest.mock('../../lib/services/connect', () => ({
 jest.mock('../../lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
-		host: ''
+		host: null
 	}
 }));
 
@@ -381,8 +381,8 @@ describe('deepLinking saga — server already connected, should skip changing se
 
 	afterEach(() => {
 		jest.useRealTimers();
-		// Reset so other describe blocks see the default empty host
-		(sdk as any).host = '';
+		// Reset so other describe blocks see the default disconnected host
+		(sdk as any).host = null;
 	});
 
 	/**
@@ -607,12 +607,12 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 			if (key === 'currentServer') return HOST;
 			return makeStoredUser();
 		});
-		(sdk as any).host = '';
+		(sdk as any).host = null;
 	});
 
 	afterEach(() => {
 		cancelSagaTasks();
-		(sdk as any).host = '';
+		(sdk as any).host = null;
 	});
 
 	it('lands on ROOT_OUTSIDE, not the loading root, when the server record is missing', async () => {

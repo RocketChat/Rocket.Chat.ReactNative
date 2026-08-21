@@ -39,7 +39,7 @@ class Sdk {
 		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
 
-	initialize(server: string) {
+	initialize(server: string): Rocketchat {
 		this.code = null;
 		this.sdk = this.initializeSdk(server);
 		return this.sdk;
