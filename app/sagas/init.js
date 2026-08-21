@@ -21,43 +21,47 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
+const isLoggedIn = server => !!UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+
+const serverToRestore = function* serverToRestore(server) {
+	if (!server) {
+		return null;
+	}
+
+	if (!isLoggedIn(server)) {
+		const serversDB = database.servers;
+		const serversCollection = serversDB.get('servers');
+		const servers = yield serversCollection.query().fetch();
+
+		return servers.find(({ id }) => isLoggedIn(id)) || null;
+	}
+
+	yield localAuthenticate(server);
+	return (yield getServerById(server)) || null;
+};
+
 const restore = function* restore() {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const restoredServer = yield* serverToRestore(server);
 
-		if (!server) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else if (!userId) {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const { id: newServer, version } = servers[i];
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						return yield put(selectServerRequest(newServer, version));
-					}
-				}
-			}
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		if (restoredServer) {
+			yield put(selectServerRequest(restoredServer.id, restoredServer.version));
 		} else {
-			yield localAuthenticate(server);
-			const serverRecord = yield getServerById(server);
-			if (!serverRecord) {
-				return;
-			}
-			yield put(selectServerRequest(server, serverRecord.version));
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
 		yield put(appReady({}));
 		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
 		if (pushNotification) {
-			const pushNotification = yield call(AsyncStorage.removeItem, 'pushNotification');
-			yield call(deepLinkingClickCallPush, JSON.parse(pushNotification));
+			yield call(AsyncStorage.removeItem, 'pushNotification');
+			if (restoredServer) {
+				try {
+					yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
+				} catch (e) {
+					log(e);
+				}
+			}
 		}
 	} catch (e) {
 		log(e);

@@ -93,14 +93,15 @@ jest.mock('../../lib/methods/helpers', () => ({
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
 import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
-import { loginSuccess } from '../../actions/login';
-import { selectServerSuccess } from '../../actions/server';
+import { loginFailure, loginSuccess } from '../../actions/login';
+import { selectServerFailure, selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
-import { APP, SERVER } from '../../actions/actionsTypes';
+import { APP, LOGOUT, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
+import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
@@ -599,5 +600,96 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 
 		expect(emit).toHaveBeenCalledWith('NewServer', { server: HOST });
 		emit.mockRestore();
+	});
+});
+
+describe('deepLinking saga — handleShareExtension user-facing roots', () => {
+	beforeEach(() => {
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return HOST;
+			return makeStoredUser();
+		});
+		jest.mocked(sdk).current.client.host = '';
+	});
+
+	afterEach(() => {
+		cancelSagaTasks();
+		jest.mocked(sdk).current.client.host = '';
+	});
+
+	it('lands on ROOT_OUTSIDE, not the loading root, when the server record is missing', async () => {
+		jest.mocked(getServerById).mockResolvedValue(null as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when the login that the share sheet waits on fails', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_LOADING_SHARE_EXTENSION);
+
+		store.dispatch(loginFailure({ message: 'connect failed' }));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when selecting the server fails while the share sheet waits', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerFailure());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when the server logs the share sheet out instead of failing the login', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch({ type: LOGOUT });
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('lands on ROOT_OUTSIDE when local authentication throws', async () => {
+		jest.mocked(localAuthenticate).mockRejectedValueOnce(new Error('biometrics unavailable'));
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('still reaches ROOT_SHARE_EXTENSION when the login succeeds', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: TOKEN } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
 	});
 });
