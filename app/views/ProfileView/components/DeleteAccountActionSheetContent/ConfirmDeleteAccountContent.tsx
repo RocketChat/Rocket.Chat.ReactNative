@@ -7,6 +7,7 @@ import sharedStyles from '../../../Styles';
 import FooterButtons from './FooterButtons';
 import AlertText from './AlertText';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
+import { isTwoFactorCancelled } from '../../../../lib/services/twoFactor';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
@@ -55,7 +56,14 @@ const ConfirmDeleteAccountContent = ({
 
 	const handleDeleteAccount = async () => {
 		hideActionSheet();
-		await deleteOwnAccount(password, true);
+		try {
+			await deleteOwnAccount(password, true);
+		} catch (e) {
+			if (isTwoFactorCancelled(e)) {
+				return;
+			}
+			throw e;
+		}
 		dispatch(deleteAccount());
 	};
 

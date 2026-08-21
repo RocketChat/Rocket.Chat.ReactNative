@@ -1,5 +1,3 @@
-import type { Store } from 'redux';
-
 jest.unmock('@rocket.chat/sdk');
 
 import { connect, login, loginWithPassword } from '../connect';
@@ -11,15 +9,17 @@ import { setActiveUsers } from '../../../actions/activeUsers';
 import { updateSettings } from '../../../actions/settings';
 import { updatePermission } from '../../../actions/permissions';
 import { _activeUsers, _setUserTimer } from '../../methods/setUser';
-import type { IApplicationState } from '../../../definitions';
-import { flush, framesOn, mockConnections, resetConnections, type MockConnection } from './mockWebSocketClient';
+import { flush, framesOn, makeCollection, makeReduxStore, receiveFrame } from '../../testUtils/sdkIntegration';
+import type { MockConnection } from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
-const DDP_LOGIN_RESULT = { id: 'user-id', token: 'auth-token' };
+const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
-	require('./mockWebSocketClient').createWebSocketClientMock((frame: { msg: string; id?: string; method?: string }) =>
-		frame.msg === 'method' && frame.method === 'login' ? { msg: 'result', id: frame.id, result: DDP_LOGIN_RESULT } : undefined
-	)
+	jest.fn().mockImplementation(() => {
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
+	})
 );
 
 jest.mock('../voip/MediaSessionInstance', () => ({
@@ -61,7 +61,6 @@ jest.mock('../../database', () => ({
 	}
 }));
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const database = require('../../database').default as {
 	setActiveDB: jest.Mock;
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
@@ -84,50 +83,13 @@ const REST_LOGIN_ME = {
 	requirePasswordChange: false
 };
 
-function makeReduxStore() {
-	const listeners = new Set<() => void>();
-	const state = {
-		meteor: { connected: false },
-		login: { user: null as Record<string, unknown> | null, isAuthenticated: false },
-		server: { version: '5.0.0' },
-		settings: {} as Record<string, unknown>,
-		room: { subscribedRoom: null as string | null }
-	};
-	return {
-		state,
-		store: {
-			getState: () => state,
-			dispatch: jest.fn(),
-			subscribe: (listener: () => void) => {
-				listeners.add(listener);
-				return () => listeners.delete(listener);
-			}
-		} as unknown as Store<IApplicationState> & { dispatch: jest.Mock }
-	};
-}
-
-function receiveFrame(connection: MockConnection, frame: Record<string, unknown>) {
-	connection.onmessage({ data: JSON.stringify(frame) });
-}
-
-function makeCollection(name: string) {
-	return {
-		name,
-		find: jest.fn(),
-		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })),
-		create: jest.fn(),
-		prepareCreate: jest.fn(),
-		schema: {}
-	};
-}
-
 let redux: ReturnType<typeof makeReduxStore>;
 let collections: Record<string, ReturnType<typeof makeCollection>>;
 
 beforeEach(() => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
-	resetConnections();
+	mockConnections.length = 0;
 	collections = {};
 	redux = makeReduxStore();
 	initStore(redux.store);

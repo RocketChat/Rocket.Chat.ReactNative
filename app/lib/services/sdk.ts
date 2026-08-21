@@ -15,7 +15,7 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-export type TDriver = Rocketchat['ddp'];
+export type TDriver = Rocketchat['driver'];
 
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
@@ -107,9 +107,8 @@ class Sdk {
 					try {
 						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
 						return resolve(this.post(endpoint, params));
-					} catch {
-						// twoFactor was canceled
-						return resolve({} as any);
+					} catch (twoFactorError) {
+						return reject(twoFactorError);
 					}
 				} else {
 					reject(e);
@@ -121,6 +120,7 @@ class Sdk {
 	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
+				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
 				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));
@@ -131,9 +131,8 @@ class Sdk {
 					try {
 						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
 						return resolve(this.methodCall(method, ...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
+					} catch (twoFactorError) {
+						return reject(twoFactorError);
 					}
 				} else {
 					reject(e);
@@ -161,12 +160,12 @@ class Sdk {
 		return this.methodCall(method, ...parsedParams);
 	}
 
-	subscribe(topic: string, ...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribe(topic, ...args);
+	subscribe(topic: string, eventName?: string, ...args: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribe(topic, eventName as string, ...args);
 	}
 
-	subscribeRaw(...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribeRaw(...args);
+	subscribeRaw(name: string, params: any[]): Promise<ISubscription | undefined> {
+		return this.current.subscribeRaw(name, params);
 	}
 
 	subscribeRoom(...args: any[]) {

@@ -4,7 +4,7 @@ import { type IProfileParams, type IUser } from '../../../definitions';
 
 interface IProfileFormValues {
 	name: string;
-	username: string;
+	username?: string;
 	email: string | null;
 	currentPassword: string | null;
 	bio?: string;

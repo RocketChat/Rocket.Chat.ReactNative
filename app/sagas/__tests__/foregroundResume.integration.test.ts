@@ -3,19 +3,27 @@ jest.unmock('@rocket.chat/sdk');
 import { applyMiddleware, createStore, type AnyAction, type Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
+import type * as SdkIntegration from '../../lib/testUtils/sdkIntegration';
+import type { MockConnection } from '../../lib/testUtils/sdkIntegration';
+
 const USER_ID = 'user-id';
 const RESUME_TOKEN = 'token-abc';
+const CLOSED = 3;
+const mockConnections: MockConnection[] = [];
+
+function latestConnection() {
+	return mockConnections[mockConnections.length - 1];
+}
+
+function resetConnections() {
+	mockConnections.length = 0;
+}
 
 jest.mock('universal-websocket-client', () =>
-	require('../../lib/services/__tests__/mockWebSocketClient').createWebSocketClientMock(
-		(frame: { msg: string; id?: string; method?: string }) => {
-			if (frame.msg === 'unsub') return { msg: 'nosub', id: frame.id };
-			if (frame.msg === 'method' && frame.method === 'login') {
-				return { msg: 'result', id: frame.id, result: { id: USER_ID, token: RESUME_TOKEN } };
-			}
-			return undefined;
-		}
-	)
+	jest.fn().mockImplementation(() => {
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../lib/testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
+	})
 );
 
 jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
@@ -108,16 +116,7 @@ import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';
-import {
-	CLOSED,
-	flush,
-	framesOn,
-	latestConnection,
-	mockConnections,
-	resetConnections,
-	stopAnsweringFrames,
-	type MockConnection
-} from '../../lib/services/__tests__/mockWebSocketClient';
+import { flush, framesOn, stopAnsweringFrames } from '../../lib/testUtils/sdkIntegration';
 
 const SERVER = 'https://open.rocket.chat';
 const ROOM_ID = 'room-rid';

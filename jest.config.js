@@ -5,8 +5,7 @@ module.exports = {
 		'node_modules',
 		'<rootDir>/.*worktrees/',
 		'/__tests__/testHelpers\\.tsx$',
-		'/__tests__/mockedWatermelonDB\\.tsx$',
-		'/__tests__/mockWebSocketClient\\.ts$'
+		'/__tests__/mockedWatermelonDB\\.tsx$'
 	],
 	transformIgnorePatterns: [
 		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit|@rocket.chat/sdk|@rocket.chat/message-parser|tiny-events)'
