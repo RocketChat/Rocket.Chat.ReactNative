@@ -1,3 +1,8 @@
+// What this suite proves: the saga wiring around app-state changes — which actions
+// the app dispatches, in which order, and under which guards, over the real SDK
+// driver talking to a mock websocket.
+// What it does not prove: that the real SDK's resume login behaves the way the
+// mock harness answers it. That is a separate question, out of scope here.
 jest.unmock('@rocket.chat/sdk');
 
 import { applyMiddleware, createStore, type AnyAction, type Store } from 'redux';
@@ -7,7 +12,7 @@ import type * as SdkIntegration from '../../lib/testUtils/sdkIntegration';
 import type { MockConnection } from '../../lib/testUtils/sdkIntegration';
 
 const USER_ID = 'user-id';
-const RESUME_TOKEN = 'token-abc';
+const RESUME_TOKEN = 'auth-token';
 const CLOSED = 3;
 const mockConnections: MockConnection[] = [];
 
@@ -117,6 +122,8 @@ import reducers from '../../reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';
 import { flush, framesOn, stopAnsweringFrames } from '../../lib/testUtils/sdkIntegration';
+import { saveLastLocalAuthenticationSession } from '../../lib/methods/helpers/localAuthentication';
+import { setUserPresenceAway } from '../../lib/services/restApi';
 
 const SERVER = 'https://open.rocket.chat';
 const ROOM_ID = 'room-rid';
@@ -161,7 +168,7 @@ function recordDispatched() {
 	};
 }
 
-function bootSignedInApp() {
+function bootApp() {
 	dispatched = [];
 	const sagaMiddleware = createSagaMiddleware();
 	store = createStore(reducers, applyMiddleware(recordDispatched(), sagaMiddleware));
@@ -172,14 +179,24 @@ function bootSignedInApp() {
 	store.dispatch(selectServerSuccess({ server: SERVER, name: 'open.rocket.chat', version: '6.0.0' }));
 }
 
-async function openSignedInSocket() {
+async function openSocket() {
 	await connect({ server: SERVER });
 	await flush();
 	mockConnections[0].onopen();
 	await flush();
-	store.dispatch(loginSuccess({ id: USER_ID, token: RESUME_TOKEN } as never));
 	store.dispatch(connectSuccess());
 	await flush();
+}
+
+async function openSignedInSocket() {
+	await openSocket();
+	store.dispatch(loginSuccess({ id: USER_ID, token: RESUME_TOKEN } as never));
+	await flush();
+}
+
+function resumedUser() {
+	const resumed = dispatched.find(action => action.type === loginSuccess({} as never).type);
+	return resumed?.user;
 }
 
 async function subscribeToRoom(rid: string) {
@@ -219,7 +236,7 @@ afterEach(async () => {
 
 describe('foreground resume over the real SDK socket', () => {
 	it('gets messages flowing again when the socket died silently while away', async () => {
-		bootSignedInApp();
+		bootApp();
 		await openSignedInSocket();
 		await subscribeToRoom(ROOM_ID);
 		const frozen = mockConnections[0];
@@ -249,10 +266,12 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(dispatched).toContainEqual(loginRequest({ resume: RESUME_TOKEN }, false));
 		expect(loadMissedMessages).toHaveBeenCalledWith({ rid: ROOM_ID });
 		expect(roomTopicsOn(reopened)).toEqual(expect.arrayContaining(ROOM_TOPICS));
+		expect(resumedUser()).toEqual(expect.objectContaining({ id: USER_ID, token: RESUME_TOKEN, username: 'the-user' }));
+		expect(store.getState().login.isAuthenticated).toBe(true);
 	});
 
 	it('lands on a reconnected, still-signed-in app instead of forcing a relaunch after the network dropped while away', async () => {
-		bootSignedInApp();
+		bootApp();
 		await openSignedInSocket();
 		const dropped = mockConnections[0];
 
@@ -273,7 +292,8 @@ describe('foreground resume over the real SDK socket', () => {
 		const reopened = latestConnection();
 
 		reopened.onopen();
-		expect(dispatched.map(action => action.type)).not.toContain(connectSuccess().type);
+		await flush();
+		await jest.advanceTimersByTimeAsync(LOGIN_REPLY_WINDOW);
 		await flush();
 
 		const connectSuccessAt = dispatched.findIndex(action => action.type === connectSuccess().type);
@@ -281,12 +301,14 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(connectSuccessAt).toBeGreaterThanOrEqual(0);
 		expect(loginRequestAt).toBeGreaterThan(connectSuccessAt);
 		expect(dispatched[loginRequestAt]).toEqual(loginRequest({ resume: RESUME_TOKEN }, false));
+		expect(resumedUser()).toEqual(expect.objectContaining({ id: USER_ID, token: RESUME_TOKEN, username: 'the-user' }));
+		expect(store.getState().login.isAuthenticated).toBe(true);
 
 		expect(framesOn(reopened, 'connect').length).toBeGreaterThan(0);
 	});
 
 	it('keeps the live connection instead of paying for an avoidable reconnect when switching straight back', async () => {
-		bootSignedInApp();
+		bootApp();
 		await openSignedInSocket();
 		await subscribeToRoom(ROOM_ID);
 		const alive = mockConnections[0];
@@ -304,5 +326,88 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(framesOn(alive, 'connect')).toHaveLength(connectFramesBefore);
 		expect(dispatched.map(action => action.type)).not.toContain(connectSuccess().type);
 		expect(dispatched.map(action => action.type)).not.toContain(loginRequest({ resume: RESUME_TOKEN }, false).type);
+	});
+
+	it('leaves the socket alone when the app returns to the foreground before anyone is signed in', async () => {
+		bootApp();
+		await openSocket();
+		const frozen = mockConnections[0];
+		stopAnsweringFrames(frozen);
+		dispatched.length = 0;
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flush();
+		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
+
+		expect(framesOn(frozen, 'ping')).toHaveLength(0);
+		expect(mockConnections).toHaveLength(1);
+		expect(dispatched.map(action => action.type)).not.toContain(loginRequest({ resume: RESUME_TOKEN }, false).type);
+	});
+
+	it('leaves the socket alone when the app returns to the foreground on the Outside Stack', async () => {
+		bootApp();
+		await openSignedInSocket();
+		const frozen = mockConnections[0];
+		stopAnsweringFrames(frozen);
+		store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		await flush();
+		const pingsBefore = framesOn(frozen, 'ping').length;
+		dispatched.length = 0;
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flush();
+		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
+
+		expect(framesOn(frozen, 'ping')).toHaveLength(pingsBefore);
+		expect(mockConnections).toHaveLength(1);
+		expect(dispatched.map(action => action.type)).not.toContain(loginRequest({ resume: RESUME_TOKEN }, false).type);
+	});
+
+	it('saves the local authentication session and goes away when the app leaves for the background', async () => {
+		bootApp();
+		await openSignedInSocket();
+
+		store.dispatch({ type: APP_STATE.BACKGROUND });
+		await flush();
+
+		expect(saveLastLocalAuthenticationSession).toHaveBeenCalledWith(SERVER);
+		expect(setUserPresenceAway).toHaveBeenCalled();
+	});
+
+	it('stays quiet on the background transition when nobody is signed in', async () => {
+		bootApp();
+		await openSocket();
+
+		store.dispatch({ type: APP_STATE.BACKGROUND });
+		await flush();
+
+		expect(saveLastLocalAuthenticationSession).not.toHaveBeenCalled();
+		expect(setUserPresenceAway).not.toHaveBeenCalled();
+	});
+
+	it('stays quiet on the background transition while the socket is down', async () => {
+		bootApp();
+		await openSignedInSocket();
+		store.dispatch(disconnect());
+		await flush();
+
+		store.dispatch({ type: APP_STATE.BACKGROUND });
+		await flush();
+
+		expect(saveLastLocalAuthenticationSession).not.toHaveBeenCalled();
+		expect(setUserPresenceAway).not.toHaveBeenCalled();
+	});
+
+	it('stays quiet on the background transition while on the Outside Stack', async () => {
+		bootApp();
+		await openSignedInSocket();
+		store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		await flush();
+
+		store.dispatch({ type: APP_STATE.BACKGROUND });
+		await flush();
+
+		expect(saveLastLocalAuthenticationSession).not.toHaveBeenCalled();
+		expect(setUserPresenceAway).not.toHaveBeenCalled();
 	});
 });

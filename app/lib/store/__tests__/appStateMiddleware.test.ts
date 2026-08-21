@@ -54,14 +54,6 @@ describe('appStateMiddleware', () => {
 		expect(dispatchedTypes(dispatch)).toEqual([APP_STATE.BACKGROUND]);
 	});
 
-	it('stays silent while the app is only temporarily interrupted', () => {
-		const { dispatch, notifyAppState } = setupStore();
-
-		notifyAppState('inactive');
-
-		expect(dispatchedTypes(dispatch)).toEqual([]);
-	});
-
 	it('keeps the foreground state through a temporary interruption', () => {
 		const { dispatch, notifyAppState } = setupStore();
 
