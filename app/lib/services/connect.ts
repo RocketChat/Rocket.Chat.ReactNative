@@ -86,7 +86,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		const client = sdk.initialize(server);
-		getSettings();
+		getSettings(server);
 
 		client
 			.connect()

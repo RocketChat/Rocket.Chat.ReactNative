@@ -109,10 +109,7 @@ export async function triggerAction({
 
 	try {
 		const { host, currentLogin } = sdk;
-		if (host === null) {
-			throw new Error('triggerAction requires an active connection');
-		}
-		if (!currentLogin) {
+		if (!host || !currentLogin) {
 			throw new Error('triggerAction requires an authenticated session');
 		}
 		const { userId, authToken } = currentLogin;

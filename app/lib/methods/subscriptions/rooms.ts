@@ -39,7 +39,7 @@ import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/video
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
 let streamListener: Promise<any> | false;
-let subServer: string;
+let subServer: string | null;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
 const WINDOW_TIME = 500;
@@ -436,8 +436,7 @@ export default function subscribeRooms() {
 		roomsSubscription = null;
 	};
 
-	const { host } = sdk;
-	if (host === null) {
+	if (!sdk.isInitialized) {
 		return null;
 	}
 
@@ -445,7 +444,7 @@ export default function subscribeRooms() {
 
 	try {
 		// set the server that started this task
-		subServer = host;
+		subServer = sdk.host;
 		sdk.subscribeNotifyUser().catch((e: unknown) => console.log(e));
 		roomsSubscription = { stop: () => stop() };
 		return null;
