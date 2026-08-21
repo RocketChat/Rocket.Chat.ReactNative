@@ -54,7 +54,7 @@ export const onPressGoogle = ({ service, server }: IServiceLogin) => {
 	const redirect_uri = `${server}/_oauth/google?close`;
 	const scope = encodeURIComponent('profile email');
 	const state = getOAuthState('redirect');
-	const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
+	const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code&prompt=select_account`;
 	openOAuthSession(`${endpoint}${params}`);
 };
 

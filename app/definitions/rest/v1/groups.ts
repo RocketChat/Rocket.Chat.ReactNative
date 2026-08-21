@@ -90,4 +90,9 @@ export type GroupsEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'groups.open': {
+		POST: (params: { roomId: IServerRoom['_id'] }) => {
+			success: boolean;
+		};
+	};
 };

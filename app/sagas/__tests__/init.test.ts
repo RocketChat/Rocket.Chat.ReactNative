@@ -47,31 +47,17 @@ jest.mock('../../lib/database', () => ({
 
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
 import RNBootSplash from 'react-native-bootsplash';
 
 import { appInit } from '../../actions/app';
 import { RootEnum } from '../../definitions';
-import reducers from '../../reducers';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
-/** Drains pending saga microtasks so all synchronous saga steps complete. */
-async function flushSagaMicrotasks(): Promise<void> {
-	await Promise.resolve();
-	await Promise.resolve();
-	await Promise.resolve();
-	await Promise.resolve();
-}
-
-function setupStore() {
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(reducers, undefined, applyMiddleware(sagaMiddleware));
-	sagaMiddleware.run(initRoot);
-	return store;
-}
+const setupStore = (): RecordingStore => createRecordingStore(initRoot);
 
 const HOST = 'https://open.rocket.chat';
 
@@ -83,9 +69,13 @@ describe('init saga — restore terminal roots', () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
 
+	afterEach(() => {
+		cancelSagaTasks();
+	});
+
 	it('lands on ROOT_OUTSIDE and hides the splash when the stored server has no database record', async () => {
 		jest.mocked(getServerById).mockResolvedValue(null);
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
@@ -96,7 +86,7 @@ describe('init saga — restore terminal roots', () => {
 
 	it('marks the app ready when the stored server has no database record', async () => {
 		jest.mocked(getServerById).mockResolvedValue(null);
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
@@ -106,7 +96,7 @@ describe('init saga — restore terminal roots', () => {
 
 	it('selects the stored server and marks the app ready when the record exists', async () => {
 		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
