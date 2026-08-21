@@ -100,7 +100,6 @@ jest.mock('../../lib/database', () => ({
 import loginRoot from '../login';
 import { logout } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
-import { SERVER } from '../../actions/actionsTypes';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { TOKEN_KEY } from '../../lib/constants/keys';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
@@ -110,16 +109,16 @@ afterEach(cancelSagaTasks);
 const LOGGED_OUT_SERVER = 'https://logged-out.rocket.chat';
 const OTHER_SERVER = 'https://other.rocket.chat';
 
-const setRemainingServers = (servers: { id: string }[]) => {
+const setRemainingServers = (servers: { id: string }[]): void => {
 	mockServersQuery.query.mockReturnValue({ fetch: jest.fn(() => Promise.resolve(servers)) });
 };
 
-const runForcedLogout = async () => {
-	const { store, dispatchedActions } = createRecordingStore(loginRoot);
+const runForcedLogout = async (): Promise<string | null> => {
+	const { store } = createRecordingStore(loginRoot);
 	store.dispatch(selectServerSuccess({ server: LOGGED_OUT_SERVER, version: '7.0.0', name: 'Logged out' }));
 	store.dispatch(logout(true, 'Logged_out_by_server'));
 	await flushSagaMicrotasks();
-	return dispatchedActions;
+	return store.getState().server.previousServer;
 };
 
 describe('login saga — a logout forced by the server', () => {
@@ -132,16 +131,12 @@ describe('login saga — a logout forced by the server', () => {
 		setRemainingServers([{ id: OTHER_SERVER }]);
 		UserPreferences.setString(`${TOKEN_KEY}-${OTHER_SERVER}`, 'user-id');
 
-		const dispatchedActions = await runForcedLogout();
-
-		expect(dispatchedActions).toEqual(expect.arrayContaining([{ type: SERVER.INIT_ADD, previousServer: OTHER_SERVER }]));
+		expect(await runForcedLogout()).toBe(OTHER_SERVER);
 	});
 
 	it('leaves previousServer unset when no other workspace is logged in', async () => {
 		setRemainingServers([{ id: OTHER_SERVER }]);
 
-		const dispatchedActions = await runForcedLogout();
-
-		expect(dispatchedActions.some(({ type }) => type === SERVER.INIT_ADD)).toBe(false);
+		expect(await runForcedLogout()).toBeNull();
 	});
 });
