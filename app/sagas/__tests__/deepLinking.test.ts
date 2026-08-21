@@ -111,8 +111,6 @@ import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const setupStore = () => createRecordingStore(deepLinkingRoot);
 
 afterEach(cancelSagaTasks);
@@ -593,6 +591,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 
 	afterEach(() => {
 		jest.useRealTimers();
+		jest.restoreAllMocks();
 	});
 
 	it('starts the outside stack, seeds the previous server, then emits NewServer for the host', async () => {

@@ -80,6 +80,8 @@ const SERVER_URL = 'https://new.rocket.chat';
 const USER_ID = 'user-new';
 const TOKEN = 'token-new';
 
+const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
+
 const setupStore = () => createRecordingStore(selectServerRoot);
 
 afterEach(cancelSagaTasks);
@@ -90,8 +92,6 @@ beforeEach(() => {
 	UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
 	setBasicAuth(null);
 });
-
-const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
 
 describe('selectServer saga — resolving the target workspace user', () => {
 	it('sets the full user from the logged-user record and stamps CURRENT_SERVER', async () => {
