@@ -77,6 +77,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import { getLoggedUserById } from '../../lib/database/services/LoggedUser';
+import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { connect } from '../../lib/services/connect';
 
 async function flushSagaMicrotasks(): Promise<void> {
@@ -91,7 +92,7 @@ const USER_ID = 'user-new';
 const TOKEN = 'token-new';
 
 function setupStore() {
-	const dispatched: { type: string }[] = [];
+	const dispatched: Record<string, any>[] = [];
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(
 		reducers,
@@ -180,5 +181,38 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		await flushSagaMicrotasks();
 
 		expect(RocketChatSettings.customHeaders).not.toHaveProperty('Authorization');
+	});
+});
+
+describe('selectServer saga — version fallback when server info is not fetched', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		keysToClear.forEach(key => UserPreferences.removeItem(key));
+		UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
+		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
+		setBasicAuth(null);
+	});
+
+	it('reports the caller-supplied version and the default name', async () => {
+		const { store, dispatched } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
+		await flushSagaMicrotasks();
+
+		const success = dispatched.find(action => action.type === SERVER.SELECT_SUCCESS);
+		expect(success).toMatchObject({ server: SERVER_URL, version: '7.4.0', name: 'Rocket.Chat' });
+		expect(getServerInfo).not.toHaveBeenCalled();
+	});
+
+	it('reports a server failure, not a select failure, when the server info fetch throws', async () => {
+		jest.mocked(getServerInfo).mockRejectedValue(new Error('offline'));
+
+		const { store, dispatched } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', true));
+		await flushSagaMicrotasks();
+
+		const types = dispatched.map(action => action.type);
+		expect(types).toContain(SERVER.FAILURE);
+		expect(types).not.toContain(SERVER.SELECT_FAILURE);
 	});
 });
