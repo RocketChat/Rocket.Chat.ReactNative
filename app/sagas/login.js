@@ -451,23 +451,11 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 		try {
 			yield call(removeServerData, { server });
 			yield call(removeServerDatabase, { server });
-			const serversDB = database.servers;
-			// all servers
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			const loggedInServer = yield call(findLoggedInServer);
+			if (loggedInServer) {
+				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+				return;
 			}
-			// if there's no servers, go outside
 			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {
