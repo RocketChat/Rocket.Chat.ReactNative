@@ -6,6 +6,9 @@ import { useCallStore } from './useCallStore';
 import { initStore } from '../../store/auxStore';
 import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
+import { addMediaSubs, buildConnectedDriver } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, ISdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 import type { IApplicationState } from '../../../definitions';
 
 jest.mock('./terminateNativeCall', () => ({
@@ -22,10 +25,19 @@ jest.mock('../socketHealth', () => ({
 	recoverSocket: jest.fn()
 }));
 
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: { driver: undefined }
-}));
+jest.mock('../sdk', () => {
+	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+});
+
+const mockConnections: MockConnection[] = [];
+
+jest.mock('universal-websocket-client', () =>
+	jest.fn().mockImplementation(() => {
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
+	})
+);
 
 jest.mock('../../methods/helpers/log', () => ({
 	__esModule: true,
@@ -33,6 +45,7 @@ jest.mock('../../methods/helpers/log', () => ({
 }));
 
 const CALL_ID = 'call-uuid';
+const USER_ID = 'user-id';
 const READINESS_TIMEOUT = 8000;
 
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
@@ -52,22 +65,6 @@ function makeMediaSession(): IMediaSession {
 		answerCall: jest.fn<Promise<void>, [string]>(() => Promise.resolve()),
 		endCall: jest.fn<void, [string]>(),
 		isInitialized: jest.fn<boolean, []>(() => true)
-	};
-}
-
-/** Media Signal subs that ack `delayMs` after the gate starts waiting. */
-function mediaSubsAckAfter(delayMs: number) {
-	return {
-		waitForNotifyUserMediaSubs: jest.fn(() => new Promise<boolean>(resolve => setTimeout(() => resolve(true), delayMs)))
-	};
-}
-
-/** Media Signal subs that never ack: the wait ends on its own timeout. */
-function mediaSubsNeverAck() {
-	return {
-		waitForNotifyUserMediaSubs: jest.fn(
-			(timeoutMs: number) => new Promise<boolean>(resolve => setTimeout(() => resolve(false), timeoutMs))
-		)
 	};
 }
 
@@ -97,18 +94,24 @@ function makeReduxStore() {
 
 describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	let redux: ReturnType<typeof makeReduxStore>;
+	let driver: ISdkDriver;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
+		mockConnections.length = 0;
 		redux = makeReduxStore();
 		initStore(redux.store);
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 		mockRecoverSocket.mockResolvedValue('reopened');
-		(sdk as any).driver = mediaSubsAckAfter(100);
+		driver = await buildConnectedDriver(mockConnections, USER_ID);
+		addMediaSubs(driver, USER_ID);
+		(sdk as unknown as IMockSdk).setClient({ driver });
 	});
 
 	afterEach(() => {
+		if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
+		if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
 		jest.useRealTimers();
 	});
 
@@ -148,7 +151,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		(sdk as any).driver = mediaSubsNeverAck();
+		driver.socket.subscriptions = {};
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();

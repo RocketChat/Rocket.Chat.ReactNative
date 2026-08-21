@@ -7,7 +7,7 @@ import {
 	framesOn,
 	stopAnsweringFrames
 } from '../../testUtils/sdkIntegration';
-import type { MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 const mockConnections: MockConnection[] = [];
@@ -19,10 +19,10 @@ jest.mock('universal-websocket-client', () =>
 	})
 );
 
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: { driver: undefined }
-}));
+jest.mock('../sdk', () => {
+	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+});
 
 const USER_ID = 'user-id';
 const PING_INTERVAL = 10000;
@@ -36,7 +36,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		jest.useFakeTimers();
 		mockConnections.length = 0;
 		driver = await buildConnectedDriver(mockConnections, USER_ID);
-		(sdk as unknown as { driver: ISdkDriver }).driver = driver;
+		(sdk as unknown as IMockSdk).setClient({ driver });
 	});
 
 	afterEach(() => {
@@ -154,7 +154,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		await expect(recovery).resolves.toBe('reopened');
 
-		const resubscribed = driver.waitForNotifyUserMediaSubs!();
+		const resubscribed = driver.waitForNotifyUserMediaSubs();
 		await jest.advanceTimersByTimeAsync(200);
 		await expect(resubscribed).resolves.toBe(true);
 
@@ -189,7 +189,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		await expect(recovery).resolves.toBe('reopened');
 
-		const resubscribed = driver.waitForNotifyUserMediaSubs!(1000);
+		const resubscribed = driver.waitForNotifyUserMediaSubs(1000);
 		await jest.advanceTimersByTimeAsync(100);
 		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
 
@@ -215,7 +215,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		stopAnsweringFrames(mockConnections[1]);
 
-		const resubscribed = driver.waitForNotifyUserMediaSubs!(500);
+		const resubscribed = driver.waitForNotifyUserMediaSubs(500);
 		await jest.advanceTimersByTimeAsync(500);
 
 		await expect(resubscribed).resolves.toBe(false);

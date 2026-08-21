@@ -46,8 +46,10 @@ export class MockConnection {
 export interface ISdkDriver {
 	userId: string;
 	pingInterval: number;
+	connected: boolean;
 	reopenNow(): Promise<void>;
-	waitForNotifyUserMediaSubs?(timeoutMs?: number): Promise<boolean>;
+	probe(timeoutMs: number): Promise<boolean>;
+	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
 	socket: {
 		lastPing: number;
 		pingTimeout?: ReturnType<typeof setTimeout>;
@@ -55,6 +57,36 @@ export interface ISdkDriver {
 		open(): Promise<void>;
 		send(message: Record<string, unknown>): Promise<unknown>;
 		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
+	};
+}
+
+export interface IMockSdkClient {
+	host?: string;
+	driver?: unknown;
+}
+
+export interface IMockSdk {
+	setClient(client: IMockSdkClient | null): void;
+	readonly host: string | null;
+	readonly driver: unknown;
+	readonly isInitialized: boolean;
+}
+
+export function makeSdkMock(): IMockSdk {
+	let client: IMockSdkClient | null = null;
+	return {
+		setClient(next: IMockSdkClient | null) {
+			client = next;
+		},
+		get host() {
+			return client ? (client.host ?? 'localhost:3000') : null;
+		},
+		get driver() {
+			return client?.driver ?? null;
+		},
+		get isInitialized() {
+			return client !== null;
+		}
 	};
 }
 
