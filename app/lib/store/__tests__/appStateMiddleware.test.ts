@@ -46,7 +46,9 @@ describe('appStateMiddleware', () => {
 		expect(dispatchedTypes(dispatch)).toEqual([APP_STATE.FOREGROUND]);
 	});
 
-	it('stays quiet when the app boots into a state the OS cannot name', () => {
+	it('stays quiet when the app boots into an unknown state', () => {
+		AppState.currentState = 'unknown';
+
 		const { dispatch } = bootMiddleware();
 
 		expect(dispatchedTypes(dispatch)).toEqual([]);
