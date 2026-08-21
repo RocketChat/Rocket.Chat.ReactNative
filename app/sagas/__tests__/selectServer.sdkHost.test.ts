@@ -38,15 +38,13 @@ import { APP, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import sdk from '../../lib/services/sdk';
 import { connect } from '../../lib/services/connect';
-import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 const HOST = 'https://open.rocket.chat';
 
 describe('selectServer saga — redundant select for the live SDK host', () => {
-	const runningTasks: { cancel: () => void }[] = [];
-
 	afterEach(() => {
-		runningTasks.splice(0).forEach(task => task.cancel());
+		cancelSagaTasks();
 		sdk.disconnect();
 	});
 
@@ -54,8 +52,7 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 		sdk.initialize(HOST);
 		expect(sdk.current.client.host).toBe(HOST);
 
-		const { store, dispatched, task } = createRecordingStore(selectServerRoot);
-		runningTasks.push(task);
+		const { store, dispatched } = createRecordingStore(selectServerRoot);
 
 		store.dispatch(selectServerRequest(HOST, '7.0.0', false));
 		await flushSagaMicrotasks();

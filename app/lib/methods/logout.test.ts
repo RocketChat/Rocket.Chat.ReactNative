@@ -39,6 +39,8 @@ const OTHER_SERVER = 'https://b.rocket.chat';
 const USER_ID = 'user-a';
 const OTHER_USER_ID = 'user-b';
 
+const tokenKey = (suffix: string) => `${TOKEN_KEY}-${suffix}`;
+
 const serverKeys = (server: string) => [
 	`${BASIC_AUTH_KEY}-${server}`,
 	`${server}-${E2E_PUBLIC_KEY}`,
@@ -49,22 +51,22 @@ const serverKeys = (server: string) => [
 const keysToClear = [
 	...serverKeys(SERVER),
 	...serverKeys(OTHER_SERVER),
-	`${TOKEN_KEY}-${SERVER}`,
-	`${TOKEN_KEY}-${OTHER_SERVER}`,
-	`${TOKEN_KEY}-${USER_ID}`,
-	`${TOKEN_KEY}-${OTHER_USER_ID}`,
+	tokenKey(SERVER),
+	tokenKey(OTHER_SERVER),
+	tokenKey(USER_ID),
+	tokenKey(OTHER_USER_ID),
 	CURRENT_SERVER
 ];
 
 function seedServer(server: string, userId?: string) {
 	if (userId) {
-		UserPreferences.setString(`${TOKEN_KEY}-${server}`, userId);
-		UserPreferences.setString(`${TOKEN_KEY}-${userId}`, `token-${userId}`);
+		UserPreferences.setString(tokenKey(server), userId);
+		UserPreferences.setString(tokenKey(userId), `token-${userId}`);
 	}
 	serverKeys(server).forEach(key => UserPreferences.setString(key, `value-for-${key}`));
 }
 
-function seedServersDBWithServer() {
+function mockServersDBFind() {
 	const serverRecord = { prepareDestroyPermanently: jest.fn(() => ({})) };
 	jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.resolve(serverRecord)) } as any);
 }
@@ -73,7 +75,7 @@ describe('removeServerData', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		keysToClear.forEach(key => UserPreferences.removeItem(key));
-		seedServersDBWithServer();
+		mockServersDBFind();
 	});
 
 	it('clears every per-server key for the removed server', async () => {
@@ -81,8 +83,8 @@ describe('removeServerData', () => {
 
 		await removeServerData({ server: SERVER });
 
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER}`)).toBeNull();
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${USER_ID}`)).toBeNull();
+		expect(UserPreferences.getString(tokenKey(SERVER))).toBeNull();
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
 	});
 
@@ -92,8 +94,8 @@ describe('removeServerData', () => {
 
 		await removeServerData({ server: SERVER });
 
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${OTHER_SERVER}`)).toBe(OTHER_USER_ID);
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${OTHER_USER_ID}`)).toBe(`token-${OTHER_USER_ID}`);
+		expect(UserPreferences.getString(tokenKey(OTHER_SERVER))).toBe(OTHER_USER_ID);
+		expect(UserPreferences.getString(tokenKey(OTHER_USER_ID))).toBe(`token-${OTHER_USER_ID}`);
 		serverKeys(OTHER_SERVER).forEach(key => expect(UserPreferences.getString(key)).toBe(`value-for-${key}`));
 	});
 
@@ -108,11 +110,11 @@ describe('removeServerData', () => {
 
 	it('skips the user token key when the server has no stored userId', async () => {
 		seedServer(SERVER);
-		UserPreferences.setString(`${TOKEN_KEY}-${USER_ID}`, `token-${USER_ID}`);
+		UserPreferences.setString(tokenKey(USER_ID), `token-${USER_ID}`);
 
 		await removeServerData({ server: SERVER });
 
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${USER_ID}`)).toBe(`token-${USER_ID}`);
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBe(`token-${USER_ID}`);
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
 	});
 });

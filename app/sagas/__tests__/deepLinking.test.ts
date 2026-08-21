@@ -109,13 +109,13 @@ import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
 import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function setupStore(preloadedState?: Parameters<typeof createRecordingStore>[1]) {
-	return createRecordingStore(deepLinkingRoot, preloadedState).store;
-}
+const setupStore = () => createRecordingStore(deepLinkingRoot).store;
+
+afterEach(cancelSagaTasks);
 
 // ─── Factories ────────────────────────────────────────────────────────────────
 

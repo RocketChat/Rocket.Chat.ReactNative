@@ -101,15 +101,9 @@ import { selectServerRequest, selectServerSuccess } from '../../actions/server';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import { getPermissions } from '../../lib/methods/getPermissions';
-import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
-const runningTasks: { cancel: () => void }[] = [];
-
-function setupStore() {
-	const { store, task } = createRecordingStore(loginRoot);
-	runningTasks.push(task);
-	return store;
-}
+const setupStore = () => createRecordingStore(loginRoot).store;
 
 const SERVER_A = 'https://a.rocket.chat';
 const SERVER_B = 'https://b.rocket.chat';
@@ -123,9 +117,7 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 		jest.clearAllMocks();
 	});
 
-	afterEach(() => {
-		runningTasks.splice(0).forEach(task => task.cancel());
-	});
+	afterEach(cancelSagaTasks);
 
 	it('does not persist the credentials when SELECT_REQUEST arrives before the token write', async () => {
 		let releasePermissions = () => {};

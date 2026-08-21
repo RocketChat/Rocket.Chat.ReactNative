@@ -73,24 +73,16 @@ import { getLoggedUserById } from '../../lib/database/services/LoggedUser';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { connect } from '../../lib/services/connect';
 import { getServerById } from '../../lib/database/services/Server';
-import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 const OLD_SERVER = 'https://old.rocket.chat';
 const SERVER_URL = 'https://new.rocket.chat';
 const USER_ID = 'user-new';
 const TOKEN = 'token-new';
 
-const runningTasks: { cancel: () => void }[] = [];
+const setupStore = () => createRecordingStore(selectServerRoot);
 
-function setupStore() {
-	const { store, dispatched, task } = createRecordingStore(selectServerRoot);
-	runningTasks.push(task);
-	return { store, dispatched };
-}
-
-afterEach(() => {
-	runningTasks.splice(0).forEach(task => task.cancel());
-});
+afterEach(cancelSagaTasks);
 
 const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
 
@@ -129,8 +121,6 @@ describe('selectServer saga — resolving the target workspace user', () => {
 	});
 
 	it('does not stamp CURRENT_SERVER when the target workspace has no credentials', async () => {
-		jest.mocked(getLoggedUserById).mockResolvedValue(null as any);
-
 		const { store } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
 		await flushSagaMicrotasks();
