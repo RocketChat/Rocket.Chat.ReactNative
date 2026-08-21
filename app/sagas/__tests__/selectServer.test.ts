@@ -211,7 +211,7 @@ describe('selectServer saga — user-facing root after a failed switch', () => {
 		jest.mocked(getLoggedUserById).mockRejectedValue(new Error('database unavailable'));
 	});
 
-	it('leaves ROOT_OUTSIDE when the switch fails while the app is on the loading root', async () => {
+	it('lands on ROOT_OUTSIDE when the switch fails while the app is on the loading root', async () => {
 		const { store } = setupStore();
 		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
@@ -220,7 +220,7 @@ describe('selectServer saga — user-facing root after a failed switch', () => {
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
 	});
 
-	it('leaves ROOT_OUTSIDE when the switch fails while the share sheet is on its loading root', async () => {
+	it('lands on ROOT_OUTSIDE when the switch fails while the share sheet is on its loading root', async () => {
 		const { store } = setupStore();
 		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));

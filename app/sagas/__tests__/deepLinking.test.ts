@@ -621,7 +621,7 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		jest.mocked(sdk).current.client.host = '';
 	});
 
-	it('leaves ROOT_OUTSIDE, not the loading root, when the server record is missing', async () => {
+	it('lands on ROOT_OUTSIDE, not the loading root, when the server record is missing', async () => {
 		jest.mocked(getServerById).mockResolvedValue(null as any);
 		const { store } = setupStore();
 
@@ -631,7 +631,7 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
 	});
 
-	it('leaves ROOT_OUTSIDE when the login that the share sheet waits on fails', async () => {
+	it('lands on ROOT_OUTSIDE when the login that the share sheet waits on fails', async () => {
 		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
 		const { store } = setupStore();
 
@@ -645,7 +645,7 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
 	});
 
-	it('leaves ROOT_OUTSIDE when selecting the server fails while the share sheet waits', async () => {
+	it('lands on ROOT_OUTSIDE when selecting the server fails while the share sheet waits', async () => {
 		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
 		const { store } = setupStore();
 
@@ -658,7 +658,7 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
 	});
 
-	it('leaves ROOT_OUTSIDE when the server logs the share sheet out instead of failing the login', async () => {
+	it('lands on ROOT_OUTSIDE when the server logs the share sheet out instead of failing the login', async () => {
 		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
 		const { store } = setupStore();
 
@@ -671,7 +671,7 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
 	});
 
-	it('leaves ROOT_OUTSIDE when local authentication throws', async () => {
+	it('lands on ROOT_OUTSIDE when local authentication throws', async () => {
 		jest.mocked(localAuthenticate).mockRejectedValueOnce(new Error('biometrics unavailable'));
 		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
 		const { store } = setupStore();

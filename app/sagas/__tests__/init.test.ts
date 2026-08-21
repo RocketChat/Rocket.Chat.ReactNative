@@ -54,6 +54,8 @@ import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { deepLinkingClickCallPush } from '../../actions/deepLinking';
 import { TOKEN_KEY } from '../../lib/constants/keys';
 import database from '../../lib/database';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
@@ -69,6 +71,8 @@ describe('init saga — restore user-facing roots', () => {
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(RNBootSplash.hide).mockClear();
+		jest.mocked(deepLinkingClickCallPush).mockClear();
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
 
@@ -114,6 +118,18 @@ describe('init saga — restore user-facing roots', () => {
 		expect(store.getState().server.server).toBe(OTHER_HOST);
 		expect(store.getState().server.version).toBe('7.0.0');
 		expect(store.getState().app.ready).toBe(true);
+	});
+
+	it('delivers the pending push notification without stranding the boot', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(deepLinkingClickCallPush)).toHaveBeenCalledWith({ rid: 'room-1' });
+		expect(store.getState().server.server).toBe(HOST);
 	});
 
 	it('selects the stored server and marks the app ready when the record exists', async () => {
