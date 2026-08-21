@@ -14,7 +14,7 @@ import { AppState } from 'react-native';
 import applyAppStateMiddleware from '../appStateMiddleware';
 import { APP_STATE } from '../../../actions/actionsTypes';
 
-function bootMiddleware() {
+function bootMiddleware(): { dispatch: jest.Mock; notifyAppState: (state: string) => void } {
 	const dispatch = jest.fn();
 	const createStore = jest.fn(() => ({ dispatch }));
 	applyAppStateMiddleware()(createStore)();
@@ -23,7 +23,7 @@ function bootMiddleware() {
 	return { dispatch, notifyAppState };
 }
 
-function dispatchedTypes(dispatch: jest.Mock) {
+function dispatchedTypes(dispatch: jest.Mock): string[] {
 	return dispatch.mock.calls.map(([action]) => action.type);
 }
 

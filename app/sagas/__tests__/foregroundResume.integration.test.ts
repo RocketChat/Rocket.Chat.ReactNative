@@ -135,15 +135,15 @@ const ROOM_TOPICS = [
 	`stream-notify-room:${ROOM_ID}/messagesRead`
 ];
 
-function typeOf(action: AnyAction) {
+function typeOf(action: AnyAction): string {
 	return action.type;
 }
 
-function topicsOn(connection: MockConnection) {
+function topicsOn(connection: MockConnection): string[] {
 	return framesOn(connection, 'sub').map(frame => `${frame.name}:${frame.params?.[0]}`);
 }
 
-function roomTopicsOn(connection: MockConnection) {
+function roomTopicsOn(connection: MockConnection): string[] {
 	return topicsOn(connection).filter(topic => topic.includes(ROOM_ID));
 }
 
@@ -158,7 +158,7 @@ function recordDispatched() {
 	};
 }
 
-function bootApp() {
+function bootApp(): void {
 	dispatched = [];
 	const sagaMiddleware = createSagaMiddleware();
 	store = createStore(reducers, applyMiddleware(recordDispatched(), sagaMiddleware));
@@ -169,7 +169,7 @@ function bootApp() {
 	store.dispatch(selectServerSuccess({ server: SERVER, name: 'open.rocket.chat', version: '6.0.0' }));
 }
 
-async function openSocket() {
+async function openSocket(): Promise<void> {
 	await connect({ server: SERVER });
 	await flush();
 	mockConnections[0].onopen();
@@ -178,18 +178,18 @@ async function openSocket() {
 	await flush();
 }
 
-async function openSignedInSocket() {
+async function openSignedInSocket(): Promise<void> {
 	await openSocket();
 	store.dispatch(loginSuccess({ id: USER_ID, token: RESUME_TOKEN } as never));
 	await flush();
 }
 
-function resumedUser() {
+function resumedUser(): unknown {
 	const resumed = dispatched.find(action => typeOf(action) === typeOf(loginSuccess({} as never)));
 	return resumed?.user;
 }
 
-async function subscribeToRoom(rid: string) {
+async function subscribeToRoom(rid: string): Promise<RoomSubscription> {
 	const room = new RoomSubscription(rid);
 	const subscribing = room.subscribe();
 	await flush();
