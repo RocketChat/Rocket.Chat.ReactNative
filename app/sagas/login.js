@@ -375,7 +375,7 @@ const findLoggedInServer = function* findLoggedInServer() {
 	return servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
 };
 
-export const handleLogout = function* handleLogout({ forcedByServer, message }) {
+const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
