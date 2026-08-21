@@ -54,12 +54,14 @@ import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
+import database from '../../lib/database';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
 const setupStore = (): RecordingStore => createRecordingStore(initRoot);
 
 const HOST = 'https://open.rocket.chat';
+const OTHER_HOST = 'https://other.rocket.chat';
 
 describe('init saga — restore user-facing roots', () => {
 	beforeEach(() => {
@@ -91,6 +93,29 @@ describe('init saga — restore user-facing roots', () => {
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
 
+		expect(store.getState().app.ready).toBe(true);
+	});
+
+	it('selects another logged in server with its own version when the stored server has no token', async () => {
+		jest
+			.mocked(UserPreferences.getString)
+			.mockImplementation(key =>
+				key === `reactnativemeteor_usertoken-${OTHER_HOST}`
+					? 'token'
+					: key.startsWith('reactnativemeteor_usertoken-')
+						? null
+						: HOST
+			);
+		jest.mocked(database.servers.get).mockReturnValue({
+			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
+		} as any);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().server.server).toBe(OTHER_HOST);
+		expect(store.getState().server.version).toBe('7.0.0');
 		expect(store.getState().app.ready).toBe(true);
 	});
 

@@ -153,26 +153,32 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
-	yield localAuthenticate(server);
-	const serverRecord = yield getServerById(server);
-	if (!serverRecord) {
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		return;
-	}
-	yield put(selectServerRequest(server, serverRecord.version));
-	if (sdk.current?.client?.host !== server) {
-		const { loginSuccess } = yield race({
-			loginSuccess: take(types.LOGIN.SUCCESS),
-			loginFailure: take(types.LOGIN.FAILURE),
-			selectServerFailure: take(types.SERVER.SELECT_FAILURE)
-		});
-		if (!loginSuccess) {
+	try {
+		yield localAuthenticate(server);
+		const serverRecord = yield getServerById(server);
+		if (!serverRecord) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			return;
 		}
+		yield put(selectServerRequest(server, serverRecord.version));
+		if (sdk.current?.client?.host !== server) {
+			const { loginSuccess } = yield race({
+				loginSuccess: take(types.LOGIN.SUCCESS),
+				loginFailure: take(types.LOGIN.FAILURE),
+				selectServerFailure: take(types.SERVER.SELECT_FAILURE),
+				logout: take(types.LOGOUT)
+			});
+			if (!loginSuccess) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				return;
+			}
+		}
+		yield put(shareSetParams(params));
+		yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+	} catch (e) {
+		log(e);
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
-	yield put(shareSetParams(params));
-	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 };
 
 const handleOpen = function* handleOpen({ params }) {

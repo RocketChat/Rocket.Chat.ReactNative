@@ -96,11 +96,12 @@ import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLin
 import { loginFailure, loginSuccess } from '../../actions/login';
 import { selectServerFailure, selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
-import { APP, SERVER } from '../../actions/actionsTypes';
+import { APP, LOGOUT, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
+import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
@@ -652,6 +653,30 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerFailure());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('leaves ROOT_OUTSIDE when the server logs the share sheet out instead of failing the login', async () => {
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch({ type: LOGOUT });
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('leaves ROOT_OUTSIDE when local authentication throws', async () => {
+		jest.mocked(localAuthenticate).mockRejectedValueOnce(new Error('biometrics unavailable'));
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);

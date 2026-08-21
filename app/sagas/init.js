@@ -39,11 +39,14 @@ const restore = function* restore() {
 					const newServer = servers[i].id;
 					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (userId) {
-						return yield put(selectServerRequest(newServer, newServer.version));
+						yield put(selectServerRequest(newServer, servers[i].version));
+						break;
 					}
 				}
 			}
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			if (!userId) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			}
 		} else {
 			yield localAuthenticate(server);
 			const serverRecord = yield getServerById(server);
