@@ -417,10 +417,9 @@ function abort() {
 	}
 }
 
-function disconnect() {
-	const result = sdk.disconnect();
+function disconnect(): void {
+	sdk.disconnect();
 	mediaSessionInstance.reset();
-	return result;
 }
 
 async function getWebsocketInfo({

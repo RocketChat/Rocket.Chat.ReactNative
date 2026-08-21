@@ -75,12 +75,11 @@ class Sdk {
 		return this.activeSdk.subscribeNotifyUser();
 	}
 
-	disconnect() {
+	disconnect(): void {
 		if (this.sdk) {
 			this.sdk.disconnect();
 			this.sdk = null;
 		}
-		return null;
 	}
 
 	get<TPath extends PathFor<'GET'>>(

@@ -26,7 +26,7 @@ export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — `sdk.driver` is null; nothing to recover.
+ * - `'no-socket'`       — there is no socket; nothing to recover.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
