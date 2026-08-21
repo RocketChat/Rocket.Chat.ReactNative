@@ -37,6 +37,11 @@ test('render several emojis', () => {
 	expect(unicodeEmoji).toBe('🐶🐱🍔🍦🚀');
 });
 
+test('render cldr shortnames used by the web client', () => {
+	const unicodeEmoji = renderShortnameToUnicode(':water_wave::thumbs_up::red_heart:');
+	expect(unicodeEmoji).toBe('🌊👍❤️');
+});
+
 test('render unknown emoji', () => {
 	const unicodeEmoji = renderShortnameToUnicode(':unknown:');
 	expect(unicodeEmoji).toBe(':unknown:');

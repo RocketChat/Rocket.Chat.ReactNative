@@ -4,7 +4,8 @@ import database from '../database';
 import { type ICustomEmoji, type IEmoji, type TFrequentlyUsedEmojiModel } from '../../definitions';
 import log from './helpers/log';
 import { sanitizeLikeString } from '../database/utils';
-import { DEFAULT_EMOJIS, emojis } from '../constants/emojis';
+import { DEFAULT_EMOJIS } from '../constants/emojis';
+import { searchEmojiNames } from './helpers/emojiAliases';
 
 const FREQUENTLY_USED_TABLE = 'frequently_used_emojis';
 
@@ -85,6 +86,6 @@ export const searchEmojis = async (keyword: string): Promise<IEmoji[]> => {
 		name: emoji?.name,
 		extension: emoji?.extension
 	}));
-	const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1);
+	const filteredEmojis = searchEmojiNames(keyword);
 	return [...customEmojis, ...filteredEmojis];
 };
