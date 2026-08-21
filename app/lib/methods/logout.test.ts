@@ -32,7 +32,14 @@ import { removeServerData } from './logout';
 import database from '../database';
 import UserPreferences from './userPreferences';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
+import {
+	CERTIFICATE_KEY,
+	CURRENT_SERVER,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	TOKEN_KEY
+} from '../constants/keys';
 
 const SERVER = 'https://a.rocket.chat';
 const OTHER_SERVER = 'https://b.rocket.chat';
@@ -40,6 +47,7 @@ const USER_ID = 'user-a';
 const OTHER_USER_ID = 'user-b';
 
 const tokenKey = (suffix: string) => `${TOKEN_KEY}-${suffix}`;
+const certificateKey = (server: string) => `${CERTIFICATE_KEY}-${server}`;
 
 const serverKeys = (server: string) => [
 	`${BASIC_AUTH_KEY}-${server}`,
@@ -55,6 +63,7 @@ const keysToClear = [
 	tokenKey(OTHER_SERVER),
 	tokenKey(USER_ID),
 	tokenKey(OTHER_USER_ID),
+	certificateKey(SERVER),
 	CURRENT_SERVER
 ];
 
@@ -106,6 +115,15 @@ describe('removeServerData', () => {
 		await removeServerData({ server: SERVER });
 
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER);
+	});
+
+	it('keeps the pinned certificate so the user does not have to re-enter its password', async () => {
+		seedServer(SERVER, USER_ID);
+		UserPreferences.setString(certificateKey(SERVER), 'client-certificate');
+
+		await removeServerData({ server: SERVER });
+
+		expect(UserPreferences.getString(certificateKey(SERVER))).toBe('client-certificate');
 	});
 
 	it('skips the user token key when the server has no stored userId', async () => {
