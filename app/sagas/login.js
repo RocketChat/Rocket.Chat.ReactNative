@@ -383,9 +383,10 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 		try {
 			yield call(logoutCall, { server });
 
+			const loggedInServer = yield call(findLoggedInServer);
+
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				const loggedInServer = yield call(findLoggedInServer);
 				if (loggedInServer) {
 					yield put(serverInitAdd(loggedInServer.id));
 				}
@@ -396,7 +397,6 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			} else {
-				const loggedInServer = yield call(findLoggedInServer);
 				if (loggedInServer) {
 					yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
 					return;
