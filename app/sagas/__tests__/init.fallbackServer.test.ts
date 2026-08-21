@@ -33,6 +33,8 @@ describe('init saga — fallback workspace', () => {
 
 	afterEach(() => {
 		cancelSagaTasks();
+		UserPreferences.removeItem(CURRENT_SERVER);
+		UserPreferences.removeItem(`${TOKEN_KEY}-${FALLBACK_SERVER}`);
 	});
 
 	it('requests the fallback workspace with the version from its own record', async () => {
