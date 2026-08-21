@@ -1,4 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
+import type { AnyAction } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import type { Saga, Task } from 'redux-saga';
 
@@ -21,7 +22,7 @@ export function cancelSagaTasks(): void {
 }
 
 export function createRecordingStore(rootSaga: Saga, preloadedState?: PreloadedState) {
-	const dispatched: Record<string, any>[] = [];
+	const dispatched: AnyAction[] = [];
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(
 		reducers,
@@ -36,5 +37,5 @@ export function createRecordingStore(rootSaga: Saga, preloadedState?: PreloadedS
 	);
 	const task: Task = sagaMiddleware.run(rootSaga);
 	runningTasks.push(task);
-	return { store, dispatched, task };
+	return { store, dispatched };
 }

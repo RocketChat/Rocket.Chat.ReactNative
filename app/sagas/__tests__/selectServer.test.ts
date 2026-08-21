@@ -84,16 +84,16 @@ const setupStore = () => createRecordingStore(selectServerRoot);
 
 afterEach(cancelSagaTasks);
 
+beforeEach(() => {
+	jest.clearAllMocks();
+	keysToClear.forEach(key => UserPreferences.removeItem(key));
+	UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
+	setBasicAuth(null);
+});
+
 const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
 
 describe('selectServer saga — resolving the target workspace user', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-		keysToClear.forEach(key => UserPreferences.removeItem(key));
-		UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
-		setBasicAuth(null);
-	});
-
 	it('sets the full user from the logged-user record and stamps CURRENT_SERVER', async () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN, username: 'new' } as any);
@@ -160,12 +160,8 @@ describe('selectServer saga — resolving the target workspace user', () => {
 
 describe('selectServer saga — version and name fallback', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
-		keysToClear.forEach(key => UserPreferences.removeItem(key));
-		UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
-		setBasicAuth(null);
 	});
 
 	it('reports the caller-supplied version and the default name', async () => {

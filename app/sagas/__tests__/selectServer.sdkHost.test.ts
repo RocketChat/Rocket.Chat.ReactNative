@@ -1,10 +1,10 @@
 jest.unmock('@rocket.chat/sdk');
 
-const mockConnections: any[] = [];
+const mockConnections: MockConnection[] = [];
 
 jest.mock('universal-websocket-client', () =>
 	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual('../../lib/testUtils/sdkIntegration');
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../lib/testUtils/sdkIntegration');
 		return new sdkIntegration.MockConnection(mockConnections);
 	})
 );
@@ -38,11 +38,17 @@ import { APP, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import sdk from '../../lib/services/sdk';
 import { connect } from '../../lib/services/connect';
+import type { MockConnection } from '../../lib/testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../lib/testUtils/sdkIntegration';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 const HOST = 'https://open.rocket.chat';
 
 describe('selectServer saga — redundant select for the live SDK host', () => {
+	beforeEach(() => {
+		mockConnections.length = 0;
+	});
+
 	afterEach(() => {
 		cancelSagaTasks();
 		sdk.disconnect();

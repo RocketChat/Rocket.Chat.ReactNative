@@ -103,7 +103,9 @@ import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import { getPermissions } from '../../lib/methods/getPermissions';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
-const setupStore = () => createRecordingStore(loginRoot).store;
+const setupStore = () => createRecordingStore(loginRoot);
+
+afterEach(cancelSagaTasks);
 
 const SERVER_A = 'https://a.rocket.chat';
 const SERVER_B = 'https://b.rocket.chat';
@@ -117,8 +119,6 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 		jest.clearAllMocks();
 	});
 
-	afterEach(cancelSagaTasks);
-
 	it('does not persist the credentials when SELECT_REQUEST arrives before the token write', async () => {
 		let releasePermissions = () => {};
 		jest.mocked(getPermissions).mockImplementation(
@@ -128,7 +128,7 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 				}) as any
 		);
 
-		const store = setupStore();
+		const { store } = setupStore();
 		store.dispatch(selectServerSuccess({ server: SERVER_A, version: '7.0.0', name: 'A' }));
 
 		store.dispatch(loginSuccess(USER_B));
@@ -150,7 +150,7 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 	it('persists the credentials when no switch interrupts the bootstrap', async () => {
 		jest.mocked(getPermissions).mockResolvedValue(undefined as any);
 
-		const store = setupStore();
+		const { store } = setupStore();
 		store.dispatch(selectServerSuccess({ server: SERVER_A, version: '7.0.0', name: 'A' }));
 
 		store.dispatch(loginSuccess(USER_B));

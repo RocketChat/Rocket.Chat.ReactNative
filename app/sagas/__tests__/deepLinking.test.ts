@@ -113,7 +113,7 @@ import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../.
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const setupStore = () => createRecordingStore(deepLinkingRoot).store;
+const setupStore = () => createRecordingStore(deepLinkingRoot);
 
 afterEach(cancelSagaTasks);
 
@@ -188,7 +188,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * once, sequenced after the APP.START dispatch.
 	 */
 	it('calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -229,7 +229,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * Then dispatch APP.START(ROOT_INSIDE). Flush. Assert goRoom called once.
 	 */
 	it('goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -261,7 +261,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * before flushing, so the reducer updates the root before the saga's select runs.
 	 */
 	it('skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -290,7 +290,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * called once.
 	 */
 	it('APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -325,7 +325,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 	 * the take, takeLatest has not been retriggered).
 	 */
 	it('a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 		const params = makeParamsWithToken();
 
 		store.dispatch(deepLinkingOpen(params));
@@ -401,7 +401,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 	 * (not SELECT_SUCCESS) when the server is already connected.
 	 */
 	it('calls goRoom after LOGIN.SUCCESS + APP.START(ROOT_INSIDE) without needing SERVER.SELECT_SUCCESS', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
 		// Two flushes drain the getServerById and getServerInfo promise microtasks.
@@ -434,7 +434,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 	it('does not emit NewServer when the SDK is already connected to the deeplink host', async () => {
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 
-		const store = setupStore();
+		const { store } = setupStore();
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
 		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
@@ -486,7 +486,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 	});
 
 	it('navigates to the call room once after SELECT_SUCCESS and LOGIN.SUCCESS', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingClickCallPush(makeCallParams()));
 		await flushSagaMicrotasks();
@@ -517,7 +517,7 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 
 	it('calls loginOAuthOrSso with the oauth credentials on a fresh token', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-fresh-A', credentialSecret: 'secret-A' } as any));
 		await flushSagaMicrotasks();
@@ -530,7 +530,7 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 
 	it('does not call loginOAuthOrSso when the credentialSecret is missing', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-no-secret-D' } as any));
 		await flushSagaMicrotasks();
@@ -540,7 +540,7 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 
 	it('does not call loginOAuthOrSso a second time for the same credentialToken', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
 		await flushSagaMicrotasks();
@@ -555,7 +555,7 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 	});
 
 	it('calls loginOAuthOrSso again for a different credentialToken after a previous one was consumed', async () => {
-		const store = setupStore();
+		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-first-C', credentialSecret: 'secret-C' } as any));
 		await flushSagaMicrotasks();
