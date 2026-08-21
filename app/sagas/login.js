@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { selectServerRequest, serverFinishAdd, serverInitAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -369,7 +369,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	}
 };
 
-const handleLogout = function* handleLogout({ forcedByServer, message }) {
+const findLoggedInServer = function* findLoggedInServer() {
+	const serversCollection = database.servers.get('servers');
+	const servers = yield serversCollection.query().fetch();
+	return servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
+};
+
+export const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
@@ -379,6 +385,10 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
+				const loggedInServer = yield call(findLoggedInServer);
+				if (loggedInServer) {
+					yield put(serverInitAdd(loggedInServer.id));
+				}
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				if (message) {
 					showErrorAlert(I18n.t(message), I18n.t('Oops'));
