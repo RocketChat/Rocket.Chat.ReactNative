@@ -92,16 +92,12 @@ jest.mock('../../lib/methods/helpers', () => ({
 
 // ─── Real imports (after mocks) ───────────────────────────────────────────────
 
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-
 import { deepLinkingOpen, deepLinkingClickCallPush } from '../../actions/deepLinking';
 import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
 import { APP, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
-import reducers from '../../reducers';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
@@ -113,23 +109,12 @@ import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
 import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { createRecordingStore } from '../../lib/testUtils/sagaStore';
+import { createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Drains pending saga microtasks so all synchronous saga steps complete. */
-async function flushSagaMicrotasks(): Promise<void> {
-	await Promise.resolve();
-	await Promise.resolve();
-}
-
-type PreloadedState = Parameters<typeof createStore>[1];
-
-function setupStore(preloadedState?: PreloadedState) {
-	const sagaMiddleware = createSagaMiddleware();
-	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
-	sagaMiddleware.run(deepLinkingRoot);
-	return store;
+function setupStore(preloadedState?: Parameters<typeof createRecordingStore>[1]) {
+	return createRecordingStore(deepLinkingRoot, preloadedState).store;
 }
 
 // ─── Factories ────────────────────────────────────────────────────────────────

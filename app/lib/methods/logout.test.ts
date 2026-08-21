@@ -46,7 +46,7 @@ const serverKeys = (server: string) => [
 	`${server}-${E2E_RANDOM_PASSWORD_KEY}`
 ];
 
-const allKeys = [
+const keysToClear = [
 	...serverKeys(SERVER),
 	...serverKeys(OTHER_SERVER),
 	`${TOKEN_KEY}-${SERVER}`,
@@ -72,7 +72,7 @@ function seedServersDBWithServer() {
 describe('removeServerData', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		allKeys.forEach(key => UserPreferences.removeItem(key));
+		keysToClear.forEach(key => UserPreferences.removeItem(key));
 		seedServersDBWithServer();
 	});
 

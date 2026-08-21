@@ -80,7 +80,17 @@ const SERVER_URL = 'https://new.rocket.chat';
 const USER_ID = 'user-new';
 const TOKEN = 'token-new';
 
-const setupStore = () => createRecordingStore(selectServerRoot);
+const runningTasks: { cancel: () => void }[] = [];
+
+function setupStore() {
+	const { store, dispatched, task } = createRecordingStore(selectServerRoot);
+	runningTasks.push(task);
+	return { store, dispatched };
+}
+
+afterEach(() => {
+	runningTasks.splice(0).forEach(task => task.cancel());
+});
 
 const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
 
