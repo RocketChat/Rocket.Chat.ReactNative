@@ -74,6 +74,7 @@ import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { connect } from '../../lib/services/connect';
 import { getServerById } from '../../lib/database/services/Server';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
 const OLD_SERVER = 'https://old.rocket.chat';
 const SERVER_URL = 'https://new.rocket.chat';
@@ -82,7 +83,7 @@ const TOKEN = 'token-new';
 
 const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
 
-const setupStore = () => createRecordingStore(selectServerRoot);
+const setupStore = (): RecordingStore => createRecordingStore(selectServerRoot);
 
 afterEach(cancelSagaTasks);
 

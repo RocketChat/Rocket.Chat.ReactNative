@@ -110,8 +110,9 @@ import sdk from '../../lib/services/sdk';
 import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
-const setupStore = () => createRecordingStore(deepLinkingRoot);
+const setupStore = (): RecordingStore => createRecordingStore(deepLinkingRoot);
 
 afterEach(cancelSagaTasks);
 

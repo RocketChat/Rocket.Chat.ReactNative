@@ -102,8 +102,9 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import { getPermissions } from '../../lib/methods/getPermissions';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
-const setupStore = () => createRecordingStore(loginRoot);
+const setupStore = (): RecordingStore => createRecordingStore(loginRoot);
 
 afterEach(cancelSagaTasks);
 

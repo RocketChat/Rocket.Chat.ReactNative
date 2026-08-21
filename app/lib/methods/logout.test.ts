@@ -46,10 +46,10 @@ const OTHER_SERVER = 'https://b.rocket.chat';
 const USER_ID = 'user-a';
 const OTHER_USER_ID = 'user-b';
 
-const tokenKey = (suffix: string) => `${TOKEN_KEY}-${suffix}`;
-const certificateKey = (server: string) => `${CERTIFICATE_KEY}-${server}`;
+const tokenKey = (suffix: string): string => `${TOKEN_KEY}-${suffix}`;
+const certificateKey = (server: string): string => `${CERTIFICATE_KEY}-${server}`;
 
-const serverKeys = (server: string) => [
+const serverKeys = (server: string): string[] => [
 	`${BASIC_AUTH_KEY}-${server}`,
 	`${server}-${E2E_PUBLIC_KEY}`,
 	`${server}-${E2E_PRIVATE_KEY}`,
@@ -67,7 +67,7 @@ const keysToClear = [
 	CURRENT_SERVER
 ];
 
-function seedServer(server: string, userId?: string) {
+function seedServer(server: string, userId?: string): void {
 	if (userId) {
 		UserPreferences.setString(tokenKey(server), userId);
 		UserPreferences.setString(tokenKey(userId), `token-${userId}`);
@@ -75,7 +75,7 @@ function seedServer(server: string, userId?: string) {
 	serverKeys(server).forEach(key => UserPreferences.setString(key, `value-for-${key}`));
 }
 
-function mockDestroyableServerRecord() {
+function mockDestroyableServerRecord(): void {
 	const serverRecord = { prepareDestroyPermanently: jest.fn(() => ({})) };
 	jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.resolve(serverRecord)) } as any);
 }

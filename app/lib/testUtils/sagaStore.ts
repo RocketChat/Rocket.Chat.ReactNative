@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
-import type { AnyAction } from 'redux';
+import type { AnyAction, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import type { Saga, Task } from 'redux-saga';
 
@@ -19,7 +19,12 @@ export function cancelSagaTasks(): void {
 	runningTasks.splice(0).forEach(task => task.cancel());
 }
 
-export function createRecordingStore(rootSaga: Saga) {
+export interface RecordingStore {
+	store: Store;
+	dispatchedActions: AnyAction[];
+}
+
+export function createRecordingStore(rootSaga: Saga): RecordingStore {
 	const dispatchedActions: AnyAction[] = [];
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(
