@@ -49,8 +49,8 @@ describe('subscribeRooms host guard', () => {
 		mockedSdk.host = null;
 	});
 
-	it('does not open the stream when there is no client', async () => {
-		expect(subscribeRooms()).toBeNull();
+	it('does not open the stream when there is no client', () => {
+		subscribeRooms();
 
 		expect(mockedSdk.onStreamData).not.toHaveBeenCalled();
 		expect(mockedSdk.subscribeNotifyUser).not.toHaveBeenCalled();
@@ -58,7 +58,7 @@ describe('subscribeRooms host guard', () => {
 
 	it('drops a frame that arrives after the client is gone', async () => {
 		mockedSdk.host = HOST;
-		await subscribeRooms();
+		subscribeRooms();
 
 		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
 		mockedSdk.host = null;
