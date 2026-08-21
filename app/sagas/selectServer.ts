@@ -219,7 +219,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	} catch (e) {
 		yield put(selectServerFailure());
 		const currentRoot = yield* appSelector(state => state.app.root);
-		if (currentRoot === RootEnum.ROOT_LOADING || currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		if (currentRoot !== RootEnum.ROOT_INSIDE && currentRoot !== RootEnum.ROOT_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 		log(e);

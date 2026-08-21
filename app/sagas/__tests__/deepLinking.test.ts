@@ -603,8 +603,6 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 	});
 });
 
-// ─── handleShareExtension — every exit must land on a user-facing root ──────────
-
 describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 	beforeEach(() => {
 		jest.mocked(UserPreferences.getString).mockReset();

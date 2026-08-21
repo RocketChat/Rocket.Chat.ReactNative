@@ -1,5 +1,3 @@
-// ─── Boundary mocks — must appear before any import that triggers the module ───
-
 jest.mock('../../lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
@@ -40,8 +38,6 @@ jest.mock('../../lib/database', () => ({
 		}
 	}
 }));
-
-// ─── Real imports (after mocks) ───────────────────────────────────────────────
 
 import RNBootSplash from 'react-native-bootsplash';
 
