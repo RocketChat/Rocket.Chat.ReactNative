@@ -19,14 +19,8 @@ function bootMiddleware() {
 	const createStore = jest.fn(() => ({ dispatch }));
 	applyAppStateMiddleware()(createStore)();
 	const [, notifyAppState] = (AppState.addEventListener as jest.Mock).mock.calls[0];
-	return { dispatch, notifyAppState };
-}
-
-function bootMiddlewareFromUnknownState() {
-	const booted = bootMiddleware();
 	jest.runOnlyPendingTimers();
-	expect(dispatchedTypes(booted.dispatch)).toEqual([]);
-	return booted;
+	return { dispatch, notifyAppState };
 }
 
 function dispatchedTypes(dispatch: jest.Mock) {
@@ -46,15 +40,20 @@ describe('appStateMiddleware', () => {
 
 	it('reports the state the app booted into', () => {
 		AppState.currentState = 'active';
-		const { dispatch } = bootMiddleware();
 
-		jest.runOnlyPendingTimers();
+		const { dispatch } = bootMiddleware();
 
 		expect(dispatchedTypes(dispatch)).toEqual([APP_STATE.FOREGROUND]);
 	});
 
+	it('stays quiet when the app boots into a state the OS cannot name', () => {
+		const { dispatch } = bootMiddleware();
+
+		expect(dispatchedTypes(dispatch)).toEqual([]);
+	});
+
 	it('tells the app it came to the foreground', () => {
-		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
+		const { dispatch, notifyAppState } = bootMiddleware();
 
 		notifyAppState('active');
 
@@ -62,7 +61,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('tells the app it went to the background', () => {
-		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
+		const { dispatch, notifyAppState } = bootMiddleware();
 
 		notifyAppState('background');
 
@@ -70,7 +69,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('keeps the foreground state through a temporary interruption', () => {
-		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
+		const { dispatch, notifyAppState } = bootMiddleware();
 
 		notifyAppState('active');
 		notifyAppState('inactive');
@@ -80,7 +79,7 @@ describe('appStateMiddleware', () => {
 	});
 
 	it('does not repeat the state already in effect', () => {
-		const { dispatch, notifyAppState } = bootMiddlewareFromUnknownState();
+		const { dispatch, notifyAppState } = bootMiddleware();
 
 		notifyAppState('background');
 		notifyAppState('background');
