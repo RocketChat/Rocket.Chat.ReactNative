@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { selectServerRequest, serverFinishAdd, serverInitAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -369,6 +369,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	}
 };
 
+const findLoggedInServer = function* findLoggedInServer() {
+	const serversCollection = database.servers.get('servers');
+	const servers = yield serversCollection.query().fetch();
+	return servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
+};
+
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
@@ -377,8 +383,13 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 		try {
 			yield call(logoutCall, { server });
 
+			const loggedInServer = yield call(findLoggedInServer);
+
 			// if the user was logged out by the server
 			if (forcedByServer) {
+				if (loggedInServer) {
+					yield put(serverInitAdd(loggedInServer.id));
+				}
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				if (message) {
 					showErrorAlert(I18n.t(message), I18n.t('Oops'));
@@ -386,23 +397,10 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			} else {
-				const serversDB = database.servers;
-				// all servers
-				const serversCollection = serversDB.get('servers');
-				const servers = yield serversCollection.query().fetch();
-
-				// see if there're other logged in servers and selects first one
-				if (servers.length > 0) {
-					for (let i = 0; i < servers.length; i += 1) {
-						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-						if (token) {
-							yield put(selectServerRequest(newServer, newServer.version));
-							return;
-						}
-					}
+				if (loggedInServer) {
+					yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+					return;
 				}
-				// if there's no servers, go outside
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			}
 		} catch (e) {
@@ -453,23 +451,11 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 		try {
 			yield call(removeServerData, { server });
 			yield call(removeServerDatabase, { server });
-			const serversDB = database.servers;
-			// all servers
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			const loggedInServer = yield call(findLoggedInServer);
+			if (loggedInServer) {
+				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+				return;
 			}
-			// if there's no servers, go outside
 			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {

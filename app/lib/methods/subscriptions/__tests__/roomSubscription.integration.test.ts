@@ -83,7 +83,6 @@ import {
 import type { IMockCollection, MockConnection } from '../../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const database = require('../../../database').default as {
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
 };
