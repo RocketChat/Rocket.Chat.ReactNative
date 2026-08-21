@@ -21,40 +21,40 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
+const serverToRestore = function* serverToRestore(server, userId) {
+	if (!server) {
+		return null;
+	}
+
+	if (!userId) {
+		const serversDB = database.servers;
+		const serversCollection = serversDB.get('servers');
+		const servers = yield serversCollection.query().fetch();
+
+		return servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`)) || null;
+	}
+
+	yield localAuthenticate(server);
+	return yield getServerById(server);
+};
+
 const restore = function* restore() {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const restoredServer = yield* serverToRestore(server, userId);
 
-		if (!server) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else if (!userId) {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			const loggedInServer = servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
-			if (loggedInServer) {
-				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
-			} else {
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			}
+		if (restoredServer) {
+			yield put(selectServerRequest(restoredServer.id, restoredServer.version));
 		} else {
-			yield localAuthenticate(server);
-			const serverRecord = yield getServerById(server);
-			if (!serverRecord) {
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			} else {
-				yield put(selectServerRequest(server, serverRecord.version));
-			}
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
 		yield put(appReady({}));
 		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
 		if (pushNotification) {
 			yield call(AsyncStorage.removeItem, 'pushNotification');
-			const root = yield select(state => state.app.root);
-			if (root !== RootEnum.ROOT_OUTSIDE) {
+			if (restoredServer) {
 				try {
 					yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
 				} catch (e) {

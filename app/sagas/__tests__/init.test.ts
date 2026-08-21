@@ -45,7 +45,7 @@ jest.mock('../../lib/database', () => ({
 
 import RNBootSplash from 'react-native-bootsplash';
 
-import { appInit } from '../../actions/app';
+import { appInit, appStart } from '../../actions/app';
 import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
@@ -139,6 +139,18 @@ describe('init saga — restore user-facing roots', () => {
 		expect(store.getState().server.server).toBe(HOST);
 		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_OUTSIDE);
 		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: DEEP_LINKING.OPEN_VIDEO_CONF }));
+	});
+
+	it('delivers the pending push notification even when the connect fails after the server is restored', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(appInit());
+		store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toContainEqual({ type: DEEP_LINKING.OPEN_VIDEO_CONF, params: { rid: 'room-1' } });
 	});
 
 	it('drops the pending push notification when the boot lands on ROOT_OUTSIDE', async () => {
