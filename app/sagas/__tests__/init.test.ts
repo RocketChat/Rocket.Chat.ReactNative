@@ -69,6 +69,7 @@ describe('init saga — restore user-facing roots', () => {
 		jest.mocked(RNBootSplash.hide).mockClear();
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
 		jest.mocked(AsyncStorage.removeItem).mockClear();
+		jest.mocked(database.servers.get).mockReset();
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
 
@@ -99,6 +100,20 @@ describe('init saga — restore user-facing roots', () => {
 
 	it('lands on ROOT_OUTSIDE when no server is stored at all', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(() => null);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().app.ready).toBe(true);
+	});
+
+	it('lands on ROOT_OUTSIDE when neither the stored server nor any other has a token', async () => {
+		jest.mocked(UserPreferences.getString).mockImplementation(key => (key.startsWith(`${TOKEN_KEY}-`) ? null : HOST));
+		jest.mocked(database.servers.get).mockReturnValue({
+			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
+		} as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());

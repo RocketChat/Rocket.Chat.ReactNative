@@ -21,17 +21,19 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
+const isLoggedIn = server => !!UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+
 const serverToRestore = function* serverToRestore(server) {
 	if (!server) {
 		return null;
 	}
 
-	if (!UserPreferences.getString(`${TOKEN_KEY}-${server}`)) {
+	if (!isLoggedIn(server)) {
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
 		const servers = yield serversCollection.query().fetch();
 
-		return servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`)) || null;
+		return servers.find(({ id }) => isLoggedIn(id)) || null;
 	}
 
 	yield localAuthenticate(server);
