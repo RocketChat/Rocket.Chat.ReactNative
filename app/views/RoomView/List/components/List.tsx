@@ -30,6 +30,32 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const { isAutocompleteVisible } = useRoomContext();
 	const { ts, viewabilityConfigCallbackPairs } = useFloatingDate();
 	const bubbleOpacity = useSharedValue(0);
+	const isBubbleFadingIn = useSharedValue(false);
+
+	const hideBubble = () => {
+		'worklet';
+
+		bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
+	};
+
+	const showBubble = () => {
+		'worklet';
+
+		if (isBubbleFadingIn.get()) {
+			return;
+		}
+		if (bubbleOpacity.get() === 1) {
+			hideBubble();
+			return;
+		}
+		isBubbleFadingIn.set(true);
+		bubbleOpacity.set(
+			withTiming(1, { duration: 150 }, () => {
+				isBubbleFadingIn.set(false);
+				hideBubble();
+			})
+		);
+	};
 
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
@@ -38,15 +64,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 			} else {
 				scheduleOnRN(setScrolledPastLimit, false);
 			}
-			bubbleOpacity.set(withTiming(1, { duration: 150 }));
-		},
-		// Same as web: keep the bubble around for a moment after the list settles, then fade it out.
-		// onEndDrag covers releases that don't produce momentum; onScroll re-shows it if momentum follows.
-		onEndDrag: () => {
-			bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
-		},
-		onMomentumEnd: () => {
-			bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
+			showBubble();
 		}
 	});
 
