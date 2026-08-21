@@ -278,16 +278,22 @@ describe('removePushToken', () => {
 		mockSdkInitialized = true;
 	});
 
-	it('deletes the token on the server', async () => {
-		const { removePushToken, getDeviceToken: getToken } = loadPushTokenApi();
-		getToken.mockReturnValue('fcm-token');
+	it('deletes the token on the server and forgets the registered tokens', async () => {
+		const { registerPushToken, removePushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+		await registerPushToken();
+		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 
 		await removePushToken();
+		expect(mockSdkDel).toHaveBeenCalledWith('push.token', { token: 'apns-token' });
 
-		expect(mockSdkDel).toHaveBeenCalledWith('push.token', { token: 'fcm-token' });
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
 	});
 
-	it('forgets the registered tokens even when the device token is already gone', async () => {
+	it('keeps the registered tokens when the device token is already gone', async () => {
 		const { registerPushToken, removePushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
@@ -301,7 +307,7 @@ describe('removePushToken', () => {
 		getToken.mockReturnValue('apns-token');
 		await registerPushToken();
 
-		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 	});
 
 	it('forgets the registered tokens even when there is no client to delete them from', async () => {
