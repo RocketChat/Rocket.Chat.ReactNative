@@ -49,7 +49,7 @@ jest.mock('react-native-device-info', () => {
 	};
 });
 
-function loadRegisterPushToken(platform: 'ios' | 'android' = 'android', mockServerVersion = '8.0.0') {
+function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVersion = '8.0.0') {
 	jest.resetModules();
 	Object.defineProperty(Platform, 'OS', { configurable: true, writable: true, value: platform });
 
@@ -137,7 +137,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('does not post when SDK is not initialized, and a later call after init posts', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 		mockSdkInitialized = false;
@@ -151,7 +151,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('returns early when there is no device push token', async () => {
-		const { registerPushToken, getDeviceToken: getToken } = loadRegisterPushToken();
+		const { registerPushToken, getDeviceToken: getToken } = loadPushTokenApi();
 		getToken.mockReturnValue('');
 
 		await registerPushToken();
@@ -160,7 +160,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on iOS registers apn payload without voipToken when VoIP token is missing', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('');
 
@@ -181,7 +181,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on Android still registers when VoIP token is missing', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('android');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('android');
 		getToken.mockReturnValue('fcm-token');
 		getVoip.mockReturnValue('');
 
@@ -202,7 +202,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('dedupes when the same push and VoIP tokens are registered again', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 
@@ -213,7 +213,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on iOS posts apn payload with voipToken when both tokens are present', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios', '8.4.0');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios', '8.4.0');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 
@@ -232,7 +232,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on RC < 8.0 does not send id field', async () => {
-		const { registerPushToken, getDeviceToken: getToken } = loadRegisterPushToken('ios', '7.5.0');
+		const { registerPushToken, getDeviceToken: getToken } = loadPushTokenApi('ios', '7.5.0');
 		getToken.mockReturnValue('apns-token');
 
 		await registerPushToken();
@@ -242,7 +242,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on RC < 8.0 does not send voipToken field even when present', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios', '7.5.0');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios', '7.5.0');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 
@@ -253,7 +253,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on RC 8.0-8.3 sends id but not voipToken', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios', '8.2.0');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios', '8.2.0');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 
@@ -279,7 +279,7 @@ describe('removePushToken', () => {
 	});
 
 	it('deletes the token on the server', async () => {
-		const { removePushToken, getDeviceToken: getToken } = loadRegisterPushToken();
+		const { removePushToken, getDeviceToken: getToken } = loadPushTokenApi();
 		getToken.mockReturnValue('fcm-token');
 
 		await removePushToken();
@@ -287,13 +287,25 @@ describe('removePushToken', () => {
 		expect(mockSdkDel).toHaveBeenCalledWith('push.token', { token: 'fcm-token' });
 	});
 
+	it('forgets the registered tokens even when the device token is already gone', async () => {
+		const { registerPushToken, removePushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+		await registerPushToken();
+		expect(mockSdkPost).toHaveBeenCalledTimes(1);
+
+		getToken.mockReturnValue('');
+		await removePushToken();
+		expect(mockSdkDel).not.toHaveBeenCalled();
+
+		getToken.mockReturnValue('apns-token');
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+	});
+
 	it('forgets the registered tokens even when there is no client to delete them from', async () => {
-		const {
-			registerPushToken,
-			removePushToken,
-			getDeviceToken: getToken,
-			getLastVoipToken: getVoip
-		} = loadRegisterPushToken('ios');
+		const { registerPushToken, removePushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 		await registerPushToken();

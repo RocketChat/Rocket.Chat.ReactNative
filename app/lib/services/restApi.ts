@@ -1176,13 +1176,10 @@ export const registerPushToken = async (): Promise<void> => {
 
 // TODO: add voip token removal
 export const removePushToken = async (): Promise<void> => {
-	const token = getDeviceToken();
-	if (!token) {
-		return;
-	}
 	lastToken = '';
 	lastVoipToken = '';
-	if (!sdk.isInitialized) {
+	const token = getDeviceToken();
+	if (!token || !sdk.isInitialized) {
 		return;
 	}
 	// RC 0.60.0
