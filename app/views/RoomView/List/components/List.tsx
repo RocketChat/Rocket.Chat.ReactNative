@@ -32,13 +32,13 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const bubbleOpacity = useSharedValue(0);
 	const isBubbleFadingIn = useSharedValue(false);
 
-	const hideBubble = () => {
+	const hideBubble = (): void => {
 		'worklet';
 
 		bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
 	};
 
-	const showBubble = () => {
+	const showBubble = (): void => {
 		'worklet';
 
 		if (isBubbleFadingIn.get()) {
@@ -50,7 +50,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 		}
 		isBubbleFadingIn.set(true);
 		bubbleOpacity.set(
-			withTiming(1, { duration: 150 }, () => {
+			withTiming(1, { duration: 150 }, (): void => {
 				isBubbleFadingIn.set(false);
 				hideBubble();
 			})
