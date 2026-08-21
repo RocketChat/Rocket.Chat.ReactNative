@@ -21,12 +21,12 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const serverToRestore = function* serverToRestore(server, userId) {
+const serverToRestore = function* serverToRestore(server) {
 	if (!server) {
 		return null;
 	}
 
-	if (!userId) {
+	if (!UserPreferences.getString(`${TOKEN_KEY}-${server}`)) {
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
 		const servers = yield serversCollection.query().fetch();
@@ -35,14 +35,13 @@ const serverToRestore = function* serverToRestore(server, userId) {
 	}
 
 	yield localAuthenticate(server);
-	return yield getServerById(server);
+	return (yield getServerById(server)) || null;
 };
 
 const restore = function* restore() {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
-		const restoredServer = yield* serverToRestore(server, userId);
+		const restoredServer = yield* serverToRestore(server);
 
 		if (restoredServer) {
 			yield put(selectServerRequest(restoredServer.id, restoredServer.version));

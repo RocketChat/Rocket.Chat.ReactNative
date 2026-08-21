@@ -97,6 +97,17 @@ describe('init saga — restore user-facing roots', () => {
 		expect(store.getState().app.ready).toBe(true);
 	});
 
+	it('lands on ROOT_OUTSIDE when no server is stored at all', async () => {
+		jest.mocked(UserPreferences.getString).mockImplementation(() => null);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().app.ready).toBe(true);
+	});
+
 	it('selects another logged in server with its own version when the stored server has no token', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(key => {
 			if (key === `${TOKEN_KEY}-${OTHER_HOST}`) return 'token';
@@ -141,7 +152,7 @@ describe('init saga — restore user-facing roots', () => {
 		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: DEEP_LINKING.OPEN_VIDEO_CONF }));
 	});
 
-	it('delivers the pending push notification even when the connect fails after the server is restored', async () => {
+	it('delivers the pending push notification even when the root has already moved outside', async () => {
 		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
 		const { store, dispatchedActions } = setupStore();
