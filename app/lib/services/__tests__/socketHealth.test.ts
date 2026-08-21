@@ -5,9 +5,7 @@ jest.mock('../sdk', () => ({
 	}
 }));
 
-import type { Driver } from '@rocket.chat/sdk/lib/drivers/driver';
-
-import sdk from '../sdk';
+import sdk, { type TDriver } from '../sdk';
 import { classifySocketHealth, recoverSocket } from '../socketHealth';
 
 const now = 1_000_000;
@@ -44,12 +42,12 @@ describe('classifySocketHealth', () => {
 
 	it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
 		const driver = makeDriver({ connected: true });
-		expect(classifySocketHealth(driver as unknown as Driver)).toBe('round-trip-check');
+		expect(classifySocketHealth(driver as unknown as TDriver)).toBe('round-trip-check');
 	});
 
 	it('returns reopen for a closed socket even when lastPing is fresh', () => {
 		const driver = makeDriver({ connected: false, lastPing: now });
-		expect(classifySocketHealth(driver as unknown as Driver)).toBe('reopen');
+		expect(classifySocketHealth(driver as unknown as TDriver)).toBe('reopen');
 	});
 });
 

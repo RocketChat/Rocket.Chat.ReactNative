@@ -1,5 +1,4 @@
 import { Q } from '@nozbe/watermelondb';
-import { type ISubscription } from '@rocket.chat/sdk/interfaces';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../actions/settings';
@@ -144,8 +143,8 @@ export async function setSettings(): Promise<void> {
 	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
-export function subscribeSettings(): Promise<ISubscription | undefined> {
-	return sdk.subscribe('stream-notify-all', 'public-settings-changed');
+export async function subscribeSettings(): Promise<void> {
+	await sdk.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
 type IData = ISettingsIcon | IPreparedSettings;

@@ -61,7 +61,6 @@ jest.mock('../../database', () => ({
 	}
 }));
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const database = require('../../database').default as {
 	setActiveDB: jest.Mock;
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
