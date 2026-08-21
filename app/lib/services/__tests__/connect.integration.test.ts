@@ -12,56 +12,14 @@ import { updateSettings } from '../../../actions/settings';
 import { updatePermission } from '../../../actions/permissions';
 import { _activeUsers, _setUserTimer } from '../../methods/setUser';
 import type { IApplicationState } from '../../../definitions';
-
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: (event?: { code?: number }) => void;
-}
-
-interface WireFrame {
-	msg: string;
-	id?: string;
-	name?: string;
-	method?: string;
-	params?: unknown[];
-}
-
-const mockConnections: MockConnection[] = [];
+import { flush, framesOn, mockConnections, resetConnections, type MockConnection } from './mockWebSocketClient';
 
 const DDP_LOGIN_RESULT = { id: 'user-id', token: 'auth-token' };
 
 jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string; method?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				} else if (message.msg === 'method' && message.method === 'login') {
-					setImmediate(() =>
-						connection.onmessage({ data: JSON.stringify({ msg: 'result', id: message.id, result: DDP_LOGIN_RESULT }) })
-					);
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
-	})
+	require('./mockWebSocketClient').createWebSocketClientMock((frame: { msg: string; id?: string; method?: string }) =>
+		frame.msg === 'method' && frame.method === 'login' ? { msg: 'result', id: frame.id, result: DDP_LOGIN_RESULT } : undefined
+	)
 );
 
 jest.mock('../voip/MediaSessionInstance', () => ({
@@ -148,19 +106,6 @@ function makeReduxStore() {
 	};
 }
 
-async function flush(turns = 10) {
-	for (let i = 0; i < turns; i++) {
-		await Promise.resolve();
-		await jest.advanceTimersByTimeAsync(0);
-	}
-}
-
-function framesOn(connection: MockConnection, msg: string) {
-	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
-		.filter(message => message.msg === msg);
-}
-
 function receiveFrame(connection: MockConnection, frame: Record<string, unknown>) {
 	connection.onmessage({ data: JSON.stringify(frame) });
 }
@@ -182,7 +127,7 @@ let collections: Record<string, ReturnType<typeof makeCollection>>;
 beforeEach(() => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
-	mockConnections.length = 0;
+	resetConnections();
 	collections = {};
 	redux = makeReduxStore();
 	initStore(redux.store);

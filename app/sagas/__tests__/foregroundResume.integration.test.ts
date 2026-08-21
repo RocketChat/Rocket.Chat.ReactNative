@@ -1,39 +1,21 @@
+jest.unmock('@rocket.chat/sdk');
+
 import { applyMiddleware, createStore, type AnyAction, type Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-jest.unmock('@rocket.chat/sdk');
+const USER_ID = 'user-id';
+const RESUME_TOKEN = 'token-abc';
 
 jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string; method?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				} else if (message.msg === 'unsub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'nosub', id: message.id }) }));
-				} else if (message.msg === 'method' && message.method === 'login') {
-					setImmediate(() =>
-						connection.onmessage({
-							data: JSON.stringify({ msg: 'result', id: message.id, result: { id: USER_ID, token: RESUME_TOKEN } })
-						})
-					);
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
-	})
+	require('../../lib/services/__tests__/mockWebSocketClient').createWebSocketClientMock(
+		(frame: { msg: string; id?: string; method?: string }) => {
+			if (frame.msg === 'unsub') return { msg: 'nosub', id: frame.id };
+			if (frame.msg === 'method' && frame.method === 'login') {
+				return { msg: 'result', id: frame.id, result: { id: USER_ID, token: RESUME_TOKEN } };
+			}
+			return undefined;
+		}
+	)
 );
 
 jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
@@ -59,10 +41,6 @@ jest.mock('../../lib/services/voip/MediaSessionInstance', () => ({
 
 jest.mock('../../lib/services/voip/MediaSessionStore', () => ({
 	mediaSessionStore: { getCurrentInstance: jest.fn(() => null) }
-}));
-
-jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
-	isInActiveVoipCall: jest.fn(() => false)
 }));
 
 jest.mock('../../lib/services/twoFactor', () => ({
@@ -102,14 +80,6 @@ jest.mock('../../lib/database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../../lib/database/services/Thread', () => ({
-	getThreadById: jest.fn()
-}));
-
-jest.mock('../../lib/database/services/ThreadMessage', () => ({
-	getThreadMessageById: jest.fn()
-}));
-
 jest.mock('../../lib/database', () => ({
 	__esModule: true,
 	default: {
@@ -126,6 +96,7 @@ jest.mock('../../lib/database', () => ({
 import RoomSubscription from '../../lib/methods/subscriptions/room';
 import databaseModule from '../../lib/database';
 import { connect } from '../../lib/services/connect';
+import sdk from '../../lib/services/sdk';
 import { loadMissedMessages } from '../../lib/methods/loadMissedMessages';
 import { initStore } from '../../lib/store/auxStore';
 import { APP_STATE } from '../../actions/actionsTypes';
@@ -137,62 +108,46 @@ import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';
-
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: (event?: { code?: number }) => void;
-}
-
-interface WireFrame {
-	msg: string;
-	id?: string;
-	name?: string;
-	params?: unknown[];
-}
-
-const mockConnections: MockConnection[] = [];
+import {
+	CLOSED,
+	flush,
+	framesOn,
+	latestConnection,
+	mockConnections,
+	resetConnections,
+	stopAnsweringFrames,
+	type MockConnection
+} from '../../lib/services/__tests__/mockWebSocketClient';
 
 const SERVER = 'https://open.rocket.chat';
-const USER_ID = 'user-id';
-const RESUME_TOKEN = 'token-abc';
 const ROOM_ID = 'room-rid';
 const RECOVERY_WINDOW = 5000;
+const LOGIN_REPLY_WINDOW = 100;
 
 const database = databaseModule as unknown as {
-	setActiveDB: jest.Mock;
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
 };
 
-async function flush(turns = 10) {
-	for (let i = 0; i < turns; i++) {
-		await Promise.resolve();
-		await jest.advanceTimersByTimeAsync(0);
-	}
+const ROOM_TOPICS = [
+	`stream-room-messages:${ROOM_ID}`,
+	`stream-notify-room:${ROOM_ID}/user-activity`,
+	`stream-notify-room:${ROOM_ID}/deleteMessage`,
+	`stream-notify-room:${ROOM_ID}/deleteMessageBulk`,
+	`stream-notify-room:${ROOM_ID}/messagesRead`
+];
+
+function topicsOn(connection: MockConnection) {
+	return framesOn(connection, 'sub').map(frame => `${frame.name}:${frame.params?.[0]}`);
 }
 
-function framesOn(connection: MockConnection, msg: string) {
-	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
-		.filter(message => message.msg === msg);
-}
-
-function stopAnsweringFrames(connection: MockConnection) {
-	connection.send.mockImplementation(() => undefined);
+function roomTopicsOn(connection: MockConnection) {
+	return topicsOn(connection).filter(topic => topic.includes(ROOM_ID));
 }
 
 function makeCollection(name: string) {
 	return {
 		name,
-		find: jest.fn(),
-		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })),
-		create: jest.fn(),
-		prepareCreate: jest.fn(),
-		schema: { columnArray: [] }
+		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
 	};
 }
 
@@ -216,7 +171,6 @@ function bootSignedInApp() {
 	initStore(store);
 	store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 	store.dispatch(selectServerSuccess({ server: SERVER, name: 'open.rocket.chat', version: '6.0.0' }));
-	return store;
 }
 
 async function openSignedInSocket() {
@@ -241,7 +195,7 @@ async function subscribeToRoom(rid: string) {
 beforeEach(() => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
-	mockConnections.length = 0;
+	resetConnections();
 	collections = {};
 	database.active.get.mockReset().mockImplementation((name: string) => (collections[name] ??= makeCollection(name)));
 	database.active.write.mockReset().mockImplementation((fn: () => unknown) => fn());
@@ -259,18 +213,18 @@ beforeEach(() => {
 });
 
 afterEach(async () => {
+	sdk.disconnect();
 	await flush();
 	jest.useRealTimers();
 });
 
-describe('coming back to a conversation after the phone was locked', () => {
+describe('foreground resume over the real SDK socket', () => {
 	it('gets messages flowing again when the socket died silently while away', async () => {
 		bootSignedInApp();
 		await openSignedInSocket();
 		await subscribeToRoom(ROOM_ID);
 		const frozen = mockConnections[0];
-		const subscribedTopics = framesOn(frozen, 'sub').map(frame => frame.name);
-		expect(subscribedTopics).toContain('stream-notify-logged');
+		expect(roomTopicsOn(frozen)).toEqual(expect.arrayContaining(ROOM_TOPICS));
 
 		stopAnsweringFrames(frozen);
 		const pingsBefore = framesOn(frozen, 'ping').length;
@@ -289,35 +243,38 @@ describe('coming back to a conversation after the phone was locked', () => {
 
 		reopened.onopen();
 		await flush();
+		await jest.advanceTimersByTimeAsync(LOGIN_REPLY_WINDOW);
 		await flush();
 
 		expect(dispatched).toContainEqual(connectSuccess());
 		expect(dispatched).toContainEqual(loginRequest({ resume: RESUME_TOKEN }, false));
 		expect(loadMissedMessages).toHaveBeenCalledWith({ rid: ROOM_ID });
-		expect(framesOn(reopened, 'sub').map(frame => frame.name)).toEqual(expect.arrayContaining(['stream-notify-logged']));
+		expect(roomTopicsOn(reopened)).toEqual(expect.arrayContaining(ROOM_TOPICS));
 	});
-});
 
-describe('coming back after the network dropped while the app was away', () => {
-	it('lands on a reconnected, still-signed-in app instead of forcing a relaunch', async () => {
+	it('lands on a reconnected, still-signed-in app instead of forcing a relaunch after the network dropped while away', async () => {
 		bootSignedInApp();
 		await openSignedInSocket();
 		const dropped = mockConnections[0];
 
-		dropped.readyState = 3;
+		dropped.readyState = CLOSED;
 		dropped.onclose({ code: 1006 });
 		await flush();
 		expect(dispatched).toContainEqual(disconnect());
 		dispatched.length = 0;
+
+		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
+		expect(mockConnections).toHaveLength(1);
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
 		await flush();
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(mockConnections.length).toBeGreaterThan(1);
-		const reopened = mockConnections[mockConnections.length - 1];
+		const reopened = latestConnection();
 
 		reopened.onopen();
+		expect(dispatched.map(action => action.type)).not.toContain(connectSuccess().type);
 		await flush();
 
 		const connectSuccessAt = dispatched.findIndex(action => action.type === connectSuccess().type);
@@ -328,10 +285,8 @@ describe('coming back after the network dropped while the app was away', () => {
 
 		expect(framesOn(reopened, 'connect').length).toBeGreaterThan(0);
 	});
-});
 
-describe('switching away and straight back to the app', () => {
-	it('keeps the live connection instead of paying for an avoidable reconnect', async () => {
+	it('keeps the live connection instead of paying for an avoidable reconnect when switching straight back', async () => {
 		bootSignedInApp();
 		await openSignedInSocket();
 		await subscribeToRoom(ROOM_ID);

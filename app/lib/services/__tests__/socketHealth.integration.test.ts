@@ -1,27 +1,20 @@
 import sdk from '../sdk';
 import { recoverSocket } from '../socketHealth';
+import {
+	CLOSED,
+	framesOn,
+	latestConnection,
+	mockConnections,
+	resetConnections,
+	stopAnsweringFrames
+} from './mockWebSocketClient';
+
+jest.mock('universal-websocket-client', () => require('./mockWebSocketClient').createWebSocketClientMock());
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Driver } = require('@rocket.chat/sdk/lib/drivers/driver') as {
 	Driver: new (options: { host: string; logger: unknown }) => SdkDriver;
 };
-
-interface MockConnection {
-	send: jest.Mock;
-	close: jest.Mock;
-	readyState: number;
-	onopen: () => void;
-	onmessage: (event: { data: string }) => void;
-	onerror: () => void;
-	onclose: () => void;
-}
-
-interface WireFrame {
-	msg: string;
-	id?: string;
-	name?: string;
-	params?: string[];
-}
 
 interface SdkDriver {
 	userId: string;
@@ -38,33 +31,6 @@ interface SdkDriver {
 	};
 }
 
-const mockConnections: MockConnection[] = [];
-
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const connection = {
-			send: jest.fn((data: string) => {
-				const message = JSON.parse(data) as { msg: string; id?: string };
-				if (message.msg === 'connect') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'session-id' }) }));
-				} else if (message.msg === 'ping') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'pong' }) }));
-				} else if (message.msg === 'sub') {
-					setImmediate(() => connection.onmessage({ data: JSON.stringify({ msg: 'ready', subs: [message.id] }) }));
-				}
-			}),
-			close: jest.fn(),
-			readyState: 1,
-			onopen: jest.fn(),
-			onmessage: jest.fn(),
-			onerror: jest.fn(),
-			onclose: jest.fn()
-		};
-		mockConnections.push(connection);
-		return connection;
-	})
-);
-
 jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: { current: undefined }
@@ -72,7 +38,6 @@ jest.mock('../sdk', () => ({
 
 const USER_ID = 'user-id';
 const PING_INTERVAL = 10000;
-const CLOSED = 3;
 
 const logger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
 
@@ -102,23 +67,13 @@ function backdateLastPing(driver: SdkDriver, ageMs: number) {
 	driver.ddp.lastPing = Date.now() - ageMs;
 }
 
-function stopAnsweringFrames(connection: MockConnection) {
-	connection.send.mockImplementation(() => undefined);
-}
-
-function framesOn(connection: MockConnection, msg: string) {
-	return connection.send.mock.calls
-		.map(([data]: [string]) => JSON.parse(data) as WireFrame)
-		.filter(message => message.msg === msg);
-}
-
 describe('recoverSocket against the real SDK socket', () => {
 	let driver: SdkDriver;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
-		mockConnections.length = 0;
+		resetConnections();
 		driver = await buildConnectedDriver();
 		(sdk as unknown as { current: { ddp: SdkDriver } }).current = { ddp: driver };
 	});
@@ -153,7 +108,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
+		latestConnection().onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -167,7 +122,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
 		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
+		latestConnection().onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -182,7 +137,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		expect(mockConnections).toHaveLength(2);
 		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
 
-		mockConnections[1].onopen();
+		latestConnection().onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -196,7 +151,7 @@ describe('recoverSocket against the real SDK socket', () => {
 
 		await jest.advanceTimersByTimeAsync(0);
 		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
+		latestConnection().onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await directReopen;
@@ -258,7 +213,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		expect(mockConnections).toHaveLength(2);
 		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
 
-		mockConnections[1].onopen();
+		latestConnection().onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
@@ -313,7 +268,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 
 		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
+		latestConnection().onopen();
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(first).resolves.toBe('reopened');

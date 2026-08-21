@@ -28,7 +28,7 @@ function dispatchedTypes(dispatch: jest.Mock) {
 	return dispatch.mock.calls.map(([action]) => action.type);
 }
 
-describe('app state changes', () => {
+describe('appStateMiddleware', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.clearAllMocks();
