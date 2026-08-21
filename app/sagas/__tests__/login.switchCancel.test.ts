@@ -118,10 +118,12 @@ async function flushSagaMicrotasks(): Promise<void> {
 
 type PreloadedState = Parameters<typeof createStore>[1];
 
+const runningTasks: { cancel: () => void }[] = [];
+
 function setupStore(preloadedState?: PreloadedState) {
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(reducers, preloadedState, applyMiddleware(sagaMiddleware));
-	sagaMiddleware.run(loginRoot);
+	runningTasks.push(sagaMiddleware.run(loginRoot));
 	return store;
 }
 
@@ -135,6 +137,10 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 		UserPreferences.removeItem(`${TOKEN_KEY}-${USER_B.id}`);
 		UserPreferences.removeItem(CURRENT_SERVER);
 		jest.clearAllMocks();
+	});
+
+	afterEach(() => {
+		runningTasks.splice(0).forEach(task => task.cancel());
 	});
 
 	it('does not persist the credentials when SELECT_REQUEST arrives before the token write', async () => {
