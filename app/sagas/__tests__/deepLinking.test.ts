@@ -216,7 +216,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		// Now dispatch APP.START(ROOT_INSIDE) — this satisfies the take.
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
@@ -247,7 +246,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		// Now release the saga by dispatching APP.START(ROOT_INSIDE)
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
@@ -275,7 +273,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		// so the select sees ROOT_INSIDE and skips the take.
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// goRoom should fire immediately — the take was skipped by the select short-circuit
@@ -312,7 +309,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		// Now dispatch correct root — satisfies the take
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
@@ -340,13 +336,11 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		// First APP.START(ROOT_INSIDE) — fires the take
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 
 		// Second APP.START(ROOT_INSIDE) — saga is done, no re-trigger
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// Still exactly once
@@ -402,10 +396,8 @@ describe('deepLinking saga — server already connected, should skip changing se
 		const { store } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
-		// Two flushes drain the getServerById and getServerInfo promise microtasks.
 		// No jest.advanceTimersByTimeAsync needed — delay(1000) is skipped when
 		// hostAlreadyConnected is true.
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		// Saga must be parked at take(LOGIN.SUCCESS), not take(SERVER.SELECT_SUCCESS)
@@ -418,7 +410,6 @@ describe('deepLinking saga — server already connected, should skip changing se
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
@@ -435,14 +426,12 @@ describe('deepLinking saga — server already connected, should skip changing se
 		const { store } = setupStore();
 		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
 
 		// Complete the flow to confirm the saga finishes correctly
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
@@ -498,7 +487,6 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
@@ -519,7 +507,6 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-fresh-A', credentialSecret: 'secret-A' } as any));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledWith({
@@ -532,7 +519,6 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-no-secret-D' } as any));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).not.toHaveBeenCalled();
 	});
@@ -542,11 +528,9 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		// Second dispatch with the identical token — guard must suppress it.
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
@@ -557,11 +541,9 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-first-C', credentialSecret: 'secret-C' } as any));
 		await flushSagaMicrotasks();
-		await flushSagaMicrotasks();
 
 		// A distinct token must not be blocked by the guard.
 		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-second-C', credentialSecret: 'secret-C2' } as any));
-		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(2);
@@ -596,7 +578,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 
 	it('starts the outside stack, seeds the previous server, then emits NewServer for the host', async () => {
 		const emit = jest.spyOn(EventEmitter, 'emit').mockImplementation(() => {});
-		const { store, dispatched } = createRecordingStore(deepLinkingRoot);
+		const { store, dispatched } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParams() as any));
 		await flushSagaMicrotasks();

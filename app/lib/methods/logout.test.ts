@@ -75,7 +75,7 @@ function seedServer(server: string, userId?: string) {
 	serverKeys(server).forEach(key => UserPreferences.setString(key, `value-for-${key}`));
 }
 
-function mockServersDBFind() {
+function mockDestroyableServerRecord() {
 	const serverRecord = { prepareDestroyPermanently: jest.fn(() => ({})) };
 	jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.resolve(serverRecord)) } as any);
 }
@@ -84,7 +84,7 @@ describe('removeServerData', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		keysToClear.forEach(key => UserPreferences.removeItem(key));
-		mockServersDBFind();
+		mockDestroyableServerRecord();
 	});
 
 	it('clears every per-server key for the removed server', async () => {

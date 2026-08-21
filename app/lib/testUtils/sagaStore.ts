@@ -7,8 +7,6 @@ import reducers from '../../reducers';
 
 const MICROTASK_DRAIN_PASSES = 20;
 
-export type PreloadedState = Parameters<typeof createStore>[1];
-
 export async function flushSagaMicrotasks(): Promise<void> {
 	for (let i = 0; i < MICROTASK_DRAIN_PASSES; i += 1) {
 		await Promise.resolve();
@@ -21,12 +19,11 @@ export function cancelSagaTasks(): void {
 	runningTasks.splice(0).forEach(task => task.cancel());
 }
 
-export function createRecordingStore(rootSaga: Saga, preloadedState?: PreloadedState) {
+export function createRecordingStore(rootSaga: Saga) {
 	const dispatched: AnyAction[] = [];
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(
 		reducers,
-		preloadedState,
 		applyMiddleware(
 			() => next => action => {
 				dispatched.push(action);
