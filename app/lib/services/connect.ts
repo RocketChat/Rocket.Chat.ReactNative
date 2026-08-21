@@ -301,7 +301,7 @@ function stopListener(listener: any): void {
 }
 
 async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
-	if (!sdk.isInitialized) {
+	if (!sdk.hasClient) {
 		throw new Error('Cannot login without an active connection');
 	}
 	// RC 0.64.0
@@ -412,7 +412,7 @@ async function loginOAuthOrSso(params: ILoginCredentials) {
 }
 
 function abort() {
-	if (sdk.isInitialized) {
+	if (sdk.hasClient) {
 		return sdk.abort();
 	}
 }

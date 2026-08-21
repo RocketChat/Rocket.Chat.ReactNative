@@ -69,7 +69,7 @@ export interface IMockSdk {
 	setClient(client: IMockSdkClient | null): void;
 	readonly host: string | null;
 	readonly driver: unknown;
-	readonly isInitialized: boolean;
+	readonly hasClient: boolean;
 }
 
 export function makeSdkMock(): IMockSdk {
@@ -84,7 +84,7 @@ export function makeSdkMock(): IMockSdk {
 		get driver() {
 			return client?.driver ?? null;
 		},
-		get isInitialized() {
+		get hasClient() {
 			return client !== null;
 		}
 	};

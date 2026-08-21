@@ -6,7 +6,7 @@ import { mediaCallsStateSignals } from './restApi';
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
-let mockSdkInitialized = true;
+let mockSdkHasClient = true;
 
 jest.mock('./sdk', () => ({
 	__esModule: true,
@@ -14,8 +14,8 @@ jest.mock('./sdk', () => ({
 		get: (...args: unknown[]) => mockSdkGet(...args),
 		post: (...args: unknown[]) => mockSdkPost(...args),
 		del: (...args: unknown[]) => mockSdkDel(...args),
-		get isInitialized() {
-			return mockSdkInitialized;
+		get hasClient() {
+			return mockSdkHasClient;
 		}
 	}
 }));
@@ -133,19 +133,19 @@ describe('registerPushToken', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockSdkPost.mockResolvedValue(undefined);
-		mockSdkInitialized = true;
+		mockSdkHasClient = true;
 	});
 
 	it('does not post when SDK is not initialized, and a later call after init posts', async () => {
 		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
-		mockSdkInitialized = false;
+		mockSdkHasClient = false;
 
 		await registerPushToken();
 		expect(mockSdkPost).not.toHaveBeenCalled();
 
-		mockSdkInitialized = true;
+		mockSdkHasClient = true;
 		await registerPushToken();
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 	});
@@ -275,7 +275,7 @@ describe('removePushToken', () => {
 		jest.clearAllMocks();
 		mockSdkPost.mockResolvedValue(undefined);
 		mockSdkDel.mockResolvedValue({ success: true });
-		mockSdkInitialized = true;
+		mockSdkHasClient = true;
 	});
 
 	it('deletes the token on the server and forgets the registered tokens', async () => {
@@ -317,11 +317,11 @@ describe('removePushToken', () => {
 		await registerPushToken();
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 
-		mockSdkInitialized = false;
+		mockSdkHasClient = false;
 		await removePushToken();
 		expect(mockSdkDel).not.toHaveBeenCalled();
 
-		mockSdkInitialized = true;
+		mockSdkHasClient = true;
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(2);

@@ -57,7 +57,7 @@ class Sdk {
 		return this.sdk?.driver ?? null;
 	}
 
-	get isInitialized(): boolean {
+	get hasClient(): boolean {
 		return this.sdk !== null;
 	}
 

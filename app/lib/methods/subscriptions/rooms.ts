@@ -436,7 +436,7 @@ export default function subscribeRooms() {
 		roomsSubscription = null;
 	};
 
-	if (!sdk.isInitialized) {
+	if (!sdk.hasClient) {
 		return null;
 	}
 

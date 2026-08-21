@@ -31,7 +31,7 @@ jest.mock('../services/restApi', () => ({
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
 	default: {
-		isInitialized: false,
+		hasClient: false,
 		logout: jest.fn()
 	}
 }));
@@ -56,7 +56,7 @@ const OTHER_SERVER = 'https://b.rocket.chat';
 const USER_ID = 'user-a';
 const OTHER_USER_ID = 'user-b';
 
-const mockedSdk = sdk as unknown as { isInitialized: boolean; logout: jest.Mock };
+const mockedSdk = sdk as unknown as { hasClient: boolean; logout: jest.Mock };
 
 const tokenKey = (suffix: string): string => `${TOKEN_KEY}-${suffix}`;
 const certificateKey = (server: string): string => `${CERTIFICATE_KEY}-${server}`;
@@ -154,7 +154,7 @@ describe('logout', () => {
 		jest.clearAllMocks();
 		keysToClear.forEach(key => UserPreferences.removeItem(key));
 		mockDestroyableServerRecord();
-		mockedSdk.isInitialized = false;
+		mockedSdk.hasClient = false;
 	});
 
 	it('skips the server-side logout when there is no client', async () => {
@@ -179,7 +179,7 @@ describe('logout', () => {
 
 	it('calls the server-side logout when a client exists', async () => {
 		seedServer(SERVER, USER_ID);
-		mockedSdk.isInitialized = true;
+		mockedSdk.hasClient = true;
 
 		await logout({ server: SERVER });
 

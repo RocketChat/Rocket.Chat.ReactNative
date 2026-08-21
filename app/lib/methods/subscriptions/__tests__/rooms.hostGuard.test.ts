@@ -2,7 +2,7 @@ jest.mock('../../../services/sdk', () => ({
 	__esModule: true,
 	default: {
 		host: null,
-		isInitialized: false,
+		hasClient: false,
 		onStreamData: jest.fn(async () => ({ stop: jest.fn() })),
 		subscribeNotifyUser: jest.fn(async () => undefined)
 	}
@@ -26,7 +26,7 @@ import type { IDDPMessage } from '../../../../definitions/IDDPMessage';
 
 const mockedSdk = sdk as unknown as {
 	host: string | null;
-	isInitialized: boolean;
+	hasClient: boolean;
 	onStreamData: jest.Mock;
 	subscribeNotifyUser: jest.Mock;
 };
@@ -49,7 +49,7 @@ describe('subscribeRooms host guard', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedSdk.host = null;
-		mockedSdk.isInitialized = false;
+		mockedSdk.hasClient = false;
 	});
 
 	it('does not open the stream when there is no client', () => {
@@ -61,7 +61,7 @@ describe('subscribeRooms host guard', () => {
 
 	it('drops a frame that arrives after the client is gone', async () => {
 		mockedSdk.host = HOST;
-		mockedSdk.isInitialized = true;
+		mockedSdk.hasClient = true;
 		subscribeRooms();
 
 		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
@@ -73,7 +73,7 @@ describe('subscribeRooms host guard', () => {
 
 	it('processes a frame whose host matches the subscribed server', async () => {
 		mockedSdk.host = HOST;
-		mockedSdk.isInitialized = true;
+		mockedSdk.hasClient = true;
 		subscribeRooms();
 
 		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
