@@ -20,13 +20,13 @@ export function cancelSagaTasks(): void {
 }
 
 export function createRecordingStore(rootSaga: Saga) {
-	const dispatched: AnyAction[] = [];
+	const dispatchedActions: AnyAction[] = [];
 	const sagaMiddleware = createSagaMiddleware();
 	const store = createStore(
 		reducers,
 		applyMiddleware(
 			() => next => action => {
-				dispatched.push(action);
+				dispatchedActions.push(action);
 				return next(action);
 			},
 			sagaMiddleware
@@ -34,5 +34,5 @@ export function createRecordingStore(rootSaga: Saga) {
 	);
 	const task: Task = sagaMiddleware.run(rootSaga);
 	runningTasks.push(task);
-	return { store, dispatched };
+	return { store, dispatchedActions };
 }

@@ -208,7 +208,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
-		// Saga has dispatched appReady and selected state.app.root.
+		// Saga has dispatchedActions appReady and selected state.app.root.
 		// Root is NOT yet ROOT_INSIDE (reducer hasn't seen ROOT_INSIDE yet),
 		// so saga is waiting for APP.START(ROOT_INSIDE).
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
@@ -578,17 +578,19 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 
 	it('starts the outside stack, seeds the previous server, then emits NewServer for the host', async () => {
 		const emit = jest.spyOn(EventEmitter, 'emit').mockImplementation(() => {});
-		const { store, dispatched } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 
 		store.dispatch(deepLinkingOpen(makeParams() as any));
 		await flushSagaMicrotasks();
 
-		const outsideIndex = dispatched.findIndex(action => action.type === APP.START && action.root === RootEnum.ROOT_OUTSIDE);
-		const initAddIndex = dispatched.findIndex(action => action.type === SERVER.INIT_ADD);
+		const outsideIndex = dispatchedActions.findIndex(
+			action => action.type === APP.START && action.root === RootEnum.ROOT_OUTSIDE
+		);
+		const initAddIndex = dispatchedActions.findIndex(action => action.type === SERVER.INIT_ADD);
 
 		expect(outsideIndex).toBeGreaterThanOrEqual(0);
 		expect(initAddIndex).toBeGreaterThan(outsideIndex);
-		expect(dispatched[initAddIndex].previousServer).toBe(PREVIOUS_SERVER);
+		expect(dispatchedActions[initAddIndex].previousServer).toBe(PREVIOUS_SERVER);
 		expect(emit).not.toHaveBeenCalledWith('NewServer', { server: HOST });
 
 		jest.advanceTimersByTime(1000);

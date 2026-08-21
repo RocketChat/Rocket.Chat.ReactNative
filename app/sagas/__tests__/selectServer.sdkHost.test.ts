@@ -58,13 +58,13 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 		sdk.initialize(HOST);
 		expect(sdk.current.client.host).toBe(HOST);
 
-		const { store, dispatched } = createRecordingStore(selectServerRoot);
+		const { store, dispatchedActions } = createRecordingStore(selectServerRoot);
 
 		store.dispatch(selectServerRequest(HOST, '7.0.0', false));
 		await flushSagaMicrotasks();
 
-		const insideIndex = dispatched.findIndex(action => action.type === APP.START && action.root === RootEnum.ROOT_INSIDE);
-		const cancelIndex = dispatched.findIndex(action => action.type === SERVER.SELECT_CANCEL);
+		const insideIndex = dispatchedActions.findIndex(action => action.type === APP.START && action.root === RootEnum.ROOT_INSIDE);
+		const cancelIndex = dispatchedActions.findIndex(action => action.type === SERVER.SELECT_CANCEL);
 
 		expect(insideIndex).toBeGreaterThanOrEqual(0);
 		expect(cancelIndex).toBeGreaterThan(insideIndex);

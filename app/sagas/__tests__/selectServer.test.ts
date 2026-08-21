@@ -98,12 +98,12 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN, username: 'new' } as any);
 
-		const { store, dispatched } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
 		await flushSagaMicrotasks();
 
 		expect(store.getState().login.user).toMatchObject({ id: USER_ID, token: TOKEN });
-		expect(dispatched.map(action => action.type)).not.toContain(SERVER.SELECT_FAILURE);
+		expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.SELECT_FAILURE);
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_URL);
 	});
 
@@ -134,11 +134,11 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
 		jest.mocked(getLoggedUserById).mockRejectedValue(new Error('database unavailable'));
 
-		const { store, dispatched } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
 		await flushSagaMicrotasks();
 
-		expect(dispatched.map(action => action.type)).toContain(SERVER.SELECT_FAILURE);
+		expect(dispatchedActions.map(action => action.type)).toContain(SERVER.SELECT_FAILURE);
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(OLD_SERVER);
 		expect(connect).not.toHaveBeenCalled();
 	});
@@ -165,11 +165,11 @@ describe('selectServer saga — version and name fallback', () => {
 	});
 
 	it('reports the caller-supplied version and the default name', async () => {
-		const { store, dispatched } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
 		await flushSagaMicrotasks();
 
-		const success = dispatched.find(action => action.type === SERVER.SELECT_SUCCESS);
+		const success = dispatchedActions.find(action => action.type === SERVER.SELECT_SUCCESS);
 		expect(success).toMatchObject({ server: SERVER_URL, version: '7.4.0', name: 'Rocket.Chat' });
 		expect(getServerInfo).not.toHaveBeenCalled();
 	});
@@ -177,15 +177,15 @@ describe('selectServer saga — version and name fallback', () => {
 	it('reports a server failure and the caller-supplied version when the server info fetch throws', async () => {
 		jest.mocked(getServerInfo).mockRejectedValue(new Error('offline'));
 
-		const { store, dispatched } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', true));
 		await flushSagaMicrotasks();
 
-		const types = dispatched.map(action => action.type);
+		const types = dispatchedActions.map(action => action.type);
 		expect(types).toContain(SERVER.FAILURE);
 		expect(types).not.toContain(SERVER.SELECT_FAILURE);
 
-		const success = dispatched.find(action => action.type === SERVER.SELECT_SUCCESS);
+		const success = dispatchedActions.find(action => action.type === SERVER.SELECT_SUCCESS);
 		expect(success).toMatchObject({ server: SERVER_URL, version: '7.4.0', name: 'Rocket.Chat' });
 	});
 
@@ -193,11 +193,11 @@ describe('selectServer saga — version and name fallback', () => {
 		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
 		jest.mocked(getServerById).mockResolvedValue({ version: '6.9.0', name: 'Stored A' } as any);
 
-		const { store, dispatched } = setupStore();
+		const { store, dispatchedActions } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', true));
 		await flushSagaMicrotasks();
 
-		const success = dispatched.find(action => action.type === SERVER.SELECT_SUCCESS);
+		const success = dispatchedActions.find(action => action.type === SERVER.SELECT_SUCCESS);
 		expect(success).toMatchObject({ server: SERVER_URL, version: '6.9.0', name: 'Stored A' });
 	});
 });
