@@ -5,6 +5,7 @@ import { mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
+const mockSdkDel = jest.fn();
 let mockSdkInitialized = true;
 
 jest.mock('./sdk', () => ({
@@ -12,6 +13,7 @@ jest.mock('./sdk', () => ({
 	default: {
 		get: (...args: unknown[]) => mockSdkGet(...args),
 		post: (...args: unknown[]) => mockSdkPost(...args),
+		del: (...args: unknown[]) => mockSdkDel(...args),
 		get isInitialized() {
 			return mockSdkInitialized;
 		}
@@ -64,10 +66,12 @@ function loadRegisterPushToken(platform: 'ios' | 'android' = 'android', mockServ
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const voipNative = require('../native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const { registerPushToken } = require('./restApi');
+	const { registerPushToken, removePushToken } = require('./restApi');
 	return {
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 		registerPushToken: registerPushToken as typeof import('./restApi').registerPushToken,
+		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+		removePushToken: removePushToken as typeof import('./restApi').removePushToken,
 		getDeviceToken: jest.mocked(notifications.getDeviceToken),
 		getLastVoipToken: jest.mocked(voipNative.getLastVoipToken)
 	};
@@ -263,5 +267,45 @@ describe('registerPushToken', () => {
 		);
 		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
 		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
+	});
+});
+
+describe('removePushToken', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockSdkPost.mockResolvedValue(undefined);
+		mockSdkDel.mockResolvedValue({ success: true });
+		mockSdkInitialized = true;
+	});
+
+	it('deletes the token on the server', async () => {
+		const { removePushToken, getDeviceToken: getToken } = loadRegisterPushToken();
+		getToken.mockReturnValue('fcm-token');
+
+		await removePushToken();
+
+		expect(mockSdkDel).toHaveBeenCalledWith('push.token', { token: 'fcm-token' });
+	});
+
+	it('forgets the registered tokens even when there is no client to delete them from', async () => {
+		const {
+			registerPushToken,
+			removePushToken,
+			getDeviceToken: getToken,
+			getLastVoipToken: getVoip
+		} = loadRegisterPushToken('ios');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+		await registerPushToken();
+		expect(mockSdkPost).toHaveBeenCalledTimes(1);
+
+		mockSdkInitialized = false;
+		await removePushToken();
+		expect(mockSdkDel).not.toHaveBeenCalled();
+
+		mockSdkInitialized = true;
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
 	});
 });
