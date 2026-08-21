@@ -59,13 +59,20 @@ jest.mock('./useCallStore', () => ({
 const mockOnStreamDataStop = jest.fn();
 const mockOnStreamData = jest.fn(() => ({ stop: mockOnStreamDataStop }));
 const mockMethodCall = jest.fn();
+let mockSdkIsInitialized = true;
 
 jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
+		get isInitialized() {
+			return mockSdkIsInitialized;
+		},
 		methodCall: (...args: unknown[]) => {
 			mockMethodCall(...args);
+			if (!mockSdkIsInitialized) {
+				return Promise.reject(new Error('Sdk is not initialized'));
+			}
 			return Promise.resolve();
 		},
 		get current() {
@@ -262,6 +269,7 @@ describe('MediaSessionInstance', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockSdkIsInitialized = true;
 		mockStartVoipCallService.mockResolvedValue(undefined);
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		mockRequestVoipCallPermissions.mockResolvedValue(true);
@@ -319,6 +327,22 @@ describe('MediaSessionInstance', () => {
 				'user-xyz/media-calls',
 				expect.stringContaining('register')
 			);
+			spy.mockRestore();
+		});
+
+		it('should drop sendSignal after the client is gone', async () => {
+			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
+			await mediaSessionInstance.init('user-xyz');
+			const sendFn = spy.mock.calls[spy.mock.calls.length - 1][0] as (signal: { type: string }) => void;
+			mockSdkIsInitialized = false;
+			mockMethodCall.mockClear();
+			mockLog.mockClear();
+
+			sendFn({ type: 'register' });
+			await Promise.resolve();
+
+			expect(mockMethodCall).not.toHaveBeenCalled();
+			expect(mockLog).not.toHaveBeenCalled();
 			spy.mockRestore();
 		});
 	});
