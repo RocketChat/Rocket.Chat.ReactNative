@@ -54,6 +54,7 @@ import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
+import { TOKEN_KEY } from '../../lib/constants/keys';
 import database from '../../lib/database';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 import type { RecordingStore } from '../../lib/testUtils/sagaStore';
@@ -97,15 +98,11 @@ describe('init saga — restore user-facing roots', () => {
 	});
 
 	it('selects another logged in server with its own version when the stored server has no token', async () => {
-		jest
-			.mocked(UserPreferences.getString)
-			.mockImplementation(key =>
-				key === `reactnativemeteor_usertoken-${OTHER_HOST}`
-					? 'token'
-					: key.startsWith('reactnativemeteor_usertoken-')
-						? null
-						: HOST
-			);
+		jest.mocked(UserPreferences.getString).mockImplementation(key => {
+			if (key === `${TOKEN_KEY}-${OTHER_HOST}`) return 'token';
+			if (key.startsWith(`${TOKEN_KEY}-`)) return null;
+			return HOST;
+		});
 		jest.mocked(database.servers.get).mockReturnValue({
 			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
 		} as any);

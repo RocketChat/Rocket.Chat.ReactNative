@@ -34,17 +34,10 @@ const restore = function* restore() {
 			const servers = yield serversCollection.query().fetch();
 
 			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						yield put(selectServerRequest(newServer, servers[i].version));
-						break;
-					}
-				}
-			}
-			if (!userId) {
+			const loggedInServer = servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
+			if (loggedInServer) {
+				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
+			} else {
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			}
 		} else {

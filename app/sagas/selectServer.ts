@@ -218,6 +218,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
 	} catch (e) {
 		yield put(selectServerFailure());
+		const currentRoot = yield* appSelector(state => state.app.root);
+		if (currentRoot === RootEnum.ROOT_LOADING || currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		}
 		log(e);
 	}
 };

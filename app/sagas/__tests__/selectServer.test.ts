@@ -65,6 +65,8 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
 import { selectServerRequest } from '../../actions/server';
+import { appStart } from '../../actions/app';
+import { RootEnum } from '../../definitions';
 import { SERVER } from '../../actions/actionsTypes';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
@@ -200,5 +202,39 @@ describe('selectServer saga — version and name fallback', () => {
 
 		const success = dispatchedActions.find(action => action.type === SERVER.SELECT_SUCCESS);
 		expect(success).toMatchObject({ server: SERVER_URL, version: '6.9.0', name: 'Stored A' });
+	});
+});
+
+describe('selectServer saga — user-facing root after a failed switch', () => {
+	beforeEach(() => {
+		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		jest.mocked(getLoggedUserById).mockRejectedValue(new Error('database unavailable'));
+	});
+
+	it('leaves ROOT_OUTSIDE when the switch fails while the app is on the loading root', async () => {
+		const { store } = setupStore();
+		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('leaves ROOT_OUTSIDE when the switch fails while the share sheet is on its loading root', async () => {
+		const { store } = setupStore();
+		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+	});
+
+	it('keeps the current root when the switch fails while the app is already inside', async () => {
+		const { store } = setupStore();
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
 	});
 });
