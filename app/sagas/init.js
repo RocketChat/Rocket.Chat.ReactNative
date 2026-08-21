@@ -36,10 +36,10 @@ const restore = function* restore() {
 			// Check if there're other logged in servers and picks first one
 			if (servers.length > 0) {
 				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
+					const { id: newServer, version } = servers[i];
 					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (userId) {
-						return yield put(selectServerRequest(newServer, newServer.version));
+						return yield put(selectServerRequest(newServer, version));
 					}
 				}
 			}
