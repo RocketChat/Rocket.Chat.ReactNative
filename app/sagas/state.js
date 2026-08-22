@@ -1,4 +1,4 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { call, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -29,12 +29,17 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 
-		recoverSocket().catch(e => log(e));
+		try {
+			yield call(recoverSocket);
+		} catch (e) {
+			log(e);
+		}
 
-		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch(e => {
+		try {
+			yield call(checkPendingNotification);
+		} catch (e) {
 			log('[state.js] Error checking pending notification:', e);
-		});
+		}
 		return yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);

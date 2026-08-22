@@ -66,6 +66,10 @@ jest.mock('../../lib/services/voip/resetVoipState', () => ({
 	resetVoipState: jest.fn()
 }));
 
+jest.mock('../../lib/services/socketHealth', () => ({
+	recoverSocket: jest.fn(() => Promise.resolve('confirmed-alive'))
+}));
+
 jest.mock('../../lib/navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {

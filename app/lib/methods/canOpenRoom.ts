@@ -1,3 +1,5 @@
+import { Q } from '@nozbe/watermelondb';
+
 import { ERoomTypes } from '../../definitions';
 import database from '../database';
 import sdk from '../services/sdk';
@@ -72,36 +74,76 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 	}
 }
 
+function formatRoom(room: any, rid?: string) {
+	return (
+		room?.asPlain?.() ?? {
+			rid: rid ?? room.rid,
+			t: room.t,
+			name: room.name,
+			fname: room.fname,
+			prid: room.prid,
+			uids: room.uids,
+			usernames: room.usernames
+		}
+	);
+}
+
+async function findSubscriptionByRid(subsCollection: any, rid: string) {
+	try {
+		const room = await subsCollection.find(rid);
+		return formatRoom(room, rid);
+	} catch {
+		return null;
+	}
+}
+
+async function findSubscriptionByName(subsCollection: any, name: string, roomType: string) {
+	try {
+		const rows = await subsCollection
+			.query(Q.or(Q.where('name', name), Q.where('rid', name)), Q.where('t', roomType), Q.take(1))
+			.fetch();
+		if (rows.length && rows[0]) {
+			return formatRoom(rows[0]);
+		}
+	} catch {
+		// Do nothing
+	}
+	return null;
+}
+
 export async function canOpenRoom({ rid, path }: { rid: string; path: string }): Promise<any> {
 	try {
 		const db = database.active;
-		const subsCollection = db.get('subscriptions');
+		const subsCollection = db?.get ? db.get('subscriptions') : null;
 
-		if (rid) {
-			try {
-				const room = await subsCollection.find(rid);
-				return {
-					rid,
-					t: room.t,
-					name: room.name,
-					fname: room.fname,
-					prid: room.prid,
-					uids: room.uids,
-					usernames: room.usernames
-				};
-			} catch (e) {
-				// Do nothing
+		if (subsCollection && rid) {
+			const room = await findSubscriptionByRid(subsCollection, rid);
+			if (room) {
+				return room;
 			}
 		}
 
-		const [type, name] = path.split('/');
-		const t = type as ERoomTypes;
-		try {
-			const result = await open({ type: t, rid, name });
-			return result;
-		} catch (e) {
-			return false;
+		if (path) {
+			const [type, name] = path.split('/');
+			const t = type as ERoomTypes;
+			const roomType = t === ERoomTypes.GROUP ? 'p' : t === ERoomTypes.DIRECT ? 'd' : (t as string) === 'channels' ? 'l' : 'c';
+
+			if (subsCollection && name) {
+				const room = await findSubscriptionByName(subsCollection, name, roomType);
+				if (room) {
+					return room;
+				}
+			}
+
+			try {
+				const result = await open({ type: t, rid, name });
+				return result;
+			} catch (e) {
+				return false;
+			}
 		}
+
+		return false;
 	} catch (e) {
 		return false;
 	}

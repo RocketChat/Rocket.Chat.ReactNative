@@ -29,6 +29,7 @@ import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
 import { resetVoipState } from '../lib/services/voip/resetVoipState';
+import { recoverSocket } from '../lib/services/socketHealth';
 
 const roomTypes = {
 	channel: 'c',
@@ -58,7 +59,15 @@ const navigate = function* navigate({ params }) {
 			[type, name, , jumpToThreadId] = params.path.split('/');
 		}
 		if (type !== 'invite' || params.rid) {
-			const room = yield canOpenRoom(params);
+			let room = yield canOpenRoom(params);
+			if (!room) {
+				try {
+					yield call(recoverSocket);
+				} catch (e) {
+					log(e);
+				}
+				room = yield canOpenRoom(params);
+			}
 			if (room) {
 				const item = {
 					name,
