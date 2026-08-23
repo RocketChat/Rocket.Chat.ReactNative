@@ -1,3 +1,4 @@
+import { isIOS } from "../methods/helpers";
 import { AudioQuality, IOSOutputFormat, type RecordingOptions, type AudioMode } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
@@ -5,8 +6,8 @@ export const RECORDING_EXTENSION = '.aac';
 export const RECORDING_SETTINGS: RecordingOptions = {
 	extension: RECORDING_EXTENSION,
 	sampleRate: 44100,
-	numberOfChannels: 1,
-	bitRate: 64000,
+	numberOfChannels: 2,
+	bitRate: isIOS ? 64000 : 128000,
 	android: {
 		outputFormat: 'aac_adts',
 		audioEncoder: 'aac'
