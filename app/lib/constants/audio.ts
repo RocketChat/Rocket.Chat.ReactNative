@@ -1,4 +1,4 @@
-import { isIOS } from "../methods/helpers";
+import { isIOS } from '../methods/helpers';
 import { AudioQuality, IOSOutputFormat, type RecordingOptions, type AudioMode } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
