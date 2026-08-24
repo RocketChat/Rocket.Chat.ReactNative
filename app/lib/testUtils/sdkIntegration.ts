@@ -67,9 +67,9 @@ export type IMockSdk = Pick<typeof sdk, 'host' | 'driver' | 'isInitialized'> & {
 	setClient(client: IMockSdkClient | null): void;
 };
 
-export type TSdkMockMembers = Partial<typeof sdk>;
-
-export function makeSdkMock<TMembers extends TSdkMockMembers = Record<string, never>>(members?: TMembers): IMockSdk & TMembers {
+export function makeSdkMock<TMembers extends Partial<typeof sdk> = Record<string, never>>(
+	members?: TMembers
+): IMockSdk & TMembers {
 	let client: IMockSdkClient | null = null;
 	const mock: IMockSdk = {
 		setClient(next: IMockSdkClient | null) {
