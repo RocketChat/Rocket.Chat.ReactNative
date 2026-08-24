@@ -1,3 +1,4 @@
+// Shortnames from emojibase-data (joypixels ?? emojibase), same as web: https://github.com/RocketChat/Rocket.Chat/pull/39411
 /* eslint-disable quote-props */
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-curly-spacing */
