@@ -24813,7 +24813,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       <View
         style={
           {
-            "marginHorizontal": 14,
+            "marginHorizontal": 12,
           }
         }
       >
@@ -27133,7 +27133,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       <View
         style={
           {
-            "marginHorizontal": 14,
+            "marginHorizontal": 12,
           }
         }
       >
