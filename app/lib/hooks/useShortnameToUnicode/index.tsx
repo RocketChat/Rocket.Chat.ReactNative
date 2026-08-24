@@ -1,10 +1,11 @@
-import emojis from './emojis';
 import ascii, { asciiRegexp } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
+import { legacyShortnameToUnicodeMap, shortnameToUnicodeMap } from '../../constants/emojis';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
-const replaceShortNameWithUnicode = (shortname: string) => emojis[shortname] || shortname;
+const replaceShortNameWithUnicode = (shortname: string) =>
+	shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
 const regAscii = new RegExp(`((\\s|^)${asciiRegexp}(?=\\s|$|[!,.?]))`, 'gi');
 
 const unescapeHTML = (string: string) => {

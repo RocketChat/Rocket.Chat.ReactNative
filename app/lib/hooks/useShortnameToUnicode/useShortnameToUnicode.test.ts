@@ -37,9 +37,10 @@ test('render several emojis', () => {
 	expect(unicodeEmoji).toBe('🐶🐱🍔🍦🚀');
 });
 
-test('render cldr shortnames used by the web client', () => {
+// emojibase emits the emoji presentation sequence, hence the trailing U+FE0F.
+test('render alias shortnames', () => {
 	const unicodeEmoji = renderShortnameToUnicode(':water_wave::thumbs_up::red_heart:');
-	expect(unicodeEmoji).toBe('🌊👍❤️');
+	expect(unicodeEmoji).toBe('🌊👍\uFE0F❤\uFE0F');
 });
 
 test('render unknown emoji', () => {

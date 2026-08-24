@@ -1,11 +1,11 @@
 import { getEmojiAliases, searchEmojiNames } from './emojiAliases';
 
 describe('searchEmojiNames', () => {
-	it('matches the picker shortname', () => {
+	it('matches the listed shortname', () => {
 		expect(searchEmojiNames('ocean')).toContain('ocean');
 	});
 
-	it('matches a cldr alias used by the web client and returns the picker shortname', () => {
+	it('matches an alias and returns the listed shortname instead of the alias', () => {
 		const result = searchEmojiNames('water_wave');
 		expect(result).toContain('ocean');
 		expect(result).not.toContain('water_wave');
