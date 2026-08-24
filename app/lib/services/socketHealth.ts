@@ -20,12 +20,6 @@ export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan 
 }
 
 /**
- * What a recovery attempt reports.
- * - `'confirmed-alive'` — round trip succeeded; nothing was done.
- * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'abandoned'`       — caller's abort signal fired while waiting; the
- *                         underlying recovery (shared — see below) runs on.
- *
  * Errors from `reopenNow()`/`probe()` REJECT the promise rather than becoming
  * an outcome: both current callers already sit in catch paths (`state.js`
  * logs, accept gate fails the call), and a thrown error is not a decision the
