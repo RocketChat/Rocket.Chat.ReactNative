@@ -303,7 +303,7 @@ export default function subscribeRooms() {
 
 		// check if the server from variable is the same as the js sdk client
 		const { host } = sdk;
-		if (host !== subServer) {
+		if (!host || host !== subServer) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {

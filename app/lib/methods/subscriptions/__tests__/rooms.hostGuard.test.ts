@@ -19,7 +19,7 @@ jest.mock('../../../store/auxStore', () => ({
 
 jest.mock('../../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
-import subscribeRooms from '../rooms';
+import subscribeRooms, { roomsSubscription } from '../rooms';
 import sdk from '../../../services/sdk';
 import database from '../../../database';
 import type { IDDPMessage } from '../../../../definitions/IDDPMessage';
@@ -65,6 +65,19 @@ describe('subscribeRooms host guard', () => {
 		subscribeRooms();
 
 		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
+		mockedSdk.host = null;
+		await handleStreamMessageReceived(removedSubscriptionFrame());
+
+		expect(mockedDatabase.active.get).not.toHaveBeenCalled();
+	});
+
+	it('drops a frame that arrives after the subscription stopped', async () => {
+		mockedSdk.host = HOST;
+		mockedSdk.hasClient = true;
+		subscribeRooms();
+
+		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
+		roomsSubscription?.stop();
 		mockedSdk.host = null;
 		await handleStreamMessageReceived(removedSubscriptionFrame());
 
