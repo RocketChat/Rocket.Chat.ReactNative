@@ -256,6 +256,7 @@
 			"app/lib/services/socketHealth.ts",
 			"app/lib/methods/loadMissedMessages.ts",
 			"app/lib/methods/subscriptions/room.ts",
+			"app/lib/methods/subscribeRooms.ts",
 			"app/sagas/rooms.js",
 			"app/views/RoomView/**"
 		]
