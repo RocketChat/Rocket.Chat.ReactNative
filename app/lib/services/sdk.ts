@@ -15,7 +15,14 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-export type TDriver = Rocketchat['driver'];
+export interface ISocketProbe {
+	readonly connected: boolean;
+	reopenNow(): Promise<void>;
+	probe(timeoutMs?: number): Promise<boolean>;
+	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
+}
+
+export type TDriver = ISocketProbe;
 
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
@@ -39,10 +46,13 @@ class Sdk {
 		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
 
-	initialize(server: string): Rocketchat {
+	initialize(server: string): void {
 		this.code = null;
 		this.sdk = this.initializeSdk(server);
-		return this.sdk;
+	}
+
+	connect(): Promise<unknown> {
+		return this.activeSdk.connect();
 	}
 
 	get host(): string | null {
@@ -53,8 +63,8 @@ class Sdk {
 		return this.sdk?.currentLogin ?? null;
 	}
 
-	get driver(): TDriver | null {
-		return this.sdk?.driver ?? null;
+	get driver(): ISocketProbe | null {
+		return (this.sdk?.driver as unknown as ISocketProbe | undefined) ?? null;
 	}
 
 	get hasClient(): boolean {

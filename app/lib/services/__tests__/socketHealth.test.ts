@@ -25,7 +25,7 @@ const CLOSED = 3;
 
 describe('socket health against a driver from the shared harness', () => {
 	let driver: ISdkDriver;
-	let probe: jest.SpyInstance<Promise<boolean>, [number]>;
+	let probe: jest.SpyInstance<Promise<boolean>, [number?]>;
 	let reopenNow: jest.SpyInstance<Promise<void>, []>;
 
 	beforeEach(async () => {

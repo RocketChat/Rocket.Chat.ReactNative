@@ -129,7 +129,8 @@ afterEach(() => {
 });
 
 async function connectDriver() {
-	const connectPromise = sdk.initialize('https://example.com').connect();
+	sdk.initialize('https://example.com');
+	const connectPromise = sdk.connect();
 	await flush();
 	mockConnections[0].onopen();
 	await flush();

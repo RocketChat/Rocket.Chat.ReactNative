@@ -2,6 +2,8 @@ import type * as RocketChatSdk from '@rocket.chat/sdk';
 import type { Store } from 'redux';
 
 import type { IApplicationState } from '../../definitions';
+import type sdk from '../services/sdk';
+import type { ISocketProbe } from '../services/sdk';
 
 export interface IDdpMessage {
 	msg: string;
@@ -43,13 +45,9 @@ export class MockConnection {
 	}
 }
 
-export interface ISdkDriver {
+export interface ISdkDriver extends ISocketProbe {
 	userId: string;
 	pingInterval: number;
-	connected: boolean;
-	reopenNow(): Promise<void>;
-	probe(timeoutMs: number): Promise<boolean>;
-	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
 	socket: {
 		lastPing: number;
 		pingTimeout?: ReturnType<typeof setTimeout>;
@@ -62,15 +60,12 @@ export interface ISdkDriver {
 
 export interface IMockSdkClient {
 	host?: string;
-	driver?: unknown;
+	driver?: ISocketProbe;
 }
 
-export interface IMockSdk {
+export type IMockSdk = Pick<typeof sdk, 'host' | 'driver' | 'hasClient'> & {
 	setClient(client: IMockSdkClient | null): void;
-	readonly host: string | null;
-	readonly driver: unknown;
-	readonly hasClient: boolean;
-}
+};
 
 export function makeSdkMock(): IMockSdk {
 	let client: IMockSdkClient | null = null;

@@ -85,10 +85,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-		const client = sdk.initialize(server);
+		sdk.initialize(server);
 		getSettings(server);
 
-		client
+		sdk
 			.connect()
 			.then(() => {
 				console.log('connected');
@@ -97,11 +97,11 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 				console.log('connect error', err);
 			});
 
-		connectingListener = client.onStreamData('connecting', () => {
+		connectingListener = sdk.onStreamData('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		connectedListener = client.onStreamData('connected', () => {
+		connectedListener = sdk.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -117,12 +117,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
 
-		closeListener = client.onStreamData('close', () => {
+		closeListener = sdk.onStreamData('close', () => {
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = client.onStreamData('connected', async () => {
+		pendingHangupsConnectedListener = sdk.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
@@ -134,12 +134,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		usersListener = client.onStreamData(
+		usersListener = sdk.onStreamData(
 			'users',
 			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		notifyAllListener = client.onStreamData(
+		notifyAllListener = sdk.onStreamData(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -177,7 +177,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		rolesListener = client.onStreamData(
+		rolesListener = sdk.onStreamData(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
@@ -199,7 +199,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		notifyLoggedListener = client.onStreamData(
+		notifyLoggedListener = sdk.onStreamData(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -290,7 +290,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		logoutListener = client.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+		logoutListener = sdk.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});

@@ -25,17 +25,14 @@ const mockSdkAbort = jest.fn<void, []>();
 const mockSdkDisconnect = jest.fn<void, []>();
 const mockSdkLogin = jest.fn<Promise<void>, [unknown]>(() => Promise.resolve());
 const mockSdkCurrent: Record<string, unknown> = {
-	onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
-	connect: () => mockSdkConnect(),
-	abort: () => mockSdkAbort(),
-	login: (credentials: unknown) => mockSdkLogin(credentials),
 	currentLogin: undefined
 };
-const mockSdkInitialize = jest.fn<typeof mockSdkCurrent, [string]>(() => mockSdkCurrent);
+const mockSdkInitialize = jest.fn<void, [string]>();
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
 		initialize: (server: string) => mockSdkInitialize(server),
+		connect: () => mockSdkConnect(),
 		disconnect: () => mockSdkDisconnect(),
 		onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
 		hasClient: true,
