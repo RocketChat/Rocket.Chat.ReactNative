@@ -24841,7 +24841,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                   "fontVariant": [
                     "tabular-nums",
                   ],
-                  "fontWeight": "500",
+                  "fontWeight": "700",
                   "textAlign": "left",
                 },
                 {
@@ -27161,7 +27161,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                   "fontVariant": [
                     "tabular-nums",
                   ],
-                  "fontWeight": "500",
+                  "fontWeight": "700",
                   "textAlign": "left",
                 },
                 {

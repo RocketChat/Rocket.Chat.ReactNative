@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		...sharedStyles.textMedium
+		...sharedStyles.textBold
 	},
 	label: {
 		paddingHorizontal: 8,
