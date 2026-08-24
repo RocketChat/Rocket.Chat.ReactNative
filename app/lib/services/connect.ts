@@ -411,9 +411,9 @@ async function loginOAuthOrSso(params: ILoginCredentials) {
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
-function abort() {
+function abort(): void {
 	if (sdk.hasClient) {
-		return sdk.abort();
+		sdk.abort();
 	}
 }
 

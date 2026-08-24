@@ -75,8 +75,8 @@ class Sdk {
 		return client.currentLogin ?? null;
 	}
 
-	abort() {
-		return this.activeSdk.abort();
+	abort(): void {
+		this.activeSdk.abort();
 	}
 
 	subscribeNotifyUser() {
