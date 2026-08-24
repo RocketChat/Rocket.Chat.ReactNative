@@ -302,7 +302,7 @@ export default function subscribeRooms() {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
-		const { host } = sdk;
+		const host = sdk.host;
 		if (!host || host !== subServer) {
 			return;
 		}
