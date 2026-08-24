@@ -39,7 +39,7 @@ import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/video
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
 let streamListener: Promise<any> | false;
-let subServer: string | null = null;
+let subscribedHost: string | null = null;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
 const WINDOW_TIME = 500;
@@ -301,7 +301,7 @@ export default function subscribeRooms() {
 	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const db = database.active;
 
-		if (!subServer || sdk.host !== subServer) {
+		if (!subscribedHost || sdk.host !== subscribedHost) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -432,7 +432,7 @@ export default function subscribeRooms() {
 			subTimer = false;
 		}
 		roomsSubscription = null;
-		subServer = null;
+		subscribedHost = null;
 	};
 
 	const host = sdk.host;
@@ -444,7 +444,7 @@ export default function subscribeRooms() {
 
 	try {
 		// set the server that started this task
-		subServer = host;
+		subscribedHost = host;
 		sdk.subscribeNotifyUser().catch((e: unknown) => console.log(e));
 		roomsSubscription = { stop: () => stop() };
 		return null;

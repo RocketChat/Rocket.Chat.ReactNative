@@ -45,7 +45,7 @@ export class MockConnection {
 	}
 }
 
-export interface ISdkDriver extends ISocketDriver {
+export interface IMockSdkDriver extends ISocketDriver {
 	userId: string;
 	pingInterval: number;
 	socket: {
@@ -106,8 +106,8 @@ const { Rocketchat } = jest.requireActual<typeof RocketChatSdk>('@rocket.chat/sd
 
 const driverLogger = { debug: jest.fn(), info: jest.fn(), error: jest.fn(), warn: jest.fn() };
 
-export async function buildConnectedDriver(connections: MockConnection[], userId: string): Promise<ISdkDriver> {
-	const driver = new Rocketchat({ host: 'localhost:3000', logger: driverLogger }).driver as unknown as ISdkDriver;
+export async function buildConnectedDriver(connections: MockConnection[], userId: string): Promise<IMockSdkDriver> {
+	const driver = new Rocketchat({ host: 'localhost:3000', logger: driverLogger }).driver as unknown as IMockSdkDriver;
 	driver.userId = userId;
 	const openPromise = driver.socket.open();
 	connections[0].onopen();
@@ -116,7 +116,7 @@ export async function buildConnectedDriver(connections: MockConnection[], userId
 	return driver;
 }
 
-export function addMediaSubs(driver: ISdkDriver, userId: string): void {
+export function addMediaSubs(driver: IMockSdkDriver, userId: string): void {
 	['media-signal', 'media-calls'].forEach((name, index) => {
 		const id = `sub-${index}`;
 		driver.socket.subscriptions[id] = {
@@ -128,7 +128,7 @@ export function addMediaSubs(driver: ISdkDriver, userId: string): void {
 	});
 }
 
-export function backdateLastPing(driver: ISdkDriver, ageMs: number): void {
+export function backdateLastPing(driver: IMockSdkDriver, ageMs: number): void {
 	driver.socket.lastPing = Date.now() - ageMs;
 }
 

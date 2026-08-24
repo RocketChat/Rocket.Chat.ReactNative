@@ -7,7 +7,7 @@ import { initStore } from '../../store/auxStore';
 import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
 import { addMediaSubs, buildConnectedDriver } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, ISdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 import type { IApplicationState } from '../../../definitions';
 
@@ -94,7 +94,7 @@ function makeReduxStore() {
 
 describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	let redux: ReturnType<typeof makeReduxStore>;
-	let driver: ISdkDriver;
+	let driver: IMockSdkDriver;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();

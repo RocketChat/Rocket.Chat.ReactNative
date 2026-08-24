@@ -1,7 +1,7 @@
 import sdk, { type ISocketDriver } from '../sdk';
 import { classifySocketHealth, recoverSocket } from '../socketHealth';
 import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, ISdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 const mockConnections: MockConnection[] = [];
@@ -24,7 +24,7 @@ const USER_ID = 'user-id';
 const CLOSED = 3;
 
 describe('socket health against a driver from the shared harness', () => {
-	let driver: ISdkDriver;
+	let driver: IMockSdkDriver;
 	let probe: jest.SpyInstance<Promise<boolean>, [number?]>;
 	let reopenNow: jest.SpyInstance<Promise<void>, []>;
 

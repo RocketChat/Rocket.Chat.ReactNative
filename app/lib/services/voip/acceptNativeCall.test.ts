@@ -5,7 +5,7 @@ import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
 import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, ISdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof waitForLoginReady>;
@@ -80,7 +80,7 @@ describe('acceptNativeCallWithReadiness', () => {
 	const CALL_ID = 'call-uuid';
 	const USER_ID = 'user-id';
 
-	let driver: ISdkDriver;
+	let driver: IMockSdkDriver;
 	let waitForMediaSubs: jest.SpyInstance<Promise<boolean>, [number?]>;
 
 	beforeEach(async () => {

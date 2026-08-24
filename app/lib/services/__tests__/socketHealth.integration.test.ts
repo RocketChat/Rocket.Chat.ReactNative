@@ -7,7 +7,7 @@ import {
 	framesOn,
 	stopAnsweringFrames
 } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, MockConnection, IMockSdkDriver } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 const mockConnections: MockConnection[] = [];
@@ -29,7 +29,7 @@ const PING_INTERVAL = 10000;
 const CLOSED = 3;
 
 describe('recoverSocket against the real SDK socket', () => {
-	let driver: ISdkDriver;
+	let driver: IMockSdkDriver;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();

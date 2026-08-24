@@ -4,7 +4,7 @@ import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, MockConnection, IMockSdkDriver } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
 jest.mock('../sdk', () => {
@@ -63,7 +63,7 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 	};
 }
 
-let driver: ISdkDriver;
+let driver: IMockSdkDriver;
 
 beforeEach(async () => {
 	jest.clearAllMocks();
