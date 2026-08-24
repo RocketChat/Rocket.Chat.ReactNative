@@ -106,7 +106,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 		log(e);
 	}
 
-	if (sdk.hasClient) {
+	if (sdk.isInitialized) {
 		try {
 			// RC 0.60.0
 			await sdk.logout();

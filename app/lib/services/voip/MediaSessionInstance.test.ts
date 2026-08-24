@@ -65,7 +65,7 @@ jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
-		get hasClient() {
+		get isInitialized() {
 			return mockSdkHasClient;
 		},
 		methodCall: (...args: unknown[]) => {

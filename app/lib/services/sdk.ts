@@ -54,7 +54,7 @@ class Sdk {
 	}
 
 	get host(): string | null {
-		return this.sdk?.client?.host ?? null;
+		return this.sdk?.client.host ?? null;
 	}
 
 	get currentLogin(): ICurrentLogin | null {
@@ -65,7 +65,7 @@ class Sdk {
 		return this.sdk?.driver ?? null;
 	}
 
-	get hasClient(): boolean {
+	get isInitialized(): boolean {
 		return this.sdk !== null;
 	}
 

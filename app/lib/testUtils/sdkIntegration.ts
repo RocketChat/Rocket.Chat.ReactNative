@@ -63,7 +63,7 @@ export interface IMockSdkClient {
 	driver?: ISocketDriver;
 }
 
-export type IMockSdk = Pick<typeof sdk, 'host' | 'driver' | 'hasClient'> & {
+export type IMockSdk = Pick<typeof sdk, 'host' | 'driver' | 'isInitialized'> & {
 	setClient(client: IMockSdkClient | null): void;
 };
 
@@ -79,7 +79,7 @@ export function makeSdkMock(): IMockSdk {
 		get driver() {
 			return client?.driver ?? null;
 		},
-		get hasClient() {
+		get isInitialized() {
 			return client !== null;
 		}
 	};

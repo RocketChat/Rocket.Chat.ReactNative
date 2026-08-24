@@ -14,7 +14,7 @@ jest.mock('./sdk', () => ({
 		get: (...args: unknown[]) => mockSdkGet(...args),
 		post: (...args: unknown[]) => mockSdkPost(...args),
 		del: (...args: unknown[]) => mockSdkDel(...args),
-		get hasClient() {
+		get isInitialized() {
 			return mockSdkHasClient;
 		}
 	}
