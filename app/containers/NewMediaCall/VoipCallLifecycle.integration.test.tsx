@@ -25,7 +25,7 @@ import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocom
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import { acceptNativeCallWithReadiness } from '../../lib/services/voip/acceptNativeCall';
-import { resetTerminateNativeCallForTesting } from '../../lib/services/voip/terminateNativeCall';
+import { clearTerminateDedupeSentinels } from '../../lib/services/voip/terminateNativeCall';
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
@@ -138,7 +138,7 @@ jest.mock('react-native-device-info', () => ({
 }));
 jest.mock('../../lib/native/NativeVoip', () => ({
 	__esModule: true,
-	default: { stopNativeDDPClient: jest.fn() }
+	default: { stopNativeDDPClient: jest.fn(), disconnectNativeCall: jest.fn(), stopVoipCallService: jest.fn() }
 }));
 jest.mock('../../lib/methods/voipCallPermissions', () => ({
 	requestVoipCallPermissions: jest.fn().mockResolvedValue(true)
@@ -398,7 +398,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		unexpectedConsoleErrors = [];
 		usePeerAutocompleteStore.getState().reset();
 		useCallStore.getState().reset();
-		resetTerminateNativeCallForTesting();
+		clearTerminateDedupeSentinels();
 		mediaSessionInstance.reset();
 
 		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {

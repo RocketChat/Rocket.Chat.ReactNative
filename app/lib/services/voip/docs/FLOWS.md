@@ -297,7 +297,12 @@ sequenceDiagram
     Note over Native,Store: Stale-session guards ensure a CallKit/Telecom event for an old call (after server switch / logout) is ignored: UUID mismatch drops the event before any state change.
 ```
 
-_Last verified: cd2faa00a_
+"Terminate native call" is `terminateNativeCall(callId)`, deduped per `callId` by a module-level sentinel set (cleared by `resetVoipState`). What it does differs by platform:
+
+- **iOS** — `RNCallKeep.endCall(callId)` only.
+- **Android** — `NativeVoip.disconnectNativeCall(callId)` first, then `RNCallKeep.endCall(callId)`, then `NativeVoip.stopVoipCallService()`. `disconnectNativeCall` delegates to `VoipNotification.terminateIncomingCall`, which runs the full incoming-call teardown on the main looper: cancel the timeout, disconnect the Telecom connection, stop `VoipCallService`, and stop the per-call DDP client. If the incoming payload for that `callId` is still tracked in this process (`activeIncomingPayloads`, populated by `showIncomingCall`), it also cancels the notification and broadcasts `ACTION_DISMISS`, which finishes `IncomingCallActivity` — the same dismissal set the notification-action paths run, so terminating a still-ringing call clears the full-screen UI.
+
+_Last verified: e3515c79c_
 
 ---
 

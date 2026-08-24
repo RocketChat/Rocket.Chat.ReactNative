@@ -37,6 +37,7 @@ import chat.rocket.reactnative.BuildConfig
 import chat.rocket.reactnative.R
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -86,6 +87,40 @@ class VoipNotification(private val context: Context) {
         /** Returns the stable Android device ID used as `contractId` in media-calls.answer requests. */
         private fun deviceId(context: Context): String =
             Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+
+        /**
+         * Payload of every incoming call whose notification / full-screen UI is still up, keyed by
+         * callId. [terminateIncomingCall] needs it to send the same dismissal set the
+         * notification-action paths send; entries are dropped by the disconnect helpers below.
+         */
+        private val activeIncomingPayloads = ConcurrentHashMap<String, VoipPayload>()
+
+        /**
+         * JS-driven teardown (`NativeVoip.disconnectNativeCall`). Runs the same dismissal set as the
+         * notification-action paths — Telecom disconnect, foreground service, notification and
+         * [ACTION_DISMISS] — so a terminate that lands while the call is still ringing also finishes
+         * [IncomingCallActivity] instead of leaving it on screen. Always runs on the main looper,
+         * because the caller is a synchronous TurboModule method on an arbitrary JS thread.
+         */
+        @JvmStatic
+        fun terminateIncomingCall(context: Context, callId: String) {
+            val appContext = context.applicationContext
+            Handler(Looper.getMainLooper()).post {
+                cancelTimeout(callId)
+                val payload = activeIncomingPayloads[callId]
+                disconnectIncomingCall(callId, false)
+                VoipCallService.stopService(appContext)
+                if (payload != null) {
+                    cancelById(appContext, payload.notificationId)
+                    LocalBroadcastManager.getInstance(appContext).sendBroadcast(
+                        Intent(ACTION_DISMISS).apply {
+                            putExtras(payload.toBundle())
+                        }
+                    )
+                }
+                ddpRegistry.stopClient(callId)
+            }
+        }
 
         /**
          * Cancels a VoIP notification by ID.
@@ -396,6 +431,7 @@ class VoipNotification(private val context: Context) {
 
         // TODO: unify these three functions and check VoiceConnectionService
         private fun disconnectTimedOutCall(callId: String) {
+            activeIncomingPayloads.remove(callId)
             val connection = VoiceConnectionService.getConnection(callId)
             when (connection) {
                 is VoiceConnection -> connection.reportDisconnect(DISCONNECT_REASON_MISSED)
@@ -407,6 +443,7 @@ class VoipNotification(private val context: Context) {
         }
 
         private fun rejectIncomingCall(callId: String) {
+            activeIncomingPayloads.remove(callId)
             val connection = VoiceConnectionService.getConnection(callId)
             when (connection) {
                 is VoiceConnection -> connection.onReject()
@@ -418,6 +455,7 @@ class VoipNotification(private val context: Context) {
         }
 
         private fun disconnectIncomingCall(callId: String, reportAsMissed: Boolean) {
+            activeIncomingPayloads.remove(callId)
             val connection = VoiceConnectionService.getConnection(callId)
             when (connection) {
                 is VoiceConnection -> {
@@ -749,6 +787,7 @@ class VoipNotification(private val context: Context) {
         registerCallWithTelecomManager(callId, caller)
 
         // Show notification with full-screen intent
+        activeIncomingPayloads[callId] = voipPayload
         showIncomingCallNotification(voipPayload)
         scheduleTimeout(context, voipPayload)
         startListeningForCallEnd(context, voipPayload)

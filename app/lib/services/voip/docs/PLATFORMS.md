@@ -61,6 +61,10 @@ VoIP incoming calls arrive as FCM **data-only payloads** (so the app can wake wi
 
 `IncomingCallActivity` is the lock-screen activity that surfaces the incoming call UI when the device is locked.
 
+### JS-driven teardown — `terminateIncomingCall`
+
+Everything above is native-owned, but JS can also end a call that native is still presenting (in-app hangup, peer hangup, a failed accept reconciliation). `terminateNativeCall` calls `NativeVoip.disconnectNativeCall(callId)`, which delegates to `VoipNotification.terminateIncomingCall` — the single shared teardown, posted to the main looper because the caller is a synchronous TurboModule method on the JS thread. It cancels the timeout, disconnects the Telecom connection, stops `VoipCallService`, and stops the per-call DDP client; when the incoming payload for that `callId` is still tracked in-process (`activeIncomingPayloads`), it also cancels the notification and broadcasts `ACTION_DISMISS` so `IncomingCallActivity` finishes. Without that dismissal a JS-side terminate would leave the full-screen incoming UI on screen. JS then calls `RNCallKeep.endCall(callId)` and `NativeVoip.stopVoipCallService()`.
+
 ### Per-call DDP — `VoipPerCallDdpRegistry.kt`
 
 Mirrors the iOS rationale: a short-lived DDP client per incoming call so the REST accept and any inbound signaling can land before the app's main DDP socket exists. The registry is keyed by `callId`; clients close on accept-resolved, call-ended, or timeout.

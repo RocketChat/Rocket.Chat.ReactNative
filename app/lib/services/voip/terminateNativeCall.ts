@@ -53,9 +53,9 @@ export function terminateNativeCall(callId: string): void {
 }
 
 /**
- * Resets module-scoped state for testing purposes.
- * NOT intended for production use.
+ * Clears the terminate-dedupe sentinels. Called from `resetVoipState` alongside the accept-dedupe
+ * sentinels so a logout / account switch cannot leave a reused callId short-circuited here.
  */
-export function resetTerminateNativeCallForTesting(): void {
+export function clearTerminateDedupeSentinels(): void {
 	terminatedCallIds.clear();
 }

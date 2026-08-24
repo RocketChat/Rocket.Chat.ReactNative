@@ -2,6 +2,7 @@ import { DeviceEventEmitter } from 'react-native';
 
 import { resetMediaCallEventsStateForTesting, setupMediaCallEvents, type MediaCallEventsAdapters } from './MediaCallEvents';
 import { resetVoipState } from './resetVoipState';
+import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 
 jest.mock('../../methods/helpers', () => ({
@@ -19,7 +20,9 @@ jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		clearInitialEvents: jest.fn(),
-		getInitialEvents: jest.fn(() => null)
+		getInitialEvents: jest.fn(() => null),
+		disconnectNativeCall: jest.fn(),
+		stopVoipCallService: jest.fn()
 	}
 }));
 
@@ -29,6 +32,7 @@ jest.mock('react-native-callkeep', () => ({
 		addEventListener: jest.fn(() => ({ remove: jest.fn() })),
 		clearInitialEvents: jest.fn(),
 		setCurrentCallActive: jest.fn(),
+		endCall: jest.fn(),
 		getInitialEvents: jest.fn(() => Promise.resolve([]))
 	}
 }));
@@ -145,5 +149,20 @@ describe('resetVoipState', () => {
 		// Third delivery — must be processed again
 		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
 		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(2);
+	});
+
+	it('after resetVoipState, a previously-terminated callId is torn down again (terminate sentinel cleared)', () => {
+		(useCallStore.getState as jest.Mock).mockReturnValue({ resetNativeCallId: jest.fn(), reset: jest.fn() });
+		const endCall = jest.requireMock('react-native-callkeep').default.endCall as jest.Mock;
+		endCall.mockClear();
+
+		terminateNativeCall('reused-terminate-id');
+		terminateNativeCall('reused-terminate-id');
+		expect(endCall).toHaveBeenCalledTimes(1);
+
+		resetVoipState();
+
+		terminateNativeCall('reused-terminate-id');
+		expect(endCall).toHaveBeenCalledTimes(2);
 	});
 });

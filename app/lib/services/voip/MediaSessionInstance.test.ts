@@ -137,8 +137,7 @@ jest.mock('../../native/NativeVoip', () => ({
 	default: {
 		stopNativeDDPClient: jest.fn(),
 		startVoipCallService: (callId: string) => mockStartVoipCallService(callId),
-		stopVoipCallService: () => mockStopVoipCallService(),
-		disconnectNativeCall: jest.fn()
+		stopVoipCallService: () => mockStopVoipCallService()
 	}
 }));
 

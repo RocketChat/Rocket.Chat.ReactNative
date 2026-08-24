@@ -4,6 +4,7 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { useCallStore } from './useCallStore';
+import { clearTerminateDedupeSentinels } from './terminateNativeCall';
 
 const mockLog = jest.fn();
 jest.mock('../../methods/helpers/log', () => ({
@@ -87,6 +88,10 @@ function createMockCall(callId: string) {
 	} as unknown as IClientMediaCall;
 	return { call };
 }
+
+beforeEach(() => {
+	clearTerminateDedupeSentinels();
+});
 
 describe('useCallStore audio route sync (iOS, isIOS=true)', () => {
 	beforeEach(() => {

@@ -17,7 +17,6 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import chat.rocket.reactnative.networking.NativeVoipSpec
-import io.wazo.callkeep.VoiceConnectionService
 import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
@@ -202,13 +201,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
 
     override fun disconnectNativeCall(callId: String) {
         try {
-            when (val connection = VoiceConnectionService.getConnection(callId)) {
-                null -> Log.d(TAG, "disconnectNativeCall: no connection for $callId")
-                else -> {
-                    connection.onDisconnect()
-                    Log.d(TAG, "disconnectNativeCall: disconnected $callId")
-                }
-            }
+            VoipNotification.terminateIncomingCall(reactApplicationContext, callId)
         } catch (e: Exception) {
             Log.e(TAG, "disconnectNativeCall: failed to disconnect $callId", e)
         }

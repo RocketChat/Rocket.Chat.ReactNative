@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 
 import NativeVoipModule from '../../native/NativeVoip';
-import { resetTerminateNativeCallForTesting, terminateNativeCall } from './terminateNativeCall';
+import { clearTerminateDedupeSentinels, terminateNativeCall } from './terminateNativeCall';
 
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
@@ -15,7 +15,7 @@ jest.mock('../../native/NativeVoip', () => ({
 describe('terminateNativeCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		resetTerminateNativeCallForTesting();
+		clearTerminateDedupeSentinels();
 		Platform.OS = 'android';
 	});
 

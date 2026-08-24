@@ -128,6 +128,10 @@ RCT_EXPORT_MODULE()
 - (void)disconnectNativeCall:(NSString *)callId {
 }
 
+// Android-only foreground service teardown; this stub satisfies the codegen spec.
+- (void)stopVoipCallService {
+}
+
 // iOS keeps using InCallManager.setForceSpeakerphoneOn from JS; this stub satisfies the codegen spec.
 - (void)setSpeakerOn:(BOOL)on
             resolve:(RCTPromiseResolveBlock)resolve
