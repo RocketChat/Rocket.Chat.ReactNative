@@ -229,17 +229,15 @@ const RoomInfoView = (): ReactElement => {
 		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
-	const createDirect = () =>
-		new Promise<void | ISubscription>(async (resolve, reject) => {
-			// We don't need to create a direct
-			if (!isEmpty(member)) return resolve();
-			try {
-				const result = await createDirectMessage(roomUser.username);
-				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
-			} catch (e) {
-				reject(e);
-			}
-		});
+	const createDirect = async (): Promise<void | ISubscription> => {
+		// We don't need to create a direct
+		if (!isEmpty(member)) return;
+		const result = await createDirectMessage(roomUser.username);
+		if (!result.success) {
+			throw new Error('Failed to create direct message');
+		}
+		return { ...roomUser, rid: result.room.rid };
+	};
 
 	const handleGoRoom = (r?: ISubscription) => {
 		logEvent(events.RI_GO_ROOM_USER);
@@ -268,7 +266,7 @@ const RoomInfoView = (): ReactElement => {
 			}
 			handleGoRoom(r);
 		} catch (e: any) {
-			emitErrorCreateDirectMessage(e?.data);
+			emitErrorCreateDirectMessage(e?.data ?? e);
 		}
 	};
 

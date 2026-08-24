@@ -5,6 +5,7 @@ import { Encryption } from '../../lib/encryption';
 import log from '../../lib/methods/helpers/log';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { e2eResetRoomKey } from '../../lib/services/restApi';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor';
 
 export const resetRoomKey = (rid: string) => {
 	Alert.alert(
@@ -35,6 +36,9 @@ export const resetRoomKey = (rid: string) => {
 						await e2eResetRoomKey(rid, e2eKey, e2eKeyId);
 						showToast(I18n.t('Encryption_keys_reset'));
 					} catch (e) {
+						if (isTwoFactorCancelled(e)) {
+							return;
+						}
 						log(e);
 						showToast(I18n.t('Encryption_keys_failed'));
 					}

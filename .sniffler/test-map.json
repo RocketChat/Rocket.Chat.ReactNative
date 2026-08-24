@@ -40,7 +40,9 @@
 			"app/views/RegisterView/**",
 			"app/views/RoomsListView/**",
 			"app/sagas/login.js",
-			"app/sagas/rooms.js"
+			"app/sagas/rooms.js",
+			"app/sagas/selectServer.ts",
+			"app/lib/services/connect.ts"
 		]
 	},
 	{
@@ -66,7 +68,9 @@
 			"app/views/RegisterView/**",
 			"app/views/RoomsListView/**",
 			"app/sagas/login.js",
-			"app/sagas/rooms.js"
+			"app/sagas/rooms.js",
+			"app/sagas/selectServer.ts",
+			"app/lib/services/connect.ts"
 		]
 	},
 	{

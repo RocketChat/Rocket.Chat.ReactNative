@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 export interface IProfileParams {
 	realname?: string;
 	name?: string;
-	username: string;
+	username?: string;
 	email: string | null;
 	newPassword: string;
 	currentPassword: string;

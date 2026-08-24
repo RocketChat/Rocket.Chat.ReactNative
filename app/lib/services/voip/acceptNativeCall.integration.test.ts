@@ -105,7 +105,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 		initStore(redux.store);
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 		mockRecoverSocket.mockResolvedValue('reopened');
-		(sdk as any).current = { ddp: mediaSubsAckAfter(100) };
+		(sdk as any).current = { driver: mediaSubsAckAfter(100) };
 	});
 
 	afterEach(() => {
@@ -148,7 +148,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		(sdk as any).current = { ddp: mediaSubsNeverAck() };
+		(sdk as any).current = { driver: mediaSubsNeverAck() };
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();

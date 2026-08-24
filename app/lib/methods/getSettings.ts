@@ -143,8 +143,8 @@ export async function setSettings(): Promise<void> {
 	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
-export function subscribeSettings(): void {
-	return sdk.subscribe('stream-notify-all', 'public-settings-changed');
+export async function subscribeSettings(): Promise<void> {
+	await sdk.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
 type IData = ISettingsIcon | IPreparedSettings;

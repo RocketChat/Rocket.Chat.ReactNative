@@ -26,7 +26,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor';
+import { twoFactor, isTwoFactorCancelled } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -205,7 +205,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		}
 	};
 
-	// Returns true if a 2FA retry was issued and submit should yield to it.
 	const handleTwoFactorChallenge = async (e: any): Promise<boolean> => {
 		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
 			return false;
@@ -215,8 +214,11 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			setTwoFactorCode(code as any);
 			await submit();
 			return true;
-		} catch {
-			// cancelled twoFactor modal
+		} catch (twoFactorError) {
+			if (isTwoFactorCancelled(twoFactorError)) {
+				resetSavingState();
+				return true;
+			}
 			return false;
 		}
 	};
@@ -249,8 +251,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			const { email } = getValues();
 			setFieldErrorsFromResponse(e, email);
 
-			const retried = await handleTwoFactorChallenge(e);
-			if (retried) return;
+			const handled = await handleTwoFactorChallenge(e);
+			if (handled) return;
 
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			resetSavingState();
