@@ -75,7 +75,6 @@ describe('subscribeRooms host guard', () => {
 
 		const [, handleStreamMessageReceived] = mockOnStreamData.mock.calls[0];
 		roomsSubscription?.stop();
-		mockedSdk.setClient(null);
 		await handleStreamMessageReceived(removedSubscriptionFrame());
 
 		expect(mockedDatabase.active.get).not.toHaveBeenCalled();
