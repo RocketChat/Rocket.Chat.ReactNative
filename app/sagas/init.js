@@ -2,13 +2,13 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
+import { findLoggedInServer, hasStoredLoginToken } from '../lib/methods/loggedInServer';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
-import database from '../lib/database';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
@@ -21,19 +21,13 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const isLoggedIn = server => !!UserPreferences.getString(`${TOKEN_KEY}-${server}`);
-
 const serverToRestore = function* serverToRestore(server) {
 	if (!server) {
 		return null;
 	}
 
-	if (!isLoggedIn(server)) {
-		const serversDB = database.servers;
-		const serversCollection = serversDB.get('servers');
-		const servers = yield serversCollection.query().fetch();
-
-		return servers.find(({ id }) => isLoggedIn(id)) || null;
+	if (!hasStoredLoginToken(server)) {
+		return (yield* findLoggedInServer()) || null;
 	}
 
 	yield localAuthenticate(server);

@@ -11,6 +11,7 @@ import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
+import { findLoggedInServer } from '../lib/methods/loggedInServer';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
@@ -367,12 +368,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	} catch (e) {
 		log(e);
 	}
-};
-
-const findLoggedInServer = function* findLoggedInServer() {
-	const serversCollection = database.servers.get('servers');
-	const servers = yield serversCollection.query().fetch();
-	return servers.find(({ id }) => UserPreferences.getString(`${TOKEN_KEY}-${id}`));
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
