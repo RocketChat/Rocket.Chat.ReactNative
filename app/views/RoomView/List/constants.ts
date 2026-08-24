@@ -5,4 +5,3 @@ export const SCROLL_LIMIT = 200;
 
 export const EDGE_DISTANCE = 15;
 
-export const HIDE_BUBBLE_DELAY = 1000;

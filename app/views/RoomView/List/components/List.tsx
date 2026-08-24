@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedScrollHandler, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
@@ -10,9 +10,9 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { FloatingDateSeparator } from '../../../../containers/Separator';
+import { FloatingDateSeparator, useFloatingDateOpacity } from '../../../../containers/Separator';
 import { type IListProps } from '../definitions';
-import { HIDE_BUBBLE_DELAY, SCROLL_LIMIT } from '../constants';
+import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
 import { useFloatingDate } from '../hooks/useFloatingDate';
 
@@ -29,33 +29,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const { ts, viewabilityConfigCallbackPairs } = useFloatingDate();
-	const bubbleOpacity = useSharedValue(0);
-	const isBubbleFadingIn = useSharedValue(false);
-
-	const hideBubble = (): void => {
-		'worklet';
-
-		bubbleOpacity.set(withDelay(HIDE_BUBBLE_DELAY, withTiming(0, { duration: 300 })));
-	};
-
-	const showBubble = (): void => {
-		'worklet';
-
-		if (isBubbleFadingIn.get()) {
-			return;
-		}
-		if (bubbleOpacity.get() === 1) {
-			hideBubble();
-			return;
-		}
-		isBubbleFadingIn.set(true);
-		bubbleOpacity.set(
-			withTiming(1, { duration: 150 }, (): void => {
-				isBubbleFadingIn.set(false);
-				hideBubble();
-			})
-		);
-	};
+	const { opacity: bubbleOpacity, show: showBubble } = useFloatingDateOpacity();
 
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
