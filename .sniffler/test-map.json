@@ -253,9 +253,7 @@
 		"test": ".maestro/tests/room/messages-received-while-offline.yaml",
 		"dependsOn": [
 			"app/lib/services/sdk.ts",
-			"app/lib/services/connect.ts",
 			"app/lib/services/socketHealth.ts",
-			"app/sagas/state.js",
 			"app/sagas/login.js",
 			"app/sagas/rooms.js",
 			"app/views/RoomView/**",

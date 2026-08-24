@@ -3,8 +3,6 @@ name: Messages received while device is offline
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
-  # Airplane mode outlives the flow, so a failure between the toggles would leave the device
-  # offline for every flow after this one.
   - setAirplaneMode: disabled
   - stopApp: ${APP_ID}
   - evalScript: ${output.utils.deleteCreatedUsers()}
@@ -34,12 +32,13 @@ tags:
     timeout: 60000
 
 # should deliver every message that arrived while the device had no network
-# The messages are posted over REST from the host, which keeps its own network while the device
-# has none, so this reproduces a real backlog rather than a queued local send.
 - setAirplaneMode: enabled
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-1')}
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-2')}
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-3')}
+- evalScript: ${output.utils.sleep(5000)}
+- assertNotVisible:
+    id: 'message-content-${output.tag}-1'
 - assertNotVisible:
     id: 'message-content-${output.tag}-3'
 - setAirplaneMode: disabled
