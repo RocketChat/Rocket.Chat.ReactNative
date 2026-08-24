@@ -146,7 +146,7 @@ export default async function updateMessages({
 			try {
 				return message.prepareUpdate(
 					protectedFunction((m: TMessageModel) => {
-						const { attachments } = m;
+						const { attachments, urls } = m;
 						if (newMessage && !newMessage?.blocks) {
 							newMessage.blocks = null;
 						}
@@ -162,6 +162,10 @@ export default async function updateMessages({
 						// If image_url didn't change, keep the same attachments, trying to stick to already downloaded media inside att.title_link (starting with file://)
 						if (attachments?.[0]?.image_url === newMessage?.attachments?.[0]?.image_url) {
 							m.attachments = attachments;
+						}
+
+						if (!newMessage?.urls?.length && urls?.length) {
+							m.urls = urls;
 						}
 					})
 				);

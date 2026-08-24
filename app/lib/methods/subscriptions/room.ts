@@ -282,7 +282,12 @@ export default class RoomSubscription {
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
+								const { urls } = m;
 								Object.assign(m, message);
+
+								if (!message.urls?.length && urls?.length) {
+									m.urls = urls;
+								}
 							})
 						)
 					);

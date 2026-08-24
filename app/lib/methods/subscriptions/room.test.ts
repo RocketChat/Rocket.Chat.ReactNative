@@ -161,6 +161,23 @@ describe('RoomSubscription', () => {
 		});
 	});
 
+	describe('updateMessage urls preservation', () => {
+		it('keeps the existing resolved link preview when a partial sync payload carries no urls', async () => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(null);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			// Simulates a later partial-sync event for the same message that carries no url metadata
+			// (already normalized to [] upstream) — it must not wipe out the previously resolved preview.
+			await sub.updateMessage({ _id, rid, msg: 'hi', urls: [] } as any);
+
+			expect(messageRecord.urls).toEqual(existingUrls);
+		});
+	});
+
 	describe('deleteMessage concurrency', () => {
 		let interactionTask: Promise<unknown> | null = null;
 
