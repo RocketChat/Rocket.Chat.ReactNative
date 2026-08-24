@@ -230,7 +230,6 @@ const RoomInfoView = (): ReactElement => {
 	};
 
 	const createDirect = async (): Promise<void | ISubscription> => {
-		// We don't need to create a direct
 		if (!isEmpty(member)) return;
 		const result = await createDirectMessage(roomUser.username);
 		if (!result.success) {

@@ -206,12 +206,8 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
-		// Saga has dispatchedActions appReady and selected state.app.root.
-		// Root is NOT yet ROOT_INSIDE (reducer hasn't seen ROOT_INSIDE yet),
-		// so saga is waiting for APP.START(ROOT_INSIDE).
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
-		// Now dispatch APP.START(ROOT_INSIDE) — this satisfies the take.
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
 

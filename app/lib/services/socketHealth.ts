@@ -13,12 +13,9 @@ import sdk, { type ISocketDriver } from './sdk';
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
 export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan {
-	// `driver.connected` already folds in the ping-age test, so a stale ping lands here.
 	if (!driver.connected) {
 		return 'reopen';
 	}
-	// A connected socket is still verified by a round trip, never trusted outright:
-	// onOpen refreshes lastPing before the handshake reply lands.
 	return 'round-trip-check';
 }
 
@@ -26,7 +23,6 @@ export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan 
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — `sdk.driver` is null; nothing to recover.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
