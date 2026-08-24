@@ -44,6 +44,8 @@ let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
 const WINDOW_TIME = 500;
 
+const subscribedHost = () => sdk.host;
+
 export let roomsSubscription: { stop: () => void } | null = null;
 
 const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
@@ -301,9 +303,7 @@ export default function subscribeRooms() {
 	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const db = database.active;
 
-		// check if the server from variable is the same as the js sdk client
-		const host = sdk.host;
-		if (!host || host !== subServer) {
+		if (!subServer || subscribedHost() !== subServer) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -437,7 +437,7 @@ export default function subscribeRooms() {
 		subServer = null;
 	};
 
-	const host = sdk.host;
+	const host = subscribedHost();
 	if (!host) {
 		return null;
 	}
