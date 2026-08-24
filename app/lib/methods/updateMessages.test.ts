@@ -79,7 +79,7 @@ describe('updateMessages', () => {
 		expect(messageRecord.urls).toEqual(existingUrls);
 	});
 
-	it('keeps the existing resolved link preview on the thread record when a partial sync payload carries no urls', async () => {
+	it('keeps the existing resolved link preview on the thread record when a partial sync payload carries no urls', async (): Promise<void> => {
 		const _id = 'KXse45i7gGYE8j4Xb';
 		const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
 		const messageRecord = makeFakeRecord(`messages#${_id}`, { unread: false });
@@ -93,7 +93,7 @@ describe('updateMessages', () => {
 		expect(threadRecord.urls).toEqual(existingUrls);
 	});
 
-	it('keeps the existing resolved link preview on the thread message record when a partial sync payload carries no urls', async () => {
+	it('keeps the existing resolved link preview on the thread message record when a partial sync payload carries no urls', async (): Promise<void> => {
 		const _id = 'KXse45i7gGYE8j4Xb';
 		const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
 		const messageRecord = makeFakeRecord(`messages#${_id}`, { unread: false });
