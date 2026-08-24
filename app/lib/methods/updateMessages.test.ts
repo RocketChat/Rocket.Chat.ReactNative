@@ -78,4 +78,32 @@ describe('updateMessages', () => {
 
 		expect(messageRecord.urls).toEqual(existingUrls);
 	});
+
+	it('keeps the existing resolved link preview on the thread record when a partial sync payload carries no urls', async () => {
+		const _id = 'KXse45i7gGYE8j4Xb';
+		const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+		const messageRecord = makeFakeRecord(`messages#${_id}`, { unread: false });
+		const threadRecord = makeFakeRecord(`threads#${_id}`, { urls: existingUrls, _updatedAt: 1 });
+		collections.messages = new FakeCollection([messageRecord]);
+		collections.threads = new FakeCollection([threadRecord]);
+		(globalThis as any).__collections = collections;
+
+		await updateMessages({ rid, update: [{ _id, rid, msg: 'hi', tlm: { $date: 2 }, _updatedAt: 2 } as any] });
+
+		expect(threadRecord.urls).toEqual(existingUrls);
+	});
+
+	it('keeps the existing resolved link preview on the thread message record when a partial sync payload carries no urls', async () => {
+		const _id = 'KXse45i7gGYE8j4Xb';
+		const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+		const messageRecord = makeFakeRecord(`messages#${_id}`, { unread: false });
+		const threadMessageRecord = makeFakeRecord(`thread_messages#${_id}`, { urls: existingUrls, _updatedAt: 1 });
+		collections.messages = new FakeCollection([messageRecord]);
+		collections.thread_messages = new FakeCollection([threadMessageRecord]);
+		(globalThis as any).__collections = collections;
+
+		await updateMessages({ rid, update: [{ _id, rid, msg: 'hi', tmid: 'parent-thread-id', _updatedAt: 2 } as any] });
+
+		expect(threadMessageRecord.urls).toEqual(existingUrls);
+	});
 });

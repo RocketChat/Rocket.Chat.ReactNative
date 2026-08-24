@@ -178,7 +178,12 @@ export default async function updateMessages({
 			try {
 				return thread.prepareUpdate(
 					protectedFunction((t: TThreadModel) => {
+						const { urls } = t;
 						Object.assign(t, newThread);
+
+						if (!newThread?.urls?.length && urls?.length) {
+							t.urls = urls;
+						}
 					})
 				);
 			} catch {
@@ -190,10 +195,15 @@ export default async function updateMessages({
 			try {
 				return threadMessage.prepareUpdate(
 					protectedFunction((tm: TThreadMessageModel) => {
+						const { urls } = tm;
 						if (newThreadMessage && !newThreadMessage?.blocks) {
 							newThreadMessage.blocks = null;
 						}
 						Object.assign(tm, newThreadMessage);
+
+						if (!newThreadMessage?.urls?.length && urls?.length) {
+							tm.urls = urls;
+						}
 						if (threadMessage.tmid) {
 							tm.rid = threadMessage.tmid;
 						}
