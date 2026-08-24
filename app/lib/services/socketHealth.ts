@@ -26,7 +26,6 @@ export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan 
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — nothing to recover; no attempt was made.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
