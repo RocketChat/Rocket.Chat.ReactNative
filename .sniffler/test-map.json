@@ -254,10 +254,10 @@
 		"dependsOn": [
 			"app/lib/services/sdk.ts",
 			"app/lib/services/socketHealth.ts",
-			"app/sagas/login.js",
+			"app/lib/methods/loadMissedMessages.ts",
+			"app/lib/methods/subscriptions/room.ts",
 			"app/sagas/rooms.js",
-			"app/views/RoomView/**",
-			"app/views/RoomsListView/**"
+			"app/views/RoomView/**"
 		]
 	},
 	{

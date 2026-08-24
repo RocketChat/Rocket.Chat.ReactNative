@@ -209,7 +209,7 @@ function logAccounts() {
     console.log(JSON.stringify(data.accounts));
 }
 
-const sleep = (ms) => {
+const busyWait = (ms) => {
     const start = Date.now();
     while (Date.now() - start < ms) { }
 }
@@ -240,7 +240,7 @@ const retryRequest = (fn, {
         if (attempt < retries) {
             const wait = delay * Math.pow(factor, attempt - 1);
             console.log(`Retry ${attempt}/${retries} after ${wait}ms`);
-            sleep(wait);
+            busyWait(wait);
         }
     }
 
@@ -264,5 +264,5 @@ output.utils = {
     login,
     getDeepLink,
     createDM,
-    sleep
+    busyWait
 };
