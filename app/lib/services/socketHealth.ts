@@ -1,5 +1,5 @@
 import { onAbort } from '../methods/helpers/onAbort';
-import sdk, { type TDriver } from './sdk';
+import sdk, { type ISocket } from './sdk';
 
 /**
  * The recovery plan — what classification decides.
@@ -12,9 +12,9 @@ import sdk, { type TDriver } from './sdk';
  */
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
-export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
-	// `driver.connected` already folds in the ping-age test, so a stale ping lands here.
-	if (!driver.connected) {
+export function classifySocketHealth(socket: ISocket): SocketRecoveryPlan {
+	// `socket.connected` already folds in the ping-age test, so a stale ping lands here.
+	if (!socket.connected) {
 		return 'reopen';
 	}
 	// A connected socket is still verified by a round trip, never trusted outright:
@@ -26,7 +26,7 @@ export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — `sdk.current?.driver` undefined; nothing to recover.
+ * - `'no-socket'`       — `sdk.socket` undefined; nothing to recover.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
@@ -43,20 +43,20 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
 	}
-	const driver = sdk.current?.driver;
-	if (!driver) {
+	const { socket } = sdk;
+	if (!socket) {
 		return Promise.resolve('no-socket');
 	}
 	const recovery = (async (): Promise<SocketRecoveryOutcome> => {
-		if (classifySocketHealth(driver) === 'reopen') {
-			await driver.reopenNow();
+		if (classifySocketHealth(socket) === 'reopen') {
+			await socket.reopenNow();
 			return 'reopened';
 		}
-		const alive = await driver.probe(2000);
+		const alive = await socket.probe(2000);
 		if (alive) {
 			return 'confirmed-alive';
 		}
-		await driver.reopenNow();
+		await socket.reopenNow();
 		return 'reopened';
 	})();
 	inFlightRecovery = recovery;

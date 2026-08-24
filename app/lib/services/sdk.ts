@@ -17,6 +17,16 @@ import { compareServerVersion, random } from '../methods/helpers';
 
 export type TDriver = Rocketchat['driver'];
 
+/**
+ * The Meteor Connect socket, narrowed to what Socket Health needs.
+ * Keeps `driver` an implementation detail of this module.
+ */
+export interface ISocket {
+	connected: boolean;
+	reopenNow: () => Promise<void>;
+	probe: (timeout: number) => Promise<boolean>;
+}
+
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
 export interface IStreamDataListener {
@@ -41,6 +51,10 @@ class Sdk {
 
 	get current(): Rocketchat {
 		return this.sdk;
+	}
+
+	get socket(): ISocket | undefined {
+		return this.sdk?.driver;
 	}
 
 	/**

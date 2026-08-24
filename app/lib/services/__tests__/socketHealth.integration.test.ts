@@ -21,7 +21,7 @@ jest.mock('universal-websocket-client', () =>
 
 jest.mock('../sdk', () => ({
 	__esModule: true,
-	default: { current: undefined }
+	default: { socket: undefined }
 }));
 
 const USER_ID = 'user-id';
@@ -36,7 +36,7 @@ describe('recoverSocket against the real SDK socket', () => {
 		jest.useFakeTimers();
 		mockConnections.length = 0;
 		driver = await buildConnectedDriver(mockConnections, USER_ID);
-		(sdk as unknown as { current: { driver: ISdkDriver } }).current = { driver };
+		(sdk as unknown as { socket: ISdkDriver }).socket = driver;
 	});
 
 	afterEach(() => {
