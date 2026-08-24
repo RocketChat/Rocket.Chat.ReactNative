@@ -15,14 +15,12 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-export interface ISocketProbe {
+export interface ISocketDriver {
 	readonly connected: boolean;
 	reopenNow(): Promise<void>;
 	probe(timeoutMs?: number): Promise<boolean>;
 	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
 }
-
-export type TDriver = ISocketProbe;
 
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
@@ -63,8 +61,8 @@ class Sdk {
 		return this.sdk?.currentLogin ?? null;
 	}
 
-	get driver(): ISocketProbe | null {
-		return (this.sdk?.driver as unknown as ISocketProbe | undefined) ?? null;
+	get driver(): ISocketDriver | null {
+		return this.sdk?.driver ?? null;
 	}
 
 	get hasClient(): boolean {

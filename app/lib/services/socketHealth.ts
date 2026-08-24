@@ -1,5 +1,5 @@
 import { onAbort } from '../methods/helpers/onAbort';
-import sdk, { type TDriver } from './sdk';
+import sdk, { type ISocketDriver } from './sdk';
 
 /**
  * The recovery plan — what classification decides.
@@ -12,7 +12,7 @@ import sdk, { type TDriver } from './sdk';
  */
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
-export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
+export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan {
 	// `driver.connected` already folds in the ping-age test, so a stale ping lands here.
 	if (!driver.connected) {
 		return 'reopen';

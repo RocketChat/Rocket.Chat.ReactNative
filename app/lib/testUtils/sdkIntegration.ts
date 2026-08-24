@@ -3,7 +3,7 @@ import type { Store } from 'redux';
 
 import type { IApplicationState } from '../../definitions';
 import type sdk from '../services/sdk';
-import type { ISocketProbe } from '../services/sdk';
+import type { ISocketDriver } from '../services/sdk';
 
 export interface IDdpMessage {
 	msg: string;
@@ -45,7 +45,7 @@ export class MockConnection {
 	}
 }
 
-export interface ISdkDriver extends ISocketProbe {
+export interface ISdkDriver extends ISocketDriver {
 	userId: string;
 	pingInterval: number;
 	socket: {
@@ -60,7 +60,7 @@ export interface ISdkDriver extends ISocketProbe {
 
 export interface IMockSdkClient {
 	host?: string;
-	driver?: ISocketProbe;
+	driver?: ISocketDriver;
 }
 
 export type IMockSdk = Pick<typeof sdk, 'host' | 'driver' | 'hasClient'> & {

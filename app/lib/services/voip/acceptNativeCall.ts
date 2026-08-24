@@ -1,6 +1,6 @@
 import log from '../../methods/helpers/log';
 import { onAbort } from '../../methods/helpers/onAbort';
-import sdk, { type TDriver } from '../sdk';
+import sdk, { type ISocketDriver } from '../sdk';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';
 import { terminateNativeCall } from './terminateNativeCall';
@@ -15,7 +15,7 @@ export interface NativeCallMediaSession {
 
 const activeGates = new Map<string, AbortController>();
 
-async function waitForMediaSignalSubs(driver: TDriver, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
+async function waitForMediaSignalSubs(driver: ISocketDriver, timeoutMs: number, abortSignal?: AbortSignal): Promise<boolean> {
 	if (abortSignal?.aborted) {
 		return false;
 	}

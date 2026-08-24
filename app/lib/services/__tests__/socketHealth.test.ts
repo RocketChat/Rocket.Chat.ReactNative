@@ -1,4 +1,4 @@
-import sdk, { type TDriver } from '../sdk';
+import sdk, { type ISocketDriver } from '../sdk';
 import { classifySocketHealth, recoverSocket } from '../socketHealth';
 import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
 import type { IMockSdk, ISdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
@@ -46,12 +46,12 @@ describe('socket health against a driver from the shared harness', () => {
 
 	describe('classifySocketHealth', () => {
 		it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
-			expect(classifySocketHealth(driver as unknown as TDriver)).toBe('round-trip-check');
+			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('round-trip-check');
 		});
 
 		it('returns reopen for a closed socket even when lastPing is fresh', () => {
 			mockConnections[0].readyState = CLOSED;
-			expect(classifySocketHealth(driver as unknown as TDriver)).toBe('reopen');
+			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('reopen');
 		});
 	});
 
