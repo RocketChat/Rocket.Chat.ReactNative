@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-// Floating date bubble, like web's: fades in while the list scrolls and out once it settles.
 const FloatingDateSeparator = ({ ts, opacity }: { ts?: Date | string | null; opacity: SharedValue<number> }) => {
 	const style = useAnimatedStyle(() => ({ opacity: opacity.get() }));
 

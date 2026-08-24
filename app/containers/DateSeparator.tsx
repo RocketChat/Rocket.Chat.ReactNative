@@ -24,11 +24,10 @@ const styles = StyleSheet.create({
 		borderRadius: 16
 	},
 	marginHorizontal: {
-		marginHorizontal: 14
+		marginHorizontal: 12
 	}
 });
 
-// The date pill itself, shared with the floating date bubble so both look exactly the same.
 export const DateSeparatorLabel = ({ date }: { date: string }): ReactElement => {
 	const { colors } = useTheme();
 
