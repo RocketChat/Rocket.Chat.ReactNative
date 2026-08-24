@@ -59,6 +59,6 @@ describe('two-factor cancellation', () => {
 	});
 
 	it('surfaces a generic login error when the login path reports a cancellation', () => {
-		expect(handleLoginErrors(undefined as any)).toBe('Login_error');
+		expect(handleLoginErrors((cancelled as any).error)).toBe('Login_error');
 	});
 });

@@ -61,7 +61,7 @@ export const useAvatarETag = ({
 				}
 			};
 		}
-	}, [text]);
+	}, [text, username, type, rid, id]);
 
 	return { avatarETag };
 };

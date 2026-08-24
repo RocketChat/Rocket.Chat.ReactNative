@@ -232,10 +232,10 @@ const RoomInfoView = (): ReactElement => {
 	const createDirect = async (): Promise<void | ISubscription> => {
 		if (!isEmpty(member)) return;
 		const result = await createDirectMessage(roomUser.username);
-		if (!result.success) {
+		if (!result?.success || !result.room?._id) {
 			throw new Error('Failed to create direct message');
 		}
-		return { ...roomUser, rid: result.room.rid };
+		return { ...roomUser, rid: result.room._id };
 	};
 
 	const handleGoRoom = (r?: ISubscription) => {
