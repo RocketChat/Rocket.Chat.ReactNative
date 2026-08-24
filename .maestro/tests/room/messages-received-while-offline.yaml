@@ -36,7 +36,7 @@ tags:
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-1')}
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-2')}
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-3')}
-- evalScript: ${output.utils.busyWait(5000)}
+- evalScript: ${output.utils.sleep(5000)}
 - assertNotVisible:
     id: 'message-content-${output.tag}-1'
 - assertNotVisible:
