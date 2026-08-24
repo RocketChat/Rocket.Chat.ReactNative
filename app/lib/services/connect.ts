@@ -86,9 +86,9 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		sdk.initialize(server);
-		getSettings();
+		getSettings(server);
 
-		sdk.current
+		sdk
 			.connect()
 			.then(() => {
 				console.log('connected');
@@ -97,11 +97,11 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 				console.log('connect error', err);
 			});
 
-		connectingListener = sdk.current.onStreamData('connecting', () => {
+		connectingListener = sdk.onStreamData('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		connectedListener = sdk.current.onStreamData('connected', () => {
+		connectedListener = sdk.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -117,12 +117,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
 
-		closeListener = sdk.current.onStreamData('close', () => {
+		closeListener = sdk.onStreamData('close', () => {
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
+		pendingHangupsConnectedListener = sdk.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
@@ -134,12 +134,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		usersListener = sdk.current.onStreamData(
+		usersListener = sdk.onStreamData(
 			'users',
 			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		notifyAllListener = sdk.current.onStreamData(
+		notifyAllListener = sdk.onStreamData(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -177,7 +177,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		rolesListener = sdk.current.onStreamData(
+		rolesListener = sdk.onStreamData(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
@@ -199,7 +199,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		notifyLoggedListener = sdk.current.onStreamData(
+		notifyLoggedListener = sdk.onStreamData(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -290,7 +290,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+		logoutListener = sdk.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
@@ -301,10 +301,13 @@ function stopListener(listener: any): void {
 }
 
 async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
+	if (!sdk.isInitialized) {
+		throw new Error('Cannot login before a server is selected');
+	}
 	// RC 0.64.0
-	await sdk.current.login(credentials);
+	const currentLogin = await sdk.login(credentials);
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current.currentLogin?.result;
+	const result = currentLogin?.result;
 	if (!result) {
 		throw new Error('Login failed: missing login result');
 	}
@@ -408,16 +411,15 @@ async function loginOAuthOrSso(params: ILoginCredentials) {
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
-function abort() {
-	if (sdk.current) {
-		return sdk.current.abort();
+function abort(): void {
+	if (sdk.isInitialized) {
+		sdk.abort();
 	}
 }
 
-function disconnect() {
-	const result = sdk.disconnect();
+function disconnect(): void {
+	sdk.disconnect();
 	mediaSessionInstance.reset();
-	return result;
 }
 
 async function getWebsocketInfo({

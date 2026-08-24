@@ -56,7 +56,7 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 
 	it('reads the live host off the real SDK client and cancels the select without reconnecting', async () => {
 		sdk.initialize(HOST);
-		expect(sdk.current.client.host).toBe(HOST);
+		expect(sdk.host).toBe(HOST);
 
 		const { store, dispatchedActions } = createRecordingStore(selectServerRoot);
 

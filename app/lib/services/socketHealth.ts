@@ -1,5 +1,5 @@
 import { onAbort } from '../methods/helpers/onAbort';
-import sdk, { type TDriver } from './sdk';
+import sdk, { type ISocketDriver } from './sdk';
 
 /**
  * The recovery plan — what classification decides.
@@ -12,7 +12,7 @@ import sdk, { type TDriver } from './sdk';
  */
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
-export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
+export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan {
 	// `driver.connected` already folds in the ping-age test, so a stale ping lands here.
 	if (!driver.connected) {
 		return 'reopen';
@@ -26,7 +26,7 @@ export function classifySocketHealth(driver: TDriver): SocketRecoveryPlan {
  * What a recovery attempt reports.
  * - `'confirmed-alive'` — round trip succeeded; nothing was done.
  * - `'reopened'`        — socket reopened (stale ping, or round trip failed).
- * - `'no-socket'`       — `sdk.current?.driver` undefined; nothing to recover.
+ * - `'no-socket'`       — `sdk.driver` is null; nothing to recover.
  * - `'abandoned'`       — caller's abort signal fired while waiting; the
  *                         underlying recovery (shared — see below) runs on.
  *
@@ -43,7 +43,7 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 	if (inFlightRecovery) {
 		return inFlightRecovery;
 	}
-	const driver = sdk.current?.driver;
+	const driver = sdk.driver;
 	if (!driver) {
 		return Promise.resolve('no-socket');
 	}

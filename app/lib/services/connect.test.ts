@@ -23,23 +23,26 @@ const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args
 const mockSdkConnect = jest.fn<Promise<void>, []>(() => Promise.resolve());
 const mockSdkAbort = jest.fn<void, []>();
 const mockSdkDisconnect = jest.fn<void, []>();
-const mockSdkInitialize = jest.fn<void, [string]>();
 const mockSdkLogin = jest.fn<Promise<void>, [unknown]>(() => Promise.resolve());
 const mockSdkCurrent: Record<string, unknown> = {
-	onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
-	connect: () => mockSdkConnect(),
-	abort: () => mockSdkAbort(),
-	login: (credentials: unknown) => mockSdkLogin(credentials),
 	currentLogin: undefined
 };
+const mockSdkInitialize = jest.fn<void, [string]>();
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
 		initialize: (server: string) => mockSdkInitialize(server),
+		connect: () => mockSdkConnect(),
 		disconnect: () => mockSdkDisconnect(),
 		onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
-		get current() {
-			return mockSdkCurrent;
+		isInitialized: true,
+		login: async (credentials: unknown) => {
+			await mockSdkLogin(credentials);
+			return mockSdkCurrent.currentLogin ?? null;
+		},
+		abort: () => mockSdkAbort(),
+		get currentLogin() {
+			return mockSdkCurrent.currentLogin;
 		}
 	}
 }));

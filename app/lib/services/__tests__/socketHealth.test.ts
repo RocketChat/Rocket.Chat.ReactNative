@@ -1,144 +1,144 @@
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: {
-		current: { driver: undefined }
-	}
-}));
-
-import sdk, { type TDriver } from '../sdk';
+import sdk, { type ISocketDriver } from '../sdk';
 import { classifySocketHealth, recoverSocket } from '../socketHealth';
+import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
-const now = 1_000_000;
+const mockConnections: MockConnection[] = [];
 
-const sdkMock = sdk as unknown as { current: { driver: unknown } | undefined };
+jest.mock('universal-websocket-client', () =>
+	jest.fn().mockImplementation(() => {
+		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+		return new sdkIntegration.MockConnection(mockConnections);
+	})
+);
 
-interface MockDriver {
-	connected: boolean;
-	lastPing: number;
-	pingInterval: number;
-	reopenNow: jest.Mock<Promise<void>, []>;
-	probe: jest.Mock<Promise<boolean>, [number]>;
-}
+jest.mock('../sdk', () => {
+	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+});
 
-function makeDriver(overrides: Partial<MockDriver> = {}): MockDriver {
-	return {
-		connected: true,
-		lastPing: now,
-		pingInterval: 10000,
-		reopenNow: jest.fn<Promise<void>, []>(() => Promise.resolve()),
-		probe: jest.fn<Promise<boolean>, [number]>(() => Promise.resolve(true)),
-		...overrides
-	};
-}
+const sdkMock = sdk as unknown as IMockSdk;
 
-describe('classifySocketHealth', () => {
-	beforeEach(() => {
-		jest.spyOn(Date, 'now').mockReturnValue(now);
+const USER_ID = 'user-id';
+const CLOSED = 3;
+
+describe('socket health against a driver from the shared harness', () => {
+	let driver: IMockSdkDriver;
+	let probe: jest.SpyInstance<Promise<boolean>, [number?]>;
+	let reopenNow: jest.SpyInstance<Promise<void>, []>;
+
+	beforeEach(async () => {
+		jest.clearAllMocks();
+		jest.useFakeTimers();
+		mockConnections.length = 0;
+		driver = await buildConnectedDriver(mockConnections, USER_ID);
+		probe = jest.spyOn(driver, 'probe').mockResolvedValue(true);
+		reopenNow = jest.spyOn(driver, 'reopenNow').mockResolvedValue();
+		sdkMock.setClient({ driver });
 	});
 
 	afterEach(() => {
-		jest.restoreAllMocks();
+		if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
+		if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
+		jest.useRealTimers();
 	});
 
-	it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
-		const driver = makeDriver({ connected: true });
-		expect(classifySocketHealth(driver as unknown as TDriver)).toBe('round-trip-check');
+	describe('classifySocketHealth', () => {
+		it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
+			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('round-trip-check');
+		});
+
+		it('returns reopen for a closed socket even when lastPing is fresh', () => {
+			mockConnections[0].readyState = CLOSED;
+			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('reopen');
+		});
 	});
 
-	it('returns reopen for a closed socket even when lastPing is fresh', () => {
-		const driver = makeDriver({ connected: false, lastPing: now });
-		expect(classifySocketHealth(driver as unknown as TDriver)).toBe('reopen');
-	});
-});
+	describe('recoverSocket', () => {
+		it('keeps a socket whose round trip answers', async () => {
+			await expect(recoverSocket()).resolves.toBe('confirmed-alive');
+			expect(reopenNow).not.toHaveBeenCalled();
+		});
 
-describe('recoverSocket', () => {
-	let driver: MockDriver;
+		it('runs the round trip with a 2s budget', async () => {
+			await recoverSocket();
+			expect(probe).toHaveBeenCalledWith(2000);
+		});
 
-	beforeEach(() => {
-		driver = makeDriver({ lastPing: Date.now() });
-		sdkMock.current = { driver };
-	});
+		it('reopens when the round trip goes unanswered', async () => {
+			probe.mockResolvedValue(false);
+			await expect(recoverSocket()).resolves.toBe('reopened');
+			expect(reopenNow).toHaveBeenCalledTimes(1);
+		});
 
-	it('keeps a socket whose round trip answers', async () => {
-		await expect(recoverSocket()).resolves.toBe('confirmed-alive');
-		expect(driver.reopenNow).not.toHaveBeenCalled();
-	});
+		it('reopens a known-dead socket without a round trip', async () => {
+			mockConnections[0].readyState = CLOSED;
+			await expect(recoverSocket()).resolves.toBe('reopened');
+			expect(probe).not.toHaveBeenCalled();
+			expect(reopenNow).toHaveBeenCalledTimes(1);
+		});
 
-	it('runs the round trip with a 2s budget', async () => {
-		await recoverSocket();
-		expect(driver.probe).toHaveBeenCalledWith(2000);
-	});
+		it('reports no-socket when the driver handle is missing', async () => {
+			sdkMock.setClient({});
+			await expect(recoverSocket()).resolves.toBe('no-socket');
+			expect(probe).not.toHaveBeenCalled();
+			expect(reopenNow).not.toHaveBeenCalled();
+		});
 
-	it('reopens when the round trip goes unanswered', async () => {
-		driver.probe.mockResolvedValue(false);
-		await expect(recoverSocket()).resolves.toBe('reopened');
-		expect(driver.reopenNow).toHaveBeenCalledTimes(1);
-	});
+		it('reports no-socket when there is no client at all', async () => {
+			sdkMock.setClient(null);
+			await expect(recoverSocket()).resolves.toBe('no-socket');
+			expect(probe).not.toHaveBeenCalled();
+			expect(reopenNow).not.toHaveBeenCalled();
+		});
 
-	it('reopens a known-dead socket without a round trip', async () => {
-		driver.connected = false;
-		await expect(recoverSocket()).resolves.toBe('reopened');
-		expect(driver.probe).not.toHaveBeenCalled();
-		expect(driver.reopenNow).toHaveBeenCalledTimes(1);
-	});
+		it('rejects when the round trip throws', async () => {
+			probe.mockRejectedValue(new Error('round trip failed'));
+			await expect(recoverSocket()).rejects.toThrow('round trip failed');
+		});
 
-	it('reports no-socket when the driver handle is missing', async () => {
-		sdkMock.current = { driver: undefined };
-		await expect(recoverSocket()).resolves.toBe('no-socket');
-		expect(driver.probe).not.toHaveBeenCalled();
-		expect(driver.reopenNow).not.toHaveBeenCalled();
-	});
+		it('rejects when reopening throws', async () => {
+			mockConnections[0].readyState = CLOSED;
+			reopenNow.mockRejectedValue(new Error('reopen failed'));
+			await expect(recoverSocket()).rejects.toThrow('reopen failed');
+		});
 
-	it('reports no-socket when there is no sdk instance', async () => {
-		sdkMock.current = undefined;
-		await expect(recoverSocket()).resolves.toBe('no-socket');
-	});
+		it('shares one in-flight recovery between overlapping callers', async () => {
+			const outcomes = await Promise.all([recoverSocket(), recoverSocket()]);
+			expect(outcomes).toEqual(['confirmed-alive', 'confirmed-alive']);
+			expect(probe).toHaveBeenCalledTimes(1);
+		});
 
-	it('rejects when the round trip throws', async () => {
-		driver.probe.mockRejectedValue(new Error('round trip failed'));
-		await expect(recoverSocket()).rejects.toThrow('round trip failed');
-	});
+		it('starts a fresh recovery after the shared one settles', async () => {
+			await recoverSocket();
+			await recoverSocket();
+			expect(probe).toHaveBeenCalledTimes(2);
+		});
 
-	it('rejects when reopening throws', async () => {
-		driver.connected = false;
-		driver.reopenNow.mockRejectedValue(new Error('reopen failed'));
-		await expect(recoverSocket()).rejects.toThrow('reopen failed');
-	});
+		it('abandons the aborted caller while the shared recovery runs on', async () => {
+			let answerRoundTrip: (alive: boolean) => void = () => {};
+			probe.mockImplementation(() => new Promise<boolean>(resolve => (answerRoundTrip = resolve)));
 
-	it('shares one in-flight recovery between overlapping callers', async () => {
-		const outcomes = await Promise.all([recoverSocket(), recoverSocket()]);
-		expect(outcomes).toEqual(['confirmed-alive', 'confirmed-alive']);
-		expect(driver.probe).toHaveBeenCalledTimes(1);
-	});
+			const controller = new AbortController();
+			const aborted = recoverSocket({ abortSignal: controller.signal });
+			const other = recoverSocket();
 
-	it('starts a fresh recovery after the shared one settles', async () => {
-		await recoverSocket();
-		await recoverSocket();
-		expect(driver.probe).toHaveBeenCalledTimes(2);
-	});
+			controller.abort();
+			await expect(aborted).resolves.toBe('abandoned');
 
-	it('abandons the aborted caller while the shared recovery runs on', async () => {
-		let answerRoundTrip: (alive: boolean) => void = () => {};
-		driver.probe.mockImplementation(() => new Promise<boolean>(resolve => (answerRoundTrip = resolve)));
+			answerRoundTrip(true);
+			await expect(other).resolves.toBe('confirmed-alive');
+			expect(probe).toHaveBeenCalledTimes(1);
+		});
 
-		const controller = new AbortController();
-		const aborted = recoverSocket({ abortSignal: controller.signal });
-		const other = recoverSocket();
+		it('abandons a pre-aborted caller without touching the socket', async () => {
+			const controller = new AbortController();
+			controller.abort();
 
-		controller.abort();
-		await expect(aborted).resolves.toBe('abandoned');
-
-		answerRoundTrip(true);
-		await expect(other).resolves.toBe('confirmed-alive');
-		expect(driver.probe).toHaveBeenCalledTimes(1);
-	});
-
-	it('abandons a pre-aborted caller without touching the socket', async () => {
-		const controller = new AbortController();
-		controller.abort();
-
-		await expect(recoverSocket({ abortSignal: controller.signal })).resolves.toBe('abandoned');
-		expect(driver.probe).not.toHaveBeenCalled();
-		expect(driver.reopenNow).not.toHaveBeenCalled();
+			await expect(recoverSocket({ abortSignal: controller.signal })).resolves.toBe('abandoned');
+			expect(probe).not.toHaveBeenCalled();
+			expect(reopenNow).not.toHaveBeenCalled();
+		});
 	});
 });

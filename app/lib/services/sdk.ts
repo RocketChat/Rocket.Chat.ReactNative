@@ -1,5 +1,5 @@
 import { Rocketchat } from '@rocket.chat/sdk';
-import { type ICallback, type ISubscription } from '@rocket.chat/sdk/interfaces';
+import { type ICallback, type ICurrentLogin, type ILoginCredentials, type ISubscription } from '@rocket.chat/sdk/interfaces';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
@@ -15,7 +15,12 @@ import {
 } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-export type TDriver = Rocketchat['driver'];
+export interface ISocketDriver {
+	readonly connected: boolean;
+	reopenNow(): Promise<void>;
+	probe(timeoutMs?: number): Promise<boolean>;
+	waitForNotifyUserMediaSubs(timeoutMs?: number): Promise<boolean>;
+}
 
 export type TStreamDataCallback = (ddpMessage: any) => void;
 
@@ -24,36 +29,65 @@ export interface IStreamDataListener {
 }
 
 class Sdk {
-	private sdk!: Rocketchat;
+	private sdk: Rocketchat | null = null;
 	private code: any;
+
+	private get activeSdk(): Rocketchat {
+		if (!this.sdk) {
+			throw new Error('Sdk is not initialized');
+		}
+		return this.sdk;
+	}
 
 	private initializeSdk(server: string): Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
 		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
 
-	// TODO: We need to stop returning the SDK after all methods are dehydrated
-	initialize(server: string) {
+	initialize(server: string): void {
 		this.code = null;
 		this.sdk = this.initializeSdk(server);
-		return this.sdk;
 	}
 
-	get current(): Rocketchat {
-		return this.sdk;
+	connect(): Promise<unknown> {
+		return this.activeSdk.connect();
 	}
 
-	/**
-	 * TODO: evaluate the need for assigning "null" to this.sdk
-	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
-	 */
-	disconnect() {
+	get host(): string | null {
+		return this.sdk?.client.host ?? null;
+	}
+
+	get currentLogin(): ICurrentLogin | null {
+		return this.sdk?.currentLogin ?? null;
+	}
+
+	get driver(): ISocketDriver | null {
+		return this.sdk?.driver ?? null;
+	}
+
+	get isInitialized(): boolean {
+		return this.sdk !== null;
+	}
+
+	async login(credentials: ILoginCredentials): Promise<ICurrentLogin | null> {
+		const client = this.activeSdk;
+		await client.login(credentials);
+		return client.currentLogin ?? null;
+	}
+
+	abort(): void {
+		this.activeSdk.abort();
+	}
+
+	subscribeNotifyUser() {
+		return this.activeSdk.subscribeNotifyUser();
+	}
+
+	disconnect(): void {
 		if (this.sdk) {
 			this.sdk.disconnect();
-			// @ts-expect-error
 			this.sdk = null;
 		}
-		return null;
 	}
 
 	get<TPath extends PathFor<'GET'>>(
@@ -67,7 +101,7 @@ class Sdk {
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.current.get(endpoint, params);
+		return this.activeSdk.get(endpoint, params);
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -84,7 +118,7 @@ class Sdk {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
-				const result = await this.current.post(endpoint, params);
+				const result = await this.activeSdk.post(endpoint, params);
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -117,13 +151,31 @@ class Sdk {
 		});
 	}
 
+	del<TPath extends PathFor<'DELETE'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'DELETE', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+			'DELETE',
+			MatchPathPattern<TPath>
+		>
+			? void
+			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>>
+	): Promise<Serialized<ResultFor<'DELETE', MatchPathPattern<TPath>>>> {
+		return this.activeSdk.del(endpoint, params);
+	}
+
+	logout() {
+		return this.activeSdk.logout();
+	}
+
 	methodCall(method: string, ...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
 				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
-				const result = await this.current.methodCall(method, ...args, ...(code ? [code] : []));
+				const result = await this.activeSdk.methodCall(method, ...args, ...(code ? [code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -161,11 +213,11 @@ class Sdk {
 	}
 
 	subscribe(topic: string, eventName?: string, ...args: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribe(topic, eventName as string, ...args);
+		return this.activeSdk.subscribe(topic, eventName as string, ...args);
 	}
 
 	subscribeRaw(name: string, params: any[]): Promise<ISubscription | undefined> {
-		return this.current.subscribeRaw(name, params);
+		return this.activeSdk.subscribeRaw(name, params);
 	}
 
 	subscribeRoom(...args: any[]) {
@@ -190,11 +242,11 @@ class Sdk {
 	}
 
 	unsubscribe(subscription: ISubscription) {
-		return this.current.unsubscribe(subscription);
+		return this.activeSdk.unsubscribe(subscription);
 	}
 
 	onStreamData(event: string, callback: TStreamDataCallback): Promise<IStreamDataListener> {
-		return this.current.onStreamData(event, callback as ICallback);
+		return this.activeSdk.onStreamData(event, callback as ICallback);
 	}
 }
 

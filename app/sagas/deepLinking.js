@@ -161,7 +161,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 			return;
 		}
 		yield put(selectServerRequest(server, serverRecord.version));
-		if (sdk.current?.client?.host !== server) {
+		if (sdk.host !== server) {
 			const { loginSuccess } = yield race({
 				loginSuccess: take(types.LOGIN.SUCCESS),
 				loginFailure: take(types.LOGIN.FAILURE),
@@ -248,7 +248,7 @@ const handleOpen = function* handleOpen({ params }) {
 			return;
 		}
 		// if the host is different from the current one, we need to connect to it before navigating
-		const hostAlreadyConnected = sdk.current?.client?.host === host;
+		const hostAlreadyConnected = sdk.host === host;
 		if (!hostAlreadyConnected) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			yield put(serverInitAdd(server));

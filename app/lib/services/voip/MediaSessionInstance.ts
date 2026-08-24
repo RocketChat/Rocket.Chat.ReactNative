@@ -111,6 +111,9 @@ class MediaSessionInstance {
 				})
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
+			if (!sdk.isInitialized) {
+				return;
+			}
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal)).catch(error => {
 				log(error);
 			});

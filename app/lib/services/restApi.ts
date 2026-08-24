@@ -1139,7 +1139,7 @@ export const registerPushToken = async (): Promise<void> => {
 	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
 	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
 	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
-	if (!sdk.current) {
+	if (!sdk.isInitialized) {
 		return;
 	}
 
@@ -1175,15 +1175,18 @@ export const registerPushToken = async (): Promise<void> => {
 };
 
 // TODO: add voip token removal
-export const removePushToken = (): Promise<boolean | void> => {
+export const removePushToken = async (): Promise<void> => {
 	const token = getDeviceToken();
-	if (token) {
-		lastToken = '';
-		lastVoipToken = '';
-		// RC 0.60.0
-		return sdk.current.del('push.token', { token });
+	if (!token) {
+		return;
 	}
-	return Promise.resolve();
+	lastToken = '';
+	lastVoipToken = '';
+	if (!sdk.isInitialized) {
+		return;
+	}
+	// RC 0.60.0
+	await sdk.del('push.token', { token });
 };
 
 // RC 6.6.0

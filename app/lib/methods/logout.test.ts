@@ -1,3 +1,5 @@
+import type * as SdkIntegration from '../testUtils/sdkIntegration';
+
 jest.mock('../database', () => ({
 	__esModule: true,
 	default: {
@@ -28,7 +30,16 @@ jest.mock('../services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
-import { removeServerData } from './logout';
+const mockSdkLogout = jest.fn();
+
+jest.mock('../services/sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
+});
+
+import { logout, removeServerData } from './logout';
+import sdk from '../services/sdk';
+import { disconnect } from '../services/connect';
 import database from '../database';
 import UserPreferences from './userPreferences';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
@@ -40,6 +51,8 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	TOKEN_KEY
 } from '../constants/keys';
+
+const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
 
 const SERVER = 'https://a.rocket.chat';
 const OTHER_SERVER = 'https://b.rocket.chat';
@@ -134,5 +147,44 @@ describe('removeServerData', () => {
 
 		expect(UserPreferences.getString(tokenKey(USER_ID))).toBe(`token-${USER_ID}`);
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
+	});
+});
+
+describe('logout', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		keysToClear.forEach(key => UserPreferences.removeItem(key));
+		mockDestroyableServerRecord();
+		mockSdk.setClient(null);
+	});
+
+	it('skips the server-side logout when there is no client', async () => {
+		seedServer(SERVER, USER_ID);
+
+		await logout({ server: SERVER });
+
+		expect(mockSdkLogout).not.toHaveBeenCalled();
+		expect(disconnect).not.toHaveBeenCalled();
+	});
+
+	it('clears the local logout state when there is no client', async () => {
+		seedServer(SERVER, USER_ID);
+		UserPreferences.setString(CURRENT_SERVER, SERVER);
+
+		await logout({ server: SERVER });
+
+		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
+		expect(UserPreferences.getString(tokenKey(SERVER))).toBeNull();
+		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
+	});
+
+	it('calls the server-side logout when a client exists', async () => {
+		seedServer(SERVER, USER_ID);
+		mockSdk.setClient({ host: SERVER });
+
+		await logout({ server: SERVER });
+
+		expect(mockSdkLogout).toHaveBeenCalled();
+		expect(disconnect).toHaveBeenCalled();
 	});
 });

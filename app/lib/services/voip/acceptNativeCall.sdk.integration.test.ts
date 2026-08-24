@@ -4,13 +4,13 @@ import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '../../testUtils/sdkIntegration';
-import type { MockConnection, ISdkDriver } from '../../testUtils/sdkIntegration';
+import type { IMockSdk, MockConnection, IMockSdkDriver } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
 
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: { current: undefined }
-}));
+jest.mock('../sdk', () => {
+	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+});
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: { getState: jest.fn() }
@@ -63,14 +63,14 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 	};
 }
 
-let driver: ISdkDriver;
+let driver: IMockSdkDriver;
 
 beforeEach(async () => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
 	mockConnections.length = 0;
 	driver = await buildConnectedDriver(mockConnections, USER_ID);
-	(sdk as unknown as { current: { driver: ISdkDriver } }).current = { driver };
+	(sdk as unknown as IMockSdk).setClient({ driver });
 	mockWaitForLoginReady.mockResolvedValue(true);
 	mockGetState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 });

@@ -35,11 +35,7 @@ jest.mock('../../lib/services/connect', () => ({
 jest.mock('../../lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
-		current: {
-			client: {
-				host: ''
-			}
-		}
+		host: null
 	}
 }));
 
@@ -380,13 +376,12 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(goRoom).mockResolvedValue(undefined);
 
 		// Key setup: SDK websocket is already open to HOST
-		(sdk.current as any).client.host = HOST;
+		(sdk as any).host = HOST;
 	});
 
 	afterEach(() => {
 		jest.useRealTimers();
-		// Reset so other describe blocks see the default empty host
-		(sdk.current as any).client.host = '';
+		(sdk as any).host = null;
 	});
 
 	/**
@@ -570,7 +565,7 @@ describe('deepLinking saga — unknown host hands off to the add-server flow', (
 		});
 		jest.mocked(getServerById).mockResolvedValue(undefined as any);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true } as any);
-		jest.mocked(sdk).current.client.host = PREVIOUS_SERVER;
+		(sdk as any).host = PREVIOUS_SERVER;
 	});
 
 	afterEach(() => {
@@ -611,12 +606,12 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 			if (key === 'currentServer') return HOST;
 			return makeStoredUser();
 		});
-		jest.mocked(sdk).current.client.host = '';
+		(sdk as any).host = null;
 	});
 
 	afterEach(() => {
 		cancelSagaTasks();
-		jest.mocked(sdk).current.client.host = '';
+		(sdk as any).host = null;
 	});
 
 	it('lands on ROOT_OUTSIDE, not the loading root, when the server record is missing', async () => {
