@@ -10,7 +10,7 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import FloatingDateSeparator from './FloatingDateSeparator';
+import { FloatingDateSeparator } from '../../../../containers/Separator';
 import { type IListProps } from '../definitions';
 import { HIDE_BUBBLE_DELAY, SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';

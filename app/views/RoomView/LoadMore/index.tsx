@@ -6,7 +6,7 @@ import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type MessageType, type RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
-import MessageSeparator from '../../../containers/MessageSeparator';
+import { MessageSeparator } from '../../../containers/Separator';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';

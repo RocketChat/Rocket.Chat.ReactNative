@@ -1,14 +1,15 @@
 import { StyleSheet } from 'react-native';
 import Animated, { type SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
-import dayjs from '../../../../lib/dayjs';
-import { DateSeparatorLabel } from '../../../../containers/DateSeparator';
-import { BUBBLE_TOP_MARGIN } from '../constants';
+import dayjs from '../../lib/dayjs';
+import { DateSeparatorLabel } from './DateSeparator';
+
+const TOP_MARGIN = 8;
 
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		top: BUBBLE_TOP_MARGIN,
+		top: TOP_MARGIN,
 		left: 0,
 		right: 0,
 		alignItems: 'center'

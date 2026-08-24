@@ -1,11 +1,11 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import dayjs from '../lib/dayjs';
-import I18n from '../i18n';
-import sharedStyles from '../views/Styles';
-import { themes } from '../lib/constants/colors';
-import { useTheme } from '../theme';
+import dayjs from '../../lib/dayjs';
+import I18n from '../../i18n';
+import sharedStyles from '../../views/Styles';
+import { themes } from '../../lib/constants/colors';
+import { useTheme } from '../../theme';
 import DateSeparator from './DateSeparator';
 
 const styles = StyleSheet.create({
