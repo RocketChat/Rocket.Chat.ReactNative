@@ -91,24 +91,3 @@ maestro test .maestro
 # Test a specific file
 maestro test .maestro/tests-folder-1/login.yaml
 ```
-
-## Messages received while the device is offline (Android)
-
-`tests/room/messages-received-while-offline.yaml` covers the messages that arrive while the app has
-no connection. `setAirplaneMode: enabled` drops the socket in a live process, the messages are then
-posted over REST from the host, which keeps its own network, and `assertNotVisible` proves the
-device received nothing before `setAirplaneMode: disabled` lets it reconnect.
-
-Airplane mode outlives the flow, so the flow disables it again in `onFlowComplete`, which Maestro
-runs even when the flow fails.
-
-Run it locally with `APP_ID` set, or `stopApp`, `clearState` and `launchApp` silently target a
-package named `undefined` and state leaks between runs:
-
-```bash
-maestro test -e APP_ID=chat.rocket.android .maestro/tests/room/messages-received-while-offline.yaml
-```
-
-Messages are always sent by a **second account**. A same-account REST login invalidates the app's
-auth token on the QA server: the app then fails `channels.history` with 401 and logs itself out,
-which looks exactly like message loss. Never log in as the account the app under test is using.
