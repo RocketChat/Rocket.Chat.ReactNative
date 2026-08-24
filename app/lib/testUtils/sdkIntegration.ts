@@ -67,9 +67,11 @@ export type IMockSdk = Pick<typeof sdk, 'host' | 'driver' | 'isInitialized'> & {
 	setClient(client: IMockSdkClient | null): void;
 };
 
-export function makeSdkMock(): IMockSdk {
+export type TSdkMockMembers = Partial<{ [TMember in keyof typeof sdk]: (typeof sdk)[TMember] }>;
+
+export function makeSdkMock<TMembers extends TSdkMockMembers = Record<string, never>>(members?: TMembers): IMockSdk & TMembers {
 	let client: IMockSdkClient | null = null;
-	return {
+	const mock: IMockSdk = {
 		setClient(next: IMockSdkClient | null) {
 			client = next;
 		},
@@ -83,6 +85,7 @@ export function makeSdkMock(): IMockSdk {
 			return client !== null;
 		}
 	};
+	return Object.assign(mock, members ?? ({} as TMembers));
 }
 
 export function latestConnection(connections: MockConnection[]): MockConnection {

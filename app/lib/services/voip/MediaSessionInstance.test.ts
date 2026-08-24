@@ -3,6 +3,8 @@ import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
+import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
@@ -56,24 +58,27 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
-const mockOnStreamDataStop = jest.fn();
-const mockOnStreamData = jest.fn(() => ({ stop: mockOnStreamDataStop }));
-const mockMethodCall = jest.fn();
-let mockSdkHasClient = true;
+const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
+const SDK_HOST = 'https://open.rocket.chat';
 
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: {
-		onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
-		get isInitialized() {
-			return mockSdkHasClient;
-		},
-		methodCall: (...args: unknown[]) => {
-			mockMethodCall(...args);
-			return Promise.resolve();
-		}
-	}
-}));
+const mockOnStreamDataStop = jest.fn();
+const mockOnStreamData = jest.fn((_event: string, _callback: (message: IDDPMessage) => void) =>
+	Promise.resolve({ stop: mockOnStreamDataStop })
+);
+const mockMethodCall = jest.fn();
+jest.mock('../sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	return {
+		__esModule: true,
+		default: makeSdkMock({
+			onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
+			methodCall: (...args: unknown[]) => {
+				mockMethodCall(...args);
+				return Promise.resolve();
+			}
+		})
+	};
+});
 
 const mockMediaCallsStateSignals = jest.fn().mockResolvedValue({ signals: [], success: true });
 
@@ -255,7 +260,7 @@ describe('MediaSessionInstance', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockSdkHasClient = true;
+		mockSdk.setClient({ host: SDK_HOST });
 		mockStartVoipCallService.mockResolvedValue(undefined);
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		mockRequestVoipCallPermissions.mockResolvedValue(true);
@@ -320,7 +325,7 @@ describe('MediaSessionInstance', () => {
 			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
 			await mediaSessionInstance.init('user-xyz');
 			const sendFn = spy.mock.calls[spy.mock.calls.length - 1][0] as (signal: { type: string }) => void;
-			mockSdkHasClient = false;
+			mockSdk.setClient(null);
 			mockMethodCall.mockClear();
 			mockLog.mockClear();
 

@@ -1,24 +1,27 @@
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 
+import type * as SdkIntegration from '../testUtils/sdkIntegration';
 import { mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
-let mockSdkHasClient = true;
+let mockSdk!: SdkIntegration.IMockSdk;
 
-jest.mock('./sdk', () => ({
-	__esModule: true,
-	default: {
-		get: (...args: unknown[]) => mockSdkGet(...args),
-		post: (...args: unknown[]) => mockSdkPost(...args),
-		del: (...args: unknown[]) => mockSdkDel(...args),
-		get isInitialized() {
-			return mockSdkHasClient;
-		}
-	}
-}));
+jest.mock('./sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+	mockSdk =
+		mockSdk ??
+		makeSdkMock({
+			get: (...args: unknown[]) => mockSdkGet(...args),
+			post: (...args: unknown[]) => mockSdkPost(...args),
+			del: (...args: unknown[]) => mockSdkDel(...args)
+		});
+	return { __esModule: true, default: mockSdk };
+});
+
+const SDK_HOST = 'https://open.rocket.chat';
 
 jest.mock('../notifications', () => ({
 	getDeviceToken: jest.fn()
@@ -133,19 +136,19 @@ describe('registerPushToken', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockSdkPost.mockResolvedValue(undefined);
-		mockSdkHasClient = true;
+		mockSdk.setClient({ host: SDK_HOST });
 	});
 
 	it('does not post when SDK is not initialized, and a later call after init posts', async () => {
 		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
-		mockSdkHasClient = false;
+		mockSdk.setClient(null);
 
 		await registerPushToken();
 		expect(mockSdkPost).not.toHaveBeenCalled();
 
-		mockSdkHasClient = true;
+		mockSdk.setClient({ host: SDK_HOST });
 		await registerPushToken();
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 	});
@@ -275,7 +278,7 @@ describe('removePushToken', () => {
 		jest.clearAllMocks();
 		mockSdkPost.mockResolvedValue(undefined);
 		mockSdkDel.mockResolvedValue({ success: true });
-		mockSdkHasClient = true;
+		mockSdk.setClient({ host: SDK_HOST });
 	});
 
 	it('deletes the token on the server and forgets the registered tokens', async () => {
@@ -317,11 +320,11 @@ describe('removePushToken', () => {
 		await registerPushToken();
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 
-		mockSdkHasClient = false;
+		mockSdk.setClient(null);
 		await removePushToken();
 		expect(mockSdkDel).not.toHaveBeenCalled();
 
-		mockSdkHasClient = true;
+		mockSdk.setClient({ host: SDK_HOST });
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(2);

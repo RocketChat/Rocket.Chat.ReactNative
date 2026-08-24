@@ -1,11 +1,16 @@
-jest.mock('../../../services/sdk', () => ({
-	__esModule: true,
-	default: {
-		host: null,
-		onStreamData: jest.fn(async () => ({ stop: jest.fn() })),
-		subscribeNotifyUser: jest.fn(async () => undefined)
-	}
-}));
+const mockOnStreamData = jest.fn(async (_event: string, _callback: (message: IDDPMessage) => void) => ({ stop: jest.fn() }));
+const mockSubscribeNotifyUser = jest.fn(async () => undefined);
+
+jest.mock('../../../services/sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
+	return {
+		__esModule: true,
+		default: makeSdkMock({
+			onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
+			subscribeNotifyUser: () => mockSubscribeNotifyUser()
+		})
+	};
+});
 
 jest.mock('../../../database', () => ({
 	__esModule: true,
@@ -22,12 +27,9 @@ import subscribeRooms, { roomsSubscription } from '../rooms';
 import sdk from '../../../services/sdk';
 import database from '../../../database';
 import type { IDDPMessage } from '../../../../definitions/IDDPMessage';
+import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
 
-const mockedSdk = sdk as unknown as {
-	host: string | null;
-	onStreamData: jest.Mock;
-	subscribeNotifyUser: jest.Mock;
-};
+const mockedSdk = sdk as unknown as SdkIntegration.IMockSdk;
 const mockedDatabase = database as unknown as { active: { get: jest.Mock } };
 
 const HOST = 'https://open.rocket.chat';
@@ -46,44 +48,44 @@ const removedSubscriptionFrame = (): IDDPMessage =>
 describe('subscribeRooms host guard', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedSdk.host = null;
+		mockedSdk.setClient(null);
 	});
 
 	it('does not open the stream when there is no client', () => {
 		subscribeRooms();
 
-		expect(mockedSdk.onStreamData).not.toHaveBeenCalled();
-		expect(mockedSdk.subscribeNotifyUser).not.toHaveBeenCalled();
+		expect(mockOnStreamData).not.toHaveBeenCalled();
+		expect(mockSubscribeNotifyUser).not.toHaveBeenCalled();
 	});
 
 	it('drops a frame that arrives after the client is gone', async () => {
-		mockedSdk.host = HOST;
+		mockedSdk.setClient({ host: HOST });
 		subscribeRooms();
 
-		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
-		mockedSdk.host = null;
+		const [, handleStreamMessageReceived] = mockOnStreamData.mock.calls[0];
+		mockedSdk.setClient(null);
 		await handleStreamMessageReceived(removedSubscriptionFrame());
 
 		expect(mockedDatabase.active.get).not.toHaveBeenCalled();
 	});
 
 	it('drops a frame that arrives after the subscription stopped', async () => {
-		mockedSdk.host = HOST;
+		mockedSdk.setClient({ host: HOST });
 		subscribeRooms();
 
-		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
+		const [, handleStreamMessageReceived] = mockOnStreamData.mock.calls[0];
 		roomsSubscription?.stop();
-		mockedSdk.host = null;
+		mockedSdk.setClient(null);
 		await handleStreamMessageReceived(removedSubscriptionFrame());
 
 		expect(mockedDatabase.active.get).not.toHaveBeenCalled();
 	});
 
 	it('processes a frame whose host matches the subscribed server', async () => {
-		mockedSdk.host = HOST;
+		mockedSdk.setClient({ host: HOST });
 		subscribeRooms();
 
-		const [, handleStreamMessageReceived] = mockedSdk.onStreamData.mock.calls[0];
+		const [, handleStreamMessageReceived] = mockOnStreamData.mock.calls[0];
 		await handleStreamMessageReceived(removedSubscriptionFrame());
 
 		expect(mockedDatabase.active.get).toHaveBeenCalledWith('subscriptions');

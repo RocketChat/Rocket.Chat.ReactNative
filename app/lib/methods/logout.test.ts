@@ -1,3 +1,5 @@
+import type * as SdkIntegration from '../testUtils/sdkIntegration';
+
 jest.mock('../database', () => ({
 	__esModule: true,
 	default: {
@@ -28,13 +30,12 @@ jest.mock('../services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
-jest.mock('../services/sdk', () => ({
-	__esModule: true,
-	default: {
-		isInitialized: false,
-		logout: jest.fn()
-	}
-}));
+const mockSdkLogout = jest.fn();
+
+jest.mock('../services/sdk', () => {
+	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
+});
 
 import { logout, removeServerData } from './logout';
 import sdk from '../services/sdk';
@@ -51,12 +52,12 @@ import {
 	TOKEN_KEY
 } from '../constants/keys';
 
+const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
+
 const SERVER = 'https://a.rocket.chat';
 const OTHER_SERVER = 'https://b.rocket.chat';
 const USER_ID = 'user-a';
 const OTHER_USER_ID = 'user-b';
-
-const mockedSdk = sdk as unknown as { isInitialized: boolean; logout: jest.Mock };
 
 const tokenKey = (suffix: string): string => `${TOKEN_KEY}-${suffix}`;
 const certificateKey = (server: string): string => `${CERTIFICATE_KEY}-${server}`;
@@ -154,7 +155,7 @@ describe('logout', () => {
 		jest.clearAllMocks();
 		keysToClear.forEach(key => UserPreferences.removeItem(key));
 		mockDestroyableServerRecord();
-		mockedSdk.isInitialized = false;
+		mockSdk.setClient(null);
 	});
 
 	it('skips the server-side logout when there is no client', async () => {
@@ -162,7 +163,7 @@ describe('logout', () => {
 
 		await logout({ server: SERVER });
 
-		expect(mockedSdk.logout).not.toHaveBeenCalled();
+		expect(mockSdkLogout).not.toHaveBeenCalled();
 		expect(disconnect).not.toHaveBeenCalled();
 	});
 
@@ -179,11 +180,11 @@ describe('logout', () => {
 
 	it('calls the server-side logout when a client exists', async () => {
 		seedServer(SERVER, USER_ID);
-		mockedSdk.isInitialized = true;
+		mockSdk.setClient({ host: SERVER });
 
 		await logout({ server: SERVER });
 
-		expect(mockedSdk.logout).toHaveBeenCalled();
+		expect(mockSdkLogout).toHaveBeenCalled();
 		expect(disconnect).toHaveBeenCalled();
 	});
 });
