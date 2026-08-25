@@ -786,6 +786,10 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	});
 };
 
+export const getMessageByFileId = (fileId: string) =>
+	// RC 8.10.0
+	sdk.get('chat.getMessageByFileId', { fileId });
+
 export const getMessages = ({
 	roomId,
 	type,

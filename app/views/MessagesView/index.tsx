@@ -31,7 +31,15 @@ import {
 	type TAnyMessageModel,
 	type IUrl
 } from '../../definitions';
-import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
+import {
+	getFiles,
+	getMessageByFileId,
+	getMessages,
+	getPinnedMessages,
+	togglePinMessage,
+	toggleStarMessage
+} from '../../lib/services/restApi';
+import { compareServerVersion, showErrorAlert } from '../../lib/methods/helpers';
 import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
@@ -54,6 +62,7 @@ interface IMessagesViewProps {
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
+	serverVersion: string | null;
 }
 
 interface IMessagesViewState {
@@ -136,11 +145,33 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
+	// A Files row is an upload record, not a message: its `_id` is the file id.
+	resolveMessageId = async (item: IMessage): Promise<string | null> => {
+		const { route, serverVersion } = this.props;
+		if (route.params?.name !== 'Files' || compareServerVersion(serverVersion, 'lowerThan', '8.9.0')) {
+			return item._id;
+		}
+	
+		try {
+			const result = await getMessageByFileId(item._id);
+			if (result.success && result.message) {
+				return result.message._id;
+			}
+		} catch {
+		}
+		return null;
+	};
+
 	jumpToMessage = async ({ item }: { item: IMessage }) => {
 		const { isMasterDetail } = this.props;
+		const jumpToMessageId = await this.resolveMessageId(item);
+		if (!jumpToMessageId) {
+			showErrorAlert(I18n.t('Message_not_found'), I18n.t('Oops'));
+			return;
+		}
 		let params: IParams = {
 			rid: this.rid,
-			jumpToMessageId: item._id,
+			jumpToMessageId,
 			t: this.t,
 			room: this.room
 		};
@@ -149,7 +180,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid, item._id),
+				name: await getThreadName(this.rid, item.tmid, jumpToMessageId),
 				t: SubscriptionType.THREAD
 			};
 			Navigation.push('RoomView', params);
@@ -367,7 +398,8 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	serverVersion: state.server.version
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(MessagesView)))));
