@@ -35,31 +35,32 @@ const serverToRestore = function* serverToRestore(server) {
 };
 
 const restore = function* restore() {
+	let restoredServer = null;
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
-		const restoredServer = yield* serverToRestore(server);
+		restoredServer = yield* serverToRestore(server);
+	} catch (e) {
+		log(e);
+	}
 
-		if (restoredServer) {
-			yield put(selectServerRequest(restoredServer.id, restoredServer.version));
-		} else {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		}
+	if (restoredServer) {
+		yield put(selectServerRequest(restoredServer.id, restoredServer.version));
+	} else {
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	}
 
-		yield put(appReady({}));
+	yield put(appReady({}));
+
+	try {
 		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
 		if (pushNotification) {
 			yield call(AsyncStorage.removeItem, 'pushNotification');
 			if (restoredServer) {
-				try {
-					yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
-				} catch (e) {
-					log(e);
-				}
+				yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
 			}
 		}
 	} catch (e) {
 		log(e);
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
 };
 
