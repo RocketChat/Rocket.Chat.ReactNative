@@ -151,14 +151,13 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		if (route.params?.name !== 'Files' || compareServerVersion(serverVersion, 'lowerThan', '8.9.0')) {
 			return item._id;
 		}
-	
+
 		try {
 			const result = await getMessageByFileId(item._id);
 			if (result.success && result.message) {
 				return result.message._id;
 			}
-		} catch {
-		}
+		} catch {}
 		return null;
 	};
 
