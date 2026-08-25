@@ -198,21 +198,16 @@ describe('init saga — restore user-facing roots', () => {
 		expect(store.getState().app.ready).toBe(true);
 		expect(store.getState().server.server).toBe(HOST);
 	});
-});
 
-describe('init saga — restore keeps a server that already restored', () => {
-	beforeEach(() => {
-		jest.mocked(UserPreferences.getString).mockReset();
-		jest.mocked(getServerById).mockReset();
-		jest.mocked(RNBootSplash.hide).mockClear();
-		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
-		jest.mocked(AsyncStorage.removeItem).mockClear();
-		jest.mocked(database.servers.get).mockReset();
-		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
-	});
+	it('lands on ROOT_OUTSIDE when resolving the stored server throws', async () => {
+		jest.mocked(getServerById).mockRejectedValue(new Error('database unavailable'));
+		const { store } = setupStore();
 
-	afterEach(() => {
-		cancelSagaTasks();
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().app.ready).toBe(true);
 	});
 
 	it('stays on the restored server when reading the pending push notification fails', async () => {
