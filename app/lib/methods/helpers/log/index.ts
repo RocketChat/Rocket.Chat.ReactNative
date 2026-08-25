@@ -3,7 +3,7 @@ import { getCrashlytics as crashlytics } from '@react-native-firebase/crashlytic
 import bugsnag from '@bugsnag/react-native';
 
 import events from './events';
-import { isCancellation } from '../../../services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../../services/twoFactorCancelled';
 
 export { events };
 
@@ -58,10 +58,10 @@ export const toggleAnalyticsEventsReport = (value: boolean): boolean => {
 };
 
 const log = (e: any): void => {
-	if (isCancellation(e)) {
+	if (isTwoFactorCancelled(e)) {
 		return;
 	}
-	if (e instanceof Error && bugsnag && !__DEV__) {
+	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
 			event.addMetadata('details', { ...metadata });
 		});

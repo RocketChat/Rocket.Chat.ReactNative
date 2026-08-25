@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import bugsnag from '@bugsnag/react-native';
 
 import log from './log';
-import { showErrorAlertWithEMessage } from './info';
+import { reportError, showErrorAlertWithEMessage } from './info';
 import handleSaveUserProfileError from './handleSaveUserProfileError';
 import { handleLoginErrors } from '../../../views/LoginView/handleLoginErrors';
 import { TwoFactorCancelledError } from '../../services/twoFactorCancelled';
@@ -46,6 +46,18 @@ describe('two-factor cancellation', () => {
 	it('still alerts when a genuine failure reaches showErrorAlertWithEMessage', () => {
 		showErrorAlertWithEMessage(genuineFailure);
 		expect(Alert.alert).toHaveBeenCalled();
+	});
+
+	it('neither logs nor alerts when a cancellation reaches reportError', () => {
+		reportError(cancelled, 'fallback');
+		expect(Alert.alert).not.toHaveBeenCalled();
+		expect(console.error).not.toHaveBeenCalled();
+	});
+
+	it('logs and alerts with the fallback message when a genuine failure reaches reportError', () => {
+		reportError(new Error('boom'), 'fallback');
+		expect(console.error).toHaveBeenCalled();
+		expect(Alert.alert).toHaveBeenCalledWith('', 'fallback', expect.anything(), expect.anything());
 	});
 
 	it('does not alert when a cancellation reaches handleSaveUserProfileError', () => {

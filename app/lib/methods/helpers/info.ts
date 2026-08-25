@@ -2,13 +2,13 @@ import { Alert } from 'react-native';
 
 import I18n from '../../../i18n';
 import log from './log';
-import { isCancellation } from '../../services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../services/twoFactorCancelled';
 
 export const showErrorAlert = (message: string, title?: string, onPress = () => {}): void =>
 	Alert.alert(title || '', message, [{ text: 'OK', onPress }], { cancelable: true });
 
 export const reportError = (e: unknown, fallbackMessage: string, title?: string): void => {
-	if (isCancellation(e)) {
+	if (isTwoFactorCancelled(e)) {
 		return;
 	}
 	log(e);
@@ -16,7 +16,7 @@ export const reportError = (e: unknown, fallbackMessage: string, title?: string)
 };
 
 export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
-	if (isCancellation(e)) {
+	if (isTwoFactorCancelled(e)) {
 		return;
 	}
 	let errorMessage: string = e?.data?.error;
