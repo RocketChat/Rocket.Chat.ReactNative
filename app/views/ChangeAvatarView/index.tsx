@@ -173,6 +173,7 @@ const ChangeAvatarView = () => {
 			isDirty.current = false;
 		} catch (e: any) {
 			reportError(e, e.message, I18n.t('Oops'));
+			return;
 		} finally {
 			setSaving(false);
 		}
