@@ -198,4 +198,40 @@ describe('init saga — restore user-facing roots', () => {
 		expect(store.getState().app.ready).toBe(true);
 		expect(store.getState().server.server).toBe(HOST);
 	});
+
+	it('lands on ROOT_OUTSIDE when resolving the stored server throws', async () => {
+		jest.mocked(getServerById).mockRejectedValue(new Error('database unavailable'));
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().app.ready).toBe(true);
+	});
+
+	it('stays on the restored server when reading the pending push notification fails', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockRejectedValue(new Error('storage unavailable') as any);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().server.server).toBe(HOST);
+	});
+
+	it('stays on the restored server when clearing the pending push notification fails', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
+		jest.mocked(AsyncStorage.removeItem).mockRejectedValue(new Error('storage unavailable') as any);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().server.server).toBe(HOST);
+	});
 });
