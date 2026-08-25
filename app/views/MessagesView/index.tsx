@@ -145,7 +145,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	// A Files row is an upload record, not a message: its `_id` is the file id.
 	resolveMessageId = async (item: IMessage): Promise<string | null> => {
 		const { route, serverVersion } = this.props;
 		if (route.params?.name !== 'Files' || compareServerVersion(serverVersion, 'lowerThan', '8.9.0')) {
