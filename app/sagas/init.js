@@ -22,10 +22,6 @@ export const initLocalSettings = function* initLocalSettings() {
 };
 
 const serverToRestore = function* serverToRestore(server) {
-	if (!server) {
-		return null;
-	}
-
 	if (!hasStoredLoginToken(server)) {
 		return (yield* findLoggedInServer()) || null;
 	}

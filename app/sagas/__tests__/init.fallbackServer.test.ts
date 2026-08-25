@@ -18,10 +18,11 @@ jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
 }));
 
 import { appInit } from '../../actions/app';
-import { SERVER } from '../../actions/actionsTypes';
+import { APP, SERVER } from '../../actions/actionsTypes';
 import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 
 describe('init saga — fallback workspace', () => {
@@ -46,5 +47,18 @@ describe('init saga — fallback workspace', () => {
 		expect(dispatchedActions.find(action => action.type === SERVER.SELECT_REQUEST)).toEqual(
 			expect.objectContaining({ server: FALLBACK_SERVER, version: FALLBACK_VERSION })
 		);
+	});
+
+	it('requests the fallback workspace when the current server was cleared by a logout', async () => {
+		UserPreferences.removeItem(CURRENT_SERVER);
+		const { store, dispatchedActions } = createRecordingStore(initRoot);
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.find(action => action.type === SERVER.SELECT_REQUEST)).toEqual(
+			expect.objectContaining({ server: FALLBACK_SERVER, version: FALLBACK_VERSION })
+		);
+		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: APP.START, root: RootEnum.ROOT_OUTSIDE }));
 	});
 });

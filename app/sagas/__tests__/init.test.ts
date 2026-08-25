@@ -96,6 +96,9 @@ describe('init saga — restore user-facing roots', () => {
 
 	it('lands on ROOT_OUTSIDE when no server is stored at all', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(() => null);
+		jest.mocked(database.servers.get).mockReturnValue({
+			query: () => ({ fetch: () => Promise.resolve([]) })
+		} as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
