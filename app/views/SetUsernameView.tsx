@@ -16,11 +16,10 @@ import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { useTheme } from '../theme';
-import { showErrorAlert } from '../lib/methods/helpers';
+import { reportError } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';
-import { isTwoFactorCancelled } from '../lib/services/twoFactor';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
@@ -86,9 +85,7 @@ const SetUsernameView = () => {
 			await saveUserProfile({ username, name });
 			dispatch(loginRequest({ resume: user.token }));
 		} catch (e: any) {
-			if (!isTwoFactorCancelled(e)) {
-				showErrorAlert(e.message, I18n.t('Oops'));
-			}
+			reportError(e, e.message, I18n.t('Oops'));
 		}
 		setLoading(false);
 	};

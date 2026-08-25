@@ -1,5 +1,5 @@
 import sdk from './sdk';
-import { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactor';
+import { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactorCancelled';
 
 const mockInnerMethodCall = jest.fn();
 const mockInnerPost = jest.fn();

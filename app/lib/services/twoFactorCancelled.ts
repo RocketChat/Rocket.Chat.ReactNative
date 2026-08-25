@@ -6,4 +6,6 @@ export class TwoFactorCancelledError extends Error {
 }
 
 export const isTwoFactorCancelled = (e: unknown): e is TwoFactorCancelledError =>
-	e instanceof TwoFactorCancelledError || (e instanceof Error && e.name === 'TwoFactorCancelledError');
+	e instanceof Error && e.name === 'TwoFactorCancelledError';
+
+export const isCancellation = (e: unknown): boolean => isTwoFactorCancelled(e) || (e instanceof Error && e.message === 'Aborted');

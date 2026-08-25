@@ -7,7 +7,7 @@ import sharedStyles from '../../../Styles';
 import FooterButtons from './FooterButtons';
 import AlertText from './AlertText';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../../../lib/services/twoFactor';
+import { isTwoFactorCancelled } from '../../../../lib/services/twoFactorCancelled';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
