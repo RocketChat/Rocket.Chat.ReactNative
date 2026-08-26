@@ -10,7 +10,7 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { FloatingDateSeparator, useFloatingDateOpacity } from '../../../../containers/Separator';
+import { FloatingDateSeparator } from '../../../../containers/Separator';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
-	const { ts, viewabilityConfigCallbackPairs } = useFloatingDate();
-	const { opacity: floatingDateOpacity, show: showFloatingDate } = useFloatingDateOpacity();
+	const { ts, opacity: floatingDateOpacity, show: showFloatingDate, viewabilityConfigCallbackPairs } = useFloatingDate();
 
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
