@@ -51,7 +51,7 @@ interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
-	const validationSchema = yup.object().shape({
+	const validationSchema = yup.object({
 		name: yup.string().required(I18n.t('Name_required')),
 		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
 		username: yup.string().required(I18n.t('Username_required'))

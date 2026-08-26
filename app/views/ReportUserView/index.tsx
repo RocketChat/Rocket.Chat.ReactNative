@@ -34,7 +34,7 @@ interface ISubmit {
 	description: string;
 }
 
-const schema = yup.object().shape({
+const schema = yup.object({
 	description: yup.string().trim().required(I18n.t('Report_reason_required'))
 });
 

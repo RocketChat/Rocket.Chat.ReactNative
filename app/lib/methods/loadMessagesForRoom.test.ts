@@ -48,7 +48,7 @@ const buildMessage = ({ id, ts, t }: { id: string; ts: string; t?: string }) =>
 		_id: id,
 		rid: 'ROOM_ID',
 		ts,
-		...(t ? { t } : {})
+		t
 	}) as any;
 
 describe('loadMessagesForRoom', () => {

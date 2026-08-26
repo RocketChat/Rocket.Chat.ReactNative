@@ -63,7 +63,7 @@ const methods: IMethods = {
 };
 
 const TwoFactor = memo(() => {
-	const schema = yup.object().shape({
+	const schema = yup.object({
 		code: yup.string().required(I18n.t('Code_required'))
 	});
 	const { colors } = useTheme();

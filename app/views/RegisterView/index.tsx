@@ -34,7 +34,7 @@ type RegisterViewProps = StaticScreenProps<{ title: string; username?: string }>
 
 const RegisterView = ({ route }: RegisterViewProps) => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'RegisterView'>>();
-	const validationSchema = yup.object().shape({
+	const validationSchema = yup.object({
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup
 			.string()

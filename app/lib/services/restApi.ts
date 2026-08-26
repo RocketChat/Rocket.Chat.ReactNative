@@ -1297,7 +1297,10 @@ export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {
 		const result = await (
-			sdk.get as unknown as (path: string, params?: object) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
+			sdk.get as unknown as (
+				path: string,
+				params?: { contractId: string }
+			) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
 		)('media-calls.stateSignals', { contractId });
 		return result;
 	} catch {

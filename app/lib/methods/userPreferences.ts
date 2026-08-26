@@ -129,7 +129,7 @@ class UserPreferences {
 		this.mmkv.set(key, value);
 	}
 
-	getMap(key: string): object | null {
+	getMap<T extends object>(key: string): T | null {
 		try {
 			const jsonString = this.mmkv.getString(key);
 			return jsonString ? JSON.parse(jsonString) : null;
@@ -138,7 +138,7 @@ class UserPreferences {
 		}
 	}
 
-	setMap(key: string, value: object): void {
+	setMap<T extends object>(key: string, value: T): void {
 		this.mmkv.set(key, JSON.stringify(value));
 	}
 

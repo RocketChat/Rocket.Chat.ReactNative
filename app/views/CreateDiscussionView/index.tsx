@@ -32,7 +32,7 @@ import SelectedUsers from '../../containers/SelectedUsers';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
-	const schema = yup.object().shape({
+	const schema = yup.object({
 		name: yup.string().required(I18n.t('Discussion_name_required'))
 	});
 	const { colors } = useTheme();

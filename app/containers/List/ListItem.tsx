@@ -63,9 +63,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
-	actionIndicator: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
-	}
+	actionIndicator: I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {}
 });
 
 interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}

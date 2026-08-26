@@ -17,7 +17,7 @@ import { showErrorAlert } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 
-const schema = yup.object().shape({
+const schema = yup.object({
 	email: yup.string().email().required()
 });
 
