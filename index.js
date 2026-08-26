@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry, LogBox, PermissionsAndroid, Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
+import DeviceInfo from 'react-native-device-info';
 
 import { name as appName } from './app.json';
 
@@ -22,8 +23,12 @@ if (process.env.USE_STORYBOOK) {
 
 	LogBox.ignoreAllLogs();
 
-	// Never gate on FEATURE_TELECOM (API 33+): non-Telecom devices bail natively in registerPhoneAccount
-	if (Platform.OS === 'android') {
+	// FEATURE_TELECOM is only declared from API 33; trusting the query below that killed setup() and endCall (#7334)
+	const isAndroid = Platform.OS === 'android';
+	const supportsTelecom =
+		isAndroid && (Number(Platform.Version) < 33 || DeviceInfo.hasSystemFeatureSync('android.software.telecom'));
+
+	if (supportsTelecom) {
 		const options = {
 			android: {
 				// TODO: i18n
