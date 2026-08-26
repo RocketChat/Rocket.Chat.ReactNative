@@ -29,7 +29,7 @@ jest.mock('../voip/MediaSessionInstance', () => ({
 	}
 }));
 
-jest.mock('../twoFactor', () => ({
+jest.mock('../twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 

@@ -1,5 +1,5 @@
 import sdk from './sdk';
-import { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactor';
+import { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactor/twoFactorCancelled';
 
 const mockInnerMethodCall = jest.fn();
 const mockInnerPost = jest.fn();
@@ -13,10 +13,9 @@ jest.mock('@rocket.chat/sdk', () => ({
 	settings: { customHeaders: {} }
 }));
 
-jest.mock('../../containers/TwoFactor', () => ({ TWO_FACTOR: 'TWO_FACTOR' }));
+jest.mock('../constants/twoFactor', () => ({ TWO_FACTOR: 'TWO_FACTOR' }));
 
-jest.mock('./twoFactor', () => ({
-	...jest.requireActual('./twoFactor'),
+jest.mock('./twoFactor/twoFactor', () => ({
 	twoFactor: (...args: unknown[]) => mockTwoFactor(...args)
 }));
 

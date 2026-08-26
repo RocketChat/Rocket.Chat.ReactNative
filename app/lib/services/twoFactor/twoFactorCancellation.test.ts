@@ -1,11 +1,11 @@
 import { Alert } from 'react-native';
 import bugsnag from '@bugsnag/react-native';
 
-import log from './log';
-import { showErrorAlertWithEMessage } from './info';
-import handleSaveUserProfileError from './handleSaveUserProfileError';
+import log from '../../methods/helpers/log';
+import { showErrorAlertWithEMessage } from '../../methods/helpers/info';
+import handleSaveUserProfileError from '../../methods/helpers/handleSaveUserProfileError';
 import { handleLoginErrors } from '../../../views/LoginView/handleLoginErrors';
-import { TwoFactorCancelledError } from '../../services/twoFactorCancelled';
+import { TwoFactorCancelledError } from './twoFactorCancelled';
 
 jest.mock('../../../i18n', () => ({
 	t: (key: string) => key,

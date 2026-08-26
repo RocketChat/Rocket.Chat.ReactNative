@@ -1,13 +1,10 @@
 import { type TServerModel } from '../../definitions';
 import { TOKEN_KEY } from '../constants/keys';
-import database from '../database';
-import { SERVERS_TABLE } from '../database/model';
+import { getAllServers } from '../database/services/Server';
 import UserPreferences from './userPreferences';
 
-export const hasStoredLoginToken = (serverId: string): boolean => !!UserPreferences.getString(`${TOKEN_KEY}-${serverId}`);
+export const isLoggedInServer = (serverId?: string | null): boolean =>
+	!!serverId && !!UserPreferences.getString(`${TOKEN_KEY}-${serverId}`);
 
-export const findLoggedInServer = function* findLoggedInServer(): Generator<any, TServerModel | undefined> {
-	const serversCollection = database.servers.get(SERVERS_TABLE);
-	const servers = (yield serversCollection.query().fetch()) as TServerModel[];
-	return servers.find(({ id }) => hasStoredLoginToken(id));
-};
+export const findLoggedInServer = async (): Promise<TServerModel | undefined> =>
+	(await getAllServers()).find(({ id }) => isLoggedInServer(id));

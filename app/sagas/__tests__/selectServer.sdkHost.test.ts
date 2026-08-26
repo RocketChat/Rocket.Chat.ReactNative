@@ -28,7 +28,7 @@ jest.mock('../../lib/methods/helpers/log', () => ({
 	logServerVersion: jest.fn()
 }));
 
-jest.mock('../../lib/services/twoFactor', () => ({
+jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
