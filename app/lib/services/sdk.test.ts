@@ -16,7 +16,6 @@ jest.mock('@rocket.chat/sdk', () => ({
 jest.mock('../../containers/TwoFactor', () => ({ TWO_FACTOR: 'TWO_FACTOR' }));
 
 jest.mock('./twoFactor', () => ({
-	...jest.requireActual('./twoFactor'),
 	twoFactor: (...args: unknown[]) => mockTwoFactor(...args)
 }));
 
