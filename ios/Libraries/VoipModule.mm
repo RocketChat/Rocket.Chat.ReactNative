@@ -124,14 +124,6 @@ RCT_EXPORT_MODULE()
     resolve(nil);
 }
 
-// Android-only Telecom teardown fallback. iOS tears CallKit down through RNCallKeep.
-- (void)disconnectNativeCall:(NSString *)callId {
-}
-
-// Android-only foreground service teardown; this stub satisfies the codegen spec.
-- (void)stopVoipCallService {
-}
-
 // iOS keeps using InCallManager.setForceSpeakerphoneOn from JS; this stub satisfies the codegen spec.
 - (void)setSpeakerOn:(BOOL)on
             resolve:(RCTPromiseResolveBlock)resolve

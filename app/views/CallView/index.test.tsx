@@ -9,7 +9,6 @@ import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
-import { clearTerminateDedupeSentinels } from '../../lib/services/voip/terminateNativeCall';
 
 const mockStartRingback = jest.fn(() => Promise.resolve());
 const mockStopRingback = jest.fn(() => Promise.resolve());
@@ -33,7 +32,6 @@ jest.mock('../../lib/native/NativeVoip', () => ({
 		getLastVoipToken: jest.fn(() => ''),
 		stopNativeDDPClient: jest.fn(),
 		stopVoipCallService: jest.fn(),
-		disconnectNativeCall: jest.fn(),
 		setSpeakerOn: jest.fn(() => Promise.resolve(true)),
 		startAudioRouteSync: jest.fn(() => Promise.resolve()),
 		stopAudioRouteSync: jest.fn(() => Promise.resolve()),
@@ -160,10 +158,6 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 };
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
-
-beforeEach(() => {
-	clearTerminateDedupeSentinels();
-});
 
 describe('CallView/CallView', () => {
 	beforeEach(() => {

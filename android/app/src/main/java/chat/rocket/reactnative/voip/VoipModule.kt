@@ -199,14 +199,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         }
     }
 
-    override fun disconnectNativeCall(callId: String) {
-        try {
-            VoipNotification.terminateIncomingCall(reactApplicationContext, callId)
-        } catch (e: Exception) {
-            Log.e(TAG, "disconnectNativeCall: failed to disconnect $callId", e)
-        }
-    }
-
     override fun startVoipCallService(callId: String, promise: Promise) {
         // Only valid for outgoing calls initiated from a visible activity. The incoming-accept
         // path starts the service from native (VoipNotification.handleAcceptAction) after Telecom

@@ -4,7 +4,6 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { useCallStore } from './useCallStore';
-import { clearTerminateDedupeSentinels } from './terminateNativeCall';
 
 const mockLog = jest.fn();
 jest.mock('../../methods/helpers/log', () => ({
@@ -49,7 +48,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		getLastVoipToken: jest.fn(() => ''),
 		stopNativeDDPClient: jest.fn(),
 		stopVoipCallService: jest.fn(),
-		disconnectNativeCall: jest.fn(),
 		addListener: jest.fn(),
 		removeListeners: jest.fn()
 	}
@@ -88,10 +86,6 @@ function createMockCall(callId: string) {
 	} as unknown as IClientMediaCall;
 	return { call };
 }
-
-beforeEach(() => {
-	clearTerminateDedupeSentinels();
-});
 
 describe('useCallStore audio route sync (iOS, isIOS=true)', () => {
 	beforeEach(() => {

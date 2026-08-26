@@ -310,11 +310,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		if (call) {
-			try {
-				call.hangup();
-			} catch (e) {
-				log(e);
-			}
+			call.hangup();
 		}
 
 		if (callUuid) {

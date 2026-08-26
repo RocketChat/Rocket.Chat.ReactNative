@@ -6,7 +6,6 @@ import InCallManager from 'react-native-incall-manager';
 import NativeVoipModule from '../../native/NativeVoip';
 import { pendingHangups } from './pendingHangups';
 import { useCallStore } from './useCallStore';
-import { clearTerminateDedupeSentinels } from './terminateNativeCall';
 
 const mockLog = jest.fn();
 jest.mock('../../methods/helpers/log', () => ({
@@ -54,7 +53,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		getLastVoipToken: jest.fn(() => ''),
 		stopNativeDDPClient: jest.fn(),
 		stopVoipCallService: jest.fn(),
-		disconnectNativeCall: jest.fn(),
 		addListener: jest.fn(),
 		removeListeners: jest.fn()
 	}
@@ -123,10 +121,6 @@ function createMockCall(callId: string, options?: { initialState?: string }) {
 	} as unknown as IClientMediaCall;
 	return { call, emit };
 }
-
-beforeEach(() => {
-	clearTerminateDedupeSentinels();
-});
 
 describe('createMockCall emitter', () => {
 	it('forwards variadic arguments to listeners', () => {

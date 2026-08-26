@@ -56,9 +56,6 @@ export interface Spec extends TurboModule {
 	 */
 	stopVoipCallService(): void;
 
-	/** Android: disconnects the VoiceConnection for `callId` directly, bypassing RNCallKeep's JS state. iOS: no-op. */
-	disconnectNativeCall(callId: string): void;
-
 	/**
 	 * Routes call audio between speakerphone and earpiece.
 	 * Android: API 31+ uses AudioManager.setCommunicationDevice(SPEAKER) for on,
@@ -109,7 +106,6 @@ const NativeVoipModule =
 		stopNativeDDPClient: () => undefined,
 		startVoipCallService: () => Promise.resolve(),
 		stopVoipCallService: () => undefined,
-		disconnectNativeCall: () => undefined,
 		setSpeakerOn: () => Promise.resolve(false),
 		startAudioRouteSync: () => Promise.resolve(),
 		stopAudioRouteSync: () => Promise.resolve(),
