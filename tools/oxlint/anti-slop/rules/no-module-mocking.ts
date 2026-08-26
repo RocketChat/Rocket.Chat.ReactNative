@@ -65,7 +65,7 @@ function moduleMockCall(sourceCode: SourceCode, callee: ESTree.Expression): bool
   return method !== null && moduleMockMethods.has(method);
 }
 
-/** Ban test framework module mocking in favor of real dependency seams. */
+/** Ban test framework module mocking in favor of real injected dependencies. */
 export const noModuleMockingRule = defineRule({
   meta: {
     type: "problem",

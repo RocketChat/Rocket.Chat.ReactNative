@@ -4,6 +4,7 @@ Vendored Oxlint plugin. Upstream: https://github.com/dmmulroy/anti-slop
 
 ## Local deviations
 
+- `no-module-mocking`'s doc comment is reworded — its upstream wording uses a term this repo bans.
 - Upstream's `effect/` rules are not vendored — this app has no direct `effect` dependency.
 - `no-unknown-parameters`, `no-unknown-returns` and `no-runtime-typeof` were removed. `unknown`
   parameters and `typeof` narrowing are used deliberately across our repos.
