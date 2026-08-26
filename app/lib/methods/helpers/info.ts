@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 
 import I18n from '../../../i18n';
 import log from './log';
-import { isTwoFactorCancelled } from '../../services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../services/twoFactor/twoFactorCancelled';
 
 export const showErrorAlert = (message: string, title?: string, onPress = () => {}): void =>
 	Alert.alert(title || '', message, [{ text: 'OK', onPress }], { cancelable: true });

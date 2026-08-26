@@ -1,5 +1,5 @@
 import I18n from '../../i18n';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 
 export const handleError = (e: any, action: string) => {
 	if (isTwoFactorCancelled(e)) {

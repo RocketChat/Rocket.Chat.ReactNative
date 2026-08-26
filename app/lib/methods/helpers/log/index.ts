@@ -3,7 +3,7 @@ import { getCrashlytics as crashlytics } from '@react-native-firebase/crashlytic
 import bugsnag from '@bugsnag/react-native';
 
 import events from './events';
-import { isTwoFactorCancelled } from '../../../services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../../services/twoFactor/twoFactorCancelled';
 
 export { events };
 

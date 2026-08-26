@@ -5,7 +5,7 @@ import { sha256 } from 'js-sha256';
 import ProfileView from './index';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor';
+import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { setUser } from '../../actions/login';
@@ -27,7 +27,7 @@ jest.mock('../../lib/services/restApi', () => ({
 	saveUserProfile: jest.fn()
 }));
 
-jest.mock('../../lib/services/twoFactor', () => ({
+jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 

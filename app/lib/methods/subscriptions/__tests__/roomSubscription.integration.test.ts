@@ -21,7 +21,7 @@ jest.mock('../../helpers/log', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../../../services/twoFactor', () => ({
+jest.mock('../../../services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 

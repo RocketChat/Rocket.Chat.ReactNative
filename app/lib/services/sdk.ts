@@ -3,7 +3,7 @@ import { type ICallback, type ICurrentLogin, type ILoginCredentials, type ISubsc
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
-import { twoFactor } from './twoFactor';
+import { twoFactor } from './twoFactor/twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
 import {
