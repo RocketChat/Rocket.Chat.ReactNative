@@ -7,7 +7,7 @@ import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
-import { twoFactor } from './twoFactor';
+import { twoFactor } from './twoFactor/twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';

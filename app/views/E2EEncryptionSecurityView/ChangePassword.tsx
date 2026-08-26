@@ -8,7 +8,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { FormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';
 import { Encryption } from '../../lib/encryption';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';

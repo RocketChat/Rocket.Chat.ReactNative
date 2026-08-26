@@ -13,7 +13,7 @@ import Button from '../../containers/Button';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { e2eResetOwnKey } from '../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
 import { styles } from './styles';

@@ -43,7 +43,7 @@ jest.mock('../../lib/services/voip/MediaSessionStore', () => ({
 	mediaSessionStore: { getCurrentInstance: jest.fn(() => null) }
 }));
 
-jest.mock('../../lib/services/twoFactor', () => ({
+jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 

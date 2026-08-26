@@ -1,8 +1,8 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 
 import TwoFactor from '.';
-import { twoFactor } from '../../lib/services/twoFactor';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactorCancelled';
+import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 
 jest.mock('../../lib/services/restApi', () => ({
 	sendEmailCode: jest.fn()

@@ -29,7 +29,7 @@ import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
-import { isTwoFactorCancelled } from '../lib/services/twoFactorCancelled';
+import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancelled';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
