@@ -43,9 +43,10 @@ describe('two-factor cancellation', () => {
 		expect(Alert.alert).not.toHaveBeenCalled();
 	});
 
-	it('still alerts when a genuine failure reaches showErrorAlertWithEMessage', () => {
+	it('logs and alerts when a genuine failure reaches showErrorAlertWithEMessage', () => {
 		showErrorAlertWithEMessage(genuineFailure);
 		expect(Alert.alert).toHaveBeenCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('neither logs nor alerts when a cancellation reaches reportError', () => {

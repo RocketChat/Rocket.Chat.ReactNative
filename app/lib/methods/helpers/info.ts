@@ -7,18 +7,15 @@ import { isTwoFactorCancelled } from '../../services/twoFactorCancelled';
 export const showErrorAlert = (message: string, title?: string, onPress = () => {}): void =>
 	Alert.alert(title || '', message, [{ text: 'OK', onPress }], { cancelable: true });
 
-export const reportError = (e: unknown, fallbackMessage: string, title?: string): void => {
+export const reportError = (e: unknown, message: string, title?: string): void => {
 	if (isTwoFactorCancelled(e)) {
 		return;
 	}
 	log(e);
-	showErrorAlert(fallbackMessage, title);
+	showErrorAlert(message, title);
 };
 
 export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
-	if (isTwoFactorCancelled(e)) {
-		return;
-	}
 	let errorMessage: string = e?.data?.error;
 
 	if (errorMessage?.includes('[error-too-many-requests]')) {
@@ -28,7 +25,7 @@ export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
 		errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
 	}
 
-	showErrorAlert(errorMessage, title);
+	reportError(e, errorMessage, title);
 };
 
 interface IShowConfirmationAlert {
