@@ -378,7 +378,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 		try {
 			yield call(logoutCall, { server });
 
-			const loggedInServer = yield call(findLoggedInServer);
+			const loggedInServer = yield* findLoggedInServer();
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
@@ -446,7 +446,7 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 		try {
 			yield call(removeServerData, { server });
 			yield call(removeServerDatabase, { server });
-			const loggedInServer = yield call(findLoggedInServer);
+			const loggedInServer = yield* findLoggedInServer();
 			if (loggedInServer) {
 				yield put(selectServerRequest(loggedInServer.id, loggedInServer.version));
 				return;
