@@ -6,12 +6,12 @@
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | **Room**            | A server-side conversation container with shared state (name, type, settings)                                                         | Chat, conversation            |
 | **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open) — never a **DDP Subscription** | Membership, room entry        |
-| **Channel**         | A public Room (type `'c'`) visible to all server users                                                                                | Public room                   |
+| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                             | Public room                   |
 | **Group**           | A private Room (type `'p'`) visible only to invited members                                                                           | Private room, private channel |
 | **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                  | DM, PM, private message       |
 | **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                       | Reply chain                   |
 | **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms        | Sub-room, sub-channel         |
-| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                             | Workspace (ambiguous)         |
+| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                             | Workspace (a different thing) |
 | **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                       | Broadcast channel             |
 | **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                            | Broadcast reply               |
 
@@ -101,7 +101,7 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 | **Loader Row**      | A placeholder Message record marking a Gap; becoming visible triggers a server fetch                                               | Load-more, spinner row |
 | **Older Loader**    | A Loader Row marking older Messages (types `MORE`, `PREVIOUS_CHUNK`) — resolving it fetches Messages before it                     | Load previous          |
 | **Newer Loader**    | A Loader Row marking newer Messages (type `NEXT_CHUNK`) — resolving it fetches Messages after it                                   | Load next              |
-| **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
+| **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Workspace History**)                                   | Message history        |
 | **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
 
 ## Timestamp Trust Boundary
@@ -195,15 +195,15 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 | **Media Signal**            | A typed event on the `@rocket.chat/media-signaling` wire protocol (offer, answer, ICE candidate, state update) carried over DDP `stream-notify-user` and replayable via REST `media-calls.stateSignals`   | Signal, RTC event              |
 | **Pending Hangup**          | A VOIP call id recorded in-memory when the user taps End while the WebSocket is unhealthy, so the hangup Media Signal can be replayed through the lib's transporter on the next post-login reconnect      | Hangup intent, deferred hangup |
 
-## Server & Connection
+## Workspace & Connection
 
-| Term                 | Definition                                                                                                                                                                                                                                                                                | Aliases to avoid                                                 |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **Server**           | A Rocket.Chat server instance the app connects to, with version, settings, and enterprise modules                                                                                                                                                                                         | Workspace (used by web but not consistently in mobile), instance |
-| **Server History**   | List of previously connected Servers for quick reconnection                                                                                                                                                                                                                               | Recent servers                                                   |
-| **Meteor Connect**   | The WebSocket connection to the Server's DDP (Distributed Data Protocol) endpoint                                                                                                                                                                                                         | Socket, connection                                               |
-| **Socket Health**    | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead                                                                                                                                                                  | Staleness (stale/gray/fresh), socket probe                       |
-| **DDP Subscription** | A live server-push feed on Meteor Connect, opened by name and parameters (`stream-room-messages`, `stream-notify-user`); the SDK derives its id from those parameters, so two callers asking for the same feed share one — distinct from a **Subscription**, which is a membership record | Stream, DDP stream, sub                                          |
+| Term                  | Definition                                                                                                                                                                                                                                                                                | Aliases to avoid                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Workspace**         | A Rocket.Chat deployment the app connects to, with version, settings, and enterprise modules                                                                                                                                                                                              | Server (legacy), instance                  |
+| **Workspace History** | List of previously connected Workspaces for quick reconnection                                                                                                                                                                                                                            | Recent servers                             |
+| **Meteor Connect**    | The WebSocket connection to the Workspace's DDP (Distributed Data Protocol) endpoint                                                                                                                                                                                                      | Socket, connection                         |
+| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead                                                                                                                                                                  | Staleness (stale/gray/fresh), socket probe |
+| **DDP Subscription**  | A live server-push feed on Meteor Connect, opened by name and parameters (`stream-room-messages`, `stream-notify-user`); the SDK derives its id from those parameters, so two callers asking for the same feed share one — distinct from a **Subscription**, which is a membership record | Stream, DDP stream, sub                    |
 
 ## Navigation & Layout
 
@@ -254,12 +254,14 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Flagged ambiguities
 
-- **"Workspace"** is used by Rocket.Chat web to mean a server instance, but the mobile codebase uses **Server**. Use **Server** in mobile context to avoid confusion with the web admin concept.
+- **"Server"** is the legacy name for **Workspace** and still dominates the mobile code (`server`, `serversHistory`, `selectServer`). **Workspace** is the canonical term across Rocket.Chat — use it in prose, names for new code, and user-facing copy; read existing `server*` identifiers as **Workspace**. Renaming them is a migration, not a prerequisite.
+
+- **"Server" as backend counterparty** is a separate, still-valid use: _server response_, _server truth_, _server-generated_, _server clock_ all mean "the remote side, as opposed to this device". That sense is not being renamed — only the entity a user connects to is a **Workspace**.
 - **"Room type `'e2e'`"** and **"Room type `'thread'`"** appear in `SubscriptionType` enum but are marked with FIXME in code — these are not true room types but flags. Do not treat them as room types in new code.
-- **"Account"** is sometimes used loosely to mean either **User** (the identity) or **Server** (the connected instance). These are distinct: a **User** authenticates on a **Server**.
+- **"Account"** is sometimes used loosely to mean either **User** (the identity) or **Workspace** (the connected deployment). These are distinct: a **User** authenticates on a **Workspace**.
 - **"Channel"** in everyday speech can mean any Room, but in domain terms it strictly means a public Room (type `'c'`). A private Room is a **Group** (type `'p'`).
 - **"Forward"** in omnichannel context means **Transfer** (reassigning a room to another agent/department). The codebase uses both `forwardRoom` and "transfer" — prefer **Transfer** as the domain term.
-- **"History"** is overloaded: **Server History** is the recent-Servers reconnection list; **Room History** is older Messages fetched on demand. The action `roomHistoryRequest` and saga `ROOM.HISTORY_REQUEST` refer to **Room History**.
+- **"History"** is overloaded: **Workspace History** is the recent-Workspaces reconnection list; **Room History** is older Messages fetched on demand. The action `roomHistoryRequest` and saga `ROOM.HISTORY_REQUEST` refer to **Room History**.
 - **"Window"** is used metaphorically in the Subscriptions dialogue ("a Subscription is the user's window into it"); a **Message Window** is the concrete observed Message range in the Room view. Disambiguate when both could be meant.
 - **"`lastOpen`"** names a database column, not a concept: it stores the **Last Open**, a server-clock fetch cursor. It has never meant "when the user last opened the room". The Unread Separator anchor is **Last Seen** (`ls`). Do not read `lastOpen` as a read receipt or write a device clock into it.
 - **"Load more"** is directional: older Messages are an **Older Loader** (`MORE`/`PREVIOUS_CHUNK`), newer Messages are a **Newer Loader** (`NEXT_CHUNK`). Avoid bare "load more".
