@@ -881,12 +881,11 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	const params = {
 		rid,
 		count,
-		offset,
-		...(text ? { text } : {})
+		offset
 	};
 
 	// RC 1.0
-	return sdk.get('chat.getThreadsList', params);
+	return sdk.get('chat.getThreadsList', text ? { ...params, text } : params);
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>

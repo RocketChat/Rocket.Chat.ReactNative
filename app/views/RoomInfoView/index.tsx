@@ -147,7 +147,8 @@ const RoomInfoView = (): ReactElement => {
 				const result = await getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
-					setRoomUser({ ...visitor, ...(visitor.userAgent ? parseUserAgent(visitor.userAgent) : {}) });
+					const { userAgent } = visitor;
+					setRoomUser(userAgent ? { ...visitor, ...parseUserAgent(userAgent) } : visitor);
 					setHeader();
 				}
 			}
