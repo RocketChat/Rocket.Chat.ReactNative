@@ -440,7 +440,7 @@ export default function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((cause: unknown) => console.log(cause));
+		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

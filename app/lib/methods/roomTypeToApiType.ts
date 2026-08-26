@@ -25,5 +25,4 @@ export const types: { [K in RoomTypes]: ApiTypes<K> } = {
 
 export const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
 
-// oxlint-disable-next-line anti-slop/no-unknown-parameters -- this guard is the boundary parser that turns unknown into RoomTypes
 export const isRoomType = (t: unknown): t is RoomTypes => typeof t === 'string' && t in types;

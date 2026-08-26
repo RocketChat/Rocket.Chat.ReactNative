@@ -87,13 +87,13 @@ export default function subscribeInquiry() {
 				const { departments } = result;
 
 				if (!departments.length || hasRole('livechat-manager')) {
-					sdk.subscribe(streamTopic, 'public').catch((cause: unknown) => console.log(cause));
+					sdk.subscribe(streamTopic, 'public').catch((e: unknown) => console.log(e));
 				}
 
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
 				departmentIds.forEach(departmentId => {
 					// subscribe to all departments of the agent
-					sdk.subscribe(streamTopic, `department/${departmentId}`).catch((cause: unknown) => console.log(cause));
+					sdk.subscribe(streamTopic, `department/${departmentId}`).catch((e: unknown) => console.log(e));
 				});
 			}
 		});

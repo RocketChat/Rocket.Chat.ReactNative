@@ -93,7 +93,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	onClearInput?: () => void;
 }
 
-// oxlint-disable-next-line anti-slop/no-unknown-parameters -- this is the boundary parser for an untyped form/API error
 const getInputError = (error: unknown): string => {
 	if (typeof error === 'string') return error;
 	if (typeof error === 'object' && error !== null && 'reason' in error) {

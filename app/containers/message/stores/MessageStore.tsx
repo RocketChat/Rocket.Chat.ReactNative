@@ -65,7 +65,6 @@ export const useMessageItem = (): TAnyMessageModel => useMessageStore(s => s.ite
 // (app/lib/database/model/Message.js); a field that drops memo:true returns a fresh ref every
 // access and would defeat both the Object.is and useShallow bail.
 // Guarded by app/lib/database/model/__tests__/Message.memo.test.ts.
-// oxlint-disable-next-line anti-slop/no-unknown-parameters -- this guard is the boundary parser for arbitrary selector return values
 const isRecordOrArray = (value: unknown): value is Record<string, unknown> | unknown[] =>
 	typeof value === 'object' && value !== null;
 

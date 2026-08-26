@@ -76,9 +76,9 @@ export function inquirySuccess(inquiries: IOmnichannelRoom[]): IInquirySuccess {
 	};
 }
 
-export function inquiryFailure(cause: unknown): IInquiryFailure {
+export function inquiryFailure(error: unknown): IInquiryFailure {
 	return {
 		type: INQUIRY.FAILURE,
-		error: cause
+		error
 	};
 }
