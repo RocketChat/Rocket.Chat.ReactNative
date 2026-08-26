@@ -6,7 +6,8 @@ jest.mock('../../lib/methods/userPreferences', () => ({
 }));
 
 jest.mock('../../lib/database/services/Server', () => ({
-	getServerById: jest.fn()
+	getServerById: jest.fn(),
+	getAllServers: jest.fn()
 }));
 
 jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
@@ -30,26 +31,16 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 	}
 }));
 
-jest.mock('../../lib/database', () => ({
-	__esModule: true,
-	default: {
-		servers: {
-			get: jest.fn()
-		}
-	}
-}));
-
 import RNBootSplash from 'react-native-bootsplash';
 
 import { appInit, appStart } from '../../actions/app';
 import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { getServerById } from '../../lib/database/services/Server';
+import { getAllServers, getServerById } from '../../lib/database/services/Server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEEP_LINKING } from '../../actions/actionsTypes';
 import { TOKEN_KEY } from '../../lib/constants/keys';
-import database from '../../lib/database';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
@@ -65,7 +56,7 @@ describe('init saga — restore user-facing roots', () => {
 		jest.mocked(RNBootSplash.hide).mockClear();
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
 		jest.mocked(AsyncStorage.removeItem).mockClear();
-		jest.mocked(database.servers.get).mockReset();
+		jest.mocked(getAllServers).mockResolvedValue([]);
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
 
@@ -107,9 +98,7 @@ describe('init saga — restore user-facing roots', () => {
 
 	it('lands on ROOT_OUTSIDE when neither the stored server nor any other has a token', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(key => (key.startsWith(`${TOKEN_KEY}-`) ? null : HOST));
-		jest.mocked(database.servers.get).mockReturnValue({
-			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
-		} as any);
+		jest.mocked(getAllServers).mockResolvedValue([{ id: OTHER_HOST, version: '7.0.0' }] as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
@@ -125,9 +114,7 @@ describe('init saga — restore user-facing roots', () => {
 			if (key.startsWith(`${TOKEN_KEY}-`)) return null;
 			return HOST;
 		});
-		jest.mocked(database.servers.get).mockReturnValue({
-			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
-		} as any);
+		jest.mocked(getAllServers).mockResolvedValue([{ id: OTHER_HOST, version: '7.0.0' }] as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
@@ -196,6 +183,42 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.ready).toBe(true);
+		expect(store.getState().server.server).toBe(HOST);
+	});
+
+	it('lands on ROOT_OUTSIDE when resolving the stored server throws', async () => {
+		jest.mocked(getServerById).mockRejectedValue(new Error('database unavailable'));
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().app.ready).toBe(true);
+	});
+
+	it('stays on the restored server when reading the pending push notification fails', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockRejectedValue(new Error('storage unavailable') as any);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_OUTSIDE);
+		expect(store.getState().server.server).toBe(HOST);
+	});
+
+	it('stays on the restored server when clearing the pending push notification fails', async () => {
+		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
+		jest.mocked(AsyncStorage.getItem).mockResolvedValue(JSON.stringify({ rid: 'room-1' }) as any);
+		jest.mocked(AsyncStorage.removeItem).mockRejectedValue(new Error('storage unavailable') as any);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_OUTSIDE);
 		expect(store.getState().server.server).toBe(HOST);
 	});
 });

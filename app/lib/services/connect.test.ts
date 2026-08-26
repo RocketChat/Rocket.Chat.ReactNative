@@ -92,6 +92,11 @@ jest.mock('../methods/helpers/events', () => ({
 }));
 
 const mockLog = jest.fn<void, unknown[]>();
+const mockTwoFactor = jest.fn<Promise<{ twoFactorCode: string }>, [unknown]>(() => Promise.resolve({ twoFactorCode: '123456' }));
+jest.mock('./twoFactor', () => ({
+	twoFactor: (params: unknown) => mockTwoFactor(params)
+}));
+
 jest.mock('../methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
@@ -684,5 +689,23 @@ describe('loginTOTP', () => {
 
 	it('rejects instead of hanging when the SDK resolves login without a login result', async () => {
 		await expect(loginTOTP({ user: 'user', password: 'password' })).rejects.toThrow('Login failed: missing login result');
+	}, 2000);
+
+	it('normalizes ldap credentials to user and password on the 2FA retry', async () => {
+		mockSdkLogin.mockImplementationOnce(() => Promise.reject({ data: { error: 'totp-required', details: {} } }));
+		mockSdkCurrent.currentLogin = { result: { userId: 'userId', authToken: 'authToken', me: { username: 'username' } } };
+
+		await loginTOTP({ username: 'user', ldapPass: 'password', ldap: true, ldapOptions: {} }, true);
+
+		expect(mockSdkLogin).toHaveBeenLastCalledWith({ user: 'user', password: 'password', code: '123456' });
+	}, 2000);
+
+	it('normalizes crowd credentials to user and password on the 2FA retry', async () => {
+		mockSdkLogin.mockImplementationOnce(() => Promise.reject({ data: { error: 'totp-required', details: {} } }));
+		mockSdkCurrent.currentLogin = { result: { userId: 'userId', authToken: 'authToken', me: { username: 'username' } } };
+
+		await loginTOTP({ username: 'user', crowdPassword: 'password', crowd: true }, true);
+
+		expect(mockSdkLogin).toHaveBeenLastCalledWith({ user: 'user', password: 'password', code: '123456' });
 	}, 2000);
 });
