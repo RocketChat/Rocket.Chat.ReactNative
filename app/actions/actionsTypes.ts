@@ -5,6 +5,7 @@ const defaultTypes = [REQUEST, SUCCESS, FAILURE];
 function createRequestTypes(base = {}, types = defaultTypes): Record<string, string> {
 	const res: Record<string, string> = {};
 	types.forEach(type => (res[type] = `${base}_${type}`));
+	// oxlint-disable-next-line anti-slop/no-known-value-widening -- the action-type keys come from a runtime array, not a literal
 	return res;
 }
 
