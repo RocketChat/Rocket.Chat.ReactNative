@@ -171,13 +171,12 @@ const ChangeAvatarView = () => {
 				await resetUserAvatar(userId);
 			}
 			isDirty.current = false;
+			navigation.goBack();
 		} catch (e: any) {
 			reportError(e, e.message, I18n.t('Oops'));
-			return;
 		} finally {
 			setSaving(false);
 		}
-		return navigation.goBack();
 	};
 
 	const pickImage = async (isCam = false) => {
