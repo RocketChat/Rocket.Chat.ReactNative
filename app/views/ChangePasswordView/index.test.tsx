@@ -5,7 +5,7 @@ import ChangePasswordView from './index';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
-import { TwoFactorCancelledError } from '../../lib/services/twoFactorCancelled';
+import { TwoFactorCancelledError } from '../../lib/services/twoFactor';
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 
@@ -23,7 +23,7 @@ jest.mock('../../lib/services/restApi', () => ({
 }));
 
 jest.mock('../../lib/services/twoFactor', () => ({
-	...jest.requireActual('../../lib/services/twoFactorCancelled'),
+	...jest.requireActual('../../lib/services/twoFactor'),
 	twoFactor: jest.fn()
 }));
 
