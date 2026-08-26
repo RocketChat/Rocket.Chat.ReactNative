@@ -1,3 +1,5 @@
+import { hasOwnKey } from '../methods/helpers/hasOwnKey';
+
 export const E2E_MESSAGE_TYPE = 'e2e';
 export const E2E_PUBLIC_KEY = 'RC_E2E_PUBLIC_KEY';
 export const E2E_PRIVATE_KEY = 'RC_E2E_PRIVATE_KEY';
@@ -16,7 +18,7 @@ export const E2E_ROOM_TYPES = {
 } satisfies Record<string, string>;
 
 export const isE2ERoomType = (roomType?: string): roomType is keyof typeof E2E_ROOM_TYPES =>
-	roomType !== undefined && Object.prototype.hasOwnProperty.call(E2E_ROOM_TYPES, roomType);
+	roomType !== undefined && hasOwnKey(E2E_ROOM_TYPES, roomType);
 
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const USER_MENTIONS_PREFERENCES_KEY = 'RC_USER_MENTIONS_PREFERENCES_KEY';

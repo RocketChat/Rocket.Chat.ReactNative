@@ -1,3 +1,5 @@
+import { hasOwnKey } from '../methods/helpers/hasOwnKey';
+
 const translationLanguages = {
 	af: 'Afrikaans',
 	ar: 'Arabic',
@@ -203,6 +205,6 @@ const translationLanguages = {
 } satisfies Record<string, string>;
 
 export const isTranslationLanguage = (language: string): language is keyof typeof translationLanguages =>
-	Object.prototype.hasOwnProperty.call(translationLanguages, language);
+	hasOwnKey(translationLanguages, language);
 
 export default translationLanguages;

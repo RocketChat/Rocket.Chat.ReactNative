@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { hasIcon, CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { type IIcon } from './interfaces';
+import { hasOwnKey } from '../../lib/methods/helpers/hasOwnKey';
 
 const iconAliases = {
 	'phone-end': 'phone-off',
@@ -14,7 +15,7 @@ const iconAliases = {
 
 type TIconAlias = keyof typeof iconAliases;
 
-const isIconAlias = (icon: string): icon is TIconAlias => Object.prototype.hasOwnProperty.call(iconAliases, icon);
+const isIconAlias = (icon: string): icon is TIconAlias => hasOwnKey(iconAliases, icon);
 
 const styles = StyleSheet.create({
 	frame: {

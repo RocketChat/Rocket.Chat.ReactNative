@@ -26,13 +26,13 @@ const handleErrors = (isAdmin: boolean, error: keyof typeof availabilityErrors) 
 	if (i18n.isTranslated(body) && i18n.isTranslated(header)) showErrorAlert(i18n.t(body), i18n.t(header));
 };
 
-export interface IUseVideoConf {
+export interface IUseVideoConfResult {
 	showInitCallActionSheet: () => Promise<void>;
 	callEnabled: boolean;
 	disabledTooltip?: boolean;
 }
 
-export const useVideoConf = (rid: string): IUseVideoConf => {
+export const useVideoConf = (rid: string): IUseVideoConfResult => {
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);

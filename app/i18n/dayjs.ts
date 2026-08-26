@@ -1,3 +1,5 @@
+import { hasOwnKey } from '../lib/methods/helpers/hasOwnKey';
+
 const localeKeys = {
 	en: 'en',
 	ar: 'ar',
@@ -21,6 +23,6 @@ const localeKeys = {
 
 type TLocaleKey = keyof typeof localeKeys;
 
-const isLocaleKey = (locale: string): locale is TLocaleKey => Object.prototype.hasOwnProperty.call(localeKeys, locale);
+const isLocaleKey = (locale: string): locale is TLocaleKey => hasOwnKey(localeKeys, locale);
 
 export const toDayJsLocale = (locale: string): string => (isLocaleKey(locale) ? localeKeys[locale] : locale);

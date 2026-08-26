@@ -54,9 +54,8 @@ function moduleMockCall(sourceCode: SourceCode, callee: ESTree.Expression): bool
   const property = callee.property;
   const method = callee.computed
     ? property.type === "Literal" &&
-      (property.value === "doMock" ||
-        property.value === "mock" ||
-        property.value === "unstable_mockModule")
+      typeof property.value === "string" &&
+      moduleMockMethods.has(property.value)
       ? property.value
       : null
     : property.type === "Identifier"

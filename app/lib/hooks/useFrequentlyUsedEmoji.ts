@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { type IEmoji } from '../../definitions';
 import { getFrequentlyUsedEmojis } from '../methods/emojis';
 
-export interface IFrequentlyUsedEmoji {
+export interface IUseFrequentlyUsedEmojiResult {
 	frequentlyUsed: IEmoji[];
 	loaded: boolean;
 }
 
-export const useFrequentlyUsedEmoji = (withDefaultEmojis: boolean = false): IFrequentlyUsedEmoji => {
+export const useFrequentlyUsedEmoji = (withDefaultEmojis = false): IUseFrequentlyUsedEmojiResult => {
 	const [frequentlyUsed, setFrequentlyUsed] = useState<IEmoji[]>([]);
 	const [loaded, setLoaded] = useState(false);
 	useEffect(() => {

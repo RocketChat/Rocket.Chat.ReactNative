@@ -2,6 +2,7 @@ import emojis, { isEmojiShortname } from './emojis';
 import ascii, { asciiRegexp, isAsciiEmoji } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
+import { hasOwnKey } from '../../methods/helpers/hasOwnKey';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
 const replaceShortNameWithUnicode = (shortname: string) => (isEmojiShortname(shortname) ? emojis[shortname] : shortname);
@@ -25,8 +26,7 @@ const htmlEntities = {
 	'&#x27;': "'"
 } satisfies Record<string, string>;
 
-const isHtmlEntity = (entity: string): entity is keyof typeof htmlEntities =>
-	Object.prototype.hasOwnProperty.call(htmlEntities, entity);
+const isHtmlEntity = (entity: string): entity is keyof typeof htmlEntities => hasOwnKey(htmlEntities, entity);
 
 const unescapeHTML = (string: string) =>
 	string.replace(/&(?:amp|#38|#x26|lt|#60|#x3C|gt|#62|#x3E|apos|#39|#x27|quot|#34|#x22);/gi, match =>

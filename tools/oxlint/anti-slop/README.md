@@ -8,6 +8,8 @@ Vendored Oxlint plugin. Upstream: https://github.com/dmmulroy/anti-slop
 - Upstream's `effect/` rules are not vendored — this app has no direct `effect` dependency.
 - `no-unknown-parameters`, `no-unknown-returns` and `no-runtime-typeof` were removed. `unknown`
   parameters and `typeof` narrowing are used deliberately across our repos.
+- `no-module-mocking`'s computed-access branch derives its method names from the shared
+  `moduleMockMethods` list instead of repeating them inline, so both branches stay in sync.
 - `no-chained-type-assertions` and `no-unsafe-dictionary-type` run as warnings. Their remaining
   findings need real parsing at the server-payload boundary, not a lint fix.
 - `no-module-mocking` and `require-safety-comment-for-type-assertion` also run as warnings. Both

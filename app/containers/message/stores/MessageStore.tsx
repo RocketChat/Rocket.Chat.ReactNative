@@ -325,7 +325,7 @@ export const useMessageIgnored = (): boolean => useMessageStore(s => (s.manualUn
 
 export const useRevealIgnored = (): (() => void) => useMessageStore(s => s.reveal);
 
-interface IMessageTouchable {
+interface IUseMessageTouchableResult {
 	tappable: boolean;
 	longPressable: boolean;
 	revealsIgnored: boolean;
@@ -334,7 +334,7 @@ interface IMessageTouchable {
 // Single source of truth for pressability, shared by the Touch gate, long-press guard and
 // press guard. longPressable drops encrypted messages (tap can still open a thread; the action
 // sheet is suppressed); revealsIgnored is tappable ∧ isIgnored (a tap reveals instead of pressing).
-export const useMessageTouchable = (): IMessageTouchable => {
+export const useMessageTouchable = (): IUseMessageTouchableResult => {
 	const isInfo = useIsInfoMessage();
 	const { hasError, isTemp } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
