@@ -6,14 +6,14 @@ let interval: number | null = null;
 
 export const initVideoConfTimer = (rid: string): void => {
 	if (rid) {
-		updateJitsiTimeout(rid).catch((e: unknown) => console.log(e));
+		updateJitsiTimeout(rid).catch((cause: unknown) => console.log(cause));
 		if (interval) {
 			BackgroundTimer.clearInterval(interval);
 			BackgroundTimer.stopBackgroundTimer();
 			interval = null;
 		}
 		interval = BackgroundTimer.setInterval(() => {
-			updateJitsiTimeout(rid).catch((e: unknown) => console.log(e));
+			updateJitsiTimeout(rid).catch((cause: unknown) => console.log(cause));
 		}, 10000);
 	}
 };

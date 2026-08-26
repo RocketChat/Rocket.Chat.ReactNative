@@ -177,8 +177,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 		if (!isIOS) {
 			// Idempotent: native short-circuits if a listener is already registered or API < 31.
-			NativeVoipModule.startAudioRouteSync().catch((error: unknown) => {
-				log(error);
+			NativeVoipModule.startAudioRouteSync().catch((cause: unknown) => {
+				log(cause);
 			});
 		}
 
@@ -334,8 +334,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
 		if (!isIOS) {
-			NativeVoipModule.stopAudioRouteSync().catch((error: unknown) => {
-				log(error);
+			NativeVoipModule.stopAudioRouteSync().catch((cause: unknown) => {
+				log(cause);
 			});
 		}
 		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.

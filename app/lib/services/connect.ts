@@ -109,8 +109,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			.then(() => {
 				console.log('connected');
 			})
-			.catch((err: unknown) => {
-				console.log('connect error', err);
+			.catch((cause: unknown) => {
+				console.log('connect error', cause);
 			});
 
 		connectingListener = sdk.current.onStreamData('connecting', () => {
