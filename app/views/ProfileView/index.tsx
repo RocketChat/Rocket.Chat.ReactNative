@@ -50,11 +50,7 @@ const MAX_NICKNAME_LENGTH = 120;
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
-type TwoFactorChallengeOutcome =
-	| { status: 'notChallenged' }
-	| { status: 'retried' }
-	| { status: 'cancelled' }
-	| { status: 'failed'; error: unknown };
+type TwoFactorChallengeOutcome = { status: 'retried' } | { status: 'cancelled' } | { status: 'failed'; error: unknown };
 
 const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const validationSchema = yup.object().shape({
@@ -213,7 +209,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 
 	const handleTwoFactorChallenge = async (e: any): Promise<TwoFactorChallengeOutcome> => {
 		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
-			return { status: 'notChallenged' };
+			return { status: 'failed', error: e };
 		}
 		try {
 			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
@@ -259,14 +255,11 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			const twoFactorOutcome = await handleTwoFactorChallenge(e);
 			if (twoFactorOutcome.status === 'retried') return;
 
-			if (twoFactorOutcome.status === 'cancelled') {
-				resetSavingState();
-				return;
-			}
+			resetSavingState();
+			if (twoFactorOutcome.status === 'cancelled') return;
 
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			resetSavingState();
-			handleSaveUserProfileError(twoFactorOutcome.status === 'failed' ? twoFactorOutcome.error : e, 'saving_profile');
+			handleSaveUserProfileError(twoFactorOutcome.error, 'saving_profile');
 		}
 	};
 
