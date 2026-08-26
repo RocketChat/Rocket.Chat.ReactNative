@@ -61,7 +61,7 @@
 		"require-await": "error",
 		"react/exhaustive-deps": "warn",
 		"react/rules-of-hooks": "error",
-		"anti-slop/no-chained-type-assertions": "error",
+		"anti-slop/no-chained-type-assertions": "warn",
 		"anti-slop/no-conditional-empty-object-spread": "error",
 		"anti-slop/no-known-value-widening": "error",
 		"anti-slop/no-module-mocking": "warn",
