@@ -16,6 +16,8 @@ type TPolicySettings =
 	| 'Accounts_Password_Policy_Enabled'
 	| 'Accounts_Password_Policy_AtLeastOneNumber';
 
+type TPolicySettingValues = { [K in TPolicySettings]?: boolean | number };
+
 const mockUseSetting = useSetting as jest.Mock;
 
 describe('useVerifyPassword', () => {
@@ -50,7 +52,7 @@ describe('useVerifyPassword', () => {
 
 		it('should validate password based on policies', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_AtLeastOneLowercase: true,
 					Accounts_Password_Policy_AtLeastOneUppercase: true,
@@ -77,7 +79,7 @@ describe('useVerifyPassword', () => {
 	describe('validate password policies', () => {
 		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneLowercase policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_AtLeastOneLowercase: true
 				};
@@ -90,7 +92,7 @@ describe('useVerifyPassword', () => {
 
 		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneUppercase policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_AtLeastOneUppercase: true
 				};
@@ -103,7 +105,7 @@ describe('useVerifyPassword', () => {
 
 		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneSpecialCharacter policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_AtLeastOneSpecialCharacter: true
 				};
@@ -116,7 +118,7 @@ describe('useVerifyPassword', () => {
 
 		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneNumber policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_AtLeastOneNumber: true
 				};
@@ -129,7 +131,7 @@ describe('useVerifyPassword', () => {
 
 		it('should return false if password does not meet the Accounts_Password_Policy_ForbidRepeatingCharacters policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_ForbidRepeatingCharacters: true,
 					Accounts_Password_Policy_ForbidRepeatingCharactersCount: 3
@@ -143,7 +145,7 @@ describe('useVerifyPassword', () => {
 
 		it('should return false if password does not meet the Accounts_Password_Policy_MinLength policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_MinLength: 3
 				};
@@ -156,7 +158,7 @@ describe('useVerifyPassword', () => {
 
 		it('should return false if password does not meet the Accounts_Password_Policy_MaxLength policy', () => {
 			mockUseSetting.mockImplementation((key: TPolicySettings) => {
-				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+				const settings: TPolicySettingValues = {
 					Accounts_Password_Policy_Enabled: true,
 					Accounts_Password_Policy_MaxLength: 4
 				};

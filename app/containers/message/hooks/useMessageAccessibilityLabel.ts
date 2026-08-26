@@ -1,5 +1,5 @@
 import i18n from '../../../i18n';
-import translationLanguages from '../../../lib/constants/translationLanguages';
+import translationLanguages, { isTranslationLanguage } from '../../../lib/constants/translationLanguages';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
 import { getInfoMessage } from '../utils';
 import { type IUserChannel, type IUserMention } from '../../../definitions';
@@ -67,7 +67,8 @@ export const useMessageAccessibilityLabel = (): string => {
 	const readOrUnreadLabel = !unread && unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const readReceipt = isReadReceiptEnabled && !isInfo ? readOrUnreadLabel : '';
 	const encryptedMessageLabel = isEncrypted ? i18n.t('Encrypted_message') : '';
-	const translatedLanguage = translationLanguages[autoTranslateLanguage || 'en'];
+	const language = autoTranslateLanguage || 'en';
+	const translatedLanguage = isTranslationLanguage(language) ? translationLanguages[language] : language;
 	const translated = isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
 	// For translated messages, the translated body is announced by the inner A11y.Index node, so the outer label
 	// only carries the metadata (user, hour, translated marker) and the suffix (image description, encryption, read receipt).

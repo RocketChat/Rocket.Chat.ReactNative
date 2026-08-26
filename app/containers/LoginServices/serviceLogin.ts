@@ -161,18 +161,10 @@ const openOAuthSession = async (url: string) => {
 
 const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 	const credentialToken = random(43);
-	let obj: {
-		loginStyle: string;
-		credentialToken: string;
-		isCordova: boolean;
-		redirectUrl?: string;
-	} = { loginStyle, credentialToken, isCordova: true };
-	if (loginStyle === 'redirect') {
-		obj = {
-			...obj,
-			redirectUrl: 'rocketchat://auth'
-		};
-	}
+	const obj =
+		loginStyle === 'redirect'
+			? { loginStyle, credentialToken, isCordova: true, redirectUrl: 'rocketchat://auth' }
+			: { loginStyle, credentialToken, isCordova: true };
 	return Base64.encodeURI(JSON.stringify(obj));
 };
 

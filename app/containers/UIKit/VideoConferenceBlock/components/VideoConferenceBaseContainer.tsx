@@ -15,7 +15,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 	const { colors } = useTheme();
 	const style = useStyle();
 
-	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
+	const iconStyle = {
 		ended: {
 			icon: 'phone-off',
 			color: colors.fontSecondaryInfo,
@@ -40,7 +40,10 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 			backgroundColor: colors.statusBackgroundWarning,
 			label: i18n.t('Call_issue')
 		}
-	};
+	} satisfies Record<
+		VideoConfMessageIconProps['variant'],
+		{ icon: TIconsName; color: string; backgroundColor: string; label: string }
+	>;
 
 	return (
 		<View style={style.container}>

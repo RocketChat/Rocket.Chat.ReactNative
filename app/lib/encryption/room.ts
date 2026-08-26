@@ -67,6 +67,12 @@ import { store } from '../store/auxStore';
 
 type TAlgorithm = 'A128CBC' | 'A256GCM' | '';
 
+interface IParsedContent {
+	kid: string;
+	iv: ArrayBuffer;
+	ciphertext: string;
+}
+
 export default class EncryptionRoom {
 	ready: boolean;
 	roomId: string;
@@ -616,13 +622,7 @@ export default class EncryptionRoom {
 		return data;
 	};
 
-	parse = (
-		payload: string | IMessage['content']
-	): {
-		kid: string;
-		iv: ArrayBuffer;
-		ciphertext: string;
-	} => {
+	parse = (payload: string | IMessage['content']): IParsedContent => {
 		// v2: {"kid":"...", "iv": "...", "ciphertext":"..."}
 		if (typeof payload !== 'string' && payload?.algorithm === 'rc.v2.aes-sha2') {
 			return { kid: payload.kid, iv: b64ToBuffer(payload.iv), ciphertext: payload.ciphertext };

@@ -236,10 +236,15 @@ export const encodePrefixedBase64 = (prefix: string, data: ArrayBuffer): string 
 	return prefix + base64Data;
 };
 
-export const parsePrivateKey = (
-	privateKey: string,
-	userId: string
-): { iv: ArrayBuffer; ciphertext: ArrayBuffer; salt: string; iterations: number; version: 'v1' | 'v2' } => {
+interface IParsedPrivateKey {
+	iv: ArrayBuffer;
+	ciphertext: ArrayBuffer;
+	salt: string;
+	iterations: number;
+	version: 'v1' | 'v2';
+}
+
+export const parsePrivateKey = (privateKey: string, userId: string): IParsedPrivateKey => {
 	const json: unknown = JSON.parse(privateKey);
 	if (typeof json !== 'object' || json === null) {
 		throw new TypeError('Invalid private key format');

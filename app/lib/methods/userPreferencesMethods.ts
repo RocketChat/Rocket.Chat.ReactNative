@@ -8,7 +8,6 @@ export function getSortPreferences() {
 }
 
 export function saveSortPreference(param: Partial<IPreferences>) {
-	let prefs = getSortPreferences();
-	prefs = { ...prefs, ...param } as object;
-	return userPreferences.setMap(SORT_PREFS_KEY, prefs);
+	const prefs = getSortPreferences();
+	return userPreferences.setMap(SORT_PREFS_KEY, { ...prefs, ...param });
 }

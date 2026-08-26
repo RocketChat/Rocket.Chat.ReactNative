@@ -35,7 +35,11 @@ export interface IActiveUsers {
 }
 
 export const _activeUsers = { activeUsers: {} as IActiveUsers };
-export const _setUserTimer: { setUserTimer: null | ReturnType<typeof setTimeout> } = { setUserTimer: null };
+interface ISetUserTimer {
+	setUserTimer: null | ReturnType<typeof setTimeout>;
+}
+
+export const _setUserTimer: ISetUserTimer = { setUserTimer: null };
 
 export function _setUser(ddpMessage: IActiveUsers): void {
 	_activeUsers.activeUsers = _activeUsers.activeUsers || {};

@@ -3,7 +3,7 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable comma-spacing */
 /* eslint-disable key-spacing */
-const emojis: { [key: string]: string } = {
+const emojis = {
 	':england:': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
 	':scotland:': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
 	':wales:': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
@@ -4632,5 +4632,8 @@ const emojis: { [key: string]: string } = {
 	':x:': '❌',
 	':yin_yang:': '☯️',
 	':zap:': '⚡'
-};
+} satisfies Record<string, string>;
+
+export const isEmojiShortname = (shortname: string): shortname is keyof typeof emojis => shortname in emojis;
+
 export default emojis;

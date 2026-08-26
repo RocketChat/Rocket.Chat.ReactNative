@@ -6,7 +6,7 @@ export const getTranslations = ({
 }: {
 	shouldChangeOwner: string[];
 	shouldBeRemoved: string[];
-}): { changeOwnerRooms: string; removedRooms: string } => {
+}) => {
 	let changeOwnerRooms = '';
 	if (shouldChangeOwner.length) {
 		if (shouldChangeOwner.length === 1) {

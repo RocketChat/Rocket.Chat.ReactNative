@@ -4,13 +4,17 @@ import { hasIcon, CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { type IIcon } from './interfaces';
 
-const iconAliases: Record<string, string> = {
+const iconAliases = {
 	'phone-end': 'phone-off',
 	microphone: 'mic',
 	'microphone-disabled': 'mic-off',
 	audio: 'volume',
 	'audio-disabled': 'volume-off'
-};
+} satisfies Record<string, string>;
+
+type TIconAlias = keyof typeof iconAliases;
+
+const isIconAlias = (icon: string): icon is TIconAlias => icon in iconAliases;
 
 const styles = StyleSheet.create({
 	frame: {
@@ -27,9 +31,11 @@ export const resolveIconName = (icon: string) => {
 		return icon as any;
 	}
 
-	const aliasedIcon = iconAliases[icon];
-	if (aliasedIcon && hasIcon(aliasedIcon)) {
-		return aliasedIcon as any;
+	if (isIconAlias(icon)) {
+		const aliasedIcon = iconAliases[icon];
+		if (hasIcon(aliasedIcon)) {
+			return aliasedIcon as any;
+		}
 	}
 
 	return 'info' as any;

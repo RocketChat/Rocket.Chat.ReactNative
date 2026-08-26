@@ -21,12 +21,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	>
 		? void
 		: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
-): {
-	result: Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined;
-	loading: boolean;
-	reload: Function;
-	error: ErrorResult | undefined;
-} => {
+) => {
 	const [loading, setLoading] = useState(true);
 	const [result, setResult] = useState<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined>();
 	const [error, setError] = useState<ErrorResult | undefined>();

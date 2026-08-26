@@ -102,7 +102,7 @@ function getToggleHoldHandler(): (payload: { hold: boolean; callUUID: string }) 
 
 /** Minimal store slice: handler only runs hold logic when call + matching callId/native id exist. */
 const activeCallBase = {
-	call: {} as object,
+	call: {},
 	callId: 'uuid-1',
 	nativeAcceptedCallId: null as string | null
 };

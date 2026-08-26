@@ -212,14 +212,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const { isMasterDetail } = this.props;
-		let params: {
-			rid: string;
-			jumpToMessageId: string;
-			t: SubscriptionType;
-			room: TSubscriptionModel | undefined;
-			tmid?: string;
-			name?: string;
-		} = {
+		const params = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
 			t: this.t,
@@ -227,13 +220,12 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		};
 		if ('tmid' in item && item.tmid) {
 			Navigation.popToRoom(isMasterDetail);
-			params = {
+			Navigation.push('RoomView', {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid as string, item._id),
 				t: SubscriptionType.THREAD
-			};
-			Navigation.push('RoomView', params);
+			});
 		} else {
 			Navigation.popToRoom(isMasterDetail);
 			Navigation.setParams(params);

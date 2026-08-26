@@ -165,7 +165,7 @@ function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload
 }
 
 const activeCallBase = {
-	call: {} as object,
+	call: {},
 	callId: 'uuid-1',
 	nativeAcceptedCallId: null as string | null
 };

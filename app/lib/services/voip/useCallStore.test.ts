@@ -61,9 +61,9 @@ jest.mock('../../native/NativeVoip', () => ({
 // Re-evaluate `isIOS` per-test (the helper module computes it once at import time from Platform.OS,
 // so we replace it with a getter that reflects the current Platform.OS in the test).
 jest.mock('../../methods/helpers', () => {
-	const actual = jest.requireActual('../../methods/helpers');
+	const actual = jest.requireActual<typeof import('../../methods/helpers')>('../../methods/helpers');
 	const { Platform } = jest.requireActual('react-native');
-	const proxy: Record<string, unknown> = { ...actual };
+	const proxy = { ...actual };
 	Object.defineProperty(proxy, 'isIOS', {
 		get() {
 			return Platform.OS === 'ios';

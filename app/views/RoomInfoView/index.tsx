@@ -39,6 +39,15 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
+const parseUserAgent = (userAgent: string) => {
+	const ua = new UAParser();
+	ua.setUA(userAgent);
+	return {
+		os: `${ua.getOS().name} ${ua.getOS().version}`,
+		browser: `${ua.getBrowser().name} ${ua.getBrowser().version}`
+	};
+};
+
 const RoomInfoView = (): ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
@@ -138,14 +147,7 @@ const RoomInfoView = (): ReactElement => {
 				const result = await getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
-					const params: { os?: string; browser?: string } = {};
-					if (visitor.userAgent) {
-						const ua = new UAParser();
-						ua.setUA(visitor.userAgent);
-						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
-					}
-					setRoomUser({ ...visitor, ...params });
+					setRoomUser({ ...visitor, ...(visitor.userAgent ? parseUserAgent(visitor.userAgent) : {}) });
 					setHeader();
 				}
 			}

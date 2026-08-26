@@ -10,10 +10,13 @@ export const E2E_BANNER_TYPE = {
 	REQUEST_PASSWORD: 'REQUEST_PASSWORD',
 	SAVE_PASSWORD: 'SAVE_PASSWORD'
 };
-export const E2E_ROOM_TYPES: Record<string, string> = {
+export const E2E_ROOM_TYPES = {
 	d: 'd',
 	p: 'p'
-};
+} satisfies Record<string, string>;
+
+export const isE2ERoomType = (roomType?: string): roomType is keyof typeof E2E_ROOM_TYPES =>
+	roomType !== undefined && roomType in E2E_ROOM_TYPES;
 
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const USER_MENTIONS_PREFERENCES_KEY = 'RC_USER_MENTIONS_PREFERENCES_KEY';

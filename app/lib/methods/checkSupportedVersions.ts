@@ -29,18 +29,20 @@ const getStatus = ({ expiration, message }: { expiration?: string; message?: TSV
 	return 'supported';
 };
 
+export interface ISupportedVersionsCheck {
+	status: TSVStatus;
+	message?: TSVMessage;
+	i18n?: TSVDictionary;
+	expiration?: string;
+}
+
 export const checkSupportedVersions = function ({
 	supportedVersions,
 	serverVersion
 }: {
 	supportedVersions?: ISupportedVersionsData;
 	serverVersion: string;
-}): {
-	status: TSVStatus;
-	message?: TSVMessage;
-	i18n?: TSVDictionary;
-	expiration?: string;
-} {
+}): ISupportedVersionsCheck {
 	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
 	let sv: ISupportedVersionsData;
 	if (!supportedVersions || supportedVersions.timestamp < builtInSupportedVersions.timestamp) {

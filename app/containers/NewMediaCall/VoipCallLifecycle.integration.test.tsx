@@ -40,7 +40,11 @@ assertType<InsideStackParamList extends { CallView: unknown } ? true : false>();
 // Jest hoists jest.mock() to the top of the module; factories can only close
 // over variables whose names start with "mock". Wrapping in an object lets us
 // reassign across the beforeEach without recreating the module mock.
-const mockSdkState: { streamHandler: ((msg: IDDPMessage) => void) | null } = { streamHandler: null };
+interface IMockSdkState {
+	streamHandler: ((msg: IDDPMessage) => void) | null;
+}
+
+const mockSdkState: IMockSdkState = { streamHandler: null };
 
 jest.mock('../../lib/database', () => ({
 	db: { get: jest.fn() },

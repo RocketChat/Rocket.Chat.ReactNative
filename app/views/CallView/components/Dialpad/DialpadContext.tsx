@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useRef } from 'react';
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
-const DTMF_ASSETS: Record<string, ReturnType<typeof require>> = {
+const DTMF_ASSETS = {
 	'0': require('../../../../containers/Ringer/dtmf/digit-0.mp3'),
 	'1': require('../../../../containers/Ringer/dtmf/digit-1.mp3'),
 	'2': require('../../../../containers/Ringer/dtmf/digit-2.mp3'),
@@ -14,7 +14,7 @@ const DTMF_ASSETS: Record<string, ReturnType<typeof require>> = {
 	'9': require('../../../../containers/Ringer/dtmf/digit-9.mp3'),
 	'*': require('../../../../containers/Ringer/dtmf/digit-star.mp3'),
 	'#': require('../../../../containers/Ringer/dtmf/digit-pound.mp3')
-};
+} satisfies Record<string, ReturnType<typeof require>>;
 
 interface DialpadContextValue {
 	playTone: (digit: string) => void;

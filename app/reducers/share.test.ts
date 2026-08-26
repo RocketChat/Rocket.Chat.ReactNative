@@ -9,7 +9,7 @@ describe('test share reducer', () => {
 	});
 
 	it('should return correctly updated state after calling setParams action', () => {
-		const params: Record<string, any> = {
+		const params = {
 			mediaUris: 'test'
 		};
 		mockedStore.dispatch(shareSetParams(params));
@@ -21,7 +21,7 @@ describe('test share reducer', () => {
 	});
 
 	it('should reset params to an empty object', () => {
-		const params: Record<string, any> = {};
+		const params = {};
 		mockedStore.dispatch(shareSetParams(params));
 		const state = mockedStore.getState().share;
 		expect(state).toEqual(initialState);

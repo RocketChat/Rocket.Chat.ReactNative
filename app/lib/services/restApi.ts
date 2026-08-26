@@ -881,11 +881,9 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	const params = {
 		rid,
 		count,
-		offset
-	} as { rid: string; count: number; offset: number; text?: string };
-	if (text) {
-		params.text = text;
-	}
+		offset,
+		...(text ? { text } : {})
+	};
 
 	// RC 1.0
 	return sdk.get('chat.getThreadsList', params);

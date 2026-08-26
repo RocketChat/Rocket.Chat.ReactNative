@@ -1,6 +1,11 @@
 import { type IUrl, type IUrlFromServer } from '../../../definitions';
 import parseUrls from './parseUrls';
 
+type TUrlFixture = {
+	urls: IUrlFromServer[];
+	expectedResult: IUrl[];
+};
+
 const tmpImageValidLink = {
 	urls: [
 		{
@@ -42,7 +47,7 @@ const tmpImageValidLink = {
 			url: 'https://meet.google.com/cbr-hysk-azn?pli=1&authuser=1'
 		}
 	]
-} as { urls: IUrlFromServer[]; expectedResult: IUrl[] };
+} as TUrlFixture;
 
 const tmpImagePointingToAnAsset = {
 	urls: [
@@ -70,7 +75,7 @@ const tmpImagePointingToAnAsset = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as { urls: IUrlFromServer[]; expectedResult: IUrl[] };
+} as unknown as TUrlFixture;
 
 const tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl = {
 	urls: [
@@ -98,7 +103,7 @@ const tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as { urls: IUrlFromServer[]; expectedResult: IUrl[] };
+} as unknown as TUrlFixture;
 
 const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl = {
 	urls: [
@@ -136,7 +141,7 @@ const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as { urls: IUrlFromServer[]; expectedResult: IUrl[] };
+} as unknown as TUrlFixture;
 
 const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl = {
 	urls: [
@@ -171,7 +176,7 @@ const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as { urls: IUrlFromServer[]; expectedResult: IUrl[] };
+} as unknown as TUrlFixture;
 
 const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl = {
 	urls: [
@@ -199,7 +204,7 @@ const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as { urls: IUrlFromServer[]; expectedResult: IUrl[] };
+} as unknown as TUrlFixture;
 
 describe('parseUrls function', () => {
 	it('test when a tmp.image is a valid link', () => {

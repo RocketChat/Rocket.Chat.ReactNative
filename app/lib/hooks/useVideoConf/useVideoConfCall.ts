@@ -10,9 +10,7 @@ import { isReadOnly } from '../../methods/helpers/isReadOnly';
 import { useAppSelector } from '../useAppSelector';
 import { usePermissions } from '../usePermissions';
 
-export const useVideoConfCall = (
-	rid: string
-): { callEnabled: boolean; disabledTooltip?: boolean; roomType?: SubscriptionType } => {
+export const useVideoConfCall = (rid: string) => {
 	const [callEnabled, setCallEnabled] = useState(false);
 	const [disabledTooltip, setDisabledTooltip] = useState(false);
 	const [roomType, setRoomType] = useState<SubscriptionType>();

@@ -44,14 +44,16 @@ const mockedDecryptMessage = Encryption.decryptMessage as jest.MockedFunction<ty
 const mockedLog = log as jest.MockedFunction<typeof log>;
 
 // mimics watermelon rejecting an update prepared on a record another writer already touched
+interface IFakeMessageRecord {
+	id: string;
+	tmsg: string | undefined;
+	stale: boolean;
+	prepareUpdate: jest.Mock;
+	update: jest.Mock;
+}
+
 const buildMessageRecord = (id: string) => {
-	const record: {
-		id: string;
-		tmsg: string | undefined;
-		stale: boolean;
-		prepareUpdate: jest.Mock;
-		update: jest.Mock;
-	} = {
+	const record: IFakeMessageRecord = {
 		id,
 		tmsg: undefined,
 		stale: false,

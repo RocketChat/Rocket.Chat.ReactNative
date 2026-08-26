@@ -8,7 +8,6 @@ import { initStore } from '../../lib/store/auxStore';
 import { setUser } from '../../actions/login';
 import { getUserInfo, toggleBlockUser } from '../../lib/services/restApi';
 
-let mockRouteParams: Record<string, unknown> = {};
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
@@ -83,6 +82,16 @@ const dmRoom = {
 	blocker: false
 };
 
+const dmRouteParams = {
+	rid: 'dm-rid',
+	t: 'd',
+	fromRid: 'dm-rid',
+	room: dmRoom,
+	member: { username: 'other.user', status: 'online' }
+};
+
+let mockRouteParams = dmRouteParams;
+
 describe('RoomInfoView block/ignore user', () => {
 	beforeAll(() => {
 		initStore(mockedStore);
@@ -92,13 +101,7 @@ describe('RoomInfoView block/ignore user', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		// member arrives from RoomActionsView possibly without _id (its own fetch may not have resolved yet)
-		mockRouteParams = {
-			rid: 'dm-rid',
-			t: 'd',
-			fromRid: 'dm-rid',
-			room: dmRoom,
-			member: { username: 'other.user', status: 'online' }
-		};
+		mockRouteParams = dmRouteParams;
 	});
 
 	it('blocks the DM user even when member param has no _id yet', async () => {
