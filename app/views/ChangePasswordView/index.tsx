@@ -118,6 +118,11 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		}
 	};
 
+	const resetTwoFactorState = () => {
+		setValue('currentPassword', '');
+		setTwoFactorCode(null);
+	};
+
 	const changePasswordFromProfileView = async () => {
 		const { currentPassword, newPassword, confirmNewPassword } = inputValues;
 		if (newPassword !== confirmNewPassword) {
@@ -147,9 +152,11 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					setTwoFactorCode(code as any);
 					return handleSetNewPassword();
 				} catch (twoFactorError) {
+					resetTwoFactorState();
 					if (isTwoFactorCancelled(twoFactorError)) {
 						return;
 					}
+					return handleSaveUserProfileError(twoFactorError, 'saving_profile');
 				}
 			}
 
@@ -159,8 +166,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 				return;
 			}
 
-			setValue('currentPassword', '');
-			setTwoFactorCode(null);
+			resetTwoFactorState();
 			handleSaveUserProfileError(e, 'saving_profile');
 		} finally {
 			setValue('saving', false);
