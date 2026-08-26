@@ -50,12 +50,6 @@ const MAX_NICKNAME_LENGTH = 120;
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
-type TwoFactorChallengeOutcome =
-	| { status: 'notChallenged' }
-	| { status: 'retried' }
-	| { status: 'cancelled' }
-	| { status: 'failed'; error: unknown };
-
 const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(I18n.t('Name_required')),
@@ -211,20 +205,21 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		}
 	};
 
-	const handleTwoFactorChallenge = async (e: any): Promise<TwoFactorChallengeOutcome> => {
+	const handleTwoFactorChallenge = async (e: any): Promise<boolean> => {
 		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
-			return { status: 'notChallenged' };
+			return false;
 		}
 		try {
 			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
 			setTwoFactorCode(code as any);
 			await submit();
-			return { status: 'retried' };
+			return true;
 		} catch (twoFactorError) {
 			if (isTwoFactorCancelled(twoFactorError)) {
-				return { status: 'cancelled' };
+				resetSavingState();
+				return true;
 			}
-			return { status: 'failed', error: twoFactorError };
+			return false;
 		}
 	};
 
@@ -256,17 +251,12 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			const { email } = getValues();
 			setFieldErrorsFromResponse(e, email);
 
-			const twoFactorOutcome = await handleTwoFactorChallenge(e);
-			if (twoFactorOutcome.status === 'retried') return;
-
-			if (twoFactorOutcome.status === 'cancelled') {
-				resetSavingState();
-				return;
-			}
+			const handled = await handleTwoFactorChallenge(e);
+			if (handled) return;
 
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			resetSavingState();
-			handleSaveUserProfileError(twoFactorOutcome.status === 'failed' ? twoFactorOutcome.error : e, 'saving_profile');
+			handleSaveUserProfileError(e, 'saving_profile');
 		}
 	};
 

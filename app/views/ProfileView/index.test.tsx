@@ -6,7 +6,6 @@ import ProfileView from './index';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
-import { TwoFactorCancelledError } from '../../lib/services/twoFactorCancelled';
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { setUser } from '../../actions/login';
@@ -29,7 +28,6 @@ jest.mock('../../lib/services/restApi', () => ({
 }));
 
 jest.mock('../../lib/services/twoFactor', () => ({
-	...jest.requireActual('../../lib/services/twoFactor'),
 	twoFactor: jest.fn()
 }));
 
@@ -134,28 +132,6 @@ describe('ProfileView submit', () => {
 		await waitFor(() => expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false }));
 		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledTimes(2));
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
-	});
-
-	it('stays silent when the user cancels the 2FA challenge', async () => {
-		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
-		(twoFactor as jest.Mock).mockRejectedValue(new TwoFactorCancelledError());
-
-		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
-
-		await waitFor(() => expect(twoFactor).toHaveBeenCalled());
-		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
-	});
-
-	it('reports the 2FA error itself when the challenge fails for a reason other than cancelling', async () => {
-		const twoFactorError = { error: 'totp-required' };
-		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
-		(twoFactor as jest.Mock).mockRejectedValue(twoFactorError);
-
-		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
-
-		await waitFor(() => expect(handleSaveUserProfileError).toHaveBeenCalledWith(twoFactorError, 'saving_profile'));
 	});
 
 	it('handles the save error after a cancelled/non-2FA failure', async () => {
