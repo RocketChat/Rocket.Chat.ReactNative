@@ -4634,6 +4634,7 @@ const emojis = {
 	':zap:': '⚡'
 } satisfies Record<string, string>;
 
-export const isEmojiShortname = (shortname: string): shortname is keyof typeof emojis => shortname in emojis;
+export const isEmojiShortname = (shortname: string): shortname is keyof typeof emojis =>
+	Object.prototype.hasOwnProperty.call(emojis, shortname);
 
 export default emojis;

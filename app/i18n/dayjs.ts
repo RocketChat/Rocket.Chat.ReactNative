@@ -21,6 +21,6 @@ const localeKeys = {
 
 type TLocaleKey = keyof typeof localeKeys;
 
-const isLocaleKey = (locale: string): locale is TLocaleKey => locale in localeKeys;
+const isLocaleKey = (locale: string): locale is TLocaleKey => Object.prototype.hasOwnProperty.call(localeKeys, locale);
 
 export const toDayJsLocale = (locale: string): string => (isLocaleKey(locale) ? localeKeys[locale] : locale);

@@ -203,6 +203,6 @@ const translationLanguages = {
 } satisfies Record<string, string>;
 
 export const isTranslationLanguage = (language: string): language is keyof typeof translationLanguages =>
-	language in translationLanguages;
+	Object.prototype.hasOwnProperty.call(translationLanguages, language);
 
 export default translationLanguages;

@@ -25,7 +25,8 @@ const htmlEntities = {
 	'&#x27;': "'"
 } satisfies Record<string, string>;
 
-const isHtmlEntity = (entity: string): entity is keyof typeof htmlEntities => entity in htmlEntities;
+const isHtmlEntity = (entity: string): entity is keyof typeof htmlEntities =>
+	Object.prototype.hasOwnProperty.call(htmlEntities, entity);
 
 const unescapeHTML = (string: string) =>
 	string.replace(/&(?:amp|#38|#x26|lt|#60|#x3C|gt|#62|#x3E|apos|#39|#x27|quot|#34|#x22);/gi, match =>

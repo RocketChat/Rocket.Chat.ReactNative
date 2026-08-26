@@ -14,7 +14,7 @@ const iconAliases = {
 
 type TIconAlias = keyof typeof iconAliases;
 
-const isIconAlias = (icon: string): icon is TIconAlias => icon in iconAliases;
+const isIconAlias = (icon: string): icon is TIconAlias => Object.prototype.hasOwnProperty.call(iconAliases, icon);
 
 const styles = StyleSheet.create({
 	frame: {
