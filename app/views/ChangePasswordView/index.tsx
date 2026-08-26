@@ -147,9 +147,12 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					setTwoFactorCode(code as any);
 					return handleSetNewPassword();
 				} catch (twoFactorError) {
+					setValue('currentPassword', '');
+					setTwoFactorCode(null);
 					if (isTwoFactorCancelled(twoFactorError)) {
 						return;
 					}
+					return handleSaveUserProfileError(twoFactorError, 'saving_profile');
 				}
 			}
 
