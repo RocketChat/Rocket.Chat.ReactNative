@@ -6,7 +6,8 @@ jest.mock('../../lib/methods/userPreferences', () => ({
 }));
 
 jest.mock('../../lib/database/services/Server', () => ({
-	getServerById: jest.fn()
+	getServerById: jest.fn(),
+	getAllServers: jest.fn()
 }));
 
 jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
@@ -30,26 +31,16 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 	}
 }));
 
-jest.mock('../../lib/database', () => ({
-	__esModule: true,
-	default: {
-		servers: {
-			get: jest.fn()
-		}
-	}
-}));
-
 import RNBootSplash from 'react-native-bootsplash';
 
 import { appInit, appStart } from '../../actions/app';
 import { RootEnum } from '../../definitions';
 import initRoot from '../init';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { getServerById } from '../../lib/database/services/Server';
+import { getAllServers, getServerById } from '../../lib/database/services/Server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEEP_LINKING } from '../../actions/actionsTypes';
 import { TOKEN_KEY } from '../../lib/constants/keys';
-import database from '../../lib/database';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 import type { RecordingStore } from '../../lib/testUtils/sagaStore';
 
@@ -65,7 +56,7 @@ describe('init saga — restore user-facing roots', () => {
 		jest.mocked(RNBootSplash.hide).mockClear();
 		jest.mocked(AsyncStorage.getItem).mockResolvedValue(null as any);
 		jest.mocked(AsyncStorage.removeItem).mockClear();
-		jest.mocked(database.servers.get).mockReset();
+		jest.mocked(getAllServers).mockResolvedValue([]);
 		jest.mocked(UserPreferences.getString).mockImplementation(() => HOST);
 	});
 
@@ -96,9 +87,6 @@ describe('init saga — restore user-facing roots', () => {
 
 	it('lands on ROOT_OUTSIDE when no server is stored at all', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(() => null);
-		jest.mocked(database.servers.get).mockReturnValue({
-			query: () => ({ fetch: () => Promise.resolve([]) })
-		} as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
@@ -110,9 +98,7 @@ describe('init saga — restore user-facing roots', () => {
 
 	it('lands on ROOT_OUTSIDE when neither the stored server nor any other has a token', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation(key => (key.startsWith(`${TOKEN_KEY}-`) ? null : HOST));
-		jest.mocked(database.servers.get).mockReturnValue({
-			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
-		} as any);
+		jest.mocked(getAllServers).mockResolvedValue([{ id: OTHER_HOST, version: '7.0.0' }] as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
@@ -128,9 +114,7 @@ describe('init saga — restore user-facing roots', () => {
 			if (key.startsWith(`${TOKEN_KEY}-`)) return null;
 			return HOST;
 		});
-		jest.mocked(database.servers.get).mockReturnValue({
-			query: () => ({ fetch: () => Promise.resolve([{ id: OTHER_HOST, version: '7.0.0' }]) })
-		} as any);
+		jest.mocked(getAllServers).mockResolvedValue([{ id: OTHER_HOST, version: '7.0.0' }] as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());

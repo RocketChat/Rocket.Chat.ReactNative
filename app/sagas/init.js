@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
-import { findLoggedInServer, hasStoredLoginToken } from '../lib/methods/loggedInServer';
+import { findLoggedInServer, isLoggedInServer } from '../lib/methods/loggedInServer';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
@@ -21,19 +21,20 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const serverToRestore = function* serverToRestore(server) {
-	if (!hasStoredLoginToken(server)) {
-		return (yield* findLoggedInServer()) || null;
+const serverToRestore = async server => {
+	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : await findLoggedInServer();
+
+	if (restoredServer) {
+		await localAuthenticate(restoredServer.id);
 	}
 
-	yield localAuthenticate(server);
-	return (yield getServerById(server)) || null;
+	return restoredServer;
 };
 
 const restore = function* restore() {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
-		const restoredServer = yield* serverToRestore(server);
+		const restoredServer = yield call(serverToRestore, server);
 
 		if (restoredServer) {
 			yield put(selectServerRequest(restoredServer.id, restoredServer.version));
