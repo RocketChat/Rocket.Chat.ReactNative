@@ -29,7 +29,7 @@ import ImagePicker, { type Image } from '../../lib/methods/helpers/ImagePicker/I
 import { compareServerVersion, isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactorCancelled';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
