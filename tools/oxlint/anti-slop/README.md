@@ -9,6 +9,8 @@ Vendored Oxlint plugin. Upstream: https://github.com/dmmulroy/anti-slop
   parameters and `typeof` narrowing are used deliberately across our repos.
 - `no-chained-type-assertions` and `no-unsafe-dictionary-type` run as warnings. Their remaining
   findings need real parsing at the server-payload boundary, not a lint fix.
+- `no-module-mocking` and `require-safety-comment-for-type-assertion` also run as warnings. Both
+  fire mostly in tests, where module mocking and asserted fixtures are the intended style.
 
 ## Constraints
 

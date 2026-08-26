@@ -558,8 +558,8 @@ const getInfoCardAction = ({
 }) => ({
 	type: 'icon_button',
 	actionId: 'open-history',
-	appId,
-	blockId,
+	...(appId && { appId }),
+	...(blockId && { blockId }),
 	label: label ?? 'Call history',
 	icon: {
 		type: 'icon',
