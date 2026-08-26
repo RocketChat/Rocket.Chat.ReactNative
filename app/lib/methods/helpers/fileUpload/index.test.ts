@@ -31,6 +31,15 @@ describe('FileUpload', () => {
 		expect(mockSend).not.toHaveBeenCalled();
 	});
 
+	it('carries a translation key for the UI and a developer message', async () => {
+		const upload = new FileUpload('https://open.rocket.chat/api/v1/users.setAvatar', {}, formData);
+
+		await expect(upload.send()).rejects.toMatchObject({
+			error: 'Token_expired',
+			message: 'Upload requires the X-Auth-Token and X-User-Id headers'
+		});
+	});
+
 	it('sends an authenticated upload keeping optional headers out of the request', async () => {
 		const progressCallback = jest.fn();
 		const upload = new FileUpload(
