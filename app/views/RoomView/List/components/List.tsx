@@ -29,7 +29,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const { ts, viewabilityConfigCallbackPairs } = useFloatingDate();
-	const { opacity: bubbleOpacity, show: showBubble } = useFloatingDateOpacity();
+	const { opacity: floatingDateOpacity, show: showFloatingDate } = useFloatingDateOpacity();
 
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
@@ -38,7 +38,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 			} else {
 				scheduleOnRN(setScrolledPastLimit, false);
 			}
-			showBubble();
+			showFloatingDate();
 		}
 	});
 
@@ -76,7 +76,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				{...scrollPersistTaps}
 				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 			/>
-			<FloatingDateSeparator ts={ts} opacity={bubbleOpacity} />
+			<FloatingDateSeparator ts={ts} opacity={floatingDateOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);

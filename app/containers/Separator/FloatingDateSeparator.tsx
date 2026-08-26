@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Animated, { type SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
-import dayjs from '../../lib/dayjs';
 import { DateSeparatorLabel } from './DateSeparator';
 
 const TOP_MARGIN = 8;
@@ -25,7 +24,7 @@ const FloatingDateSeparator = ({ ts, opacity }: { ts?: Date | string | null; opa
 
 	return (
 		<Animated.View pointerEvents='none' style={[styles.container, style]}>
-			<DateSeparatorLabel date={dayjs(ts).format('LL')} />
+			<DateSeparatorLabel ts={ts} />
 		</Animated.View>
 	);
 };

@@ -1,19 +1,12 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import dayjs from '../../lib/dayjs';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
+import { separatorStyles } from './styles';
 
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		margin: 12
-	},
-	line: {
-		height: 1,
-		flex: 1
-	},
 	text: {
 		fontSize: 14,
 		...sharedStyles.textBold
@@ -22,33 +15,30 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 8,
 		paddingVertical: 2,
 		borderRadius: 16
-	},
-	marginHorizontal: {
-		marginHorizontal: 12
 	}
 });
 
-export const DateSeparatorLabel = ({ date }: { date: string }): ReactElement => {
+export const formatSeparatorDate = (ts: Date | string): string => dayjs(ts).format('LL');
+
+export const DateSeparatorLabel = ({ ts }: { ts: Date | string }): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={[styles.label, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
-			<Text style={[styles.text, { color: colors.buttonFontSecondary }]}>{date}</Text>
+			<Text style={[styles.text, { color: colors.buttonFontSecondary }]}>{formatSeparatorDate(ts)}</Text>
 		</View>
 	);
 };
 
-const DateSeparator = ({ date }: { date: string }): ReactElement => {
+const DateSeparator = ({ ts }: { ts: Date | string }): ReactElement => {
 	const { colors } = useTheme();
 	const lineStyle = { backgroundColor: colors.strokeLight };
 
 	return (
-		<View style={styles.container}>
-			<View style={[styles.line, lineStyle]} />
-			<View style={styles.marginHorizontal}>
-				<DateSeparatorLabel date={date} />
-			</View>
-			<View style={[styles.line, lineStyle]} />
+		<View style={separatorStyles.container}>
+			<View style={[separatorStyles.line, lineStyle]} />
+			<DateSeparatorLabel ts={ts} />
+			<View style={[separatorStyles.line, lineStyle]} />
 		</View>
 	);
 };

@@ -23506,6 +23506,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
+          "gap": 12,
           "margin": 12,
         }
       }
@@ -23540,9 +23541,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             },
             {
               "backgroundColor": "#EC0D2A",
-            },
-            {
-              "marginHorizontal": 14,
             },
           ]
         }
@@ -24044,6 +24042,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
+          "gap": 12,
           "margin": 12,
         }
       }
@@ -24063,9 +24062,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             },
             {
               "color": "#D40C26",
-            },
-            {
-              "marginRight": 14,
             },
           ]
         }
@@ -24793,6 +24789,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
+          "gap": 12,
           "margin": 12,
         }
       }
@@ -24812,47 +24809,39 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       />
       <View
         style={
-          {
-            "marginHorizontal": 12,
-          }
+          [
+            {
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
         }
       >
-        <View
+        <Text
           style={
             [
               {
-                "borderRadius": 16,
-                "paddingHorizontal": 8,
-                "paddingVertical": 2,
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "textAlign": "left",
               },
               {
-                "backgroundColor": "#E4E7EA",
+                "color": "#1F2329",
               },
             ]
           }
         >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "700",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
-            }
-          >
-            November 10, 2017
-          </Text>
-        </View>
+          November 10, 2017
+        </Text>
       </View>
       <View
         style={
@@ -25826,6 +25815,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
+          "gap": 12,
           "margin": 12,
         }
       }
@@ -25860,9 +25850,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             },
             {
               "backgroundColor": "#EC0D2A",
-            },
-            {
-              "marginHorizontal": 14,
             },
           ]
         }
@@ -26364,6 +26351,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
+          "gap": 12,
           "margin": 12,
         }
       }
@@ -26383,9 +26371,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             },
             {
               "color": "#D40C26",
-            },
-            {
-              "marginRight": 14,
             },
           ]
         }
@@ -27113,6 +27098,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
+          "gap": 12,
           "margin": 12,
         }
       }
@@ -27132,47 +27118,39 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       />
       <View
         style={
-          {
-            "marginHorizontal": 12,
-          }
+          [
+            {
+              "borderRadius": 16,
+              "paddingHorizontal": 8,
+              "paddingVertical": 2,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+          ]
         }
       >
-        <View
+        <Text
           style={
             [
               {
-                "borderRadius": 16,
-                "paddingHorizontal": 8,
-                "paddingVertical": 2,
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "700",
+                "textAlign": "left",
               },
               {
-                "backgroundColor": "#E4E7EA",
+                "color": "#1F2329",
               },
             ]
           }
         >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "700",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#1F2329",
-                },
-              ]
-            }
-          >
-            November 10, 2017
-          </Text>
-        </View>
+          November 10, 2017
+        </Text>
       </View>
       <View
         style={
