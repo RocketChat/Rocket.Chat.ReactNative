@@ -93,7 +93,7 @@ jest.mock('../methods/helpers/events', () => ({
 
 const mockLog = jest.fn<void, unknown[]>();
 const mockTwoFactor = jest.fn<Promise<{ twoFactorCode: string }>, [unknown]>(() => Promise.resolve({ twoFactorCode: '123456' }));
-jest.mock('./twoFactor', () => ({
+jest.mock('./twoFactor/twoFactor', () => ({
 	twoFactor: (params: unknown) => mockTwoFactor(params)
 }));
 
