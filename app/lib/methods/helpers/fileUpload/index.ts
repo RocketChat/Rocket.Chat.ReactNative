@@ -1,13 +1,12 @@
 import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-import i18n from '../../../../i18n';
 import { Upload } from './Upload';
 import { type IFormData, type TUploadHeaders } from './definitions';
 
-const authHeaders = ['X-Auth-Token', 'X-User-Id'];
-
 export class MissingUploadAuthHeadersError extends Error {
+	readonly error = 'Token_expired';
+
 	constructor() {
-		super(i18n.t('Token_expired'));
+		super('Upload requires the X-Auth-Token and X-User-Id headers');
 	}
 }
 
@@ -15,7 +14,7 @@ const dropUndefinedHeaders = (headers: TUploadHeaders): Record<string, string> =
 	Object.fromEntries(Object.entries(headers).filter(([, value]) => value !== undefined)) as Record<string, string>;
 
 const assertAuthHeaders = (headers: TUploadHeaders): void => {
-	if (authHeaders.some(header => !headers[header])) {
+	if (!headers['X-Auth-Token'] || !headers['X-User-Id']) {
 		throw new MissingUploadAuthHeadersError();
 	}
 };
