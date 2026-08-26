@@ -201,7 +201,7 @@
 		"jest-cli": "^29.7.0",
 		"jest-expo": "~54.0.16",
 		"oxfmt": "^0.60.0",
-		"oxlint": "^1.75.0",
+		"oxlint": "^1.80.0",
 		"patch-package": "~8.0.1",
 		"react-dom": "19.1.0",
 		"react-native-dotenv": "3.4.8",
