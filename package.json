@@ -167,6 +167,7 @@
 		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5",
+		"@oxlint/plugins": "1.80.0",
 		"@react-native-community/cli": "20.0.0",
 		"@react-native-community/cli-platform-android": "20.0.0",
 		"@react-native-community/cli-platform-ios": "20.0.0",

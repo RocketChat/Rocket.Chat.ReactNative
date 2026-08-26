@@ -1,7 +1,13 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
 	"plugins": ["import", "react", "jest"],
-	"jsPlugins": ["eslint-plugin-react-native"],
+	"jsPlugins": [
+		"eslint-plugin-react-native",
+		{
+			"name": "anti-slop",
+			"specifier": "./tools/oxlint/anti-slop/index.ts"
+		}
+	],
 	"categories": {
 		"correctness": "off"
 	},
@@ -17,7 +23,20 @@
 		"**/android",
 		"**/ios",
 		"**/.worktrees/",
-		".rnstorybook/storybook.requires.ts"
+		".rnstorybook/storybook.requires.ts",
+		".agent/**",
+		".agents/**",
+		".claude/**",
+		".codex/**",
+		".continue/**",
+		".cursor/**",
+		".gemini/**",
+		".opencode/**",
+		".pi/**",
+		".roo/**",
+		".windsurf/**",
+		".sniffler/**",
+		"tools/oxlint/anti-slop/**"
 	],
 	"rules": {
 		"import/extensions": "off",
@@ -41,7 +60,22 @@
 		"new-cap": "error",
 		"require-await": "error",
 		"react/exhaustive-deps": "warn",
-		"react/rules-of-hooks": "error"
+		"react/rules-of-hooks": "error",
+		"anti-slop/no-chained-type-assertions": "error",
+		"anti-slop/no-conditional-empty-object-spread": "error",
+		"anti-slop/no-known-value-widening": "error",
+		"anti-slop/no-module-mocking": "warn",
+		"anti-slop/no-object-parameters": "error",
+		"anti-slop/no-reflect-apply": "error",
+		"anti-slop/no-reflect-get": "error",
+		"anti-slop/no-runtime-typeof": "error",
+		"anti-slop/no-shape-in-symbol-names": "error",
+		"anti-slop/no-unknown-parameters": "error",
+		"anti-slop/no-unknown-returns": "error",
+		"anti-slop/no-unknown-type-aliases": "error",
+		"anti-slop/no-unsafe-dictionary-type": "error",
+		"anti-slop/no-widen-then-assert": "error",
+		"anti-slop/require-safety-comment-for-type-assertion": "warn"
 	},
 	"overrides": [
 		{

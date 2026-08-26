@@ -36,6 +36,7 @@
 		".storybook/",
 		"app/i18n/locales/",
 		"app/containers/CustomIcon/mappedIcons.js",
-		"app/containers/CustomIcon/selection.json"
+		"app/containers/CustomIcon/selection.json",
+		"tools/oxlint/anti-slop/"
 	]
 }
