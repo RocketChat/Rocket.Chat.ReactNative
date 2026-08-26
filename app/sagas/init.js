@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
-import { findLoggedInServer, hasStoredLoginToken } from '../lib/methods/loggedInServer';
+import { findLoggedInServer, isLoggedInServer } from '../lib/methods/loggedInServer';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
@@ -16,51 +16,62 @@ import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
 
+const PUSH_NOTIFICATION_KEY = 'pushNotification';
+
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const serverToRestore = function* serverToRestore(server) {
-	if (!server) {
-		return null;
+const findServerToRestore = async () => {
+	const server = UserPreferences.getString(CURRENT_SERVER);
+	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : await findLoggedInServer();
+
+	if (restoredServer) {
+		await localAuthenticate(restoredServer.id);
 	}
 
-	if (!hasStoredLoginToken(server)) {
-		return (yield* findLoggedInServer()) || null;
-	}
-
-	yield localAuthenticate(server);
-	return (yield getServerById(server)) || null;
+	return restoredServer;
 };
 
-const restore = function* restore() {
+const serverToRestore = function* serverToRestore() {
 	try {
-		const server = UserPreferences.getString(CURRENT_SERVER);
-		const restoredServer = yield* serverToRestore(server);
+		return (yield call(findServerToRestore)) || null;
+	} catch (e) {
+		log(e);
+		return null;
+	}
+};
 
-		if (restoredServer) {
-			yield put(selectServerRequest(restoredServer.id, restoredServer.version));
-		} else {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+const deliverPendingPushNotification = function* deliverPendingPushNotification(restoredServer) {
+	try {
+		const pushNotification = yield call(AsyncStorage.getItem, PUSH_NOTIFICATION_KEY);
+		if (!pushNotification) {
+			return;
 		}
 
-		yield put(appReady({}));
-		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
-		if (pushNotification) {
-			yield call(AsyncStorage.removeItem, 'pushNotification');
-			if (restoredServer) {
-				try {
-					yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
-				} catch (e) {
-					log(e);
-				}
-			}
+		yield call(AsyncStorage.removeItem, PUSH_NOTIFICATION_KEY);
+
+		if (restoredServer) {
+			yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
 		}
 	} catch (e) {
 		log(e);
+	}
+};
+
+const restore = function* restore() {
+	const restoredServer = yield* serverToRestore();
+
+	if (restoredServer) {
+		yield put(selectServerRequest(restoredServer.id, restoredServer.version));
+	} else {
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
+
+	yield put(appReady({}));
+
+	yield* deliverPendingPushNotification(restoredServer);
 };
 
 const start = function* start() {
