@@ -16,7 +16,7 @@ interface IEjson {
 	messageId: string;
 }
 
-const pathSegmentByRoomType = (roomType: string) => {
+const pathSegmentByRoomType = (roomType: string): string | undefined => {
 	switch (roomType) {
 		case SubscriptionType.CHANNEL:
 			return 'channel';

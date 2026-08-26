@@ -1,12 +1,30 @@
 import { type IUrl, type IUrlFromServer } from '../../../definitions';
 import parseUrls from './parseUrls';
 
-type TUrlFixture = {
-	urls: IUrlFromServer[];
-	expectedResult: IUrl[];
-};
+interface IParseUrlsFixture {
+	urls: {
+		url: string;
+		ignoreParse?: boolean;
+		meta: Partial<IUrlFromServer['meta']> & {
+			msapplicationTileImage?: string;
+			msapplicationConfig?: string;
+			appleMobileWebAppTitle?: string;
+		};
+		headers?: IUrlFromServer['headers'];
+		parsedUrl?: Partial<NonNullable<IUrlFromServer['parsedUrl']>>;
+	}[];
+	expectedResult: {
+		_id: number;
+		title?: string;
+		description?: string;
+		image?: string;
+		url: string;
+	}[];
+}
 
-const tmpImageValidLink = {
+const parseFixture = (fixture: IParseUrlsFixture): IUrl[] => parseUrls(fixture.urls as IUrlFromServer[]);
+
+const tmpImageValidLink: IParseUrlsFixture = {
 	urls: [
 		{
 			url: 'https://meet.google.com/cbr-hysk-azn?pli=1&authuser=1',
@@ -47,9 +65,9 @@ const tmpImageValidLink = {
 			url: 'https://meet.google.com/cbr-hysk-azn?pli=1&authuser=1'
 		}
 	]
-} as TUrlFixture;
+};
 
-const tmpImagePointingToAnAsset = {
+const tmpImagePointingToAnAsset: IParseUrlsFixture = {
 	urls: [
 		{
 			url: 'https://open.rocket.chat/',
@@ -75,9 +93,9 @@ const tmpImagePointingToAnAsset = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as TUrlFixture;
+};
 
-const tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl = {
+const tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl: IParseUrlsFixture = {
 	urls: [
 		{
 			url: 'https://open.rocket.chat/',
@@ -103,9 +121,9 @@ const tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as TUrlFixture;
+};
 
-const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl = {
+const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl: IParseUrlsFixture = {
 	urls: [
 		{
 			url: 'https://open.rocket.chat/',
@@ -141,9 +159,9 @@ const tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as TUrlFixture;
+};
 
-const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl = {
+const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl: IParseUrlsFixture = {
 	urls: [
 		{
 			url: 'https://open.rocket.chat/',
@@ -176,9 +194,9 @@ const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as TUrlFixture;
+};
 
-const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl = {
+const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl: IParseUrlsFixture = {
 	urls: [
 		{
 			url: 'https://open.rocket.chat/',
@@ -204,36 +222,36 @@ const tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl = {
 			url: 'https://open.rocket.chat/'
 		}
 	]
-} as unknown as TUrlFixture;
+};
 
 describe('parseUrls function', () => {
 	it('test when a tmp.image is a valid link', () => {
-		const result = parseUrls(tmpImageValidLink.urls);
+		const result = parseFixture(tmpImageValidLink);
 		expect(result).toEqual(tmpImageValidLink.expectedResult);
 	});
 
 	it('test when a tmp.image is assets/favicon_512.png', () => {
-		const result = parseUrls(tmpImagePointingToAnAsset.urls);
+		const result = parseFixture(tmpImagePointingToAnAsset);
 		expect(result).toEqual(tmpImagePointingToAnAsset.expectedResult);
 	});
 
 	it('test when a tmp.image is /assets/favicon_512.png and url with parsedUrl, parsedUrl.protocol and parsedUrl.host', () => {
-		const result = parseUrls(tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl.urls);
+		const result = parseFixture(tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl);
 		expect(result).toEqual(tmpImagePointingToAnAssetThatStartsWithSlashWithParsedUrl.expectedResult);
 	});
 
 	it('test when a tmp.image is /assets/favicon_512.png and url without parsedUrl', () => {
-		const result = parseUrls(tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl.urls);
+		const result = parseFixture(tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl);
 		expect(result).toEqual(tmpImagePointingToAnAssetThatStartsWithSlashWithoutParsedUrl.expectedResult);
 	});
 
 	it('test when a tmp.image is //assets/favicon_512.png and url with parsedUrl', () => {
-		const result = parseUrls(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl.urls);
+		const result = parseFixture(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl);
 		expect(result).toEqual(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithParsedUrl.expectedResult);
 	});
 
 	it('test when a tmp.image is //assets/favicon_512.png and url without parsedUrl', () => {
-		const result = parseUrls(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl.urls);
+		const result = parseFixture(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl);
 		expect(result).toEqual(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl.expectedResult);
 	});
 });

@@ -39,7 +39,12 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
-const parseUserAgent = (userAgent: string) => {
+interface IUserAgentInfo {
+	os: string;
+	browser: string;
+}
+
+const parseUserAgent = (userAgent: string): IUserAgentInfo => {
 	const ua = new UAParser();
 	ua.setUA(userAgent);
 	return {

@@ -11,6 +11,13 @@ import {
 } from '../../definitions/rest/helpers';
 import sdk from '../services/sdk';
 
+export interface IUseEndpointDataResult<TPath extends PathFor<'GET'>> {
+	result: Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined;
+	loading: boolean;
+	reload: () => void;
+	error: ErrorResult | undefined;
+}
+
 export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	endpoint: TPath,
 	params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
@@ -21,7 +28,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 	>
 		? void
 		: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
-) => {
+): IUseEndpointDataResult<TPath> => {
 	const [loading, setLoading] = useState(true);
 	const [result, setResult] = useState<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>> | undefined>();
 	const [error, setError] = useState<ErrorResult | undefined>();

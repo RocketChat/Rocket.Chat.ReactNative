@@ -1,12 +1,17 @@
 import i18n from '../../../../i18n';
 
+export interface IDeleteAccountTranslations {
+	changeOwnerRooms: string;
+	removedRooms: string;
+}
+
 export const getTranslations = ({
 	shouldChangeOwner,
 	shouldBeRemoved
 }: {
 	shouldChangeOwner: string[];
 	shouldBeRemoved: string[];
-}) => {
+}): IDeleteAccountTranslations => {
 	let changeOwnerRooms = '';
 	if (shouldChangeOwner.length) {
 		if (shouldChangeOwner.length === 1) {

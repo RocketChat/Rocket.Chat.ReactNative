@@ -12,7 +12,7 @@ import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 
-export function loadSurroundingMessages({ messageId, rid }: { messageId: string; rid: string }) {
+export function loadSurroundingMessages({ messageId, rid }: { messageId: string; rid: string }): Promise<IMessage[]> {
 	return new Promise<IMessage[]>(async (resolve, reject) => {
 		try {
 			const data = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
