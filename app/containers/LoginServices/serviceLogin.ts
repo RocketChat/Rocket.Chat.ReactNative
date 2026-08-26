@@ -162,8 +162,7 @@ const openOAuthSession = async (url: string) => {
 const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 	const credentialToken = random(43);
 	const state = { loginStyle, credentialToken, isCordova: true };
-	const obj = loginStyle === 'redirect' ? { ...state, redirectUrl: 'rocketchat://auth' } : state;
-	return Base64.encodeURI(JSON.stringify(obj));
+	return Base64.encodeURI(JSON.stringify(loginStyle === 'redirect' ? { ...state, redirectUrl: 'rocketchat://auth' } : state));
 };
 
 const openSSOWebView = ({ url, ssoToken, authType }: IOpenSSOWebView) => {
