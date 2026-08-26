@@ -130,7 +130,9 @@
 				"jest/no-focused-tests": "error",
 				"jest/valid-expect": "error",
 				"jest/no-conditional-expect": "error",
-				"jest/expect-expect": "off"
+				"jest/expect-expect": "off",
+				"anti-slop/no-unknown-parameters": "off",
+				"anti-slop/no-unknown-returns": "off"
 			}
 		}
 	]
