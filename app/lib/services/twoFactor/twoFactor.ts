@@ -1,11 +1,9 @@
 import { settings } from '@rocket.chat/sdk';
 
-import { TWO_FACTOR } from '../../containers/TwoFactor';
-import EventEmitter from '../methods/helpers/events';
-import { type ILoginCredentials } from '../../definitions';
+import { TWO_FACTOR } from '../../constants/twoFactor';
+import EventEmitter from '../../methods/helpers/events';
+import { type ILoginCredentials } from '../../../definitions';
 import { TwoFactorCancelledError } from './twoFactorCancelled';
-
-export { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactorCancelled';
 
 interface ITwoFactor {
 	method: string;
