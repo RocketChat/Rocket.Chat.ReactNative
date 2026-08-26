@@ -7,7 +7,8 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
-import { twoFactor, isTwoFactorCancelled } from '../../lib/services/twoFactor';
+import { twoFactor } from '../../lib/services/twoFactor';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactorCancelled';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';

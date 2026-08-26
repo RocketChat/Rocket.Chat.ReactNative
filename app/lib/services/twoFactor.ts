@@ -5,8 +5,6 @@ import EventEmitter from '../methods/helpers/events';
 import { type ILoginCredentials } from '../../definitions';
 import { TwoFactorCancelledError } from './twoFactorCancelled';
 
-export { TwoFactorCancelledError, isTwoFactorCancelled } from './twoFactorCancelled';
-
 interface ITwoFactor {
 	method: string;
 	invalid: boolean;
