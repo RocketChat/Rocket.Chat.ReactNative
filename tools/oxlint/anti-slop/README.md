@@ -4,7 +4,7 @@ Vendored Oxlint plugin. Upstream: https://github.com/dmmulroy/anti-slop
 
 ## Local deviations
 
-- The `effect/` rules are not registered in `index.ts` — this app has no direct `effect` dependency.
+- Upstream's `effect/` rules are not vendored — this app has no direct `effect` dependency.
 - `no-unknown-parameters`, `no-unknown-returns` and `no-runtime-typeof` were removed. `unknown`
   parameters and `typeof` narrowing are used deliberately across our repos.
 - `no-chained-type-assertions` and `no-unsafe-dictionary-type` run as warnings. Their remaining
