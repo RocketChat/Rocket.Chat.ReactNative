@@ -13,7 +13,7 @@ import I18n from '../../i18n';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-type INotification = INotifierComponent['notification'] & {
+type INotifierNotification = INotifierComponent['notification'] & {
 	customComponent?: ElementType;
 	customTime?: number;
 	customNotification?: boolean;
@@ -21,7 +21,7 @@ type INotification = INotifierComponent['notification'] & {
 	swipeEnabled?: boolean;
 };
 
-const announceForAccessibility = ({ payload }: INotification) => {
+const announceForAccessibility = ({ payload }: INotifierNotification) => {
 	if (!payload?.name || !payload?.message) return;
 
 	AccessibilityInfo.announceForAccessibility(
@@ -32,7 +32,7 @@ const announceForAccessibility = ({ payload }: INotification) => {
 	);
 };
 
-const showNotification = (notification: INotification) => {
+const showNotification = (notification: INotifierNotification) => {
 	Notifier.showNotification({
 		showEasing: Easing.inOut(Easing.quad),
 		Component: notification.customComponent || NotifierComponent,
@@ -59,7 +59,7 @@ const InAppNotification = memo(() => {
 
 	const dispatch = useDispatch();
 
-	const show = (notification: INotification) => {
+	const show = (notification: INotifierNotification) => {
 		if (appState !== 'foreground') return;
 
 		const { payload } = notification;
