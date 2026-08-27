@@ -354,7 +354,6 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 	}
 }
 
-// Force normalized params for 2FA starting RC 3.9.0.
 function normalizeTOTPParams(params: ICredentials): ICredentials {
 	const serverVersion = store.getState().server.version;
 	if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {

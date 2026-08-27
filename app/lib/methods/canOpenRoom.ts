@@ -48,8 +48,8 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 
 			// a group has to be open before it can be read
 			if (type === ERoomTypes.GROUP) {
-				const isGroupOpen = await openGroup(roomId);
-				if (!isGroupOpen) {
+				const didOpenGroup = await openGroup(roomId);
+				if (!didOpenGroup) {
 					return false;
 				}
 			}

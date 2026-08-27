@@ -314,19 +314,20 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		this.initIfInviteAccepted(prevState);
 	}
 
-	consumeJumpParams(prevProps: IRoomViewProps) {
-		const { route } = this.props;
+	private consumeJumpParams(prevProps: IRoomViewProps) {
+		const params = this.props.route?.params;
+		const previousParams = prevProps.route?.params;
 
-		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.consumeJumpParam(route?.params?.jumpToMessageId);
+		if (params?.jumpToMessageId && params.jumpToMessageId !== previousParams?.jumpToMessageId) {
+			this.consumeJumpParam(params.jumpToMessageId);
 		}
 
-		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
-			this.navToThread({ tmid: route?.params?.jumpToThreadId });
+		if (params?.jumpToThreadId && params.jumpToThreadId !== previousParams?.jumpToThreadId) {
+			this.navToThread({ tmid: params.jumpToThreadId });
 		}
 	}
 
-	updateOmnichannelIfNeeded(prevState: IRoomViewState) {
+	private updateOmnichannelIfNeeded(prevState: IRoomViewState) {
 		if (this.t !== 'l') return;
 
 		const { roomUpdate, joined } = this.state;
@@ -340,7 +341,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	}
 
-	setHeaderIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+	private setHeaderIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
 		const { roomUpdate } = this.state;
 		const { insets } = this.props;
 
@@ -350,7 +351,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	}
 
-	updateE2EEStateIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+	private updateE2EEStateIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
 		const { roomUpdate } = this.state;
 		const { encryptionEnabled } = this.props;
 
@@ -363,7 +364,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	}
 
-	initIfInviteAccepted(prevState: IRoomViewState) {
+	private initIfInviteAccepted(prevState: IRoomViewState) {
 		const { roomUpdate } = this.state;
 
 		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {

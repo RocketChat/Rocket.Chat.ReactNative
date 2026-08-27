@@ -99,12 +99,7 @@
 				"complexity": "off",
 				"max-depth": "off",
 				"max-nested-callbacks": "off",
-				"max-params": "off"
-			}
-		},
-		{
-			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],
-			"rules": {
+				"max-params": "off",
 				"jest/no-commented-out-tests": "warn",
 				"jest/no-identical-title": "error",
 				"jest/no-focused-tests": "error",
