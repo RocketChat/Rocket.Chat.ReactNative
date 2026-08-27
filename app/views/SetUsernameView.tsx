@@ -20,7 +20,7 @@ import { showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';
-import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../lib/services/twoFactor/twoFactorOutcome';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
@@ -83,12 +83,12 @@ const SetUsernameView = () => {
 		}
 		setLoading(true);
 		try {
-			await saveUserProfile({ username, name });
-			dispatch(loginRequest({ resume: user.token }));
-		} catch (e: any) {
-			if (!isTwoFactorCancelled(e)) {
-				showErrorAlert(e.message, I18n.t('Oops'));
+			const outcome = await runCancellableAction(() => saveUserProfile({ username, name }));
+			if (outcome.status === 'completed') {
+				dispatch(loginRequest({ resume: user.token }));
 			}
+		} catch (e: any) {
+			showErrorAlert(e.message, I18n.t('Oops'));
 		}
 		setLoading(false);
 	};

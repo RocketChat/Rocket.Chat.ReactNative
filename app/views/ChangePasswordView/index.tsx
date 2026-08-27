@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
 import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../lib/services/twoFactor/twoFactorOutcome';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -149,14 +149,17 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
-					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-					setTwoFactorCode(code as any);
+					const outcome = await runCancellableAction(() =>
+						twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode })
+					);
+					if (outcome.status === 'cancelled') {
+						resetTwoFactorState();
+						return;
+					}
+					setTwoFactorCode(outcome.value as any);
 					return handleSetNewPassword();
 				} catch (twoFactorError) {
 					resetTwoFactorState();
-					if (isTwoFactorCancelled(twoFactorError)) {
-						return;
-					}
 					return handleSaveUserProfileError(twoFactorError, 'saving_profile');
 				}
 			}

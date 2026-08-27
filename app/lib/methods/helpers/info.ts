@@ -6,21 +6,26 @@ import { isTwoFactorCancelled } from '../../services/twoFactor/twoFactorCancelle
 export const showErrorAlert = (message: string, title?: string, onPress = () => {}): void =>
 	Alert.alert(title || '', message, [{ text: 'OK', onPress }], { cancelable: true });
 
-export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
+export const presentUnlessCancelled = (e: unknown, present: () => void): void => {
 	if (isTwoFactorCancelled(e)) {
 		return;
 	}
-	let errorMessage: string = e?.data?.error;
-
-	if (errorMessage?.includes('[error-too-many-requests]')) {
-		const seconds = errorMessage.replace(/\D/g, '');
-		errorMessage = I18n.t('error-too-many-requests', { seconds });
-	} else {
-		errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
-	}
-
-	showErrorAlert(errorMessage, title);
+	present();
 };
+
+export const showErrorAlertWithEMessage = (e: any, title?: string): void =>
+	presentUnlessCancelled(e, () => {
+		let errorMessage: string = e?.data?.error;
+
+		if (errorMessage?.includes('[error-too-many-requests]')) {
+			const seconds = errorMessage.replace(/\D/g, '');
+			errorMessage = I18n.t('error-too-many-requests', { seconds });
+		} else {
+			errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
+		}
+
+		showErrorAlert(errorMessage, title);
+	});
 
 interface IShowConfirmationAlert {
 	title?: string;

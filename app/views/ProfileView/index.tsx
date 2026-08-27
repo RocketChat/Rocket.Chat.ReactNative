@@ -27,7 +27,7 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../lib/services/twoFactor/twoFactorOutcome';
 import { getUserSelector } from '../../selectors/login';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -213,14 +213,16 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			return { status: 'failed', error: e };
 		}
 		try {
-			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-			setTwoFactorCode(code as any);
+			const outcome = await runCancellableAction(() =>
+				twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode })
+			);
+			if (outcome.status === 'cancelled') {
+				return { status: 'cancelled' };
+			}
+			setTwoFactorCode(outcome.value as any);
 			await submit();
 			return { status: 'retried' };
 		} catch (twoFactorError) {
-			if (isTwoFactorCancelled(twoFactorError)) {
-				return { status: 'cancelled' };
-			}
 			return { status: 'failed', error: twoFactorError };
 		}
 	};
@@ -244,8 +246,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		}
 
 		try {
-			const result = await saveUserProfile(params, customFields);
-			if (result) {
+			const outcome = await runCancellableAction(() => saveUserProfile(params, customFields));
+			if (outcome.status === 'completed' && outcome.value) {
 				applySaveSuccess(params);
 			}
 			resetSavingState();

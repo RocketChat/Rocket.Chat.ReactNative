@@ -9,7 +9,7 @@ import sharedStyles from '../../../Styles';
 import FooterButtons from './FooterButtons';
 import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../../../lib/services/twoFactor/twoFactorOutcome';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
@@ -61,12 +61,12 @@ const DeleteAccountActionSheetContent = (): ReactElement => {
 		const { password } = getValues();
 		Keyboard.dismiss();
 		try {
-			await deleteOwnAccount(sha256(password));
-			hideActionSheet();
-		} catch (error: any) {
-			if (isTwoFactorCancelled(error)) {
+			const outcome = await runCancellableAction(() => deleteOwnAccount(sha256(password)));
+			if (outcome.status === 'cancelled') {
 				return;
 			}
+			hideActionSheet();
+		} catch (error: any) {
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });

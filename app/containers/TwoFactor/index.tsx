@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -11,18 +11,16 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ControlledFormTextInput } from '../TextInput';
 import I18n from '../../i18n';
-import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { type ILoginCredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import log from '../../lib/methods/helpers/log';
-import { TWO_FACTOR } from '../../lib/constants/twoFactor';
+import { cancelActiveRequest, type ITwoFactorPrompt, subscribeToTwoFactorPrompts } from '../../lib/services/twoFactor/twoFactor';
 
 interface IMethodsProp {
 	text: string;
@@ -30,21 +28,7 @@ interface IMethodsProp {
 	title?: string;
 	secureTextEntry?: boolean;
 }
-interface IMethods {
-	totp: IMethodsProp;
-	email: IMethodsProp;
-	password: IMethodsProp;
-}
-
-interface EventListenerMethod {
-	params?: ILoginCredentials;
-	method?: keyof IMethods;
-	submit?: (param: string) => void;
-	cancel?: () => void;
-	invalid?: boolean;
-}
-
-const methods: IMethods = {
+const methods: Record<string, IMethodsProp> = {
 	totp: {
 		text: 'Open_your_authentication_app_and_enter_the_code',
 		keyboardType: 'numeric'
@@ -68,8 +52,7 @@ const TwoFactor = memo(() => {
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const [visible, setVisible] = useState(false);
-	const [data, setData] = useState<EventListenerMethod>({});
-	const pendingCancel = useRef<EventListenerMethod['cancel']>(undefined);
+	const [data, setData] = useState<Partial<ITwoFactorPrompt>>({});
 	const {
 		control,
 		setValue,
@@ -113,9 +96,7 @@ const TwoFactor = memo(() => {
 		}
 	}, [data]);
 
-	const showTwoFactor = (args: EventListenerMethod) => {
-		pendingCancel.current?.();
-		pendingCancel.current = args.cancel;
+	const showTwoFactor = (args: ITwoFactorPrompt) => {
 		setData(args);
 		if (args.invalid) {
 			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
@@ -123,24 +104,15 @@ const TwoFactor = memo(() => {
 		}
 	};
 
-	useEffect(() => {
-		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
-
-		return () => EventEmitter.removeListener(TWO_FACTOR, listener);
-	}, []);
+	useEffect(() => subscribeToTwoFactorPrompts(showTwoFactor), []);
 
 	const onCancel = () => {
-		const { cancel } = data;
-		pendingCancel.current = undefined;
-		if (cancel) {
-			cancel();
-		}
+		cancelActiveRequest();
 		setData({});
 	};
 
 	const onSubmit = () => {
 		const { submit } = data;
-		pendingCancel.current = undefined;
 		if (submit) {
 			const { code } = getValues();
 			if (data.method === 'password') {
@@ -148,6 +120,8 @@ const TwoFactor = memo(() => {
 			} else {
 				submit(code);
 			}
+		} else {
+			cancelActiveRequest();
 		}
 		clearErrors();
 		setData({});

@@ -4,7 +4,7 @@ import EventEmitter from '../../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../../lib/methods/helpers';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { logoutOtherLocations as logoutOtherLocationsService } from '../../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../../lib/services/twoFactor/twoFactorOutcome';
 
 const logoutOtherLocations = () => {
 	logEvent(events.PL_OTHER_LOCATIONS);
@@ -13,12 +13,12 @@ const logoutOtherLocations = () => {
 		confirmationText: I18n.t('Logout'),
 		onPress: async () => {
 			try {
-				await logoutOtherLocationsService();
-				EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
-			} catch (e) {
-				if (isTwoFactorCancelled(e)) {
+				const outcome = await runCancellableAction(logoutOtherLocationsService);
+				if (outcome.status === 'cancelled') {
 					return;
 				}
+				EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
+			} catch {
 				logEvent(events.PL_OTHER_LOCATIONS_F);
 				EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
 			}

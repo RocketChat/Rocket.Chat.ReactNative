@@ -4,6 +4,7 @@ import bugsnag from '@bugsnag/react-native';
 import log from '../../methods/helpers/log';
 import { showErrorAlertWithEMessage } from '../../methods/helpers/info';
 import handleSaveUserProfileError from '../../methods/helpers/handleSaveUserProfileError';
+import { handleError } from '../../../views/ChangeAvatarView/submitHelpers';
 import { handleLoginErrors } from '../../../views/LoginView/handleLoginErrors';
 import { TwoFactorCancelledError } from './twoFactorCancelled';
 
@@ -56,6 +57,11 @@ describe('two-factor cancellation', () => {
 	it('still alerts when a genuine failure reaches handleSaveUserProfileError', () => {
 		handleSaveUserProfileError({ error: 'error-invalid-password' }, 'saving_profile');
 		expect(Alert.alert).toHaveBeenCalled();
+	});
+
+	it('preserves the typed cancellation through non-presenting error translation', () => {
+		expect(() => handleError(cancelled, 'changing_avatar')).toThrow(cancelled);
+		expect(Alert.alert).not.toHaveBeenCalled();
 	});
 
 	it('surfaces a generic login error when the login path reports a cancellation', () => {

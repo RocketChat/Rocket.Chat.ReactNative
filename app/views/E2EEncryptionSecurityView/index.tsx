@@ -13,7 +13,7 @@ import Button from '../../containers/Button';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { e2eResetOwnKey } from '../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../lib/services/twoFactor/twoFactorOutcome';
 import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
 import { styles } from './styles';
@@ -37,15 +37,15 @@ const E2EEncryptionSecurityView = () => {
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await e2eResetOwnKey();
+					const outcome = await runCancellableAction(e2eResetOwnKey);
+					if (outcome.status === 'cancelled') {
+						return;
+					}
 
-					if (res?.success === true) {
+					if (outcome.value?.success === true) {
 						dispatch(logout());
 					}
 				} catch (e) {
-					if (isTwoFactorCancelled(e)) {
-						return;
-					}
 					log(e);
 					showErrorAlert(I18n.t('E2E_encryption_reset_error'));
 				}

@@ -36,4 +36,36 @@ describe('TwoFactor', () => {
 
 		await expect(newest!).resolves.toEqual({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
 	});
+
+	it('rejects the pending request when the presenter is removed', async () => {
+		const { getByTestId, unmount } = render(<TwoFactor />);
+
+		let pending: Promise<unknown> | undefined;
+		await act(() => {
+			pending = requestTwoFactor().catch(error => error);
+		});
+
+		await waitFor(() => expect(getByTestId('two-factor-input')).toBeTruthy());
+
+		unmount();
+
+		expect(isTwoFactorCancelled(await pending!)).toBe(true);
+	});
+
+	it('rejects the pending request when Cancel is pressed', async () => {
+		const { getByTestId, getByText } = render(<TwoFactor />);
+
+		let pending: Promise<unknown> | undefined;
+		await act(() => {
+			pending = requestTwoFactor().catch(error => error);
+		});
+
+		await waitFor(() => expect(getByTestId('two-factor-input')).toBeTruthy());
+
+		await act(() => {
+			fireEvent.press(getByText('Cancel'));
+		});
+
+		expect(isTwoFactorCancelled(await pending!)).toBe(true);
+	});
 });

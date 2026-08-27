@@ -8,7 +8,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { FormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';
 import { Encryption } from '../../lib/encryption';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../lib/services/twoFactor/twoFactorOutcome';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
@@ -44,14 +44,14 @@ const ChangePassword = () => {
 			onPress: async () => {
 				logEvent(events.E2E_SEC_CHANGE_PASSWORD);
 				try {
-					await Encryption.changePassword(server, newPassword);
+					const outcome = await runCancellableAction(() => Encryption.changePassword(server, newPassword));
+					if (outcome.status === 'cancelled') {
+						return;
+					}
 					EventEmitter.emit(LISTENER, { message: I18n.t('E2E_encryption_change_password_success') });
 					newPasswordInputRef?.current?.clear();
 					newPasswordInputRef?.current?.blur();
 				} catch (e) {
-					if (isTwoFactorCancelled(e)) {
-						return;
-					}
 					log(e);
 					showErrorAlert(I18n.t('E2E_encryption_change_password_error'));
 				}

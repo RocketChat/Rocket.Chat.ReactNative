@@ -29,7 +29,7 @@ import ImagePicker, { type Image } from '../../lib/methods/helpers/ImagePicker/I
 import { compareServerVersion, isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../lib/services/twoFactor/twoFactorOutcome';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -161,21 +161,23 @@ const ChangeAvatarView = () => {
 	const submit = async () => {
 		try {
 			setSaving(true);
-			if (context === 'room' && room?.rid) {
-				// Change Rooms Avatar
-				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url) {
-				// Change User's Avatar
-				await changeUserAvatar(state);
-			} else if (state.resetUserAvatar) {
-				// Change User's Avatar
-				await resetUserAvatar(userId);
+			const outcome = await runCancellableAction(async () => {
+				if (context === 'room' && room?.rid) {
+					// Change Rooms Avatar
+					await changeRoomsAvatar(room.rid, state?.data);
+				} else if (state?.url) {
+					// Change User's Avatar
+					await changeUserAvatar(state);
+				} else if (state.resetUserAvatar) {
+					// Change User's Avatar
+					await resetUserAvatar(userId);
+				}
+			});
+			if (outcome.status === 'cancelled') {
+				return;
 			}
 			isDirty.current = false;
 		} catch (e: any) {
-			if (isTwoFactorCancelled(e)) {
-				return;
-			}
 			log(e);
 			return showErrorAlert(e.message, I18n.t('Oops'));
 		} finally {

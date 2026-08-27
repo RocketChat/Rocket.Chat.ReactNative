@@ -5,7 +5,7 @@ import { Encryption } from '../../lib/encryption';
 import log from '../../lib/methods/helpers/log';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { e2eResetRoomKey } from '../../lib/services/restApi';
-import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
+import { runCancellableAction } from '../../lib/services/twoFactor/twoFactorOutcome';
 
 export const resetRoomKey = (rid: string) => {
 	Alert.alert(
@@ -21,24 +21,27 @@ export const resetRoomKey = (rid: string) => {
 				style: 'destructive',
 				onPress: async () => {
 					try {
-						const e2eRoom = await Encryption.getRoomInstance(rid);
-						if (!e2eRoom) {
-							console.log('Encryption room instance not found');
-							return;
+						const outcome = await runCancellableAction(async () => {
+							const e2eRoom = await Encryption.getRoomInstance(rid);
+							if (!e2eRoom) {
+								console.log('Encryption room instance not found');
+								return false;
+							}
+
+							const { e2eKey, e2eKeyId } = (await e2eRoom.resetRoomKey()) ?? {};
+
+							if (!e2eKey || !e2eKeyId) {
+								return false;
+							}
+
+							await e2eResetRoomKey(rid, e2eKey, e2eKeyId);
+							return true;
+						});
+
+						if (outcome.status === 'completed' && outcome.value) {
+							showToast(I18n.t('Encryption_keys_reset'));
 						}
-
-						const { e2eKey, e2eKeyId } = (await e2eRoom.resetRoomKey()) ?? {};
-
-						if (!e2eKey || !e2eKeyId) {
-							return;
-						}
-
-						await e2eResetRoomKey(rid, e2eKey, e2eKeyId);
-						showToast(I18n.t('Encryption_keys_reset'));
 					} catch (e) {
-						if (isTwoFactorCancelled(e)) {
-							return;
-						}
 						log(e);
 						showToast(I18n.t('Encryption_keys_failed'));
 					}

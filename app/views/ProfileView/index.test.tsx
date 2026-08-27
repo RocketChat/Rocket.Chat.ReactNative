@@ -8,6 +8,7 @@ import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
 import { TwoFactorCancelledError } from '../../lib/services/twoFactor/twoFactorCancelled';
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { setUser } from '../../actions/login';
 
@@ -33,6 +34,11 @@ jest.mock('../../lib/services/twoFactor/twoFactor', () => ({
 }));
 
 jest.mock('../../lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
+
+jest.mock('../../lib/methods/helpers/log', () => ({
+	events: jest.requireActual('../../lib/methods/helpers/log/events').default,
+	logEvent: jest.fn()
+}));
 
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
@@ -144,6 +150,18 @@ describe('ProfileView submit', () => {
 
 		await waitFor(() => expect(twoFactor).toHaveBeenCalled());
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+	});
+
+	it('reports no failure when the save itself is cancelled by the 2FA prompt', async () => {
+		(saveUserProfile as jest.Mock).mockRejectedValue(new TwoFactorCancelledError());
+
+		const { getByTestId } = renderProfile();
+		changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(saveUserProfile).toHaveBeenCalled());
+		expect(logEvent).not.toHaveBeenCalledWith(events.PROFILE_SAVE_CHANGES_F);
+		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+		expect(dispatch).not.toHaveBeenCalledWith(setUser(expect.anything()));
 	});
 
 	it('reports the 2FA error itself when the challenge fails for a reason other than cancelling', async () => {
