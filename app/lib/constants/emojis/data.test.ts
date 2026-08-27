@@ -1,6 +1,7 @@
 import { aliasesByEmojiName, emojisByCategory, shortnameToUnicodeMap } from './data';
 import { emojis } from './emojis';
 import { legacyShortnameToUnicodeMap } from './legacyShortnames';
+import pinnedShortnames from '../../../../scripts/pinned-shortnames';
 
 describe('emoji data', () => {
 	it('resolves every listed emoji to a unicode character', () => {
@@ -31,6 +32,13 @@ describe('emoji data', () => {
 		expect(
 			Object.keys(emojisByCategory).filter(key => emojisByCategory[key as keyof typeof emojisByCategory].length === 0)
 		).toEqual([]);
+	});
+
+	it('holds every pinned shortname at its pinned glyph', () => {
+		const drifted = Object.keys(pinnedShortnames).filter(
+			shortname => shortnameToUnicodeMap[shortname] !== pinnedShortnames[shortname as keyof typeof pinnedShortnames]
+		);
+		expect(drifted).toEqual([]);
 	});
 
 	it('keeps legacy shortnames out of the current map', () => {

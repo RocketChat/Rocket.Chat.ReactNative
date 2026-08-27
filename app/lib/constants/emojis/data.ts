@@ -1937,6 +1937,7 @@ export const emojisByCategory = {
 };
 
 // Every shortname the app can resolve, aliases and skin tone variants included.
+// Values come from emojibase, except the ones held back by scripts/pinned-shortnames.js.
 export const shortnameToUnicodeMap: { [key: string]: string } = {
 	':regional_indicator_a:': '🇦',
 	':regional_indicator_b:': '🇧',
@@ -4160,16 +4161,16 @@ export const shortnameToUnicodeMap: { [key: string]: string } = {
 	':tuxedo_tone4:': '🤵🏾',
 	':person_in_tuxedo_tone5:': '🤵🏿',
 	':tuxedo_tone5:': '🤵🏿',
-	':man_in_tuxedo:': '🤵‍♂️',
-	':man_in_tuxedo_tone1:': '🤵🏻‍♂️',
+	':man_in_tuxedo:': '🤵',
+	':man_in_tuxedo_tone1:': '🤵🏻',
 	':man_in_tuxedo_light_skin_tone:': '🤵🏻‍♂️',
-	':man_in_tuxedo_tone2:': '🤵🏼‍♂️',
+	':man_in_tuxedo_tone2:': '🤵🏼',
 	':man_in_tuxedo_medium_light_skin_tone:': '🤵🏼‍♂️',
-	':man_in_tuxedo_tone3:': '🤵🏽‍♂️',
+	':man_in_tuxedo_tone3:': '🤵🏽',
 	':man_in_tuxedo_medium_skin_tone:': '🤵🏽‍♂️',
-	':man_in_tuxedo_tone4:': '🤵🏾‍♂️',
+	':man_in_tuxedo_tone4:': '🤵🏾',
 	':man_in_tuxedo_medium_dark_skin_tone:': '🤵🏾‍♂️',
-	':man_in_tuxedo_tone5:': '🤵🏿‍♂️',
+	':man_in_tuxedo_tone5:': '🤵🏿',
 	':man_in_tuxedo_dark_skin_tone:': '🤵🏿‍♂️',
 	':woman_in_tuxedo:': '🤵‍♀️',
 	':woman_in_tuxedo_tone1:': '🤵🏻‍♀️',
@@ -6980,7 +6981,7 @@ export const shortnameToUnicodeMap: { [key: string]: string } = {
 	':ant:': '🐜',
 	':bee:': '🐝',
 	':honeybee:': '🐝',
-	':beetle:': '🪲',
+	':beetle:': '🐞',
 	':lady_beetle:': '🐞',
 	':cricket:': '🦗',
 	':cockroach:': '🪳',
