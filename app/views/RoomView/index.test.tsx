@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { RoomView } from './index';
 import { type IRoomViewProps } from './definitions';
-import RoomServices from './services';
+import { syncRoom } from '../../lib/methods/syncRoom';
 import { readMessages } from '../../lib/methods/readMessages';
 import { mockedStore } from '../../reducers/mockedStore';
 import { initStore } from '../../lib/store/auxStore';
@@ -50,10 +50,7 @@ jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
 	useIsInActiveVoipCall: () => false
 }));
 
-jest.mock('./services', () => ({
-	__esModule: true,
-	default: { getMessages: jest.fn().mockResolvedValue(undefined) }
-}));
+jest.mock('../../lib/methods/syncRoom', () => ({ syncRoom: jest.fn().mockResolvedValue(undefined) }));
 jest.mock('../../lib/methods/readMessages', () => ({ readMessages: jest.fn().mockResolvedValue(undefined) }));
 jest.mock('../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn().mockResolvedValue(undefined) }));
 jest.mock('../../lib/methods/helpers/isReadOnly', () => ({ isReadOnly: jest.fn().mockResolvedValue(false) }));
@@ -62,7 +59,7 @@ jest.mock('../../lib/methods/AudioManager', () => ({
 	default: { pauseAudio: jest.fn(), unloadRoomAudios: jest.fn().mockResolvedValue(undefined) }
 }));
 
-const mockedGetMessages = RoomServices.getMessages as jest.Mock;
+const mockedSyncRoom = syncRoom as jest.Mock;
 const mockedReadMessages = readMessages as jest.Mock;
 
 const mockSubscriptionsQuery = { observe: jest.fn(), observeWithColumns: jest.fn(() => new Subject()) };
@@ -144,7 +141,7 @@ describe('RoomView init cursor predicate', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedGetMessages.mockResolvedValue(undefined);
+		mockedSyncRoom.mockResolvedValue(undefined);
 		mockedReadMessages.mockResolvedValue(undefined);
 		mockSubscriptionsCollection.find.mockRejectedValue(new Error('not found'));
 		mockSubscriptionsQuery.observe.mockReturnValue(new Subject());
@@ -154,19 +151,19 @@ describe('RoomView init cursor predicate', () => {
 		renderRoomView({ rid: 'rid-1', t: 'c' });
 		await flush();
 
-		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
+		expect(mockedSyncRoom).toHaveBeenCalledWith({ rid: 'rid-1', fallbackRoomType: 'c' });
 		expect(mockedReadMessages).not.toHaveBeenCalled();
 	});
 
-	it('routes a cursor-less subscribed room to the room-history loader directly', async () => {
+	it('synchronizes a cursor-less subscribed room once', async () => {
 		renderRoomView({ rid: 'rid-1', t: 'c', room: buildRow() });
 		await flush();
 
-		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
-		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1', t: 'c' });
+		expect(mockedSyncRoom).toHaveBeenCalledTimes(1);
+		expect(mockedSyncRoom).toHaveBeenCalledWith({ rid: 'rid-1', fallbackRoomType: 'c' });
 	});
 
-	it('routes a subscribed room with a cursor to the missed-messages loader', async () => {
+	it('synchronizes a subscribed room with a cursor once', async () => {
 		renderRoomView({
 			rid: 'rid-1',
 			t: 'c',
@@ -174,7 +171,7 @@ describe('RoomView init cursor predicate', () => {
 		});
 		await flush();
 
-		expect(mockedGetMessages).toHaveBeenCalledTimes(1);
-		expect(mockedGetMessages).toHaveBeenCalledWith({ rid: 'rid-1' });
+		expect(mockedSyncRoom).toHaveBeenCalledTimes(1);
+		expect(mockedSyncRoom).toHaveBeenCalledWith({ rid: 'rid-1', fallbackRoomType: 'c' });
 	});
 });

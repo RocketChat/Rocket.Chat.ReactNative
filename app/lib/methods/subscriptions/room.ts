@@ -26,7 +26,7 @@ import {
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
-import { loadMissedMessages } from '../loadMissedMessages';
+import { syncRoom } from '../syncRoom';
 import markMessagesRead from '../helpers/markMessagesRead';
 
 export default class RoomSubscription {
@@ -94,7 +94,7 @@ export default class RoomSubscription {
 	handleConnection = async () => {
 		try {
 			reduxStore.dispatch(clearUserTyping());
-			await loadMissedMessages({ rid: this.rid });
+			await syncRoom({ rid: this.rid });
 			this.read();
 		} catch (e) {
 			log(e);

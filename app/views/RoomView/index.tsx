@@ -49,6 +49,8 @@ import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import RoomServices from './services';
+import { syncRoom } from '../../lib/methods/syncRoom';
+import { type RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
 import RightButtons from './RightButtons';
@@ -678,10 +680,7 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					this.consumeJumpParam(messageId);
 				}
 			} else {
-				await RoomServices.getMessages({
-					rid: room.rid,
-					...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
-				});
+				await syncRoom({ rid: room.rid, fallbackRoomType: room.t as RoomTypes });
 
 				// if room is joined
 				if (joined && 'id' in room) {
