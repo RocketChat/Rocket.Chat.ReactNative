@@ -37,6 +37,10 @@
 				]
 			}
 		],
+		"complexity": ["warn", { "max": 20 }],
+		"max-depth": ["error", { "max": 4 }],
+		"max-nested-callbacks": ["error", { "max": 10 }],
+		"max-params": ["warn", { "max": 4 }],
 		"no-void": "error",
 		"new-cap": "error",
 		"require-await": "error",
@@ -92,6 +96,10 @@
 		{
 			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],
 			"rules": {
+				"complexity": "off",
+				"max-depth": "off",
+				"max-nested-callbacks": "off",
+				"max-params": "off",
 				"jest/no-commented-out-tests": "warn",
 				"jest/no-identical-title": "error",
 				"jest/no-focused-tests": "error",
