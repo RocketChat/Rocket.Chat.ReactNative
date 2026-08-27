@@ -33,15 +33,19 @@ Do not edit `data.ts` by hand — the two datasets drifting apart is what this r
 Shortname resolution matches web:
 
 - One name per emoji is listed, taken from joypixels shortcodes, falling back to emojibase.
-- The remaining shortcodes become aliases, so search matches them but returns the listed name.
+- The remaining shortcodes become aliases, so search matches them but returns the listed name. Both
+  search surfaces go through `searchEmojiNames` in `app/lib/methods/emojis.ts` — the picker and the
+  composer's `:` autocomplete — so a name is either findable in both or neither.
 - The 26 regional indicator letters are generated but not listed: they are the building blocks of
   flags, not emojis to pick. They resolve from `data.ts` like anything else.
 - Emojibase's component group — skin tones, hair styles, and the 12 keycap components
   (`:digit_zero:`–`:digit_nine:`, `:asterisk_symbol:`, `:pound_symbol:`) — is dropped before
   anything is added, so those names are absent from `data.ts` entirely. The keycaps still resolve,
   but only through [legacy shortnames](#legacy-shortnames), which is what stored reactions need.
-- Between them that is the 38 names the pre-emojibase picker listed and this one does not, so none
-  of them turn up in search any more.
+- Between them that is 38 names the pre-emojibase picker listed which no longer turn up in search at
+  all. A further 36 names it listed are still searchable, just as aliases of the name joypixels
+  picked instead — `cop` returns `police_officer`, `shrug` returns `person_shrugging`. 74 of the old
+  1,388 listings are gone; only these 38 left search with them.
 - Skin tone variants resolve but are not listed or searchable, since the picker has no tone
   selector. Remove that exclusion in the generator if one is ever added.
 

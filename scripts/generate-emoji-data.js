@@ -144,7 +144,8 @@ export const emojisByCategory = {
 ${categories}
 };
 
-// Every shortname the app can resolve, aliases and skin tone variants included.
+// Every generated shortname, aliases and skin tone variants included. Not everything the app can
+// resolve: useShortnameToUnicode falls back to legacyShortnames.json, which is kept out of this map.
 // Values come from emojibase, except the ones held back by scripts/pinned-shortnames.js.
 export const shortnameToUnicodeMap: { [key: string]: string } = {
 ${map}

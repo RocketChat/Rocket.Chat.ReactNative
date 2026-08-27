@@ -9,7 +9,7 @@ import { DEFAULT_EMOJIS, emojis } from '../constants/emojis/emojis';
 
 const FREQUENTLY_USED_TABLE = 'frequently_used_emojis';
 
-const searchEmojiNames = (keyword: string): string[] => {
+export const searchEmojiNames = (keyword: string): string[] => {
 	const term = keyword.toLowerCase();
 	return emojis.filter(name => name.includes(term) || (aliasesByEmojiName[name] ?? []).some(alias => alias.includes(term)));
 };
