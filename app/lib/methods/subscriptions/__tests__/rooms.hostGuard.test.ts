@@ -1,5 +1,5 @@
 const mockOnStreamData = jest.fn(async (_event: string, _callback: (message: IDDPMessage) => void) => ({ stop: jest.fn() }));
-const mockSubscribeNotifyUser = jest.fn(async () => undefined);
+const mockSubscribeNotifyUser = jest.fn(async () => []);
 
 jest.mock('../../../services/sdk', () => {
 	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
