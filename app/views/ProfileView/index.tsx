@@ -47,16 +47,25 @@ import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChang
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
 
+// Mirror the server's username validation, which matches the value against the
+// UTF8_User_Names_Validation setting anchored as a full match (`^pattern$`),
+// falling back to the default pattern when the setting is empty or invalid.
+// https://github.com/RocketChat/Rocket.Chat/blob/develop/apps/meteor/app/lib/server/functions/validateUsername.ts
+const DEFAULT_USERNAME_VALIDATION = '[0-9a-zA-Z-_.]+';
+
+const isValidUsername = (username: string, pattern: string): boolean => {
+	try {
+		return new RegExp(`^(${pattern || DEFAULT_USERNAME_VALIDATION})$`).test(username);
+	} catch {
+		// Fall back to the default pattern if the server provides an invalid regex.
+		return new RegExp(`^(${DEFAULT_USERNAME_VALIDATION})$`).test(username);
+	}
+};
+
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
-	const validationSchema = yup.object().shape({
-		name: yup.string().required(I18n.t('Name_required')),
-		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
-		username: yup.string().required(I18n.t('Username_required'))
-	});
-
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
@@ -69,6 +78,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		Accounts_AllowUserAvatarChange,
 		Accounts_AllowUsernameChange,
 		Accounts_CustomFields,
+		UTF8_User_Names_Validation,
 		serverVersion,
 		user
 	} = useAppSelector(state => ({
@@ -79,9 +89,19 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange as boolean,
 		Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 		Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
+		UTF8_User_Names_Validation: state.settings.UTF8_User_Names_Validation as string,
 		serverVersion: state.server.version,
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
+
+	const validationSchema = yup.object().shape({
+		name: yup.string().required(I18n.t('Name_required')),
+		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
+		username: yup
+			.string()
+			.required(I18n.t('Username_required'))
+			.test('valid-username', I18n.t('Username_invalid'), value => isValidUsername(value ?? '', UTF8_User_Names_Validation))
+	});
 	const isMasterDetail = useMasterDetail();
 	const {
 		control,

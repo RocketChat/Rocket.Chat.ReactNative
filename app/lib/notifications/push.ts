@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
+import EJSON from 'ejson';
 
 import { type INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
@@ -8,6 +9,7 @@ import { store as reduxStore } from '../store/auxStore';
 import { registerPushToken } from '../services/restApi';
 import I18n from '../../i18n';
 import NativePushNotificationModule from '../native/NativePushNotificationAndroid';
+import { isNotificationProcessed } from './deduplicator';
 
 export let deviceToken = '';
 
@@ -159,6 +161,33 @@ const registerForPushNotifications = async (): Promise<string | null> => {
 	}
 };
 
+/**
+ * Retrieve the last notification response, but return null if it was already processed.
+ */
+const getLastDeduplicatedResponse = (): INotification | null => {
+	try {
+		const lastResponse = Notifications.getLastNotificationResponse();
+		if (lastResponse) {
+			const transformed = transformNotificationResponse(lastResponse);
+			if (transformed.payload?.ejson) {
+				const ejsonData = EJSON.parse(transformed.payload.ejson);
+				if (ejsonData?.notificationType === 'videoconf') {
+					if (transformed.identifier && isNotificationProcessed(transformed.identifier)) {
+						return null;
+					}
+					if (ejsonData?.callId && isNotificationProcessed(ejsonData.callId)) {
+						return null;
+					}
+				}
+			}
+			return transformed;
+		}
+	} catch (e) {
+		console.log('Error getting deduplicated last notification response:', e);
+	}
+	return null;
+};
+
 export const pushNotificationConfigure = (onNotification: (notification: INotification) => void): Promise<any> => {
 	if (configured) {
 		return Promise.resolve({ configured: true });
@@ -261,12 +290,7 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 				}
 
 				// Fallback to expo-notifications (for iOS or if native module doesn't have data)
-				const lastResponse = Notifications.getLastNotificationResponse();
-				if (lastResponse) {
-					return transformNotificationResponse(lastResponse);
-				}
-
-				return null;
+				return getLastDeduplicatedResponse();
 			})
 			.catch(e => {
 				console.error('[push.ts] Error in promise chain:', e);
@@ -275,10 +299,5 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	}
 
 	// Fallback to expo-notifications (for iOS or if native module doesn't have data)
-	const lastResponse = Notifications.getLastNotificationResponse();
-	if (lastResponse) {
-		return Promise.resolve(transformNotificationResponse(lastResponse));
-	}
-
-	return Promise.resolve(null);
+	return Promise.resolve(getLastDeduplicatedResponse());
 };
