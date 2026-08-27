@@ -1,4 +1,4 @@
-import type * as SdkIntegration from '../testUtils/sdkIntegration';
+import type * as SdkModuleFake from '../testUtils/sdkModuleFake';
 
 jest.mock('../database', () => ({
 	__esModule: true,
@@ -33,8 +33,8 @@ jest.mock('../services/restApi', () => ({
 const mockSdkLogout = jest.fn();
 
 jest.mock('../services/sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
-	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
+	const { createSdkModuleFake } = jest.requireActual<typeof SdkModuleFake>('../testUtils/sdkModuleFake');
+	return { __esModule: true, default: createSdkModuleFake({ logout: () => mockSdkLogout() }) };
 });
 
 import { logout, removeServerData } from './logout';
@@ -52,7 +52,7 @@ import {
 	TOKEN_KEY
 } from '../constants/keys';
 
-const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
+const mockSdk = sdk as unknown as SdkModuleFake.ISdkModuleFake;
 
 const SERVER = 'https://a.rocket.chat';
 const OTHER_SERVER = 'https://b.rocket.chat';

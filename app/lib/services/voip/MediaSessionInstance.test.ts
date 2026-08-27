@@ -3,7 +3,7 @@ import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import type * as SdkModuleFake from '../../testUtils/sdkModuleFake';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
@@ -58,7 +58,7 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
-const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
+const mockSdk = sdk as unknown as SdkModuleFake.ISdkModuleFake;
 const SDK_HOST = 'https://open.rocket.chat';
 
 const mockOnStreamDataStop = jest.fn();
@@ -67,10 +67,10 @@ const mockOnStreamData = jest.fn((_event: string, _callback: (message: IDDPMessa
 );
 const mockMethodCall = jest.fn();
 jest.mock('../sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
+	const { createSdkModuleFake } = jest.requireActual<typeof SdkModuleFake>('../../testUtils/sdkModuleFake');
 	return {
 		__esModule: true,
-		default: makeSdkMock({
+		default: createSdkModuleFake({
 			onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
 			methodCall: (...args: unknown[]) => {
 				mockMethodCall(...args);

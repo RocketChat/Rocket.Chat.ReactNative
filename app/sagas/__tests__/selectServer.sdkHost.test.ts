@@ -1,13 +1,8 @@
 jest.unmock('@rocket.chat/sdk');
 
-const mockConnections: MockConnection[] = [];
+const mockTransport = createTransportFake();
 
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../lib/testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 jest.mock('../../lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
@@ -38,15 +33,15 @@ import { APP, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
 import sdk from '../../lib/services/sdk';
 import { connect } from '../../lib/services/connect';
-import type { MockConnection } from '../../lib/testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../lib/testUtils/sdkIntegration';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
+import { cancelSagaTasks, createRecordingStore } from '../../lib/testUtils/sagaStore';
+import { waitUntil } from '../../lib/testUtils/observedEffects';
+import { createTransportFake } from '../../lib/testUtils/sdkTransport';
 
 const HOST = 'https://open.rocket.chat';
 
 describe('selectServer saga — redundant select for the live SDK host', () => {
 	beforeEach(() => {
-		mockConnections.length = 0;
+		mockTransport.reset();
 	});
 
 	afterEach(() => {
@@ -61,7 +56,10 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 		const { store, dispatchedActions } = createRecordingStore(selectServerRoot);
 
 		store.dispatch(selectServerRequest(HOST, '7.0.0', false));
-		await flushSagaMicrotasks();
+		await waitUntil(() => dispatchedActions.some(action => action.type === SERVER.SELECT_CANCEL), {
+			label: 'selectServer cancels the redundant select',
+			observed: () => dispatchedActions.map(action => action.type)
+		});
 
 		const insideIndex = dispatchedActions.findIndex(action => action.type === APP.START && action.root === RootEnum.ROOT_INSIDE);
 		const cancelIndex = dispatchedActions.findIndex(action => action.type === SERVER.SELECT_CANCEL);

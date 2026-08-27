@@ -1,11 +1,8 @@
 jest.unmock('@rocket.chat/sdk');
 
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+const mockTransport = createTransportFake();
+
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 jest.mock('../../../encryption', () => ({
 	Encryption: { decryptMessage: jest.fn(async (message: unknown) => message) }
@@ -73,21 +70,13 @@ import { getMessageById } from '../../../database/services/Message';
 import buildMessage from '../../helpers/buildMessage';
 import { subscribeRoom, unsubscribeRoom } from '../../../../actions/room';
 import { clearUserTyping } from '../../../../actions/usersTyping';
-import {
-	flush,
-	framesOn,
-	makeCollection as makeBaseCollection,
-	makeReduxStore,
-	receiveFrame
-} from '../../../testUtils/sdkIntegration';
-import type { IMockCollection, MockConnection } from '../../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
+import { makeCollection as makeBaseCollection, makeReduxStore } from '../../../testUtils/appMocks';
+import type { IMockCollection } from '../../../testUtils/appMocks';
+import { createTransportFake } from '../../../testUtils/sdkTransport';
 
 const database = require('../../../database').default as {
 	active: { get: jest.Mock; write: jest.Mock; batch: jest.Mock };
 };
-
-const mockConnections: MockConnection[] = [];
 
 function makeCollection(name: string): IMockCollection {
 	const collection = makeBaseCollection(name);
@@ -114,7 +103,7 @@ let collections: Record<string, ReturnType<typeof makeCollection>>;
 beforeEach(() => {
 	jest.clearAllMocks();
 	jest.useFakeTimers();
-	mockConnections.length = 0;
+	mockTransport.reset();
 	collections = {};
 	redux = makeReduxStore();
 	initStore(redux.store);
@@ -125,25 +114,30 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+	sdk.disconnect();
 	jest.useRealTimers();
 });
 
 async function connectDriver() {
 	sdk.initialize('https://example.com');
-	const connectPromise = sdk.connect();
-	await flush();
-	mockConnections[0].onopen();
-	await flush();
-	await connectPromise;
+	const connecting = sdk.connect();
+	mockTransport.open(await mockTransport.awaitConnection());
+	await connecting;
 }
 
 async function subscribeToRoom(rid: string) {
 	const room = new RoomSubscription(rid);
-	const subscribing = room.subscribe();
-	await flush();
-	await subscribing;
-	await flush();
+	await room.subscribe();
 	return room;
+}
+
+function nextBatchedRecords(): Promise<unknown[]> {
+	return new Promise(resolve => {
+		database.active.batch.mockImplementation((...records: unknown[]) => {
+			resolve(records);
+			return Promise.resolve(records);
+		});
+	});
 }
 
 describe('RoomSubscription over the real SDK', () => {
@@ -152,7 +146,7 @@ describe('RoomSubscription over the real SDK', () => {
 
 		await subscribeToRoom('room-rid');
 
-		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(5);
+		expect(mockTransport.frames({ msg: 'sub' })).toHaveLength(5);
 		expect(redux.store.dispatch).toHaveBeenCalledWith(subscribeRoom('room-rid'));
 	});
 
@@ -160,18 +154,17 @@ describe('RoomSubscription over the real SDK', () => {
 		await connectDriver();
 		await subscribeToRoom('room-rid');
 
-		receiveFrame(mockConnections[0], {
+		const batched = nextBatchedRecords();
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-room-messages',
 			fields: { eventName: 'room-rid', args: [MESSAGE] }
 		});
-		await flush();
 
+		expect(await batched).toMatchObject([{ _id: 'msg-1', rid: 'room-rid', msg: 'hello' }]);
 		expect(buildMessage).toHaveBeenCalledTimes(1);
 		expect(getMessageById).toHaveBeenCalledWith('msg-1');
 		expect(database.active.write).toHaveBeenCalled();
-		const record = database.active.batch.mock.calls[0][0];
-		expect(record).toMatchObject({ _id: 'msg-1', rid: 'room-rid', msg: 'hello' });
 	});
 
 	it('stops its listeners and unsubscribes all five subscriptions', async () => {
@@ -179,18 +172,16 @@ describe('RoomSubscription over the real SDK', () => {
 		const room = await subscribeToRoom('room-rid');
 
 		await room.unsubscribe();
-		await flush();
 
-		expect(framesOn(mockConnections[0], 'unsub')).toHaveLength(5);
+		expect(mockTransport.frames({ msg: 'unsub' })).toHaveLength(5);
 		expect(redux.store.dispatch).toHaveBeenCalledWith(unsubscribeRoom('room-rid'));
 		expect(redux.store.dispatch).toHaveBeenCalledWith(clearUserTyping());
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-room-messages',
 			fields: { eventName: 'room-rid', args: [MESSAGE] }
 		});
-		await flush();
 
 		expect(buildMessage).not.toHaveBeenCalled();
 	});

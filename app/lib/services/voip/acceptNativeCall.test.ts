@@ -4,14 +4,16 @@ import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
 import { recoverSocket } from '../socketHealth';
 import sdk from '../sdk';
-import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { connectAuthenticatedSdk, createTransportFake } from '../../testUtils/sdkTransport';
+import type { RealSdkClient } from '../../testUtils/sdkTransport';
+import type { ISdkModuleFake } from '../../testUtils/sdkModuleFake';
 
 const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof waitForLoginReady>;
 const mockRecoverSocket = recoverSocket as jest.MockedFunction<typeof recoverSocket>;
 const mockGetState = useCallStore.getState as jest.Mock;
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
+
+const mockTransport = createTransportFake();
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
@@ -24,18 +26,11 @@ jest.mock('./terminateNativeCall', () => ({
 }));
 
 jest.mock('../sdk', () => {
-	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+	const { createSdkModuleFake: create } = jest.requireActual('../../testUtils/sdkModuleFake');
+	return { __esModule: true, default: create() };
 });
 
-const mockConnections: MockConnection[] = [];
-
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 jest.mock('../socketHealth', () => ({
 	recoverSocket: jest.fn()
@@ -50,6 +45,8 @@ jest.mock('../../methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
+
+const sdkModule = sdk as unknown as ISdkModuleFake;
 
 interface IMediaSession {
 	applyRestStateSignals: jest.Mock<Promise<void>>;
@@ -78,27 +75,24 @@ function makeStoreState(overrides: Record<string, unknown> = {}) {
 
 describe('acceptNativeCallWithReadiness', () => {
 	const CALL_ID = 'call-uuid';
-	const USER_ID = 'user-id';
 
-	let driver: IMockSdkDriver;
+	let client: RealSdkClient;
 	let waitForMediaSubs: jest.SpyInstance<Promise<boolean>, [number?]>;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
-		jest.useFakeTimers();
-		mockConnections.length = 0;
-		driver = await buildConnectedDriver(mockConnections, USER_ID);
-		waitForMediaSubs = jest.spyOn(driver, 'waitForNotifyUserMediaSubs').mockResolvedValue(true);
-		(sdk as unknown as IMockSdk).setClient({ driver });
+		mockTransport.reset();
+		client = await connectAuthenticatedSdk(mockTransport);
+		waitForMediaSubs = jest.spyOn(client.driver, 'waitForNotifyUserMediaSubs').mockResolvedValue(true);
+		sdkModule.setClient(client);
 		mockRecoverSocket.mockResolvedValue('confirmed-alive');
 		mockWaitForLoginReady.mockResolvedValue(true);
 		mockGetState.mockReturnValue(makeStoreState());
 	});
 
-	afterEach(() => {
-		if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
-		if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
-		jest.useRealTimers();
+	afterEach(async () => {
+		await client.disconnect();
+		sdkModule.setClient(null);
 	});
 
 	it.each(['confirmed-alive', 'reopened'] as const)(
@@ -201,7 +195,7 @@ describe('acceptNativeCallWithReadiness', () => {
 	});
 
 	it('terminates and ends the call when the SDK socket is unavailable for media subscriptions', async () => {
-		(sdk as unknown as IMockSdk).setClient({});
+		sdkModule.setClient(null);
 		const mediaSession = makeMediaSession();
 		const resetNativeCallId = jest.fn();
 		mockGetState.mockReturnValue(makeStoreState({ resetNativeCallId }));
@@ -258,6 +252,7 @@ describe('acceptNativeCallWithReadiness', () => {
 	});
 
 	it('keeps the newer gate entry when an older gate cleans up, so a third gate aborts the newer one', async () => {
+		jest.useFakeTimers();
 		let gateIndex = 0;
 		mockWaitForLoginReady.mockImplementation((_timeoutMs, signal) => {
 			const myIndex = ++gateIndex;
@@ -288,5 +283,7 @@ describe('acceptNativeCallWithReadiness', () => {
 		expect(firstSession.endCall).not.toHaveBeenCalled();
 		expect(secondSession.answerCall).not.toHaveBeenCalled();
 		expect(thirdSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+
+		jest.useRealTimers();
 	});
 });

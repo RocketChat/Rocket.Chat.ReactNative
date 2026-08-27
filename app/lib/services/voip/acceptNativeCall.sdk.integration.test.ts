@@ -3,13 +3,15 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
-import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, MockConnection, IMockSdkDriver } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { connectAuthenticatedSdk, createTransportFake, subscribeMediaStreams } from '../../testUtils/sdkTransport';
+import type { FakeConnection, RealSdkClient } from '../../testUtils/sdkTransport';
+import type { ISdkModuleFake } from '../../testUtils/sdkModuleFake';
+
+const mockTransport = createTransportFake();
 
 jest.mock('../sdk', () => {
-	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+	const { createSdkModuleFake } = jest.requireActual('../../testUtils/sdkModuleFake');
+	return { __esModule: true, default: createSdkModuleFake() };
 });
 
 jest.mock('./useCallStore', () => ({
@@ -29,22 +31,17 @@ jest.mock('../../methods/helpers/log', () => ({
 	default: jest.fn()
 }));
 
-const mockConnections: MockConnection[] = [];
-
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 const mockWaitForLoginReady = waitForLoginReady as jest.MockedFunction<typeof waitForLoginReady>;
 const mockGetState = useCallStore.getState as jest.Mock;
 const mockTerminateNativeCall = terminateNativeCall as jest.Mock;
+const sdkModule = sdk as unknown as ISdkModuleFake;
 
 const CALL_ID = 'call-uuid';
 const USER_ID = 'user-id';
-const PING_INTERVAL = 10000;
+const MEDIA_STREAMS = ['media-signal', 'media-calls'];
+const READINESS_TIMEOUT = 8000;
 
 interface IMediaSession {
 	applyRestStateSignals: jest.Mock<Promise<void>>;
@@ -63,38 +60,42 @@ function makeMediaSession(overrides: Partial<IMediaSession> = {}): IMediaSession
 	};
 }
 
-let driver: IMockSdkDriver;
+function mediaSubIdsOn(connection: FakeConnection): (string | undefined)[] {
+	const sent = mockTransport.frames({ msg: 'sub', name: 'stream-notify-user' }, connection);
+	return MEDIA_STREAMS.map(stream => sent.find(frame => frame.params?.[0] === `${USER_ID}/${stream}`)?.id);
+}
+
+let client: RealSdkClient;
 
 beforeEach(async () => {
 	jest.clearAllMocks();
-	jest.useFakeTimers();
-	mockConnections.length = 0;
-	driver = await buildConnectedDriver(mockConnections, USER_ID);
-	(sdk as unknown as IMockSdk).setClient({ driver });
+	mockTransport.reset();
+	client = await connectAuthenticatedSdk(mockTransport);
+	sdkModule.setClient(client);
 	mockWaitForLoginReady.mockResolvedValue(true);
 	mockGetState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 });
 
-afterEach(() => {
-	if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
-	if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
+afterEach(async () => {
+	await client.disconnect();
+	sdkModule.setClient(null);
 	jest.useRealTimers();
 });
 
 describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
-	it('answers the call once media subs re-ack on the reopened socket', async () => {
+	it('replays the media subscription ids onto the reopened socket and answers the call', async () => {
+		await subscribeMediaStreams(client);
+		const originalIds = mediaSubIdsOn(mockTransport.connections[0]);
+		expect(originalIds).toEqual([expect.any(String), expect.any(String)]);
 		const mediaSession = makeMediaSession();
 
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
-
+		const reopened = mockTransport.awaitConnection(1);
+		mockTransport.closeTransport(mockTransport.connections[0]);
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-		await jest.advanceTimersByTimeAsync(200);
+		mockTransport.open(await reopened);
 		await accept;
 
+		expect(mediaSubIdsOn(mockTransport.connections[1])).toEqual(originalIds);
 		expect(mockWaitForLoginReady).toHaveBeenCalledTimes(1);
 		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
 		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
@@ -102,21 +103,21 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		expect(mediaSession.endCall).not.toHaveBeenCalled();
 	});
 
-	it('fails the call without answering when the reopened socket never acks the re-sub', async () => {
-		const mediaSession = makeMediaSession();
+	it('fails the call without answering when the reopened socket never acks the replayed subscriptions', async () => {
+		await subscribeMediaStreams(client);
 		const resetNativeCallId = jest.fn();
 		mockGetState.mockReturnValue({ call: null, resetNativeCallId });
+		const mediaSession = makeMediaSession();
 
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
+		jest.useFakeTimers();
+		mockTransport.withhold({ msg: 'sub' });
 
+		const reopened = mockTransport.awaitConnection(1);
+		mockTransport.closeTransport(mockTransport.connections[0]);
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-
-		stopAnsweringFrames(mockConnections[1]);
-		await jest.advanceTimersByTimeAsync(0);
-		await jest.advanceTimersByTimeAsync(8000);
+		mockTransport.open(await reopened);
+		await mockTransport.awaitFrame({ msg: 'sub' }, mockTransport.connections[1]);
+		await jest.advanceTimersByTimeAsync(READINESS_TIMEOUT);
 		await accept;
 
 		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
@@ -126,22 +127,22 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		expect(mediaSession.applyRestStateSignals).not.toHaveBeenCalled();
 	});
 
-	it('answers when the media subs only appear after the reopen', async () => {
+	it('answers when the media subscriptions are only created after the reopen', async () => {
 		const mediaSession = makeMediaSession();
 
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		jest.useFakeTimers();
 
+		const reopened = mockTransport.awaitConnection(1);
+		mockTransport.closeTransport(mockTransport.connections[0]);
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+		const connection = await reopened;
+		mockTransport.open(connection);
+		await subscribeMediaStreams(client);
 
-		await jest.advanceTimersByTimeAsync(100);
-
-		addMediaSubs(driver, USER_ID);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;
 
+		expect(mediaSubIdsOn(connection)).toEqual([expect.any(String), expect.any(String)]);
 		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
 		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
 		expect(mockTerminateNativeCall).not.toHaveBeenCalled();

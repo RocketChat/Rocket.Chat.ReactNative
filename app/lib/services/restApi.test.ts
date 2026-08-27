@@ -1,19 +1,19 @@
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 
-import type * as SdkIntegration from '../testUtils/sdkIntegration';
+import type * as SdkModuleFake from '../testUtils/sdkModuleFake';
 import { mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
 const mockSdkDel = jest.fn();
-let mockSdk!: SdkIntegration.IMockSdk;
+let mockSdk!: SdkModuleFake.ISdkModuleFake;
 
 jest.mock('./sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../testUtils/sdkIntegration');
+	const { createSdkModuleFake } = jest.requireActual<typeof SdkModuleFake>('../testUtils/sdkModuleFake');
 	mockSdk =
 		mockSdk ??
-		makeSdkMock({
+		createSdkModuleFake({
 			get: (...args: unknown[]) => mockSdkGet(...args),
 			post: (...args: unknown[]) => mockSdkPost(...args),
 			del: (...args: unknown[]) => mockSdkDel(...args)

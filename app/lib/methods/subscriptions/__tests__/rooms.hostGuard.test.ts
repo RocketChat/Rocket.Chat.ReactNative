@@ -2,10 +2,10 @@ const mockOnStreamData = jest.fn(async (_event: string, _callback: (message: IDD
 const mockSubscribeNotifyUser = jest.fn(async () => undefined);
 
 jest.mock('../../../services/sdk', () => {
-	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('../../../testUtils/sdkIntegration');
+	const { createSdkModuleFake } = jest.requireActual<typeof SdkModuleFake>('../../../testUtils/sdkModuleFake');
 	return {
 		__esModule: true,
-		default: makeSdkMock({
+		default: createSdkModuleFake({
 			onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
 			subscribeNotifyUser: () => mockSubscribeNotifyUser()
 		})
@@ -27,9 +27,9 @@ import subscribeRooms, { roomsSubscription } from '../rooms';
 import sdk from '../../../services/sdk';
 import database from '../../../database';
 import type { IDDPMessage } from '../../../../definitions/IDDPMessage';
-import type * as SdkIntegration from '../../../testUtils/sdkIntegration';
+import type * as SdkModuleFake from '../../../testUtils/sdkModuleFake';
 
-const mockedSdk = sdk as unknown as SdkIntegration.IMockSdk;
+const mockedSdk = sdk as unknown as SdkModuleFake.ISdkModuleFake;
 const mockedDatabase = database as unknown as { active: { get: jest.Mock } };
 
 const HOST = 'https://open.rocket.chat';

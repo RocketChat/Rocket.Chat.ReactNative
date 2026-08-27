@@ -1,5 +1,7 @@
 jest.unmock('@rocket.chat/sdk');
 
+import type { AnyAction, Store } from 'redux';
+
 import { connect, login, loginWithPassword } from '../connect';
 import sdk from '../sdk';
 import { initStore } from '../../store/auxStore';
@@ -9,18 +11,16 @@ import { setActiveUsers } from '../../../actions/activeUsers';
 import { updateSettings } from '../../../actions/settings';
 import { updatePermission } from '../../../actions/permissions';
 import { _activeUsers, _setUserTimer } from '../../methods/setUser';
-import { flush, framesOn, makeCollection, makeReduxStore, receiveFrame } from '../../testUtils/sdkIntegration';
-import type { MockConnection } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { makeCollection } from '../../testUtils/appMocks';
+import { createActionRecorder, trackCalls } from '../../testUtils/observedEffects';
+import { createTransportFake } from '../../testUtils/sdkTransport';
+import type { IApplicationState } from '../../../definitions';
 
-const mockConnections: MockConnection[] = [];
+const ROUND_TRIP_BUDGET = 2000;
 
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+const mockTransport = createTransportFake();
+
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 jest.mock('../voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: {
@@ -83,16 +83,45 @@ const REST_LOGIN_ME = {
 	requirePasswordChange: false
 };
 
-let redux: ReturnType<typeof makeReduxStore>;
+interface IHarnessState {
+	meteor: { connected: boolean };
+	login: { user: Record<string, unknown> | null; isAuthenticated: boolean };
+	server: { version: string };
+	settings: Record<string, unknown>;
+	room: { subscribedRoom: string | null };
+}
+
+const recorder = createActionRecorder();
+
+let state: IHarnessState;
+let store: Store<IApplicationState> & { dispatch: jest.Mock };
 let collections: Record<string, ReturnType<typeof makeCollection>>;
+
+function makeStore(): void {
+	state = {
+		meteor: { connected: false },
+		login: { user: null, isAuthenticated: false },
+		server: { version: '5.0.0' },
+		settings: {},
+		room: { subscribedRoom: null }
+	};
+	store = {
+		getState: () => state,
+		dispatch: jest.fn((action: AnyAction) => {
+			recorder.record(action);
+			return action;
+		}),
+		subscribe: () => () => undefined
+	} as unknown as Store<IApplicationState> & { dispatch: jest.Mock };
+}
 
 beforeEach(() => {
 	jest.clearAllMocks();
-	jest.useFakeTimers();
-	mockConnections.length = 0;
+	mockTransport.reset();
+	recorder.reset();
 	collections = {};
-	redux = makeReduxStore();
-	initStore(redux.store);
+	makeStore();
+	initStore(store);
 	database.setActiveDB.mockReset();
 	database.active.get.mockReset().mockImplementation((name: string) => (collections[name] ??= makeCollection(name)));
 	database.active.write.mockReset().mockImplementation((fn: () => unknown) => fn());
@@ -114,82 +143,79 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	jest.useRealTimers();
+	sdk.disconnect();
+	if (_setUserTimer.setUserTimer) clearTimeout(_setUserTimer.setUserTimer);
+	_setUserTimer.setUserTimer = null;
 });
 
 async function connectAndDriveHandshake(server = 'https://example.com') {
-	await connect({ server });
-	await flush();
-	expect(mockConnections.length).toBeGreaterThan(0);
-	mockConnections[0].onopen();
-	await flush();
+	const index = mockTransport.connections.length;
+	const connecting = connect({ server });
+	mockTransport.open(await mockTransport.awaitConnection(index));
+	await connecting;
+	await recorder.awaitAction(connectSuccess().type);
+	state.meteor.connected = true;
 }
 
 describe('connect() over the real SDK', () => {
 	it('dispatches connectRequest when connecting and connectSuccess once on the handshake', async () => {
 		await connectAndDriveHandshake();
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(connectRequest());
-		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
-		expect(redux.store.dispatch.mock.calls.filter(([action]) => action.type === connectSuccess().type)).toHaveLength(1);
+		expect(store.dispatch).toHaveBeenCalledWith(connectRequest());
+		expect(store.dispatch).toHaveBeenCalledWith(connectSuccess());
+		expect(recorder.actionsOfType(connectSuccess().type)).toHaveLength(1);
 	});
 
 	it('ignores a repeated connected frame after the first', async () => {
 		await connectAndDriveHandshake();
-		redux.state.meteor.connected = true;
 
-		receiveFrame(mockConnections[0], { msg: 'connected', session: 'again' });
-		await flush();
+		mockTransport.deliver({ msg: 'connected', session: 'again' });
+		await expect(sdk.driver?.probe(ROUND_TRIP_BUDGET)).resolves.toBe(true);
 
-		expect(redux.store.dispatch.mock.calls.filter(([action]) => action.type === connectSuccess().type)).toHaveLength(1);
+		expect(recorder.actionsOfType(connectSuccess().type)).toHaveLength(1);
 	});
 
 	it('dispatches disconnect when the socket closes', async () => {
 		await connectAndDriveHandshake();
 
-		mockConnections[0].onclose({ code: 1006 });
-		await flush();
+		mockTransport.closeTransport();
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(disconnectAction());
+		await expect(recorder.awaitAction(disconnectAction().type)).resolves.toEqual(disconnectAction());
 	});
 
 	it('resumes login with the stored token once connected', async () => {
-		redux.state.login.user = { token: 'stored-token' };
+		state.login.user = { token: 'stored-token' };
 
 		await connectAndDriveHandshake();
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(loginRequest({ resume: 'stored-token' }, false));
+		expect(recorder.requireAction(loginRequest({}, false).type)).toEqual(loginRequest({ resume: 'stored-token' }, false));
 	});
 
 	it('tears down the prior connection and stops its listeners when connect() is re-run', async () => {
 		await connectAndDriveHandshake('https://a.example.com');
-		const firstConnection = mockConnections[0];
-		const successCount = () => redux.store.dispatch.mock.calls.filter(([action]) => action.type === connectSuccess().type).length;
-		const before = successCount();
+		const firstConnection = mockTransport.connections[0];
+		const successBefore = recorder.actionsOfType(connectSuccess().type).length;
+		state.meteor.connected = false;
 
-		await connect({ server: 'https://b.example.com' });
-		await flush();
+		const reconnecting = connect({ server: 'https://b.example.com' });
+		await mockTransport.awaitConnection(1);
+		await reconnecting;
 
-		expect(firstConnection.close).toHaveBeenCalled();
+		expect(firstConnection.readyState).toBe(3);
 
-		firstConnection.onmessage({ data: JSON.stringify({ msg: 'connected', session: 'x' }) });
-		await flush();
+		mockTransport.deliver({ msg: 'connected', session: 'x' }, firstConnection);
+		mockTransport.open(mockTransport.connections[1]);
+		await recorder.awaitAction(connectSuccess().type);
 
-		expect(successCount()).toBe(before);
+		expect(recorder.actionsOfType(connectSuccess().type)).toHaveLength(successBefore + 1);
 	});
 });
 
 describe('login() over the real SDK', () => {
-	async function connectLoggedIn() {
-		await connectAndDriveHandshake();
-	}
-
 	it('maps the server login result to the logged user', async () => {
-		await connectLoggedIn();
+		await connectAndDriveHandshake();
 
-		const loginPromise = login({ user: 'the-user', password: 'secret' });
-		await flush();
-		const user = await loginPromise;
+		const user = await login({ user: 'the-user', password: 'secret' });
 
 		expect(user).toEqual(
 			expect.objectContaining({
@@ -208,11 +234,9 @@ describe('login() over the real SDK', () => {
 	});
 
 	it('defaults the parser/main-thread preferences on servers >= 5.0.0', async () => {
-		await connectLoggedIn();
+		await connectAndDriveHandshake();
 
-		const loginPromise = login({ user: 'the-user', password: 'secret' });
-		await flush();
-		const user = await loginPromise;
+		const user = await login({ user: 'the-user', password: 'secret' });
 
 		expect(user).toEqual(
 			expect.objectContaining({
@@ -223,15 +247,13 @@ describe('login() over the real SDK', () => {
 	});
 
 	it('reads the parser/main-thread preferences from the server below 5.0.0', async () => {
-		redux.state.server.version = '4.9.0';
+		state.server.version = '4.9.0';
 		(REST_LOGIN_ME.settings.preferences as Record<string, unknown>).enableMessageParserEarlyAdoption = false;
 		(REST_LOGIN_ME.settings.preferences as Record<string, unknown>).showMessageInMainThread = true;
 
-		await connectLoggedIn();
+		await connectAndDriveHandshake();
 
-		const loginPromise = login({ user: 'the-user', password: 'secret' });
-		await flush();
-		const user = await loginPromise;
+		const user = await login({ user: 'the-user', password: 'secret' });
 
 		expect(user).toEqual(
 			expect.objectContaining({
@@ -242,12 +264,10 @@ describe('login() over the real SDK', () => {
 	});
 
 	it('sends LDAP params on the wire when LDAP is enabled', async () => {
-		redux.state.settings.LDAP_Enable = true;
-		await connectLoggedIn();
+		state.settings.LDAP_Enable = true;
+		await connectAndDriveHandshake();
 
-		const loginPromise = loginWithPassword({ user: 'the-user', password: 'secret' });
-		await flush();
-		await loginPromise;
+		await loginWithPassword({ user: 'the-user', password: 'secret' });
 
 		const loginCall = (global.fetch as jest.Mock).mock.calls.find(([url]) => String(url).includes('/api/v1/login'));
 		const body = JSON.parse(loginCall[1].body);
@@ -255,12 +275,10 @@ describe('login() over the real SDK', () => {
 	});
 
 	it('sends CROWD params on the wire when CROWD is enabled', async () => {
-		redux.state.settings.CROWD_Enable = true;
-		await connectLoggedIn();
+		state.settings.CROWD_Enable = true;
+		await connectAndDriveHandshake();
 
-		const loginPromise = loginWithPassword({ user: 'the-user', password: 'secret' });
-		await flush();
-		await loginPromise;
+		await loginWithPassword({ user: 'the-user', password: 'secret' });
 
 		const loginCall = (global.fetch as jest.Mock).mock.calls.find(([url]) => String(url).includes('/api/v1/login'));
 		const body = JSON.parse(loginCall[1].body);
@@ -273,97 +291,95 @@ describe('onStreamData handlers over real frames', () => {
 		await connectAndDriveHandshake();
 		database.active.get('settings').find.mockResolvedValue({ update: jest.fn(async (fn: (u: unknown) => void) => fn({})) });
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-notify-all',
 			fields: { eventName: 'public-settings-changed', args: [null, { _id: 'Site_Name', value: 'New Name' }] }
 		});
-		await flush();
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(updateSettings('Site_Name', 'New Name'));
+		await expect(recorder.awaitAction(updateSettings('Site_Name', 'New Name').type)).resolves.toEqual(
+			updateSettings('Site_Name', 'New Name')
+		);
 	});
 
 	it('stream-user-presence sets the active user and the logged user', async () => {
-		redux.state.login.user = { id: 'user-id' };
+		state.login.user = { id: 'user-id' };
 		await connectAndDriveHandshake();
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-user-presence',
 			fields: { uid: 'user-id', args: [['user-id', 1, '', '', undefined]] }
 		});
-		await flush();
+		await recorder.awaitAction(setUser({}).type);
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(
-			setActiveUsers({ 'user-id': expect.objectContaining({ status: 'online' }) })
-		);
-		expect(redux.store.dispatch).toHaveBeenCalledWith(setUser(expect.objectContaining({ status: 'online' })));
+		expect(store.dispatch).toHaveBeenCalledWith(setActiveUsers({ 'user-id': expect.objectContaining({ status: 'online' }) }));
+		expect(store.dispatch).toHaveBeenCalledWith(setUser(expect.objectContaining({ status: 'online' })));
 	});
 
 	it('user-status batches into _activeUsers and sets the logged user', async () => {
-		redux.state.login.user = { id: 'user-id' };
+		state.login.user = { id: 'user-id' };
 		await connectAndDriveHandshake();
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-notify-logged',
 			fields: { eventName: 'user-status', args: [['user-id', 'online', 1, '', '', undefined]] }
 		});
-		await flush();
+		await recorder.awaitAction(setUser({}).type);
 
 		expect(_activeUsers.activeUsers['user-id']).toEqual(expect.objectContaining({ status: 'online' }));
-		expect(redux.store.dispatch).toHaveBeenCalledWith(setUser(expect.objectContaining({ status: 'online' })));
+		expect(store.dispatch).toHaveBeenCalledWith(setUser(expect.objectContaining({ status: 'online' })));
 	});
 
 	it('permissions-changed dispatches updatePermission', async () => {
 		await connectAndDriveHandshake();
 		database.active.get('permissions').find.mockResolvedValue({ update: jest.fn(async (fn: (u: unknown) => void) => fn({})) });
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-notify-logged',
 			fields: { eventName: 'permissions-changed', args: [null, { _id: 'create-c', roles: ['admin'] }] }
 		});
-		await flush();
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(updatePermission('create-c', ['admin']));
+		await expect(recorder.awaitAction(updatePermission('create-c', ['admin']).type)).resolves.toEqual(
+			updatePermission('create-c', ['admin'])
+		);
 	});
 
 	it('Users:NameChanged upserts the user in the database', async () => {
 		await connectAndDriveHandshake();
 		const collection = database.active.get('users');
 		collection.find.mockResolvedValue({ update: jest.fn(async (fn: (u: unknown) => void) => fn({})) });
+		const writes = trackCalls(database.active.write);
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'changed',
 			collection: 'stream-notify-logged',
 			fields: { eventName: 'Users:NameChanged', args: [{ _id: 'user-id', username: 'renamed' }] }
 		});
-		await flush();
+		await writes.awaitCall();
 
 		expect(collection.find).toHaveBeenCalledWith('user-id');
-		expect(database.active.write).toHaveBeenCalled();
 	});
 
 	it('stream-force_logout dispatches logout(true)', async () => {
 		await connectAndDriveHandshake();
 
-		receiveFrame(mockConnections[0], { msg: 'changed', collection: 'stream-force_logout', fields: {} });
-		await flush();
+		mockTransport.deliver({ msg: 'changed', collection: 'stream-force_logout', fields: {} });
 
-		expect(redux.store.dispatch).toHaveBeenCalledWith(logout(true));
+		await expect(recorder.awaitAction(logout(true).type)).resolves.toEqual(logout(true));
 	});
 
 	it('users frame feeds _setUser', async () => {
 		await connectAndDriveHandshake();
 
-		receiveFrame(mockConnections[0], {
+		mockTransport.deliver({
 			msg: 'added',
 			collection: 'users',
 			id: 'user-id',
 			fields: { username: 'the-user', status: 'online' }
 		});
-		await flush();
 
 		expect(_activeUsers.activeUsers['user-id']).toEqual(expect.objectContaining({ status: 'online' }));
 	});
@@ -371,14 +387,12 @@ describe('onStreamData handlers over real frames', () => {
 
 describe('sdk.subscribeRoom() over the real SDK', () => {
 	it('subscribes to the room streams for servers >= 4.0.0', async () => {
-		redux.state.server.version = '5.0.0';
+		state.server.version = '5.0.0';
 		await connectAndDriveHandshake();
 
-		const subscribing = sdk.subscribeRoom('room-rid');
-		await flush();
-		await subscribing;
+		await sdk.subscribeRoom('room-rid');
 
-		const subs = framesOn(mockConnections[0], 'sub');
+		const subs = mockTransport.frames({ msg: 'sub' });
 		expect(subs.map(sub => sub.name)).toEqual([
 			'stream-notify-room',
 			'stream-room-messages',
@@ -396,14 +410,11 @@ describe('sdk.subscribeRoom() over the real SDK', () => {
 	});
 
 	it('subscribes to the typing event on servers below 4.0.0', async () => {
-		redux.state.server.version = '3.9.0';
+		state.server.version = '3.9.0';
 		await connectAndDriveHandshake();
 
-		const subscribing = sdk.subscribeRoom('room-rid');
-		await flush();
-		await subscribing;
+		await sdk.subscribeRoom('room-rid');
 
-		const subs = framesOn(mockConnections[0], 'sub');
-		expect(subs[0].params?.[0]).toBe('room-rid/typing');
+		expect(mockTransport.frames({ msg: 'sub' })[0].params?.[0]).toBe('room-rid/typing');
 	});
 });

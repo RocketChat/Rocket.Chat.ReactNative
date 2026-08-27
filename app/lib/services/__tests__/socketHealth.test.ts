@@ -1,57 +1,50 @@
 import sdk, { type ISocketDriver } from '../sdk';
 import { classifySocketHealth, recoverSocket } from '../socketHealth';
-import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
-import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { connectAuthenticatedSdk, createTransportFake } from '../../testUtils/sdkTransport';
+import type { RealSdkClient } from '../../testUtils/sdkTransport';
+import type * as SdkModuleFake from '../../testUtils/sdkModuleFake';
 
-const mockConnections: MockConnection[] = [];
+const mockTransport = createTransportFake();
 
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 jest.mock('../sdk', () => {
-	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+	const { createSdkModuleFake } = jest.requireActual<typeof SdkModuleFake>('../../testUtils/sdkModuleFake');
+	return { __esModule: true, default: createSdkModuleFake() };
 });
 
-const sdkMock = sdk as unknown as IMockSdk;
+const sdkMock = sdk as unknown as SdkModuleFake.ISdkModuleFake;
 
-const USER_ID = 'user-id';
-const CLOSED = 3;
-
-describe('socket health against a driver from the shared harness', () => {
-	let driver: IMockSdkDriver;
+describe('socket health over the public SDK driver', () => {
+	let client: RealSdkClient;
+	let driver: ISocketDriver;
 	let probe: jest.SpyInstance<Promise<boolean>, [number?]>;
 	let reopenNow: jest.SpyInstance<Promise<void>, []>;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
-		jest.useFakeTimers();
-		mockConnections.length = 0;
-		driver = await buildConnectedDriver(mockConnections, USER_ID);
+		mockTransport.reset();
+		client = await connectAuthenticatedSdk(mockTransport);
+		driver = client.driver;
 		probe = jest.spyOn(driver, 'probe').mockResolvedValue(true);
 		reopenNow = jest.spyOn(driver, 'reopenNow').mockResolvedValue();
 		sdkMock.setClient({ driver });
 	});
 
-	afterEach(() => {
-		if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
-		if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
-		jest.useRealTimers();
+	afterEach(async () => {
+		reopenNow.mockRestore();
+		probe.mockRestore();
+		await client.disconnect();
 	});
 
 	describe('classifySocketHealth', () => {
 		it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
-			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('round-trip-check');
+			expect(classifySocketHealth(driver)).toBe('round-trip-check');
 		});
 
-		it('returns reopen for a closed socket even when lastPing is fresh', () => {
-			mockConnections[0].readyState = CLOSED;
-			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('reopen');
+		it('returns reopen once the transport is closed', () => {
+			mockTransport.closeTransport();
+			expect(classifySocketHealth(driver)).toBe('reopen');
 		});
 	});
 
@@ -73,7 +66,7 @@ describe('socket health against a driver from the shared harness', () => {
 		});
 
 		it('reopens a known-dead socket without a round trip', async () => {
-			mockConnections[0].readyState = CLOSED;
+			mockTransport.closeTransport();
 			await expect(recoverSocket()).resolves.toBe('reopened');
 			expect(probe).not.toHaveBeenCalled();
 			expect(reopenNow).toHaveBeenCalledTimes(1);
@@ -99,7 +92,7 @@ describe('socket health against a driver from the shared harness', () => {
 		});
 
 		it('rejects when reopening throws', async () => {
-			mockConnections[0].readyState = CLOSED;
+			mockTransport.closeTransport();
 			reopenNow.mockRejectedValue(new Error('reopen failed'));
 			await expect(recoverSocket()).rejects.toThrow('reopen failed');
 		});

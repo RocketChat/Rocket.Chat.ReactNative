@@ -1,239 +1,184 @@
-import sdk from '../sdk';
+import sdk, { type ISocketDriver } from '../sdk';
 import { recoverSocket } from '../socketHealth';
-import {
-	addMediaSubs,
-	backdateLastPing,
-	buildConnectedDriver,
-	framesOn,
-	stopAnsweringFrames
-} from '../../testUtils/sdkIntegration';
-import type { IMockSdk, MockConnection, IMockSdkDriver } from '../../testUtils/sdkIntegration';
-import type * as SdkIntegration from '../../testUtils/sdkIntegration';
+import { connectAuthenticatedSdk, createTransportFake } from '../../testUtils/sdkTransport';
+import type { FakeConnection, RealSdkClient } from '../../testUtils/sdkTransport';
+import type * as SdkModuleFake from '../../testUtils/sdkModuleFake';
 
-const mockConnections: MockConnection[] = [];
+const mockTransport = createTransportFake();
 
-jest.mock('universal-websocket-client', () =>
-	jest.fn().mockImplementation(() => {
-		const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-		return new sdkIntegration.MockConnection(mockConnections);
-	})
-);
+jest.mock('universal-websocket-client', () => jest.fn().mockImplementation(() => mockTransport.createConnection()));
 
 jest.mock('../sdk', () => {
-	const sdkIntegration = jest.requireActual<typeof SdkIntegration>('../../testUtils/sdkIntegration');
-	return { __esModule: true, default: sdkIntegration.makeSdkMock() };
+	const { createSdkModuleFake } = jest.requireActual<typeof SdkModuleFake>('../../testUtils/sdkModuleFake');
+	return { __esModule: true, default: createSdkModuleFake() };
 });
 
 const USER_ID = 'user-id';
-const PING_INTERVAL = 10000;
+const ROUND_TRIP_BUDGET = 2000;
+const RESUBSCRIBE_POLL = 100;
 const CLOSED = 3;
 
-describe('recoverSocket against the real SDK socket', () => {
-	let driver: IMockSdkDriver;
+const MEDIA_SUBS = [
+	{ id: expect.any(String), name: 'stream-notify-user', params: [`${USER_ID}/media-signal`, false] },
+	{ id: expect.any(String), name: 'stream-notify-user', params: [`${USER_ID}/media-calls`, false] }
+];
+
+describe('recoverSocket over the public SDK driver and an app-owned transport', () => {
+	let client: RealSdkClient;
+	let driver: ISocketDriver;
+	let frozen: FakeConnection;
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		jest.useFakeTimers();
-		mockConnections.length = 0;
-		driver = await buildConnectedDriver(mockConnections, USER_ID);
-		(sdk as unknown as IMockSdk).setClient({ driver });
+		mockTransport.reset();
+		client = await connectAuthenticatedSdk(mockTransport);
+		driver = client.driver;
+		frozen = mockTransport.latestConnection;
+		(sdk as unknown as SdkModuleFake.ISdkModuleFake).setClient({ driver });
 	});
 
-	afterEach(() => {
-		if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
-		if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
+	afterEach(async () => {
+		await client.disconnect();
 		jest.useRealTimers();
 	});
 
-	it('exposes the ping interval the health classification depends on', () => {
-		expect(driver.pingInterval).toBe(PING_INTERVAL);
+	async function subscribeToMediaStreams(): Promise<void> {
+		await Promise.all([
+			client.subscribeRaw('stream-notify-user', [`${USER_ID}/media-signal`, false]),
+			client.subscribeRaw('stream-notify-user', [`${USER_ID}/media-calls`, false])
+		]);
+	}
+
+	async function reopenAfterUnansweredRoundTrip(): Promise<{ recovery: Promise<string>; reopened: FakeConnection }> {
+		mockTransport.withhold({ msg: 'ping' });
+		const recovery = recoverSocket();
+		await mockTransport.awaitFrame({ msg: 'ping' }, frozen);
+		await jest.advanceTimersByTimeAsync(ROUND_TRIP_BUDGET);
+		const reopened = await mockTransport.awaitConnection(1);
+		mockTransport.open(reopened);
+		return { recovery, reopened };
+	}
+
+	it('keeps a live socket when the round trip gets a pong', async () => {
+		await expect(recoverSocket()).resolves.toBe('confirmed-alive');
+
+		expect(mockTransport.frames({ msg: 'ping' }, frozen).length).toBeGreaterThan(0);
+		expect(mockTransport.connections).toHaveLength(1);
 	});
 
-	it('keeps a doubtful socket when the round trip gets a pong', async () => {
-		backdateLastPing(driver, PING_INTERVAL + 5000);
+	it('reopens a frozen socket when the round trip gets no pong', async () => {
+		const { recovery } = await reopenAfterUnansweredRoundTrip();
 
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-
-		await expect(recovery).resolves.toBe('confirmed-alive');
-		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
-		expect(mockConnections).toHaveLength(1);
-	});
-
-	it('reopens a doubtful socket when the round trip gets no pong', async () => {
-		backdateLastPing(driver, PING_INTERVAL + 5000);
-		stopAnsweringFrames(mockConnections[0]);
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(2000);
-
-		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-
+		expect(mockTransport.frames({ msg: 'ping' }, frozen).length).toBeGreaterThan(0);
+		expect(mockTransport.connections).toHaveLength(2);
 		await expect(recovery).resolves.toBe('reopened');
 	});
 
-	it('reopens a frozen socket whose young lastPing sits on an unusable session', async () => {
-		stopAnsweringFrames(mockConnections[0]);
+	it('reopens a closed transport without a round trip', async () => {
+		mockTransport.closeTransport(frozen);
+		const pingsBefore = mockTransport.frames({ msg: 'ping' }, frozen).length;
 
 		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(2000);
-
-		expect(framesOn(mockConnections[0], 'ping').length).toBeGreaterThan(0);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+		const reopened = await mockTransport.awaitConnection(1);
+		mockTransport.open(reopened);
 
 		await expect(recovery).resolves.toBe('reopened');
-	});
-
-	it('reopens a known-dead socket without a round trip', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 2 + 1000);
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-
-		expect(mockConnections).toHaveLength(2);
-		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
-
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-
-		await expect(recovery).resolves.toBe('reopened');
+		expect(mockTransport.frames({ msg: 'ping' }, frozen)).toHaveLength(pingsBefore);
+		expect(frozen.readyState).toBe(CLOSED);
 	});
 
 	it('shares one reopen with a concurrent direct reopenNow', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		mockTransport.closeTransport(frozen);
 
 		const directReopen = driver.reopenNow();
 		const recovery = recoverSocket();
 
-		await jest.advanceTimersByTimeAsync(0);
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+		mockTransport.open(await mockTransport.awaitConnection(1));
 
 		await directReopen;
 		await expect(recovery).resolves.toBe('reopened');
-		expect(mockConnections).toHaveLength(2);
+		expect(mockTransport.connections).toHaveLength(2);
 
 		await jest.advanceTimersByTimeAsync(60000);
-		expect(mockConnections).toHaveLength(2);
+		expect(mockTransport.connections).toHaveLength(2);
 	});
 
-	it('rejects an in-flight DDP method call when recovery reopens the socket', async () => {
-		let rejected = false;
-		const inFlight = driver.socket.send({ msg: 'method', method: 'getRoomByTypeAndName', params: [] }).catch(() => {
-			rejected = true;
+	it('shares one reopen between two concurrent recoverSocket calls', async () => {
+		mockTransport.closeTransport(frozen);
+
+		const first = recoverSocket();
+		const second = recoverSocket();
+
+		mockTransport.open(await mockTransport.awaitConnection(1));
+
+		await expect(first).resolves.toBe('reopened');
+		await expect(second).resolves.toBe('reopened');
+		expect(mockTransport.connections).toHaveLength(2);
+	});
+
+	it('rejects an in-flight method call when recovery reopens the socket', async () => {
+		mockTransport.withhold({ msg: 'method', method: 'getRoomByTypeAndName' });
+		let rejection: Error | undefined;
+		const inFlight = client.methodCall('getRoomByTypeAndName', 'general').catch((error: Error) => {
+			rejection = error;
 		});
-		await jest.advanceTimersByTimeAsync(0);
-		expect(rejected).toBe(false);
+		await mockTransport.awaitFrame({ msg: 'method', method: 'getRoomByTypeAndName' }, frozen);
 
-		backdateLastPing(driver, PING_INTERVAL * 3);
+		const { recovery } = await reopenAfterUnansweredRoundTrip();
 
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
 		await inFlight;
-		expect(rejected).toBe(true);
-
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-
+		expect(rejection?.message).toBe('[ddp] connection reopened before the response arrived');
 		await expect(recovery).resolves.toBe('reopened');
 	});
 
-	it('re-sends the media subscriptions on the new socket reusing their ids', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
+	it('re-sends the media subscriptions on the reopened socket reusing their ids', async () => {
+		await subscribeToMediaStreams();
+		const establishedSubs = mockTransport.frames({ msg: 'sub' }, frozen);
 
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+		const { recovery, reopened } = await reopenAfterUnansweredRoundTrip();
 		await expect(recovery).resolves.toBe('reopened');
 
 		const resubscribed = driver.waitForNotifyUserMediaSubs();
-		await jest.advanceTimersByTimeAsync(200);
+		await jest.advanceTimersByTimeAsync(RESUBSCRIBE_POLL);
 		await expect(resubscribed).resolves.toBe(true);
 
-		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(0);
-		expect(framesOn(mockConnections[1], 'sub')).toEqual([
-			expect.objectContaining({ id: 'sub-0', name: 'stream-notify-user', params: [`${USER_ID}/media-signal`] }),
-			expect.objectContaining({ id: 'sub-1', name: 'stream-notify-user', params: [`${USER_ID}/media-calls`] })
-		]);
+		expect(mockTransport.frames({ msg: 'sub' }, reopened)).toEqual(
+			establishedSubs.map(sub => expect.objectContaining({ id: sub.id, name: sub.name, params: sub.params }))
+		);
 	});
 
-	it('reopens a closed transport without a round trip even when lastPing is fresh', async () => {
-		mockConnections[0].readyState = CLOSED;
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-
-		expect(mockConnections).toHaveLength(2);
-		expect(framesOn(mockConnections[0], 'ping')).toHaveLength(0);
-
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-
-		await expect(recovery).resolves.toBe('reopened');
-	});
-
-	it('waits for media subs to appear after reopen, then re-acks them', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+	it('waits for media subs to appear after the reopen, then re-acks them', async () => {
+		const { recovery, reopened } = await reopenAfterUnansweredRoundTrip();
 		await expect(recovery).resolves.toBe('reopened');
 
 		const resubscribed = driver.waitForNotifyUserMediaSubs(1000);
-		await jest.advanceTimersByTimeAsync(100);
-		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
+		await jest.advanceTimersByTimeAsync(RESUBSCRIBE_POLL);
+		expect(mockTransport.frames({ msg: 'sub' }, reopened)).toHaveLength(0);
 
-		addMediaSubs(driver, USER_ID);
-		await jest.advanceTimersByTimeAsync(200);
+		await subscribeToMediaStreams();
+		const establishedSubs = mockTransport.frames({ msg: 'sub' }, reopened);
+		expect(establishedSubs).toEqual(MEDIA_SUBS.map(sub => expect.objectContaining(sub)));
+		await jest.advanceTimersByTimeAsync(RESUBSCRIBE_POLL);
 
 		await expect(resubscribed).resolves.toBe(true);
-		expect(framesOn(mockConnections[1], 'sub')).toEqual([
-			expect.objectContaining({ id: 'sub-0', name: 'stream-notify-user', params: [`${USER_ID}/media-signal`] }),
-			expect.objectContaining({ id: 'sub-1', name: 'stream-notify-user', params: [`${USER_ID}/media-calls`] })
+		expect(mockTransport.frames({ msg: 'sub' }, reopened)).toEqual([
+			...establishedSubs,
+			...establishedSubs.map(sub => expect.objectContaining({ id: sub.id, params: sub.params }))
 		]);
 	});
 
 	it('resolves false when the reopened socket never acks the re-sub', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
+		await subscribeToMediaStreams();
 
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+		const { recovery } = await reopenAfterUnansweredRoundTrip();
 		await expect(recovery).resolves.toBe('reopened');
 
-		stopAnsweringFrames(mockConnections[1]);
+		mockTransport.withhold({ msg: 'sub' });
 
 		const resubscribed = driver.waitForNotifyUserMediaSubs(500);
 		await jest.advanceTimersByTimeAsync(500);
 
 		await expect(resubscribed).resolves.toBe(false);
-	});
-
-	it('shares one reopen between two concurrent recoverSocket calls', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-
-		const first = recoverSocket();
-		const second = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-
-		expect(mockConnections).toHaveLength(2);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-
-		await expect(first).resolves.toBe('reopened');
-		await expect(second).resolves.toBe('reopened');
-		expect(mockConnections).toHaveLength(2);
 	});
 });
