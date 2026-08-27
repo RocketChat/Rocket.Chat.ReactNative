@@ -215,6 +215,25 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		}
 	}
 
+	async loadOmnichannelRoom(rid: string) {
+		const result = await getSubscriptionByRoomId(rid);
+		if (result) {
+			this.setState({ room: result });
+		}
+	}
+
+	async loadChannelRoom(rid: string) {
+		try {
+			const result = await getChannelInfo(rid);
+			if (result.success) {
+				// @ts-ignore
+				this.setState({ room: { ...result.channel, rid: result.channel._id } });
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	async componentDidMount() {
 		this.mounted = true;
 		const { room, member } = this.state;
@@ -223,21 +242,10 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			if (!room.id) {
 				if (room.t === SubscriptionType.OMNICHANNEL) {
 					if (!this.isOmnichannelPreview) {
-						const result = await getSubscriptionByRoomId(room.rid);
-						if (result) {
-							this.setState({ room: result });
-						}
+						await this.loadOmnichannelRoom(room.rid);
 					}
 				} else {
-					try {
-						const result = await getChannelInfo(room.rid);
-						if (result.success) {
-							// @ts-ignore
-							this.setState({ room: { ...result.channel, rid: result.channel._id } });
-						}
-					} catch (e) {
-						log(e);
-					}
+					await this.loadChannelRoom(room.rid);
 				}
 			}
 

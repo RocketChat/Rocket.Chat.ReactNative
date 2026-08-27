@@ -4,6 +4,16 @@ import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';
 import { getRoomByTypeAndName } from '../services/restApi';
 
+async function openGroup(roomId: string) {
+	try {
+		// RC 0.61.0
+		await sdk.post('groups.open', { roomId });
+		return true;
+	} catch (e: any) {
+		return !!(e.data && /is already open/.test(e.data.error));
+	}
+}
+
 async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: string }) {
 	try {
 		// if it's a direct link without rid we'll create a new dm
@@ -37,15 +47,8 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 			}
 
 			// a group has to be open before it can be read
-			if (type === ERoomTypes.GROUP) {
-				try {
-					// RC 0.61.0
-					await sdk.post('groups.open', { roomId });
-				} catch (e: any) {
-					if (!(e.data && /is already open/.test(e.data.error))) {
-						return false;
-					}
-				}
+			if (type === ERoomTypes.GROUP && !(await openGroup(roomId))) {
+				return false;
 			}
 
 			if (room) {

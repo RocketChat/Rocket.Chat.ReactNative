@@ -37,7 +37,10 @@
 				]
 			}
 		],
-		"complexity": ["error", { "max": 30 }],
+		"complexity": ["warn", { "max": 20 }],
+		"max-depth": ["error", { "max": 4 }],
+		"max-nested-callbacks": ["error", { "max": 10 }],
+		"max-params": ["warn", { "max": 4 }],
 		"no-void": "error",
 		"new-cap": "error",
 		"require-await": "error",
@@ -89,6 +92,15 @@
 				"typescript/no-var-requires": "off"
 			},
 			"plugins": ["typescript"]
+		},
+		{
+			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}", "**/__tests__/**", "**/__snapshots__/**"],
+			"rules": {
+				"complexity": "off",
+				"max-depth": "off",
+				"max-nested-callbacks": "off",
+				"max-params": "off"
+			}
 		},
 		{
 			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],

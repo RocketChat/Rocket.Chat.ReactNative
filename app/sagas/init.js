@@ -21,6 +21,18 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
+const selectFirstLoggedServer = function* selectFirstLoggedServer(servers) {
+	for (let i = 0; i < servers.length; i += 1) {
+		const newServer = servers[i].id;
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
+		if (userId) {
+			yield put(selectServerRequest(newServer, newServer.version));
+			return true;
+		}
+	}
+	return false;
+};
+
 const restore = function* restore() {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
@@ -34,14 +46,8 @@ const restore = function* restore() {
 			const servers = yield serversCollection.query().fetch();
 
 			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						return yield put(selectServerRequest(newServer, newServer.version));
-					}
-				}
+			if (yield* selectFirstLoggedServer(servers)) {
+				return;
 			}
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {

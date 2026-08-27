@@ -362,6 +362,18 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	}
 };
 
+const selectFirstLoggedServer = function* selectFirstLoggedServer(servers) {
+	for (let i = 0; i < servers.length; i += 1) {
+		const newServer = servers[i].id;
+		const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
+		if (token) {
+			yield put(selectServerRequest(newServer, newServer.version));
+			return true;
+		}
+	}
+	return false;
+};
+
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
@@ -385,15 +397,8 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				const servers = yield serversCollection.query().fetch();
 
 				// see if there're other logged in servers and selects first one
-				if (servers.length > 0) {
-					for (let i = 0; i < servers.length; i += 1) {
-						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-						if (token) {
-							yield put(selectServerRequest(newServer, newServer.version));
-							return;
-						}
-					}
+				if (yield* selectFirstLoggedServer(servers)) {
+					return;
 				}
 				// if there's no servers, go outside
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -452,15 +457,8 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 			const servers = yield serversCollection.query().fetch();
 
 			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			if (yield* selectFirstLoggedServer(servers)) {
+				return;
 			}
 			// if there's no servers, go outside
 			disconnect();

@@ -257,13 +257,10 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 
 			for (const event of callKeepInitialEvents) {
 				const { name, data } = event;
-				if (name === 'RNCallKeepPerformAnswerCallAction') {
-					const { callUUID } = data;
-					if (initialEvents.callId === callUUID) {
-						wasAnswered = true;
-						mediaCallLogger.log(`${TAG} Call was already answered via CallKit`);
-						break;
-					}
+				if (name === 'RNCallKeepPerformAnswerCallAction' && initialEvents.callId === data.callUUID) {
+					wasAnswered = true;
+					mediaCallLogger.log(`${TAG} Call was already answered via CallKit`);
+					break;
 				}
 			}
 		} else {
