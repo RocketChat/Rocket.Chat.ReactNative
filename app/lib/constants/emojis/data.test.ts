@@ -6,14 +6,8 @@ import pinnedShortnames from '../../../../scripts/pinned-shortnames';
 const bare = (unicode: string) => unicode.replace(/\uFE0F/g, '');
 const resolve = (name: string) => shortnameToUnicodeMap[`:${name}:`] ?? legacyShortnameToUnicodeMap[`:${name}:`];
 
-const CHANGED_GLYPHS: [string, string][] = [
-	[':beetle:', '🐞'],
-	[':man_in_tuxedo:', '🤵'],
-	[':man_in_tuxedo_tone1:', '🤵🏻'],
-	[':man_in_tuxedo_tone2:', '🤵🏼'],
-	[':man_in_tuxedo_tone3:', '🤵🏽'],
-	[':man_in_tuxedo_tone4:', '🤵🏾'],
-	[':man_in_tuxedo_tone5:', '🤵🏿'],
+// The only seven glyphs that changed against the pre-emojibase map, all repairs of a missing joiner.
+const JOINER_REPAIRS: [string, string][] = [
 	[':kiss_mm:', '👨\u200D❤\uFE0F\u200D💋\u200D👨'],
 	[':couplekiss_mm:', '👨\u200D❤\uFE0F\u200D💋\u200D👨'],
 	[':kiss_ww:', '👩\u200D❤\uFE0F\u200D💋\u200D👩'],
@@ -21,6 +15,17 @@ const CHANGED_GLYPHS: [string, string][] = [
 	[':kiss_woman_man:', '👩\u200D❤\uFE0F\u200D💋\u200D👨'],
 	[':men_wrestling:', '🤼\u200D♂\uFE0F'],
 	[':women_wrestling:', '🤼\u200D♀\uFE0F']
+];
+
+// The pins, spelled out so editing scripts/pinned-shortnames.js fails here and not only in the picker.
+const PINNED_GLYPHS: [string, string][] = [
+	[':beetle:', '🐞'],
+	[':man_in_tuxedo:', '🤵'],
+	[':man_in_tuxedo_tone1:', '🤵🏻'],
+	[':man_in_tuxedo_tone2:', '🤵🏼'],
+	[':man_in_tuxedo_tone3:', '🤵🏽'],
+	[':man_in_tuxedo_tone4:', '🤵🏾'],
+	[':man_in_tuxedo_tone5:', '🤵🏿']
 ];
 
 const UNLISTED_COMPONENTS = [
@@ -69,14 +74,15 @@ describe('emoji data', () => {
 	});
 
 	it('holds every pinned shortname at its pinned glyph', () => {
+		expect(Object.entries(pinnedShortnames)).toEqual(PINNED_GLYPHS);
 		const drifted = Object.keys(pinnedShortnames).filter(
 			shortname => shortnameToUnicodeMap[shortname] !== pinnedShortnames[shortname as keyof typeof pinnedShortnames]
 		);
 		expect(drifted).toEqual([]);
 	});
 
-	it('holds every glyph that changed against the pre-emojibase map', () => {
-		const drifted = CHANGED_GLYPHS.filter(([shortname, unicode]) => shortnameToUnicodeMap[shortname] !== unicode);
+	it('holds every repaired joiner glyph at the value this branch decided on', () => {
+		const drifted = JOINER_REPAIRS.filter(([shortname, unicode]) => shortnameToUnicodeMap[shortname] !== unicode);
 		expect(drifted).toEqual([]);
 	});
 
