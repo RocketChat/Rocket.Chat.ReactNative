@@ -37,6 +37,7 @@
 				]
 			}
 		],
+		"complexity": ["warn", { "max": 30 }],
 		"no-void": "error",
 		"new-cap": "error",
 		"require-await": "error",
