@@ -15,22 +15,11 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
+import { selectFirstLoggedServer } from './selectFirstLoggedServer';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
-};
-
-const selectFirstLoggedServer = function* selectFirstLoggedServer(servers) {
-	for (let i = 0; i < servers.length; i += 1) {
-		const newServer = servers[i].id;
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-		if (userId) {
-			yield put(selectServerRequest(newServer, newServer.version));
-			return true;
-		}
-	}
-	return false;
 };
 
 const restore = function* restore() {

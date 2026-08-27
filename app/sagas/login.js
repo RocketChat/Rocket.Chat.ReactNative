@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -23,6 +23,7 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { selectFirstLoggedServer } from './selectFirstLoggedServer';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
@@ -360,18 +361,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	} catch (e) {
 		log(e);
 	}
-};
-
-const selectFirstLoggedServer = function* selectFirstLoggedServer(servers) {
-	for (let i = 0; i < servers.length; i += 1) {
-		const newServer = servers[i].id;
-		const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-		if (token) {
-			yield put(selectServerRequest(newServer, newServer.version));
-			return true;
-		}
-	}
-	return false;
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
