@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { type FlatListProps, type ViewToken } from 'react-native';
 import { type SharedValue, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
+import dayjs from '../../../../lib/dayjs';
 import { type TAnyMessageModel } from '../../../../definitions';
 
 const HIDE_DELAY = 1000;
@@ -17,33 +18,31 @@ interface IUseFloatingDate {
 	viewabilityConfigCallbackPairs: TViewabilityConfigCallbackPairs;
 }
 
-// The list is inverted, so the topmost visible row is the one with the highest index.
-export const getTopVisibleTs = (viewableItems: ViewToken<TAnyMessageModel>[]): Date | string | null => {
-	let top: ViewToken<TAnyMessageModel> | undefined;
-	viewableItems.forEach(token => {
-		if (!token.isViewable || !token.item?.ts || token.index == null) {
-			return;
+export const getHighestIndexViewableTs = (viewableItems: ViewToken<TAnyMessageModel>[]): Date | string | null =>
+	viewableItems.reduce<{ index: number; ts: Date | string } | null>((top, { isViewable, index, item }) => {
+		if (!isViewable || !item?.ts || index == null) {
+			return top;
 		}
-		if (!top || token.index > top.index!) {
-			top = token;
-		}
-	});
-	return top?.item.ts || null;
-};
+		return !top || index > top.index ? { index, ts: item.ts } : top;
+	}, null)?.ts ?? null;
 
 export const useFloatingDate = (): IUseFloatingDate => {
 	const [ts, setTs] = useState<Date | string | null>(null);
+	const dayKey = useRef<string | null>(null);
 	const opacity = useSharedValue(0);
 	const isFadingIn = useSharedValue(false);
 
-	const [viewabilityConfigCallbackPairs] = useState<TViewabilityConfigCallbackPairs>(() => [
+	const { current: viewabilityConfigCallbackPairs } = useRef<TViewabilityConfigCallbackPairs>([
 		{
 			viewabilityConfig: { itemVisiblePercentThreshold: 0 },
 			onViewableItemsChanged: ({ viewableItems }) => {
-				const next = getTopVisibleTs(viewableItems);
-				if (next) {
-					setTs(next);
+				const next = getHighestIndexViewableTs(viewableItems);
+				const nextDayKey = next ? dayjs(next).format('L') : null;
+				if (nextDayKey === dayKey.current) {
+					return;
 				}
+				dayKey.current = nextDayKey;
+				setTs(next);
 			}
 		}
 	]);
