@@ -52,6 +52,17 @@ const loginWithPasswordCall = args => loginWithPassword(args);
 const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
 
+const saveCustomFields = function* saveCustomFields(registerCustomFields, user) {
+	try {
+		const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
+		yield put(setUser({ ...user, ...updatedUser.user }));
+	} catch (e) {
+		if (!isTwoFactorCancelled(e)) {
+			throw e;
+		}
+	}
+};
+
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
 	const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
 	if (supportedVersionsStatus !== 'warn') {
@@ -125,14 +136,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				try {
-					const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
-					yield put(setUser({ ...result, ...updatedUser.user }));
-				} catch (e) {
-					if (!isTwoFactorCancelled(e)) {
-						throw e;
-					}
-				}
+				yield* saveCustomFields(registerCustomFields, result);
 			}
 		}
 	} catch (e) {

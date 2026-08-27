@@ -42,6 +42,8 @@ import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 // only after the sheet is fully dismissed.
 const REFOCUS_BUFFER = 50;
 
+const isVideoConf = (message: TAnyMessageModel) => message.t === 'videoconf';
+
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
 	tmid?: string;
@@ -400,9 +402,9 @@ const MessageActions = memo(
 				});
 			};
 
-			const getOptions = (message: TAnyMessageModel) => {
+			const getConversationOptions = (message: TAnyMessageModel) => {
 				const options: TActionSheetOptionsItem[] = [];
-				const videoConfBlock = message.t === 'videoconf';
+				const videoConfBlock = isVideoConf(message);
 
 				// Edit
 				const isEditAllowed = allowEdit(message);
@@ -468,6 +470,13 @@ const MessageActions = memo(
 					testID: 'message-actions-create-discussion'
 				});
 
+				return options;
+			};
+
+			const getSharingOptions = (message: TAnyMessageModel) => {
+				const options: TActionSheetOptionsItem[] = [];
+				const videoConfBlock = isVideoConf(message);
+
 				// Forward
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
@@ -508,6 +517,14 @@ const MessageActions = memo(
 					testID: 'message-actions-share'
 				});
 
+				return options;
+			};
+
+			const getMessageStateOptions = (message: TAnyMessageModel) => {
+				const options: TActionSheetOptionsItem[] = [];
+				const videoConfBlock = isVideoConf(message);
+				const isFromAnotherUser = !!message.u && message.u._id !== user.id;
+
 				// Pin
 				if (Message_AllowPinning && !videoConfBlock) {
 					options.push({
@@ -530,7 +547,7 @@ const MessageActions = memo(
 				}
 
 				// Mark as unread
-				if (message.u && message.u._id !== user.id) {
+				if (isFromAnotherUser) {
 					options.push({
 						title: I18n.t('Mark_unread'),
 						icon: 'flag',
@@ -550,7 +567,7 @@ const MessageActions = memo(
 				}
 
 				// Toggle Auto-translate
-				if (room.autoTranslate && message.u && message.u._id !== user.id) {
+				if (room.autoTranslate && isFromAnotherUser) {
 					options.push({
 						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
@@ -558,6 +575,12 @@ const MessageActions = memo(
 						testID: 'message-actions-toggle-translation'
 					});
 				}
+
+				return options;
+			};
+
+			const getModerationOptions = (message: TAnyMessageModel) => {
+				const options: TActionSheetOptionsItem[] = [];
 
 				// Report
 				options.push({
@@ -583,6 +606,13 @@ const MessageActions = memo(
 
 				return options;
 			};
+
+			const getOptions = (message: TAnyMessageModel): TActionSheetOptionsItem[] => [
+				...getConversationOptions(message),
+				...getSharingOptions(message),
+				...getMessageStateOptions(message),
+				...getModerationOptions(message)
+			];
 
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);

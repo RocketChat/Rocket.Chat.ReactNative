@@ -385,17 +385,15 @@ export default function subscribeRooms() {
 				notification.avatar = getRoomAvatar(room);
 
 				// If it's from a encrypted room
-				if (message?.t === E2E_MESSAGE_TYPE) {
-					if (message.msg || message.content) {
-						// Decrypt this message content
-						const { msg } = await Encryption.decryptMessage({ ...message, rid });
-						// If it's a direct the content is the message decrypted
-						if (room.t === 'd') {
-							notification.text = msg;
-							// If it's a private group we should add the sender name
-						} else {
-							notification.text = `${getSenderName(sender)}: ${msg}`;
-						}
+				if (message?.t === E2E_MESSAGE_TYPE && (message.msg || message.content)) {
+					// Decrypt this message content
+					const { msg } = await Encryption.decryptMessage({ ...message, rid });
+					// If it's a direct the content is the message decrypted
+					if (room.t === 'd') {
+						notification.text = msg;
+						// If it's a private group we should add the sender name
+					} else {
+						notification.text = `${getSenderName(sender)}: ${msg}`;
 					}
 				}
 			} catch (e) {
