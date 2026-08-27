@@ -28,7 +28,7 @@
 			"app/lib/methods/getUsersPresence.ts",
 			"app/sagas/index.js",
 			"app/sagas/init.js",
-			"app/sagas/selectFirstLoggedServer.js",
+			"app/sagas/selectFirstLoggedServer.ts",
 			"app/sagas/state.js",
 			"app/sagas/selectServer.ts",
 			"app/sagas/deepLinking.js",
