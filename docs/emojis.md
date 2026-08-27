@@ -33,9 +33,11 @@ Do not edit `data.ts` by hand — the two datasets drifting apart is what this r
 Shortname resolution matches web:
 
 - One name per emoji is listed, taken from joypixels shortcodes, falling back to emojibase.
-- The remaining shortcodes become aliases, so search matches them but returns the listed name. Both
-  search surfaces go through `searchEmojiNames` in `app/lib/methods/emojis.ts` — the picker and the
-  composer's `:` autocomplete — so a name is either findable in both or neither.
+- The remaining shortcodes become aliases, so search matches them but returns the listed name. The
+  picker and the composer's `:` autocomplete both search through `searchEmojiNames` in
+  `app/lib/methods/emojis.ts`, so the same names match in both. What they show differs: the picker
+  scrolls the whole result, the composer shows the first four. That is why `searchEmojiNames` ranks
+  exact matches — on the name or an alias — above partial ones, and a test pins `:fire` to `fire`.
 - The 26 regional indicator letters are generated but not listed: they are the building blocks of
   flags, not emojis to pick. They resolve from `data.ts` like anything else.
 - Emojibase's component group — skin tones, hair styles, and the 12 keycap components
@@ -56,9 +58,11 @@ are emojibase emitting the fully-qualified sequence:
 
 - 158 gained one, on bases that already default to emoji presentation — `:alien:` is `1F47D FE0F`
   where the old map had `1F47D`. The glyph is the same, the string is not: anything matching emoji
-  text literally carries the extra codepoint. `Markdown.test.tsx.snap` was regenerated for that,
-  `testID` and `accessibilityLabel` values included, so a selector written against one of those has
-  to use the fully-qualified sequence.
+  text literally, or counting code units, sees the extra codepoint. `Markdown.test.tsx.snap` was
+  regenerated for that, `testID` and `accessibilityLabel` values included, so a selector written
+  against one of those has to use the fully-qualified sequence. It also broke the emoji keyboard's
+  backspace, which read a fixed two-code-unit window and so deleted only the invisible selector —
+  `lastGlyphLength` in `app/containers/MessageComposer/helpers` measures the whole sequence now.
 - 175 lost one, in every case immediately before a skin tone modifier — `:man_detective_tone1:` is
   `1F575 1F3FB 200D 2642 FE0F` where the old map had `1F575 FE0F 1F3FB 200D 2642 FE0F`. The modifier
   already forces emoji presentation, so the selector in front of it was ill-formed (UTS #51).

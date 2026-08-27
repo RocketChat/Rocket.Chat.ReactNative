@@ -24,7 +24,6 @@ describe('useAutocomplete emoji suggestions', () => {
 	});
 
 	it('suggests an emoji typed by an alias, returning the listed shortname', async () => {
-		// The bug this guards: web sends :water_wave:, which is only an alias of the listed `ocean`.
 		expect(await names('water_wave')).toContain('ocean');
 	});
 

@@ -132,6 +132,19 @@ describe('searchEmojis', () => {
 		await expect(searchEmojis('WATER_WAVE')).resolves.toContain('ocean');
 	});
 
+	it('ranks the exact shortname first, so a short keyword is not buried by longer names', async () => {
+		// The composer's autocomplete only shows the first few, so rank is what makes `fire` reachable.
+		await expect(searchEmojis('fire')).resolves.toHaveProperty('0', 'fire');
+		await expect(searchEmojis('heart')).resolves.toHaveProperty('0', 'heart');
+		await expect(searchEmojis('ok')).resolves.toHaveProperty('0', 'ok');
+	});
+
+	it('ranks an exact alias above a name that merely contains the keyword', async () => {
+		const result = await searchEmojis('cop');
+
+		expect(result.indexOf('police_officer')).toBeLessThan(result.indexOf('helicopter'));
+	});
+
 	it('returns only custom emojis when no shortname matches', async () => {
 		mockFetch.mockResolvedValue([{ name: 'rocketchat', extension: 'png' }]);
 
