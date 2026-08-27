@@ -1,7 +1,8 @@
 import ascii, { asciiRegexp } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
-import { legacyShortnameToUnicodeMap, shortnameToUnicodeMap } from '../../constants/emojis';
+import { shortnameToUnicodeMap } from '../../constants/emojis/data';
+import { legacyShortnameToUnicodeMap } from '../../constants/emojis/legacyShortnames';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
 const replaceShortNameWithUnicode = (shortname: string) =>

@@ -10,7 +10,7 @@ import {
 import { searchLocal, searchRemote, type TSearch } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
-import { emojis } from '../../../lib/constants/emojis';
+import { emojis } from '../../../lib/constants/emojis/emojis';
 import { type ICustomEmoji } from '../../../definitions';
 import { getCommandPreview, getListCannedResponse } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';

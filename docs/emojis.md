@@ -75,6 +75,8 @@ pins whose name emojibase dropped entirely — those belong in `legacyShortnames
 ## Invariants
 
 `app/lib/constants/emojis/data.test.ts` guards the ones that broke before: every listed emoji
-resolves, no emoji is listed twice, aliases are keyed by a listed name and resolve, no category is
-empty, no legacy shortname shadows a current one, and every pin still holds. Run it after
-regenerating.
+resolves, no emoji is listed twice, aliases are keyed by a listed name and resolve to the same
+glyph as that name, no category is empty, no legacy shortname shadows a current one, every pin
+still holds, and every glyph that changed against the pre-emojibase map still has the value this
+branch decided on. Run it after regenerating — a bump that moves a glyph should fail there and be
+answered with a pin or an updated fixture, not a silent diff.

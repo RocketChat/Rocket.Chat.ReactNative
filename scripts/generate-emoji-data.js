@@ -6,9 +6,7 @@ const data = require('emojibase-data/en/data.json');
 const emojibaseShortcodes = require('emojibase-data/en/shortcodes/emojibase.json');
 const joypixelsShortcodes = require('emojibase-data/en/shortcodes/joypixels.json');
 const pinnedShortnames = require('./pinned-shortnames');
-// Hand-maintained, and the same file `legacyShortnames.ts` re-exports: shortnames older clients
-// resolved but emojibase no longer lists, still stored in message reactions and in the frequently
-// used emojis table. Read here so those names stay searchable; see docs/emojis.md before adding.
+// Hand-maintained, and the same file `legacyShortnames.ts` re-exports. See docs/emojis.md.
 const legacyShortnames = require('../app/lib/constants/emojis/legacyShortnames.json');
 
 const OUTPUT = path.join(__dirname, '..', 'app', 'lib', 'constants', 'emojis', 'data.ts');
@@ -49,10 +47,13 @@ const getShortcodes = hexcode => {
 };
 
 const build = () => {
-	const emojisByCategory = CATEGORIES.reduce((acc, key) => ({ ...acc, [key]: [] }), {});
+	const emojisByCategory = Object.fromEntries(CATEGORIES.map(key => [key, []]));
 	const shortnameToUnicode = {};
 	const aliasesByName = {};
 
+	// First write wins, and three things below depend on it: joypixels shortcodes are looked up
+	// before emojibase ones, an emoji's first shortcode is added before its aliases, and the base
+	// emoji is added before its tone variants. Whoever gets there first owns the name.
 	const add = (shortname, unicode) => {
 		const key = `:${shortname}:`;
 		if (!(key in shortnameToUnicode)) {
