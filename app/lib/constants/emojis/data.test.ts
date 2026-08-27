@@ -3,16 +3,10 @@ import { emojis } from './emojis';
 import { legacyShortnameToUnicodeMap } from './legacyShortnames';
 import pinnedShortnames from '../../../../scripts/pinned-shortnames';
 
-// The variation selector is presentational, so `⚠️` and `⚠` are the same emoji here.
 const bare = (unicode: string) => unicode.replace(/\uFE0F/g, '');
 const resolve = (name: string) => shortnameToUnicodeMap[`:${name}:`] ?? legacyShortnameToUnicodeMap[`:${name}:`];
 
-// Every shortname whose glyph differs from the pre-emojibase map, spelled out so a regeneration
-// cannot move one without failing here. The joiner (\u200D) and the variation selector (\uFE0F) are
-// written as escapes: they are invisible in an editor, and they are the whole point of the second
-// group.
 const CHANGED_GLYPHS: [string, string][] = [
-	// Held at what earlier releases resolved — see scripts/pinned-shortnames.js.
 	[':beetle:', '🐞'],
 	[':man_in_tuxedo:', '🤵'],
 	[':man_in_tuxedo_tone1:', '🤵🏻'],
@@ -20,7 +14,6 @@ const CHANGED_GLYPHS: [string, string][] = [
 	[':man_in_tuxedo_tone3:', '🤵🏽'],
 	[':man_in_tuxedo_tone4:', '🤵🏾'],
 	[':man_in_tuxedo_tone5:', '🤵🏿'],
-	// Repaired: the old map dropped the joiners, so these rendered as separate glyphs.
 	[':kiss_mm:', '👨\u200D❤\uFE0F\u200D💋\u200D👨'],
 	[':couplekiss_mm:', '👨\u200D❤\uFE0F\u200D💋\u200D👨'],
 	[':kiss_ww:', '👩\u200D❤\uFE0F\u200D💋\u200D👩'],
@@ -28,6 +21,22 @@ const CHANGED_GLYPHS: [string, string][] = [
 	[':kiss_woman_man:', '👩\u200D❤\uFE0F\u200D💋\u200D👨'],
 	[':men_wrestling:', '🤼\u200D♂\uFE0F'],
 	[':women_wrestling:', '🤼\u200D♀\uFE0F']
+];
+
+const UNLISTED_COMPONENTS = [
+	...Array.from({ length: 26 }, (_, i) => `regional_indicator_${String.fromCharCode(97 + i)}`),
+	'digit_zero',
+	'digit_one',
+	'digit_two',
+	'digit_three',
+	'digit_four',
+	'digit_five',
+	'digit_six',
+	'digit_seven',
+	'digit_eight',
+	'digit_nine',
+	'asterisk_symbol',
+	'pound_symbol'
 ];
 
 describe('emoji data', () => {
@@ -69,6 +78,19 @@ describe('emoji data', () => {
 	it('holds every glyph that changed against the pre-emojibase map', () => {
 		const drifted = CHANGED_GLYPHS.filter(([shortname, unicode]) => shortnameToUnicodeMap[shortname] !== unicode);
 		expect(drifted).toEqual([]);
+	});
+
+	it('never puts a variation selector before a skin tone modifier', () => {
+		const illFormed = [shortnameToUnicodeMap, legacyShortnameToUnicodeMap].flatMap(map =>
+			Object.keys(map).filter(key => /\uFE0F[\u{1F3FB}-\u{1F3FF}]/u.test(map[key]))
+		);
+		expect(illFormed).toEqual([]);
+	});
+
+	it('resolves every unlisted component without listing it', () => {
+		expect(UNLISTED_COMPONENTS.filter(name => !resolve(name))).toEqual([]);
+		const listed = new Set(emojis);
+		expect(UNLISTED_COMPONENTS.filter(name => listed.has(name))).toEqual([]);
 	});
 
 	it('keeps legacy shortnames out of the current map', () => {

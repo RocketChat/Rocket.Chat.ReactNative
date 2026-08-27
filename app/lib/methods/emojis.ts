@@ -9,8 +9,6 @@ import { DEFAULT_EMOJIS, emojis } from '../constants/emojis/emojis';
 
 const FREQUENTLY_USED_TABLE = 'frequently_used_emojis';
 
-// Aliases are matched but never returned: searching `water_wave` returns `ocean`, the one name
-// the picker lists for that emoji.
 const searchEmojiNames = (keyword: string): string[] => {
 	const term = keyword.toLowerCase();
 	return emojis.filter(name => name.includes(term) || (aliasesByEmojiName[name] ?? []).some(alias => alias.includes(term)));

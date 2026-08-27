@@ -6,29 +6,25 @@ const data = require('emojibase-data/en/data.json');
 const emojibaseShortcodes = require('emojibase-data/en/shortcodes/emojibase.json');
 const joypixelsShortcodes = require('emojibase-data/en/shortcodes/joypixels.json');
 const pinnedShortnames = require('./pinned-shortnames');
-// Hand-maintained, and the same file `legacyShortnames.ts` re-exports. See docs/emojis.md.
 const legacyShortnames = require('../app/lib/constants/emojis/legacyShortnames.json');
 
 const OUTPUT = path.join(__dirname, '..', 'app', 'lib', 'constants', 'emojis', 'data.ts');
 
-// Same mapping the web client uses, so both clients agree on which tab an emoji lands in.
-// Group 2 (component: skin tones, hair styles) has no picker category and is skipped.
 const groupToCategory = {
-	0: 'people', // smileys & emotion
-	1: 'people', // people & body
-	3: 'nature', // animals & nature
-	4: 'food', // food & drink
-	5: 'travel', // travel & places
-	6: 'activity', // activities
-	7: 'objects', // objects
-	8: 'symbols', // symbols
-	9: 'flags' // flags
+	0: 'people',
+	1: 'people',
+	3: 'nature',
+	4: 'food',
+	5: 'travel',
+	6: 'activity',
+	7: 'objects',
+	8: 'symbols',
+	9: 'flags'
 };
 
 const CATEGORIES = ['people', 'nature', 'food', 'activity', 'travel', 'objects', 'symbols', 'flags'];
 
-// The variation selector is presentational, so `⚠️` and `⚠` are the same emoji here.
-const bare = unicode => unicode.replace(/\uFE0F/g, '');
+const bare = unicode => unicode.replace(/️/g, '');
 
 const isRegionalIndicator = hexcode => {
 	if (hexcode.includes('-')) {
@@ -51,9 +47,6 @@ const build = () => {
 	const shortnameToUnicode = {};
 	const aliasesByName = {};
 
-	// First write wins, and three things below depend on it: joypixels shortcodes are looked up
-	// before emojibase ones, an emoji's first shortcode is added before its aliases, and the base
-	// emoji is added before its tone variants. Whoever gets there first owns the name.
 	const add = (shortname, unicode) => {
 		const key = `:${shortname}:`;
 		if (!(key in shortnameToUnicode)) {
@@ -85,14 +78,10 @@ const build = () => {
 			aliasesByName[name] = aliases;
 		}
 
-		// Regional indicators are the letter tiles that combine into flags, not emojis
-		// the picker should list on their own.
 		if (!emoji.tone && !isRegional) {
 			emojisByCategory[category].push(name);
 		}
 
-		// The picker has no tone selector, so tone variants only need to resolve when a
-		// message already contains one — they stay out of the categories and out of search.
 		(emoji.skins ?? []).forEach(skin => {
 			if (!skin.tone) {
 				return;
@@ -106,8 +95,6 @@ const build = () => {
 	return { emojisByCategory, shortnameToUnicode, aliasesByName };
 };
 
-// Pins hold a shortname at the glyph a previous release resolved. Applied here, offline, because
-// the generated map is read first at runtime — a hand-maintained map cannot override it.
 const applyPins = shortnameToUnicode => {
 	const applied = [];
 	const stale = [];
@@ -129,7 +116,6 @@ const applyPins = shortnameToUnicode => {
 		displaced.push(upstream);
 	});
 
-	// A pin can take the last shortname an emoji had, leaving nothing that resolves to it.
 	const resolvable = new Set(Object.keys(shortnameToUnicode).map(key => bare(shortnameToUnicode[key])));
 	const orphaned = displaced.filter(unicode => !resolvable.has(bare(unicode)));
 
@@ -173,13 +159,9 @@ ${aliases}
 
 	fs.writeFileSync(OUTPUT, contents, 'utf8');
 
-	// Format the output so a plain `pnpm format-lint` never rewrites it, which would make the
-	// next run of this script look like a real diff.
-	execFileSync('npx', ['oxfmt', OUTPUT], { stdio: 'ignore' });
+	execFileSync('pnpm', ['exec', 'oxfmt', OUTPUT], { stdio: 'ignore' });
 };
 
-// Legacy names stay searchable: they are folded into the alias list of whichever current
-// name renders the same emoji. Done here, offline, so nothing reverse-maps at runtime.
 const foldLegacyIntoAliases = ({ emojisByCategory, shortnameToUnicode, aliasesByName }, legacy) => {
 	const nameByUnicode = {};
 	CATEGORIES.forEach(category =>

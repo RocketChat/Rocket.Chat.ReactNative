@@ -30,10 +30,27 @@ Shortname resolution matches web:
 
 - One name per emoji is listed, taken from joypixels shortcodes, falling back to emojibase.
 - The remaining shortcodes become aliases, so search matches them but returns the listed name.
-- Emojibase's component group (skin tones, hair styles) and the regional indicator letters are
-  skipped: they are building blocks, not emojis to list.
+- Emojibase's component group (skin tones, hair styles), the regional indicator letters and the
+  keycap components (`:digit_zero:`–`:digit_nine:`, `:asterisk_symbol:`, `:pound_symbol:`) are
+  skipped: they are building blocks, not emojis to list. The pre-emojibase picker listed all 38, so
+  they no longer turn up in search — they still resolve, which is what stored reactions need.
 - Skin tone variants resolve but are not listed or searchable, since the picker has no tone
   selector. Remove that exclusion in the generator if one is ever added.
+
+## Variation selectors
+
+Regenerating moved 333 values by a variation selector (`U+FE0F`) only, in both directions, and both
+are emojibase emitting the fully-qualified sequence:
+
+- 158 gained one, on bases that already default to emoji presentation — `:alien:` is `1F47D FE0F`
+  where the old map had `1F47D`. Cosmetic; the glyph is the same.
+- 175 lost one, in every case immediately before a skin tone modifier — `:man_detective_tone1:` is
+  `1F575 1F3FB 200D 2642 FE0F` where the old map had `1F575 FE0F 1F3FB 200D 2642 FE0F`. The modifier
+  already forces emoji presentation, so the selector in front of it was ill-formed (UTS #51).
+
+Only seven values changed glyph, all repairs of a missing joiner, and they are pinned in
+`CHANGED_GLYPHS`. Nothing resolvable was dropped. Do not "restore" the old selectors — a test
+guards against reintroducing the ill-formed ones.
 
 ## Legacy shortnames
 
@@ -77,6 +94,7 @@ pins whose name emojibase dropped entirely — those belong in `legacyShortnames
 `app/lib/constants/emojis/data.test.ts` guards the ones that broke before: every listed emoji
 resolves, no emoji is listed twice, aliases are keyed by a listed name and resolve to the same
 glyph as that name, no category is empty, no legacy shortname shadows a current one, every pin
-still holds, and every glyph that changed against the pre-emojibase map still has the value this
-branch decided on. Run it after regenerating — a bump that moves a glyph should fail there and be
+still holds, every glyph that changed against the pre-emojibase map still has the value this branch
+decided on, no value puts a variation selector before a skin tone modifier, and every unlisted
+component still resolves. Run it after regenerating — a bump that moves a glyph should fail there and be
 answered with a pin or an updated fixture, not a silent diff.
