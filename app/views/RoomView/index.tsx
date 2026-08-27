@@ -306,8 +306,16 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined } = this.state;
-		const { insets, route, encryptionEnabled } = this.props;
+		this.consumeJumpParams(prevProps);
+		this.updateOmnichannelIfNeeded(prevState);
+		this.setHeaderIfNeeded(prevProps, prevState);
+		this.setReadOnly();
+		this.updateE2EEStateIfNeeded(prevProps, prevState);
+		this.initIfInviteAccepted(prevState);
+	}
+
+	consumeJumpParams(prevProps: IRoomViewProps) {
+		const { route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.consumeJumpParam(route?.params?.jumpToMessageId);
@@ -316,23 +324,35 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
 			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
+	}
 
-		// If it's a livechat room
-		if (this.t === 'l') {
-			if (
-				!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
-				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
-				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
-				prevState.joined !== joined
-			) {
-				this.updateOmnichannel();
-			}
+	updateOmnichannelIfNeeded(prevState: IRoomViewState) {
+		if (this.t !== 'l') return;
+
+		const { roomUpdate, joined } = this.state;
+		if (
+			!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
+			!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
+			!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
+			prevState.joined !== joined
+		) {
+			this.updateOmnichannel();
 		}
+	}
+
+	setHeaderIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+		const { insets } = this.props;
+
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
-		this.setReadOnly();
+	}
+
+	updateE2EEStateIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+		const { encryptionEnabled } = this.props;
 
 		if (
 			encryptionEnabled !== prevProps.encryptionEnabled ||
@@ -341,8 +361,11 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		) {
 			this.updateE2EEState();
 		}
+	}
 
-		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+	initIfInviteAccepted(prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+
 		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
 			this.init();
 		}
