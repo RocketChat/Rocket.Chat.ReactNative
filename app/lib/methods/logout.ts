@@ -60,6 +60,22 @@ export async function removeServerDatabase({ server }: { server: string }): Prom
 	}
 }
 
+async function logoutFromServer(server: string, resume: string): Promise<void> {
+	try {
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+		await sdk.login({ resume });
+
+		const token = getDeviceToken();
+		if (token) {
+			await sdk.del('push.token', { token });
+		}
+
+		await sdk.logout();
+	} catch (e) {
+		log(e);
+	}
+}
+
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
@@ -67,19 +83,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
 			if (resume) {
-				try {
-					const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-					await sdk.login({ resume });
-
-					const token = getDeviceToken();
-					if (token) {
-						await sdk.del('push.token', { token });
-					}
-
-					await sdk.logout();
-				} catch (e) {
-					log(e);
-				}
+				await logoutFromServer(server, resume);
 			}
 		}
 

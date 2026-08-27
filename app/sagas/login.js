@@ -52,6 +52,13 @@ const loginWithPasswordCall = args => loginWithPassword(args);
 const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
 
+const saveCustomFields = function* saveCustomFields(registerCustomFields, user) {
+	const outcome = yield call(runCancellableAction, () => saveUserProfile({}, { ...registerCustomFields }));
+	if (outcome.status === 'completed') {
+		yield put(setUser({ ...user, ...outcome.value.user }));
+	}
+};
+
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
 	const { status: supportedVersionsStatus } = yield select(state => state.supportedVersions);
 	if (supportedVersionsStatus !== 'warn') {
@@ -125,10 +132,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const outcome = yield call(runCancellableAction, () => saveUserProfile({}, { ...registerCustomFields }));
-				if (outcome.status === 'completed') {
-					yield put(setUser({ ...result, ...outcome.value.user }));
-				}
+				yield* saveCustomFields(registerCustomFields, result);
 			}
 		}
 	} catch (e) {
