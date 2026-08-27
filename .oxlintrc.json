@@ -94,7 +94,7 @@
 			"plugins": ["typescript"]
 		},
 		{
-			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}", "**/__tests__/**", "**/__snapshots__/**"],
+			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],
 			"rules": {
 				"complexity": "off",
 				"max-depth": "off",
