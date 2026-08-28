@@ -32,7 +32,7 @@ const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: stri
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
 						<Text style={[styles.usernameText, { color: colors.fontDefault }]} numberOfLines={1}>
-							{useRealName && item.name ? item.name : item.username}
+							{useRealName ? item.name || item.username : item.username}
 						</Text>
 					</View>
 				</View>

@@ -55,8 +55,8 @@ const ReactionsList = ({ reactions }: IReactionsListProps) => {
 		if (route.key === 'all') {
 			return <AllTab reactions={sortedReactions} />;
 		}
-		if (route.emoji && route.usernames && route.names) {
-			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names} />;
+		if (route.emoji && route.usernames && route.usernames.length > 0) {
+			return <UsersList emoji={route.emoji} usernames={route.usernames} names={route.names || []} />;
 		}
 		return null;
 	};
