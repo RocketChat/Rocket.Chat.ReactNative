@@ -3,14 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { type IAttachment } from '../../../../definitions';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
+import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
-import { Attachments } from './components';
+import Attachments from './Attachments';
 import Quote from './Quote';
 import { useBaseUrl, useMessageUser, useTimeFormat } from '../../stores/MessageRoomStore';
 import { useIsEncrypted, useMessageId } from '../../stores/MessageStore';

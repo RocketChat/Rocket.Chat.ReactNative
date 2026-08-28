@@ -98,9 +98,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
         source={
           [
             {
-              "headers": {
-                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-              },
+              "headers": undefined,
               "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
             },
           ]
@@ -262,9 +260,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           source={
             [
               {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
+                "headers": undefined,
                 "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]
@@ -488,9 +484,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           source={
             [
               {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
+                "headers": undefined,
                 "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
               },
             ]
@@ -714,9 +708,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
           source={
             [
               {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
+                "headers": undefined,
                 "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]

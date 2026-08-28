@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { View } from 'react-native';
 
-import { Reply } from './components';
+import Reply from './Reply';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';

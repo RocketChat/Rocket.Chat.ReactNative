@@ -6,7 +6,7 @@ import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
+import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
 
 jest.mock('../../../markdown', () => {
 	const React = require('react');
@@ -19,7 +19,7 @@ jest.mock('../../../markdown', () => {
 });
 
 // Never resolves, so a click leaves the reply's loading state stuck at `true`.
-jest.mock('../../../../lib/methods/helpers', () => ({
+jest.mock('../../../../lib/methods/helpers/fileDownload', () => ({
 	fileDownloadAndPreview: jest.fn(() => new Promise(() => {}))
 }));
 

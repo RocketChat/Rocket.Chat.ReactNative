@@ -7,7 +7,7 @@ import { MessageRoomProvider, type MessageRoomState } from '../../stores/Message
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
+import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 
@@ -21,7 +21,7 @@ jest.mock('../../../markdown', () => {
 	};
 });
 
-jest.mock('../../../../lib/methods/helpers', () => ({
+jest.mock('../../../../lib/methods/helpers/fileDownload', () => ({
 	fileDownloadAndPreview: jest.fn(() => Promise.resolve())
 }));
 
