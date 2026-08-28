@@ -1,0 +1,72 @@
+appId: ${APP_ID}
+name: Report Message
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.otherUser && output.utils.deleteReportedMessages(output.otherUser.username, output.otherUser.password)}
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-to-report')}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+
+# should report another user's message
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-message-to-report'
+    timeout: 60000
+- longPressOn:
+    id: 'message-content-message-to-report'
+- extendedWaitUntil:
+    visible:
+      id: action-sheet
+    timeout: 60000
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: UP
+- scrollUntilVisible:
+    element:
+      id: message-actions-report
+- tapOn:
+    id: message-actions-report
+- extendedWaitUntil:
+    visible:
+      text: 'Message reported'
+    timeout: 60000
+- tapOn: 'OK'
+
+# should not report own message
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'own-message-to-report'
+- runFlow: '../../helpers/hide-keyboard.yaml'
+- longPressOn:
+    id: 'message-content-own-message-to-report'
+- extendedWaitUntil:
+    visible:
+      id: action-sheet
+    timeout: 60000
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: UP
+- scrollUntilVisible:
+    element:
+      id: message-actions-delete
+- assertNotVisible:
+    id: message-actions-report

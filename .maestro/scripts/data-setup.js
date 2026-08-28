@@ -205,6 +205,24 @@ const deleteCreatedUsers = () => {
     }
 };
 
+const deleteReportedMessages = (username, password) => {
+    try {
+        const { userId } = login(username, password);
+
+        login(output.account.adminUser, output.account.adminPassword);
+
+        postWithRetry(`${data.server}/api/v1/moderation.user.deleteReportedMessages`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify({ userId })
+        });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+    }
+};
+
 function logAccounts() {
     console.log(JSON.stringify(data.accounts));
 }
@@ -260,6 +278,7 @@ output.utils = {
     createRandomRoom,
     sendMessage,
     getProfileInfo,
+    deleteReportedMessages,
     post,
     login,
     getDeepLink,
