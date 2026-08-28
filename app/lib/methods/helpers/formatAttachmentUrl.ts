@@ -10,6 +10,9 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	return urlObj.toString();
 }
 
+// The server encodes the path with `encodeURI(file.name)`, which leaves `#` raw and truncates the url at the fragment.
+const escapeFragmentDelimiter = (url: string) => url.replace(/#/g, '%23');
+
 export const formatAttachmentUrl = (
 	attachmentUrl: string | undefined,
 	userId: string,
@@ -27,18 +30,21 @@ export const formatAttachmentUrl = (
 			return _originalUrl;
 		}
 
-		if (attachmentUrl.includes('rc_token')) {
-			return encodeURI(attachmentUrl);
+		const url = escapeFragmentDelimiter(attachmentUrl);
+
+		if (url.includes('rc_token')) {
+			return url;
 		}
 
-		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
-		return attachmentUrl;
+		if (protectFiles) return setParamInUrl({ url, token, userId });
+		return url;
 	}
 	let cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
 	cdnPrefix = cdnPrefix?.trim();
 	if (cdnPrefix && cdnPrefix.startsWith('http')) {
 		server = cdnPrefix.replace(/\/+$/, '');
 	}
-	if (protectFiles) return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
-	return `${server}${attachmentUrl}`;
+	const url = escapeFragmentDelimiter(`${server}${attachmentUrl}`);
+	if (protectFiles) return setParamInUrl({ url, token, userId });
+	return url;
 };

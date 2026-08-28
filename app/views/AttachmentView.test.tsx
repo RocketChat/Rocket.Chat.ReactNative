@@ -9,6 +9,14 @@ const mockNavigation = {
 	pop: jest.fn()
 };
 const mockUseAltTextSupported = jest.fn();
+const mockImageViewer = jest.fn();
+
+const DEFAULT_ATTACHMENT = {
+	title: 'IMG_2444.jpg',
+	image_url: 'https://open.rocket.chat/image.png',
+	description: 'A wavy orange and black pattern'
+};
+let mockAttachment: Record<string, unknown> = DEFAULT_ATTACHMENT;
 
 jest.mock('@react-navigation/elements', () => ({
 	useHeaderHeight: () => 0
@@ -42,8 +50,9 @@ jest.mock('../containers/ActionSheet', () => ({
 jest.mock('../containers/ActivityIndicator', () => () => null);
 
 jest.mock('../containers/ImageViewer', () => ({
-	ImageViewer: () => {
+	ImageViewer: (props: Record<string, unknown>) => {
 		const { Text } = require('react-native');
+		mockImageViewer(props);
 		return <Text>Image Viewer</Text>;
 	}
 }));
@@ -67,11 +76,7 @@ jest.mock('../lib/hooks/navigation', () => ({
 	useAppNavigation: () => mockNavigation,
 	useAppRoute: () => ({
 		params: {
-			attachment: {
-				title: 'IMG_2444.jpg',
-				image_url: 'https://open.rocket.chat/image.png',
-				description: 'A wavy orange and black pattern'
-			}
+			attachment: mockAttachment
 		}
 	})
 }));
@@ -104,6 +109,7 @@ jest.mock('../lib/methods/helpers', () => ({
 describe('AttachmentView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockAttachment = DEFAULT_ATTACHMENT;
 	});
 
 	it('renders the alt text label and opens the action sheet when pressed', () => {
@@ -123,5 +129,35 @@ describe('AttachmentView', () => {
 		const { queryByTestId } = render(<AttachmentView />);
 
 		expect(queryByTestId('attachment-view-alt-text-label')).toBeNull();
+	});
+
+	describe('gif detection from the url', () => {
+		const renderWithImageUrl = (image_url: string) => {
+			mockUseAltTextSupported.mockReturnValue(false);
+			mockAttachment = { title: 'clip.gif', image_url };
+			render(<AttachmentView />);
+			return mockImageViewer.mock.calls[0][0].isAnimated;
+		};
+
+		test('detects a plain .gif', () => {
+			expect(renderWithImageUrl('https://open.rocket.chat/file-upload/1/clip.gif')).toBe(true);
+		});
+
+		test('detects a .gif followed by a query', () => {
+			expect(renderWithImageUrl('https://open.rocket.chat/file-upload/1/clip.gif?rc_token=token')).toBe(true);
+		});
+
+		// A `#` in the filename reaches here escaped, so the extension is followed by `%23` rather than `#`.
+		test('detects a .gif followed by an escaped `#`', () => {
+			expect(renderWithImageUrl('https://open.rocket.chat/file-upload/1/clip.gif%23draft')).toBe(true);
+		});
+
+		test('detects a .gif followed by a raw `#`', () => {
+			expect(renderWithImageUrl('https://open.rocket.chat/file-upload/1/clip.gif#draft')).toBe(true);
+		});
+
+		test('does not flag a non-gif url', () => {
+			expect(renderWithImageUrl('https://open.rocket.chat/file-upload/1/photo.png')).toBe(false);
+		});
 	});
 });
