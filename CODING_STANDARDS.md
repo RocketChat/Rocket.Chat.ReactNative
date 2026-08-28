@@ -1,0 +1,1 @@
+Tautological tests considered harmful.
