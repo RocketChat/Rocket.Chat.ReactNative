@@ -93,6 +93,31 @@ export const initializePushNotifications = async (): Promise<INotification | { c
 	return pushNotificationConfigure(onNotification);
 };
 
+const dispatchPendingNotification = (pendingNotification: string): void => {
+	try {
+		const notificationData = JSON.parse(pendingNotification);
+		const notification: INotification = {
+			payload: {
+				message: notificationData.message || '',
+				style: notificationData.style || '',
+				ejson: notificationData.ejson || '',
+				collapse_key: notificationData.collapse_key || '',
+				notId: notificationData.notId || '',
+				msgcnt: notificationData.msgcnt || '',
+				title: notificationData.title || '',
+				from: notificationData.from || '',
+				image: notificationData.image || '',
+				soundname: notificationData.soundname || '',
+				action: notificationData.action
+			},
+			identifier: notificationData.notId || ''
+		};
+		onNotification(notification);
+	} catch (e) {
+		console.warn('[notifications/index.ts] Failed to parse pending notification:', e);
+	}
+};
+
 /**
  * Check for pending notification from native module (Android - when app comes to foreground)
  * This handles the case when app is in background and user taps a notification.
@@ -104,28 +129,7 @@ export const checkPendingNotification = async (): Promise<void> => {
 			if (NativePushNotificationModule) {
 				const pendingNotification = await NativePushNotificationModule.getPendingNotification();
 				if (pendingNotification) {
-					try {
-						const notificationData = JSON.parse(pendingNotification);
-						const notification: INotification = {
-							payload: {
-								message: notificationData.message || '',
-								style: notificationData.style || '',
-								ejson: notificationData.ejson || '',
-								collapse_key: notificationData.collapse_key || '',
-								notId: notificationData.notId || '',
-								msgcnt: notificationData.msgcnt || '',
-								title: notificationData.title || '',
-								from: notificationData.from || '',
-								image: notificationData.image || '',
-								soundname: notificationData.soundname || '',
-								action: notificationData.action
-							},
-							identifier: notificationData.notId || ''
-						};
-						onNotification(notification);
-					} catch (e) {
-						console.warn('[notifications/index.ts] Failed to parse pending notification:', e);
-					}
+					dispatchPendingNotification(pendingNotification);
 				}
 			}
 		} catch (e) {
