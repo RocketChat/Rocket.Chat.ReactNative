@@ -23,9 +23,11 @@ if (process.env.USE_STORYBOOK) {
 
 	LogBox.ignoreAllLogs();
 
-	// android.software.telecom is only declared from API 33, so querying it skipped setup() on older devices (#7334)
+	// FEATURE_TELECOM is only declared from API 33; older releases declare its predecessor, FEATURE_CONNECTION_SERVICE.
 	const supportsTelecom =
-		Platform.OS === 'android' && (Number(Platform.Version) < 33 || DeviceInfo.hasSystemFeatureSync('android.software.telecom'));
+		Platform.OS === 'android' &&
+		(DeviceInfo.hasSystemFeatureSync('android.software.telecom') ||
+			DeviceInfo.hasSystemFeatureSync('android.software.connectionservice'));
 
 	if (supportsTelecom) {
 		const options = {
