@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react-native';
+import { StyleSheet } from 'react-native';
 
 import Markdown from '.';
 
@@ -39,5 +40,31 @@ describe('Markdown textStyle integration', () => {
 		fireEvent.press(linkNode);
 
 		expect(onLinkPress).toHaveBeenCalledWith('https://rocket.chat');
+	});
+
+	it('propagates custom color in textStyle to link, mention, hashtag and plain text', () => {
+		const onLinkPress = jest.fn();
+		const textStyle = { color: 'red' };
+
+		const { getByLabelText, getByText } = render(
+			<Markdown
+				msg='hello [my link](https://rocket.chat) @rocket.cat #general'
+				textStyle={textStyle}
+				onLinkPress={onLinkPress}
+				mentions={[{ _id: 'u1', username: 'rocket.cat', name: 'Rocket Cat', type: 'user' }]}
+				username='another.user'
+				channels={[{ _id: 'r1', name: 'general' }]}
+			/>
+		);
+
+		const plainTextNode = getByLabelText('hello ');
+		const linkNode = getByText('my link');
+		const mentionNode = getByText('@rocket.cat');
+		const hashtagNode = getByText('#general');
+
+		expect(StyleSheet.flatten(plainTextNode.props.style).color).toBe('red');
+		expect(StyleSheet.flatten(linkNode.props.style).color).toBe('red');
+		expect(StyleSheet.flatten(mentionNode.props.style).color).toBe('red');
+		expect(StyleSheet.flatten(hashtagNode.props.style).color).toBe('red');
 	});
 });

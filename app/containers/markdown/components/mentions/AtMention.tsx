@@ -23,10 +23,10 @@ const AtMention = memo(({ mention }: IAtMention) => {
 			<Text
 				style={[
 					styles.mention,
-					...(textStyle ? [textStyle] : []),
 					{
 						color: themes[theme].statusFontService
-					}
+					},
+					...(textStyle ? [textStyle] : [])
 				]}>
 				{preffix}
 				{mention}
@@ -71,7 +71,7 @@ const AtMention = memo(({ mention }: IAtMention) => {
 		return (
 			// not enough information on mentions to navigate to team info, so we don't handle onPress
 			<Text
-				style={[styles.mention, ...(textStyle ? [textStyle] : []), mentionStyle]}
+				style={[styles.mention, mentionStyle, ...(textStyle ? [textStyle] : [])]}
 				onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
 				{preffix}
 				{text}
@@ -80,7 +80,7 @@ const AtMention = memo(({ mention }: IAtMention) => {
 	}
 
 	return (
-		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }]}>{`@${mention}`}</Text>
+		<Text style={[styles.text, { color: themes[theme].fontDefault }, ...(textStyle ? [textStyle] : [])]}>{`@${mention}`}</Text>
 	);
 });
 
