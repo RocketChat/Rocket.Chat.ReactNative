@@ -245,7 +245,9 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
-		// First call fails, second call succeeds after recoverSocket
+		// Simulate a dormant socket: the first canOpenRoom fails because the REST
+		// fallback can't reach the server; after recoverSocket restores the connection,
+		// the retry succeeds.
 		jest
 			.mocked(canOpenRoom)
 			.mockResolvedValueOnce(false as any)

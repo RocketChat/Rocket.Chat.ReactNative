@@ -87,7 +87,9 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 }
 
 /**
- * Formats a subscription model or raw subscription object into a plain room representation.
+ * WatermelonDB models are lazy proxies that can't be passed across the saga/navigation
+ * boundary. Normalize to a plain object so downstream consumers (goRoom, navigate) receive
+ * serializable data.
  */
 function formatRoom(room: TSubscriptionModel | ISubscription | any, rid?: string): ICanOpenRoomResult | ISubscription {
 	return (
@@ -104,7 +106,9 @@ function formatRoom(room: TSubscriptionModel | ISubscription | any, rid?: string
 }
 
 /**
- * Queries local WatermelonDB subscriptions collection for a room by ID.
+ * Push notifications carry the room ID. Resolving by rid first avoids a network round trip
+ * and succeeds even when the socket is still reconnecting after a background-to-foreground
+ * transition.
  */
 async function findSubscriptionByRid(
 	subsCollection: Collection<TSubscriptionModel>,
@@ -119,7 +123,9 @@ async function findSubscriptionByRid(
 }
 
 /**
- * Queries local WatermelonDB subscriptions collection for a room by name or room ID.
+ * Deep-link path segments may hold either a room name or a room ID depending on how the
+ * link was generated. Querying by both with a room-type filter avoids a false-negative
+ * when the path contains an ID instead of a name.
  */
 async function findSubscriptionByName(
 	subsCollection: Collection<TSubscriptionModel>,
@@ -140,8 +146,9 @@ async function findSubscriptionByName(
 }
 
 /**
- * Determines whether a room can be opened from a deep link or push notification payload,
- * resolving from local database first and falling back to remote REST API calls.
+ * Local resolution is attempted before the REST fallback so that notification taps succeed
+ * instantly even when the network or DDP socket is temporarily unavailable (e.g. Android
+ * transitioning from a doze/background state).
  */
 export async function canOpenRoom({
 	rid,
