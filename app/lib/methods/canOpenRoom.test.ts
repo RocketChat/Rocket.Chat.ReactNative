@@ -210,6 +210,13 @@ describe('canOpenRoom — local subscription fast-path', () => {
 });
 
 describe('canOpenRoom — other paths', () => {
+	it('returns { rid } fallback when rid is provided but path is empty and not found locally', async () => {
+		mockFind.mockRejectedValueOnce(new Error('not found'));
+
+		const result = await canOpenRoom({ rid: 'remote-rid-123', path: '' });
+		expect(result).toEqual({ rid: 'remote-rid-123' });
+	});
+
 	it('returns false when no path and no rid', async () => {
 		const result = await canOpenRoom({ rid: '', path: '' });
 		expect(result).toBe(false);

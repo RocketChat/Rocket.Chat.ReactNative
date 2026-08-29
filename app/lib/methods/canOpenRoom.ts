@@ -1,10 +1,22 @@
+import type { Collection } from '@nozbe/watermelondb';
 import { Q } from '@nozbe/watermelondb';
 
-import { ERoomTypes } from '../../definitions';
+import { ERoomTypes, type ISubscription, type TSubscriptionModel } from '../../definitions';
 import database from '../database';
 import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';
 import { getRoomByTypeAndName } from '../services/restApi';
+
+export interface ICanOpenRoomResult {
+	rid: string;
+	t?: string;
+	name?: string;
+	fname?: string;
+	prid?: string;
+	uids?: string[];
+	usernames?: string[];
+	[key: string]: any;
+}
 
 async function openGroup(roomId: string) {
 	try {
@@ -74,7 +86,10 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 	}
 }
 
-function formatRoom(room: any, rid?: string) {
+/**
+ * Formats a subscription model or raw subscription object into a plain room representation.
+ */
+function formatRoom(room: TSubscriptionModel | ISubscription | any, rid?: string): ICanOpenRoomResult | ISubscription {
 	return (
 		room?.asPlain?.() ?? {
 			rid: rid ?? room.rid,
@@ -88,7 +103,13 @@ function formatRoom(room: any, rid?: string) {
 	);
 }
 
-async function findSubscriptionByRid(subsCollection: any, rid: string) {
+/**
+ * Queries local WatermelonDB subscriptions collection for a room by ID.
+ */
+async function findSubscriptionByRid(
+	subsCollection: Collection<TSubscriptionModel>,
+	rid: string
+): Promise<ICanOpenRoomResult | ISubscription | null> {
 	try {
 		const room = await subsCollection.find(rid);
 		return formatRoom(room, rid);
@@ -97,7 +118,14 @@ async function findSubscriptionByRid(subsCollection: any, rid: string) {
 	}
 }
 
-async function findSubscriptionByName(subsCollection: any, name: string, roomType: string) {
+/**
+ * Queries local WatermelonDB subscriptions collection for a room by name or room ID.
+ */
+async function findSubscriptionByName(
+	subsCollection: Collection<TSubscriptionModel>,
+	name: string,
+	roomType: string
+): Promise<ICanOpenRoomResult | ISubscription | null> {
 	try {
 		const rows = await subsCollection
 			.query(Q.or(Q.where('name', name), Q.where('rid', name)), Q.where('t', roomType), Q.take(1))
@@ -111,10 +139,20 @@ async function findSubscriptionByName(subsCollection: any, name: string, roomTyp
 	return null;
 }
 
-export async function canOpenRoom({ rid, path }: { rid: string; path: string }): Promise<any> {
+/**
+ * Determines whether a room can be opened from a deep link or push notification payload,
+ * resolving from local database first and falling back to remote REST API calls.
+ */
+export async function canOpenRoom({
+	rid,
+	path
+}: {
+	rid: string;
+	path: string;
+}): Promise<ICanOpenRoomResult | ISubscription | { rid: string } | boolean> {
 	try {
 		const db = database.active;
-		const subsCollection = db?.get ? db.get('subscriptions') : null;
+		const subsCollection = (db?.get ? db.get('subscriptions') : null) as Collection<TSubscriptionModel> | null;
 
 		if (subsCollection && rid) {
 			const room = await findSubscriptionByRid(subsCollection, rid);
@@ -141,6 +179,10 @@ export async function canOpenRoom({ rid, path }: { rid: string; path: string }):
 			} catch (e) {
 				return false;
 			}
+		}
+
+		if (rid) {
+			return { rid };
 		}
 
 		return false;
