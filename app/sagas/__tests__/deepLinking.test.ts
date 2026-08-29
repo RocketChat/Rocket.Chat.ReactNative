@@ -113,6 +113,7 @@ import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
 import { loginOAuthOrSso } from '../../lib/services/connect';
+import { recoverSocket } from '../../lib/services/socketHealth';
 import sdk from '../../lib/services/sdk';
 import database from '../../lib/database';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -237,6 +238,36 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('retries canOpenRoom after calling recoverSocket when the first canOpenRoom attempt fails', async () => {
+		const store = setupStore();
+		const params = makeParamsWithToken();
+
+		// First call fails, second call succeeds after recoverSocket
+		jest
+			.mocked(canOpenRoom)
+			.mockResolvedValueOnce(false as any)
+			.mockResolvedValueOnce({ rid: 'room-1', name: 'general', t: 'c' } as any);
+
+		store.dispatch(deepLinkingOpen(params));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(recoverSocket)).toHaveBeenCalled();
+		expect(jest.mocked(canOpenRoom)).toHaveBeenCalledTimes(2);
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
 
