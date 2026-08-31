@@ -1,20 +1,5 @@
 import { onAbort } from '../methods/helpers/onAbort';
-import sdk, { type ISocketDriver } from './sdk';
-
-/**
- * The recovery plan — what classification decides.
- * `'round-trip-check'` means a stored ping timestamp can't vouch for a socket
- * the OS may have frozen, so anything young enough is verified by a round trip,
- * never trusted outright.
- */
-export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
-
-export function classifySocketHealth(driver: ISocketDriver): SocketRecoveryPlan {
-	if (!driver.connected) {
-		return 'reopen';
-	}
-	return 'round-trip-check';
-}
+import sdk from './sdk';
 
 /**
  * Errors from `reopenNow()`/`probe()` REJECT the promise rather than becoming
@@ -35,10 +20,13 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 		return Promise.resolve('no-socket');
 	}
 	const recovery = (async (): Promise<SocketRecoveryOutcome> => {
-		if (classifySocketHealth(driver) === 'reopen') {
+		if (!driver.connected) {
 			await driver.reopenNow();
 			return 'reopened';
 		}
+		// A connected socket is still verified by a round trip, never trusted outright:
+		// `connected` already folds in the ping-age test, but onOpen refreshes lastPing
+		// before the handshake reply lands.
 		const alive = await driver.probe(2000);
 		if (alive) {
 			return 'confirmed-alive';
