@@ -5,7 +5,7 @@ import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { type INotification, SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
-import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
+import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
 interface IEjson {
 	rid: string;
@@ -80,7 +80,7 @@ export const onNotification = (push: INotification): void => {
 	store.dispatch(appInit());
 };
 
-export const getDeviceToken = (): string => deviceToken;
+export { getDeviceToken } from './deviceToken';
 export const setBadgeCount = (count?: number): void => {
 	setNotificationsBadgeCount(count);
 };

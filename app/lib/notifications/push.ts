@@ -6,10 +6,9 @@ import { type INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import { registerPushToken } from '../services/restApi';
+import { setDeviceToken } from './deviceToken';
 import I18n from '../../i18n';
 import NativePushNotificationModule from '../native/NativePushNotificationAndroid';
-
-export let deviceToken = '';
 
 export const setNotificationsBadgeCount = async (count = 0): Promise<void> => {
 	try {
@@ -184,7 +183,7 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	// Register for push notifications and get token
 	registerForPushNotifications().then(token => {
 		if (token) {
-			deviceToken = token;
+			setDeviceToken(token);
 			console.log('[push.ts] Registered for push notifications successfully.');
 
 			registerPushToken().catch(e => {
@@ -195,7 +194,7 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 	// Listen for token updates (FCM can refresh tokens at any time)
 	Notifications.addPushTokenListener(tokenData => {
-		deviceToken = tokenData.data;
+		setDeviceToken(tokenData.data);
 		registerPushToken().catch(e => {
 			console.log('[push.ts] Failed to re-register push token after refresh:', e);
 		});

@@ -12,6 +12,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Button from '../../containers/Button';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
+import { unsubscribeRooms } from '../../lib/methods/subscribeRooms';
 import { e2eResetOwnKey } from '../../lib/services/restApi';
 import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
@@ -36,6 +37,7 @@ const E2EEncryptionSecurityView = () => {
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
+					unsubscribeRooms();
 					const res = await e2eResetOwnKey();
 
 					if (res?.success === true) {

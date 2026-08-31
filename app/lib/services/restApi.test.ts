@@ -18,7 +18,7 @@ jest.mock('./sdk', () => ({
 	}
 }));
 
-jest.mock('../notifications', () => ({
+jest.mock('../notifications/deviceToken', () => ({
 	getDeviceToken: jest.fn()
 }));
 
@@ -60,7 +60,7 @@ function loadRegisterPushToken(platform: 'ios' | 'android' = 'android', mockServ
 	}));
 
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const notifications = require('../notifications');
+	const notifications = require('../notifications/deviceToken');
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const voipNative = require('../native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
