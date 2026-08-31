@@ -74,7 +74,7 @@ import buildMessage from '../../helpers/buildMessage';
 import { subscribeRoom, unsubscribeRoom } from '../../../../actions/room';
 import { clearUserTyping } from '../../../../actions/usersTyping';
 import {
-	flush,
+	flushMicrotasksAndTimers,
 	framesOn,
 	makeCollection as makeBaseCollection,
 	makeReduxStore,
@@ -131,18 +131,18 @@ afterEach(() => {
 async function connectDriver() {
 	sdk.initialize('https://example.com');
 	const connectPromise = sdk.connect();
-	await flush();
+	await flushMicrotasksAndTimers();
 	mockConnections[0].onopen();
-	await flush();
+	await flushMicrotasksAndTimers();
 	await connectPromise;
 }
 
 async function subscribeToRoom(rid: string) {
 	const room = new RoomSubscription(rid);
 	const subscribing = room.subscribe();
-	await flush();
+	await flushMicrotasksAndTimers();
 	await subscribing;
-	await flush();
+	await flushMicrotasksAndTimers();
 	return room;
 }
 
@@ -165,7 +165,7 @@ describe('RoomSubscription over the real SDK', () => {
 			collection: 'stream-room-messages',
 			fields: { eventName: 'room-rid', args: [MESSAGE] }
 		});
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(buildMessage).toHaveBeenCalledTimes(1);
 		expect(getMessageById).toHaveBeenCalledWith('msg-1');
@@ -179,7 +179,7 @@ describe('RoomSubscription over the real SDK', () => {
 		const room = await subscribeToRoom('room-rid');
 
 		await room.unsubscribe();
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(framesOn(mockConnections[0], 'unsub')).toHaveLength(5);
 		expect(redux.store.dispatch).toHaveBeenCalledWith(unsubscribeRoom('room-rid'));
@@ -190,7 +190,7 @@ describe('RoomSubscription over the real SDK', () => {
 			collection: 'stream-room-messages',
 			fields: { eventName: 'room-rid', args: [MESSAGE] }
 		});
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(buildMessage).not.toHaveBeenCalled();
 	});

@@ -23,7 +23,7 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const findServerToRestore = async () => {
+const restoreServer = async () => {
 	const server = UserPreferences.getString(CURRENT_SERVER);
 	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : await findLoggedInServer();
 
@@ -34,9 +34,9 @@ const findServerToRestore = async () => {
 	return restoredServer;
 };
 
-const serverToRestore = function* serverToRestore() {
+const getServerToRestore = function* getServerToRestore() {
 	try {
-		return (yield call(findServerToRestore)) || null;
+		return (yield call(restoreServer)) || null;
 	} catch (e) {
 		log(e);
 		return null;
@@ -61,7 +61,7 @@ const deliverPendingPushNotification = function* deliverPendingPushNotification(
 };
 
 const restore = function* restore() {
-	const restoredServer = yield* serverToRestore();
+	const restoredServer = yield* getServerToRestore();
 
 	if (restoredServer) {
 		yield put(selectServerRequest(restoredServer.id, restoredServer.version));
