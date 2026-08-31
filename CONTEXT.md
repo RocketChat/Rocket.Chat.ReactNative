@@ -144,14 +144,14 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 A **Reaction** and the frequently used emojis table store an emoji by _name_, never as a glyph. A name that stops resolving does not degrade to the old picture — it renders as literal `:shortname:` text — which is why names are only ever added to the resolvable set, not removed. The name travels in two forms, colon-wrapped and bare; see the ambiguity flagged below. The dataset is generated; see [emojis](docs/emojis.md) for how.
 
-| Term                 | Definition                                                                                                                                   | Aliases to avoid            |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| **Shortname**        | The colon-wrapped `:name:` token Message text and a Reaction's `emoji` field hold; the only form `useShortnameToUnicode` resolves            | Emoji code, emoji id        |
-| **Listed Name**      | The single Shortname per listed emoji that the picker shows (`emojisByCategory`) and that search returns; unlisted emoji have none          | Canonical name, primary     |
-| **Alias**            | Any other Shortname resolving to the same emoji; searchable, but search answers with the Listed Name (`water_wave` finds `ocean`)            | Synonym, alternate name     |
-| **Legacy Shortname** | A hand-maintained Shortname the generated dataset does not carry, kept resolvable by fallback because an older client could have stored it   | Deprecated name, old name   |
-| **Pinned Shortname** | A Shortname held at the glyph a previous release resolved, applied at generation time, for when upstream reassigns the name to another emoji | Override, frozen name       |
-| **Custom Emoji**     | A Workspace-uploaded image emoji, stored by name plus file extension rather than resolving to unicode                                        | Custom reaction, sticker    |
+| Term                 | Definition                                                                                                                                   | Aliases to avoid          |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **Shortname**        | The colon-wrapped `:name:` token Message text and a Reaction's `emoji` field hold; the only form `useShortnameToUnicode` resolves            | Emoji code, emoji id      |
+| **Listed Name**      | The single Shortname per listed emoji that the picker shows (`emojisByCategory`) and that search returns; unlisted emoji have none           | Canonical name, primary   |
+| **Alias**            | Any other Shortname resolving to the same emoji; searchable, but search answers with the Listed Name (`water_wave` finds `ocean`)            | Synonym, alternate name   |
+| **Legacy Shortname** | A hand-maintained Shortname the generated dataset does not carry, kept resolvable by fallback because an older client could have stored it   | Deprecated name, old name |
+| **Pinned Shortname** | A Shortname held at the glyph a previous release resolved, applied at generation time, for when upstream reassigns the name to another emoji | Override, frozen name     |
+| **Custom Emoji**     | A Workspace-uploaded image emoji, stored by name plus file extension rather than resolving to unicode                                        | Custom reaction, sticker  |
 
 ## Users & Roles
 
