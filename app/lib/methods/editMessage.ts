@@ -9,7 +9,6 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	}
 
 	if (result.content) {
-		// RC 0.49.0
 		return sdk.post('chat.update', {
 			roomId: message.rid,
 			msgId: message.id,
@@ -17,7 +16,6 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 		});
 	}
 
-	// RC 0.49.0
 	return sdk.post('chat.update', {
 		roomId: message.rid,
 		msgId: message.id,
