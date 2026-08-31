@@ -100,8 +100,6 @@ export const MessageActionProvider = ({
 	initialAction?: TMessageActionState;
 	children: ReactNode;
 }): ReactNode => {
-	'use memo';
-
 	const [store] = useState(() => externalStore ?? createMessageActionStore(initialAction));
 	return <MessageActionStoreContext.Provider value={store}>{children}</MessageActionStoreContext.Provider>;
 };

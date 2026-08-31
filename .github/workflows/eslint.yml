@@ -1,11 +1,15 @@
-name: Run ESLint and Test
+name: Run Lint and Test
 
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   run-eslint-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout Repository
@@ -14,8 +18,11 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: Run ESLint
+      - name: Run Oxlint
         run: pnpm lint
 
       - name: Run Tests
         run: pnpm test --runInBand
+
+      - name: Validate sniffler test-map freshness
+        run: node .github/scripts/validate-test-map.js

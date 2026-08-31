@@ -1,0 +1,164 @@
+{
+  "_about": "Canonical scenario matrix for the sniffler-driven e2e selection system. Single source of truth consumed by the shard-script tests (select-impacted-shards.sh), the real-test-map coverage fixtures, and the same-PR CI orchestration observation. JSON so both a shell/bats harness (via jq) and a jest harness (via require) can read it. Expected shards are literal test-N integers, matching select-impacted-shards.sh $GITHUB_OUTPUT byte-for-byte. Home may be relocated once the test harness is settled.",
+  "fullShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  "assertableInLegend": {
+    "script": "select-impacted-shards.sh run in isolation with stubbed sniffler/git/jq",
+    "map": "computed against the real .sniffler/test-map.json",
+    "ci": "observed on real build-pr.yml via a throwaway PR commit"
+  },
+  "scenarios": [
+    {
+      "id": "F1",
+      "name": "release lane forces full suite",
+      "category": "fall-to-full",
+      "input": { "env": { "IS_RELEASE_LANE": "true" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script", "ci"]
+    },
+    {
+      "id": "F2",
+      "name": "no base ref (not a PR / unset) falls to full",
+      "category": "fall-to-full",
+      "input": { "env": { "BASE_REF": "" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "F3",
+      "name": "merge-base empty/fails falls to full (shallow clone, unfetched base, first run)",
+      "category": "fall-to-full",
+      "input": { "stub": { "git": "merge-base-empty" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "F4",
+      "name": "sniffler nonzero exit falls to full",
+      "category": "fall-to-full",
+      "input": { "stub": { "sniffler": "exit1" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "F5",
+      "name": "unparseable JSON falls to full",
+      "category": "fall-to-full",
+      "input": { "stub": { "sniffler": "stdout:not-json" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "F5b",
+      "name": "valid JSON missing recommendedTests key falls to full (never confident-zero)",
+      "category": "fall-to-full",
+      "input": { "stub": { "sniffler": "stdout:{\"other\":true}" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "F6",
+      "name": "run-all reason falls to full",
+      "category": "fall-to-full",
+      "input": { "stub": { "sniffler": "stdout:{\"recommendedTests\":[{\"test\":\"x\",\"reasons\":[{\"kind\":\"run-all\"}]}]}" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script", "ci"]
+    },
+    {
+      "id": "F7",
+      "name": "impacted flow with no derivable test-N tag falls to full (defensive)",
+      "category": "fall-to-full",
+      "input": { "stub": { "sniffler": "stdout:recommends a flow file with no `- test-N` tag" } },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "Z1",
+      "name": "confident zero: exit 0 + no impacted flow skips the stage",
+      "category": "confident-zero",
+      "input": { "stub": { "sniffler": "stdout:{\"recommendedTests\":[]}" } },
+      "expectedShards": [],
+      "expectedShouldRun": false,
+      "assertableIn": ["script"]
+    },
+    {
+      "id": "C1",
+      "name": "narrow view: LanguageView -> one flow",
+      "category": "real-domain",
+      "input": { "diff": ["app/views/LanguageView/LanguageView.tsx"] },
+      "expectedShards": [6],
+      "expectedShouldRun": true,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C2",
+      "name": "shared view fans wide: RoomView -> nine flows",
+      "category": "real-domain",
+      "input": { "diff": ["app/views/RoomView/index.tsx"] },
+      "expectedShards": [3, 7, 9, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C3",
+      "name": "shared saga fans wide: sagas/rooms.js -> twelve flows",
+      "category": "real-domain",
+      "input": { "diff": ["app/sagas/rooms.js"] },
+      "expectedShards": [1, 5, 6, 7, 8, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C4",
+      "name": "container glob (not a view): containers/markdown -> one flow",
+      "category": "real-domain",
+      "input": { "diff": ["app/containers/markdown/index.tsx"] },
+      "expectedShards": [9],
+      "expectedShouldRun": true,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C5",
+      "name": "docs-only outside source roots -> no impact, skip",
+      "category": "confident-zero",
+      "input": { "diff": ["README.md"] },
+      "expectedShards": [],
+      "expectedShouldRun": false,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C6",
+      "name": "ignored glob inside root (*.test.*) -> no impact, skip",
+      "category": "confident-zero",
+      "input": { "diff": ["app/views/RoomView/RoomView.test.tsx"] },
+      "expectedShards": [],
+      "expectedShouldRun": false,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C7",
+      "name": "runAllWhenChanged (app-internal): sagas/index.js -> run-all -> full",
+      "category": "real-domain",
+      "input": { "diff": ["app/sagas/index.js"] },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["map", "ci"]
+    },
+    {
+      "id": "C8",
+      "name": "runAllWhenChanged (non-app): package.json -> run-all -> full",
+      "category": "real-domain",
+      "input": { "diff": ["package.json"] },
+      "expectedShards": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "expectedShouldRun": true,
+      "assertableIn": ["map", "ci"]
+    }
+  ]
+}

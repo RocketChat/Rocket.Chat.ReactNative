@@ -30,8 +30,6 @@ const styles = StyleSheet.create({
 });
 
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer) => {
-	'use memo';
-
 	const { keyboardHeight, keyboardShown } = useKeyboard();
 	const { height } = useWindowDimensions();
 	const modalHeight = sharedStyles.modalFormSheet.height;

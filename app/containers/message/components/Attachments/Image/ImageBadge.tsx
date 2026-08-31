@@ -18,8 +18,6 @@ interface IImageBadge {
 }
 
 const ImageBadge = ({ title }: IImageBadge) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>

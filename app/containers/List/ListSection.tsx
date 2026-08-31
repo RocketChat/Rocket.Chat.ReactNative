@@ -16,8 +16,6 @@ interface IListSection {
 }
 
 const ListSection = ({ children, title, translateTitle }: IListSection) => {
-	'use memo';
-
 	return (
 		<View style={styles.container}>
 			{title ? <Header {...{ title, translateTitle }} /> : null}

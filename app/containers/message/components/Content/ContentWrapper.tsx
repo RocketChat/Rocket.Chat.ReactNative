@@ -5,8 +5,6 @@ import styles from '../../styles';
 import { useMessageStatus, useMessageText } from '../../stores/MessageStore';
 
 const ContentWrapper = ({ children }: { children: ReactNode }) => {
-	'use memo';
-
 	const { isTemp } = useMessageStatus();
 	const { messageText } = useMessageText();
 

@@ -80,6 +80,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "textAlign": "left",
                   },
@@ -177,6 +180,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -275,6 +281,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -373,6 +382,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -452,6 +464,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -531,6 +546,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -699,6 +717,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -717,6 +738,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -793,6 +817,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -811,6 +838,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -887,6 +917,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -905,6 +938,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -961,6 +997,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -979,6 +1018,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -1035,6 +1077,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -1053,6 +1098,9 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -1155,6 +1203,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "textAlign": "left",
                   },
@@ -1252,6 +1303,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -1350,6 +1404,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -1448,6 +1505,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -1527,6 +1587,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -1606,6 +1669,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "600",
                     "marginLeft": 4,
                     "textAlign": "left",
@@ -1774,6 +1840,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -1792,6 +1861,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -1868,6 +1940,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -1886,6 +1961,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -1962,6 +2040,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -1980,6 +2061,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -2036,6 +2120,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -2054,6 +2141,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
@@ -2110,6 +2200,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "500",
                           "textAlign": "left",
                         },
@@ -2128,6 +2221,9 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
                           "fontSize": 14,
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
