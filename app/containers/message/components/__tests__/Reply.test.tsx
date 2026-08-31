@@ -54,12 +54,10 @@ const buildItem = (isEncrypted?: boolean) =>
 
 const renderReply = ({
 	attachment,
-	msg,
 	isEncrypted,
 	ctx = {}
 }: {
 	attachment?: IAttachment;
-	msg?: string;
 	isEncrypted?: boolean;
 	ctx?: Partial<MessageRoomState>;
 }) => {
@@ -73,7 +71,7 @@ const renderReply = ({
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem(isEncrypted)}>
-					<Reply attachment={attachment as IAttachment} msg={msg} />
+					<Reply attachment={attachment as IAttachment} />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
@@ -202,5 +200,9 @@ describe('Reply', () => {
 			});
 			expect(getByText('Status')).toBeTruthy();
 		});
+	});
+	it('renders the attachment description as the message', () => {
+		const { getByTestId } = renderReply({ attachment: { author_name: 'Alice', description: 'Look at this' } });
+		expect(getByTestId('reply-markdown')).toHaveTextContent('Look at this');
 	});
 });

@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import Quote from '../Attachments/Quote';
+import Attachments from '../Attachments/Attachments';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
@@ -54,7 +54,7 @@ const renderQuote = (attachments: IAttachment[], ctx: Partial<MessageRoomState> 
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem()}>
-					<Quote attachments={attachments} />
+					<Attachments variant='quote' attachments={attachments} />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
@@ -84,7 +84,7 @@ describe('Quote', () => {
 					baseUrl='https://open.rocket.chat'
 					timeFormat='HH:mm'>
 					<MessageProvider item={buildItem()}>
-						<Quote attachments={[attachmentB, attachmentA]} />
+						<Attachments variant='quote' attachments={[attachmentB, attachmentA]} />
 					</MessageProvider>
 				</MessageRoomProvider>
 			</Provider>
