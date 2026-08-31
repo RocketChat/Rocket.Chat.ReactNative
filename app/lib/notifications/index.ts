@@ -7,6 +7,8 @@ import { type INotification, SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
+export { getDeviceToken } from './deviceToken';
+
 interface IEjson {
 	rid: string;
 	name: string;
@@ -80,7 +82,6 @@ export const onNotification = (push: INotification): void => {
 	store.dispatch(appInit());
 };
 
-export { getDeviceToken } from './deviceToken';
 export const setBadgeCount = (count?: number): void => {
 	setNotificationsBadgeCount(count);
 };
