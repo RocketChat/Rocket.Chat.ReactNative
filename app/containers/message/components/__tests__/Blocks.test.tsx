@@ -14,7 +14,7 @@ jest.mock('../../../UIKit/MessageBlock', () => ({
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { messageBlockWithContext } = jest.requireMock('../../../UIKit/MessageBlock');
 
-const buildItem = (blocks: TAnyMessageModel['blocks']) => ({ id: 'msg-1', blocks } as unknown as TAnyMessageModel);
+const buildItem = (blocks: TAnyMessageModel['blocks']) => ({ id: 'msg-1', blocks }) as unknown as TAnyMessageModel;
 
 const renderBlocks = (blocks: TAnyMessageModel['blocks'], config: Partial<MessageRoomState> = {}) =>
 	render(

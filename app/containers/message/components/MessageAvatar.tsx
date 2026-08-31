@@ -18,8 +18,6 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 };
 
 const MessageAvatar = ({ small }: IMessageAvatar) => {
-	'use memo';
-
 	const user = useMessageUser();
 	const navToRoomInfo = useNavToRoomInfo();
 	const { fontScaleLimited } = useResponsiveLayout();

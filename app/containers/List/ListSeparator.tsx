@@ -15,8 +15,6 @@ interface IListSeparator {
 }
 
 const ListSeparator = memo(({ style }: IListSeparator) => {
-	'use memo';
-
 	const { theme } = useTheme();
 
 	return <View style={[styles.separator, style, { backgroundColor: themes[theme].strokeLight }]} />;

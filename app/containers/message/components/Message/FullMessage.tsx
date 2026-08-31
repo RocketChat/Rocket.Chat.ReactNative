@@ -8,8 +8,6 @@ import { Layout } from '../Layout';
 import { useMessageField, useMessageGrouping } from '../../stores/MessageStore';
 
 const FullMessage = ({ isPreview }: { isPreview?: boolean }) => {
-	'use memo';
-
 	const isHeader = useMessageGrouping();
 	const id = useMessageField(item => item.id);
 

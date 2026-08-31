@@ -5,8 +5,6 @@ import { useMessageField } from '../../stores/MessageStore';
 import { useIsReadReceiptEnabled } from '../../stores/MessageRoomStore';
 
 const ReadReceipt = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const unread = useMessageField(item => item.unread);
 	const isReadReceiptEnabled = useIsReadReceiptEnabled();

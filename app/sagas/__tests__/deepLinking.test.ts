@@ -585,3 +585,61 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 		});
 	});
 });
+
+describe('deepLinking saga — handleSaml', () => {
+	beforeEach(() => {
+		jest.mocked(loginOAuthOrSso).mockReset();
+		jest.mocked(loginOAuthOrSso).mockResolvedValue(undefined as any);
+	});
+
+	it('redeems the SAML credential token through the regular saml login', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-fresh-A' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledWith({ saml: true, credentialToken: 'saml-fresh-A' });
+	});
+
+	it('does not call loginOAuthOrSso when the credentialToken is missing', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).not.toHaveBeenCalled();
+	});
+
+	it('does not redeem the same SAML credentialToken twice', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-dup-B' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// The credential token is single use on the server, so a replayed deep link must be suppressed.
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-dup-B' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
+	});
+
+	it('redeems a different SAML credentialToken after a previous one was consumed', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-first-C' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		store.dispatch(deepLinkingOpen({ type: 'saml', host: HOST, credentialToken: 'saml-second-C' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(2);
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenNthCalledWith(2, { saml: true, credentialToken: 'saml-second-C' });
+	});
+});

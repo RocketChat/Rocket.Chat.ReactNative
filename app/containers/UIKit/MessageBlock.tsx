@@ -1,12 +1,11 @@
 import { UiKitMessage, UiKitModal } from './index';
 import { KitContext } from './utils';
 
-export const messageBlockWithContext = (context: any) => (props: any) =>
-	(
-		<KitContext.Provider value={context}>
-			<MessageBlock {...props} />
-		</KitContext.Provider>
-	);
+export const messageBlockWithContext = (context: any) => (props: any) => (
+	<KitContext.Provider value={context}>
+		<MessageBlock {...props} />
+	</KitContext.Provider>
+);
 
 const MessageBlock = ({ blocks }: any) => UiKitMessage(blocks);
 

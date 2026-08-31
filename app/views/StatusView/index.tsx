@@ -80,8 +80,6 @@ const Status = ({
 	status: TUserStatus;
 	setStatus: (status: TUserStatus) => void;
 }) => {
-	'use memo';
-
 	const { id, name } = statusType;
 	return (
 		<>
@@ -106,8 +104,6 @@ const Status = ({
 };
 
 const StatusView = (): ReactElement => {
-	'use memo';
-
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const isMasterDetail = useMasterDetail();
 	const Accounts_AllowInvisibleStatusOption = useSelector(

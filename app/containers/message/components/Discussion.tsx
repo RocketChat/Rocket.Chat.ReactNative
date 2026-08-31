@@ -12,8 +12,6 @@ import { useDiscussion, useMessageField, useMessageText } from '../stores/Messag
 import { useOnDiscussionPress } from '../stores/MessageRoomStore';
 
 const Discussion = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const drid = useMessageField(item => item.drid);
 	const { dcount, dlm } = useDiscussion();
