@@ -67,8 +67,9 @@ are emojibase emitting the fully-qualified sequence:
   `1F575 1F3FB 200D 2642 FE0F` where the old map had `1F575 FE0F 1F3FB 200D 2642 FE0F`. The modifier
   already forces emoji presentation, so the selector in front of it was ill-formed (UTS #51).
 
-Only seven values changed glyph, all repairs of a missing joiner, and they are pinned in
-`JOINER_REPAIRS`. Nothing resolvable was dropped. Do not "restore" the old selectors — a test
+Only seven values changed glyph, all repairs of a missing joiner, and each is asserted in
+`JOINER_REPAIRS`, a fixture in `data.test.ts` — not a [pin](#pinned-shortnames), which is a
+generation-time override. Nothing resolvable was dropped. Do not "restore" the old selectors — a test
 guards against reintroducing the ill-formed ones.
 
 ## Legacy shortnames

@@ -140,6 +140,19 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 | **Edit**  | A Message Action where a single Message is being edited by the current user             | Editing          |
 | **React** | A Message Action where a single Message is the target of a reaction picker              | Reacting         |
 
+## Emojis
+
+A **Reaction** and the frequently used emojis table store a **Shortname**, never the glyph. A name that stops resolving does not degrade to the old picture — it renders as literal `:shortname:` text — which is why names are only ever added to the resolvable set, not removed. The dataset is generated; see [emojis](docs/emojis.md) for how.
+
+| Term                 | Definition                                                                                                                                   | Aliases to avoid            |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| **Shortname**        | The `:name:` token a Reaction, a frequently used entry, or Message text holds; resolved to unicode by `useShortnameToUnicode`                | Emoji code, emoji name      |
+| **Listed Name**      | The single Shortname per emoji that the picker lists (`emojisByCategory`) and that search returns                                            | Canonical name, primary     |
+| **Alias**            | Any other Shortname resolving to the same emoji; searchable, but search answers with the Listed Name (`water_wave` finds `ocean`)            | Synonym, alternate name     |
+| **Legacy Shortname** | A hand-maintained Shortname the generated dataset does not carry, kept resolvable by fallback because an older client could have stored it   | Deprecated name, old name   |
+| **Pinned Shortname** | A Shortname held at the glyph a previous release resolved, applied at generation time, for when upstream reassigns the name to another emoji | Override, frozen name       |
+| **Custom Emoji**     | A Workspace-uploaded image emoji, stored by name plus file extension rather than resolving to unicode                                        | Custom reaction, sticker    |
+
 ## Users & Roles
 
 | Term            | Definition                                                                         | Aliases to avoid        |
@@ -269,5 +282,7 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 - **"Preview"** is overloaded. **Message Preview** (`isPreview`) is a Message rendered outside its Room (search, pinned, share, notifications). `PreviewContent` is a different concept: the compact body of a Thread Message shown in the parent Room. Disambiguate when either could be meant.
 - **"Muted"** is overloaded: a User can be muted in a Room (a moderator action that removes send permission, recorded by `user-muted`/`mute_unmute` System Messages) OR be an **Ignored User** (a per-viewer filter that hides their Messages behind an Ignored Message placeholder, stored in `room.ignored`). Muting is a room permission; ignoring is a personal filter. Different concepts — keep them apart.
 - **"Reply"** is overloaded: **Reply Broadcast** is the action available to non-authorized users in a Broadcast Room; replying in a **Thread** is navigation into the Thread view. Neither is a **Message Action** — there is no "reply" Message Action.
+- **"Pinned"** is overloaded: **Pinned** is a Message Flag (a Message pinned in a Room); a **Pinned Shortname** is an emoji name held at an older glyph by `scripts/pinned-shortnames.js`. Nothing connects them — say which one you mean.
+- **"Alias"** is overloaded. Every glossary table here has an _Aliases to avoid_ column: words **not** to use. An emoji **Alias** is the opposite — a first-class Shortname that resolves and is searchable, just not the **Listed Name** search answers with. Do not read the emoji sense as a term to avoid.
 - **"Status" vs "flags"** — a Message has exactly one delivery **Status** (Sent, Temp, Error). **Pinned** and **Starred** are independent **Message Flags**, not statuses; do not group them with delivery states.
 - **"Interaction" retired** — the selection-plus-action state was once an "interaction" concept; the canonical term is now **Message Action State**. Use **Message Action**, not "interaction", for which Message is selected and how. (Selection is not separate — it lives inside the active Message Action.)
