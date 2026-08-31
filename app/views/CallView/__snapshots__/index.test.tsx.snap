@@ -125,7 +125,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -1018,7 +1020,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -1917,7 +1921,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -2810,7 +2816,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -3703,7 +3711,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -4596,7 +4606,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -5472,7 +5484,9 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -6337,7 +6351,9 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -7208,7 +7224,9 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -8073,7 +8091,9 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -8938,7 +8958,9 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -9803,7 +9825,9 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -10668,7 +10692,9 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -11550,7 +11576,9 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
