@@ -21,7 +21,7 @@
 	],
 	"rules": {
 		"import/extensions": "off",
-		"import/no-cycle": "warn",
+		"import/no-cycle": "error",
 		"react/jsx-fragments": ["error", "syntax"],
 		"react-native/no-single-element-style-arrays": "error",
 		"react-native/no-unused-styles": "error",
