@@ -6,9 +6,6 @@ import sdk, { type ISocketDriver } from './sdk';
  * `'round-trip-check'` means a stored ping timestamp can't vouch for a socket
  * the OS may have frozen, so anything young enough is verified by a round trip,
  * never trusted outright.
- *
- * Exported for unit tests; callers never branch on it — they call
- * `recoverSocket()` and see outcomes.
  */
 export type SocketRecoveryPlan = 'reopen' | 'round-trip-check';
 
@@ -60,21 +57,6 @@ function shareRecovery(): Promise<SocketRecoveryOutcome> {
 }
 
 /**
- * The single entry point for both callers. Classifies, then executes:
- * `reopen` → `reopenNow()`; `round-trip-check` → `probe(2000)`, reopening on a
- * dead round trip.
- *
- * One entry, two usage postures — the semantics live in the call site, not in
- * two named functions:
- *
- *   // Foreground ladder (app/sagas/state.js) — fire-and-forget:
- *   recoverSocket().catch(log);
- *
- *   // Accept gate (acceptNativeCall.ts) — awaited, abortable:
- *   const outcome = await recoverSocket({ abortSignal: controller.signal });
- *   if (outcome === 'no-socket') return handleFailure(callId, mediaSession);
- *   if (outcome === 'abandoned') return;
- *
  * Concurrency: overlapping calls share one in-flight recovery — the second
  * caller awaits the same work and receives its outcome. An abort signal
  * detaches the caller from the shared wait (`'abandoned'`); it never cancels

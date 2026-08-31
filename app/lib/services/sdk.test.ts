@@ -13,8 +13,6 @@ jest.mock('@rocket.chat/sdk', () => ({
 	settings: { customHeaders: {} }
 }));
 
-jest.mock('../constants/twoFactor', () => ({ TWO_FACTOR: 'TWO_FACTOR' }));
-
 jest.mock('./twoFactor/twoFactor', () => ({
 	twoFactor: (...args: unknown[]) => mockTwoFactor(...args)
 }));

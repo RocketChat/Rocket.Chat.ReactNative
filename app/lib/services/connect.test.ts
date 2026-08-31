@@ -104,7 +104,6 @@ jest.mock('../methods/helpers/log', () => ({
 
 const flushMicrotasks = async (): Promise<void> => {
 	for (let i = 0; i < 5; i += 1) {
-		// eslint-disable-next-line no-await-in-loop
 		await Promise.resolve();
 	}
 };
