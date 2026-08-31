@@ -4,6 +4,9 @@ The emoji dataset is generated from [emojibase](https://emojibase.dev), the same
 web client uses ([Rocket.Chat#39411](https://github.com/RocketChat/Rocket.Chat/pull/39411)), so
 both clients agree on shortnames, aliases and picker categories.
 
+Shortname, Listed Name, Alias, Legacy Shortname and Pinned Shortname are defined in
+[CONTEXT.md](../CONTEXT.md#emojis); this page says how each one is produced.
+
 ## Generating
 
 ```sh
