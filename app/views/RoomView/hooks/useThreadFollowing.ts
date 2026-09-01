@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import database from '../../../lib/database';
-import { type TMessageModel } from '../../../definitions';
+import { getMessageById } from '../../../lib/database/services/Message';
 
 export function useThreadFollowing(tmid?: string, userId?: string): boolean {
 	const [isFollowingThread, setIsFollowingThread] = useState(true);
@@ -11,16 +10,15 @@ export function useThreadFollowing(tmid?: string, userId?: string): boolean {
 			return;
 		}
 		let unsubscribe: (() => void) | undefined;
-		database.active
-			.get('messages')
-			.find(tmid)
-			.then((threadRecord: TMessageModel) => {
-				const subscriptionRef = threadRecord.observe().subscribe(thread => {
-					setIsFollowingThread((thread.replies && !!thread.replies.find(replyUserId => replyUserId === userId)) ?? false);
-				});
-				unsubscribe = () => subscriptionRef.unsubscribe();
-			})
-			.catch(() => console.log("Can't find message to observe."));
+		getMessageById(tmid).then(threadRecord => {
+			if (!threadRecord) {
+				return;
+			}
+			const subscription = threadRecord.observe().subscribe(thread => {
+				setIsFollowingThread(thread.replies?.some(replyUserId => replyUserId === userId) ?? false);
+			});
+			unsubscribe = () => subscription.unsubscribe();
+		});
 
 		return () => unsubscribe?.();
 	}, [tmid, userId]);

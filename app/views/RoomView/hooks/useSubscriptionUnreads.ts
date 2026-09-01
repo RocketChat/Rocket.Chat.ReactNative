@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import database from '../../../lib/database';
+import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { type TSubscriptionModel } from '../../../definitions';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
@@ -17,20 +17,19 @@ export function useSubscriptionUnreads(rid?: string, userId?: string): IUseSubsc
 			return;
 		}
 		let unsubscribe: (() => void) | undefined;
-		database.active
-			.get('subscriptions')
-			.find(rid)
-			.then((subRecord: TSubscriptionModel) => {
-				setSubscription(subRecord);
-				const subscriptionRef = subRecord.observe().subscribe(sub => {
-					setTunread(sub?.tunread ?? []);
-					setTunreadUser(sub?.tunreadUser ?? []);
-					setTunreadGroup(sub?.tunreadGroup ?? []);
-					setIsSelfDm(sub?.t === 'd' && !!userId && getUidDirectMessage(sub) === userId);
-				});
-				unsubscribe = () => subscriptionRef.unsubscribe();
-			})
-			.catch(() => console.log("Can't find subscription to observe."));
+		getSubscriptionByRoomId(rid).then(subRecord => {
+			if (!subRecord) {
+				return;
+			}
+			setSubscription(subRecord);
+			const subscription = subRecord.observe().subscribe(sub => {
+				setTunread(sub?.tunread ?? []);
+				setTunreadUser(sub?.tunreadUser ?? []);
+				setTunreadGroup(sub?.tunreadGroup ?? []);
+				setIsSelfDm(sub?.t === 'd' && !!userId && getUidDirectMessage(sub) === userId);
+			});
+			unsubscribe = () => subscription.unsubscribe();
+		});
 
 		return () => unsubscribe?.();
 	}, [rid, userId]);
