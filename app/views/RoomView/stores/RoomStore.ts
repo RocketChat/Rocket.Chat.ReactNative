@@ -86,6 +86,10 @@ const loadRoom = async (
 			return { failed: false, skipped: true, lastSeen: null };
 		}
 
+		// The DM counterpart is a REST round trip that needs nothing from the message load, so it
+		// runs alongside it instead of extending the room-open path.
+		const memberPromise = getRoomMember(room);
+
 		if (tmid) {
 			await loadThreadMessages({ tmid, rid });
 			onThreadMessagesLoaded?.();
@@ -102,7 +106,7 @@ const loadRoom = async (
 		}
 
 		const canAutoTranslate = canAutoTranslateMethod();
-		const { roomUserId, member } = await getRoomMember(room);
+		const { roomUserId, member } = await memberPromise;
 
 		return {
 			failed: false,
