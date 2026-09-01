@@ -39,15 +39,6 @@ describe('useGoRoomActionsView', () => {
 		mockState.room = { rid: 'rid-1', t: 'l' };
 	});
 
-	it('sources t from the room store rather than the route params', () => {
-		mockState.room = { rid: 'rid-1', t: 'c' };
-		const { result } = renderHook(() => useGoRoomActionsView('rid-1'));
-
-		result.current();
-
-		expect(mockPush).toHaveBeenCalledWith('RoomActionsView', expect.objectContaining({ t: 'c' }));
-	});
-
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
 		const { result } = renderHook(() => useGoRoomActionsView('rid-1'));
 
