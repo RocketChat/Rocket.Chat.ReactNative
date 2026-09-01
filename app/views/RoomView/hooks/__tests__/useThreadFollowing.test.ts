@@ -12,20 +12,38 @@ const mockGet = database.active.get as jest.Mock;
 
 type Emit<T> = (value: T) => void;
 
-const setupObservable = () => {
+const setupObservable = ({ deferFind = false }: { deferFind?: boolean } = {}) => {
 	let emit: Emit<any> | undefined;
-	const unsubscribe = jest.fn();
+	let resolveFind: (() => void) | undefined;
+	let openSubscriptions = 0;
+	const unsubscribe = jest.fn(() => {
+		openSubscriptions -= 1;
+	});
 	const threadRecord = {
 		observe: () => ({
 			subscribe: (cb: Emit<any>) => {
 				emit = cb;
+				openSubscriptions += 1;
 				return { unsubscribe };
 			}
 		})
 	};
-	mockGet.mockImplementation(() => ({ find: jest.fn(() => Promise.resolve(threadRecord)) }));
+	mockGet.mockImplementation(() => ({
+		find: jest.fn(
+			() =>
+				new Promise(resolve => {
+					if (deferFind) {
+						resolveFind = () => resolve(threadRecord);
+						return;
+					}
+					resolve(threadRecord);
+				})
+		)
+	}));
 	return {
 		unsubscribe,
+		openSubscriptions: () => openSubscriptions,
+		resolveFind: () => resolveFind?.(),
 		emitThread: (thread: any) => act(() => emit?.(thread))
 	};
 };
@@ -62,5 +80,16 @@ describe('useThreadFollowing', () => {
 		await flush();
 		unmount();
 		expect(observable.unsubscribe).toHaveBeenCalledTimes(1);
+	});
+
+	it('leaves no observer open when the record resolves after unmount', async () => {
+		const observable = setupObservable({ deferFind: true });
+		const { unmount } = renderHook(() => useThreadFollowing('tmid-1', 'user-1'));
+
+		unmount();
+		observable.resolveFind();
+		await flush();
+
+		expect(observable.openSubscriptions()).toBe(0);
 	});
 });
