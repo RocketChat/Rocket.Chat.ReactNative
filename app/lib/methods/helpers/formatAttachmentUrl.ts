@@ -10,6 +10,14 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	return urlObj.toString();
 }
 
+export const encodeAttachmentUrl = (url: string): string => {
+	try {
+		return new URL(url).toString();
+	} catch {
+		return url;
+	}
+};
+
 export const formatAttachmentUrl = (
 	attachmentUrl: string | undefined,
 	userId: string,
@@ -28,7 +36,7 @@ export const formatAttachmentUrl = (
 		}
 
 		if (attachmentUrl.includes('rc_token')) {
-			return encodeURI(attachmentUrl);
+			return encodeAttachmentUrl(attachmentUrl);
 		}
 
 		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
