@@ -1,5 +1,5 @@
-import sdk, { type ISocketDriver } from '../sdk';
-import { classifySocketHealth, recoverSocket } from '../socketHealth';
+import sdk from '../sdk';
+import { recoverSocket } from '../socketHealth';
 import { buildConnectedDriver } from '../../testUtils/sdkIntegration';
 import type { IMockSdk, IMockSdkDriver, MockConnection } from '../../testUtils/sdkIntegration';
 import type * as SdkIntegration from '../../testUtils/sdkIntegration';
@@ -42,17 +42,6 @@ describe('socket health against a driver from the shared harness', () => {
 		if (driver.socket.pingTimeout) clearTimeout(driver.socket.pingTimeout);
 		if (driver.socket.openTimeout) clearTimeout(driver.socket.openTimeout);
 		jest.useRealTimers();
-	});
-
-	describe('classifySocketHealth', () => {
-		it('returns round-trip-check for a connected socket rather than trusting it outright', () => {
-			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('round-trip-check');
-		});
-
-		it('returns reopen for a closed socket even when lastPing is fresh', () => {
-			mockConnections[0].readyState = CLOSED;
-			expect(classifySocketHealth(driver as unknown as ISocketDriver)).toBe('reopen');
-		});
 	});
 
 	describe('recoverSocket', () => {

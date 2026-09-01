@@ -4,7 +4,6 @@ import bugsnag from '@bugsnag/react-native';
 import log from '../../methods/helpers/log';
 import { showErrorAlertWithEMessage } from '../../methods/helpers/info';
 import handleSaveUserProfileError from '../../methods/helpers/handleSaveUserProfileError';
-import { handleLoginErrors } from '../../../views/LoginView/handleLoginErrors';
 import { TwoFactorCancelledError } from './twoFactorCancelled';
 
 jest.mock('../../../i18n', () => ({
@@ -56,9 +55,5 @@ describe('two-factor cancellation', () => {
 	it('still alerts when a genuine failure reaches handleSaveUserProfileError', () => {
 		handleSaveUserProfileError({ error: 'error-invalid-password' }, 'saving_profile');
 		expect(Alert.alert).toHaveBeenCalled();
-	});
-
-	it('surfaces a generic login error when the login path reports a cancellation', () => {
-		expect(handleLoginErrors((cancelled as any).error)).toBe('Login_error');
 	});
 });

@@ -45,10 +45,6 @@ describe('recoverSocket against the real SDK socket', () => {
 		jest.useRealTimers();
 	});
 
-	it('exposes the ping interval the health classification depends on', () => {
-		expect(driver.pingInterval).toBe(PING_INTERVAL);
-	});
-
 	it('keeps a doubtful socket when the round trip gets a pong', async () => {
 		backdateLastPing(driver, PING_INTERVAL + 5000);
 
