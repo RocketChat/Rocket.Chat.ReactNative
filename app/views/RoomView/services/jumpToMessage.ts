@@ -69,8 +69,6 @@ export const jumpToMessage = async ({
 			);
 			// Synchronization needed for Fabric to work
 			await new Promise(res => setTimeout(res, 100));
-			// The list hook resolves on real completion (or via its own safety net), so we no longer
-			// race a 5s timeout that could yank a valid in-flight scroll.
 			await listContainerRef.current?.jumpToMessage(message.id, highTs);
 			sendLoadingEvent({ visible: false });
 		}
