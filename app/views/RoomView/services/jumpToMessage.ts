@@ -19,7 +19,7 @@ export const jumpToMessage = async ({
 	navToThread,
 	cancel
 }: IJumpToMessageArgs): Promise<void> => {
-	const shouldNavigateToRoom = (message: TGetMessageInfoResult) => {
+	const isTargetOutsideCurrentView = (message: TGetMessageInfoResult) => {
 		if (message.tmid && message.tmid === tmid) {
 			return false;
 		}
@@ -38,7 +38,7 @@ export const jumpToMessage = async ({
 			return;
 		}
 
-		if (shouldNavigateToRoom(message)) {
+		if (isTargetOutsideCurrentView(message)) {
 			if (message.rid !== rid) {
 				navToRoom(message);
 			} else {
