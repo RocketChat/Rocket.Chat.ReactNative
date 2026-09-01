@@ -263,3 +263,53 @@ describe('Encryption.decryptPendingMessages', () => {
 		expect(failing.msg).toBe('cipher');
 	});
 });
+
+describe('Encryption.decryptPendingSubscriptions', () => {
+	// Mimics a WatermelonDB Model: prepareUpdate throws while a previous prepared
+	// update has not been committed yet.
+	const makeSubscriptionRecord = (id: string) => {
+		const record: any = {
+			id,
+			rid: id,
+			encrypted: true,
+			e2eKeyId: 'key',
+			lastMessage: { t: 'e2e', e2e: 'pending', msg: 'cipher' },
+			_preparedState: null as string | null,
+			prepareUpdate(recordUpdater: (m: any) => void) {
+				if (record._preparedState) {
+					throw new Error(`Cannot update a record with pending changes (subscriptions#${id})`);
+				}
+				recordUpdater(record);
+				record._preparedState = 'update';
+				return record;
+			}
+		};
+		return record;
+	};
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockQueryRows.subscriptions = [];
+	});
+
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
+
+	it('leaves no subscription prepared-but-uncommitted when one decryption rejects', async () => {
+		const healthy = makeSubscriptionRecord('s1');
+		const failing = makeSubscriptionRecord('s2');
+		mockQueryRows.subscriptions = [healthy, failing];
+		jest.spyOn(encryption, 'decryptSubscription').mockImplementation((sub: any) => {
+			if (sub.id === failing.id) {
+				return Promise.reject(new Error('decrypt failed'));
+			}
+			return Promise.resolve({ lastMessage: { t: 'e2e', e2e: 'done', msg: 'plain' } } as any);
+		});
+
+		await encryption.decryptPendingSubscriptions();
+
+		expect(healthy._preparedState).toBeNull();
+		expect(failing._preparedState).toBeNull();
+	});
+});
