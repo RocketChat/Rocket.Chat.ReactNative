@@ -96,7 +96,7 @@ describe('useJumpToMessage', () => {
 		expect(navToThread).not.toHaveBeenCalled();
 	});
 
-	it('jumps out-of-window: resolves anchor with inWindow=false and calls list.jumpToMessage', async () => {
+	it('jumps out-of-window: passes inWindow=false and forwards a null anchor to the list', async () => {
 		const listContainerRef = createListRef();
 		listContainerRef.current.isMessageInWindow.mockReturnValue(false);
 		mockGetMessageInfo.mockResolvedValue({ id: 'm1', rid: RID, ts: 100 });
