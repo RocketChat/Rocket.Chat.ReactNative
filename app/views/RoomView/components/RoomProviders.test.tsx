@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
-import { useComposerSharing } from '../stores/ComposerStore';
+import { useComposerRid, useComposerSharing } from '../stores/ComposerStore';
 import {
 	createMessageActionStore,
 	useIsBeingEdited,
@@ -42,10 +42,12 @@ describe('RoomProviders', () => {
 		const store = createMessageActionStore();
 		const actionSpy = jest.fn();
 		const isBeingEditedSpy = jest.fn();
+		const ridSpy = jest.fn();
 
 		const Probe = () => {
 			actionSpy(useMessageAction());
 			isBeingEditedSpy(useIsBeingEdited('msg-1'));
+			ridSpy(useComposerRid());
 			return null;
 		};
 
@@ -55,6 +57,7 @@ describe('RoomProviders', () => {
 			</RoomProviders>
 		);
 
+		expect(ridSpy).toHaveBeenLastCalledWith('rid-1');
 		expect(actionSpy).toHaveBeenLastCalledWith(null);
 		expect(isBeingEditedSpy).toHaveBeenLastCalledWith(false);
 

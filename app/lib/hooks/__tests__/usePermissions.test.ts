@@ -63,7 +63,7 @@ describe('usePermissions', () => {
 			expected: true
 		},
 		{
-			name: 'no matching role denies the permission',
+			name: "the user's roles lack the permission",
 			userRoles: ['user'],
 			subRoles: ['moderator'],
 			permissionRoles: ['owner'],
