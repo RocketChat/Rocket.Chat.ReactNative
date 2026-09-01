@@ -273,11 +273,11 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 		const { start, end } = selectionRef.current;
 		const cursor = Math.max(start, end);
 		const regexp = getMentionRegexp();
-		let result = text.substr(0, cursor).replace(regexp, '');
+		let textBeforeMention = text.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (item.type === '!') {
 			const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
-			result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+			textBeforeMention = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
 		}
 		let mention = '';
 		switch (item.type) {
@@ -299,9 +299,9 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			default:
 				mention = '';
 		}
-		const newText = `${result}${mention} ${text.slice(cursor)}`;
+		const newText = `${textBeforeMention}${mention} ${text.slice(cursor)}`;
 
-		const newCursor = result.length + mention.length + 1;
+		const newCursor = textBeforeMention.length + mention.length + 1;
 		setInput(newText, { start: newCursor, end: newCursor });
 		focus();
 		requestAnimationFrame(() => {
