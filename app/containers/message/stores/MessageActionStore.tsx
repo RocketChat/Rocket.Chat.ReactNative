@@ -82,6 +82,9 @@ const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): 
 // `action` is a single ref replaced wholesale on every `set` — no useShallow needed.
 export const useMessageAction = (): TMessageActionState => useMessageActionStore(s => s.action);
 
+export const useMessageActionKind = (): NonNullable<TMessageActionState>['kind'] | null =>
+	useMessageActionStore(s => s.action?.kind ?? null);
+
 /**
  * Unlike `useMessageAction`, which throws without a provider, this hook degrades to `false` via
  * an inert store — search/pinned message rows render outside a `MessageActionProvider` and can never be editing.
@@ -96,9 +99,6 @@ const EMPTY_MESSAGE_IDS: string[] = [];
 
 export const useQuotedMessageIds = (): string[] =>
 	useMessageActionStore(s => (s.action?.kind === 'quote' ? s.action.messageIds : EMPTY_MESSAGE_IDS));
-
-export const useMessageActionKind = (): NonNullable<TMessageActionState>['kind'] | null =>
-	useMessageActionStore(s => s.action?.kind ?? null);
 
 export const useEditingMessageId = (): string | undefined =>
 	useMessageActionStore(s => (s.action?.kind === 'edit' ? s.action.messageId : undefined));
