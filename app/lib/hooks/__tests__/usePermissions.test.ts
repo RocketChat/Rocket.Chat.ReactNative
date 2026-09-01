@@ -1,7 +1,6 @@
 import { act, renderHook } from '@testing-library/react-native';
 
 import database from '../../database';
-import { hasPermission } from '../../methods/helpers';
 import { store as reduxStore } from '../../store/auxStore';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { usePermissions } from '../usePermissions';
@@ -21,7 +20,7 @@ const mockGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.Mock;
 
 const PERMISSION = 'toggle-room-e2e-encryption';
 
-const configureIdenticalRolesForBothPaths = ({
+const configureRoles = ({
 	userRoles,
 	subRoles,
 	permissionRoles
@@ -51,24 +50,35 @@ const configureIdenticalRolesForBothPaths = ({
 
 const flush = () => act(() => Promise.resolve());
 
-describe('usePermissions: hasPermission parity', () => {
+describe('usePermissions', () => {
 	beforeEach(() => jest.clearAllMocks());
 
 	const scenarios = [
-		{ name: 'user role grants the permission', userRoles: ['admin'], subRoles: [], permissionRoles: ['admin'] },
-		{ name: 'subscription role grants the permission', userRoles: [], subRoles: ['owner'], permissionRoles: ['owner'] },
-		{ name: 'no matching role denies the permission', userRoles: ['user'], subRoles: ['moderator'], permissionRoles: ['owner'] }
+		{ name: 'user role grants the permission', userRoles: ['admin'], subRoles: [], permissionRoles: ['admin'], expected: true },
+		{
+			name: 'subscription role grants the permission',
+			userRoles: [],
+			subRoles: ['owner'],
+			permissionRoles: ['owner'],
+			expected: true
+		},
+		{
+			name: 'no matching role denies the permission',
+			userRoles: ['user'],
+			subRoles: ['moderator'],
+			permissionRoles: ['owner'],
+			expected: false
+		}
 	];
 
 	scenarios.forEach(scenario => {
-		it(`matches the old async hasPermission result when ${scenario.name}`, async () => {
-			configureIdenticalRolesForBothPaths(scenario);
+		it(`grants ${scenario.expected} when ${scenario.name}`, async () => {
+			configureRoles(scenario);
 
 			const { result } = renderHook(() => usePermissions([PERMISSION], 'rid-1'));
 			await flush();
 
-			const [expected] = await hasPermission([scenario.permissionRoles], 'rid-1');
-			expect(result.current[0]).toBe(expected);
+			expect(result.current[0]).toBe(scenario.expected);
 		});
 	});
 });
