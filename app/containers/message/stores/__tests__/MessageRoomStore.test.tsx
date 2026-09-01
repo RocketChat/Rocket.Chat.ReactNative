@@ -1,11 +1,10 @@
-import { memo, useContext, useEffect, type ContextType } from 'react';
+import { memo } from 'react';
 import { act, render } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import {
 	MessageRoomProvider,
-	MessageRoomStoreContext,
 	useAutoTranslate,
 	useBlockAction,
 	useIsArchived,
@@ -163,7 +162,7 @@ describe('MessageRoomStore', () => {
 	});
 
 	describe('handlers bag', () => {
-		it('reads a handler through the fine-grained selector off the published bag', () => {
+		it('reads a handler through the fine-grained selector on the first render', () => {
 			const blockAction = jest.fn();
 			const spy = jest.fn();
 			const Probe = () => {
@@ -179,7 +178,7 @@ describe('MessageRoomStore', () => {
 				</Provider>
 			);
 
-			expect(spy).toHaveBeenLastCalledWith(blockAction);
+			expect(spy).toHaveBeenNthCalledWith(1, blockAction);
 		});
 
 		it('exposes navToRoomInfo/showAttachment from the handler bag', () => {
@@ -205,31 +204,27 @@ describe('MessageRoomStore', () => {
 			expect(showSpy).toHaveBeenLastCalledWith(bagShow);
 		});
 
-		it('publishes handlers in the reactive tail: a setState swap reaches the selector', () => {
+		it('resyncs the bag when the provider receives a new handlers prop', () => {
 			const first = jest.fn();
 			const second = jest.fn();
 			const spy = jest.fn();
-			const captured: { store: ContextType<typeof MessageRoomStoreContext> } = { store: null };
-			const StoreProbe = () => {
-				const store = useContext(MessageRoomStoreContext);
-				useEffect(() => {
-					captured.store = store;
-				}, [store]);
+			const Probe = () => {
 				spy(useBlockAction());
 				return null;
 			};
-
-			render(
+			const tree = (blockAction: jest.Mock) => (
 				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction: first }}>
-						<StoreProbe />
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction }}>
+						<Probe />
 					</MessageRoomProvider>
 				</Provider>
 			);
 
+			const { rerender } = render(tree(first));
+
 			expect(spy).toHaveBeenLastCalledWith(first);
 
-			act(() => captured.store?.setState({ handlers: { blockAction: second } }));
+			rerender(tree(second));
 
 			expect(spy).toHaveBeenLastCalledWith(second);
 		});

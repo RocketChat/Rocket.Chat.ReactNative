@@ -63,9 +63,7 @@ jest.mock('../List', () => {
 jest.mock('../../../containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));
-jest.mock('../components/RoomMessageHandlersBridge', () => ({
-	RoomMessageHandlersBridge: ({ children }: { children: ReactNode }) => children
-}));
+jest.mock('../hooks/useRoomMessageHandlers', () => ({ useRoomMessageHandlers: () => ({}) }));
 jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
 jest.mock('../hooks/useRoomSubscription', () => ({ useRoomSubscription: jest.fn() }));
 jest.mock('../hooks/useRoomAudioLifecycle', () => ({ useRoomAudioLifecycle: jest.fn() }));
