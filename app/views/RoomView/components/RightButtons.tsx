@@ -24,7 +24,7 @@ import { HeaderCallButton } from './HeaderCallButton';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../hooks/useSubscriptionUnreads';
 import { useThreadFollowing } from '../hooks/useThreadFollowing';
-import { toggleFollowThread } from '../services/toggleFollowThread';
+import { toggleFollowThread } from '../../../lib/methods/toggleFollowThread';
 import { useRoomStoreByRid } from '../stores/RoomStore';
 
 interface IRightButtonsProps {

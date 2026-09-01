@@ -40,7 +40,7 @@ import {
 } from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { getSyncThreadsList, getThreadsList } from '../../lib/services/restApi';
-import { toggleFollowThread as toggleFollowThreadService } from '../RoomView/services/toggleFollowThread';
+import { toggleFollowThread as toggleFollowThreadService } from '../../lib/methods/toggleFollowThread';
 import UserPreferences from '../../lib/methods/userPreferences';
 import Navigation from '../../lib/navigation/appNavigation';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';

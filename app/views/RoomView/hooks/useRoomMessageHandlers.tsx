@@ -28,7 +28,7 @@ import { useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
-import { toggleFollowThread as toggleFollowThreadService } from '../services/toggleFollowThread';
+import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
 import { pushThreadRoom } from '../services/pushThreadRoom';
 import { sendRoomMessage } from '../services/sendRoomMessage';
 import { useReactionActions } from './useReactionActions';
