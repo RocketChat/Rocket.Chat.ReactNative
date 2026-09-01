@@ -354,6 +354,16 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 	}
 }
 
+function normalizeTOTPParams(params: ICredentials): ICredentials {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
+		const user = params.user ?? params.username;
+		const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+		return { user, password };
+	}
+	return params;
+}
+
 function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -374,13 +384,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = store.getState().server.version;
-						if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
+						params = normalizeTOTPParams(params);
 
 						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					}

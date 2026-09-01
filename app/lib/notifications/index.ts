@@ -5,7 +5,9 @@ import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { type INotification, SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
-import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
+import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
+
+export { getDeviceToken } from './deviceToken';
 
 interface IEjson {
 	rid: string;
@@ -80,7 +82,6 @@ export const onNotification = (push: INotification): void => {
 	store.dispatch(appInit());
 };
 
-export const getDeviceToken = (): string => deviceToken;
 export const setBadgeCount = (count?: number): void => {
 	setNotificationsBadgeCount(count);
 };
@@ -91,6 +92,31 @@ export const removeNotificationsAndBadge = async (): Promise<void> => {
 export const initializePushNotifications = async (): Promise<INotification | { configured: boolean } | null> => {
 	await setNotificationsBadgeCount();
 	return pushNotificationConfigure(onNotification);
+};
+
+const dispatchPendingNotification = (pendingNotification: string): void => {
+	try {
+		const notificationData = JSON.parse(pendingNotification);
+		const notification: INotification = {
+			payload: {
+				message: notificationData.message || '',
+				style: notificationData.style || '',
+				ejson: notificationData.ejson || '',
+				collapse_key: notificationData.collapse_key || '',
+				notId: notificationData.notId || '',
+				msgcnt: notificationData.msgcnt || '',
+				title: notificationData.title || '',
+				from: notificationData.from || '',
+				image: notificationData.image || '',
+				soundname: notificationData.soundname || '',
+				action: notificationData.action
+			},
+			identifier: notificationData.notId || ''
+		};
+		onNotification(notification);
+	} catch (e) {
+		console.warn('[notifications/index.ts] Failed to parse pending notification:', e);
+	}
 };
 
 /**
@@ -104,28 +130,7 @@ export const checkPendingNotification = async (): Promise<void> => {
 			if (NativePushNotificationModule) {
 				const pendingNotification = await NativePushNotificationModule.getPendingNotification();
 				if (pendingNotification) {
-					try {
-						const notificationData = JSON.parse(pendingNotification);
-						const notification: INotification = {
-							payload: {
-								message: notificationData.message || '',
-								style: notificationData.style || '',
-								ejson: notificationData.ejson || '',
-								collapse_key: notificationData.collapse_key || '',
-								notId: notificationData.notId || '',
-								msgcnt: notificationData.msgcnt || '',
-								title: notificationData.title || '',
-								from: notificationData.from || '',
-								image: notificationData.image || '',
-								soundname: notificationData.soundname || '',
-								action: notificationData.action
-							},
-							identifier: notificationData.notId || ''
-						};
-						onNotification(notification);
-					} catch (e) {
-						console.warn('[notifications/index.ts] Failed to parse pending notification:', e);
-					}
+					dispatchPendingNotification(pendingNotification);
 				}
 			}
 		} catch (e) {
