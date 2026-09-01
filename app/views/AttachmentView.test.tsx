@@ -98,8 +98,11 @@ jest.mock('../lib/methods/helpers', () => ({
 	formatAttachmentUrl: (url: string) => url,
 	encodeAttachmentUrl: (url: string) => url,
 	isAndroid: false,
-	fileDownload: jest.fn(),
 	showErrorAlert: jest.fn()
+}));
+
+jest.mock('../lib/methods/helpers/fileDownload', () => ({
+	fileDownload: jest.fn()
 }));
 
 describe('AttachmentView', () => {

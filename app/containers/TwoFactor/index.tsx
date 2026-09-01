@@ -22,8 +22,7 @@ import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import log from '../../lib/methods/helpers/log';
-
-export const TWO_FACTOR = 'TWO_FACTOR';
+import { TWO_FACTOR } from '../../lib/constants/twoFactor';
 
 interface IMethodsProp {
 	text: string;

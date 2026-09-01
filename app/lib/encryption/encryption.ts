@@ -293,7 +293,7 @@ class Encryption {
 				await this.roomInstances[rid].handshake();
 				return this.roomInstances[rid];
 			}
-			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string, this);
 
 			const roomE2E = this.roomInstances[rid];
 
@@ -335,17 +335,18 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
+			const toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
 				...messagesToDecrypt,
 				...threadsToDecrypt,
 				...threadMessagesToDecrypt
 			];
-			toDecrypt = (await Promise.all(
+
+			const decrypted = await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg, attachments, content } = message;
 					let newMessage: Partial<TMessageModel> = {};
-					if (message.subscription) {
-						const { id: rid } = message.subscription;
+					const rid = message.subscription?.id;
+					if (rid) {
 						// WM Object -> Plain Object
 						newMessage = await this.decryptMessage({
 							t,
@@ -357,20 +358,28 @@ class Encryption {
 						} as IMessage);
 					}
 
+					return { message, newMessage };
+				})
+			);
+
+			if (!decrypted.length) {
+				return;
+			}
+
+			await db.write(async () => {
+				const prepared = decrypted.map(({ message, newMessage }) => {
 					try {
 						return message.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
 								Object.assign(m, newMessage);
 							})
 						);
-					} catch {
+					} catch (e) {
+						log(e);
 						return null;
 					}
-				})
-			)) as (TThreadModel | TThreadMessageModel)[];
-
-			await db.write(async () => {
-				await db.batch(toDecrypt);
+				});
+				await db.batch(...prepared);
 			});
 		} catch (e) {
 			log(e);
