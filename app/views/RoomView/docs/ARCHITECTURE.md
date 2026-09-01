@@ -11,12 +11,12 @@ The Room view renders a **Message Window**: the contiguous range of Messages it 
 
 The single piece of state that distinguishes them is `highTs`: an optional **upper** `ts` bound on the observation.
 
-- `highTs == null` → Live Window. The query is the same growing `take(count)`-from-newest it has always been.
+- `highTs == null` → Live Window. The query is a growing `take(count)` from the newest Message.
 - `highTs == <ms since epoch>` → Anchored Window. One extra clause, `Q.where('ts', Q.lte(highTs))`, caps the window below the Live Tail.
 
 A **Jump to Message** to a far-off or not-yet-synced target sets `highTs` so the window re-seeds onto the target in one step, instead of paging from the Live Tail down to it. Rejoining live releases `highTs` back to `null`.
 
-The list engine is the custom native Fabric `InvertedScrollView` (`components/InvertedScrollView.tsx`) under an `inverted` `Animated.FlatList` — not FlashList. See [Why not FlashList](#why-not-flashlist).
+The list engine is the custom native Fabric `InvertedScrollView` (`List/components/InvertedScrollView.tsx`) under an `inverted` `Animated.FlatList` — not FlashList. See [Why not FlashList](#why-not-flashlist).
 
 ---
 
@@ -117,16 +117,16 @@ To make Jump to Message O(1) instead of O(pages), the existing WatermelonDB obse
 
 Consequences:
 
-- Jump no longer grows the window page-by-page; it re-anchors in one step, removing the root cause of the prior 5s-race flakiness (a deep jump used to load every page in between, and a 5s `Promise.race` could cancel the scroll before the window reached the target on slow devices).
-- An Anchored Window deliberately sits below the Live Tail, so "rejoin live" is now explicit (the Load Newer climb, or the jump-to-bottom FAB) — previously free because the window always contained live.
-- The list engine is unchanged; a future FlashList migration remains possible but is neither blocked nor required by this work.
+- A jump re-anchors in one step rather than growing the window page by page, so its cost does not scale with the distance to the target and no wall-clock race can cancel a valid in-flight scroll on a slow device.
+- An Anchored Window deliberately sits below the Live Tail, so rejoining live is explicit: the Load Newer climb, or the jump-to-bottom FAB.
+- The list engine stays the inverted `FlatList`; a FlashList migration remains possible but is neither blocked nor required.
 - Ordering stays `ts`-only (see [Equal-`ts` limitation](#equal-ts-limitation)); `ts + _id` is a deferred option.
 
 ---
 
 ## Invariants
 
-Each is grounded in a test under `app/views/RoomView/` or an inline code comment. CI does not enforce them — they are author obligations during review.
+Each bullet names the test under `app/views/RoomView/` that holds it, or the code that carries it where no test does. CI does not enforce them as invariants — they are author obligations during review.
 
 - **Single bound distinguishes the modes** — `highTs == null` is the only Live Window; any finite `highTs` is an Anchored Window. The `<List isAnchored={highTs != null}>` prop and every anchored branch read this one source.
 - **Anchor re-seeds to one page** — `setHighTs` resets `count` to `0` so a fresh anchor lands at exactly `QUERY_SIZE`, not the grown size of the prior window. Verified by `useMessages.test.tsx`.
@@ -137,5 +137,5 @@ Each is grounded in a test under `app/views/RoomView/` or an inline code comment
 - **Every jump terminates** — growth retries, scroll-fail retries, and the safety net are all bounded and reset per jump; an unreachable target aborts (releasing the anchor) instead of looping. Verified by `useScroll.test.tsx`.
 - **Frontier climb advances, never recurses** — `onScrollToIndexFailed` steps to `highestMeasuredFrameIndex` (which moves the viewport) rather than re-scrolling to the unmeasured target, and defers each retry one frame to break `VirtualizedList`'s synchronous re-fire. Verified by `useScroll.test.tsx`.
 - **Thread jump fires after thread rows load** — the RoomStore's `init()` calls `onThreadMessagesLoaded` right after `loadThreadMessages`, and `useJumpToMessage` fires the pending thread jump from there rather than from its own mount effect; firing before the rows exist aborts on the safety net and parks on the Live Tail. The pending id is read-and-cleared so a later `init()` cannot re-fire it. See `hooks/useJumpToMessage.ts` and `stores/RoomStore.ts`.
-- **Jump param is one-shot** — `consumeJumpParam` clears `jumpToMessageId` after firing, so re-selecting the same id reads as an `undefined → id` change and re-fires instead of no-opping on a stale param.
+- **Jump param is one-shot** — `useJumpToMessage` clears the `jumpToMessageId` route param after firing, so re-selecting the same id reads as an `undefined → id` change and re-fires instead of no-opping on a stale param. Verified by `hooks/__tests__/useJumpToMessage.test.tsx`.
 - **Read-time derivations depend on observed columns** — `useReadOnly` and `useE2EEStatus` derive synchronously from the observed `room`, so they only stay reactive while `roles`, `encrypted`, and `E2EKey` remain in `roomAttrsUpdate`. Dropping any of them silently stales the read-only banner / E2EE gate. Verified by `constants.test.ts`.

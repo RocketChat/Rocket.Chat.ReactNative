@@ -128,12 +128,12 @@ A **Last Open** and a **Last Seen** are not interchangeable — conflating them 
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
 
-| Term                               | Definition                                                                                                        | Owner                         | Scope                                                          |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------- |
-| **Message Action State**           | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active | A per-Room MessageActionStore | Migrated to the per-Room store as part of the Message row work |
-| **Positional State**               | Umbrella for which Message is highlighted and the jump or scroll position. Splits across two owners (below).      | —                             | —                                                              |
-| **Jump orchestration**             | Deciding to jump to a Message, resolving its anchor, and requesting the jump                                      | RoomView (`useJumpToMessage`) | Owned by RoomView as part of the room-screen hooks migration   |
-| **Scroll and highlight execution** | Performing the scroll onto the target Message and rendering its highlight                                         | The List component            | Already shipped in the List component                          |
+| Term                               | Definition                                                                                                        | Owner                         | Scope                                |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------ |
+| **Message Action State**           | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active | A per-Room MessageActionStore | One Room's Message rows and composer |
+| **Positional State**               | Umbrella for which Message is highlighted and the jump or scroll position. Splits across two owners (below).      | —                             | —                                    |
+| **Jump orchestration**             | Deciding to jump to a Message, resolving its anchor, and requesting the jump                                      | RoomView (`useJumpToMessage`) | The Room screen                      |
+| **Scroll and highlight execution** | Performing the scroll onto the target Message and rendering its highlight                                         | The List component            | The rendered Message list            |
 
 ### Message Actions
 

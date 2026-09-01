@@ -13,13 +13,15 @@ sequenceDiagram
     autonumber
     participant User
     participant RV as RoomView
+    participant Jump as jumpToMessage service
     participant List as List handle
     participant Scroll as useScroll
     participant FlatList
 
     User->>RV: tap quoted reply / jump
-    RV->>List: jumpToMessage(id)
-    List->>List: isMessageInWindow(id)? yes
+    RV->>Jump: jumpToMessage(id)
+    Jump->>List: isMessageInWindow(id)? yes
+    Jump->>List: jumpToMessage(id, null)
     List->>Scroll: jumpToMessage(id, null)
     Scroll->>Scroll: target already in messages
     Scroll->>FlatList: scrollToTarget (two-pass)
@@ -37,6 +39,7 @@ sequenceDiagram
     autonumber
     participant User
     participant RV as RoomView
+    participant Jump as jumpToMessage service
     participant Resolve as resolveJumpAnchor
     participant Server as loadSurroundingMessages
     participant AR as anchorForServerChunk (pure)
@@ -46,14 +49,15 @@ sequenceDiagram
     participant FlatList
 
     User->>RV: jump to message id
-    RV->>RV: getMessageInfo(id) → target {ts, fromServer}
-    RV->>Resolve: resolveJumpAnchor(rid, target, inWindow=false)
+    RV->>Jump: jumpToMessage(id)
+    Jump->>Jump: getMessageInfo(id) → target {ts, fromServer}
+    Jump->>Resolve: resolveJumpAnchor(rid, target, inWindow=false)
     Resolve->>Server: fetch one Chunk centered on target
     Server-->>Resolve: chunk rows
     Resolve->>AR: anchorForServerChunk(rows, id, ts)
     AR-->>Resolve: highTs (Newer Loader ts) | null
-    Resolve-->>RV: bound
-    RV->>Scroll: jumpToMessage(id, highTs)
+    Resolve-->>Jump: bound
+    Jump->>Scroll: jumpToMessage(id, highTs)
     Scroll->>Msgs: setHighTs(bound)  %% count→0, re-seed
     Msgs->>DB: observe ts<=highTs, take(QUERY_SIZE)
     DB-->>Msgs: anchored page (incl. target)
@@ -180,16 +184,16 @@ A thread jump must fire after the thread rows load, not at mount. Firing early a
 sequenceDiagram
     autonumber
     participant Nav as navigation param
-    participant RV as RoomView
-    participant Init as init()
+    participant Hook as useJumpToMessage
+    participant Init as RoomStore init()
     participant Thread as loadThreadMessages
     participant List as List handle
 
-    Nav->>RV: jumpToMessageId (thread target)
-    RV->>RV: componentDidMount — main-list jump fires now; thread jump deferred
-    RV->>Init: init()
+    Nav->>Hook: jumpToMessageId (thread target)
+    Hook->>Hook: mount effect — main-list jump fires now; thread jump deferred
     Init->>Thread: loadThreadMessages
     Thread-->>Init: thread rows present
-    Init->>RV: read-and-clear jumpToMessageId
-    RV->>List: jumpToMessage(id)  %% rows exist → lands
+    Init->>Hook: onThreadMessagesLoaded
+    Hook->>Hook: read-and-clear pending jump id
+    Hook->>List: jumpToMessage(id)  %% rows exist → lands
 ```
