@@ -10,12 +10,16 @@ const Encrypted = () => {
 	const onEncryptedPress = useOnEncryptedPress();
 	const type = useMessageField(item => item.t);
 
-	if (type !== E2E_MESSAGE_TYPE) {
+	if (type !== E2E_MESSAGE_TYPE || !onEncryptedPress) {
 		return null;
 	}
 
 	return (
-		<MessageActionTouchable onPress={onEncryptedPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
+		<MessageActionTouchable
+			onPress={onEncryptedPress}
+			testID='message-encrypted'
+			style={styles.rightIcons}
+			hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='encrypted' size={16} />
 		</MessageActionTouchable>
 	);

@@ -768,6 +768,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       "paddingLeft": 5,
     }
   }
+  testID="message-encrypted"
 >
   <Text
     allowFontScaling={false}

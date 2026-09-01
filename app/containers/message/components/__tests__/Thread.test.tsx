@@ -46,3 +46,28 @@ describe('Thread — tlm-only update regression', () => {
 		expect(getByTestId('message-thread-button-hello')).toBeTruthy();
 	});
 });
+
+describe('Thread — follow affordance gating', () => {
+	const renderWithHandlers = (handlers: Partial<MessageRoomState['handlers']>) =>
+		render(
+			<Provider store={mockedStore}>
+				<MessageRoomProvider handlers={handlers}>
+					<MessageProvider item={buildItem({ tlm: new Date('2024-01-01T00:00:00Z') })}>
+						<Thread />
+					</MessageProvider>
+				</MessageRoomProvider>
+			</Provider>
+		);
+
+	test('shows the follow toggle when a toggleFollowThread handler was supplied', () => {
+		const { getByLabelText } = renderWithHandlers({ toggleFollowThread: jest.fn(), onThreadPress: jest.fn() });
+
+		expect(getByLabelText('Follow thread')).toBeTruthy();
+	});
+
+	test('hides the follow toggle when no toggleFollowThread handler was supplied', () => {
+		const { queryByLabelText } = renderWithHandlers({ onThreadPress: jest.fn() });
+
+		expect(queryByLabelText('Follow thread')).toBeNull();
+	});
+});

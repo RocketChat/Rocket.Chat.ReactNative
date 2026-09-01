@@ -112,3 +112,16 @@ it('should remove reaction', () => {
 	expect(queryByTestId('message-reaction-:thumbsup:')).toBeNull();
 	expect(getByTestId('message-add-reaction')).toBeTruthy();
 });
+
+it('renders nothing when neither a reaction handler nor a reaction initializer was supplied', () => {
+	const item = buildItem([{ _id: '1', emoji: '👍', usernames: ['john'], names: [] }]);
+
+	const { queryByTestId } = render(
+		<MessageProviders item={item} room={{ handlers: {} }}>
+			<Reactions />
+		</MessageProviders>
+	);
+
+	expect(queryByTestId('message-reaction-👍')).toBeNull();
+	expect(queryByTestId('message-add-reaction')).toBeNull();
+});

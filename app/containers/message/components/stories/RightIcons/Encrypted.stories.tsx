@@ -26,7 +26,9 @@ const plainItem = {
 	autoTranslate: false
 } as unknown as TAnyMessageModel;
 
-const room: Partial<MessageRoomState> = {};
+const room: Partial<MessageRoomState> = {
+	handlers: { onEncryptedPress: () => {} }
+};
 
 const StoryWrapper = ({ item, children }: { item: TAnyMessageModel; children: ReactNode }) => (
 	<Provider store={store}>

@@ -76,16 +76,21 @@ const Reaction = ({ reaction }: IMessageReaction) => {
 
 const Reactions = () => {
 	const reactions = useReactions();
+	const onReactionPress = useOnReactionPress();
+	const reactionInit = useReactionInit();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
 	}
+
+	if (!onReactionPress && !reactionInit) {
+		return null;
+	}
+
 	return (
 		<View style={styles.reactionsContainer}>
-			{reactions.map(reaction => (
-				<Reaction key={reaction.emoji} reaction={reaction} />
-			))}
-			<AddReaction />
+			{onReactionPress ? reactions.map(reaction => <Reaction key={reaction.emoji} reaction={reaction} />) : null}
+			{reactionInit ? <AddReaction /> : null}
 		</View>
 	);
 };

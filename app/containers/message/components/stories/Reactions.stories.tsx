@@ -23,7 +23,8 @@ const item = {
 } as unknown as TAnyMessageModel;
 
 const room: Partial<MessageRoomState> = {
-	reactionInit: () => {}
+	reactionInit: () => {},
+	handlers: { onReactionPress: async () => {}, onReactionLongPress: () => {} }
 };
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (

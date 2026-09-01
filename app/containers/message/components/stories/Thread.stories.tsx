@@ -22,7 +22,8 @@ const item = {
 } as unknown as TAnyMessageModel;
 
 const room: Partial<MessageRoomState> = {
-	isThreadRoom: false
+	isThreadRoom: false,
+	handlers: { onThreadPress: () => {}, toggleFollowThread: async () => {} }
 };
 
 const StoryWrapper = ({ children }: { children: ReactNode }) => (
