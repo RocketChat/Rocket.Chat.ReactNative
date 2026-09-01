@@ -16,7 +16,7 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 		const db = database.active;
 		const threadCollection = db.get('threads');
 		let messageRecord = await getMessageById(messageId);
-		let threadRecord = await getThreadById(tmid);
+		const threadRecord = await getThreadById(tmid);
 		if (threadRecord) {
 			tmsg = buildThreadName(threadRecord);
 			if (tmsg !== messageRecord?.tmsg) {
@@ -31,13 +31,14 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 			const decryptedThread = await Encryption.decryptMessage(thread);
 			tmsg = buildThreadName(decryptedThread as IMessage);
 			await db.write(async () => {
-				// check it again inside the write, where no other writer can create it concurrently
-				threadRecord = await getThreadById(tmid);
+				const createdMeanwhile = await getThreadById(tmid);
 				messageRecord = await getMessageById(messageId);
-				if (threadRecord) {
-					await messageRecord?.update(m => {
-						m.tmsg = tmsg;
-					});
+				if (createdMeanwhile) {
+					if (tmsg !== messageRecord?.tmsg) {
+						await messageRecord?.update(m => {
+							m.tmsg = tmsg;
+						});
+					}
 					return;
 				}
 				await db.batch(
