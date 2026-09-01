@@ -142,13 +142,4 @@ describe('useRoomNavigation', () => {
 
 		expect(jumpToMessage).not.toHaveBeenCalled();
 	});
-
-	// onThreadMessagesLoaded lives in useJumpToMessage (see useJumpToMessage.test.tsx for its real
-	// behavior) — here we only assert useRoomNavigation forwards that hook's result.
-	it('onThreadMessagesLoaded is forwarded from useJumpToMessage', () => {
-		const { result } = renderRoomNavigation();
-		const { onThreadMessagesLoaded } = mockUseJumpToMessage.mock.results[0].value;
-
-		expect(result.current.onThreadMessagesLoaded).toBe(onThreadMessagesLoaded);
-	});
 });

@@ -202,7 +202,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	// One stable identity: MessageRoomProvider captures the handler bag once at mount.
 	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
 
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {

@@ -287,7 +287,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	// One stable identity: MessageRoomProvider captures the handler bag once at mount.
 	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
 
 	onLongPress = (message: IMessage) => {
