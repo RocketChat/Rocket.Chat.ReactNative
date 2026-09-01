@@ -34,6 +34,27 @@ interface IRightButtonsProps {
 
 type RightButtonsNavigation = NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 
+type RightButtonsScreen = keyof (ChatsStackParamList & TNavigation);
+
+const navigateToScreen = <Screen extends RightButtonsScreen>({
+	navigation,
+	isMasterDetail,
+	screen,
+	params
+}: {
+	navigation: RightButtonsNavigation;
+	isMasterDetail: boolean;
+	screen: Screen;
+	params?: (ChatsStackParamList & TNavigation)[Screen];
+}) => {
+	const navigate = navigation.navigate as (screen: string, params?: object) => void;
+	if (isMasterDetail) {
+		navigate('ModalStackNavigator', { screen, params });
+		return;
+	}
+	navigate(screen, params);
+};
+
 const placeOnHoldLivechat = (rid: string, navigation: RightButtonsNavigation) => {
 	showConfirmationAlert({
 		title: i18n.t('Are_you_sure_question_mark'),
@@ -83,14 +104,12 @@ const closeLivechat = async ({
 			return closeLivechatService({ rid, isMasterDetail, comment });
 		}
 
-		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', {
-				screen: 'CloseLivechatView',
-				params: { rid, departmentId, departmentInfo, tagsList }
-			});
-		} else {
-			navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
-		}
+		navigateToScreen({
+			navigation,
+			isMasterDetail,
+			screen: 'CloseLivechatView',
+			params: { rid, departmentId, departmentInfo, tagsList }
+		});
 	} catch {
 		// do nothing
 	}
@@ -134,12 +153,7 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 		if (!rid) {
 			return;
 		}
-		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make this work
-			navigation.navigate('ModalStackNavigator', { screen: 'ThreadMessagesView', params: { rid, t } });
-		} else {
-			navigation.navigate('ThreadMessagesView', { rid, t });
-		}
+		navigateToScreen({ navigation, isMasterDetail, screen: 'ThreadMessagesView', params: { rid, t } });
 	};
 
 	const handleReturnLivechat = () => {
@@ -175,14 +189,7 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 				icon: 'chat-forward',
 				onPress: () => {
 					if (rid) {
-						if (isMasterDetail) {
-							navigation.navigate('ModalStackNavigator', {
-								screen: 'ForwardLivechatView',
-								params: { rid }
-							});
-						} else {
-							navigation.navigate('ForwardLivechatView', { rid });
-						}
+						navigateToScreen({ navigation, isMasterDetail, screen: 'ForwardLivechatView', params: { rid } });
 					}
 				}
 			});
@@ -211,20 +218,9 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 			return;
 		}
 		if (!issuesWithNotifications) {
-			if (isMasterDetail) {
-				navigation.navigate('ModalStackNavigator', {
-					screen: 'NotificationPrefView',
-					params: { rid, room: subscription }
-				});
-			} else {
-				navigation.navigate('NotificationPrefView', { rid, room: subscription });
-			}
-		} else if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', {
-				screen: 'PushTroubleshootView'
-			});
+			navigateToScreen({ navigation, isMasterDetail, screen: 'NotificationPrefView', params: { rid, room: subscription } });
 		} else {
-			navigation.navigate('PushTroubleshootView');
+			navigateToScreen({ navigation, isMasterDetail, screen: 'PushTroubleshootView' });
 		}
 	};
 
@@ -249,16 +245,7 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 		if (!rid) {
 			return;
 		}
-		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make this work
-			navigation.navigate('ModalStackNavigator', {
-				screen: 'E2EEToggleRoomView',
-				params: { rid }
-			});
-		} else {
-			// @ts-ignore
-			navigation.navigate('E2EEToggleRoomView', { rid });
-		}
+		navigateToScreen({ navigation, isMasterDetail, screen: 'E2EEToggleRoomView', params: { rid } });
 	};
 
 	const onToggleFollowThread = () => {
