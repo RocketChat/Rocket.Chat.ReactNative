@@ -39,8 +39,9 @@ export interface IFooterPreviewProps {
 
 export type TRoomUpdate = keyof TSubscriptionModel;
 
+// The shapes the room screen reads off a subscription. The screen's own flags live with their
+// owners: room-wide ones in RoomState, per-screen ones in IRoomScreenContextValue.
 export interface IRoomViewState {
-	joined: boolean;
 	room:
 		| TSubscriptionModel
 		| {
@@ -61,18 +62,6 @@ export interface IRoomViewState {
 	};
 	member: any;
 	lastSeen: Date | null;
-	canAutoTranslate: boolean;
-	loading: boolean;
-	readOnly: boolean;
-	unreadsCount: number | null;
-	roomUserId?: string | null;
-	isAutocompleteVisible: boolean;
-	showMissingE2EEKey: boolean;
-	showE2EEDisabledRoom: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
-	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
 }
 
 export type ComposerState = {

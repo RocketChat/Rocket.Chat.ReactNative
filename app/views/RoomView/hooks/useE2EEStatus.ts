@@ -1,14 +1,14 @@
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../../lib/encryption/utils';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { type IUseE2EEStatusResult, type RoomStore } from '../definitions';
+import { type IUseE2EEStatusResult } from '../definitions';
 import { peekRoomStore } from '../stores/RoomStore';
 import { useRoomWithUpdateFromStore } from '../stores/RoomStoreContext';
 
-// Callers in the native-stack header render outside RoomView's provider, so they resolve the store
-// by rid from the module registry; the orchestrator can pass its store instance explicitly instead.
-export const useE2EEStatus = (rid?: string, roomStoreOverride?: RoomStore): IUseE2EEStatusResult => {
+// Callers render outside RoomView's provider — the native-stack header, and the orchestrator that
+// renders the provider itself — so they resolve the store by rid from the module registry.
+export const useE2EEStatus = (rid?: string): IUseE2EEStatusResult => {
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);
-	const room = useRoomWithUpdateFromStore(roomStoreOverride ?? peekRoomStore(rid));
+	const room = useRoomWithUpdateFromStore(peekRoomStore(rid));
 
 	if (!('encrypted' in room)) {
 		return { showMissingE2EEKey: false, showE2EEDisabledRoom: false };

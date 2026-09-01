@@ -64,7 +64,7 @@ interface ILoadRoomResult {
 	// read on the user's behalf.
 	markRead?: boolean;
 	// What the attempt wants written. `init` applies it, so an aborted run can drop it wholesale.
-	patch?: Partial<IRoomViewState>;
+	patch?: Partial<RoomState>;
 }
 
 // One load attempt, over a `room` snapshot the caller read for this attempt. It reads nothing from
