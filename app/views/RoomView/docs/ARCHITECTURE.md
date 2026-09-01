@@ -128,11 +128,11 @@ Consequences:
 
 Each bullet names the test under `app/views/RoomView/` that holds it, or the code that carries it where no test does. CI does not enforce them as invariants — they are author obligations during review.
 
-- **Single bound distinguishes the modes** — `highTs == null` is the only Live Window; any finite `highTs` is an Anchored Window. The `<List isAnchored={highTs != null}>` prop and every anchored branch read this one source.
+- **Single bound distinguishes the modes** — `highTs == null` is the only Live Window; any finite `highTs` is an Anchored Window. The `<List isAnchored={highTs != null}>` prop in `List/index.tsx` and every anchored branch in `List/hooks/useMessages.ts` read this one source.
 - **Anchor re-seeds to one page** — `setHighTs` resets `count` to `0` so a fresh anchor lands at exactly `QUERY_SIZE`, not the grown size of the prior window. Verified by `useMessages.test.tsx`.
 - **Monotonic climb, no release across a Gap** — `raiseOrRelease` returns `null` only when no Newer Loader remains; otherwise the maximum Loader `ts`, clamped so the bound never moves backward. Verified by `anchorResolver.test.ts`.
 - **Reading position survives release** — RELEASE grows `count` by the rows above the old bound before clearing it, so the released window does not snap to the Live Tail. See `useMessages.raiseOrReleaseAnchor`.
-- **Stale-subscription guard** — `raiseOrReleaseAnchor` pins to the subscription that fired the emit and bails if `fetchMessages` re-subscribed during its awaits, so a room switch / concurrent raise cannot mutate the new window's `count` / `highTs`.
+- **Stale-subscription guard** — `raiseOrReleaseAnchor` pins to the subscription that fired the emit and bails if `fetchMessages` re-subscribed during its awaits, so a room switch / concurrent raise cannot mutate the new window's `count` / `highTs`. See `List/hooks/useMessages.ts`.
 - **Exactly one scroll per jump** — `jump.scrolled` gates the re-observe effect and the synchronous in-window path; a jump scrolls once and completes. Verified by `useScroll.test.tsx`.
 - **Every jump terminates** — growth retries, scroll-fail retries, and the safety net are all bounded and reset per jump; an unreachable target aborts (releasing the anchor) instead of looping. Verified by `useScroll.test.tsx`.
 - **Frontier climb advances, never recurses** — `onScrollToIndexFailed` steps to `highestMeasuredFrameIndex` (which moves the viewport) rather than re-scrolling to the unmeasured target, and defers each retry one frame to break `VirtualizedList`'s synchronous re-fire. Verified by `useScroll.test.tsx`.

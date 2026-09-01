@@ -185,12 +185,14 @@ sequenceDiagram
     autonumber
     participant Nav as navigation param
     participant Hook as useJumpToMessage
+    participant RoomInit as useRoomInit mount effect
     participant Init as RoomStore init()
     participant Thread as loadThreadMessages
     participant List as List handle
 
     Nav->>Hook: jumpToMessageId (thread target)
     Hook->>Hook: mount effect — main-list jump fires now; thread jump deferred
+    RoomInit->>Init: init({ tmid, onThreadMessagesLoaded })
     Init->>Thread: loadThreadMessages
     Thread-->>Init: thread rows present
     Init->>Hook: onThreadMessagesLoaded
