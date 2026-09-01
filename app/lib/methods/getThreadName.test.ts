@@ -160,9 +160,10 @@ describe('getThreadName', () => {
 		const tmsg = await getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_ID');
 
 		expect(tmsg).toBe('thread name');
-		expect((database.active as any).write).not.toHaveBeenCalled();
 		expect(batch).not.toHaveBeenCalled();
 		expect(threadCollection.prepareCreate).not.toHaveBeenCalled();
+		expect(record.update).toHaveBeenCalledTimes(1);
+		expect(record.tmsg).toBe('thread name');
 	});
 
 	it('logs and resolves undefined when fetching the remote thread fails', async () => {
@@ -176,5 +177,56 @@ describe('getThreadName', () => {
 		expect(tmsg).toBeUndefined();
 		expect(mockedLog).toHaveBeenCalledWith(error);
 		expect(batch).not.toHaveBeenCalled();
+	});
+
+	it('creates the thread once when two callers race for the same tmid', async () => {
+		const storedThreadIds = new Set<string>();
+		let writeQueue: Promise<unknown> = Promise.resolve();
+		const racingCollection = {
+			schema: {},
+			prepareCreate: jest.fn((cb: (t: any) => void) => {
+				const raw: any = {};
+				cb({
+					set _raw(value: any) {
+						Object.assign(raw, value);
+					},
+					get _raw() {
+						return raw;
+					}
+				});
+				return { id: raw.id };
+			})
+		};
+		(database as any).active = {
+			get: jest.fn(() => racingCollection),
+			// watermelon serializes writers, so the second caller runs after the first commits
+			write: jest.fn((fn: () => Promise<void>) => {
+				const run = writeQueue.then(fn);
+				writeQueue = run.catch(() => {});
+				return run;
+			}),
+			batch: jest.fn((...records: any[]) => {
+				records.forEach(record => {
+					if (!record?.id) return;
+					if (storedThreadIds.has(record.id)) {
+						throw new Error('UNIQUE constraint failed: threads.id');
+					}
+					storedThreadIds.add(record.id);
+				});
+				return Promise.resolve();
+			})
+		};
+
+		mockedGetMessageById.mockImplementation((id: string | null) => Promise.resolve(buildMessageRecord(id as string) as any));
+		mockedGetThreadById.mockImplementation(() =>
+			Promise.resolve(storedThreadIds.has('THREAD_ID') ? ({ msg: 'thread name' } as any) : null)
+		);
+		mockedGetSingleMessage.mockResolvedValue({ _id: 'THREAD_ID', msg: 'thread name' } as any);
+		mockedDecryptMessage.mockImplementation((message: any) => Promise.resolve(message));
+
+		await Promise.all([getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_A'), getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_B')]);
+
+		expect(mockedLog).not.toHaveBeenCalled();
+		expect(racingCollection.prepareCreate).toHaveBeenCalledTimes(1);
 	});
 });
