@@ -1,4 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
+import { useEffect, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { createStore, useStore, type StateCreator } from 'zustand';
 
@@ -296,6 +297,42 @@ export const releaseRoomStore = (rid?: string): void => {
 		entry.unsubscribe();
 		registry.delete(rid);
 	}
+};
+
+const acquireRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams, store: RoomStore): RoomStore => {
+	const { rid, t } = params;
+	if (!rid) {
+		return store;
+	}
+	const entry = registry.get(rid);
+	if (entry) {
+		entry.refCount += 1;
+		return entry.store;
+	}
+	const unsubscribe = observeRoom(rid, t, store);
+	registry.set(rid, { store, unsubscribe, refCount: 1, pendingSweep: false });
+	return store;
+};
+
+export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): RoomStore => {
+	const [screenParams] = useState(params);
+	const [screenRoomStoreState] = useState(() =>
+		createStore<{ store: RoomStore }>(() => ({ store: peekOrCreateRoomStore(screenParams) }))
+	);
+	const store = useStore(screenRoomStoreState, state => state.store);
+	const { rid } = screenParams;
+
+	useEffect(() => {
+		const acquiredStore = acquireRoomStoreForScreen(screenParams, store);
+		if (acquiredStore !== store) {
+			screenRoomStoreState.setState({ store: acquiredStore });
+		}
+		return () => {
+			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
+		};
+	}, [rid, screenParams, screenRoomStoreState, store]);
+
+	return store;
 };
 
 // Inert store derived from createRoomState (the empty-room default), so a true-bug registry miss

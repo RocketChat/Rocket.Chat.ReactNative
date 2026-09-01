@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { InteractionManager, useWindowDimensions } from 'react-native';
+import { useRef, useState } from 'react';
+import { useWindowDimensions } from 'react-native';
 import { useStore } from 'zustand';
 
 import { type IMessageActions } from '../../containers/MessageActions';
@@ -33,7 +33,7 @@ import { RoomMessageActions } from './components/RoomMessageActions';
 import { isRoomFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from './stores/RoomStore';
+import { useRoomStoreForScreen } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
 import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useHeader } from './hooks/useHeader';
@@ -126,17 +126,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const userRef = useLiveRef(user);
 
-	const [roomStore] = useState(() => peekOrCreateRoomStore({ rid, t, initialRoom, roomUserId: initialRoomUserId }));
-	// rid is stable for this RoomView instance; render peeks the store, this effect owns its lifetime.
-	// Symmetric acquire/release, so a StrictMode/concurrent double-invoke can't leak the registry entry.
-	// Release is deferred past the exit animation so the store outlives a healthy pop and the
-	// native-stack header never misses the registry mid-transition (mirrors goRoom's grace release).
-	useEffect(() => {
-		acquireRoomStore(rid);
-		return () => {
-			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
-		};
-	}, [rid]);
+	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId });
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);

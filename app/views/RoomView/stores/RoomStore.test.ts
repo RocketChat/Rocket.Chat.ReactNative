@@ -10,7 +10,7 @@ import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription'
 import log from '../../../lib/methods/helpers/log';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
-import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore, useRoomStoreByRid } from './RoomStore';
+import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore, useRoomStoreByRid, useRoomStoreForScreen } from './RoomStore';
 
 const mockScheduledSweeps: Array<() => void> = [];
 const flushSweeps = () => {
@@ -483,6 +483,36 @@ describe('RoomStore', () => {
 	});
 
 	describe('refcount lifecycle', () => {
+		it('reattaches observation when the grace sweep runs before screen acquisition', () => {
+			const { observeWithColumns, unsubscribe, emit } = setupObserve();
+			jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation(((cb: () => void) => {
+				cb();
+				return { then: () => {} };
+			}) as unknown as typeof InteractionManager.runAfterInteractions);
+
+			const { result } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', t: 'c', initialRoom: stubRoom }));
+
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
+			expect(observeWithColumns).toHaveBeenCalledTimes(2);
+			emit([subRoom]);
+			expect(result.current.getState().room).toBe(subRoom);
+		});
+
+		it('owns the store until the screen transition finishes', () => {
+			const { unsubscribe } = setupObserve();
+			const { result, unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', t: 'c', initialRoom: stubRoom }));
+
+			flushSweeps();
+			expect(result.current.getState().room).toBe(stubRoom);
+			expect(unsubscribe).not.toHaveBeenCalled();
+
+			unmount();
+			expect(unsubscribe).not.toHaveBeenCalled();
+
+			flushSweeps();
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
+		});
+
 		it('survives a StrictMode double-invoke of the render initializer (peek twice, acquire/release once)', () => {
 			const { observeWithColumns, unsubscribe } = setupObserve();
 
