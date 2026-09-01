@@ -42,15 +42,15 @@ test('render several emojis', () => {
 });
 
 test('render flag_no emoji as the Norway flag', () => {
-	const { formatShortnameToUnicode } = useShortnameToUnicode();
-	const unicodeEmoji = formatShortnameToUnicode(':flag_no:');
+	const { result } = renderHook(() => useShortnameToUnicode());
+	const unicodeEmoji = result.current.formatShortnameToUnicode(':flag_no:');
 	expect(unicodeEmoji).toBe('🇳🇴');
 });
 
 test('do NOT resolve a shortcode that collides with a custom emoji name', () => {
 	mockedStore.dispatch(setCustomEmojis({ no: { name: 'no', extension: 'png' } }));
-	const { formatShortnameToUnicode } = useShortnameToUnicode();
-	const unicodeEmoji = formatShortnameToUnicode(':no:');
+	const { result } = renderHook(() => useShortnameToUnicode());
+	const unicodeEmoji = result.current.formatShortnameToUnicode(':no:');
 	expect(unicodeEmoji).toBe(':no:');
 	mockedStore.dispatch(setCustomEmojis({}));
 });

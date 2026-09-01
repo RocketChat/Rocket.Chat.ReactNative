@@ -150,7 +150,7 @@ describe('shortcode collides with a custom emoji name', () => {
 	});
 
 	test('does not resolve :no: to the Norway flag when a custom "no" emoji exists', () => {
-		const formattedText = usePreviewFormatText(':no:');
-		expect(formattedText).toBe(':no:');
+		const { result } = renderHook(() => usePreviewFormatText(':no:'));
+		expect(result.current).toBe(':no:');
 	});
 });
