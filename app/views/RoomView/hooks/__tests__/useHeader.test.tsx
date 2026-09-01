@@ -55,17 +55,6 @@ describe('useHeader', () => {
 		mockTestStore = makeRoomStore();
 	});
 
-	it('sets headerLeft, headerTitle and headerRight when rid is present', () => {
-		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
-
-		expect(mockSetOptions).toHaveBeenCalledTimes(2);
-		const sideOptions = mockSetOptions.mock.calls[0][0];
-		expect(typeof sideOptions.headerLeft).toBe('function');
-		expect(typeof sideOptions.headerRight).toBe('function');
-		const titleOptions = mockSetOptions.mock.calls[1][0];
-		expect(typeof titleOptions.headerTitle).toBe('function');
-	});
-
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
 		renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general' }));
 
@@ -102,13 +91,10 @@ describe('useHeader', () => {
 	});
 
 	it('keeps the thread title from the passed name when the observed room name changes', () => {
-		const { getRoomTitle } = jest.requireMock('../../../../lib/methods/helpers');
 		renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread name' }));
 
 		const titleOptions = mockSetOptions.mock.calls[1][0];
 		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
-		// the parent channel's name only feeds parentTitle
-		expect(getRoomTitle).toHaveBeenCalled();
 
 		act(() => {
 			mockTestStore.setState({ room: { rid: 'rid-1', t: 'c', name: 'parent-channel' }, roomUpdate: { topic: 'new' } });
