@@ -1,4 +1,6 @@
 import { getPermissions } from './getPermissions';
+import log from './helpers/log';
+import { createWriterLock } from '../database/__tests__/mockedWatermelonDB';
 import type { IPermission } from '../../definitions';
 
 const UNIQUE_CONSTRAINT_ERROR = 'Failed to execute db update - sqlite error 1555 (UNIQUE constraint failed: permissions.id)';
@@ -9,7 +11,7 @@ interface IPermissionRow {
 	_updatedAt: string;
 }
 
-type TPermissionDraft = { _raw: { id: string }; roles: string[]; _updatedAt: string };
+type TPermissionDraft = Omit<IPermissionRow, 'id'> & { _raw: { id: string } };
 
 type TBatchOperation =
 	| { type: 'create'; model: TPermissionDraft }
@@ -17,7 +19,6 @@ type TBatchOperation =
 	| { type: 'destroy'; row: IPermissionRow };
 
 const mockPermissionsTable = new Map<string, IPermissionRow>();
-const mockLoggedErrors: Error[] = [];
 
 const makePermissionModel = (row: IPermissionRow) => ({
 	id: row.id,
@@ -28,7 +29,6 @@ const makePermissionModel = (row: IPermissionRow) => ({
 });
 
 const mockPermissionsCollection = {
-	schema: { columns: {} },
 	query: () => ({ fetch: () => Promise.resolve([...mockPermissionsTable.values()].map(makePermissionModel)) }),
 	prepareCreate: (build: (model: TPermissionDraft) => void): TBatchOperation => {
 		const model: TPermissionDraft = { _raw: { id: '' }, roles: [], _updatedAt: '' };
@@ -37,15 +37,11 @@ const mockPermissionsCollection = {
 	}
 };
 
-let mockWriterQueue: Promise<unknown> = Promise.resolve();
+let mockWrite = createWriterLock();
 
 const mockDatabase = {
 	get: () => mockPermissionsCollection,
-	write: <T>(writer: () => Promise<T>) => {
-		const settled = mockWriterQueue.then(writer);
-		mockWriterQueue = settled.catch(() => undefined);
-		return settled as Promise<T>;
-	},
+	write: <T>(writer: () => Promise<T>) => mockWrite(writer),
 	batch: (operations: TBatchOperation[]) => {
 		operations.forEach(operation => {
 			if (operation.type === 'destroy') {
@@ -79,7 +75,7 @@ jest.mock('../database', () => ({
 jest.mock('../store/auxStore', () => ({
 	store: { getState: () => ({ server: { version: '7.0.0' } }), dispatch: jest.fn() }
 }));
-jest.mock('./helpers/log', () => ({ __esModule: true, default: (error: Error) => mockLoggedErrors.push(error) }));
+jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 let mockServerUpdate: IPermission[] = [];
 let mockServerRemove: IPermission[] = [];
@@ -94,10 +90,8 @@ jest.mock('../services/sdk', () => ({
 	}
 }));
 
-const makeServerPermission = (id: string, roles: string[], updatedAt = '2026-01-01T00:00:00.000Z') =>
+const makeServerPermission = (id: string, roles: string[] = [], updatedAt = '2026-01-01T00:00:00.000Z') =>
 	({ _id: id, roles, _updatedAt: updatedAt }) as unknown as IPermission;
-
-const makeRemovedPermission = (id: string) => ({ _id: id }) as unknown as IPermission;
 
 const storedRoles = (id: string) => mockPermissionsTable.get(id)?.roles;
 
@@ -105,16 +99,18 @@ describe('getPermissions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockPermissionsTable.clear();
-		mockWriterQueue = Promise.resolve();
-		mockLoggedErrors.length = 0;
+		mockWrite = createWriterLock();
 		mockServerUpdate = [makeServerPermission('edit-message', ['admin']), makeServerPermission('mute-user', ['admin'])];
 		mockServerRemove = [];
+	});
+
+	afterEach(() => {
+		expect(log).not.toHaveBeenCalled();
 	});
 
 	it('does not violate the permissions unique constraint when two runs race on an empty database', async () => {
 		await Promise.all([getPermissions(), getPermissions()]);
 
-		expect(mockLoggedErrors).toHaveLength(0);
 		expect([...mockPermissionsTable.keys()]).toEqual(['edit-message', 'mute-user']);
 	});
 
@@ -123,7 +119,6 @@ describe('getPermissions', () => {
 
 		await getPermissions();
 
-		expect(mockLoggedErrors).toHaveLength(0);
 		expect([...mockPermissionsTable.keys()]).toEqual(['edit-message', 'mute-user']);
 		expect(storedRoles('edit-message')).toEqual(['user']);
 	});
@@ -134,7 +129,6 @@ describe('getPermissions', () => {
 
 		await getPermissions();
 
-		expect(mockLoggedErrors).toHaveLength(0);
 		expect([...mockPermissionsTable.keys()]).toEqual(['edit-message', 'mute-user']);
 		expect(storedRoles('edit-message')).toEqual(['owner']);
 	});
@@ -142,22 +136,20 @@ describe('getPermissions', () => {
 	it('deletes permissions the server removed', async () => {
 		await getPermissions();
 		mockServerUpdate = [];
-		mockServerRemove = [makeRemovedPermission('mute-user')];
+		mockServerRemove = [makeServerPermission('mute-user')];
 
 		await getPermissions();
 
-		expect(mockLoggedErrors).toHaveLength(0);
 		expect([...mockPermissionsTable.keys()]).toEqual(['edit-message']);
 	});
 
 	it('recreates a permission the server sends in both remove and update', async () => {
 		await getPermissions();
 		mockServerUpdate = [makeServerPermission('mute-user', ['owner'], '2026-01-02T00:00:00.000Z')];
-		mockServerRemove = [makeRemovedPermission('mute-user')];
+		mockServerRemove = [makeServerPermission('mute-user')];
 
 		await getPermissions();
 
-		expect(mockLoggedErrors).toHaveLength(0);
 		expect(storedRoles('mute-user')).toEqual(['owner']);
 	});
 });

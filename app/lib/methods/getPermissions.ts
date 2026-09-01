@@ -109,10 +109,11 @@ const updatePermissions = async ({ update = [], remove = [] }: { update?: IPermi
 	const permissionsCollection = db.get('permissions');
 
 	const uniqueUpdate = [...new Map(update.map(permission => [permission._id, permission])).values()];
+	const touchedIds = [...remove.map(permission => permission._id), ...uniqueUpdate.map(permission => permission._id)];
 
 	try {
 		await db.write(async () => {
-			const allRecords = (await permissionsCollection.query().fetch()) as TPermissionModel[];
+			const allRecords = (await permissionsCollection.query(Q.where('id', Q.oneOf(touchedIds))).fetch()) as TPermissionModel[];
 			const recordById = new Map(allRecords.map(record => [record.id, record]));
 			const batch: TPermissionModel[] = [];
 
@@ -125,24 +126,17 @@ const updatePermissions = async ({ update = [], remove = [] }: { update?: IPermi
 			});
 
 			uniqueUpdate.forEach(permission => {
+				const assign = (p: TPermissionModel) => Object.assign(p, permission);
 				const record = recordById.get(permission._id);
-				if (record) {
-					batch.push(
-						record.prepareUpdate(
-							protectedFunction((p: TPermissionModel) => {
-								Object.assign(p, permission);
-							})
-						)
-					);
-					return;
-				}
 				batch.push(
-					permissionsCollection.prepareCreate(
-						protectedFunction((p: TPermissionModel) => {
-							p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
-							Object.assign(p, permission);
-						})
-					)
+					record
+						? record.prepareUpdate(protectedFunction(assign))
+						: permissionsCollection.prepareCreate(
+								protectedFunction((p: TPermissionModel) => {
+									p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
+									assign(p);
+								})
+							)
 				);
 			});
 
@@ -158,9 +152,6 @@ export function getPermissions(): Promise<void> {
 	return new Promise(async resolve => {
 		try {
 			const serverVersion: string | null = reduxStore.getState().server.version;
-			const db = database.active;
-			const permissionsCollection = db.get('permissions');
-			const allRecords = await permissionsCollection.query().fetch();
 			sdk.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
 			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
@@ -178,6 +169,7 @@ export function getPermissions(): Promise<void> {
 			}
 
 			const params: { updatedSince?: string } = {};
+			const allRecords = (await database.active.get('permissions').query().fetch()) as TPermissionModel[];
 			const updatedSince = getUpdatedSince(allRecords);
 			if (updatedSince) {
 				params.updatedSince = updatedSince;
