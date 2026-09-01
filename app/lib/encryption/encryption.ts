@@ -293,7 +293,7 @@ class Encryption {
 				await this.roomInstances[rid].handshake();
 				return this.roomInstances[rid];
 			}
-			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string, this);
 
 			const roomE2E = this.roomInstances[rid];
 

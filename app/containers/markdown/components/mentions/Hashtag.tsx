@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { memo } from 'react';
 import { Text } from 'react-native';
 
 import i18n from '../../../../i18n';
@@ -13,7 +13,7 @@ import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import styles from '../../styles';
-import MarkdownContext from '../../contexts/MarkdownContext';
+import { useMarkdownContext } from '../../contexts/MarkdownContext';
 
 interface IHashtag {
 	hashtag: string;
@@ -21,7 +21,7 @@ interface IHashtag {
 
 const Hashtag = memo(({ hashtag }: IHashtag) => {
 	const { theme } = useTheme();
-	const { textStyle, channels, navToRoomInfo } = useContext(MarkdownContext);
+	const { textStyle, channels, navToRoomInfo } = useMarkdownContext();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useMasterDetail();
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
