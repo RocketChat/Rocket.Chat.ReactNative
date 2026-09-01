@@ -19,16 +19,10 @@ jest.mock('../../../views/RoomView/stores/ComposerStore', () => ({
 	useGetText: jest.fn()
 }));
 
-jest.mock('../../message/stores/MessageActionStore', () => {
-	const useMessageAction = jest.fn();
-	return {
-		useMessageAction,
-		useQuotedMessageIds: () => {
-			const action = useMessageAction();
-			return action?.kind === 'quote' ? action.messageIds : [];
-		}
-	};
-});
+jest.mock('../../message/stores/MessageActionStore', () => ({
+	useMessageAction: jest.fn(),
+	useQuotedMessageIds: jest.fn(() => [])
+}));
 
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
@@ -60,6 +54,7 @@ const mockUseMessageComposerApi = require('../context').useMessageComposerApi as
 const mockUseSetQuotesAndText = require('../../../views/RoomView/stores/ComposerStore').useSetQuotesAndText as jest.Mock;
 const mockUseGetText = require('../../../views/RoomView/stores/ComposerStore').useGetText as jest.Mock;
 const mockUseMessageAction = require('../../message/stores/MessageActionStore').useMessageAction as jest.Mock;
+const mockUseQuotedMessageIds = require('../../message/stores/MessageActionStore').useQuotedMessageIds as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 const mockGetThreadById = require('../../../lib/database/services/Thread').getThreadById as jest.Mock;
@@ -142,6 +137,7 @@ describe('useChooseMedia', () => {
 	it('forwards quoted message ids to ShareView as selectedMessages', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
 		mockUseMessageAction.mockReturnValue({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
+		mockUseQuotedMessageIds.mockReturnValue(['msg-1', 'msg-2']);
 		mockGetDocumentAsync.mockResolvedValue({
 			canceled: false,
 			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
@@ -160,6 +156,7 @@ describe('useChooseMedia', () => {
 	it('does not quote the message when the action is edit', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
 		mockUseMessageAction.mockReturnValue({ kind: 'edit', messageId: 'msg-1' });
+		mockUseQuotedMessageIds.mockReturnValue([]);
 		mockGetDocumentAsync.mockResolvedValue({
 			canceled: false,
 			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
