@@ -13,6 +13,7 @@ import getMessages from '../services/getMessages';
 import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore, useRoomStoreByRid, useRoomStoreForScreen } from './RoomStore';
 
 const mockScheduledSweeps: Array<() => void> = [];
+const acquire = (rid = 'rid-1') => acquireRoomStore({ rid }, peekOrCreateRoomStore({ rid, initialRoom: stubRoom }));
 const flushSweeps = () => {
 	const pending = mockScheduledSweeps.splice(0);
 	pending.forEach(cb => cb());
@@ -451,8 +452,8 @@ describe('RoomStore', () => {
 			const { unsubscribe } = setupObserve();
 
 			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquireRoomStore('rid-1');
-			acquireRoomStore('rid-1');
+			acquire();
+			acquire();
 
 			releaseRoomStore('rid-1');
 			expect(unsubscribe).not.toHaveBeenCalled();
@@ -465,7 +466,7 @@ describe('RoomStore', () => {
 			const { observeWithColumns } = setupObserve();
 
 			const first = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquireRoomStore('rid-1');
+			acquire();
 			releaseRoomStore('rid-1');
 			const second = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
@@ -523,7 +524,7 @@ describe('RoomStore', () => {
 			expect(observeWithColumns).toHaveBeenCalledTimes(1);
 
 			// The committed mount effect acquires once; its cleanup releases once.
-			acquireRoomStore('rid-1');
+			acquire();
 			flushSweeps();
 			expect(unsubscribe).not.toHaveBeenCalled();
 
@@ -538,7 +539,7 @@ describe('RoomStore', () => {
 			const warmed = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 			// RoomView mounts against the same warmed entry and acquires it before the sweep runs.
 			const mounted = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquireRoomStore('rid-1');
+			acquire();
 
 			flushSweeps();
 
@@ -546,17 +547,19 @@ describe('RoomStore', () => {
 			expect(unsubscribe).not.toHaveBeenCalled();
 		});
 
-		it('warns when the grace sweep reclaims an entry before the acquire commits', () => {
-			setupObserve();
-			const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+		it('re-registers an owned observer when the grace sweep reclaims an entry before the acquire commits', () => {
+			const { unsubscribe, observeWithColumns } = setupObserve();
 
 			// Warm at refCount 0, then let the sweep tear it down before the mount effect acquires.
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			const warmed = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 			flushSweeps();
-			acquireRoomStore('rid-1');
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
 
-			expect(warn).toHaveBeenCalledWith(expect.stringContaining('swept before acquire'));
-			warn.mockRestore();
+			acquireRoomStore({ rid: 'rid-1' }, warmed);
+			flushSweeps();
+
+			expect(observeWithColumns).toHaveBeenCalledTimes(2);
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
 		it('warm-up abandoned: the grace sweep tears down an entry no mount ever acquired', () => {
@@ -577,7 +580,7 @@ describe('RoomStore', () => {
 			const { unsubscribe } = setupObserve();
 
 			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquireRoomStore('rid-1');
+			acquire();
 			releaseRoomStore('rid-1');
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
 

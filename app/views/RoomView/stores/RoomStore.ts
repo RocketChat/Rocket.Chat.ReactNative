@@ -250,6 +250,10 @@ const scheduleGraceSweep = (rid: string): void => {
 	});
 };
 
+const register = (rid: string, t: string | undefined, store: RoomStore, refCount: number): void => {
+	registry.set(rid, { store, unsubscribe: observeRoom(rid, t, store), refCount, pendingSweep: false });
+};
+
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
 // without touching refCount. Safe to call from a useState initializer, which may run twice under
 // StrictMode/concurrent render. Acquire/release own the lifetime.
@@ -262,26 +266,9 @@ export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetO
 		return existing.store;
 	}
 	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
-	const unsubscribe = observeRoom(rid, t, store);
-	registry.set(rid, { store, unsubscribe, refCount: 0, pendingSweep: false });
+	register(rid, t, store, 0);
 	scheduleGraceSweep(rid);
 	return store;
-};
-
-export const acquireRoomStore = (rid?: string): void => {
-	if (!rid) {
-		return;
-	}
-	const entry = registry.get(rid);
-	if (entry) {
-		entry.refCount += 1;
-		return;
-	}
-	if (__DEV__) {
-		// A missing entry here means the grace sweep reclaimed it before this acquire committed:
-		// the store is now observed-but-unowned and will leak. A live miss is a real bug.
-		console.warn(`acquireRoomStore: no store registered for rid "${rid}"; entry was swept before acquire.`);
-	}
 };
 
 export const releaseRoomStore = (rid?: string): void => {
@@ -299,8 +286,9 @@ export const releaseRoomStore = (rid?: string): void => {
 	}
 };
 
-const acquireRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams, store: RoomStore): RoomStore => {
-	const { rid, t } = params;
+// Claims ownership of the rid-keyed store for one screen: increments refCount, re-registering the
+// observer if the grace sweep reclaimed the entry between render and effect.
+export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, 'rid' | 't'>, store: RoomStore): RoomStore => {
 	if (!rid) {
 		return store;
 	}
@@ -309,28 +297,21 @@ const acquireRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams, store: R
 		entry.refCount += 1;
 		return entry.store;
 	}
-	const unsubscribe = observeRoom(rid, t, store);
-	registry.set(rid, { store, unsubscribe, refCount: 1, pendingSweep: false });
+	register(rid, t, store, 1);
 	return store;
 };
 
 export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): RoomStore => {
 	const [screenParams] = useState(params);
-	const [screenRoomStoreState] = useState(() =>
-		createStore<{ store: RoomStore }>(() => ({ store: peekOrCreateRoomStore(screenParams) }))
-	);
-	const store = useStore(screenRoomStoreState, state => state.store);
+	const [store, setStore] = useState(() => peekOrCreateRoomStore(screenParams));
 	const { rid } = screenParams;
 
 	useEffect(() => {
-		const acquiredStore = acquireRoomStoreForScreen(screenParams, store);
-		if (acquiredStore !== store) {
-			screenRoomStoreState.setState({ store: acquiredStore });
-		}
+		setStore(acquireRoomStore(screenParams, store));
 		return () => {
 			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
 		};
-	}, [rid, screenParams, screenRoomStoreState, store]);
+	}, [rid, screenParams, store]);
 
 	return store;
 };

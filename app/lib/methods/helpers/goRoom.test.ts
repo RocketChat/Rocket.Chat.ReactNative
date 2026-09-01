@@ -85,7 +85,7 @@ describe('goRoom RoomStore warm-up', () => {
 
 		// Simulate RoomView mounting against the warmed entry and acquiring it: refCount 0 -> 1.
 		const mounted = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
-		acquireRoomStore('r1');
+		acquireRoomStore({ rid: 'r1' }, mounted);
 
 		// Grace sweep fires after the transition: refCount is 1, so the entry stays alive.
 		graceCb!();
