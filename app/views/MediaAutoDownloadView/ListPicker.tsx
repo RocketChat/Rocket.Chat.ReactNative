@@ -1,6 +1,5 @@
-import React from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import * as List from '../../containers/List';
@@ -60,27 +59,33 @@ interface IBaseParams {
 const ListPicker = ({
 	value,
 	title,
+	testID,
 	onChangeValue
 }: {
 	title: string;
+	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
-	const getOptions = () => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+	const getOptions = (): ReactElement => (
+		<View style={{ backgroundColor: colors.surfaceRoom }}>
+			<List.Separator />
 			{OPTIONS.map(i => (
-				<List.Radio
-					onPress={() => {
-						hideActionSheet();
-						onChangeValue(i.value);
-					}}
-					title={i.label}
-					value={i.value}
-					isSelected={option.value === i.value}
-				/>
+				<Fragment key={i.value}>
+					<List.Radio
+						onPress={() => {
+							hideActionSheet();
+							onChangeValue(i.value);
+						}}
+						title={i.label}
+						value={i.value}
+						isSelected={option.value === i.value}
+						testID={`${testID}-${i.value}`}
+					/>
+					<List.Separator />
+				</Fragment>
 			))}
 		</View>
 	);
@@ -90,6 +95,7 @@ const ListPicker = ({
 
 	return (
 		<List.Item
+			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>

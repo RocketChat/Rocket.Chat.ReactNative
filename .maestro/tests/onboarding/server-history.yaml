@@ -1,11 +1,11 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Server History
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-3
+  - test-1
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}

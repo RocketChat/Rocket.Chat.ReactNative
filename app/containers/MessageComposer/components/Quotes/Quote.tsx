@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 
 import dayjs from '../../../../lib/dayjs';
@@ -11,12 +10,10 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
-	'use memo';
-
 	const [styles, colors] = useStyle();
-	const message = useMessage(messageId);
+	const { tmid, onRemoveQuoteMessage } = useRoomContext();
+	const message = useMessage(messageId, tmid);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
-	const { onRemoveQuoteMessage } = useRoomContext();
 
 	let username = '';
 	let msg = '';

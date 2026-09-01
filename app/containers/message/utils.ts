@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
-import { type IAttachment } from '../../definitions';
-import { type MessageTypesValues, type TMessageModel } from '../../definitions/IMessage';
+import { type IAttachment, type IMessageTranslations } from '../../definitions';
+import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 
@@ -82,11 +82,11 @@ const messagesWithAuthorName: MessageTypesValues[] = [
 export const messageHaveAuthorName = (type: MessageTypesValues): boolean => messagesWithAuthorName.includes(type);
 
 type TInfoMessage = {
-	type: MessageTypesValues;
-	role: string;
-	msg: string;
-	author: { username: string };
-	comment?: string;
+	type: TAnyMessageModel['t'];
+	role: TAnyMessageModel['role'];
+	msg: TAnyMessageModel['msg'];
+	author: TAnyMessageModel['u'];
+	comment?: TAnyMessageModel['comment'];
 };
 
 export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessage): string => {
@@ -189,13 +189,16 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 	}
 };
 
-export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string): string | null => {
+export const getMessageTranslation = (
+	message: TMessageModel | { translations?: TMessageModel['translations'] },
+	autoTranslateLanguage: string
+): string | null => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}
 	const { translations } = message;
 	if (translations) {
-		const translation = translations.find((trans: any) => trans.language === autoTranslateLanguage);
+		const translation = translations.find((trans: IMessageTranslations) => trans.language === autoTranslateLanguage);
 		return translation?.value || null;
 	}
 	return null;
@@ -210,4 +213,14 @@ export const getMessageFromAttachment = (attachment: IAttachment, translateLangu
 		}
 	}
 	return msg;
+};
+
+export const getPreviewMessageFromAttachment = (attachment: IAttachment, translateLanguage?: string): string | undefined => {
+	if (translateLanguage) {
+		const translated = attachment.translations?.[translateLanguage];
+		if (translated) {
+			return translated;
+		}
+	}
+	return attachment.description ?? attachment.title;
 };

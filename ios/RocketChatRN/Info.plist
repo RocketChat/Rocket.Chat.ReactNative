@@ -2,10 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AppGroup</key>
+	<key>AppGroupIdentifier</key>
 	<string>group.ios.chat.rocket</string>
-	<key>IS_OFFICIAL</key>
-	<false/>
 	<key>bugsnag</key>
 	<dict>
 		<key>apiKey</key>
@@ -28,7 +26,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.72.0</string>
+	<string>4.77.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -72,7 +70,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Unlock the app with FaceID</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Use your microphone to record audio messages</string>
+	<string>$(PRODUCT_NAME) uses your microphone to make voice calls and record audio messages</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

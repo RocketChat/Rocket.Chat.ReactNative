@@ -36,6 +36,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -78,6 +81,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -169,6 +175,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -211,6 +220,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -301,6 +313,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -343,6 +358,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -469,6 +487,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -511,6 +532,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -536,101 +560,135 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             underlineColorAndroid="transparent"
             value="https://open.rocket.chat/images/logo/android-chrome-512x512.png"
           />
-          <RNGestureHandlerButton
-            activeOpacity={1}
-            collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={-1}
-            handlerType="NativeViewGestureHandler"
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
-            onPress={[Function]}
-            rippleColor="#E4E7EA"
+          <View
             style={
               [
                 {
-                  "backgroundColor": undefined,
-                  "borderRadius": undefined,
-                  "margin": undefined,
-                  "marginBottom": undefined,
-                  "marginEnd": undefined,
-                  "marginHorizontal": undefined,
-                  "marginLeft": undefined,
-                  "marginRight": undefined,
-                  "marginStart": undefined,
-                  "marginTop": undefined,
-                  "marginVertical": undefined,
                   "position": "absolute",
-                  "right": 12,
                 },
                 {
-                  "cursor": undefined,
+                  "right": 12,
                 },
               ]
             }
-            testID="clear-text-input"
-            underlayColor="#E4E7EA"
           >
-            <View
-              collapsable={false}
+            <ExternalKeyboardView
+              canBeFocused={true}
+              enableA11yFocus={false}
+              enableContextMenu={false}
+              group={false}
+              haloEffect={true}
+              hasKeyDownPress={false}
+              hasKeyUpPress={true}
+              hasOnFocusChanged={true}
+              lockFocus={0}
+              onContextMenuPress={[Function]}
+              onFocusChange={[Function]}
+              onKeyUpPress={[Function]}
+              orderIndex={-1}
+              screenAutoA11yFocusDelay={300}
               style={
-                {
-                  "backgroundColor": "#E4E7EA",
-                  "borderBottomLeftRadius": undefined,
-                  "borderBottomRightRadius": undefined,
-                  "borderRadius": undefined,
-                  "borderTopLeftRadius": undefined,
-                  "borderTopRightRadius": undefined,
-                  "bottom": 0,
-                  "left": 0,
-                  "opacity": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                }
-              }
-            />
-            <View
-              accessibilityLabel="Clear input"
-              accessible={true}
-              style={
-                {
-                  "height": 20,
-                  "width": 20,
-                }
+                [
+                  undefined,
+                  undefined,
+                ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <RNGestureHandlerButton
+                activeOpacity={1}
+                collapsable={false}
+                delayLongPress={600}
+                enabled={true}
+                handlerTag={-1}
+                handlerType="NativeViewGestureHandler"
+                innerRef={null}
+                onActiveStateChange={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onPress={[Function]}
+                rippleColor="#E4E7EA"
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 20,
+                      "backgroundColor": undefined,
+                      "borderRadius": undefined,
+                      "margin": undefined,
+                      "marginBottom": undefined,
+                      "marginEnd": undefined,
+                      "marginHorizontal": undefined,
+                      "marginLeft": undefined,
+                      "marginRight": undefined,
+                      "marginStart": undefined,
+                      "marginTop": undefined,
+                      "marginVertical": undefined,
                     },
-                    [
-                      {
-                        "lineHeight": 20,
-                      },
-                      undefined,
-                    ],
                     {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "cursor": undefined,
                     },
-                    {},
                   ]
                 }
+                testID="clear-text-input"
+                underlayColor="#E4E7EA"
               >
-                
-              </Text>
-            </View>
-          </RNGestureHandlerButton>
+                <View
+                  collapsable={false}
+                  style={
+                    {
+                      "backgroundColor": "#E4E7EA",
+                      "borderBottomLeftRadius": undefined,
+                      "borderBottomRightRadius": undefined,
+                      "borderRadius": undefined,
+                      "borderTopLeftRadius": undefined,
+                      "borderTopRightRadius": undefined,
+                      "bottom": 0,
+                      "left": 0,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    }
+                  }
+                />
+                <View
+                  accessibilityLabel="Clear input"
+                  accessible={true}
+                  style={
+                    {
+                      "height": 20,
+                      "width": 20,
+                    }
+                  }
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 20,
+                        },
+                        [
+                          {
+                            "lineHeight": 20,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </ExternalKeyboardView>
+          </View>
         </View>
       </View>
     </A11yIndexView>
@@ -674,6 +732,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -716,6 +777,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -771,6 +835,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -813,6 +880,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -892,6 +962,9 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -938,6 +1011,9 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1007,6 +1083,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1049,6 +1128,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1104,6 +1186,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1147,6 +1232,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1188,93 +1276,116 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
               ]
             }
           >
-            <RNGestureHandlerButton
-              activeOpacity={1}
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              innerRef={null}
-              onActiveStateChange={[Function]}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              onPress={[Function]}
-              rippleColor="#E4E7EA"
+            <ExternalKeyboardView
+              canBeFocused={true}
+              enableA11yFocus={false}
+              enableContextMenu={false}
+              group={false}
+              haloEffect={true}
+              hasKeyDownPress={false}
+              hasKeyUpPress={true}
+              hasOnFocusChanged={true}
+              lockFocus={0}
+              onContextMenuPress={[Function]}
+              onFocusChange={[Function]}
+              onKeyUpPress={[Function]}
+              orderIndex={-1}
+              screenAutoA11yFocusDelay={300}
               style={
                 [
-                  {
-                    "backgroundColor": undefined,
-                    "borderRadius": undefined,
-                    "margin": undefined,
-                    "marginBottom": undefined,
-                    "marginEnd": undefined,
-                    "marginHorizontal": undefined,
-                    "marginLeft": undefined,
-                    "marginRight": undefined,
-                    "marginStart": undefined,
-                    "marginTop": undefined,
-                    "marginVertical": undefined,
-                  },
-                  {
-                    "cursor": undefined,
-                  },
+                  undefined,
+                  undefined,
                 ]
               }
-              underlayColor="#E4E7EA"
             >
-              <View
+              <RNGestureHandlerButton
+                activeOpacity={1}
                 collapsable={false}
+                delayLongPress={600}
+                enabled={true}
+                handlerTag={-1}
+                handlerType="NativeViewGestureHandler"
+                innerRef={null}
+                onActiveStateChange={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onPress={[Function]}
+                rippleColor="#E4E7EA"
                 style={
-                  {
-                    "backgroundColor": "#E4E7EA",
-                    "borderBottomLeftRadius": undefined,
-                    "borderBottomRightRadius": undefined,
-                    "borderRadius": undefined,
-                    "borderTopLeftRadius": undefined,
-                    "borderTopRightRadius": undefined,
-                    "bottom": 0,
-                    "left": 0,
-                    "opacity": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
+                  [
+                    {
+                      "backgroundColor": undefined,
+                      "borderRadius": undefined,
+                      "margin": undefined,
+                      "marginBottom": undefined,
+                      "marginEnd": undefined,
+                      "marginHorizontal": undefined,
+                      "marginLeft": undefined,
+                      "marginRight": undefined,
+                      "marginStart": undefined,
+                      "marginTop": undefined,
+                      "marginVertical": undefined,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
                 }
-              />
-              <View
-                accessibilityLabel="Show Password"
-                accessible={true}
-                style={{}}
+                underlayColor="#E4E7EA"
               >
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
+                <View
+                  collapsable={false}
                   style={
-                    [
-                      {
-                        "color": "#2F343D",
-                        "fontSize": 20,
-                      },
+                    {
+                      "backgroundColor": "#E4E7EA",
+                      "borderBottomLeftRadius": undefined,
+                      "borderBottomRightRadius": undefined,
+                      "borderRadius": undefined,
+                      "borderTopLeftRadius": undefined,
+                      "borderTopRightRadius": undefined,
+                      "bottom": 0,
+                      "left": 0,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    }
+                  }
+                />
+                <View
+                  accessibilityLabel="Show Password"
+                  accessible={true}
+                  style={{}}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
                       [
                         {
-                          "lineHeight": 20,
+                          "color": "#2F343D",
+                          "fontSize": 20,
                         },
-                        undefined,
-                      ],
-                      {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-            </RNGestureHandlerButton>
+                        [
+                          {
+                            "lineHeight": 20,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </ExternalKeyboardView>
           </A11yIndexView>
         </View>
       </View>
@@ -1319,6 +1430,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1361,6 +1475,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1416,6 +1533,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1458,6 +1578,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,

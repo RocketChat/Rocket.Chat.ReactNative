@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 
 import sharedStyles from '../../../../views/Styles';
@@ -9,8 +8,6 @@ import { NO_CANNED_RESPONSES } from '../../constants';
 import { useStyle } from './styles';
 
 export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCannedResponse }) => {
-	'use memo';
-
 	const [styles] = useStyle();
 	if (item.id === NO_CANNED_RESPONSES) {
 		return (

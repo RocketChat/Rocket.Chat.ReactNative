@@ -1,6 +1,5 @@
-import React, { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type ICustomEmojis, type IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -10,10 +9,14 @@ import { emojisByCategory } from '../../lib/constants/emojis';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
-import { isAndroid } from '../../lib/methods/helpers';
 
-const ANDROID_BOTTOM_SHEET_EXTRA_OFFSET = 24;
-const ANDROID_BOTTOM_SHEET_CONTENT_PADDING = EMOJI_BUTTON_SIZE + ANDROID_BOTTOM_SHEET_EXTRA_OFFSET;
+// Minimum visible space below the last emoji row when the picker is rendered
+// inside a bottom sheet: one emoji row + a small offset, so the last row
+// clears the sheet's bottom interaction area. The container's
+// `marginBottom: safeAreaBottom` already supplies part of this on devices with
+// a home indicator; the FlatList only tops up whatever is missing.
+const BOTTOM_SHEET_EXTRA_OFFSET = 24;
+const MIN_BOTTOM_SHEET_BREATHING_ROOM = EMOJI_BUTTON_SIZE + BOTTOM_SHEET_EXTRA_OFFSET;
 
 const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
@@ -49,9 +52,8 @@ const EmojiCategory = ({
 	emojis,
 	onEmojiSelected,
 	bottomSheet = false
-}: IEmojiCategoryProps): React.ReactElement | null => {
+}: IEmojiCategoryProps): ReactElement | null => {
 	const items = useEmojis(category);
-	const { bottom } = useSafeAreaInsets();
 
 	if (!parentWidth) {
 		return null;
@@ -59,7 +61,7 @@ const EmojiCategory = ({
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
-	const contentPaddingBottom = isAndroid && bottomSheet ? ANDROID_BOTTOM_SHEET_CONTENT_PADDING + bottom : undefined;
+	const contentPaddingBottom = bottomSheet ? MIN_BOTTOM_SHEET_BREATHING_ROOM : undefined;
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 

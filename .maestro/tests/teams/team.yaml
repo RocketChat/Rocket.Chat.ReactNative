@@ -1,8 +1,8 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Team
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-4

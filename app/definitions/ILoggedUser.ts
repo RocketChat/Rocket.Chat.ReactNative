@@ -1,6 +1,7 @@
 import type Model from '@nozbe/watermelondb/Model';
 
 import { type IUserEmail, type IUserSettings } from './IUser';
+import { type TStatusSource } from './TStatusSource';
 import { type TUserStatus } from './TUserStatus';
 
 export interface ILoggedUser {
@@ -10,7 +11,10 @@ export interface ILoggedUser {
 	name?: string;
 	language?: string;
 	status: TUserStatus;
+	statusDefault?: TUserStatus;
 	statusText?: string;
+	statusExpiresAt?: string;
+	statusSource?: TStatusSource;
 	customFields?: {
 		[key: string]: any;
 	};
@@ -26,8 +30,10 @@ export interface ILoggedUser {
 	requirePasswordChange?: boolean;
 }
 
-export interface ILoggedUserResultFromServer
-	extends Omit<ILoggedUser, 'enableMessageParserEarlyAdoption' | 'showMessageInMainThread'> {
+export interface ILoggedUserResultFromServer extends Omit<
+	ILoggedUser,
+	'enableMessageParserEarlyAdoption' | 'showMessageInMainThread'
+> {
 	settings: IUserSettings;
 }
 

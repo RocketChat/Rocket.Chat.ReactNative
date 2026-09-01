@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, type TextInputProps, View } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -7,12 +7,14 @@ import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		margin: 16,
+		marginHorizontal: 12,
+		marginTop: 16,
+		// override the default margin bottom of the FormTextInput
 		marginBottom: 16
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) => {
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();

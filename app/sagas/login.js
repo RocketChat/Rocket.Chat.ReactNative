@@ -1,11 +1,11 @@
-import React from 'react';
-import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -23,22 +23,28 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { selectFirstLoggedServer } from './selectFirstLoggedServer';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
-import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
+import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
-import { connect, loginWithPassword, login } from '../lib/services/connect';
+import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
-import { isIOS } from '../lib/methods/helpers';
+import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
+import { hasPermission } from '../lib/methods/helpers/helpers';
+import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
+import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -51,7 +57,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 		return;
 	}
 	const serverRecord = yield getServerById(server);
-	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	const isMasterDetail = getIsMasterDetail();
 	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
@@ -151,7 +157,7 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	}
 };
 
-const fetchPermissionsFork = function* fetchPermissionsFork() {
+const fetchPermissions = function* fetchPermissions() {
 	try {
 		yield getPermissions();
 	} catch (e) {
@@ -201,7 +207,7 @@ const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	}
 };
 
-const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
+const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	try {
 		yield getEnterpriseModules();
 
@@ -241,25 +247,71 @@ const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	}
 };
 
+const checkVoipPermission = async () => {
+	try {
+		const state = reduxStore.getState();
+		const userId = state.login.user?.id;
+		if (!userId) {
+			return;
+		}
+
+		const hasPermissions = await hasPermission([
+			state.permissions['allow-internal-voice-calls'],
+			state.permissions['allow-external-voice-calls']
+		]);
+		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
+
+		if (!canUseVoip) {
+			if (!isInActiveVoipCall()) {
+				mediaSessionInstance.reset();
+			}
+			return;
+		}
+		if (!mediaSessionStore.getCurrentInstance()) {
+			mediaSessionInstance.init(userId);
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const startVoipFork = function* startVoipFork() {
+	yield call(checkVoipPermission);
+
+	// Re-check on permission/module changes. selectServer's DB-read phase covers warm relaunches;
+	// PERMISSIONS.SET / ENTERPRISE_MODULES.SET cover first-login on a fresh server; PERMISSIONS.UPDATE
+	// covers runtime changes pushed by the server (handled in connect.ts's stream-notify-logged listener).
+	// Stop on LOGOUT, a new LOGIN.SUCCESS, or SERVER.SELECT_REQUEST so we never leak the saga across
+	// workspace switches.
+	yield race({
+		recheck: takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission),
+		stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
+	});
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		getUserPresence(user.id);
+		yield put(setUser(user));
+		setLanguage(user?.language);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
-		yield fork(fetchPermissionsFork);
+		// VoIP must spawn before the awaited fetches so it survives the 2s cancel race in root().
+		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
+		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
+		yield spawn(startVoipFork);
+		yield call(fetchPermissions);
+		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
-		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
 		yield fork(checkBackgroundAndSetAway);
-
-		setLanguage(user?.language);
+		yield getUserPresence(user.id);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
@@ -295,7 +347,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
@@ -335,15 +386,8 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				const servers = yield serversCollection.query().fetch();
 
 				// see if there're other logged in servers and selects first one
-				if (servers.length > 0) {
-					for (let i = 0; i < servers.length; i += 1) {
-						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-						if (token) {
-							yield put(selectServerRequest(newServer, newServer.version));
-							return;
-						}
-					}
+				if (yield* selectFirstLoggedServer(servers)) {
+					return;
 				}
 				// if there's no servers, go outside
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -402,21 +446,14 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 			const servers = yield serversCollection.query().fetch();
 
 			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			if (yield* selectFirstLoggedServer(servers)) {
+				return;
 			}
 			// if there's no servers, go outside
-			sdk.disconnect();
+			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {
-			sdk.disconnect();
+			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
 		}
@@ -432,11 +469,17 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		yield race({
+		// Only cancel handleLoginSuccess if a workspace switch interrupts it.
+		// Cancelling on the 2s timeout would rip the saga before it reaches
+		// appStart(ROOT_INSIDE), stranding users on the login screen when
+		// permissions/enterprise fetches run long (issue #7333).
+		const { selectRequest } = yield race({
 			selectRequest: take(types.SERVER.SELECT_REQUEST),
 			timeout: delay(2000)
 		});
-		yield cancel(loginSuccessTask);
+		if (selectRequest) {
+			yield cancel(loginSuccessTask);
+		}
 	}
 };
 export default root;

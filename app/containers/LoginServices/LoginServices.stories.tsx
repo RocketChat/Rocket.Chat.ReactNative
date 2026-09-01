@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { colors } from '../../lib/constants/colors';
@@ -8,6 +7,7 @@ import ServicesSeparator from './ServicesSeparator';
 import ButtonService from './ButtonService';
 import { type IServices } from '../../selectors/login';
 import { type TIconsName } from '../CustomIcon';
+import ServiceList from './ServiceList';
 
 const styles = StyleSheet.create({
 	serviceName: {
@@ -66,12 +66,12 @@ export default {
 
 export const Separators = () => (
 	<>
-		<ServicesSeparator collapsed onPress={() => {}} separator services={services} />
-		<ServicesSeparator collapsed={false} onPress={() => {}} separator services={services} />
+		<ServicesSeparator collapsed onPress={() => {}} separator totalServices={4} />
+		<ServicesSeparator collapsed={false} onPress={() => {}} separator totalServices={4} />
 	</>
 );
 
-export const ServiceList = () => (
+export const ServicesList = () => (
 	<>
 		{Object.values(services).map(service => {
 			const icon = `${service.name}-monochromatic` as TIconsName;
@@ -94,3 +94,31 @@ export const ServiceList = () => (
 		})}
 	</>
 );
+
+export const ServiceListCollapsed = () => {
+	return (
+		<ServiceList
+			services={services}
+			CAS_enabled={false}
+			CAS_login_url=''
+			Gitlab_URL=''
+			server='https://demo.rocket.chat'
+			collapsed={true}
+			showLoginOnWebButton={true}
+		/>
+	);
+};
+
+export const ServiceListUncollapsed = () => {
+	return (
+		<ServiceList
+			services={services}
+			CAS_enabled={false}
+			CAS_login_url=''
+			Gitlab_URL=''
+			server='https://demo.rocket.chat'
+			collapsed={false}
+			showLoginOnWebButton={true}
+		/>
+	);
+};

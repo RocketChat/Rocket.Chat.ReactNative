@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactElement, type Ref } from 'react';
 import {
 	type StyleProp,
 	StyleSheet,
@@ -86,10 +86,10 @@ export interface IRCTextInputProps extends TextInputProps {
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
-	inputRef?: React.Ref<RNTextInput>;
+	inputRef?: Ref<RNTextInput>;
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
-	left?: JSX.Element;
+	left?: ReactElement;
 	onClearInput?: () => void;
 }
 
@@ -121,11 +121,22 @@ export const FormTextInput = ({
 	accessibilityLabel,
 	showErrorMessage = true,
 	...inputProps
-}: IRCTextInputProps): React.ReactElement => {
+}: IRCTextInputProps): ReactElement => {
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const inputError = getInputError(error);
+	// iOS 26 surfaces a system "Save Password?" sheet asynchronously after any
+	// credential-classified field submit. It overlays the app and blocks
+	// XCUITest hit-testing, breaking Maestro flows that interact with the
+	// screen underneath. iOS classifies a field as a credential via any of
+	// `secureTextEntry`, `textContentType` in {password, newPassword, ...},
+	// or `autoComplete` in {password, password-new, ...} — so we must suppress
+	// all three under RUNNING_E2E_TESTS on iOS. Since `secureTextEntry` is itself
+	// a credential trigger, masking is necessarily disabled under E2E on iOS —
+	// only throwaway test users are affected. The eye icon still renders (driven
+	// by the original prop) but is a no-op while suppression is active.
+	const suppressIOSCredentialOffer = isIOS && process.env.RUNNING_E2E_TESTS === 'true';
 	const accessibilityLabelText = useMemo(() => {
 		const baseLabel = `${accessibilityLabel || label || ''}`;
 		const formattedAccessibilityLabel = baseLabel ? `${baseLabel}.` : '';
@@ -165,7 +176,7 @@ export const FormTextInput = ({
 								inputError
 									? {
 											borderColor: colors.buttonBackgroundDangerDefault
-									  }
+										}
 									: {},
 								inputStyle
 							]}
@@ -174,12 +185,13 @@ export const FormTextInput = ({
 							autoCorrect={false}
 							autoCapitalize='none'
 							underlineColorAndroid='transparent'
-							secureTextEntry={secureTextEntry && !showPassword}
+							secureTextEntry={secureTextEntry && !showPassword && !suppressIOSCredentialOffer}
 							testID={testID}
 							placeholder={placeholder}
 							value={value}
 							placeholderTextColor={colors.fontAnnotation}
 							{...inputProps}
+							{...(suppressIOSCredentialOffer && { textContentType: 'none', autoComplete: 'off' })}
 						/>
 
 						{iconLeft ? (
@@ -193,15 +205,16 @@ export const FormTextInput = ({
 						) : null}
 
 						{showClearInput ? (
-							<Touch
-								testID='clear-text-input'
-								onPress={() => onClearInput?.()}
-								accessible
-								accessibilityLabel={i18n.t('Clear_input')}
-								rectButtonStyle={[styles.iconContainer, styles.iconRight]}
-								style={styles.clearInputIcon}>
-								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
-							</Touch>
+							<View style={[styles.iconContainer, styles.iconRight]}>
+								<Touch
+									testID='clear-text-input'
+									onPress={() => onClearInput?.()}
+									accessible
+									accessibilityLabel={i18n.t('Clear_input')}
+									style={styles.clearInputIcon}>
+									<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
+								</Touch>
+							</View>
 						) : null}
 
 						{iconRight && !showClearInput ? (

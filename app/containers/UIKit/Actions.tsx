@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
 });
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
+	'use no memo';
+
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements && elements.length > 5);
 
 	const shouldShowMore = elements && elements.length > 5;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -71,8 +70,6 @@ const getAutocompleteAccessibilityLabel = (item: TAutocompleteItem): string => {
 };
 
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
-	'use memo';
-
 	const [styles, colors] = useStyle();
 	const autocompleteAccessibilityLabel = getAutocompleteAccessibilityLabel(item);
 	return (

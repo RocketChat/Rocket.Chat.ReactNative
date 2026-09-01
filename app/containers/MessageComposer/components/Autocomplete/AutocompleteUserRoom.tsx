@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 
 import { type IAutocompleteUserRoom } from '../../interfaces';
@@ -9,8 +8,6 @@ import I18n from '../../../../i18n';
 import { useStyle } from './styles';
 
 export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) => {
-	'use memo';
-
 	const [styles] = useStyle();
 	const isAllOrHere = fetchIsAllOrHere(item);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState, type ReactElement } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
@@ -18,12 +18,10 @@ import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
-export const EmojiSearchbar = (): React.ReactElement | null => {
-	'use memo';
-
+export const EmojiSearchbar = (): ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
-	const { showEmojiSearchbar, closeEmojiSearchbar } = useEmojiKeyboard();
+	const { closeEmojiSearchbar } = useEmojiKeyboard();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
 	const [emojis, setEmojis] = useState<IEmoji[]>([]);
@@ -40,10 +38,6 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 	};
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
-
-	if (!showEmojiSearchbar) {
-		return null;
-	}
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceLight }}>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -59,8 +59,6 @@ const RoomItem = ({
 	abacAttributes,
 	isInvited
 }: IRoomItemProps) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
@@ -93,6 +91,7 @@ const RoomItem = ({
 			displayMode={displayMode}>
 			<Wrapper
 				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={I18n.t('Long_press_for_more_actions')}
 				avatar={avatar}
 				type={type}
 				userId={userId}

@@ -10,7 +10,7 @@ export default class CustomEmoji extends Model {
 
 	@field('name') name;
 
-	@json('aliases', sanitizer) aliases;
+	@json('aliases', sanitizer, { memo: true }) aliases;
 
 	@field('extension') extension;
 

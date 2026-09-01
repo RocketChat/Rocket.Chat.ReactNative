@@ -26,8 +26,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               "marginBottom": 10,
             },
             {
-              "margin": 16,
               "marginBottom": 16,
+              "marginHorizontal": 12,
+              "marginTop": 16,
             },
           ]
         }
@@ -64,6 +65,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,

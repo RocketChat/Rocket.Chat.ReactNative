@@ -13,28 +13,34 @@ Refer to [React Native environment setup](https://reactnative.dev/docs/set-up-yo
 
 Minimum Node version: 22.14.0
 
+This project uses pnpm (pinned via `package.json#packageManager`). On a fresh machine, enable corepack once so the right pnpm version is picked up:
+
+```sh
+corepack enable
+```
+
 Clone repository and install dependencies:
 ```sh
 git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
 cd Rocket.Chat.ReactNative
-yarn
+pnpm install
 ```
 
 Run the app:
 ```sh
-yarn pod-install
-yarn ios
+pnpm pod-install
+pnpm ios
 ```
 
 or
 
 ```sh
-yarn android
+pnpm android
 ```
 
 At this point, the app should be running on the simulator or on your device!
 
-*Note: npm won't work on this project*
+*Note: npm and yarn won't work on this project*
 
 ## Issues needing help
 
@@ -44,25 +50,25 @@ Can't help coding? Triaging issues is a **great** way of helping.
 
 ## Code style
 
-We use [ESLint](https://eslint.org/) to enforce code style and best practices. We have a pre-commit hook enforcing commits to follow our lint rules.
+We use [Oxlint](https://oxc.rs/docs/guide/usage/linter) to enforce code style and best practices. We have a pre-commit hook enforcing commits to follow our lint rules.
 
 To check for lint issues on your code, run this on your terminal:
 
 ```sh
-yarn lint
+pnpm lint
 ```
 
 ## Code formatting
 
-We use [Prettier](https://prettier.io) to format the code style in our project. We have a pre-commit hook enforcing commits to follow our style guides.
+We use [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) to format the code style in our project. We have a pre-commit hook enforcing commits to follow our style guides.
 
 To fix your code formatting issues, run this on your terminal:
 
 ```sh
-yarn prettier
+pnpm exec oxfmt
 ```
 
-[Check this link](https://prettier.io/docs/en/editors.html) to see how to integrate Prettier with your preferred code editor, and run Prettier when save your file for example.
+[Check this link](https://oxc.rs/docs/guide/usage/formatter/editors.html) to see how to integrate Oxfmt with your preferred code editor, and run Oxfmt when you save a file for example.
 
 ## Tests
 
@@ -76,7 +82,7 @@ We use [Jest](https://jestjs.io/) and [Storybook](https://storybook.js.org/) on 
 
 Storybook is a tool for developing UI Components and has some plugins to make Jest generate snapshots of them.
 
-To open the Storybook, run yarn `storybook:start`, and then use `yarn android` or `yarn ios` to launch it on your desired platform.
+To open the Storybook, run `pnpm storybook:start`, and then use `pnpm android` or `pnpm ios` to launch it on your desired platform.
 
 You'll see some tests like this:
 
@@ -89,7 +95,7 @@ We use Jest for our unit tests and to generate Storybook snapshots. We have a pr
 To check for test issues on your code, run this on your terminal:
 
 ```sh
-yarn test
+pnpm test
 ```
 
 ### Pull request

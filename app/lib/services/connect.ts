@@ -10,7 +10,10 @@ import database from '../database';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
+import { waitForLoginReady } from './waitForLoginReady';
 import sdk from './sdk';
+import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
 import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
@@ -26,6 +29,7 @@ import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../met
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
+import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
 import fetch from '../methods/helpers/fetch';
 
 interface IServices {
@@ -40,6 +44,7 @@ interface IServices {
 let connectingListener: any;
 let connectedListener: any;
 let closeListener: any;
+let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
@@ -66,6 +71,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		if (closeListener) {
 			closeListener.then(stopListener);
+		}
+
+		if (pendingHangupsConnectedListener) {
+			pendingHangupsConnectedListener.then(stopListener);
 		}
 
 		if (usersListener) {
@@ -120,8 +129,25 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
+		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
+		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
+		let pendingHangupsDrainArmed = false;
+
 		closeListener = sdk.current.onStreamData('close', () => {
+			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
+		});
+
+		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
+			if (!pendingHangupsDrainArmed) return;
+			pendingHangupsDrainArmed = false;
+			if (pendingHangups.size === 0) return;
+			try {
+				await waitForLoginReady(5000);
+				await mediaSessionInstance.drainPendingHangups();
+			} catch (error) {
+				log(error);
+			}
 		});
 
 		usersListener = sdk.current.onStreamData(
@@ -176,8 +202,9 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
-			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
+			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
+			const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+			const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 			// @ts-ignore
 			store.dispatch(setActiveUsers({ [uid]: newStatus }));
 
@@ -209,15 +236,25 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id, , status, statusText] = userStatus;
-					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
+					const [id, , status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
+					const statusExpiresAt = normalizeStatusExpiresAt(statusExpiresAtRaw);
+					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 
 					const { user: loggedUser } = store.getState().login;
 					if (loggedUser && loggedUser.id === id) {
-						store.dispatch(setUser({ status: STATUSES[status], statusText }));
+						store.dispatch(setUser({ status: STATUSES[status], statusText, statusSource, statusExpiresAt }));
 					}
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
+
+					// If it's the logged user, push the new etag through setUser so the
+					// servers-DB logged-user record (observed by useAvatarETag) updates,
+					// refreshing the avatar in ProfileView, SidebarView, etc.
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser?.username === username) {
+						store.dispatch(setUser({ avatarETag: etag }));
+					}
+
 					const db = database.active;
 					const userCollection = db.get('users');
 					try {
@@ -317,6 +354,16 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 	}
 }
 
+function normalizeTOTPParams(params: ICredentials): ICredentials {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
+		const user = params.user ?? params.username;
+		const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+		return { user, password };
+	}
+	return params;
+}
+
 function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -337,13 +384,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = store.getState().server.version;
-						if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
+						params = normalizeTOTPParams(params);
 
 						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					}
@@ -402,12 +443,10 @@ function abort() {
 	}
 }
 
-function checkAndReopen() {
-	return sdk.current.checkAndReopen();
-}
-
 function disconnect() {
-	return sdk.disconnect();
+	const result = sdk.disconnect();
+	mediaSessionInstance.reset();
+	return result;
 }
 
 async function getWebsocketInfo({
@@ -495,12 +534,12 @@ export {
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
-	checkAndReopen,
 	abort,
 	connect,
 	disconnect,
 	getWebsocketInfo,
 	stopListener,
 	getLoginServices,
-	determineAuthType
+	determineAuthType,
+	waitForLoginReady
 };

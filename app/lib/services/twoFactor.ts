@@ -1,6 +1,6 @@
 import { settings } from '@rocket.chat/sdk';
 
-import { TWO_FACTOR } from '../../containers/TwoFactor';
+import { TWO_FACTOR } from '../constants/twoFactor';
 import EventEmitter from '../methods/helpers/events';
 import { type ICredentials } from '../../definitions';
 

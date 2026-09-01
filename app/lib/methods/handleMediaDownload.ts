@@ -200,6 +200,11 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
+export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) =>
+	(att.image_url && downloadUrl.includes(att.image_url)) ||
+	(att.audio_url && downloadUrl.includes(att.audio_url)) ||
+	(att.video_url && downloadUrl.includes(att.video_url));
+
 const mapAttachments = ({
 	attachments,
 	uri,
@@ -213,42 +218,43 @@ const mapAttachments = ({
 }): TMessageModel['attachments'] =>
 	attachments?.map(att => ({
 		...att,
-		title_link: att.image_url && downloadUrl.includes(att.image_url) ? uri : att.title_link,
+		title_link: matchDownloadUrl(att, downloadUrl) ? uri : att.title_link,
 		e2e: encryption ? 'done' : undefined
 	}));
 
-const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
+export const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
 	const db = database.active;
-	const batch: Model[] = [];
-	const messageRecord = await getMessageById(messageId);
-	if (messageRecord) {
-		batch.push(
-			messageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	const threadRecord = await getThreadById(messageId);
-	if (threadRecord) {
-		batch.push(
-			threadRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	const threadMessageRecord = await getThreadMessageById(messageId);
-	if (threadMessageRecord) {
-		batch.push(
-			threadMessageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
-			})
-		);
-	}
-	if (batch.length) {
-		await db.write(async () => {
+
+	await db.write(async () => {
+		const batch: Model[] = [];
+		const messageRecord = await getMessageById(messageId);
+		if (messageRecord) {
+			batch.push(
+				messageRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		const threadRecord = await getThreadById(messageId);
+		if (threadRecord) {
+			batch.push(
+				threadRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		const threadMessageRecord = await getThreadMessageById(messageId);
+		if (threadMessageRecord) {
+			batch.push(
+				threadMessageRecord.prepareUpdate(m => {
+					m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
+				})
+			);
+		}
+		if (batch.length) {
 			await db.batch(batch);
-		});
-	}
+		}
+	});
 };
 
 export function downloadMediaFile({

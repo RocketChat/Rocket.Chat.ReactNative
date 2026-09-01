@@ -1,39 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
+import { type ReactNode } from 'react';
+import { Text } from 'react-native';
 
-import { Bold, Italic, Link } from './index';
-import Plain from '../Plain';
+import styles from '../../styles';
+import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
 
 interface IStrikeProps {
-	value: StrikeProps['value'];
+	children: ReactNode;
 }
 
-const styles = StyleSheet.create({
-	text: {
-		textDecorationLine: 'line-through'
-	}
-});
+const Strike = ({ children }: IStrikeProps) => {
+	const context = useMarkdownContext(styles.del);
 
-const Strike = ({ value }: IStrikeProps) => (
-	<Text style={styles.text}>
-		{value.map(block => {
-			switch (block.type) {
-				case 'LINK':
-					return <Link value={block.value} />;
-				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
-				case 'BOLD':
-					return <Bold value={block.value} />;
-				case 'ITALIC':
-					return <Italic value={block.value} />;
-				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
-				default:
-					return null;
-			}
-		})}
-	</Text>
-);
+	return (
+		<Text style={styles.del}>
+			<MarkdownContext.Provider value={context}>{children}</MarkdownContext.Provider>
+		</Text>
+	);
+};
 
 export default Strike;

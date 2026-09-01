@@ -1,40 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { type Bold as BoldProps } from '@rocket.chat/message-parser';
+import { type ReactNode } from 'react';
+import { Text } from 'react-native';
 
-import { Italic, Link, Strike } from './index';
-import Plain from '../Plain';
 import sharedStyles from '../../../../views/Styles';
+import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
 
 interface IBoldProps {
-	value: BoldProps['value'];
+	children: ReactNode;
 }
 
-const styles = StyleSheet.create({
-	text: {
-		...sharedStyles.textBold
-	}
-});
+const Bold = ({ children }: IBoldProps) => {
+	const context = useMarkdownContext(sharedStyles.textBold);
 
-const Bold = ({ value }: IBoldProps) => (
-	<Text style={styles.text}>
-		{value.map(block => {
-			switch (block.type) {
-				case 'LINK':
-					return <Link value={block.value} />;
-				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
-				case 'STRIKE':
-					return <Strike value={block.value} />;
-				case 'ITALIC':
-					return <Italic value={block.value} />;
-				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
-				default:
-					return null;
-			}
-		})}
-	</Text>
-);
+	return (
+		<Text style={sharedStyles.textBold}>
+			<MarkdownContext.Provider value={context}>{children}</MarkdownContext.Provider>
+		</Text>
+	);
+};
 
 export default Bold;

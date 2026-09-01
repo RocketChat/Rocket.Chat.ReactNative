@@ -1,4 +1,3 @@
-import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 
@@ -8,8 +7,6 @@ import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';
 
 export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) => {
-	'use memo';
-
 	const [styles, colors] = useStyle();
 
 	let content;

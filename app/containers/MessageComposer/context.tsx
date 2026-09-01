@@ -1,6 +1,7 @@
-import React, { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
+import { createContext, type ReactElement, useContext, useState } from 'react';
+import { createStore, useStore } from 'zustand';
 
-import { type IEmoji } from '../../definitions';
+import { type IEmoji, type IShareAttachment } from '../../definitions';
 import { type IAutocompleteBase, type TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
@@ -10,23 +11,74 @@ type TMessageComposerContextApi = {
 	setAlsoSendThreadToChannel(alsoSendThreadToChannel: boolean): void;
 	setRecordingAudio(recordingAudio: boolean): void;
 	setAutocompleteParams(params: IAutocompleteBase): void;
+	addAttachments(attachments: IShareAttachment[]): void;
+	updateAttachment(path: string, attachment: Partial<IShareAttachment>): void;
+	removeAttachment(path: string): void;
+	clearAttachments(): void;
 };
 
-const FocusedContext = createContext<State['focused']>({} as State['focused']);
-const MicOrSendContext = createContext<State['micOrSend']>({} as State['micOrSend']);
-const ShowMarkdownToolbarContext = createContext<State['showMarkdownToolbar']>({} as State['showMarkdownToolbar']);
-const AlsoSendThreadToChannelContext = createContext<State['alsoSendThreadToChannel']>({} as State['alsoSendThreadToChannel']);
-const RecordingAudioContext = createContext<State['recordingAudio']>({} as State['recordingAudio']);
-const AutocompleteParamsContext = createContext<State['autocompleteParams']>({} as State['autocompleteParams']);
-const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
+type State = {
+	focused: boolean;
+	micOrSend: TMicOrSend;
+	showMarkdownToolbar: boolean;
+	alsoSendThreadToChannel: boolean;
+	recordingAudio: boolean;
+	autocompleteParams: IAutocompleteBase;
+	attachments: IShareAttachment[];
+	// Built once, never replaced by a setter — stays a stable ref for consumers.
+	actions: TMessageComposerContextApi;
+};
 
-export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
-export const useFocused = (): State['focused'] => useContext(FocusedContext);
-export const useMicOrSend = (): State['micOrSend'] => useContext(MicOrSendContext);
-export const useShowMarkdownToolbar = (): State['showMarkdownToolbar'] => useContext(ShowMarkdownToolbarContext);
-export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] => useContext(AlsoSendThreadToChannelContext);
-export const useRecordingAudio = (): State['recordingAudio'] => useContext(RecordingAudioContext);
-export const useAutocompleteParams = (): State['autocompleteParams'] => useContext(AutocompleteParamsContext);
+// One store per provider instance: channel + thread composers can be mounted at once, each needs isolated state.
+const createComposerStore = () =>
+	createStore<State>()(set => ({
+		focused: false,
+		micOrSend: 'mic',
+		showMarkdownToolbar: false,
+		alsoSendThreadToChannel: false,
+		recordingAudio: false,
+		autocompleteParams: { text: '', type: null },
+		attachments: [],
+		actions: {
+			setFocused: focused => set({ focused }),
+			setMicOrSend: micOrSend => set({ micOrSend }),
+			setMarkdownToolbar: showMarkdownToolbar => set({ showMarkdownToolbar }),
+			setAlsoSendThreadToChannel: alsoSendThreadToChannel => set({ alsoSendThreadToChannel }),
+			setRecordingAudio: recordingAudio => set({ recordingAudio }),
+			setAutocompleteParams: params => set({ autocompleteParams: params }),
+			addAttachments: attachments => set(state => ({ attachments: [...state.attachments, ...attachments] })),
+			updateAttachment: (path, attachment) =>
+				set(state => ({
+					attachments: state.attachments.map(currentAttachment =>
+						currentAttachment.path === path ? { ...currentAttachment, ...attachment } : currentAttachment
+					)
+				})),
+			removeAttachment: path => set(state => ({ attachments: state.attachments.filter(attachment => attachment.path !== path) })),
+			clearAttachments: () => set({ attachments: [] })
+		}
+	}));
+
+type ComposerStore = ReturnType<typeof createComposerStore>;
+
+const ComposerStoreContext = createContext<ComposerStore | null>(null);
+
+const useComposerStore = <T,>(selector: (state: State) => T): T => {
+	const store = useContext(ComposerStoreContext);
+	if (!store) {
+		throw new Error('MessageComposer hooks must be used within a MessageComposerProvider');
+	}
+	return useStore(store, selector);
+};
+
+export const useMessageComposerApi = (): TMessageComposerContextApi => useComposerStore(state => state.actions);
+export const useFocused = (): State['focused'] => useComposerStore(state => state.focused);
+export const useMicOrSend = (): State['micOrSend'] => useComposerStore(state => state.micOrSend);
+export const useShowMarkdownToolbar = (): State['showMarkdownToolbar'] => useComposerStore(state => state.showMarkdownToolbar);
+export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] =>
+	useComposerStore(state => state.alsoSendThreadToChannel);
+export const useRecordingAudio = (): State['recordingAudio'] => useComposerStore(state => state.recordingAudio);
+export const useAutocompleteParams = (): State['autocompleteParams'] => useComposerStore(state => state.autocompleteParams);
+export const useComposerAttachments = (): State['attachments'] => useComposerStore(state => state.attachments);
 
 // TODO: rename
 type TMessageInnerContext = {
@@ -45,84 +97,8 @@ export const MessageInnerContext = createContext<TMessageInnerContext>({
 	focus: () => {}
 });
 
-type State = {
-	focused: boolean;
-	micOrSend: TMicOrSend;
-	showMarkdownToolbar: boolean;
-	alsoSendThreadToChannel: boolean;
-	recordingAudio: boolean;
-	autocompleteParams: IAutocompleteBase;
-};
-
-type Actions =
-	| { type: 'updateFocused'; focused: boolean }
-	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
-	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean }
-	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean }
-	| { type: 'setRecordingAudio'; recordingAudio: boolean }
-	| { type: 'setAutocompleteParams'; params: IAutocompleteBase };
-
-const reducer = (state: State, action: Actions): State => {
-	switch (action.type) {
-		case 'updateFocused':
-			return { ...state, focused: action.focused };
-		case 'setMicOrSend':
-			return { ...state, micOrSend: action.micOrSend };
-		case 'setMarkdownToolbar':
-			return { ...state, showMarkdownToolbar: action.showMarkdownToolbar };
-		case 'setAlsoSendThreadToChannel':
-			return { ...state, alsoSendThreadToChannel: action.alsoSendThreadToChannel };
-		case 'setRecordingAudio':
-			return { ...state, recordingAudio: action.recordingAudio };
-		case 'setAutocompleteParams':
-			return { ...state, autocompleteParams: action.params };
-	}
-};
-
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
-	'use memo';
+	const [store] = useState(createComposerStore);
 
-	const [state, dispatch] = useReducer(reducer, {
-		autocompleteParams: { text: '', type: null }
-	} as State);
-
-	const api = useMemo(() => {
-		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
-
-		const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
-
-		const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
-
-		const setAlsoSendThreadToChannel = (alsoSendThreadToChannel: boolean) =>
-			dispatch({ type: 'setAlsoSendThreadToChannel', alsoSendThreadToChannel });
-
-		const setRecordingAudio = (recordingAudio: boolean) => dispatch({ type: 'setRecordingAudio', recordingAudio });
-
-		const setAutocompleteParams = (params: IAutocompleteBase) => dispatch({ type: 'setAutocompleteParams', params });
-
-		return {
-			setFocused,
-			setMicOrSend,
-			setMarkdownToolbar,
-			setAlsoSendThreadToChannel,
-			setRecordingAudio,
-			setAutocompleteParams
-		};
-	}, []);
-
-	return (
-		<MessageComposerContextApi.Provider value={api}>
-			<FocusedContext.Provider value={state.focused}>
-				<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
-					<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
-						<RecordingAudioContext.Provider value={state.recordingAudio}>
-							<AutocompleteParamsContext.Provider value={state.autocompleteParams}>
-								<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
-							</AutocompleteParamsContext.Provider>
-						</RecordingAudioContext.Provider>
-					</AlsoSendThreadToChannelContext.Provider>
-				</ShowMarkdownToolbarContext.Provider>
-			</FocusedContext.Provider>
-		</MessageComposerContextApi.Provider>
-	);
+	return <ComposerStoreContext.Provider value={store}>{children}</ComposerStoreContext.Provider>;
 };

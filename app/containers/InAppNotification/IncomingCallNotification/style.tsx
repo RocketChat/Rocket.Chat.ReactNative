@@ -3,6 +3,8 @@ import { PixelRatio, StyleSheet } from 'react-native';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 
+const BUTTON_HEIGHT = 36;
+
 export const useStyle = () => {
 	const { colors } = useTheme();
 	return StyleSheet.create({
@@ -25,33 +27,40 @@ export const useStyle = () => {
 			flexDirection: 'row',
 			marginTop: 12
 		},
+		// Touch only forwards backgroundColor, borderRadius and margins to the RectButton, so sizing
+		// goes through rectButtonStyle - on style it lands on the inner View and the button collapses
 		closeButton: {
 			backgroundColor: colors.buttonBackgroundSecondaryDefault,
 			marginRight: 8,
+			borderRadius: 4
+		},
+		closeButtonContainer: {
+			width: BUTTON_HEIGHT,
+			height: BUTTON_HEIGHT,
 			alignItems: 'center',
-			justifyContent: 'center',
-			borderRadius: 4,
-			width: 36,
-			height: 36
+			justifyContent: 'center'
 		},
 		cancelButton: {
 			borderRadius: 4,
 			backgroundColor: colors.buttonBackgroundDangerDefault,
-			marginRight: 8,
-			flex: 2,
+			marginRight: 8
+		},
+		acceptButton: {
+			borderRadius: 4,
+			backgroundColor: colors.buttonBackgroundSuccessDefault
+		},
+		// decline and accept share the remaining width evenly, minHeight so the label can grow
+		buttonWrapper: {
+			flex: 1
+		},
+		buttonContainer: {
+			minHeight: BUTTON_HEIGHT,
 			alignItems: 'center',
 			justifyContent: 'center'
 		},
 		buttonText: {
 			...sharedStyles.textMedium,
 			color: 'white'
-		},
-		acceptButton: {
-			borderRadius: 4,
-			backgroundColor: colors.buttonBackgroundSuccessDefault,
-			flex: 2,
-			alignItems: 'center',
-			justifyContent: 'center'
 		}
 	});
 };

@@ -1,26 +1,27 @@
-import React, { useContext } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { Alert, Text } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { Bold, Italic, Strike } from './index';
 import I18n from '../../../../i18n';
 import { LISTENER } from '../../../Toast';
 import { useTheme } from '../../../../theme';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import EventEmitter from '../../../../lib/methods/helpers/events';
-import { themes } from '../../../../lib/constants/colors';
-import MarkdownContext from '../../contexts/MarkdownContext';
+import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
 import styles from '../../styles';
 
 interface ILinkProps {
 	value: LinkProps['value'];
+	children: ReactNode;
 }
 
-const Link = ({ value }: ILinkProps) => {
-	const { theme } = useTheme();
-	const { onLinkPress, textStyle } = useContext(MarkdownContext);
-	const { src, label } = value;
+const Link = ({ value, children }: ILinkProps) => {
+	const { theme, colors } = useTheme();
+	const { onLinkPress, textStyle } = useMarkdownContext();
+	const linkStyle = useMemo(() => ({ color: colors.fontInfo }), [colors.fontInfo]);
+	const context = useMarkdownContext(linkStyle);
+	const { src } = value;
 	const handlePress = () => {
 		if (!src.value) {
 			return;
@@ -48,27 +49,8 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text
-			style={[styles.link, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontInfo }]}
-			onPress={handlePress}
-			onLongPress={onLongPress}>
-			{(block => {
-				const blockArray = Array.isArray(block) ? block : [block];
-				return blockArray.map(blockInArray => {
-					switch (blockInArray.type) {
-						case 'PLAIN_TEXT':
-							return blockInArray.value;
-						case 'STRIKE':
-							return <Strike value={blockInArray.value} />;
-						case 'ITALIC':
-							return <Italic value={blockInArray.value} />;
-						case 'BOLD':
-							return <Bold value={blockInArray.value} />;
-						default:
-							return null;
-					}
-				});
-			})(label)}
+		<Text style={[styles.link, ...(textStyle ? [textStyle] : []), linkStyle]} onPress={handlePress} onLongPress={onLongPress}>
+			<MarkdownContext.Provider value={context}>{children}</MarkdownContext.Provider>
 		</Text>
 	);
 };

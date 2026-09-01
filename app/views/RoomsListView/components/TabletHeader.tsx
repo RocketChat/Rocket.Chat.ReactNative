@@ -2,15 +2,13 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { memo } from 'react';
 
 import Header from '../../../containers/Header';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { useHeader } from '../hooks/useHeader';
 
 const TabletHeader = () => {
-	'use memo';
-
 	const navigation = useNavigation<any>();
 	const route = useRoute<any>();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const { options } = useHeader();
 
 	if (!isMasterDetail || !options) {

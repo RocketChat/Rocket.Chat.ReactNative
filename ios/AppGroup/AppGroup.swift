@@ -17,7 +17,7 @@ class AppGroup: NSObject {
     var path = ""
     var suiteName = ""
     
-    if let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String {
+    if let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String {
       suiteName = suite
       if let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) {
         path = directory.path

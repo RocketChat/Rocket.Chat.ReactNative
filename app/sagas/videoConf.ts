@@ -6,7 +6,7 @@ import { AccessibilityInfo } from 'react-native';
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } from '../actions/videoConf';
 import { hideActionSheetRef } from '../containers/ActionSheet';
-import { INAPP_NOTIFICATION_EMITTER } from '../containers/InAppNotification';
+import { INAPP_NOTIFICATION_EMITTER } from '../lib/constants/notifications';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
@@ -20,6 +20,7 @@ import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
+import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -47,6 +48,8 @@ const CALL_INTERVAL = 3000;
 const CALL_ATTEMPT_LIMIT = 10;
 
 function* onDirectCall(payload: ICallInfo) {
+	if (isInActiveVoipCall()) return;
+
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	const hasAnotherCall = calls.find(c => c.action === 'call');
@@ -169,6 +172,7 @@ function* handleVideoConfIncomingWebsocketMessages({ data }: { data: any }) {
 }
 
 function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps }) {
+	if (isInActiveVoipCall()) return;
 	yield put(setCalling(true));
 	const serverVersion = yield* appSelector(state => state.server.version);
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');

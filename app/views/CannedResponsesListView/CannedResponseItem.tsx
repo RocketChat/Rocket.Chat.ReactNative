@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 
 import Touch from '../../containers/Touch';
@@ -26,7 +25,7 @@ const CannedResponseItem = ({
 	onPressUse = () => {},
 	text,
 	tags = []
-}: ICannedResponseItem): JSX.Element => (
+}: ICannedResponseItem) => (
 	<Touch onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].surfaceLight }]}>
 		<>
 			<View style={styles.cannedRow}>
@@ -53,7 +52,7 @@ const CannedResponseItem = ({
 							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
 								<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 							</View>
-					  ))
+						))
 					: null}
 			</View>
 		</>

@@ -1,9 +1,10 @@
 import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useState, type ReactElement } from 'react';
+import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -14,14 +15,16 @@ import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoCo
 import { getUserSelector } from '../../selectors/login';
 import { type ChatsStackParamList } from '../../stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
+import SafeAreaView from '../../containers/SafeAreaView';
 
-const JitsiMeetView = (): React.ReactElement => {
+const JitsiMeetView = (): ReactElement => {
 	const {
 		params: { rid, url, videoConf }
 	} = useRoute<RouteProp<ChatsStackParamList, 'JitsiMeetView'>>();
 	const { goBack } = useNavigation();
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverUrl = useAppSelector(state => state.server.server);
+	const { bottom } = useSafeAreaInsets();
 
 	const [authModal, setAuthModal] = useState(false);
 	const [cookiesSet, setCookiesSet] = useState(false);
@@ -105,7 +108,7 @@ const JitsiMeetView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			{authModal && <JitsiAuthModal setAuthModal={setAuthModal} callUrl={callUrl} />}
+			{authModal ? <JitsiAuthModal setAuthModal={setAuthModal} callUrl={callUrl} /> : null}
 			{cookiesSet ? (
 				<WebView
 					source={{
@@ -116,7 +119,7 @@ const JitsiMeetView = (): React.ReactElement => {
 					}}
 					onNavigationStateChange={onNavigationStateChange}
 					onShouldStartLoadWithRequest={onNavigationStateChange}
-					style={styles.webviewContainer}
+					style={[styles.webviewContainer, { marginBottom: bottom }]}
 					userAgent={userAgent}
 					javaScriptEnabled
 					domStorageEnabled

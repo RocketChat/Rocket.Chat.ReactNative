@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Room
 jsEngine: graaljs
 onFlowStart:
@@ -35,6 +35,10 @@ tags:
       id: message-composer-input
     timeout: 60000
 - inputText: ':joy'
+- extendedWaitUntil:
+    visible:
+      id: autocomplete-item-joystick
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: autocomplete-item-joy
@@ -161,7 +165,11 @@ tags:
 - tapOn:
     id: emoji-searchbar-input
 - inputText: 'laughing'
-- hideKeyboard
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - hideKeyboard
 - extendedWaitUntil:
     visible:
       id: emoji-laughing
@@ -603,6 +611,10 @@ tags:
     id: 'message-composer-input'
 - eraseText
 - inputText: ${output.quoteMessage}
+- extendedWaitUntil:
+    visible:
+      text: ${output.quoteMessage}
+    timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -616,6 +628,10 @@ tags:
     id: 'message-composer-input'
 - eraseText
 - inputText: ${output.quoteMessage}
+- extendedWaitUntil:
+    visible:
+      text: ${output.quoteMessage}
+    timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'

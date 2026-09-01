@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
@@ -24,9 +24,7 @@ interface IListInfo {
 	translateInfo?: boolean;
 }
 
-const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
-	'use memo';
-
+const ListInfo = memo(({ info, translateInfo = true }: IListInfo) => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

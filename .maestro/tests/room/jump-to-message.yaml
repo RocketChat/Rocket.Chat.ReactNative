@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Jump to message
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
@@ -16,7 +16,7 @@ tags:
 
 # should jump to an old message and load its surroundings
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:
@@ -28,7 +28,7 @@ tags:
       id: '.*Quote first message.*'
     timeout: 60000
 - longPressOn:
-    id: '.*Quote first message.*'
+    text: '.*Quote first message.*'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -61,7 +61,7 @@ tags:
 
 # should load messages on scroll
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:
@@ -82,7 +82,7 @@ tags:
 
 # should search for old message and load its surroundings
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:
@@ -188,7 +188,7 @@ tags:
 
 # should navigate to a thread from another room
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:
@@ -237,10 +237,11 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*quoted.*'
+      id: '.*reply-.*-quoted.*'
     timeout: 60000
 - longPressOn:
-    text: 'quoted'
+    id: '.*reply-.*-quoted.*'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
