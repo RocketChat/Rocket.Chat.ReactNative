@@ -85,7 +85,7 @@ type TMessageInnerContext = {
 	sendMessage(): void;
 	onEmojiSelected(emoji: IEmoji): void;
 	// TODO: action should be required
-	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
+	closeEmojiKeyboardAndAction(onClosed?: Function, params?: any): void;
 	focus(): void;
 };
 

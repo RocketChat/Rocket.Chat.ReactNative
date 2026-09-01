@@ -12,7 +12,7 @@ import {
 	useOnSendMessage,
 	useSetQuotesAndText
 } from '../../views/RoomView/stores/ComposerStore';
-import { useEditingMessageId, useMessageAction, useQuotedMessageIds } from '../message/stores/MessageActionStore';
+import { useEditingMessageId, useMessageActionKind, useQuotedMessageIds } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import {
@@ -66,7 +66,7 @@ export const MessageComposer = ({
 	const editRequest = useEditRequest();
 	const onSendMessage = useOnSendMessage();
 	const setQuotesAndText = useSetQuotesAndText();
-	const action = useMessageAction();
+	const actionKind = useMessageActionKind();
 	const editingMessageId = useEditingMessageId();
 	const quotedMessageIds = useQuotedMessageIds();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -88,9 +88,9 @@ export const MessageComposer = ({
 		return false;
 	});
 
-	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
+	const closeEmojiKeyboardAndAction = (onClosed?: Function, params?: any) => {
 		resetKeyboard();
-		action && action(params);
+		onClosed && onClosed(params);
 	};
 
 	useImperativeHandle(forwardedRef, () => ({
@@ -259,7 +259,7 @@ export const MessageComposer = ({
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
-				action={action?.kind ?? null}
+				action={actionKind}
 				showEmojiSearchbar={showEmojiSearchbar}
 				composerInputComponentRef={composerInputComponentRef}
 				composerInputRef={composerInputRef}

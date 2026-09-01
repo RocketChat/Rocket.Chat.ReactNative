@@ -97,6 +97,9 @@ const EMPTY_MESSAGE_IDS: string[] = [];
 export const useQuotedMessageIds = (): string[] =>
 	useMessageActionStore(s => (s.action?.kind === 'quote' ? s.action.messageIds : EMPTY_MESSAGE_IDS));
 
+export const useMessageActionKind = (): NonNullable<TMessageActionState>['kind'] | null =>
+	useMessageActionStore(s => s.action?.kind ?? null);
+
 export const useEditingMessageId = (): string | undefined =>
 	useMessageActionStore(s => (s.action?.kind === 'edit' ? s.action.messageId : undefined));
 
