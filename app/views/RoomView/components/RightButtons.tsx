@@ -143,7 +143,7 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 	const t = room.t as SubscriptionType;
 	const { status } = room;
 	const roomName = getRoomTitle(room);
-	const isGroupChatValue = isGroupChat(room as ISubscription);
+	const roomIsGroupChat = isGroupChat(room as ISubscription);
 	const teamMain = 'teamMain' in room ? room.teamMain : false;
 	const encrypted = 'encrypted' in room ? room.encrypted : undefined;
 	const departmentId = 'id' in room ? room.departmentId : undefined;
@@ -269,9 +269,9 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 	};
 
 	const accessibilityRoomName =
-		!isGroupChatValue && t === 'd' && !!userId
+		!roomIsGroupChat && t === 'd' && !!userId
 			? roomName
-			: getRoomAccessibilityLabel({ type: t, userId, isGroupChat: isGroupChatValue, status: status as TUserStatus, teamMain });
+			: getRoomAccessibilityLabel({ type: t, userId, isGroupChat: roomIsGroupChat, status: status as TUserStatus, teamMain });
 
 	if (!rid) {
 		return null;
