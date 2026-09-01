@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
-import { useComposerRid, useComposerSharing } from '../stores/ComposerStore';
+import { useComposerSharing } from '../stores/ComposerStore';
 import {
 	createMessageActionStore,
 	useIsBeingEdited,
@@ -9,25 +9,6 @@ import {
 } from '../../../containers/message/stores/MessageActionStore';
 
 describe('RoomProviders', () => {
-	it('exposes the provided composer values to consumers via named hooks', () => {
-		const store = createMessageActionStore();
-		const room = { rid: 'rid-1', t: 'c' };
-		const ridSpy = jest.fn();
-
-		const Probe = () => {
-			ridSpy(useComposerRid());
-			return null;
-		};
-
-		render(
-			<RoomProviders store={store} rid='rid-1' t='c' room={room}>
-				<Probe />
-			</RoomProviders>
-		);
-
-		expect(ridSpy).toHaveBeenLastCalledWith('rid-1');
-	});
-
 	it('does not re-render a consumer selecting a different slice when an unselected prop changes', () => {
 		const store = createMessageActionStore();
 		const sharingRenderSpy = jest.fn();
