@@ -143,9 +143,12 @@ export const useScroll = ({
 		}, JUMP_SAFETY_TIMEOUT);
 	};
 
+	const indexOfMessage = (messageId: string | null | undefined) =>
+		messageId ? (messagesIds.current?.findIndex(id => id === messageId) ?? -1) : -1;
+
 	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
 	const reScrollWhenSettled = (targetId: string | null | undefined) => {
-		const settled = targetId ? (messagesIds.current?.findIndex(id => id === targetId) ?? -1) : -1;
+		const settled = indexOfMessage(targetId);
 		if (settled !== -1) {
 			flatListRef.current?.scrollToIndex({
 				index: settled,
@@ -189,7 +192,7 @@ export const useScroll = ({
 		if (!jump || jump.scrolled) {
 			return;
 		}
-		const index = messagesIds.current?.findIndex(id => id === jump.messageId) ?? -1;
+		const index = indexOfMessage(jump.messageId);
 		if (index === -1) {
 			// Anchored target deeper than the window: grow it by QUERY_SIZE (bounded) to pull it in; the safety
 			// net aborts if it never materialises.
@@ -230,7 +233,7 @@ export const useScroll = ({
 		setTimeout(() => {
 			// Re-read at fire time so a retry queued by a previous jump can't scroll to a stale index.
 			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
-			const targetIndex = targetId ? (messagesIds.current?.findIndex(id => id === targetId) ?? -1) : -1;
+			const targetIndex = indexOfMessage(targetId);
 			if (targetIndex === -1) {
 				return;
 			}
@@ -290,7 +293,7 @@ export const useScroll = ({
 			}
 
 			// Target may already be present (contiguous / local): resolve synchronously, still one scroll.
-			const index = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
+			const index = indexOfMessage(messageId);
 			if (index !== -1 && !anchored) {
 				jump.scrolled = true;
 				scrollToTarget(messageId, index);
