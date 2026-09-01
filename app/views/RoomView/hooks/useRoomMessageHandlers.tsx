@@ -23,7 +23,6 @@ import {
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
-import { useRoomTmid } from '../../../containers/message/stores/MessageRoomStore';
 import { type IRoomViewProps } from '../definitions';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
@@ -34,7 +33,7 @@ import { pushThreadRoom } from '../services/pushThreadRoom';
 import { sendRoomMessage } from '../services/sendRoomMessage';
 import { useReactionActions } from './useReactionActions';
 
-export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
+export function useRoomMessageHandlers(tmid?: string): IUseRoomMessageHandlersResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
@@ -42,7 +41,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
 	const messageActionStore = useContext(MessageActionStoreContext);
-	const tmid = useRoomTmid();
 	const { clearLastSeen } = useRoomScreen();
 	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);

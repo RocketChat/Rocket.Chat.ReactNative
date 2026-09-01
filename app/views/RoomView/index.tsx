@@ -22,8 +22,7 @@ import { useActionSheet } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer';
 import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { RoomProviders } from './components/RoomProviders';
-import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
-import { RoomMessageHandlersBridge } from './components/RoomMessageHandlersBridge';
+import { RoomMessageProvider } from './components/RoomMessageProvider';
 import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import { type IJoinCode, type IListContainerRef, type IRoomViewProps, type IRoomViewState, type TListRef } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
@@ -264,7 +263,7 @@ const RoomView = (props: IRoomViewProps) => {
 							<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
 						) : null}
 						<A11yGateProvider>
-							<MessageRoomProvider
+							<RoomMessageProvider
 								jumpToMessage={jumpToMessageByUrl}
 								closeEmojiAndAction={handleCloseEmoji}
 								reactionInit={onReactionInit}
@@ -278,20 +277,18 @@ const RoomView = (props: IRoomViewProps) => {
 								Message_GroupingPeriod={Message_GroupingPeriod}
 								autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 								autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-								<RoomMessageHandlersBridge>
-									<List
-										ref={listRef}
-										flatListRef={flatListRef}
-										rid={room.rid}
-										t={room.t as RoomType}
-										tmid={tmid}
-										onLongPress={onMessageLongPress}
-										hideSystemMessages={hideSystemMessages}
-										showMessageInMainThread={user.showMessageInMainThread ?? false}
-										serverVersion={serverVersion}
-									/>
-								</RoomMessageHandlersBridge>
-							</MessageRoomProvider>
+								<List
+									ref={listRef}
+									flatListRef={flatListRef}
+									rid={room.rid}
+									t={room.t as RoomType}
+									tmid={tmid}
+									onLongPress={onMessageLongPress}
+									hideSystemMessages={hideSystemMessages}
+									showMessageInMainThread={user.showMessageInMainThread ?? false}
+									serverVersion={serverVersion}
+								/>
+							</RoomMessageProvider>
 						</A11yGateProvider>
 						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
 						<RoomMessageActions

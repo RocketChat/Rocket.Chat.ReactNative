@@ -1,11 +1,10 @@
-import { memo, useContext, useEffect, type ContextType } from 'react';
+import { memo } from 'react';
 import { act, render } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import {
 	MessageRoomProvider,
-	MessageRoomStoreContext,
 	useAutoTranslate,
 	useBlockAction,
 	useIsArchived,
@@ -29,24 +28,24 @@ describe('MessageRoomStore', () => {
 		});
 
 		it('useIsArchived throws', () => {
-			const Probe = () => {
+			const Consumer = () => {
 				useIsArchived();
 				return null;
 			};
-			expect(() => render(<Probe />)).toThrow('Message room hooks must be used within a MessageRoomProvider');
+			expect(() => render(<Consumer />)).toThrow('Message room hooks must be used within a MessageRoomProvider');
 		});
 	});
 
 	it('mirrors updated provider props into the store after mount', () => {
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useTimeFormat());
 			return null;
 		};
 		const wrap = (timeFormat: string) => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat={timeFormat}>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -60,7 +59,7 @@ describe('MessageRoomStore', () => {
 
 	it('does not subscribe to Message_TimeFormat when a timeFormat prop is passed', () => {
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useTimeFormat());
 			return null;
 		};
@@ -68,7 +67,7 @@ describe('MessageRoomStore', () => {
 		render(
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='literal-format'>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -87,7 +86,7 @@ describe('MessageRoomStore', () => {
 		mockedStore.dispatch(updateSettings('Message_TimeFormat', 'MMM Do YYYY'));
 
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useTimeFormat());
 			return null;
 		};
@@ -95,7 +94,7 @@ describe('MessageRoomStore', () => {
 		render(
 			<Provider store={mockedStore}>
 				<MessageRoomProvider>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -113,11 +112,11 @@ describe('MessageRoomStore', () => {
 		const autoTranslateSpy = jest.fn();
 		// memoized so re-renders only come from the store notifying its own subscription,
 		// not from the parent tree re-rendering with a new element identity
-		const TimeFormatProbe = memo(() => {
+		const TimeFormatConsumer = memo(() => {
 			timeFormatSpy(useTimeFormat());
 			return null;
 		});
-		const AutoTranslateProbe = memo(() => {
+		const AutoTranslateConsumer = memo(() => {
 			autoTranslateSpy(useAutoTranslate());
 			return null;
 		});
@@ -125,8 +124,8 @@ describe('MessageRoomStore', () => {
 		const wrap = (autoTranslateRoom: boolean) => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' autoTranslateRoom={autoTranslateRoom}>
-					<TimeFormatProbe />
-					<AutoTranslateProbe />
+					<TimeFormatConsumer />
+					<AutoTranslateConsumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -143,14 +142,14 @@ describe('MessageRoomStore', () => {
 
 	it('resyncs archived when a room gets archived mid-session', () => {
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useIsArchived());
 			return null;
 		};
 		const wrap = (archived: boolean) => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' archived={archived}>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -163,10 +162,10 @@ describe('MessageRoomStore', () => {
 	});
 
 	describe('handlers bag', () => {
-		it('reads a handler through the fine-grained selector off the published bag', () => {
+		it('reads a handler through the fine-grained selector on the first render', () => {
 			const blockAction = jest.fn();
 			const spy = jest.fn();
-			const Probe = () => {
+			const Consumer = () => {
 				spy(useBlockAction());
 				return null;
 			};
@@ -174,12 +173,12 @@ describe('MessageRoomStore', () => {
 			render(
 				<Provider store={mockedStore}>
 					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction }}>
-						<Probe />
+						<Consumer />
 					</MessageRoomProvider>
 				</Provider>
 			);
 
-			expect(spy).toHaveBeenLastCalledWith(blockAction);
+			expect(spy).toHaveBeenNthCalledWith(1, blockAction);
 		});
 
 		it('exposes navToRoomInfo/showAttachment from the handler bag', () => {
@@ -187,7 +186,7 @@ describe('MessageRoomStore', () => {
 			const bagShow = jest.fn();
 			const navSpy = jest.fn();
 			const showSpy = jest.fn();
-			const Probe = () => {
+			const Consumer = () => {
 				navSpy(useNavToRoomInfo());
 				showSpy(useShowAttachment());
 				return null;
@@ -196,7 +195,7 @@ describe('MessageRoomStore', () => {
 			render(
 				<Provider store={mockedStore}>
 					<MessageRoomProvider timeFormat='fixed-format' handlers={{ navToRoomInfo: bagNav, showAttachment: bagShow }}>
-						<Probe />
+						<Consumer />
 					</MessageRoomProvider>
 				</Provider>
 			);
@@ -205,31 +204,27 @@ describe('MessageRoomStore', () => {
 			expect(showSpy).toHaveBeenLastCalledWith(bagShow);
 		});
 
-		it('publishes handlers in the reactive tail: a setState swap reaches the selector', () => {
+		it('resyncs the bag when the provider receives a new handlers prop', () => {
 			const first = jest.fn();
 			const second = jest.fn();
 			const spy = jest.fn();
-			const captured: { store: ContextType<typeof MessageRoomStoreContext> } = { store: null };
-			const StoreProbe = () => {
-				const store = useContext(MessageRoomStoreContext);
-				useEffect(() => {
-					captured.store = store;
-				}, [store]);
+			const Consumer = () => {
 				spy(useBlockAction());
 				return null;
 			};
-
-			render(
+			const tree = (blockAction: jest.Mock) => (
 				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction: first }}>
-						<StoreProbe />
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction }}>
+						<Consumer />
 					</MessageRoomProvider>
 				</Provider>
 			);
 
+			const { rerender } = render(tree(first));
+
 			expect(spy).toHaveBeenLastCalledWith(first);
 
-			act(() => captured.store?.setState({ handlers: { blockAction: second } }));
+			rerender(tree(second));
 
 			expect(spy).toHaveBeenLastCalledWith(second);
 		});
@@ -250,7 +245,7 @@ describe('MessageRoomStore', () => {
 			const wrap = (reactionInit: () => void) => (
 				<Provider store={mockedStore}>
 					<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
-						<Text>probe</Text>
+						<Text>child</Text>
 					</MessageRoomProvider>
 				</Provider>
 			);
@@ -268,7 +263,7 @@ describe('MessageRoomStore', () => {
 			const wrap = () => (
 				<Provider store={mockedStore}>
 					<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
-						<Text>probe</Text>
+						<Text>child</Text>
 					</MessageRoomProvider>
 				</Provider>
 			);

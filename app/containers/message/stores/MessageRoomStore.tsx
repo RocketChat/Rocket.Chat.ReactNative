@@ -16,10 +16,6 @@ type FrozenState = {
 	// row action handlers
 	reactionInit?: (messageId: string) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
-	// message handler bag produced by RoomView's RoomMessageHandlersBridge; a single stable identity
-	// (leaves read it through the fine-grained selectors below). Views that render message leaves
-	// outside a RoomStoreContext (MessagesView, SearchMessagesView) supply the same bag directly.
-	handlers?: Partial<IUseRoomMessageHandlersResult>;
 	// room constants
 	rid?: string;
 	isThreadRoom?: boolean;
@@ -29,6 +25,7 @@ type FrozenState = {
 // Reactive tail: can change mid-session (e.g. an open room gets archived); the provider resyncs
 // these into the store on change (see the effect below).
 type ReactiveState = {
+	handlers?: Partial<IUseRoomMessageHandlersResult>;
 	archived?: boolean;
 	broadcast?: boolean;
 	isReadReceiptEnabled?: boolean;
@@ -102,6 +99,7 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 	// constants/handlers captured once above. The dep array keeps store writes on-change only.
 	useEffect(() => {
 		const reactiveState: ReactiveSnapshot = {
+			handlers: state.handlers,
 			timeFormat: state.timeFormat,
 			autoTranslateRoom: state.autoTranslateRoom,
 			autoTranslateLanguage: state.autoTranslateLanguage,
@@ -112,6 +110,7 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 		};
 		store.setState(reactiveState);
 	}, [
+		state.handlers,
 		state.timeFormat,
 		state.autoTranslateRoom,
 		state.autoTranslateLanguage,
@@ -149,9 +148,6 @@ export const useCloseEmojiAndAction = (): MessageRoomState['closeEmojiAndAction'
 
 export const useReactionInit = (): MessageRoomState['reactionInit'] => useMessageRoomStore(s => s.reactionInit);
 export const useErrorActionsShow = (): MessageRoomState['errorActionsShow'] => useMessageRoomStore(s => s.errorActionsShow);
-// Leaves read handlers through these fine-grained selectors, optional-chaining a possibly-partial bag.
-// The provider merges any view-level override (MessagesView, SearchMessagesView) into `handlers`,
-// so navToRoomInfo/showAttachment resolve from the single bag here.
 export const useNavToRoomInfo = (): IUseRoomMessageHandlersResult['navToRoomInfo'] | undefined =>
 	useMessageRoomStore(s => s.handlers?.navToRoomInfo);
 export const useShowAttachment = (): IUseRoomMessageHandlersResult['showAttachment'] | undefined =>
@@ -187,7 +183,6 @@ export const useBaseUrl = (): string => useAppSelector(state => state.server.ser
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
 export const useTimeFormat = (): string | undefined => useMessageRoomStore(s => s.timeFormat);
 export const useIsThreadRoom = (): boolean | undefined => useMessageRoomStore(s => s.isThreadRoom);
-export const useRoomTmid = (): string | undefined => useMessageRoomStore(s => s.tmid);
 export const useMessageGroupingPeriod = (): number | undefined => useMessageRoomStore(s => s.Message_GroupingPeriod);
 
 export const useAutoTranslate = (): { autoTranslateRoom?: boolean; autoTranslateLanguage?: string } =>

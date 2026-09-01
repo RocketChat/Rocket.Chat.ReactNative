@@ -11,7 +11,6 @@ import { type RoomState, type RoomStore } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { RoomScreenContext } from '../../stores/RoomScreenContext';
 import { createMessageActionStore, MessageActionStoreContext } from '../../../../containers/message/stores/MessageActionStore';
-import { MessageRoomProvider } from '../../../../containers/message/stores/MessageRoomStore';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
 jest.mock('@react-navigation/native', () => ({
@@ -96,15 +95,11 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	const messageActionStore = createMessageActionStore();
 	const clearLastSeen = jest.fn();
 
-	const { result } = renderHook(() => useRoomMessageHandlers(), {
+	const { result } = renderHook(() => useRoomMessageHandlers(tmid), {
 		wrapper: ({ children }) => (
 			<RoomStoreContext.Provider value={roomStore}>
 				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen }}>
-					<MessageActionStoreContext.Provider value={messageActionStore}>
-						<MessageRoomProvider tmid={tmid} timeFormat='h:mm A'>
-							{children}
-						</MessageRoomProvider>
-					</MessageActionStoreContext.Provider>
+					<MessageActionStoreContext.Provider value={messageActionStore}>{children}</MessageActionStoreContext.Provider>
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
 		)
@@ -113,11 +108,7 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	return { result, roomStore, messageActionStore, clearLastSeen };
 };
 
-// MessageRoomProvider stays mounted (useRoomTmid throws without it); the screen and room contexts are the ones left absent.
-const renderWithoutStores = () =>
-	renderHook(() => useRoomMessageHandlers(), {
-		wrapper: ({ children }) => <MessageRoomProvider timeFormat='h:mm A'>{children}</MessageRoomProvider>
-	});
+const renderWithoutStores = () => renderHook(() => useRoomMessageHandlers());
 
 describe('useRoomMessageHandlers', () => {
 	beforeEach(() => {
