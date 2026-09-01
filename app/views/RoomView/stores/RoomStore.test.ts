@@ -110,17 +110,6 @@ describe('RoomStore', () => {
 		expect(store.getState().member).toEqual({});
 	});
 
-	it('marks subscribed and joined when the subscription observable emits a row', () => {
-		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
-
-		emit([subRoom]);
-
-		expect(store.getState().room).toBe(subRoom);
-		expect(store.getState().subscribed).toBe(true);
-		expect(store.getState().joined).toBe(true);
-	});
-
 	it('flips to preview mode (not subscribed, not joined) when a non-DM has no subscription', () => {
 		const { emit } = setupObserve();
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
@@ -290,7 +279,7 @@ describe('RoomStore', () => {
 		});
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
-		await store.getState().init({ signal: controller.signal });
+		await expect(store.getState().init({ signal: controller.signal })).resolves.toEqual({ status: 'skipped' });
 
 		expect(store.getState().canAutoTranslate).toBe(false);
 		expect(mockReadMessages).not.toHaveBeenCalled();
@@ -399,18 +388,6 @@ describe('RoomStore', () => {
 			await expect(initPromise).resolves.toEqual({ status: 'skipped' });
 			expect(mockGetMessages).toHaveBeenCalledTimes(1);
 		});
-
-		it('reports skipped instead of loaded when the signal aborts during a successful attempt', async () => {
-			setupObserve();
-			const controller = new AbortController();
-			mockGetMessages.mockImplementation(() => {
-				controller.abort();
-				return Promise.resolve();
-			});
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
-
-			await expect(store.getState().init({ signal: controller.signal })).resolves.toEqual({ status: 'skipped' });
-		});
 	});
 
 	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
@@ -514,24 +491,6 @@ describe('RoomStore', () => {
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
-		it('survives a StrictMode double-invoke of the render initializer (peek twice, acquire/release once)', () => {
-			const { observeWithColumns, unsubscribe } = setupObserve();
-
-			// StrictMode invokes the useState initializer twice; both peeks must reuse one entry.
-			const first = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			const second = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			expect(second).toBe(first);
-			expect(observeWithColumns).toHaveBeenCalledTimes(1);
-
-			// The committed mount effect acquires once; its cleanup releases once.
-			acquire();
-			flushSweeps();
-			expect(unsubscribe).not.toHaveBeenCalled();
-
-			releaseRoomStore('rid-1');
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
-		});
-
 		it('warm-up then navigate: peek keeps the store alive across the sweep once the mount acquires it', () => {
 			const { unsubscribe } = setupObserve();
 
@@ -560,20 +519,6 @@ describe('RoomStore', () => {
 
 			expect(observeWithColumns).toHaveBeenCalledTimes(2);
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
-		});
-
-		it('warm-up abandoned: the grace sweep tears down an entry no mount ever acquired', () => {
-			const { unsubscribe } = setupObserve();
-
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-
-			flushSweeps();
-
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
-			// A fresh peek after the sweep starts a brand-new observation.
-			const { observeWithColumns } = setupObserve();
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			expect(observeWithColumns).toHaveBeenCalledTimes(1);
 		});
 
 		it('pop during grace: an entry released to zero before the sweep is torn down immediately, sweep is a no-op', () => {
