@@ -2,40 +2,40 @@ import { act, renderHook } from '@testing-library/react-native';
 
 import database from '../../../../lib/database';
 import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
+import { peekOrCreateRoomStore, releaseRoomStore } from '../../stores/RoomStore';
 import { useSubscriptionUnreads } from '../useSubscriptionUnreads';
 
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../../../../lib/methods/helpers/helpers', () => ({ getUidDirectMessage: jest.fn() }));
+jest.mock('../../../../lib/methods/readMessages', () => ({ readMessages: jest.fn() }));
+jest.mock('../../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn() }));
+jest.mock('../../../../lib/methods/helpers/helpers', () => ({
+	getUidDirectMessage: jest.fn(),
+	isGroupChat: jest.fn(() => false),
+	canAutoTranslate: jest.fn(() => false)
+}));
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetUidDirectMessage = getUidDirectMessage as jest.Mock;
 
-type Emit<T> = (value: T) => void;
+const stubRoom = { rid: 'rid-1', t: 'c' };
 
-const setupObservable = () => {
-	let emit: Emit<any> | undefined;
-	const unsubscribe = jest.fn();
-	const subRecord = {
-		id: 'sub-1',
-		observe: () => ({
-			subscribe: (cb: Emit<any>) => {
-				emit = cb;
-				return { unsubscribe };
-			}
-		})
-	};
-	mockGet.mockImplementation(() => ({ find: jest.fn(() => Promise.resolve(subRecord)) }));
-	return {
-		subRecord,
-		unsubscribe,
-		emitSub: (sub: any) => act(() => emit?.(sub))
-	};
+// Emits subscription rows through the rid-keyed RoomStore's observer, which is the only source
+// the hook reads from.
+const setupObservedRoom = (rid: string) => {
+	let emit: ((rows: any[]) => void) | undefined;
+	const observeWithColumns = jest.fn(() => ({
+		subscribe: (cb: (rows: any[]) => void) => {
+			emit = cb;
+			return { unsubscribe: jest.fn() };
+		}
+	}));
+	mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
+	peekOrCreateRoomStore({ rid, initialRoom: stubRoom });
+	return { emitRow: (row: any) => act(() => emit?.([row])) };
 };
-
-const flush = () => act(() => Promise.resolve());
 
 describe('useSubscriptionUnreads', () => {
 	beforeEach(() => {
@@ -43,41 +43,38 @@ describe('useSubscriptionUnreads', () => {
 		mockGetUidDirectMessage.mockReturnValue(undefined);
 	});
 
-	it('maps the subscription observable to the tunread trio and isSelfDm', async () => {
+	afterEach(() => {
+		releaseRoomStore('rid-1');
+	});
+
+	it('maps the observed subscription to the tunread trio and isSelfDm', () => {
 		mockGetUidDirectMessage.mockReturnValue('user-1');
-		const observable = setupObservable();
+		const { emitRow } = setupObservedRoom('rid-1');
 		const { result } = renderHook(() => useSubscriptionUnreads('rid-1', 'user-1'));
 
-		await flush();
-		expect(result.current.subscription).toBe(observable.subRecord);
+		const row = { id: 'sub-1', rid: 'rid-1', t: 'd', tunread: ['a', 'b'], tunreadUser: ['a'], tunreadGroup: ['b'] };
+		emitRow(row);
 
-		observable.emitSub({ t: 'd', tunread: ['a', 'b'], tunreadUser: ['a'], tunreadGroup: ['b'] });
-
+		expect(result.current.subscription).toBe(row);
 		expect(result.current.tunread).toEqual(['a', 'b']);
 		expect(result.current.tunreadUser).toEqual(['a']);
 		expect(result.current.tunreadGroup).toEqual(['b']);
 		expect(result.current.isSelfDm).toBe(true);
 	});
 
-	it('does not observe without a rid', async () => {
-		setupObservable();
-		renderHook(() => useSubscriptionUnreads(undefined, 'user-1'));
+	it('reports empty unreads while the room has no subscription row yet', () => {
+		setupObservedRoom('rid-1');
+		const { result } = renderHook(() => useSubscriptionUnreads('rid-1', 'user-1'));
 
-		await flush();
-		expect(mockGet).not.toHaveBeenCalled();
+		expect(result.current.tunread).toEqual([]);
+		expect(result.current.isSelfDm).toBe(false);
+		expect(result.current.subscription).toBeUndefined();
 	});
 
-	it('unsubscribes and re-finds when rid changes', async () => {
-		const observable = setupObservable();
-		const { rerender } = renderHook(({ rid }: { rid: string }) => useSubscriptionUnreads(rid, 'user-1'), {
-			initialProps: { rid: 'rid-1' }
-		});
+	it('falls back to empty unreads without a rid', () => {
+		const { result } = renderHook(() => useSubscriptionUnreads(undefined, 'user-1'));
 
-		await flush();
-		rerender({ rid: 'rid-2' });
-		await flush();
-
-		expect(observable.unsubscribe).toHaveBeenCalledTimes(1);
-		expect(mockGet).toHaveBeenCalledWith('subscriptions');
+		expect(result.current.tunread).toEqual([]);
+		expect(result.current.subscription).toBeUndefined();
 	});
 });

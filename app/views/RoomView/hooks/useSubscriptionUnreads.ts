@@ -1,38 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
-import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { type TSubscriptionModel } from '../../../definitions';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
+import { useRoomStoreByRid } from '../stores/RoomStore';
 
+const EMPTY_UNREADS: string[] = [];
+
+// The rid-keyed RoomStore already observes the subscription row on the tunread columns, so the
+// thread-unread badges read it from there instead of opening a second observer on the same row.
 export function useSubscriptionUnreads(rid?: string, userId?: string): IUseSubscriptionUnreadsResult {
-	const [tunread, setTunread] = useState<string[]>([]);
-	const [tunreadUser, setTunreadUser] = useState<string[]>([]);
-	const [tunreadGroup, setTunreadGroup] = useState<string[]>([]);
-	const [isSelfDm, setIsSelfDm] = useState(false);
-	const [subscription, setSubscription] = useState<TSubscriptionModel>();
-
-	useEffect(() => {
-		if (!rid) {
-			return;
-		}
-		let unsubscribe: (() => void) | undefined;
-		getSubscriptionByRoomId(rid).then(subRecord => {
-			if (!subRecord) {
-				return;
+	return useRoomStoreByRid(
+		rid,
+		useShallow(({ room }): IUseSubscriptionUnreadsResult => {
+			if (!('id' in room)) {
+				return {
+					tunread: EMPTY_UNREADS,
+					tunreadUser: EMPTY_UNREADS,
+					tunreadGroup: EMPTY_UNREADS,
+					isSelfDm: false,
+					subscription: undefined
+				};
 			}
-			setSubscription(subRecord);
-			const subscription = subRecord.observe().subscribe(sub => {
-				setTunread(sub?.tunread ?? []);
-				setTunreadUser(sub?.tunreadUser ?? []);
-				setTunreadGroup(sub?.tunreadGroup ?? []);
-				setIsSelfDm(sub?.t === 'd' && !!userId && getUidDirectMessage(sub) === userId);
-			});
-			unsubscribe = () => subscription.unsubscribe();
-		});
-
-		return () => unsubscribe?.();
-	}, [rid, userId]);
-
-	return { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription };
+			return {
+				tunread: room.tunread ?? EMPTY_UNREADS,
+				tunreadUser: room.tunreadUser ?? EMPTY_UNREADS,
+				tunreadGroup: room.tunreadGroup ?? EMPTY_UNREADS,
+				isSelfDm: room.t === 'd' && !!userId && getUidDirectMessage(room) === userId,
+				subscription: room as TSubscriptionModel
+			};
+		})
+	);
 }
