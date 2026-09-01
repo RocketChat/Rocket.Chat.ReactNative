@@ -22,10 +22,17 @@ const RID = 'ROOM_ID';
 const makeSubscription = (lastOpen: Date | null) => {
 	const subscription = {
 		lastOpen,
-		update: (updater: (s: { lastOpen: Date | null }) => void) => {
+		_raw: { _status: 'updated' },
+		get syncStatus() {
+			return this._raw._status;
+		},
+		update: jest.fn((updater: (s: { lastOpen: Date | null }) => void) => {
+			if (subscription.syncStatus === 'deleted') {
+				throw new Error(`Not allowed to change deleted record subscriptions#${RID}`);
+			}
 			updater(subscription);
 			return Promise.resolve();
-		}
+		})
 	};
 	return subscription;
 };
@@ -108,17 +115,13 @@ describe('updateLastOpen', () => {
 
 	it('is a silent no-op when the subscription is deleted between the read and the write', async () => {
 		const subscription = makeSubscription(null);
-		const deletedSubscription = {
-			...subscription,
-			syncStatus: 'deleted',
-			update: () => {
-				throw new Error(`Not allowed to change deleted record subscriptions#${RID}`);
-			}
-		};
-		mockedGetSubscriptionByRoomId.mockResolvedValue(deletedSubscription as never);
+		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
+		subscription._raw._status = 'deleted';
 
 		await updateLastOpen(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }]);
 
+		expect(subscription.update).not.toHaveBeenCalled();
+		expect(subscription.lastOpen).toBeNull();
 		expect(mockedLog).not.toHaveBeenCalled();
 	});
 });
