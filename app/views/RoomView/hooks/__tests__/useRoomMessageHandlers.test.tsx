@@ -1,16 +1,10 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { setReaction, toggleFollowMessage } from '../../../../lib/services/restApi';
+import { toggleFollowMessage } from '../../../../lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
-import log from '../../../../lib/methods/helpers/log';
-import { Review } from '../../../../lib/methods/helpers/review';
-import { sendMessage } from '../../../../lib/methods/sendMessage';
-import { getUserSelector } from '../../../../selectors/login';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore, type IUseRoomMessageHandlersParams } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
-import { RoomScreenContext } from '../../stores/RoomScreenContext';
-import { createMessageActionStore, MessageActionStoreContext } from '../../../../containers/message/stores/MessageActionStore';
 import { MessageRoomProvider } from '../../../../containers/message/stores/MessageRoomStore';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
@@ -23,14 +17,10 @@ jest.mock('react-redux', () => ({
 jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: jest.fn(() => false)
 }));
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({
-	useAppSelector: jest.fn()
-}));
 jest.mock('../../../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 jest.mock('../../../../lib/services/restApi', () => ({
-	setReaction: jest.fn(),
 	toggleFollowMessage: jest.fn()
 }));
 jest.mock('../../../../actions/messages', () => ({
@@ -41,12 +31,6 @@ jest.mock('../../../../lib/methods/helpers/log', () => ({
 	...jest.requireActual('../../../../lib/methods/helpers/log'),
 	default: jest.fn(),
 	logEvent: jest.fn()
-}));
-jest.mock('../../../../lib/methods/helpers/review', () => ({
-	Review: { pushPositiveEvent: jest.fn() }
-}));
-jest.mock('../../../../lib/methods/sendMessage', () => ({
-	sendMessage: jest.fn(() => Promise.resolve())
 }));
 jest.mock('../../../../lib/database/services/Thread', () => ({
 	getThreadById: jest.fn(() => Promise.resolve(null))
@@ -61,15 +45,8 @@ const mockDispatch = jest.fn();
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
 
-const mockSetReaction = setReaction as jest.Mock;
 const mockToggleFollowMessage = toggleFollowMessage as jest.Mock;
 const mockReplyBroadcastAction = replyBroadcastAction as jest.Mock;
-const mockLog = log as jest.Mock;
-const mockSendMessage = sendMessage as jest.Mock;
-
-const mockUser = { id: 'u1', username: 'user', token: 'tok', showMessageInMainThread: false };
-
-const { useAppSelector } = jest.requireMock('../../../../lib/hooks/useAppSelector');
 
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({
@@ -91,68 +68,65 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		...overrides
 	}));
 
-const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, tmid?: string) => {
-	const roomStore = makeRoomStore(roomStoreOverrides);
-	const messageActionStore = createMessageActionStore();
-	const clearLastSeen = jest.fn();
+const makeScreenHandlers = (overrides: Partial<IUseRoomMessageHandlersParams> = {}): IUseRoomMessageHandlersParams => ({
+	onThreadPress: jest.fn(),
+	onReactionPress: jest.fn(() => Promise.resolve()),
+	onAnswerButtonPress: jest.fn(),
+	...overrides
+});
 
-	const { result } = renderHook(() => useRoomMessageHandlers(), {
+const renderRoomMessageHandlers = (
+	roomStoreOverrides: Partial<RoomState> = {},
+	tmid?: string,
+	screenHandlers: IUseRoomMessageHandlersParams = makeScreenHandlers()
+) => {
+	const roomStore = makeRoomStore(roomStoreOverrides);
+
+	const { result } = renderHook(() => useRoomMessageHandlers(screenHandlers), {
 		wrapper: ({ children }) => (
 			<RoomStoreContext.Provider value={roomStore}>
-				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen }}>
-					<MessageActionStoreContext.Provider value={messageActionStore}>
-						<MessageRoomProvider tmid={tmid} timeFormat='h:mm A'>
-							{children}
-						</MessageRoomProvider>
-					</MessageActionStoreContext.Provider>
-				</RoomScreenContext.Provider>
+				<MessageRoomProvider tmid={tmid} timeFormat='h:mm A'>
+					{children}
+				</MessageRoomProvider>
 			</RoomStoreContext.Provider>
 		)
 	});
 
-	return { result, roomStore, messageActionStore, clearLastSeen };
+	return { result, roomStore, screenHandlers };
 };
 
-// MessageRoomProvider stays mounted (useRoomTmid throws without it); the screen and room contexts are the ones left absent.
+// MessageRoomProvider stays mounted (useRoomTmid throws without it); the room store context is the one left absent.
 const renderWithoutStores = () =>
-	renderHook(() => useRoomMessageHandlers(), {
+	renderHook(() => useRoomMessageHandlers(makeScreenHandlers()), {
 		wrapper: ({ children }) => <MessageRoomProvider timeFormat='h:mm A'>{children}</MessageRoomProvider>
 	});
 
 describe('useRoomMessageHandlers', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-		useAppSelector.mockImplementation((selector: any) => (selector === getUserSelector ? mockUser : undefined));
-	});
+	beforeEach(() => jest.clearAllMocks());
 
-	describe('onReactionPress', () => {
-		it('sets the reaction, closes the action sheet and reports a positive review event', async () => {
-			mockSetReaction.mockResolvedValue(undefined);
-			const { result, messageActionStore } = renderRoomMessageHandlers();
-			messageActionStore.getState().actions.startReacting('msg-1');
+	describe('handlers owned by the room screen', () => {
+		it('publishes the screen onThreadPress rather than opening the thread itself', () => {
+			const screenHandlers = makeScreenHandlers();
+			const { result } = renderRoomMessageHandlers({}, undefined, screenHandlers);
+			const item = { id: 'msg-1' } as any;
 
-			await act(async () => {
-				await result.current.onReactionPress({ name: 'smile' } as any, 'msg-1');
-			});
+			act(() => result.current.onThreadPress(item));
 
-			expect(mockSetReaction).toHaveBeenCalledWith('smile', 'msg-1');
-			expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
-			expect(messageActionStore.getState().action).toBeNull();
-			expect(Review.pushPositiveEvent).toHaveBeenCalledTimes(1);
+			expect(screenHandlers.onThreadPress).toHaveBeenCalledWith(item);
+			expect(mockNavigation.push).not.toHaveBeenCalled();
 		});
 
-		it('logs the error and skips the review event when setReaction rejects', async () => {
-			const error = new Error('boom');
-			mockSetReaction.mockRejectedValue(error);
-			const { result } = renderRoomMessageHandlers();
+		it('publishes the screen onReactionPress and onAnswerButtonPress', async () => {
+			const screenHandlers = makeScreenHandlers();
+			const { result } = renderRoomMessageHandlers({}, undefined, screenHandlers);
 
 			await act(async () => {
-				await result.current.onReactionPress('smile', 'msg-1');
+				await result.current.onReactionPress('smile' as any, 'msg-1');
+				result.current.onAnswerButtonPress('hello', true);
 			});
 
-			expect(mockLog).toHaveBeenCalledWith(error);
-			expect(mockHideActionSheet).not.toHaveBeenCalled();
-			expect(Review.pushPositiveEvent).not.toHaveBeenCalled();
+			expect(screenHandlers.onReactionPress).toHaveBeenCalledWith('smile', 'msg-1');
+			expect(screenHandlers.onAnswerButtonPress).toHaveBeenCalledWith('hello', true);
 		});
 	});
 
@@ -202,32 +176,6 @@ describe('useRoomMessageHandlers', () => {
 		});
 	});
 
-	describe('onAnswerButtonPress', () => {
-		it('sends the message, clears the unread divider and reports a positive review event', async () => {
-			mockSendMessage.mockResolvedValue(undefined);
-			const { result, clearLastSeen, messageActionStore } = renderRoomMessageHandlers({}, 'thread-1');
-			messageActionStore.getState().actions.startEditing('msg-1');
-
-			await act(async () => {
-				result.current.onAnswerButtonPress('hello', true);
-				await Promise.resolve();
-			});
-
-			expect(mockSendMessage).toHaveBeenCalledWith('rid-1', 'hello', 'thread-1', mockUser, true);
-			expect(clearLastSeen).toHaveBeenCalledTimes(1);
-			expect(Review.pushPositiveEvent).toHaveBeenCalledTimes(1);
-			expect(messageActionStore.getState().action).toBeNull();
-		});
-
-		it('no-ops when the message is undefined', () => {
-			const { result } = renderRoomMessageHandlers();
-
-			act(() => result.current.onAnswerButtonPress(undefined));
-
-			expect(mockSendMessage).not.toHaveBeenCalled();
-		});
-	});
-
 	describe('store contexts absent', () => {
 		let consoleErrorSpy: jest.SpyInstance;
 
@@ -239,8 +187,8 @@ describe('useRoomMessageHandlers', () => {
 			consoleErrorSpy.mockRestore();
 		});
 
-		it('throws when the screen and room contexts are absent', () => {
-			expect(() => renderWithoutStores()).toThrow(/must be used within a Room(Screen|Store)Context\.Provider/);
+		it('throws when the room store context is absent', () => {
+			expect(() => renderWithoutStores()).toThrow(/must be used within a RoomStoreContext\.Provider/);
 		});
 	});
 });

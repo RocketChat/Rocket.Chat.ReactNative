@@ -278,7 +278,10 @@ const RoomView = (props: IRoomViewProps) => {
 								Message_GroupingPeriod={Message_GroupingPeriod}
 								autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 								autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-								<RoomMessageHandlersBridge>
+								<RoomMessageHandlersBridge
+									onThreadPress={onThreadPress}
+									onReactionPress={onReactionPress}
+									onAnswerButtonPress={handleSendMessage}>
 									<List
 										ref={listRef}
 										flatListRef={flatListRef}

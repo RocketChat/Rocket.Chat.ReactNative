@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,9 +9,7 @@ import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { getUserSelector } from '../../../selectors/login';
 import {
 	type IMessage,
 	type IRoomInfoParam,
@@ -22,37 +19,26 @@ import {
 } from '../../../definitions';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
-import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
 import { useRoomTmid } from '../../../containers/message/stores/MessageRoomStore';
-import { type IRoomViewProps } from '../definitions';
+import { type IRoomViewProps, type IUseRoomMessageHandlersParams } from '../definitions';
 import { useRoomStore } from '../stores/RoomStoreContext';
-import { useRoomScreen } from '../stores/RoomScreenContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../services/toggleFollowThread';
-import { pushThreadRoom } from '../services/pushThreadRoom';
-import { sendRoomMessage } from '../services/sendRoomMessage';
-import { useReactionActions } from './useReactionActions';
 
-export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
+export function useRoomMessageHandlers({
+	onThreadPress,
+	onReactionPress,
+	onAnswerButtonPress
+}: IUseRoomMessageHandlersParams): IUseRoomMessageHandlersResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
-	const user = useAppSelector(getUserSelector);
-	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { showActionSheet } = useActionSheet();
 
-	const messageActionStore = useContext(MessageActionStoreContext);
 	const tmid = useRoomTmid();
-	const { clearLastSeen } = useRoomScreen();
 	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);
-	const roomUserId = useRoomStore(s => s.roomUserId);
-
-	if (!messageActionStore) {
-		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
-	}
-
-	const { resetAction, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
 
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {
 		if (!drid) return;
@@ -64,9 +50,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 			});
 		}
 	};
-
-	// No orchestrator-owned cancelJumpToMessageRef to self-source here, so the loading overlay renders without a cancel button.
-	const onThreadPress = (item: TAnyMessageModel) => pushThreadRoom({ rid, item, roomUserId, navigation });
 
 	const navToRoomInfo = (navParam: IRoomInfoParam) => {
 		logEvent(events[`ROOM_GO_${navParam.t === SubscriptionType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
@@ -126,9 +109,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 		}
 		return toggleFollowThreadService(threadMessageId, isFollowingThread);
 	};
-
-	const onAnswerButtonPress = (message?: string, tshow?: boolean) =>
-		sendRoomMessage({ rid, message, tmid, user, tshow, onMessageSent: clearLastSeen, resetAction });
 
 	return {
 		blockAction: blockActionService,

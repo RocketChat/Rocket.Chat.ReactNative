@@ -11,6 +11,7 @@ import {
 	type ILoggedUser,
 	type IMessage,
 	type IMessageEditAttachment,
+	type IUseRoomMessageHandlersResult,
 	type IVisitor,
 	type RoomType,
 	type TAnyMessageModel,
@@ -336,6 +337,12 @@ export interface IUseRoomNavigationParams {
 	isMasterDetail: boolean;
 	listRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;
+}
+
+export interface IUseRoomMessageHandlersParams {
+	onThreadPress: IUseRoomMessageHandlersResult['onThreadPress'];
+	onReactionPress: IUseRoomMessageHandlersResult['onReactionPress'];
+	onAnswerButtonPress: IUseRoomMessageHandlersResult['onAnswerButtonPress'];
 }
 
 export interface IUseRoomNavigationResult {
