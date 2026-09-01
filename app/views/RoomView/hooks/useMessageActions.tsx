@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 
-import { editMessage } from '../../../lib/services/restApi';
+import { editMessage } from '../../../lib/methods/editMessage';
 import log from '../../../lib/methods/helpers/log';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { getMessageById } from '../../../lib/database/services/Message';

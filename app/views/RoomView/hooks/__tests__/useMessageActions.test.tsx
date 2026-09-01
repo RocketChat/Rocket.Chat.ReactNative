@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import { editMessage, setReaction } from '../../../../lib/services/restApi';
+import { editMessage } from '../../../../lib/methods/editMessage';
+import { setReaction } from '../../../../lib/services/restApi';
 import log from '../../../../lib/methods/helpers/log';
 import { Review } from '../../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../../lib/database/services/Message';
@@ -15,8 +16,10 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation
 }));
 jest.mock('../../../../lib/services/restApi', () => ({
-	editMessage: jest.fn(),
 	setReaction: jest.fn()
+}));
+jest.mock('../../../../lib/methods/editMessage', () => ({
+	editMessage: jest.fn()
 }));
 jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 jest.mock('../../../../lib/methods/helpers/review', () => ({

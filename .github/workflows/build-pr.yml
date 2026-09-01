@@ -69,9 +69,61 @@ jobs:
     with:
       trigger: "pr"
 
+  # Runs first (cheap, secret-free): validates flow tags, then narrows the shard
+  # list to the shards sniffler flags as impacted. `should_run=false` is a
+  # confident zero (no source touched) that skips the whole e2e stage below.
+  e2e-shards:
+    name: E2E Shard Preflight
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.select.outputs.shards }}
+      should_run: ${{ steps.select.outputs.should_run }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Assert Maestro shard coverage
+        id: full
+        run: bash .github/scripts/assert-maestro-shards.sh
+
+      # Read labels live rather than from the event payload: the payload is frozen
+      # at push time (a label added afterwards, or a re-run, would never see it),
+      # and `contains()` over an array is an exact element match — it would miss
+      # the decorated label name ("💎 release").
+      - name: Detect release label
+        id: label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name' | grep -qi 'release'; then
+            echo "release=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "release=false" >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: Select impacted shards
+        id: select
+        env:
+          IS_RELEASE_LANE: ${{ github.event.pull_request.base.ref == 'master' || steps.label.outputs.release == 'true' }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          FULL_SHARDS: ${{ steps.full.outputs.shards }}
+        run: bash .github/scripts/select-impacted-shards.sh
+
   e2e-hold:
     name: E2E Hold
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
+    needs: [e2e-shards]
     permissions: {}
     environment: approve_e2e_testing
     runs-on: ubuntu-latest
@@ -80,32 +132,16 @@ jobs:
 
   e2e-build-android:
     name: E2E Build Android
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     permissions:
       contents: read
     uses: ./.github/workflows/e2e-build-android.yml
-    needs: [e2e-hold]
+    needs: [e2e-shards, e2e-hold]
     secrets: inherit
-
-  # Validates flow tags and emits the shard list both matrices fan out over.
-  e2e-shards:
-    name: E2E Shard Preflight
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    needs: [e2e-hold]
-    runs-on: ubuntu-latest
-    outputs:
-      shards: ${{ steps.shards.outputs.shards }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-
-      - name: Assert Maestro shard coverage
-        id: shards
-        run: bash .github/scripts/assert-maestro-shards.sh
 
   e2e-run-android:
     name: E2E Run Android
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     permissions:
       contents: read
     uses: ./.github/workflows/maestro-android.yml
@@ -120,16 +156,16 @@ jobs:
 
   e2e-build-ios:
     name: E2E Build iOS
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     permissions:
       contents: read
     uses: ./.github/workflows/e2e-build-ios.yml
-    needs: [e2e-hold]
+    needs: [e2e-shards, e2e-hold]
     secrets: inherit
 
   e2e-run-ios:
     name: E2E Run iOS
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' && needs.e2e-shards.outputs.should_run == 'true' }}
     permissions:
       contents: read
     uses: ./.github/workflows/maestro-ios.yml
@@ -141,3 +177,39 @@ jobs:
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
+
+  # Single required e2e status check. Always publishes one stable context, so an
+  # intentional confident-zero skip merges clean while a real shard failure blocks.
+  e2e-result:
+    name: E2E Result
+    if: ${{ always() && github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    needs: [e2e-shards, e2e-run-android, e2e-run-ios]
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate e2e outcome
+        env:
+          SHARDS_RESULT: ${{ needs.e2e-shards.result }}
+          SHOULD_RUN: ${{ needs.e2e-shards.outputs.should_run }}
+          SHARDS: ${{ needs.e2e-shards.outputs.shards }}
+          ANDROID: ${{ needs.e2e-run-android.result }}
+          IOS: ${{ needs.e2e-run-ios.result }}
+        run: |
+          if [ "$SHARDS_RESULT" != "success" ]; then
+            echo "::error title=E2E preflight failed::Shard preflight did not succeed (result=$SHARDS_RESULT)."
+            exit 1
+          fi
+          if [ "$SHOULD_RUN" != "true" ]; then
+            echo "### E2E skipped — 0 impacted flows (no source touched)" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          {
+            echo "### E2E ran shards \`$SHARDS\`"
+            echo "- Android: $ANDROID"
+            echo "- iOS: $IOS"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$ANDROID" = "success" ] && [ "$IOS" = "success" ]; then
+            exit 0
+          fi
+          echo "::error title=E2E failed::One or more Maestro shards failed (android=$ANDROID ios=$IOS)."
+          exit 1

@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
-import { ActionsButton, BaseButton } from '..';
+import { ActionsButton, BaseButton } from '../Buttons';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../../../lib/methods/helpers/emitter';

@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.76.0",
+	"version": "4.77.0",
 	"private": true,
 	"packageManager": "pnpm@10.33.4",
 	"scripts": {
@@ -19,6 +19,7 @@
 		"build-icon-set": "node scripts/build-icon-set.js",
 		"organize-translations": "node scripts/organize-translations.js",
 		"e2e:start": "RUNNING_E2E_TESTS=true react-native start",
+		"e2e:changed": "bash .github/scripts/e2e-changed.sh",
 		"storybook:start": "USE_STORYBOOK=true react-native start --reset-cache",
 		"storybook-generate": "sb-rn-get-stories",
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
@@ -50,7 +51,7 @@
 		"@rocket.chat/media-signaling": "1.0.0-rc.1",
 		"@rocket.chat/message-parser": "0.31.36",
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto#main",
-		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
+		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f",
 		"@rocket.chat/ui-kit": "^0.39.0",
 		"@zoontek/react-native-navigation-bar": "^1.1.1",
 		"axios": "0.30.3",
@@ -99,7 +100,7 @@
 		"react-native-external-keyboard": "^0.9.0",
 		"react-native-file-viewer": "2.1.4",
 		"react-native-gesture-handler": "~2.28.0",
-		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#f028aac24373d05166747ef6d9e59bb037fe3224",
+		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#47092e8c90550a54d45fe307f7cb2a24c9535ed5",
 		"react-native-incall-manager": "^4.2.1",
 		"react-native-katex": "git+https://github.com/RocketChat/react-native-katex.git",
 		"react-native-keyboard-controller": "1.18.5",
@@ -194,6 +195,7 @@
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"babel-preset-expo": "~54.0.9",
 		"eslint-plugin-react-native": "~5.0.0",
+		"fast-glob": "3.3.3",
 		"identity-obj-proxy": "^3.0.0",
 		"jest": "^29.7.0",
 		"jest-cli": "^29.7.0",
@@ -204,6 +206,7 @@
 		"react-dom": "19.1.0",
 		"react-native-dotenv": "3.4.8",
 		"reassure": "^1.5.1",
+		"sniffler": "0.4.0",
 		"storybook": "~9.0.9",
 		"typescript": "7.0.2"
 	},
