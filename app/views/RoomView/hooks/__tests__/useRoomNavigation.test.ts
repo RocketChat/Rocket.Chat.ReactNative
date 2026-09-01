@@ -65,6 +65,10 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 	return { result, navigation: mockNavigation };
 };
 
+// navToRoom/navToThread are not part of the hook's public surface: they exist to drive
+// useJumpToMessage, so the tests reach them through the props it was called with.
+const jumpToMessageProps = () => mockUseJumpToMessage.mock.calls[0][0];
+
 describe('useRoomNavigation', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -73,9 +77,9 @@ describe('useRoomNavigation', () => {
 	it('navToThread resolves and pushes a thread name for an item carrying its own tmid', async () => {
 		mockGetThreadById.mockResolvedValueOnce(null);
 		mockGetThreadName.mockResolvedValueOnce('Resolved Thread');
-		const { result, navigation } = renderRoomNavigation();
+		const { navigation } = renderRoomNavigation();
 
-		await result.current.navToThread({ id: 'msg-1', tmid: 'thread-1', tmsg: '' } as any);
+		await jumpToMessageProps().navToThread({ id: 'msg-1', tmid: 'thread-1', tmsg: '' } as any);
 
 		expect(sendLoadingEvent).toHaveBeenCalledWith(expect.objectContaining({ visible: true }));
 		expect(navigation.push).toHaveBeenCalledWith('RoomView', {
@@ -89,9 +93,9 @@ describe('useRoomNavigation', () => {
 	});
 
 	it('navToThread pushes using makeThreadName when opening a thread from its parent message', async () => {
-		const { result, navigation } = renderRoomNavigation();
+		const { navigation } = renderRoomNavigation();
 
-		await result.current.navToThread({ id: 'msg-1', tlm: '2024-01-01T00:00:00.000Z' } as any);
+		await jumpToMessageProps().navToThread({ id: 'msg-1', tlm: '2024-01-01T00:00:00.000Z' } as any);
 
 		expect(mockMakeThreadName).toHaveBeenCalled();
 		expect(navigation.push).toHaveBeenCalledWith('RoomView', {
@@ -105,18 +109,18 @@ describe('useRoomNavigation', () => {
 
 	it('navToRoom fetches the target room info and opens it, forwarding the jump target', async () => {
 		mockGetRoomInfo.mockResolvedValueOnce({ rid: 'other-rid' });
-		const { result } = renderRoomNavigation();
+		renderRoomNavigation();
 
-		await result.current.navToRoom({ id: 'msg-1', rid: 'other-rid' } as any);
+		await jumpToMessageProps().navToRoom({ id: 'msg-1', rid: 'other-rid' } as any);
 
 		expect(mockGetRoomInfo).toHaveBeenCalledWith('other-rid');
 		expect(mockGoRoom).toHaveBeenCalledWith({ item: { rid: 'other-rid' }, isMasterDetail: false, jumpToMessageId: 'msg-1' });
 	});
 
 	it('navToRoom is a no-op without a target rid', async () => {
-		const { result } = renderRoomNavigation();
+		renderRoomNavigation();
 
-		await result.current.navToRoom({ id: 'msg-1' } as any);
+		await jumpToMessageProps().navToRoom({ id: 'msg-1' } as any);
 
 		expect(mockGetRoomInfo).not.toHaveBeenCalled();
 	});
@@ -139,15 +143,8 @@ describe('useRoomNavigation', () => {
 		expect(jumpToMessage).not.toHaveBeenCalled();
 	});
 
-	// consumeJumpParam/onThreadMessagesLoaded now live in useJumpToMessage (see useJumpToMessage.test.tsx
-	// for their real behavior) — here we only assert useRoomNavigation forwards that hook's result.
-	it('consumeJumpParam is forwarded from useJumpToMessage', () => {
-		const { result } = renderRoomNavigation();
-		const { consumeJumpParam } = mockUseJumpToMessage.mock.results[0].value;
-
-		expect(result.current.consumeJumpParam).toBe(consumeJumpParam);
-	});
-
+	// onThreadMessagesLoaded lives in useJumpToMessage (see useJumpToMessage.test.tsx for its real
+	// behavior) — here we only assert useRoomNavigation forwards that hook's result.
 	it('onThreadMessagesLoaded is forwarded from useJumpToMessage', () => {
 		const { result } = renderRoomNavigation();
 		const { onThreadMessagesLoaded } = mockUseJumpToMessage.mock.results[0].value;

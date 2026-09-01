@@ -292,7 +292,7 @@ describe('useMessageActions', () => {
 		});
 	});
 
-	describe('handleCloseEmoji / handleShowActionSheet', () => {
+	describe('handleCloseEmoji', () => {
 		it('routes through the composer when a ref is present', () => {
 			const { result, refs } = renderMessageActions();
 			const action = jest.fn();
@@ -316,14 +316,6 @@ describe('useMessageActions', () => {
 			});
 
 			expect(action).toHaveBeenCalledWith('params');
-		});
-
-		it('handleShowActionSheet opens the action sheet with the given options', () => {
-			const { result, showActionSheet } = renderMessageActions();
-
-			act(() => result.current.handleShowActionSheet({ hasCancel: true }));
-
-			expect(showActionSheet).toHaveBeenCalledWith({ hasCancel: true });
 		});
 	});
 

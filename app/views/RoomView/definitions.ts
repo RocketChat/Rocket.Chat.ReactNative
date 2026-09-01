@@ -282,7 +282,6 @@ export interface IUseMessageActionsParams {
 export interface IUseMessageActionsResult {
 	resetAction: () => void;
 	handleCloseEmoji: (action?: (params?: unknown) => void, params?: unknown) => void;
-	handleShowActionSheet: (options: TActionSheetOptions) => void;
 	errorActionsShow: (message: TAnyMessageModel) => void;
 	onEditInit: (messageId: string) => void;
 	onEditCancel: () => void;
@@ -351,11 +350,6 @@ export interface IUseRoomNavigationParams {
 }
 
 export interface IUseRoomNavigationResult {
-	navToRoom: (message: TGetMessageInfoResult) => Promise<void | undefined>;
-	navToThread: (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => Promise<void | undefined>;
-	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
-	cancelJumpToMessage: () => void;
-	consumeJumpParam: (messageId: string) => void;
 	onThreadMessagesLoaded: () => void;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;

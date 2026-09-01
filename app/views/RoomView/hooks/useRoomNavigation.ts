@@ -43,7 +43,7 @@ export function useRoomNavigation({
 	const navToThread = (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) =>
 		pushThreadRoom({ rid, item, roomUserId: roomUserIdRef.current, navigation, onCancel: cancelJumpToMessageRef.current });
 
-	const { jumpToMessage, cancelJumpToMessage, consumeJumpParam, onThreadMessagesLoaded } = useJumpToMessage({
+	const { jumpToMessage, cancelJumpToMessage, onThreadMessagesLoaded } = useJumpToMessage({
 		rid,
 		tmid,
 		t,
@@ -73,14 +73,5 @@ export function useRoomNavigation({
 		}
 	};
 
-	return {
-		navToRoom,
-		navToThread,
-		jumpToMessage,
-		cancelJumpToMessage,
-		consumeJumpParam,
-		onThreadMessagesLoaded,
-		onThreadPress,
-		jumpToMessageByUrl
-	};
+	return { onThreadMessagesLoaded, onThreadPress, jumpToMessageByUrl };
 }
