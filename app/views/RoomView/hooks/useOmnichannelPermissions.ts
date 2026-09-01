@@ -39,6 +39,8 @@ export function useOmnichannelPermissions({
 
 	const [canReturnQueue, setCanReturnQueue] = useState(false);
 
+	// The routing config is server-global, so it is fetched once per screen rather than again on
+	// every rid swap or join.
 	useEffect(() => {
 		if (t !== 'l') {
 			return;
@@ -53,7 +55,7 @@ export function useOmnichannelPermissions({
 		return () => {
 			cancelled = true;
 		};
-	}, [t, rid, joined]);
+	}, [t]);
 
 	useEffect(() => {
 		if (t !== 'l') {

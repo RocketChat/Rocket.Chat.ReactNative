@@ -90,17 +90,41 @@ describe('useOmnichannelPermissions', () => {
 		expect(roomStore.getState().canPlaceLivechatOnHold).toBe(false);
 	});
 
-	it('discards a superseded return-queue batch that resolves after a fresher one', async () => {
+	it('drops a return-queue result that resolves after the screen unmounted', async () => {
 		const roomStore = makeRoomStore();
-		let resolveFirstRoutingConfig: (value: { returnQueue: boolean }) => void = () => {};
+		let resolveRoutingConfig: (value: { returnQueue: boolean }) => void = () => {};
 
 		mockUsePermissions.mockReturnValue([true, true]);
-		mockGetRoutingConfig.mockImplementationOnce(
+		mockGetRoutingConfig.mockImplementation(
 			() =>
 				new Promise(resolve => {
-					resolveFirstRoutingConfig = resolve;
+					resolveRoutingConfig = resolve;
 				})
 		);
+
+		const { unmount } = renderHook((props: IUseOmnichannelPermissionsParams) => useOmnichannelPermissions(props), {
+			initialProps: {
+				rid: 'rid-1',
+				t: 'l',
+				room: { rid: 'rid-1', t: 'l' } as any,
+				roomUpdate: {},
+				joined: false,
+				livechatAllowManualOnHold: true,
+				roomStore
+			}
+		});
+
+		unmount();
+		resolveRoutingConfig({ returnQueue: true });
+		await act(async () => {});
+
+		expect(roomStore.getState().canReturnQueue).toBe(false);
+	});
+
+	it('fetches the server-global routing config once, not again when the room is joined', async () => {
+		const roomStore = makeRoomStore();
+		mockUsePermissions.mockReturnValue([true, true]);
+		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
 
 		const baseProps: IUseOmnichannelPermissionsParams = {
 			rid: 'rid-1',
@@ -116,18 +140,14 @@ describe('useOmnichannelPermissions', () => {
 			initialProps: baseProps
 		});
 
-		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
-
-		rerender({ ...baseProps, joined: true });
-
 		await waitFor(() => {
 			expect(roomStore.getState().canReturnQueue).toBe(true);
 		});
 
-		resolveFirstRoutingConfig({ returnQueue: false });
+		rerender({ ...baseProps, joined: true });
 		await act(async () => {});
 
-		expect(roomStore.getState().canReturnQueue).toBe(true);
+		expect(mockGetRoutingConfig).toHaveBeenCalledTimes(1);
 	});
 
 	it('recomputes canPlaceLivechatOnHold on a pure on-hold flip of the same room instance', async () => {
