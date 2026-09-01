@@ -5,13 +5,15 @@ import { type RoomState, type RoomStore } from '../definitions';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 
-export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => {
+const useRoomStoreApi = (): RoomStore => {
 	const store = useContext(RoomStoreContext);
 	if (!store) {
 		throw new Error('Room store hooks must be used within a RoomStoreContext.Provider');
 	}
-	return useStore(store, selector);
+	return store;
 };
+
+export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => useStore(useRoomStoreApi(), selector);
 
 // The room model mutates in place, so tracked-column changes keep the same `room` reference.
 // Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders the caller. Works on
@@ -23,10 +25,4 @@ export const useRoomWithUpdateFromStore = <S extends { room: unknown; roomUpdate
 	return room;
 };
 
-export const useRoomWithUpdate = (): RoomState['room'] => {
-	const store = useContext(RoomStoreContext);
-	if (!store) {
-		throw new Error('Room store hooks must be used within a RoomStoreContext.Provider');
-	}
-	return useRoomWithUpdateFromStore(store);
-};
+export const useRoomWithUpdate = (): RoomState['room'] => useRoomWithUpdateFromStore(useRoomStoreApi());

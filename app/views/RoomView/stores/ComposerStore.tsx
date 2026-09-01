@@ -17,13 +17,15 @@ export const createComposerStore = (initial: TComposerExternalState) =>
 
 export const ComposerStoreContext = createContext<ComposerStore | null>(null);
 
-const useComposerStore = <T,>(selector: (state: ComposerState) => T): T => {
+const useComposerStoreApi = (): ComposerStore => {
 	const store = useContext(ComposerStoreContext);
 	if (!store) {
 		throw new Error('Composer store hooks must be used within a ComposerProvider');
 	}
-	return useStore(store, selector);
+	return store;
 };
+
+const useComposerStore = <T,>(selector: (state: ComposerState) => T): T => useStore(useComposerStoreApi(), selector);
 
 export const ComposerProvider = ({ children, ...state }: { children: ReactNode } & TComposerExternalState): ReactElement => {
 	const [store] = useState(() => createComposerStore(state));
@@ -41,13 +43,7 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 export const useComposerRid = (): ComposerState['rid'] => useComposerStore(s => s.rid);
 export const useComposerType = (): ComposerState['t'] => useComposerStore(s => s.t);
 export const useComposerTmid = (): ComposerState['tmid'] => useComposerStore(s => s.tmid);
-export const useComposerRoom = (): ComposerState['room'] => {
-	const store = useContext(ComposerStoreContext);
-	if (!store) {
-		throw new Error('Composer store hooks must be used within a ComposerProvider');
-	}
-	return useRoomWithUpdateFromStore(store);
-};
+export const useComposerRoom = (): ComposerState['room'] => useRoomWithUpdateFromStore(useComposerStoreApi());
 export const useComposerSharing = (): ComposerState['sharing'] => useComposerStore(s => s.sharing);
 export const useIsAutocompleteVisible = (): ComposerState['isAutocompleteVisible'] =>
 	useComposerStore(s => s.isAutocompleteVisible);
