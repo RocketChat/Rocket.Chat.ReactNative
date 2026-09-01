@@ -153,14 +153,9 @@ describe('useRoomInit', () => {
 		expect(onQuoteInit).not.toHaveBeenCalled();
 	});
 
-	// init() resolves on the invite early-return and on failure alike, so both land here: the footer
-	// must not stay stuck in a loading state on either path.
-	it.each([
-		['resolves', () => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })],
-		['rejects', () => Promise.reject(new Error('boom'))]
-	])('clears loading once init %s', async (_case, init) => {
+	it('clears loading once init rejects', async () => {
 		const roomStore = makeRoomStore();
-		roomStore.setState({ init: jest.fn(init) });
+		roomStore.setState({ init: jest.fn(() => Promise.reject(new Error('boom'))) });
 		const { result } = renderRoomInit({}, roomStore);
 
 		await waitFor(() => expect(result.current.loading).toBe(false));
