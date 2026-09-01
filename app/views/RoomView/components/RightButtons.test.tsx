@@ -53,7 +53,16 @@ let mockRightButtons = {
 	canToggleEncryption: false,
 	subscription: undefined
 };
-jest.mock('../hooks/useRightButtons', () => ({ useRightButtons: () => mockRightButtons }));
+jest.mock('../hooks/useThreadFollowing', () => ({ useThreadFollowing: () => mockRightButtons.isFollowingThread }));
+jest.mock('../hooks/useSubscriptionUnreads', () => ({
+	useSubscriptionUnreads: () => {
+		const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = mockRightButtons;
+		return { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription };
+	}
+}));
+jest.mock('../../../lib/hooks/usePermissions', () => ({
+	usePermissions: () => [mockRightButtons.canToggleEncryption]
+}));
 
 jest.mock('../../../containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');

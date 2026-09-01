@@ -1,27 +1,21 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import database from '../../../../lib/database';
-import { hasPermission } from '../../../../lib/methods/helpers';
-import { store as reduxStore } from '../../../../lib/store/auxStore';
-import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useRightButtons } from '../useRightButtons';
-
-// Isolate the permission concern: the observer hooks own their own suites.
-jest.mock('../useThreadFollowing', () => ({ useThreadFollowing: () => true }));
-jest.mock('../useSubscriptionUnreads', () => ({
-	useSubscriptionUnreads: () => ({ tunread: [], tunreadUser: [], tunreadGroup: [], isSelfDm: false, subscription: undefined })
-}));
+import database from '../../database';
+import { hasPermission } from '../../methods/helpers';
+import { store as reduxStore } from '../../store/auxStore';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { usePermissions } from '../usePermissions';
 
 let mockState: any;
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({
+jest.mock('../useAppSelector', () => ({
 	useAppSelector: (selector: (state: any) => unknown) => selector(mockState)
 }));
 
-jest.mock('../../../../lib/database', () => ({ __esModule: true, default: { active: { get: jest.fn() } } }));
-jest.mock('../../../../lib/store/auxStore', () => ({ store: { getState: jest.fn() } }));
-jest.mock('../../../../lib/database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn() }));
-jest.mock('../../../../lib/methods/helpers', () => ({
-	...jest.requireActual('../../../../lib/methods/helpers')
+jest.mock('../../database', () => ({ __esModule: true, default: { active: { get: jest.fn() } } }));
+jest.mock('../../store/auxStore', () => ({ store: { getState: jest.fn() } }));
+jest.mock('../../database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn() }));
+jest.mock('../../methods/helpers', () => ({
+	...jest.requireActual('../../methods/helpers')
 }));
 
 const mockGet = database.active.get as jest.Mock;
@@ -62,7 +56,7 @@ const configure = ({
 
 const flush = () => act(() => Promise.resolve());
 
-describe('useRightButtons — canToggleEncryption parity', () => {
+describe('usePermissions — hasPermission parity', () => {
 	beforeEach(() => jest.clearAllMocks());
 
 	const scenarios = [
@@ -75,11 +69,11 @@ describe('useRightButtons — canToggleEncryption parity', () => {
 		it(`matches the old async hasPermission result when ${scenario.name}`, async () => {
 			configure(scenario);
 
-			const { result } = renderHook(() => useRightButtons({ rid: 'rid-1', tmid: undefined, userId: 'user-1' }));
+			const { result } = renderHook(() => usePermissions([PERMISSION], 'rid-1'));
 			await flush();
 
 			const [expected] = await hasPermission([scenario.permissionRoles], 'rid-1');
-			expect(result.current.canToggleEncryption).toBe(expected);
+			expect(result.current[0]).toBe(expected);
 		});
 	});
 });
