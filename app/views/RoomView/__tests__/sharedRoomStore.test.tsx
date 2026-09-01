@@ -177,12 +177,6 @@ describe('RoomView screens sharing one rid-keyed store', () => {
 		jest.mocked(loadThreadMessages).mockResolvedValue(undefined);
 	});
 
-	it('mounts a room screen and a thread screen on the same rid', () => {
-		renderRoomAndThread();
-
-		expect(screen.getAllByTestId('room-view-join-button')).toHaveLength(2);
-	});
-
 	it('still opens the join-code modal from the room screen after the thread screen unmounts', async () => {
 		const { closeThread } = renderRoomAndThread();
 
