@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import parse from 'url-parse';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -36,6 +37,7 @@ import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';
+import log from '../../lib/methods/helpers/log';
 import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 interface IMessagesViewProps {
@@ -152,6 +154,24 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		} else {
 			Navigation.popToRoom(isMasterDetail);
 			Navigation.setParams(params);
+		}
+	};
+
+	jumpToMessageByUrl = (messageUrl: string) => {
+		try {
+			const messageId = parse(messageUrl, true).query.msg;
+			if (!messageId) {
+				return;
+			}
+			const { isMasterDetail } = this.props;
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams({
+				rid: this.rid,
+				jumpToMessageId: messageId,
+				t: this.t
+			});
+		} catch (e) {
+			log(e);
 		}
 	};
 
@@ -341,7 +361,12 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
 				<A11yGateProvider>
-					<MessageRoomProvider handlers={this.messageHandlers} rid={this.rid} isThreadRoom timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+					<MessageRoomProvider
+						handlers={this.messageHandlers}
+						jumpToMessage={this.jumpToMessageByUrl}
+						rid={this.rid}
+						isThreadRoom
+						timeFormat={'MMM Do YYYY, h:mm:ss a'}>
 						<FlatList
 							data={messages}
 							renderItem={this.renderItem}
