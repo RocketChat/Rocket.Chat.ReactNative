@@ -104,7 +104,6 @@ jest.mock('../methods/helpers/log', () => ({
 
 const flushMicrotasks = async (): Promise<void> => {
 	for (let i = 0; i < 5; i += 1) {
-		// eslint-disable-next-line no-await-in-loop
 		await Promise.resolve();
 	}
 };
@@ -695,7 +694,7 @@ describe('loginTOTP', () => {
 		mockSdkLogin.mockImplementationOnce(() => Promise.reject({ data: { error: 'totp-required', details: {} } }));
 		mockSdkCurrent.currentLogin = { result: { userId: 'userId', authToken: 'authToken', me: { username: 'username' } } };
 
-		await loginTOTP({ username: 'user', ldapPass: 'password', ldap: true, ldapOptions: {} }, true);
+		await loginTOTP({ username: 'user', ldapPass: 'password', ldap: true, ldapOptions: {} }, { retryWithPassword: true });
 
 		expect(mockSdkLogin).toHaveBeenLastCalledWith({ user: 'user', password: 'password', code: '123456' });
 	}, 2000);
@@ -704,7 +703,7 @@ describe('loginTOTP', () => {
 		mockSdkLogin.mockImplementationOnce(() => Promise.reject({ data: { error: 'totp-required', details: {} } }));
 		mockSdkCurrent.currentLogin = { result: { userId: 'userId', authToken: 'authToken', me: { username: 'username' } } };
 
-		await loginTOTP({ username: 'user', crowdPassword: 'password', crowd: true }, true);
+		await loginTOTP({ username: 'user', crowdPassword: 'password', crowd: true }, { retryWithPassword: true });
 
 		expect(mockSdkLogin).toHaveBeenLastCalledWith({ user: 'user', password: 'password', code: '123456' });
 	}, 2000);

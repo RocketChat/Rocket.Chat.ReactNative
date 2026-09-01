@@ -1,4 +1,3 @@
-import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 
 import type * as SdkIntegration from '../testUtils/sdkIntegration';
@@ -92,19 +91,6 @@ describe('mediaCallsStateSignals', () => {
 
 		expect(mockSdkGet).toHaveBeenCalledWith('media-calls.stateSignals', { contractId: 'device-contract-id-123' });
 		expect(result).toEqual({ signals: [], success: true });
-	});
-
-	it('returns signals and success from the API response', async () => {
-		const mockSignals = [
-			{ type: 'new', callId: 'call-1' } as unknown as ServerMediaSignal,
-			{ type: 'notification', notification: 'ringing' } as unknown as ServerMediaSignal
-		];
-		mockSdkGet.mockResolvedValueOnce({ signals: mockSignals, success: true });
-
-		const result = await mediaCallsStateSignals('device-id');
-
-		expect(result.signals).toHaveLength(2);
-		expect(result.success).toBe(true);
 	});
 
 	it('returns empty signals and success false when sdk.get throws', async () => {

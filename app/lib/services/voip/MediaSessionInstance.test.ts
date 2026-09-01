@@ -799,7 +799,7 @@ describe('MediaSessionInstance', () => {
 
 			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['a', 'b'] } as any);
 
-			// startCall is async (awaits permission on Android); flush microtask queue
+			// startCall is async (awaits permission on Android); flush the microtask queue
 			await Promise.resolve();
 			await Promise.resolve();
 

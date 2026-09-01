@@ -109,7 +109,7 @@ import reducers from '../../reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';
 import {
-	flush,
+	flushMicrotasksAndTimers,
 	framesOn,
 	latestConnection,
 	makeCollection,
@@ -171,17 +171,17 @@ function bootApp(): void {
 
 async function openSocket(): Promise<void> {
 	await connect({ server: SERVER });
-	await flush();
+	await flushMicrotasksAndTimers();
 	mockConnections[0].onopen();
-	await flush();
+	await flushMicrotasksAndTimers();
 	store.dispatch(connectSuccess());
-	await flush();
+	await flushMicrotasksAndTimers();
 }
 
 async function openSignedInSocket(): Promise<void> {
 	await openSocket();
 	store.dispatch(loginSuccess({ id: USER_ID, token: RESUME_TOKEN } as never));
-	await flush();
+	await flushMicrotasksAndTimers();
 }
 
 function resumedUser(): unknown {
@@ -192,9 +192,9 @@ function resumedUser(): unknown {
 async function subscribeToRoom(rid: string): Promise<RoomSubscription> {
 	const room = new RoomSubscription(rid);
 	const subscribing = room.subscribe();
-	await flush();
+	await flushMicrotasksAndTimers();
 	await subscribing;
-	await flush();
+	await flushMicrotasksAndTimers();
 	return room;
 }
 
@@ -220,7 +220,7 @@ beforeEach(() => {
 
 afterEach(async () => {
 	sdk.disconnect();
-	await flush();
+	await flushMicrotasksAndTimers();
 	jest.useRealTimers();
 });
 
@@ -238,7 +238,7 @@ describe('foreground resume over the real SDK socket', () => {
 		jest.mocked(loadMissedMessages).mockClear();
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(framesOn(frozen, 'ping').length).toBeGreaterThan(pingsBefore);
@@ -264,7 +264,7 @@ describe('foreground resume over the real SDK socket', () => {
 
 		dropped.readyState = CLOSED;
 		dropped.onclose({ code: 1006 });
-		await flush();
+		await flushMicrotasksAndTimers();
 		expect(dispatched).toContainEqual(disconnect());
 		dispatched.length = 0;
 
@@ -272,7 +272,7 @@ describe('foreground resume over the real SDK socket', () => {
 		expect(mockConnections).toHaveLength(1);
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(mockConnections.length).toBeGreaterThan(1);
@@ -304,7 +304,7 @@ describe('foreground resume over the real SDK socket', () => {
 		dispatched.length = 0;
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(framesOn(alive, 'ping').length).toBeGreaterThan(pingsBefore);
@@ -322,7 +322,7 @@ describe('foreground resume over the real SDK socket', () => {
 		dispatched.length = 0;
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(framesOn(frozen, 'ping')).toHaveLength(0);
@@ -336,12 +336,12 @@ describe('foreground resume over the real SDK socket', () => {
 		const frozen = mockConnections[0];
 		stopAnsweringFrames(frozen);
 		store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		await flush();
+		await flushMicrotasksAndTimers();
 		const pingsBefore = framesOn(frozen, 'ping').length;
 		dispatched.length = 0;
 
 		store.dispatch({ type: APP_STATE.FOREGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 		await jest.advanceTimersByTimeAsync(RECOVERY_WINDOW);
 
 		expect(framesOn(frozen, 'ping')).toHaveLength(pingsBefore);
@@ -354,7 +354,7 @@ describe('foreground resume over the real SDK socket', () => {
 		await openSignedInSocket();
 
 		store.dispatch({ type: APP_STATE.BACKGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(saveLastLocalAuthenticationSession).toHaveBeenCalledWith(SERVER);
 		expect(setUserPresenceAway).toHaveBeenCalled();
@@ -365,7 +365,7 @@ describe('foreground resume over the real SDK socket', () => {
 		await openSocket();
 
 		store.dispatch({ type: APP_STATE.BACKGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(saveLastLocalAuthenticationSession).not.toHaveBeenCalled();
 		expect(setUserPresenceAway).not.toHaveBeenCalled();
@@ -375,10 +375,10 @@ describe('foreground resume over the real SDK socket', () => {
 		bootApp();
 		await openSignedInSocket();
 		store.dispatch(disconnect());
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		store.dispatch({ type: APP_STATE.BACKGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(saveLastLocalAuthenticationSession).not.toHaveBeenCalled();
 		expect(setUserPresenceAway).not.toHaveBeenCalled();
@@ -388,10 +388,10 @@ describe('foreground resume over the real SDK socket', () => {
 		bootApp();
 		await openSignedInSocket();
 		store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		store.dispatch({ type: APP_STATE.BACKGROUND });
-		await flush();
+		await flushMicrotasksAndTimers();
 
 		expect(saveLastLocalAuthenticationSession).not.toHaveBeenCalled();
 		expect(setUserPresenceAway).not.toHaveBeenCalled();

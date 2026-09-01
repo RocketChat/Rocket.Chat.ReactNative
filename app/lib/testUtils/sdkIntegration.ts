@@ -5,7 +5,7 @@ import type { IApplicationState } from '../../definitions';
 import type sdk from '../services/sdk';
 import type { ISocketDriver } from '../services/sdk';
 
-export interface IDdpMessage {
+interface IDdpMessage {
 	msg: string;
 	id?: string;
 	name?: string;
@@ -58,7 +58,7 @@ export interface IMockSdkDriver extends ISocketDriver {
 	};
 }
 
-export interface IMockSdkClient {
+interface IMockSdkClient {
 	host?: string;
 	driver?: ISocketDriver;
 }
@@ -156,7 +156,7 @@ export function makeCollection(name: string): IMockCollection {
 	};
 }
 
-export async function flush(turns = 10): Promise<void> {
+export async function flushMicrotasksAndTimers(turns = 10): Promise<void> {
 	for (let i = 0; i < turns; i++) {
 		await Promise.resolve();
 		await jest.advanceTimersByTimeAsync(0);
@@ -166,11 +166,11 @@ export async function flush(turns = 10): Promise<void> {
 export async function settleUntil(isSettled: () => boolean, maxRounds = 20): Promise<void> {
 	for (let round = 0; round < maxRounds && !isSettled(); round++) {
 		await jest.runOnlyPendingTimersAsync();
-		await flush();
+		await flushMicrotasksAndTimers();
 	}
 }
 
-export interface IMockReduxState {
+interface IMockReduxState {
 	meteor: { connected: boolean };
 	login: { user: Record<string, unknown> | null; isAuthenticated: boolean };
 	server: { version: string };
@@ -178,7 +178,7 @@ export interface IMockReduxState {
 	room: { subscribedRoom: string | null };
 }
 
-export interface IMockReduxStore {
+interface IMockReduxStore {
 	state: IMockReduxState;
 	store: Store<IApplicationState> & { dispatch: jest.Mock };
 }

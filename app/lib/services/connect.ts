@@ -354,7 +354,7 @@ function toPasswordLogin(params: ILoginCredentials): ICredentialsPasswordAPI | u
 	}
 }
 
-async function loginTOTP(params: ILoginCredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
+async function loginTOTP(params: ILoginCredentials, options?: { retryWithPassword?: boolean }): Promise<ILoggedUser> {
 	try {
 		return await login(params);
 	} catch (e: any) {
@@ -366,11 +366,11 @@ async function loginTOTP(params: ILoginCredentials, loginEmailPassword?: boolean
 				invalid: (details.error || error) === 'totp-invalid'
 			});
 
-			const passwordParams = loginEmailPassword ? toPasswordLogin(params) : undefined;
+			const passwordParams = options?.retryWithPassword ? toPasswordLogin(params) : undefined;
 			if (passwordParams) {
 				store.dispatch(setUser({ username: passwordParams.user || passwordParams.username }));
 
-				return loginTOTP({ ...passwordParams, code: code?.twoFactorCode }, loginEmailPassword);
+				return loginTOTP({ ...passwordParams, code: code?.twoFactorCode }, options);
 			}
 
 			return loginTOTP({
@@ -403,11 +403,11 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 		};
 	}
 
-	return loginTOTP(params, true);
+	return loginTOTP(params, { retryWithPassword: true });
 }
 
 async function loginOAuthOrSso(params: ILoginCredentials) {
-	const result = await loginTOTP(params, false);
+	const result = await loginTOTP(params);
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
