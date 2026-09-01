@@ -1,5 +1,6 @@
 import { updateLastOpen } from './updateLastOpen';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import log from './helpers/log';
 
 jest.mock('../database', () => ({
 	__esModule: true,
@@ -11,6 +12,8 @@ jest.mock('../database/services/Subscription', () => ({
 }));
 
 jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
+const mockedLog = log as jest.MockedFunction<typeof log>;
 
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
 
@@ -101,5 +104,21 @@ describe('updateLastOpen', () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
 
 		await expect(updateLastOpen(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }])).resolves.toBeUndefined();
+	});
+
+	it('is a silent no-op when the subscription is deleted between the read and the write', async () => {
+		const subscription = makeSubscription(null);
+		const deletedSubscription = {
+			...subscription,
+			syncStatus: 'deleted',
+			update: () => {
+				throw new Error(`Not allowed to change deleted record subscriptions#${RID}`);
+			}
+		};
+		mockedGetSubscriptionByRoomId.mockResolvedValue(deletedSubscription as never);
+
+		await updateLastOpen(RID, [{ _updatedAt: '2024-01-01T12:00:00.000Z' }]);
+
+		expect(mockedLog).not.toHaveBeenCalled();
 	});
 });
