@@ -153,8 +153,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		const sub = await getSubscriptionByRoomId(tmp.rid);
 
 		const { subscribedRoom } = store.getState().room;
-		const shouldSaveLastMessage = !!tmp.lastMessage && subscribedRoom !== tmp.rid;
-		const lastMessage = tmp.lastMessage && shouldSaveLastMessage ? buildMessage(tmp.lastMessage) : null;
+		const lastMessage = tmp.lastMessage && subscribedRoom !== tmp.rid ? buildMessage(tmp.lastMessage) : null;
 		const messageRecord = lastMessage ? await getMessageById(lastMessage._id) : null;
 
 		await db.write(async () => {
@@ -195,7 +194,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 				}
 			}
 
-			if (shouldSaveLastMessage) {
+			if (lastMessage) {
 				const messagesCollection = db.get('messages');
 				try {
 					if (messageRecord) {
@@ -207,11 +206,9 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					} else {
 						batch.push(
 							messagesCollection.prepareCreate(m => {
-								if (lastMessage) {
-									m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-									if (m.subscription) {
-										m.subscription.id = lastMessage.rid;
-									}
+								m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+								if (m.subscription) {
+									m.subscription.id = lastMessage.rid;
 								}
 								return Object.assign(m, lastMessage);
 							})

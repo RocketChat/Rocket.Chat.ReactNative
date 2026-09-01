@@ -408,6 +408,10 @@ class Encryption {
 				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => ({ sub, newSub: await this.decryptSubscription(sub) }))
 			);
 
+			if (!decrypted.length) {
+				return;
+			}
+
 			await db.write(async () => {
 				const prepared = decrypted.map(({ sub, newSub }) => {
 					try {

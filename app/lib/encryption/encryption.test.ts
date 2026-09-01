@@ -265,9 +265,7 @@ describe('Encryption.decryptPendingMessages', () => {
 });
 
 describe('Encryption.decryptPendingSubscriptions', () => {
-	// Mimics a WatermelonDB Model: prepareUpdate throws while a previous prepared
-	// update has not been committed yet.
-	const makeSubscriptionRecord = (id: string) => {
+	const makeSubscriptionRecordRejectingSecondPrepareUpdate = (id: string) => {
 		const record: any = {
 			id,
 			rid: id,
@@ -297,8 +295,8 @@ describe('Encryption.decryptPendingSubscriptions', () => {
 	});
 
 	it('leaves no subscription prepared-but-uncommitted when one decryption rejects', async () => {
-		const healthy = makeSubscriptionRecord('s1');
-		const failing = makeSubscriptionRecord('s2');
+		const healthy = makeSubscriptionRecordRejectingSecondPrepareUpdate('s1');
+		const failing = makeSubscriptionRecordRejectingSecondPrepareUpdate('s2');
 		mockQueryRows.subscriptions = [healthy, failing];
 		jest.spyOn(encryption, 'decryptSubscription').mockImplementation((sub: any) => {
 			if (sub.id === failing.id) {
