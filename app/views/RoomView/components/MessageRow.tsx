@@ -1,12 +1,41 @@
+import dayjs from '../../../lib/dayjs';
 import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomScreen } from '../stores/RoomScreenContext';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { type RoomType } from '../../../definitions';
-import { useIsIgnored } from '../hooks/useIsIgnored';
+import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
-import { useMessageSeparators } from '../hooks/useMessageSeparators';
-import { type TMessageRowProps } from '../definitions';
+import { type IUseMessageSeparatorsResult, type TMessageRowProps } from '../definitions';
+
+// The room model mutates in place (same ref per emit), and the React Compiler caches derived
+// values on that stable ref. Deriving the boolean inside the selector keeps it fresh per emit
+// and only re-renders the caller when the derived value actually changes.
+const useIsIgnored = (authorId?: string): boolean =>
+	useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
+
+const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel): IUseMessageSeparatorsResult => {
+	const { lastSeen } = useRoomScreen();
+
+	let dateSeparator = null;
+	let showUnreadSeparator = false;
+
+	const itemDate = dayjs(item.ts);
+
+	if (!previousItem) {
+		dateSeparator = item.ts;
+		showUnreadSeparator = lastSeen ? itemDate.isAfter(lastSeen) : false;
+	} else {
+		const previousItemDate = dayjs(previousItem.ts);
+		showUnreadSeparator =
+			(lastSeen && (itemDate.isSame(lastSeen) || itemDate.isAfter(lastSeen)) && previousItemDate.isBefore(lastSeen)) ?? false;
+		if (!itemDate.isSame(previousItem.ts, 'day')) {
+			dateSeparator = item.ts;
+		}
+	}
+
+	return { dateSeparator, showUnreadSeparator };
+};
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
 	const room = useRoomStore(s => s.room);
