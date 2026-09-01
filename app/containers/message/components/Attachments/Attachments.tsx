@@ -1,5 +1,4 @@
-import { type FC } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Image from './Image';
 import Audio from './Audio';
@@ -7,27 +6,48 @@ import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
+import { type IAttachment } from '../../../../definitions';
 import { useShowAttachment } from '../../stores/MessageRoomStore';
 import { useMessageField, useTranslateLanguage } from '../../stores/MessageStore';
-import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
-import { getAttachmentKey, isContentAttachment } from './utils';
+import { getAttachmentKey, isContentAttachment, isQuoteAttachment } from './utils';
 
-const Attachments: FC<IMessageAttachments> = ({ attachments }: IMessageAttachments) => {
-	'use memo';
+const styles = StyleSheet.create({
+	container: {
+		gap: 4
+	}
+});
 
+interface IAttachments {
+	attachments?: IAttachment[];
+	variant?: 'content' | 'quote';
+}
+
+const NestedReply = ({ attachment }: { attachment: IAttachment }) => (
+	<Reply attachment={attachment}>
+		<Attachments attachments={attachment.attachments} variant='quote' />
+		<Attachments attachments={attachment.attachments} />
+	</Reply>
+);
+
+const Attachments = ({ attachments, variant = 'content' }: IAttachments) => {
 	const translateLanguage = useTranslateLanguage();
 	const showAttachment = useShowAttachment();
 	const author = useMessageField(item => item.u);
 
-	const nonQuoteAttachments = attachments?.filter(isContentAttachment);
+	const isQuote = variant === 'quote';
+	const files = attachments?.filter(isQuote ? isQuoteAttachment : isContentAttachment);
 
-	if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
+	if (!files || files.length === 0) {
 		return null;
 	}
 
-	const attachmentsElements = nonQuoteAttachments.map((file, index) => {
+	const elements = files.map((file, index) => {
 		const msg = getMessageFromAttachment(file, translateLanguage);
+
+		if (isQuote) {
+			return <NestedReply key={getAttachmentKey(file, 'reply', index)} attachment={file} />;
+		}
 
 		if (file.image_url) {
 			return (
@@ -59,13 +79,13 @@ const Attachments: FC<IMessageAttachments> = ({ attachments }: IMessageAttachmen
 		}
 
 		if (file.attachments?.length) {
-			return <Reply key={getAttachmentKey(file, 'reply', index)} attachment={file} msg={msg} />;
+			return <NestedReply key={getAttachmentKey(file, 'reply', index)} attachment={file} />;
 		}
 
 		return null;
 	});
 
-	return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
+	return <View style={styles.container}>{elements}</View>;
 };
 
 export default Attachments;

@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { useMemo, type FC } from 'react';
 import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
@@ -67,8 +67,6 @@ const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean
 };
 
 const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
-	'use memo';
-
 	switch (block.type) {
 		case 'BIG_EMOJI':
 			return <BigEmoji value={block.value} />;
@@ -111,8 +109,6 @@ const Markdown: FC<IMarkdownProps> = ({
 	isTranslated,
 	textStyle
 }: IMarkdownProps) => {
-	'use memo';
-
 	let tokens: Root | null = null;
 
 	if (msg) {
@@ -124,15 +120,18 @@ const Markdown: FC<IMarkdownProps> = ({
 		}
 	}
 
-	const contextValue = {
-		mentions,
-		channels,
-		useRealName,
-		username,
-		navToRoomInfo,
-		onLinkPress,
-		textStyle
-	};
+	const contextValue = useMemo(
+		() => ({
+			mentions,
+			channels,
+			useRealName,
+			username,
+			navToRoomInfo,
+			onLinkPress,
+			textStyle
+		}),
+		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
+	);
 
 	if (!tokens) {
 		return null;

@@ -143,6 +143,21 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+let consumedSamlToken;
+
+const handleSaml = function* handleSaml({ params }) {
+	const { credentialToken } = params;
+	if (!credentialToken || credentialToken === consumedSamlToken) {
+		return;
+	}
+	consumedSamlToken = credentialToken;
+	try {
+		yield loginOAuthOrSso({ saml: true, credentialToken });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
 	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
@@ -173,6 +188,10 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
+		return;
+	}
+	if (params.type === 'saml') {
+		yield handleSaml({ params });
 		return;
 	}
 
@@ -244,11 +263,6 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			if (!hostAlreadyConnected) {
 				yield take(types.SERVER.SELECT_SUCCESS);
-				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
-				const connected = yield select(state => state.meteor.connected);
-				if (!connected) {
-					yield take(types.METEOR.SUCCESS);
-				}
 			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
@@ -344,11 +358,6 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		EventEmitter.emit('NewServer', { server: host });
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
-			// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
-			const connected = yield select(state => state.meteor.connected);
-			if (!connected) {
-				yield take(types.METEOR.SUCCESS);
-			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });

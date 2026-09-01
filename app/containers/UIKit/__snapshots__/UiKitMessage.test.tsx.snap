@@ -3,364 +3,369 @@
 exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
 [
   <View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Approve"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#156FF5",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#156FF5",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#FFFFFF",
+            },
           ]
         }
       >
         Approve
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Deny"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#E4E7EA",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#E4E7EA",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#2F343D",
+            },
           ]
         }
       >
         Deny
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Deny"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#E4E7EA",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#E4E7EA",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#2F343D",
+            },
           ]
         }
       >
         Deny
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Deny"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#E4E7EA",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#E4E7EA",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#2F343D",
+            },
           ]
         }
       >
         Deny
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View>
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Deny"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#E4E7EA",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#E4E7EA",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#2F343D",
+            },
           ]
         }
       >
         Deny
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View
     style={
@@ -370,76 +375,77 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Deny"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#E4E7EA",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#E4E7EA",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#2F343D",
+            },
           ]
         }
       >
         Deny
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <View
     style={
@@ -449,76 +455,77 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       }
     }
   >
-    <RNGestureHandlerButton
+    <View
       accessibilityLabel="Deny"
       accessibilityRole="button"
-      activeOpacity={0.105}
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
       collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "backgroundColor": "#E4E7EA",
             "borderRadius": 4,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "cursor": undefined,
+            "backgroundColor": "#E4E7EA",
           },
+          {
+            "marginBottom": 16,
+          },
+          false,
         ]
       }
-      underlayColor="black"
     >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "black",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
       <Text
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#2F343D",
+            },
           ]
         }
       >
         Deny
       </Text>
-    </RNGestureHandlerButton>
+    </View>
   </View>,
   <RNGestureHandlerButton
     accessibilityLabel="Show more"
@@ -580,6 +587,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -664,6 +674,9 @@ exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
                 "color": "#6C727A",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -753,6 +766,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -790,6 +806,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -827,6 +846,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -864,6 +886,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -901,6 +926,9 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
             "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "400",
             "lineHeight": 22,
             "textAlign": "left",
@@ -1041,6 +1069,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1057,6 +1088,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1067,30 +1101,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call ended"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call ended
+                        <Text
+                          accessibilityLabel="Voice call ended"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call ended
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -1144,6 +1202,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1160,6 +1221,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1170,30 +1234,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="00:06"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        00:06
+                        <Text
+                          accessibilityLabel="00:06"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          00:06
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -1314,6 +1402,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1330,6 +1421,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1340,30 +1434,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call transferred"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call transferred
+                        <Text
+                          accessibilityLabel="Voice call transferred"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call transferred
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -1417,6 +1535,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1433,6 +1554,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1443,30 +1567,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="00:06"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        00:06
+                        <Text
+                          accessibilityLabel="00:06"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          00:06
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -1587,6 +1735,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1603,6 +1754,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1613,30 +1767,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call not answered"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call not answered
+                        <Text
+                          accessibilityLabel="Voice call not answered"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call not answered
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -1757,6 +1935,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1773,6 +1954,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1783,30 +1967,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call failed"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call failed
+                        <Text
+                          accessibilityLabel="Voice call failed"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call failed
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -1937,6 +2145,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -1953,6 +2164,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -1963,30 +2177,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call ended"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call ended
+                        <Text
+                          accessibilityLabel="Voice call ended"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#C1C7D0",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call ended
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2040,6 +2278,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2056,6 +2297,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2066,30 +2310,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="00:06"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        00:06
+                        <Text
+                          accessibilityLabel="00:06"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#C1C7D0",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          00:06
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2210,6 +2478,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2226,6 +2497,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2236,30 +2510,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call transferred"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call transferred
+                        <Text
+                          accessibilityLabel="Voice call transferred"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#C1C7D0",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call transferred
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2313,6 +2611,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2329,6 +2630,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2339,30 +2643,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="00:06"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        00:06
+                        <Text
+                          accessibilityLabel="00:06"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#C1C7D0",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          00:06
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2483,6 +2811,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2499,6 +2830,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2509,30 +2843,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call not answered"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call not answered
+                        <Text
+                          accessibilityLabel="Voice call not answered"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#C1C7D0",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call not answered
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2653,6 +3011,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2669,6 +3030,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2679,30 +3043,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call failed"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#C1C7D0",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call failed
+                        <Text
+                          accessibilityLabel="Voice call failed"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#C1C7D0",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call failed
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2833,6 +3221,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2849,6 +3240,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2859,30 +3253,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call ended"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call ended
+                        <Text
+                          accessibilityLabel="Voice call ended"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call ended
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -2936,6 +3354,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -2952,6 +3373,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -2962,30 +3386,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="00:06"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        00:06
+                        <Text
+                          accessibilityLabel="00:06"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          00:06
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -3106,6 +3554,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3122,6 +3573,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3132,30 +3586,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call transferred"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call transferred
+                        <Text
+                          accessibilityLabel="Voice call transferred"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call transferred
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -3209,6 +3687,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3225,6 +3706,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3235,30 +3719,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="00:06"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        00:06
+                        <Text
+                          accessibilityLabel="00:06"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          00:06
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -3379,6 +3887,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3395,6 +3906,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3405,30 +3919,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call not answered"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call not answered
+                        <Text
+                          accessibilityLabel="Voice call not answered"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call not answered
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -3549,6 +4087,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "fontFamily": "Inter",
                         "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "lineHeight": 22,
                         "textAlign": "left",
@@ -3565,6 +4106,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
                         "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
                         "fontWeight": "400",
                         "textAlign": "left",
                       }
@@ -3575,30 +4119,54 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
                           "fontWeight": "700",
                           "textAlign": "left",
                         }
                       }
                     >
                       <Text
-                        accessibilityLabel="Voice call failed"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                            {
-                              "fontSize": 14,
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Voice call failed
+                        <Text
+                          accessibilityLabel="Voice call failed"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                              {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "Inter",
+                                "fontVariant": [
+                                  "tabular-nums",
+                                ],
+                                "fontWeight": "700",
+                                "textAlign": "left",
+                              },
+                            ]
+                          }
+                        >
+                          Voice call failed
+                        </Text>
                       </Text>
                     </Text>
                   </Text>
@@ -3674,6 +4242,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -3690,6 +4261,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -3700,30 +4274,54 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
                 }
               >
                 <Text
-                  accessibilityLabel="Voice call ended"
                   style={
-                    [
-                      {
-                        "flexShrink": 1,
-                        "fontSize": 16,
-                        "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                      {
-                        "fontSize": 14,
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    }
                   }
                 >
-                  Voice call ended
+                  <Text
+                    accessibilityLabel="Voice call ended"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ]
+                    }
+                  >
+                    Voice call ended
+                  </Text>
                 </Text>
               </Text>
             </Text>
@@ -3777,6 +4375,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -3793,6 +4394,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -3803,30 +4407,54 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
                 }
               >
                 <Text
-                  accessibilityLabel="Voice call failed"
                   style={
-                    [
-                      {
-                        "flexShrink": 1,
-                        "fontSize": 16,
-                        "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                      {
-                        "fontSize": 14,
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    }
                   }
                 >
-                  Voice call failed
+                  <Text
+                    accessibilityLabel="Voice call failed"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ]
+                    }
+                  >
+                    Voice call failed
+                  </Text>
                 </Text>
               </Text>
             </Text>
@@ -3880,6 +4508,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -3896,6 +4527,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -3906,30 +4540,54 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
                 }
               >
                 <Text
-                  accessibilityLabel="Voice call not answered"
                   style={
-                    [
-                      {
-                        "flexShrink": 1,
-                        "fontSize": 16,
-                        "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                      {
-                        "fontSize": 14,
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    }
                   }
                 >
-                  Voice call not answered
+                  <Text
+                    accessibilityLabel="Voice call not answered"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ]
+                    }
+                  >
+                    Voice call not answered
+                  </Text>
                 </Text>
               </Text>
             </Text>
@@ -3983,6 +4641,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -3999,6 +4660,9 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -4009,30 +4673,54 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                   {
                     "backgroundColor": "transparent",
                     "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "700",
                     "textAlign": "left",
                   }
                 }
               >
                 <Text
-                  accessibilityLabel="Voice call transferred"
                   style={
-                    [
-                      {
-                        "flexShrink": 1,
-                        "fontSize": 16,
-                        "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                      {
-                        "fontSize": 14,
-                      },
-                    ]
+                    {
+                      "backgroundColor": "transparent",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    }
                   }
                 >
-                  Voice call transferred
+                  <Text
+                    accessibilityLabel="Voice call transferred"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontVariant": [
+                            "tabular-nums",
+                          ],
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        },
+                      ]
+                    }
+                  >
+                    Voice call transferred
+                  </Text>
                 </Text>
               </Text>
             </Text>
@@ -4098,6 +4786,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4356,6 +5047,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4633,6 +5327,9 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4687,6 +5384,9 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -4741,6 +5441,9 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -4757,6 +5460,9 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -4773,9 +5479,6 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -4824,6 +5527,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -4840,6 +5546,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -4857,9 +5566,6 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
-                {
-                  "fontSize": 14,
-                },
               ]
             }
           >
@@ -4869,76 +5575,77 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="button"
     accessibilityRole="button"
-    activeOpacity={0.105}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
         {
-          "backgroundColor": "#156FF5",
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginBottom": 16,
           "paddingHorizontal": 16,
           "paddingVertical": 14,
         },
         {
-          "cursor": undefined,
+          "backgroundColor": "#156FF5",
         },
+        {
+          "marginBottom": 16,
+        },
+        false,
       ]
     }
-    underlayColor="black"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "black",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <Text
       style={
         [
           {
-            "color": "#FFFFFF",
-            "fontSize": 16,
-          },
-          {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
-          undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >
       button
     </Text>
-  </RNGestureHandlerButton>
+  </View>
 </View>
 `;
 
@@ -4977,6 +5684,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -4993,6 +5703,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5009,9 +5722,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5082,6 +5792,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "500",
             "textAlign": "center",
           },
@@ -5092,6 +5805,625 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
       Select a date
     </Text>
   </RNGestureHandlerButton>
+</View>
+`;
+
+exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
+<View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Regular message: the reference font size"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Regular message: the reference font size
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Section mrkdwn: must match the message above"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Section mrkdwn: must match the message above
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="		changes: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          		changes: 
+        </Text>
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="	"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          	
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="		changes: "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              		changes: 
+            </Text>
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "color": "#095AD2",
+                      },
+                    ]
+                  }
+                >
+                  https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="	"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              	
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
 </View>
 `;
 
@@ -5130,6 +6462,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5146,6 +6481,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5156,30 +6494,54 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
               {
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "700",
                 "textAlign": "left",
               }
             }
           >
             <Text
-              accessibilityLabel="List"
               style={
-                [
-                  {
-                    "flexShrink": 1,
-                    "fontSize": 16,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
-                  },
-                ]
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                }
               }
             >
-              List
+              <Text
+                accessibilityLabel="List"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    },
+                  ]
+                }
+              >
+                List
+              </Text>
             </Text>
           </Text>
           <Text
@@ -5193,9 +6555,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5219,6 +6578,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -5244,6 +6606,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "lineHeight": 22,
                   "textAlign": "left",
@@ -5252,6 +6617,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
@@ -5267,6 +6635,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   "backgroundColor": "transparent",
                   "flexShrink": 1,
                   "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
                   "fontWeight": "400",
                   "textAlign": "left",
                 }
@@ -5283,9 +6654,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     },
                     {
                       "color": "#2F343D",
-                    },
-                    {
-                      "fontSize": 14,
                     },
                   ]
                 }
@@ -5337,6 +6705,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5353,6 +6724,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5369,9 +6743,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5442,6 +6813,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -5487,6 +6861,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -5503,6 +6880,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "flexShrink": 1,
                 "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "400",
                 "textAlign": "left",
               }
@@ -5519,9 +6899,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
-                  },
-                  {
-                    "fontSize": 14,
                   },
                 ]
               }
@@ -5592,6 +6969,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "500",
               "textAlign": "center",
             },
@@ -5641,6 +7021,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5657,6 +7040,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5673,9 +7059,6 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5844,6 +7227,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "lineHeight": 22,
               "textAlign": "left",
@@ -5860,6 +7246,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
               "backgroundColor": "transparent",
               "flexShrink": 1,
               "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }
@@ -5876,9 +7265,6 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
-                },
-                {
-                  "fontSize": 14,
                 },
               ]
             }
@@ -5954,6 +7340,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
               "color": "#6C727A",
               "fontFamily": "Inter",
               "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
               "fontWeight": "400",
               "textAlign": "left",
             }

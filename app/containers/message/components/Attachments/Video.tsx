@@ -4,7 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type IUserMessage } from '../../../../definitions';
 import { type IAttachment } from '../../../../definitions/IAttachment';
 import I18n from '../../../../i18n';
-import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
+import { isIOS } from '../../../../lib/methods/helpers';
+import { fileDownload } from '../../../../lib/methods/helpers/fileDownload';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
@@ -69,8 +70,6 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 };
 
 const Video = ({ file, showAttachment, author, msg }: IMessageVideo): ReactElement | null => {
-	'use memo';
-
 	const user = useMessageUser();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 

@@ -1,12 +1,12 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import Quote from '../Attachments/Quote';
+import Attachments from '../Attachments/Attachments';
 import { MessageProvider } from '../../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
+import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
 
 jest.mock('../../../markdown', () => {
 	const React = require('react');
@@ -19,7 +19,7 @@ jest.mock('../../../markdown', () => {
 });
 
 // Never resolves, so a click leaves the reply's loading state stuck at `true`.
-jest.mock('../../../../lib/methods/helpers', () => ({
+jest.mock('../../../../lib/methods/helpers/fileDownload', () => ({
 	fileDownloadAndPreview: jest.fn(() => new Promise(() => {}))
 }));
 
@@ -41,7 +41,7 @@ jest.mock('expo-image', () => {
 
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 
-const buildItem = () => ({ id: 'msg-1' } as unknown as TAnyMessageModel);
+const buildItem = () => ({ id: 'msg-1' }) as unknown as TAnyMessageModel;
 
 const renderQuote = (attachments: IAttachment[], ctx: Partial<MessageRoomState> = {}) => {
 	const contextValue: Partial<MessageRoomState> = {
@@ -54,7 +54,7 @@ const renderQuote = (attachments: IAttachment[], ctx: Partial<MessageRoomState> 
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem()}>
-					<Quote attachments={attachments} />
+					<Attachments variant='quote' attachments={attachments} />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
@@ -84,7 +84,7 @@ describe('Quote', () => {
 					baseUrl='https://open.rocket.chat'
 					timeFormat='HH:mm'>
 					<MessageProvider item={buildItem()}>
-						<Quote attachments={[attachmentB, attachmentA]} />
+						<Attachments variant='quote' attachments={[attachmentB, attachmentA]} />
 					</MessageProvider>
 				</MessageRoomProvider>
 			</Provider>

@@ -25,8 +25,6 @@ export const RoomProviders = ({
 	getText,
 	updateAutocompleteVisible
 }: IRoomProvidersProps): ReactElement => {
-	'use memo';
-
 	return (
 		<MessageActionProvider store={store}>
 			<RoomContext.Provider

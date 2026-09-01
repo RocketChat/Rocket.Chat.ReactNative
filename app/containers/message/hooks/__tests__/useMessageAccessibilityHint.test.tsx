@@ -8,7 +8,7 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
-	({ id: 'msg-1', ...overrides } as TAnyMessageModel);
+	({ id: 'msg-1', ...overrides }) as TAnyMessageModel;
 
 const renderHint = (item: TAnyMessageModel, config: Partial<MessageRoomState> = {}) => {
 	const spy = jest.fn();

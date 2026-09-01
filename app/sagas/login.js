@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -23,6 +23,7 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { selectFirstLoggedServer } from './selectFirstLoggedServer';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
@@ -42,6 +43,7 @@ import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
@@ -260,7 +262,9 @@ const checkVoipPermission = async () => {
 		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
 
 		if (!canUseVoip) {
-			mediaSessionInstance.reset();
+			if (!isInActiveVoipCall()) {
+				mediaSessionInstance.reset();
+			}
 			return;
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {
@@ -382,15 +386,8 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				const servers = yield serversCollection.query().fetch();
 
 				// see if there're other logged in servers and selects first one
-				if (servers.length > 0) {
-					for (let i = 0; i < servers.length; i += 1) {
-						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-						if (token) {
-							yield put(selectServerRequest(newServer, newServer.version));
-							return;
-						}
-					}
+				if (yield* selectFirstLoggedServer(servers)) {
+					return;
 				}
 				// if there's no servers, go outside
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -449,15 +446,8 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 			const servers = yield serversCollection.query().fetch();
 
 			// see if there're other logged in servers and selects first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (token) {
-						yield put(selectServerRequest(newServer, newServer.version));
-						return;
-					}
-				}
+			if (yield* selectFirstLoggedServer(servers)) {
+				return;
 			}
 			// if there's no servers, go outside
 			disconnect();

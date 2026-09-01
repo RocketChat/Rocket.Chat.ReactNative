@@ -47,8 +47,12 @@ jest.mock('../../../containers/NewMediaCall', () => ({
 	NewMediaCall: jest.fn(() => null)
 }));
 
+let mockIsAndroid = false;
+
 jest.mock('../../methods/helpers/deviceInfo', () => ({
-	isAndroid: false
+	get isAndroid() {
+		return mockIsAndroid;
+	}
 }));
 
 jest.mock('../../services/voip/MediaSessionInstance', () => ({
@@ -75,6 +79,7 @@ jest.mock('../../../i18n', () => ({
 describe('useNewMediaCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockIsAndroid = false;
 		mockUseIsInActiveVoipCall.mockReturnValue(false);
 		mockIsSelfUserId.mockReturnValue(false);
 		mockStartCall.mockReset();
@@ -273,24 +278,16 @@ describe('useNewMediaCall', () => {
 	});
 
 	it('should pass hugContent: true to the action sheet when isAndroid is true', () => {
-		jest.resetModules();
-		jest.doMock('../../methods/helpers/deviceInfo', () => ({
-			isAndroid: true
-		}));
-		// Must load hook after doMock so `hugContent: isAndroid` uses Android.
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const { useNewMediaCall: useNewMediaCallAndroid } = require('./useNewMediaCall');
-
+		mockIsAndroid = true;
 		mockUseSubscription.mockReturnValue(undefined);
 		mockUseMediaCallPermission.mockReturnValue(false);
 
-		const { result } = renderHook(() => useNewMediaCallAndroid('room-id'));
+		const { result } = renderHook(() => useNewMediaCall('room-id'));
 
 		act(() => {
 			result.current.openNewMediaCall();
 		});
 
-		// Re-required hook uses a fresh NewMediaCall mock ref; only assert hugContent and element shape.
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
 		expect(isValidElement(actionSheetArgs.children)).toBe(true);

@@ -49,7 +49,7 @@ export interface IRoomViewState {
 		[K in TRoomUpdate]?: any;
 	};
 	member: any;
-	lastOpen: Date | null;
+	lastSeen: Date | null;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	readOnly: boolean;

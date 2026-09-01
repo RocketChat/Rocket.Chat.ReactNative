@@ -17,8 +17,6 @@ interface IClearAfterSheetContentProps {
 }
 
 const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClearAfterSheetContentProps): ReactElement => {
-	'use memo';
-
 	const [pendingValue, setPendingValue] = useState<ClearAfterValue>(initialValue);
 	const { colors } = useTheme();
 	const { showActionSheet, hideActionSheet } = useActionSheet();

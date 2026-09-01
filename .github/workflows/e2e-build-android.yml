@@ -12,9 +12,13 @@ on:
       BUGSNAG_KEY_OFFICIAL:
         required: true
 
+permissions: {}
+
 jobs:
   android-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     env:
       # Keep in sync with maestro-android.yml

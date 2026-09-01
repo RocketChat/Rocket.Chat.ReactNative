@@ -42,8 +42,6 @@ export const MessageComposer = ({
 	forwardedRef: Ref<IMessageComposerRef>;
 	children?: ReactElement | null;
 }): ReactElement | null => {
-	'use memo';
-
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -114,7 +112,7 @@ export const MessageComposer = ({
 			const updatedAttachments = attachments.length
 				? attachments.map(({ description, altText, fileId, filename }) =>
 						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
-				  )
+					)
 				: undefined;
 			editRequest?.({ id: action.messageId, msg: textFromInput, rid, attachments: updatedAttachments });
 			clearAttachments();
@@ -125,7 +123,7 @@ export const MessageComposer = ({
 			let quotedMessage: string | undefined;
 
 			if (action?.kind === 'quote') {
-				quotedMessage = await prepareQuoteMessage(textFromInput, action.messageIds);
+				quotedMessage = await prepareQuoteMessage(textFromInput, action.messageIds, tmid);
 			}
 
 			try {
@@ -149,7 +147,7 @@ export const MessageComposer = ({
 		}
 
 		if (action?.kind === 'quote') {
-			const quoteMessage = await prepareQuoteMessage(textFromInput, action.messageIds);
+			const quoteMessage = await prepareQuoteMessage(textFromInput, action.messageIds, tmid);
 			onSendMessage?.(quoteMessage);
 			return;
 		}

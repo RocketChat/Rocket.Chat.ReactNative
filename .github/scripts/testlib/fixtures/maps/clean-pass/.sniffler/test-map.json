@@ -1,0 +1,6 @@
+[
+	{
+		"test": ".maestro/tests/foo.yaml",
+		"dependsOn": ["app/views/Foo/**", "app/sagas/foo.js"]
+	}
+]

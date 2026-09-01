@@ -45,7 +45,7 @@ export const getPeerAutocompleteOptions = async ({
 						sipEnabled ? { freeSwitchExtension: { $exists: true } } : null,
 						peerExtension ? { freeSwitchExtension: { $ne: peerExtension } } : null
 					].filter(Boolean)
-			  }
+				}
 			: undefined;
 
 	const exceptions = [username, peerUsername].filter(Boolean);

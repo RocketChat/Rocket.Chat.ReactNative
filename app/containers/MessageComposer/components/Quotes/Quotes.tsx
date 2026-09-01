@@ -5,8 +5,6 @@ import { Quote } from './Quote';
 import { useMessageAction } from '../../../message/stores/MessageActionStore';
 
 export const Quotes = (): ReactElement | null => {
-	'use memo';
-
 	const action = useMessageAction();
 	const selectedMessages = action?.kind === 'quote' ? action.messageIds : [];
 	const nQuotesRef = useRef(0);

@@ -8,10 +8,13 @@ on:
         required: false
         default: pr
 
+permissions: {}
+
 jobs:
   build-hold:
     name: Hold
     runs-on: ubuntu-latest
+    permissions: {}
     if: ${{ inputs.trigger == 'pr' }}
     environment: android_build
     steps:
@@ -20,6 +23,8 @@ jobs:
   build-android:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: build-hold
     if: ${{ always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped') }}
     outputs:
@@ -57,6 +62,7 @@ jobs:
   upload-hold:
     name: Upload Hold
     runs-on: ubuntu-latest
+    permissions: {}
     if: ${{ inputs.trigger == 'pr' }}
     environment: upload_android
     needs: [build-android]
@@ -68,6 +74,9 @@ jobs:
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     needs: [build-android, upload-hold]
     if: ${{ always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
     steps:
@@ -85,6 +94,9 @@ jobs:
   upload-internal:
     name: Internal Sharing
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     needs: [build-android]
     if: ${{ inputs.trigger == 'pr' }}
     steps:

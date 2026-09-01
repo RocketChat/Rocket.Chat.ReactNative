@@ -27,9 +27,6 @@ export default StyleSheet.create({
 	emph: {
 		fontStyle: 'italic'
 	},
-	strong: {
-		fontWeight: 'bold'
-	},
 	del: {
 		textDecorationLine: 'line-through'
 	},
@@ -97,27 +94,33 @@ export default StyleSheet.create({
 	},
 	heading1: {
 		...sharedStyles.textBold,
-		fontSize: 24
+		fontSize: 24,
+		lineHeight: 30
 	},
 	heading2: {
 		...sharedStyles.textBold,
-		fontSize: 22
+		fontSize: 22,
+		lineHeight: 28
 	},
 	heading3: {
 		...sharedStyles.textSemibold,
-		fontSize: 20
+		fontSize: 20,
+		lineHeight: 26
 	},
 	heading4: {
 		...sharedStyles.textSemibold,
-		fontSize: 18
+		fontSize: 18,
+		lineHeight: 24
 	},
 	heading5: {
 		...sharedStyles.textMedium,
-		fontSize: 16
+		fontSize: 16,
+		lineHeight: 22
 	},
 	heading6: {
 		...sharedStyles.textMedium,
-		fontSize: 14
+		fontSize: 14,
+		lineHeight: 20
 	},
 	quote: {
 		height: '100%',

@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { memo } from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../../../theme';
@@ -6,21 +6,16 @@ import { themes } from '../../../../lib/constants/colors';
 import { USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { type IUserMention } from '../../interfaces';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
-import MarkdownContext from '../../contexts/MarkdownContext';
+import { useMarkdownContext } from '../../contexts/MarkdownContext';
 
 interface IAtMention {
 	mention: string;
-	username?: string;
-	navToRoomInfo?: Function;
-	useRealName?: boolean;
-	mentions?: IUserMention[];
 }
 
-const AtMention = memo(({ mention, mentions, username, navToRoomInfo, useRealName }: IAtMention) => {
+const AtMention = memo(({ mention }: IAtMention) => {
 	const { theme } = useTheme();
-	const { textStyle } = useContext(MarkdownContext);
+	const { textStyle, username, navToRoomInfo, useRealName, mentions } = useMarkdownContext();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
 	if (mention === 'all' || mention === 'here') {

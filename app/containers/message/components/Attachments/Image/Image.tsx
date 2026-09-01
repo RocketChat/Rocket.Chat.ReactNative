@@ -12,10 +12,9 @@ import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
+import { encodeAttachmentUrl } from '../../../../../lib/methods/helpers/formatAttachmentUrl';
 
 export const MessageImage = ({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
@@ -71,7 +70,7 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeAttachmentUrl(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (

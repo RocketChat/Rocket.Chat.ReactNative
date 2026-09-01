@@ -1,38 +1,21 @@
-import { StyleSheet, Text } from 'react-native';
-import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
+import { type ReactNode } from 'react';
+import { Text } from 'react-native';
 
-import { Bold, Link, Strike } from './index';
-import Plain from '../Plain';
+import styles from '../../styles';
+import MarkdownContext, { useMarkdownContext } from '../../contexts/MarkdownContext';
 
 interface IItalicProps {
-	value: ItalicProps['value'];
+	children: ReactNode;
 }
 
-const styles = StyleSheet.create({
-	text: {
-		fontStyle: 'italic'
-	}
-});
+const Italic = ({ children }: IItalicProps) => {
+	const context = useMarkdownContext(styles.emph);
 
-const Italic = ({ value }: IItalicProps) => (
-	<Text style={styles.text}>
-		{value.map(block => {
-			switch (block.type) {
-				case 'LINK':
-					return <Link value={block.value} />;
-				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
-				case 'STRIKE':
-					return <Strike value={block.value} />;
-				case 'BOLD':
-					return <Bold value={block.value} />;
-				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
-				default:
-					return null;
-			}
-		})}
-	</Text>
-);
+	return (
+		<Text style={styles.emph}>
+			<MarkdownContext.Provider value={context}>{children}</MarkdownContext.Provider>
+		</Text>
+	);
+};
 
 export default Italic;
