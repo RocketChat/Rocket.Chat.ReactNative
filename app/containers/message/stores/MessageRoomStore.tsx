@@ -2,13 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactEleme
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import {
-	type IAttachment,
-	type IRoomInfoParam,
-	type IUseRoomMessageHandlersResult,
-	type IUser,
-	type TAnyMessageModel
-} from '../../../definitions';
+import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '../../../definitions';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useSetting } from '../../../lib/hooks/useSetting';
 import { getUserSelector } from '../../../selectors/login';
@@ -23,12 +17,9 @@ type FrozenState = {
 	reactionInit?: (messageId: string) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
 	// message handler bag produced by RoomView's RoomMessageHandlersBridge; a single stable identity
-	// (leaves read it through the fine-grained selectors below)
+	// (leaves read it through the fine-grained selectors below). Views that render message leaves
+	// outside a RoomStoreContext (MessagesView, SearchMessagesView) supply the same bag directly.
 	handlers?: Partial<IUseRoomMessageHandlersResult>;
-	// overrides for views (e.g. MessagesView, SearchMessagesView) that render message leaves outside
-	// a RoomStoreContext; merged into `handlers` at provider construction so selectors read one path
-	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
-	showAttachment?: (attachment: IAttachment) => void;
 	// room constants
 	rid?: string;
 	isThreadRoom?: boolean;
@@ -74,8 +65,6 @@ const FROZEN_KEYS = [
 	'closeEmojiAndAction',
 	'reactionInit',
 	'errorActionsShow',
-	'navToRoomInfo',
-	'showAttachment',
 	'rid',
 	'isThreadRoom',
 	'tmid'
@@ -106,18 +95,7 @@ const useFrozenHandlersGuard: (state: MessageRoomState) => void = __DEV__
 	: useFrozenHandlersGuardProd;
 
 const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	const [store] = useState(() => {
-		// Fold the view-level overrides into the handler bag so selectors read a single path.
-		const { navToRoomInfo, showAttachment, ...rest } = state;
-		return createMessageRoomStore({
-			...rest,
-			handlers: {
-				...state.handlers,
-				...(navToRoomInfo ? { navToRoomInfo } : null),
-				...(showAttachment ? { showAttachment } : null)
-			}
-		});
-	});
+	const [store] = useState(() => createMessageRoomStore(state));
 	useFrozenHandlersGuard(state);
 
 	// These fields can change mid-session (e.g. an open room gets archived), unlike the

@@ -11,7 +11,7 @@ import { MessageProvider } from '../../stores/MessageStore';
 import Attachments from '../Attachments/Attachments';
 
 const mockMessageContext: Partial<MessageRoomState> = {
-	showAttachment: undefined
+	handlers: { showAttachment: undefined }
 };
 
 const mockItem = { id: 'msg-id', msg: '', u: { username: 'rocket.cat' }, autoTranslate: false } as unknown as TAnyMessageModel;

@@ -87,8 +87,7 @@ const containerHandlers = {
 const roomHandlers: Partial<MessageRoomState> = {
 	reactionInit: () => {},
 	jumpToMessage: () => {},
-	navToRoomInfo: () => {},
-	showAttachment: undefined
+	handlers: { navToRoomInfo: () => {}, showAttachment: undefined }
 };
 
 export default {

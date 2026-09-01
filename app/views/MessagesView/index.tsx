@@ -287,6 +287,9 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
+	// One stable identity: MessageRoomProvider captures the handler bag once at mount.
+	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
+
 	onLongPress = (message: IMessage) => {
 		this.setState({ message }, this.showActionSheet);
 	};
@@ -339,12 +342,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
 				<A11yGateProvider>
-					<MessageRoomProvider
-						navToRoomInfo={this.navToRoomInfo}
-						showAttachment={this.showAttachment}
-						rid={this.rid}
-						isThreadRoom
-						timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+					<MessageRoomProvider handlers={this.messageHandlers} rid={this.rid} isThreadRoom timeFormat={'MMM Do YYYY, h:mm:ss a'}>
 						<FlatList
 							data={messages}
 							renderItem={this.renderItem}

@@ -182,8 +182,7 @@ describe('MessageRoomStore', () => {
 			expect(spy).toHaveBeenLastCalledWith(blockAction);
 		});
 
-		it('prefers the view-level override over the bag for navToRoomInfo/showAttachment', () => {
-			const overrideNav = jest.fn();
+		it('exposes navToRoomInfo/showAttachment from the handler bag', () => {
 			const bagNav = jest.fn();
 			const bagShow = jest.fn();
 			const navSpy = jest.fn();
@@ -196,17 +195,13 @@ describe('MessageRoomStore', () => {
 
 			render(
 				<Provider store={mockedStore}>
-					<MessageRoomProvider
-						timeFormat='fixed-format'
-						navToRoomInfo={overrideNav}
-						handlers={{ navToRoomInfo: bagNav, showAttachment: bagShow }}>
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ navToRoomInfo: bagNav, showAttachment: bagShow }}>
 						<Probe />
 					</MessageRoomProvider>
 				</Provider>
 			);
 
-			// Override wins for navToRoomInfo; showAttachment has no override so it falls back to the bag.
-			expect(navSpy).toHaveBeenLastCalledWith(overrideNav);
+			expect(navSpy).toHaveBeenLastCalledWith(bagNav);
 			expect(showSpy).toHaveBeenLastCalledWith(bagShow);
 		});
 
@@ -252,9 +247,9 @@ describe('MessageRoomStore', () => {
 		});
 
 		it('warns once when a frozen handler identity changes after mount', () => {
-			const wrap = (navToRoomInfo: () => void) => (
+			const wrap = (reactionInit: () => void) => (
 				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' navToRoomInfo={navToRoomInfo}>
+					<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
 						<Text>probe</Text>
 					</MessageRoomProvider>
 				</Provider>
@@ -265,14 +260,14 @@ describe('MessageRoomStore', () => {
 
 			act(() => rerender(wrap(() => {})));
 
-			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('navToRoomInfo'));
+			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('reactionInit'));
 		});
 
 		it('does not warn when the same handler reference is passed across re-renders', () => {
-			const navToRoomInfo = () => {};
+			const reactionInit = () => {};
 			const wrap = () => (
 				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' navToRoomInfo={navToRoomInfo}>
+					<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
 						<Text>probe</Text>
 					</MessageRoomProvider>
 				</Provider>
