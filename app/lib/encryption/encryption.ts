@@ -64,6 +64,7 @@ import {
 } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
+
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
@@ -379,7 +380,7 @@ class Encryption {
 						return null;
 					}
 				});
-				await db.batch(...prepared);
+				await db.batch(prepared.filter(record => record !== null));
 			});
 		} catch (e) {
 			log(e);
@@ -405,7 +406,14 @@ class Encryption {
 			);
 
 			const decrypted = await Promise.all(
-				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => ({ sub, newSub: await this.decryptSubscription(sub) }))
+				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => {
+					try {
+						return { sub, newSub: await this.decryptSubscription(sub) };
+					} catch (e) {
+						log(e);
+						return { sub, newSub: null };
+					}
+				})
 			);
 
 			if (!decrypted.length) {
@@ -427,7 +435,7 @@ class Encryption {
 						return null;
 					}
 				});
-				await db.batch(prepared.filter((record): record is TSubscriptionModel => record !== null));
+				await db.batch(prepared.filter(record => record !== null));
 			});
 		} catch (e) {
 			log(e);

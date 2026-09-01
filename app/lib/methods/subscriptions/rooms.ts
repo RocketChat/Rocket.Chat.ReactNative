@@ -51,6 +51,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 		const roomsCollection = db.get('rooms');
+		const messagesCollection = db.get('messages');
 
 		if (!subscription) {
 			try {
@@ -158,8 +159,9 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 
 		await db.write(async () => {
 			const batch: Model[] = [];
-			if (sub) {
-				try {
+
+			try {
+				if (sub) {
 					batch.push(
 						sub.prepareUpdate(s => {
 							Object.assign(s, tmp);
@@ -175,11 +177,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 							}
 						})
 					);
-				} catch (e) {
-					log(e);
-				}
-			} else {
-				try {
+				} else {
 					batch.push(
 						subCollection.prepareCreate(s => {
 							s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
@@ -189,13 +187,12 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 							}
 						})
 					);
-				} catch (e) {
-					log(e);
 				}
+			} catch (e) {
+				log(e);
 			}
 
 			if (lastMessage) {
-				const messagesCollection = db.get('messages');
 				try {
 					if (messageRecord) {
 						batch.push(
