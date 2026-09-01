@@ -1,9 +1,8 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { setReaction, toggleFollowMessage } from '../../../../lib/services/restApi';
+import { toggleFollowMessage } from '../../../../lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
-import log from '../../../../lib/methods/helpers/log';
 import { Review } from '../../../../lib/methods/helpers/review';
 import { sendMessage } from '../../../../lib/methods/sendMessage';
 import { getUserSelector } from '../../../../selectors/login';
@@ -29,7 +28,6 @@ jest.mock('../../../../containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 jest.mock('../../../../lib/services/restApi', () => ({
-	setReaction: jest.fn(),
 	toggleFollowMessage: jest.fn()
 }));
 jest.mock('../../../../actions/messages', () => ({
@@ -60,10 +58,8 @@ const mockDispatch = jest.fn();
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
 
-const mockSetReaction = setReaction as jest.Mock;
 const mockToggleFollowMessage = toggleFollowMessage as jest.Mock;
 const mockReplyBroadcastAction = replyBroadcastAction as jest.Mock;
-const mockLog = log as jest.Mock;
 const mockSendMessage = sendMessage as jest.Mock;
 
 const mockUser = { id: 'u1', username: 'user', token: 'tok', showMessageInMainThread: false };
@@ -114,37 +110,6 @@ describe('useRoomMessageHandlers', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		useAppSelector.mockImplementation((selector: any) => (selector === getUserSelector ? mockUser : undefined));
-	});
-
-	describe('onReactionPress', () => {
-		it('sets the reaction, closes the action sheet and reports a positive review event', async () => {
-			mockSetReaction.mockResolvedValue(undefined);
-			const { result, messageActionStore } = renderRoomMessageHandlers();
-			messageActionStore.getState().actions.startReacting('msg-1');
-
-			await act(async () => {
-				await result.current.onReactionPress({ name: 'smile' } as any, 'msg-1');
-			});
-
-			expect(mockSetReaction).toHaveBeenCalledWith('smile', 'msg-1');
-			expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
-			expect(messageActionStore.getState().action).toBeNull();
-			expect(Review.pushPositiveEvent).toHaveBeenCalledTimes(1);
-		});
-
-		it('logs the error and skips the review event when setReaction rejects', async () => {
-			const error = new Error('boom');
-			mockSetReaction.mockRejectedValue(error);
-			const { result } = renderRoomMessageHandlers();
-
-			await act(async () => {
-				await result.current.onReactionPress('smile', 'msg-1');
-			});
-
-			expect(mockLog).toHaveBeenCalledWith(error);
-			expect(mockHideActionSheet).not.toHaveBeenCalled();
-			expect(Review.pushPositiveEvent).not.toHaveBeenCalled();
-		});
 	});
 
 	describe('replyBroadcast', () => {

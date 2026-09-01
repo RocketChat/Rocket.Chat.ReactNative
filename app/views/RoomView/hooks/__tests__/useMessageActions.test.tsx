@@ -202,6 +202,7 @@ describe('useMessageActions', () => {
 
 			expect(mockLog).toHaveBeenCalledWith(error);
 			expect(hideActionSheet).not.toHaveBeenCalled();
+			expect(Review.pushPositiveEvent).not.toHaveBeenCalled();
 		});
 
 		it('onReactionInit no-ops when an action is already in progress', () => {
