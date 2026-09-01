@@ -14,6 +14,8 @@ import { Attachments } from './components';
 import Quote from './Quote';
 import { useBaseUrl, useMessageUser, useTimeFormat } from '../../stores/MessageRoomStore';
 import { useIsEncrypted, useMessageId } from '../../stores/MessageStore';
+import { useQuotedMessageChannels } from '../../hooks/useQuotedMessageChannels';
+import { formatChannelMentions } from '../../../../lib/methods/helpers/formatChannelMentions';
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
@@ -106,6 +108,8 @@ const Title = ({ attachment }: { attachment: IAttachment }) => {
 const Description = ({ attachment }: { attachment: IAttachment }) => {
 	const user = useMessageUser();
 	const text = attachment.text || attachment.title;
+	// Only quotes whose text can contain a channel mention need the quoted message's channels
+	const channels = useQuotedMessageChannels(attachment.message_link, text?.includes('#') ?? false);
 
 	if (!text) {
 		return null;
@@ -121,7 +125,7 @@ const Description = ({ attachment }: { attachment: IAttachment }) => {
 		return <MarkdownPreview msg={text} numberOfLines={0} />;
 	}
 
-	return <Markdown msg={text} username={user?.username} />;
+	return <Markdown msg={formatChannelMentions(text, channels)} username={user?.username} />;
 };
 
 const UrlImage = ({ image }: { image?: string }) => {
