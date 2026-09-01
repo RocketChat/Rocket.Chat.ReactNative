@@ -25,7 +25,7 @@ import ReactionsList from '../../../containers/ReactionsList';
 import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
 import { useRoomTmid } from '../../../containers/message/stores/MessageRoomStore';
 import { type IRoomViewProps } from '../definitions';
-import { RoomStoreContext, useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
@@ -41,7 +41,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	const user = useAppSelector(getUserSelector);
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
-	const roomStore = useContext(RoomStoreContext);
 	const messageActionStore = useContext(MessageActionStoreContext);
 	const tmid = useRoomTmid();
 	const { clearLastSeen } = useRoomScreen();
@@ -49,9 +48,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 	const room = useRoomStore(s => s.room);
 	const roomUserId = useRoomStore(s => s.roomUserId);
 
-	if (!roomStore) {
-		throw new Error('useRoomMessageHandlers must be used within a RoomStoreContext.Provider');
-	}
 	if (!messageActionStore) {
 		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
 	}
@@ -71,8 +67,6 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 
 	// No orchestrator-owned cancelJumpToMessageRef to self-source here, so the loading overlay renders without a cancel button.
 	const onThreadPress = (item: TAnyMessageModel) => pushThreadRoom({ rid, item, roomUserId, navigation });
-
-	const blockAction = (params: Parameters<IUseRoomMessageHandlersResult['blockAction']>[0]) => blockActionService(params);
 
 	const navToRoomInfo = (navParam: IRoomInfoParam) => {
 		logEvent(events[`ROOM_GO_${navParam.t === SubscriptionType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
@@ -137,7 +131,7 @@ export function useRoomMessageHandlers(): IUseRoomMessageHandlersResult {
 		sendRoomMessage({ rid, message, tmid, user, tshow, onMessageSent: clearLastSeen, resetAction });
 
 	return {
-		blockAction,
+		blockAction: blockActionService,
 		navToRoomInfo,
 		handleEnterCall,
 		onDiscussionPress,
