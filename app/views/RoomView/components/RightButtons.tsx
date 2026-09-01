@@ -14,6 +14,7 @@ import { events, logEvent } from '../../../lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '../../../lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../../lib/services/restApi';
 import { getUserSelector } from '../../../selectors/login';
 import { type TNavigation } from '../../../stacks/stackType';
@@ -21,7 +22,8 @@ import { type ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';
 import { HeaderCallButton } from './HeaderCallButton';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
-import { useRightButtons } from '../hooks/useRightButtons';
+import { useSubscriptionUnreads } from '../hooks/useSubscriptionUnreads';
+import { useThreadFollowing } from '../hooks/useThreadFollowing';
 import { toggleFollowThread } from '../services/toggleFollowThread';
 import { useRoomStoreByRid } from '../stores/RoomStore';
 
@@ -115,11 +117,9 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
 	const hasE2EEWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
 
-	const { isFollowingThread, tunread, tunreadUser, tunreadGroup, isSelfDm, canToggleEncryption, subscription } = useRightButtons({
-		rid,
-		tmid,
-		userId
-	});
+	const isFollowingThread = useThreadFollowing(tmid, userId);
+	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(rid, userId);
+	const [canToggleEncryption] = usePermissions(['toggle-room-e2e-encryption'], rid);
 
 	const t = room.t as SubscriptionType;
 	const { status } = room;

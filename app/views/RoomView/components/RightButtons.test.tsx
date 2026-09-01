@@ -44,7 +44,7 @@ jest.mock('../stores/RoomStore', () => ({
 let mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
 jest.mock('../hooks/useE2EEStatus', () => ({ useE2EEStatus: () => mockE2EEStatus }));
 
-let mockRightButtons = {
+let mockHeaderHooks = {
 	isFollowingThread: false,
 	tunread: [] as string[],
 	tunreadUser: [] as string[],
@@ -53,7 +53,16 @@ let mockRightButtons = {
 	canToggleEncryption: false,
 	subscription: undefined
 };
-jest.mock('../hooks/useRightButtons', () => ({ useRightButtons: () => mockRightButtons }));
+jest.mock('../hooks/useThreadFollowing', () => ({ useThreadFollowing: () => mockHeaderHooks.isFollowingThread }));
+jest.mock('../hooks/useSubscriptionUnreads', () => ({
+	useSubscriptionUnreads: () => {
+		const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = mockHeaderHooks;
+		return { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription };
+	}
+}));
+jest.mock('../../../lib/hooks/usePermissions', () => ({
+	usePermissions: () => [mockHeaderHooks.canToggleEncryption]
+}));
 
 jest.mock('../../../containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
@@ -75,7 +84,7 @@ describe('RightButtons', () => {
 			canPlaceLivechatOnHold: false
 		};
 		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
-		mockRightButtons = {
+		mockHeaderHooks = {
 			isFollowingThread: false,
 			tunread: [],
 			tunreadUser: [],
