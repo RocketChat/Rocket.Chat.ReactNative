@@ -28,7 +28,7 @@ interface IGetRoomHeaderPropsParams {
 	onPress: () => void;
 }
 
-export const getRoomHeaderProps = ({
+const getRoomHeaderProps = ({
 	room,
 	tmid,
 	roomName,
