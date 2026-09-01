@@ -87,7 +87,15 @@ const containerHandlers = {
 const roomHandlers: Partial<MessageRoomState> = {
 	reactionInit: () => {},
 	jumpToMessage: () => {},
-	handlers: { navToRoomInfo: () => {}, showAttachment: undefined }
+	handlers: {
+		navToRoomInfo: () => {},
+		showAttachment: undefined,
+		onEncryptedPress: () => {},
+		onReactionPress: async () => {},
+		onReactionLongPress: () => {},
+		onThreadPress: () => {},
+		toggleFollowThread: async () => {}
+	}
 };
 
 export default {

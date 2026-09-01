@@ -40040,6 +40040,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -40325,6 +40326,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -40770,6 +40772,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -42122,6 +42125,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -42610,6 +42614,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -43013,6 +43018,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -43569,6 +43575,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -43884,6 +43891,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -44350,6 +44358,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -44657,6 +44666,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -45080,6 +45090,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -46432,6 +46443,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -46920,6 +46932,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -47323,6 +47336,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -47879,6 +47893,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -48216,6 +48231,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -71295,6 +71311,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -72702,6 +72719,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -73135,6 +73153,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -73709,6 +73728,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -74283,6 +74303,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -76350,6 +76371,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -77757,6 +77779,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             "paddingLeft": 5,
                           }
                         }
+                        testID="message-encrypted"
                       >
                         <Text
                           allowFontScaling={false}
@@ -78190,6 +78213,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -78764,6 +78788,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -79338,6 +79363,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -112643,6 +112669,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -113696,6 +113723,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -114749,6 +114777,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -155997,6 +156026,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -157050,6 +157080,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
@@ -158103,6 +158134,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       "paddingLeft": 5,
                     }
                   }
+                  testID="message-encrypted"
                 >
                   <Text
                     allowFontScaling={false}
