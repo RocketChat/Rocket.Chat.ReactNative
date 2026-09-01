@@ -21,7 +21,7 @@ export function useRoomNavigation({
 	tmid,
 	t,
 	isMasterDetail,
-	listRef,
+	listContainerRef,
 	roomUserIdRef
 }: IUseRoomNavigationParams): IUseRoomNavigationResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
@@ -47,7 +47,7 @@ export function useRoomNavigation({
 		rid,
 		tmid,
 		t,
-		listRef,
+		listContainerRef,
 		navToRoom,
 		navToThread
 	});

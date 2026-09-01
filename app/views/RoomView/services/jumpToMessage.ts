@@ -14,7 +14,7 @@ export const jumpToMessage = async ({
 	rid,
 	tmid,
 	t,
-	listRef,
+	listContainerRef,
 	navToRoom,
 	navToThread,
 	cancel
@@ -60,7 +60,7 @@ export const jumpToMessage = async ({
 			 * contiguous target resolves to null and stays a Live Window. Thread/local targets are
 			 * never anchored.
 			 */
-			const inWindow = listRef.current?.isMessageInWindow(message.id) ?? false;
+			const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
 			const highTs = await resolveJumpAnchor(
 				rid,
 				{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
@@ -71,7 +71,7 @@ export const jumpToMessage = async ({
 			await new Promise(res => setTimeout(res, 100));
 			// The list hook resolves on real completion (or via its own safety net), so we no longer
 			// race a 5s timeout that could yank a valid in-flight scroll.
-			await listRef.current?.jumpToMessage(message.id, highTs);
+			await listContainerRef.current?.jumpToMessage(message.id, highTs);
 			sendLoadingEvent({ visible: false });
 		}
 	} catch (error: any) {

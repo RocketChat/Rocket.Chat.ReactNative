@@ -56,7 +56,7 @@ const renderRoomNavigation = (overrides: Partial<IUseRoomNavigationParams> = {})
 			tmid: undefined,
 			t: 'c',
 			isMasterDetail: false,
-			listRef: { current: null },
+			listContainerRef: { current: null },
 			roomUserIdRef: { current: null },
 			...overrides
 		})

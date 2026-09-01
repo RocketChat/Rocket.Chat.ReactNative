@@ -11,9 +11,7 @@ export function useCloseBanner(room: IRoomViewState['room']): () => Promise<void
 						r.bannerClosed = true;
 					});
 				});
-			} catch {
-				// do nothing
-			}
+			} catch {}
 		}
 	};
 }

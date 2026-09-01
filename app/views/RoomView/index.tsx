@@ -111,14 +111,11 @@ const RoomView = (props: IRoomViewProps) => {
 		joinCodeRequired: route.params?.joinCodeRequired
 	}));
 	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
-	// we don't need to subscribe to threads
 	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
 
 	const messageComposerRef = useRef<IMessageComposerRef | null>(null);
 	const joinCodeRef = useRef<IJoinCode | null>(null);
-	// ListContainer component
-	const listRef = useRef<IListContainerRef | null>(null);
-	// FlatList inside ListContainer
+	const listContainerRef = useRef<IListContainerRef | null>(null);
 	const flatListRef: TListRef = useRef(null);
 	const messageActionsRef = useRef<IMessageActions | null>(null);
 	const messageErrorActionsRef = useRef<IMessageErrorActions | null>(null);
@@ -142,7 +139,7 @@ const RoomView = (props: IRoomViewProps) => {
 		tmid,
 		t,
 		isMasterDetail,
-		listRef,
+		listContainerRef,
 		roomUserIdRef
 	});
 
@@ -278,7 +275,7 @@ const RoomView = (props: IRoomViewProps) => {
 								autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 								autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
 								<List
-									ref={listRef}
+									ref={listContainerRef}
 									flatListRef={flatListRef}
 									rid={room.rid}
 									t={room.t as RoomType}

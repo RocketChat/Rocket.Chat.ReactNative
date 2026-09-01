@@ -108,7 +108,6 @@ export function useMessageActions({
 		if (action && action.kind !== 'quote') {
 			return;
 		}
-		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !tmid) {
 			return;
 		}
@@ -120,7 +119,6 @@ export function useMessageActions({
 		if (!message || !rid) {
 			return;
 		}
-		// If there's a thread already, we redirect to it
 		if (message.tlm) {
 			return onThreadPress(message);
 		}

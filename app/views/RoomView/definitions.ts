@@ -96,7 +96,7 @@ export interface IJumpToMessageArgs {
 	rid?: string;
 	tmid?: string;
 	t?: string;
-	listRef: RefObject<IListContainerRef | null>;
+	listContainerRef: RefObject<IListContainerRef | null>;
 	navToRoom: (message: TGetMessageInfoResult) => void;
 	navToThread: (message: TGetMessageInfoResult) => void;
 	cancel: () => void;
@@ -301,7 +301,7 @@ export interface IUseJumpToMessageParams {
 	rid?: string;
 	tmid?: string;
 	t?: string;
-	listRef: RefObject<IListContainerRef | null>;
+	listContainerRef: RefObject<IListContainerRef | null>;
 	navToRoom: (message: TGetMessageInfoResult) => void;
 	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void;
 }
@@ -318,7 +318,7 @@ export interface IUseRoomNavigationParams {
 	tmid?: string;
 	t?: string;
 	isMasterDetail: boolean;
-	listRef: RefObject<IListContainerRef | null>;
+	listContainerRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;
 }
 

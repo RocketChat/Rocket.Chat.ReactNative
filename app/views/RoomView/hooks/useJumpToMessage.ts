@@ -24,7 +24,7 @@ export function useJumpToMessage({
 	rid,
 	tmid,
 	t,
-	listRef,
+	listContainerRef,
 	navToRoom,
 	navToThread
 }: IUseJumpToMessageParams): IUseJumpToMessageResult {
@@ -35,12 +35,22 @@ export function useJumpToMessage({
 	const jumpToThreadIdRef = useRef<string | undefined>(route.params?.jumpToThreadId);
 
 	const cancelJumpToMessage = () => {
-		listRef.current?.cancelJumpToMessage();
+		listContainerRef.current?.cancelJumpToMessage();
 		sendLoadingEvent({ visible: false });
 	};
 
 	const jumpToMessage = (messageId: string, isFromReply?: boolean) =>
-		jumpToMessageService({ messageId, isFromReply, rid, tmid, t, listRef, navToRoom, navToThread, cancel: cancelJumpToMessage });
+		jumpToMessageService({
+			messageId,
+			isFromReply,
+			rid,
+			tmid,
+			t,
+			listContainerRef,
+			navToRoom,
+			navToThread,
+			cancel: cancelJumpToMessage
+		});
 
 	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
 	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
