@@ -13,7 +13,7 @@ const mockGet = database.active.get as jest.Mock;
 type Emit<T> = (value: T) => void;
 
 const setupObservable = ({ deferFind = false }: { deferFind?: boolean } = {}) => {
-	let emit: Emit<any> | undefined;
+	let emit: Emit<unknown> | undefined;
 	let resolveFind: (() => void) | undefined;
 	let openSubscriptions = 0;
 	const unsubscribe = jest.fn(() => {
@@ -21,7 +21,7 @@ const setupObservable = ({ deferFind = false }: { deferFind?: boolean } = {}) =>
 	});
 	const threadRecord = {
 		observe: () => ({
-			subscribe: (cb: Emit<any>) => {
+			subscribe: (cb: Emit<unknown>) => {
 				emit = cb;
 				openSubscriptions += 1;
 				return { unsubscribe };

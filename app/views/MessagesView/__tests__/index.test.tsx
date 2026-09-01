@@ -8,6 +8,7 @@ import Navigation from '../../../lib/navigation/appNavigation';
 import { getPinnedMessages } from '../../../lib/services/restApi';
 import { mockedStore } from '../../../reducers/mockedStore';
 import { type MessageRoomState } from '../../../containers/message/stores/MessageRoomStore';
+import { SubscriptionType } from '../../../definitions';
 
 jest.mock('../../../lib/services/restApi', () => ({
 	getPinnedMessages: jest.fn(),
@@ -42,7 +43,7 @@ const renderMessagesView = () =>
 				<SafeAreaInsetsContext.Provider value={{ top: 0, right: 0, bottom: 0, left: 0 }}>
 					<MessagesView
 						navigation={{ setOptions: jest.fn(), navigate: jest.fn() } as any}
-						route={{ params: { rid: 'rid-1', t: 'c', name: 'Pinned' } } as any}
+						route={{ params: { rid: 'rid-1', t: SubscriptionType.CHANNEL, name: 'Pinned' } } as any}
 					/>
 				</SafeAreaInsetsContext.Provider>
 			</SafeAreaFrameContext.Provider>
