@@ -7,6 +7,7 @@ import { type IMessageErrorActions } from '../../containers/MessageErrorActions'
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import RoomClass from '../../lib/methods/subscriptions/room';
+import { sendRoomMessage } from './services/sendRoomMessage';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -42,7 +43,6 @@ import { useRoomInit } from './hooks/useRoomInit';
 import { useRoomSubscription } from './hooks/useRoomSubscription';
 import { useRoomAudioLifecycle } from './hooks/useRoomAudioLifecycle';
 import { useRoomRemoved } from './hooks/useRoomRemoved';
-import { useRoomActions } from './hooks/useRoomActions';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 import { useInAppFeedback } from './hooks/useInAppFeedback';
@@ -184,14 +184,20 @@ const RoomView = (props: IRoomViewProps) => {
 	useRoomSubscription(sub);
 	useRoomAudioLifecycle(rid, tmid);
 	useRoomRemoved(rid, isMasterDetail);
-	const { onJoin, handleSendMessage } = useRoomActions({
-		rid,
-		tmid,
-		roomStore,
-		userRef,
-		resetAction,
-		onMessageSent: roomScreen.clearLastSeen
-	});
+	const handleSendMessage = (message?: string, tshow?: boolean) =>
+		sendRoomMessage({
+			rid,
+			message,
+			tmid,
+			user: userRef.current,
+			tshow,
+			onMessageSent: roomScreen.clearLastSeen,
+			resetAction
+		});
+
+	const onJoin = () => {
+		roomStore.getState().join();
+	};
 
 	useInAppFeedback();
 

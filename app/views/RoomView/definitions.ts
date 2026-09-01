@@ -241,20 +241,6 @@ export interface IJoinCode {
 	show: () => void;
 }
 
-export interface IUseRoomActionsParams {
-	rid?: string;
-	tmid?: string;
-	roomStore: RoomStore;
-	userRef: RefObject<TRoomViewUser>;
-	resetAction: () => void;
-	onMessageSent: () => void;
-}
-
-export interface IUseRoomActionsResult {
-	onJoin: () => void;
-	handleSendMessage: (message?: string, tshow?: boolean) => void;
-}
-
 export interface IUseMessageActionsParams {
 	messageActionStore: TMessageActionStore;
 	showActionSheet: (options: TActionSheetOptions) => void;
