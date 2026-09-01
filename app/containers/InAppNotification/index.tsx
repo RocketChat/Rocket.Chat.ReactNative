@@ -10,8 +10,7 @@ import { getActiveRoute } from '../../lib/methods/helpers/navigation';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { setInAppFeedback } from '../../actions/inAppFeedback';
 import I18n from '../../i18n';
-
-export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
+import { INAPP_NOTIFICATION_EMITTER } from '../../lib/constants/notifications';
 
 type INotifierNotification = INotifierComponent['notification'] & {
 	customComponent?: ElementType;

@@ -4,7 +4,6 @@ import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
 	type IAvatarSuggestion,
-	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
 	type IPreviewItem,
@@ -22,12 +21,10 @@ import { type ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
 import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
-import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
-import { getDeviceToken } from '../notifications';
+import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
@@ -1041,8 +1038,6 @@ export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } =
 };
 
 export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
-	unsubscribeRooms();
-
 	// RC 3.6.0
 	return sdk.post('users.resetE2EKey');
 }
@@ -1087,29 +1082,6 @@ export const editMediaMessage = async (
 	}
 
 	return response.json();
-};
-
-export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
-	const result = await Encryption.encryptMessage(message as IMessage);
-	if (!result) {
-		throw new Error('Failed to encrypt message');
-	}
-
-	if (result.content) {
-		// RC 0.49.0
-		return sdk.post('chat.update', {
-			roomId: message.rid,
-			msgId: message.id,
-			content: result.content
-		});
-	}
-
-	// RC 0.49.0
-	return sdk.post('chat.update', {
-		roomId: message.rid,
-		msgId: message.id,
-		text: message.msg || ''
-	});
 };
 
 let lastToken = '';

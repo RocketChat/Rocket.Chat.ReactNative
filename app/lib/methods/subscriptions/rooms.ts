@@ -12,7 +12,7 @@ import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
-import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
+import { INAPP_NOTIFICATION_EMITTER } from '../../constants/notifications';
 import { Encryption } from '../../encryption';
 import updateMessages from '../updateMessages';
 import {
