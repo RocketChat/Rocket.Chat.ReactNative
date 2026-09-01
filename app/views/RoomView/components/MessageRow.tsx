@@ -6,7 +6,7 @@ import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
-import { type IUseMessageSeparatorsResult, type TMessageRowProps } from '../definitions';
+import { type IRoomViewState, type TMessageRowProps } from '../definitions';
 
 // The room model mutates in place (same ref per emit), and the React Compiler caches derived
 // values on that stable ref. Deriving the boolean inside the selector keeps it fresh per emit
@@ -14,10 +14,8 @@ import { type IUseMessageSeparatorsResult, type TMessageRowProps } from '../defi
 const useIsIgnored = (authorId?: string): boolean =>
 	useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
 
-const useMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel): IUseMessageSeparatorsResult => {
-	const { lastSeen } = useRoomScreen();
-
-	let dateSeparator = null;
+const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
+	let dateSeparator: TAnyMessageModel['ts'] | null = null;
 	let showUnreadSeparator = false;
 
 	const itemDate = dayjs(item.ts);
@@ -41,7 +39,8 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 	const room = useRoomStore(s => s.room);
 	const isIgnored = useIsIgnored(item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);
-	const { dateSeparator, showUnreadSeparator } = useMessageSeparators(item, previousItem);
+	const { lastSeen } = useRoomScreen();
+	const { dateSeparator, showUnreadSeparator } = getMessageSeparators(item, previousItem, lastSeen);
 
 	let content = null;
 	if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {

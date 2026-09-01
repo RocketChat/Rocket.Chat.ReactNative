@@ -322,8 +322,3 @@ export interface IUseOmnichannelPermissionsParams {
 	livechatAllowManualOnHold?: boolean;
 	roomStore: RoomStore;
 }
-
-export interface IUseMessageSeparatorsResult {
-	dateSeparator: TAnyMessageModel['ts'] | null;
-	showUnreadSeparator: boolean;
-}
