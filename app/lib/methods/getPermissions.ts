@@ -101,56 +101,51 @@ const getUpdatedSince = (allRecords: TPermissionModel[]) => {
 	return null;
 };
 
-const updatePermissions = async ({
-	update = [],
-	remove = [],
-	allRecords
-}: {
-	update?: IPermission[];
-	remove?: IPermission[];
-	allRecords: TPermissionModel[];
-}) => {
-	if (!((update && update.length) || (remove && remove.length))) {
+const updatePermissions = async ({ update = [], remove = [] }: { update?: IPermission[]; remove?: IPermission[] }) => {
+	if (!(update.length || remove.length)) {
 		return;
 	}
 	const db = database.active;
 	const permissionsCollection = db.get('permissions');
 
-	const batch: TPermissionModel[] = [];
-
-	// Delete
-	if (remove?.length) {
-		const filteredPermissionsToDelete = allRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-		const permissionsToDelete = filteredPermissionsToDelete.map(permission => permission.prepareDestroyPermanently());
-		batch.push(...permissionsToDelete);
-	}
-
-	// Create or update
-	if (update?.length) {
-		const filteredPermissionsToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
-		const filteredPermissionsToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-		const permissionsToCreate = filteredPermissionsToCreate.map(permission =>
-			permissionsCollection.prepareCreate(
-				protectedFunction((p: TPermissionModel) => {
-					p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
-					Object.assign(p, permission);
-				})
-			)
-		);
-		const permissionsToUpdate = filteredPermissionsToUpdate.map(permission => {
-			const newPermission = update.find(p => p._id === permission.id);
-			return permission.prepareUpdate(
-				protectedFunction((p: TPermissionModel) => {
-					Object.assign(p, newPermission);
-				})
-			);
-		});
-
-		batch.push(...permissionsToCreate, ...permissionsToUpdate);
-	}
+	const uniqueUpdate = [...new Map(update.map(permission => [permission._id, permission])).values()];
 
 	try {
 		await db.write(async () => {
+			const allRecords = (await permissionsCollection.query().fetch()) as TPermissionModel[];
+			const recordById = new Map(allRecords.map(record => [record.id, record]));
+			const batch: TPermissionModel[] = [];
+
+			remove.forEach(permission => {
+				const record = recordById.get(permission._id);
+				if (record) {
+					batch.push(record.prepareDestroyPermanently());
+					recordById.delete(permission._id);
+				}
+			});
+
+			uniqueUpdate.forEach(permission => {
+				const record = recordById.get(permission._id);
+				if (record) {
+					batch.push(
+						record.prepareUpdate(
+							protectedFunction((p: TPermissionModel) => {
+								Object.assign(p, permission);
+							})
+						)
+					);
+					return;
+				}
+				batch.push(
+					permissionsCollection.prepareCreate(
+						protectedFunction((p: TPermissionModel) => {
+							p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
+							Object.assign(p, permission);
+						})
+					)
+				);
+			});
+
 			await db.batch(batch);
 		});
 		return true;
@@ -175,7 +170,7 @@ export function getPermissions(): Promise<void> {
 				if (!result.success) {
 					return resolve();
 				}
-				const changePermissions = await updatePermissions({ update: result.permissions, allRecords });
+				const changePermissions = await updatePermissions({ update: result.permissions });
 				if (changePermissions) {
 					setPermissions();
 				}
@@ -194,7 +189,7 @@ export function getPermissions(): Promise<void> {
 				return resolve();
 			}
 
-			const changePermissions = await updatePermissions({ update: result.update, remove: result.remove, allRecords });
+			const changePermissions = await updatePermissions({ update: result.update, remove: result.remove });
 			if (changePermissions) {
 				setPermissions();
 			}
