@@ -39,13 +39,12 @@ export const pushThreadRoom = async ({
 			name = I18n.t('Thread');
 		}
 		if (!name) {
-			const result = await getThreadName(rid, item.tmid, jumpToMessageId);
-			// test if there isn't a thread
-			if (!result) {
+			const threadName = await getThreadName(rid, item.tmid, jumpToMessageId);
+			if (!threadName) {
 				sendLoadingEvent({ visible: false });
 				return;
 			}
-			name = result;
+			name = threadName;
 		}
 		if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
 			name = I18n.t('Encrypted_message');
