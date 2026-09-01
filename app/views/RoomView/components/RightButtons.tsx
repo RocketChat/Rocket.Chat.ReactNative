@@ -47,12 +47,16 @@ const navigateToScreen = <Screen extends RightButtonsScreen>({
 	screen: Screen;
 	params?: (ChatsStackParamList & TNavigation)[Screen];
 }) => {
-	const navigate = navigation.navigate as (screen: string, params?: object) => void;
 	if (isMasterDetail) {
-		navigate('ModalStackNavigator', { screen, params });
+		const navigateToModal = navigation.navigate as (
+			screen: 'ModalStackNavigator',
+			params: { screen: Screen; params?: typeof params }
+		) => void;
+		navigateToModal('ModalStackNavigator', { screen, params });
 		return;
 	}
-	navigate(screen, params);
+	const navigateDirect: (screen: Screen, params?: (ChatsStackParamList & TNavigation)[Screen]) => void = navigation.navigate;
+	navigateDirect(screen, params);
 };
 
 const placeOnHoldLivechat = (rid: string, navigation: RightButtonsNavigation) => {
