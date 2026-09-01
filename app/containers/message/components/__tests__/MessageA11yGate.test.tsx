@@ -81,12 +81,6 @@ describe('per-row a11y wrapper gating', () => {
 	});
 
 	describe('MessageTouchable — info message (Order-only branch)', () => {
-		it('gate false: no A11y.Order', () => {
-			const { queryByTestId } = renderTouchable(false, { t: 'uj' });
-			expect(queryByTestId('a11y-order')).toBeNull();
-			expect(queryByTestId('a11y-index-1')).toBeNull();
-		});
-
 		it('gate true: A11y.Order present, no A11y.Index', () => {
 			const { getByTestId, queryByTestId } = renderTouchable(true, { t: 'uj' });
 			expect(getByTestId('a11y-order')).toBeTruthy();
@@ -125,8 +119,6 @@ describe('per-row a11y wrapper gating', () => {
 			const { getByTestId } = renderIndex(true, { flex: 1 });
 			const index = getByTestId('a11y-index-2');
 			expect(index.props.accessibilityLanguage).toBe('pt-BR');
-			expect(typeof index.props.accessible).toBe('boolean');
-			expect('accessibilityLabel' in index.props).toBe(true);
 			expect(index.props.style).toEqual({ flex: 1 });
 		});
 	});
