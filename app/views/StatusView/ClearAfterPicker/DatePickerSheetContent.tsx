@@ -1,7 +1,6 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState, type ReactElement } from 'react';
 import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
 import Button from '../../../containers/Button';
@@ -15,15 +14,12 @@ interface IDatePickerSheetContentProps {
 }
 
 const DatePickerSheetContent = ({ initialDate, onConfirm }: IDatePickerSheetContentProps): ReactElement => {
-	'use memo';
-
 	const [pendingDate, setPendingDate] = useState<Date>(initialDate);
 	const { colors } = useTheme();
 	const { hideActionSheet } = useActionSheet();
-	const insets = useSafeAreaInsets();
 
 	return (
-		<View style={[styles.datePickerContainer, { backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }]}>
+		<View style={[styles.datePickerContainer, { backgroundColor: colors.surfaceRoom }]}>
 			<DateTimePicker
 				mode='datetime'
 				display='inline'

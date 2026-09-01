@@ -1,9 +1,9 @@
 import { ScrollView, View } from 'react-native';
 import { type ReactElement } from 'react';
 
-import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
-import { themes, colors } from '../../lib/constants/colors';
+import Markdown from '../markdown';
+import { colors } from '../../lib/constants/colors';
 import { longText } from '../../../.rnstorybook/utils';
 import {
 	BASE_ROW_HEIGHT,
@@ -11,14 +11,6 @@ import {
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { ThemeContext, type TSupportedThemes } from '../../theme';
-
-const user = {
-	id: 'y8bd77ptZswPj3EW8',
-	username: 'diego.mello',
-	token: 'abc'
-};
-
-const baseUrl = 'https://open.rocket.chat';
 
 export default {
 	title: 'UIKit/UiKitMessage',
@@ -34,22 +26,7 @@ export default {
 					width: 350,
 					height: 800
 				}}>
-				<MessageContext.Provider
-					value={{
-						user,
-						baseUrl,
-						onPress: () => {},
-						onLongPress: () => {},
-						reactionInit: () => {},
-						onErrorPress: () => {},
-						replyBroadcast: () => {},
-						onReactionPress: () => {},
-						onDiscussionPress: () => {},
-						onReactionLongPress: () => {},
-						threadBadgeColor: themes.light.fontInfo
-					}}>
-					<Story />
-				</MessageContext.Provider>
+				<Story />
 			</ResponsiveLayoutContext.Provider>
 		)
 	]
@@ -77,6 +54,39 @@ export const SectionMarkdownList = () =>
 		}
 	]);
 SectionMarkdownList.storyName = 'Section + Markdown List';
+
+// App messages are rendered from blocks, so their mrkdwn goes through
+// MessageParser.mrkdwn instead of the regular message Markdown path. Both must
+// render at the same font size, otherwise app messages look smaller than the
+// user's messages in the same list.
+const appMessageText =
+	'Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2\n\t\tchanges: https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2\n\t';
+
+export const SectionFontSizeParity = () => (
+	<View>
+		<Markdown msg='Regular message: the reference font size' />
+		{UiKitMessage([
+			{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text: 'Section mrkdwn: must match the message above'
+				}
+			}
+		])}
+		<Markdown msg={appMessageText} />
+		{UiKitMessage([
+			{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text: appMessageText
+				}
+			}
+		])}
+	</View>
+);
+SectionFontSizeParity.storyName = 'Section + Message font size parity';
 
 export const SectionOverflow = () =>
 	UiKitMessage([

@@ -27,7 +27,6 @@ import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
-import { updateLastOpen } from '../updateLastOpen';
 import markMessagesRead from '../helpers/markMessagesRead';
 
 export default class RoomSubscription {
@@ -64,7 +63,6 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
-		updateLastOpen(this.rid);
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
@@ -150,34 +148,34 @@ export default class RoomSubscription {
 						const msgCollection = db.get('messages');
 						const threadsCollection = db.get('threads');
 						const threadMessagesCollection = db.get('thread_messages');
-						let deleteMessage: TMessageModel;
-						let deleteThread: TThreadModel;
-						let deleteThreadMessage: TThreadMessageModel;
-
-						// Delete message
-						try {
-							const m = await msgCollection.find(_id);
-							deleteMessage = m.prepareDestroyPermanently();
-						} catch (e) {
-							// Do nothing
-						}
-
-						// Delete thread
-						try {
-							const m = await threadsCollection.find(_id);
-							deleteThread = m.prepareDestroyPermanently();
-						} catch (e) {
-							// Do nothing
-						}
-
-						// Delete thread message
-						try {
-							const m = await threadMessagesCollection.find(_id);
-							deleteThreadMessage = m.prepareDestroyPermanently();
-						} catch (e) {
-							// Do nothing
-						}
 						await db.write(async () => {
+							let deleteMessage: TMessageModel | undefined;
+							let deleteThread: TThreadModel | undefined;
+							let deleteThreadMessage: TThreadMessageModel | undefined;
+
+							// Delete message
+							try {
+								const m = await msgCollection.find(_id);
+								deleteMessage = m.prepareDestroyPermanently();
+							} catch (e) {
+								// Do nothing
+							}
+
+							// Delete thread
+							try {
+								const m = await threadsCollection.find(_id);
+								deleteThread = m.prepareDestroyPermanently();
+							} catch (e) {
+								// Do nothing
+							}
+
+							// Delete thread message
+							try {
+								const m = await threadMessagesCollection.find(_id);
+								deleteThreadMessage = m.prepareDestroyPermanently();
+							} catch (e) {
+								// Do nothing
+							}
 							await db.batch(deleteMessage, deleteThread, deleteThreadMessage);
 						});
 					} catch (e) {
@@ -239,23 +237,26 @@ export default class RoomSubscription {
 	});
 
 	read = debounce(() => {
-		readMessages(this.rid, new Date());
+		readMessages(this.rid);
 	}, 300);
 
-	updateMessage = (message: IMessage): Promise<void> =>
-		new Promise(async resolve => {
-			if (this.rid !== message.rid) {
-				return resolve();
-			}
+	updateMessage = async (message: IMessage): Promise<void> => {
+		if (this.rid !== message.rid) {
+			return;
+		}
 
+		const db = database.active;
+		const msgCollection = db.get('messages');
+		const threadsCollection = db.get('threads');
+		const threadMessagesCollection = db.get('thread_messages');
+
+		// Decrypt the message if necessary
+		message = (await Encryption.decryptMessage(message)) as IMessage;
+
+		// Serialize reads, prepares and the batch under the writer lock so concurrent stream
+		// events for the same id can't call prepareUpdate on a record with pending changes.
+		await db.write(async () => {
 			const batch: TMessageModel[] | TThreadModel[] | TThreadMessageModel[] = [];
-			const db = database.active;
-			const msgCollection = db.get('messages');
-			const threadsCollection = db.get('threads');
-			const threadMessagesCollection = db.get('thread_messages');
-
-			// Decrypt the message if necessary
-			message = (await Encryption.decryptMessage(message)) as IMessage;
 
 			// Create or update message
 			try {
@@ -366,10 +367,9 @@ export default class RoomSubscription {
 				}
 			}
 
-			await db.write(async () => {
-				await db.batch(...batch);
-			});
+			await db.batch(...batch);
 		});
+	};
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
 		try {

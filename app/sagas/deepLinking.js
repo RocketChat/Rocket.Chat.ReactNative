@@ -128,10 +128,31 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+let consumedOAuthToken;
+
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
+	if (!credentialToken || !credentialSecret || credentialToken === consumedOAuthToken) {
+		return;
+	}
+	consumedOAuthToken = credentialToken;
 	try {
-		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
+	} catch (e) {
+		log(e);
+	}
+};
+
+let consumedSamlToken;
+
+const handleSaml = function* handleSaml({ params }) {
+	const { credentialToken } = params;
+	if (!credentialToken || credentialToken === consumedSamlToken) {
+		return;
+	}
+	consumedSamlToken = credentialToken;
+	try {
+		yield loginOAuthOrSso({ saml: true, credentialToken });
 	} catch (e) {
 		log(e);
 	}
@@ -167,6 +188,10 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
+		return;
+	}
+	if (params.type === 'saml') {
+		yield handleSaml({ params });
 		return;
 	}
 
@@ -238,11 +263,6 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			if (!hostAlreadyConnected) {
 				yield take(types.SERVER.SELECT_SUCCESS);
-				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
-				const connected = yield select(state => state.meteor.connected);
-				if (!connected) {
-					yield take(types.METEOR.SUCCESS);
-				}
 			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
@@ -338,11 +358,6 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		EventEmitter.emit('NewServer', { server: host });
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
-			// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
-			const connected = yield select(state => state.meteor.connected);
-			if (!connected) {
-				yield take(types.METEOR.SUCCESS);
-			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });

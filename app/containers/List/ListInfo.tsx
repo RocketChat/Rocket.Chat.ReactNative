@@ -25,8 +25,6 @@ interface IListInfo {
 }
 
 const ListInfo = memo(({ info, translateInfo = true }: IListInfo) => {
-	'use memo';
-
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

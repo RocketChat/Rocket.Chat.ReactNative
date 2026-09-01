@@ -87,6 +87,9 @@ exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "textAlign": "left",
               },
@@ -208,7 +211,9 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
             ]
@@ -244,6 +249,9 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "textAlign": "left",
               },
@@ -391,7 +399,9 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
             ]
@@ -427,6 +437,9 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "textAlign": "left",
               },
@@ -555,6 +568,9 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "textAlign": "left",
               },
@@ -683,6 +699,9 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "textAlign": "left",
               },
@@ -804,7 +823,9 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
             ]
@@ -840,6 +861,9 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "textAlign": "left",
               },

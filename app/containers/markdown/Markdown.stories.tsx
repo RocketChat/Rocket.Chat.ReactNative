@@ -2,8 +2,9 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
+import { setCustomEmojis } from '../../actions/customEmojis';
+import { mockedStore } from '../../reducers/mockedStore';
 import { themes } from '../../lib/constants/colors';
-import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 
@@ -27,14 +28,12 @@ d
 e`;
 const sequentialEmptySpacesText = 'a       b                                                                             c';
 
-const getCustomEmoji: TGetCustomEmoji = content => {
-	const customEmoji = {
-		marioparty: { name: content, extension: 'gif' },
-		react_rocket: { name: content, extension: 'png' },
-		nyan_rocket: { name: content, extension: 'png' }
-	}[content] as ICustomEmoji;
-	return customEmoji;
+const customEmojis = {
+	marioparty: { name: 'marioparty', extension: 'gif' },
+	react_rocket: { name: 'react_rocket', extension: 'png' },
+	nyan_rocket: { name: 'nyan_rocket', extension: 'png' }
 };
+mockedStore.dispatch(setCustomEmojis(customEmojis));
 
 export default {
 	title: 'Markdown',
@@ -76,6 +75,7 @@ const mentions = [
 	{ _id: 'all', username: 'all', type: 'user' },
 	{ _id: 'team', name: 'team', type: 'team' }
 ];
+const channels = [{ _id: '123', name: 'test-channel' }];
 
 export const Mentions = () => (
 	<ScrollView style={styles.container}>
@@ -84,9 +84,44 @@ export const Mentions = () => (
 	</ScrollView>
 );
 
+export const MentionsWithFormatting = () => (
+	<ScrollView style={styles.container}>
+		<Markdown
+			msg='Normal: @rocket.cat @name1 @all @here #test-channel'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Bold: *@rocket.cat* *@name1* *@all* *@here* *#test-channel*'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Italic: _ @rocket.cat _ _ @name1 _ _ @all _ _ @here _ _ #test-channel _'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Strikethrough: ~@rocket.cat~ ~@name1~ ~@all~ ~@here~ ~#test-channel~'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Italic + Bold + Strikethrough: _~*@rocket.cat*~_ _~*@name1*~_ _~*@all*~_ _~*@here*~_ _~*#test-channel*~_'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+	</ScrollView>
+);
+
 export const Hashtag = () => (
 	<View style={styles.container}>
-		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} />
+		<Markdown msg='#test-channel #unknown' channels={channels} />
 	</View>
 );
 
@@ -94,8 +129,8 @@ export const Emoji = () => (
 	<View style={styles.container}>
 		<Markdown msg='Unicode: 😃😇👍' />
 		<Markdown msg='Shortnames: :joy: :+1:' />
-		<Markdown msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:' getCustomEmoji={getCustomEmoji} />
-		<Markdown msg='😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} />
+		<Markdown msg='Custom emojis: :react_rocket: :nyan_rocket: :marioparty:' />
+		<Markdown msg='😃 :+1: :marioparty:' />
 	</View>
 );
 
@@ -132,6 +167,35 @@ export const Headers = () => (
 	</View>
 );
 
+export const HeadersWithFormatting = () => (
+	<View style={styles.container}>
+		<Markdown
+			msg='# H1 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='## H2 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='### H3 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='#### H4 *bold* _italic_ ~strike~ `code` :rocket: @rocket.cat #test-channel https://rocket.chat'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+	</View>
+);
+
 export const Code = () => (
 	<View style={styles.container}>
 		<Markdown msg='This is `inline code`' />
@@ -158,13 +222,23 @@ export const Lists = () => (
 
 export const Timestamp = () => (
 	<View style={styles.container}>
-		<Markdown msg='t: <t:1735732800:t>' />
-		<Markdown msg='T: <t:1735732800:T>' />
-		<Markdown msg='d: <t:1735732800:d>' />
-		<Markdown msg='D: <t:1735732800:D>' />
-		<Markdown msg='f: <t:1735732800:f>' />
-		<Markdown msg='F: <t:1735732800:F>' />
-		<Markdown msg='R: <t:1735732800:R>' />
+		<Markdown msg='Unix timestamp formats' />
+		<Markdown msg='t - Short time: <t:1735689600:t>' />
+		<Markdown msg='T - Long time: <t:1735689600:T>' />
+		<Markdown msg='d - Short date: <t:1735689600:d>' />
+		<Markdown msg='D - Long date: <t:1735689600:D>' />
+		<Markdown msg='f - Short date/time: <t:1735689600:f>' />
+		<Markdown msg='F - Long date/time: <t:1735689600:F>' />
+		<Markdown msg='R - Relative time: <t:1735689600:R>' />
+
+		<Markdown msg='ISO timestamp formats' />
+		<Markdown msg='t - Short time: <t:2025-01-01T00:00:00.000+00:00:t>' />
+		<Markdown msg='T - Long time: <t:2025-01-01T00:00:00.000+00:00:T>' />
+		<Markdown msg='d - Short date: <t:2025-01-01T00:00:00.000+00:00:d>' />
+		<Markdown msg='D - Long date: <t:2025-01-01T00:00:00.000+00:00:D>' />
+		<Markdown msg='f - Short date/time: <t:2025-01-01T00:00:00.000+00:00:f>' />
+		<Markdown msg='F - Long date/time: <t:2025-01-01T00:00:00.000+00:00:F>' />
+		<Markdown msg='R - Relative time: <t:2025-01-01T00:00:00.000+00:00:R>' />
 	</View>
 );
 
@@ -176,7 +250,7 @@ export const TextStyle = () => (
 			textStyle={textStyle}
 		/>
 		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' textStyle={textStyle} />
-		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} textStyle={textStyle} />
+		<Markdown msg='#test-channel #unknown' channels={channels} textStyle={textStyle} />
 		<Markdown
 			msg={`> This is block quote
 this is a normal line`}

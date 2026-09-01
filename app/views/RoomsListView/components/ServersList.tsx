@@ -1,6 +1,5 @@
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 
@@ -30,15 +29,12 @@ const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
 
 const ServersList = () => {
-	'use memo';
-
 	const subscription = useRef<Subscription | null>(null);
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
 	const server = useAppSelector(state => state.server.server);
 	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
-	const insets = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		const init = () => {
@@ -125,8 +121,7 @@ const ServersList = () => {
 		<View
 			style={{
 				backgroundColor: colors.surfaceLight,
-				borderColor: colors.strokeLight,
-				marginBottom: insets.bottom
+				borderColor: colors.strokeLight
 			}}
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>

@@ -1,16 +1,16 @@
-import { Pressable, type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Pressable, PixelRatio, type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 import Avatar from './Avatar';
 import { CustomIcon, type TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
 import { isIOS } from '../lib/methods/helpers';
 import { useTheme } from '../theme';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import i18n from '../i18n';
 
+const ROW_HEIGHT = 54;
+
 const styles = StyleSheet.create({
-	button: {
-		height: 54
-	},
 	container: {
 		flexDirection: 'row'
 	},
@@ -48,6 +48,8 @@ interface IUserItem {
 
 const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, iconColor, isChecked }: IUserItem) => {
 	const { colors } = useTheme();
+	const { fontScale } = useResponsiveLayout();
+	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 	let label = `${name}`;
 	if (icon) {
 		label = `${name} ${isChecked ? i18n.t('Selected') : i18n.t('Unselected')}`;
@@ -65,7 +67,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			})}
 			accessibilityLabel={label}
 			accessibilityRole='button'>
-			<View style={[styles.container, styles.button, style]}>
+			<View style={[styles.container, { height }, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
 					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>

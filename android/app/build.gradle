@@ -90,9 +90,17 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.74.0"
+        versionName "4.77.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+    }
+
+    packaging {
+        resources {
+            // bcprov-jdk18on and its transitive jspecify both ship this OSGi bundle
+            // manifest inside their multi-release jars; it is unused on Android.
+            excludes += ["META-INF/versions/9/OSGI-INF/MANIFEST.MF"]
+        }
     }
 
     signingConfigs {

@@ -15,7 +15,7 @@ import SelectPersonOrChannel from './SelectPersonOrChannel';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { type NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
-import MessagePreview from '../../containers/message/Preview';
+import MessagePreview from '../../containers/message/components/Preview';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 

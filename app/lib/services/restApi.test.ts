@@ -18,7 +18,7 @@ jest.mock('./sdk', () => ({
 	}
 }));
 
-jest.mock('../notifications', () => ({
+jest.mock('../notifications/deviceToken', () => ({
 	getDeviceToken: jest.fn()
 }));
 
@@ -27,10 +27,6 @@ jest.mock('../native/NativeVoip', () => ({
 	default: {
 		getLastVoipToken: jest.fn()
 	}
-}));
-
-jest.mock('../methods/subscribeRooms', () => ({
-	unsubscribeRooms: jest.fn()
 }));
 
 jest.mock('react-native-device-info', () => {
@@ -60,7 +56,7 @@ function loadRegisterPushToken(platform: 'ios' | 'android' = 'android', mockServ
 	}));
 
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const notifications = require('../notifications');
+	const notifications = require('../notifications/deviceToken');
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const voipNative = require('../native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports

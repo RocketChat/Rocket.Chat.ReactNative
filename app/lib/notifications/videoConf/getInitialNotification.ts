@@ -29,6 +29,22 @@ export const setupVideoConfActionListener = (): (() => void) | undefined => {
 	return undefined;
 };
 
+const dispatchVideoConfNotificationResponse = (payload: Record<string, any>, actionIdentifier: string): boolean => {
+	if (!payload.ejson) {
+		return false;
+	}
+
+	const ejsonData = EJSON.parse(payload.ejson);
+	if (ejsonData?.notificationType !== 'videoconf') {
+		return false;
+	}
+
+	// Accept/Decline actions or default tap (treat as accept)
+	const event = actionIdentifier === 'DECLINE_ACTION' ? 'decline' : 'accept';
+	store.dispatch(deepLinkingClickCallPush({ ...ejsonData, event }));
+	return true;
+};
+
 /**
  * Check for pending video conference actions from native notification handling.
  * @returns true if a video conf action was found and dispatched, false otherwise
@@ -63,17 +79,8 @@ export const getInitialNotification = async (): Promise<boolean> => {
 					payload = trigger.payload as Record<string, any>;
 				}
 
-				if (payload.ejson) {
-					const ejsonData = EJSON.parse(payload.ejson);
-					if (ejsonData?.notificationType === 'videoconf') {
-						// Accept/Decline actions or default tap (treat as accept)
-						let event = 'accept';
-						if (actionIdentifier === 'DECLINE_ACTION') {
-							event = 'decline';
-						}
-						store.dispatch(deepLinkingClickCallPush({ ...ejsonData, event }));
-						return true;
-					}
+				if (dispatchVideoConfNotificationResponse(payload, actionIdentifier)) {
+					return true;
 				}
 			}
 		} catch (error) {

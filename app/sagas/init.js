@@ -15,6 +15,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
+import { selectFirstLoggedServer } from './selectFirstLoggedServer';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
@@ -24,7 +25,7 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		if (!server) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -34,14 +35,8 @@ const restore = function* restore() {
 			const servers = yield serversCollection.query().fetch();
 
 			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						return yield put(selectServerRequest(newServer, newServer.version));
-					}
-				}
+			if (yield* selectFirstLoggedServer(servers)) {
+				return;
 			}
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {

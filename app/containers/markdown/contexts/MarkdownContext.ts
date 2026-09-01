@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
@@ -9,7 +9,6 @@ interface IMarkdownContext {
 	useRealName?: boolean;
 	username?: string;
 	navToRoomInfo?: Function;
-	getCustomEmoji?: Function;
 	onLinkPress?: Function;
 	textStyle?: StyleProp<TextStyle>;
 }
@@ -24,4 +23,22 @@ const defaultState = {
 };
 
 const MarkdownContext = createContext<IMarkdownContext>(defaultState);
+
+export const useMarkdownContext = (textStyle?: StyleProp<TextStyle>): IMarkdownContext => {
+	const context = useContext(MarkdownContext);
+
+	return useMemo(() => {
+		if (!textStyle) return context;
+		if (!context.textStyle) return { ...context, textStyle };
+
+		return {
+			...context,
+			textStyle: [
+				...(Array.isArray(context.textStyle) ? context.textStyle : [context.textStyle]),
+				...(Array.isArray(textStyle) ? textStyle : [textStyle])
+			]
+		};
+	}, [context, textStyle]);
+};
+
 export default MarkdownContext;

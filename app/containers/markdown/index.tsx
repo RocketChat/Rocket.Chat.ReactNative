@@ -1,11 +1,10 @@
-import { type FC } from 'react';
+import { useMemo, type FC } from 'react';
 import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import MarkdownContext from './contexts/MarkdownContext';
 import LineBreak from './components/LineBreak';
 import { KaTeX } from './components/Katex';
@@ -26,7 +25,6 @@ interface IMarkdownProps {
 	msg?: string | null;
 	md?: Root;
 	mentions?: IUserMention[];
-	getCustomEmoji?: TGetCustomEmoji;
 	username?: string;
 	useRealName?: boolean;
 	channels?: IUserChannel[];
@@ -69,8 +67,6 @@ const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean
 };
 
 const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
-	'use memo';
-
 	switch (block.type) {
 		case 'BIG_EMOJI':
 			return <BigEmoji value={block.value} />;
@@ -109,13 +105,10 @@ const Markdown: FC<IMarkdownProps> = ({
 	navToRoomInfo,
 	useRealName,
 	username = '',
-	getCustomEmoji,
 	onLinkPress,
 	isTranslated,
 	textStyle
 }: IMarkdownProps) => {
-	'use memo';
-
 	let tokens: Root | null = null;
 
 	if (msg) {
@@ -127,16 +120,18 @@ const Markdown: FC<IMarkdownProps> = ({
 		}
 	}
 
-	const contextValue = {
-		mentions,
-		channels,
-		useRealName,
-		username,
-		navToRoomInfo,
-		getCustomEmoji,
-		onLinkPress,
-		textStyle
-	};
+	const contextValue = useMemo(
+		() => ({
+			mentions,
+			channels,
+			useRealName,
+			username,
+			navToRoomInfo,
+			onLinkPress,
+			textStyle
+		}),
+		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
+	);
 
 	if (!tokens) {
 		return null;

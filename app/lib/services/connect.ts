@@ -10,6 +10,7 @@ import database from '../database';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
+import { waitForLoginReady } from './waitForLoginReady';
 import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
@@ -133,22 +134,20 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		let pendingHangupsDrainArmed = false;
 
 		closeListener = sdk.current.onStreamData('close', () => {
-			// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
-			// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
-			// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
-			// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
-			unsubscribeRooms();
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', () => {
+		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
-			awaitDdpLoggedIn(5000)
-				.then(() => mediaSessionInstance.drainPendingHangups())
-				.catch(error => log(error));
+			try {
+				await waitForLoginReady(5000);
+				await mediaSessionInstance.drainPendingHangups();
+			} catch (error) {
+				log(error);
+			}
 		});
 
 		usersListener = sdk.current.onStreamData(
@@ -247,6 +246,15 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					}
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
+
+					// If it's the logged user, push the new etag through setUser so the
+					// servers-DB logged-user record (observed by useAvatarETag) updates,
+					// refreshing the avatar in ProfileView, SidebarView, etc.
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser?.username === username) {
+						store.dispatch(setUser({ avatarETag: etag }));
+					}
+
 					const db = database.active;
 					const userCollection = db.get('users');
 					try {
@@ -346,6 +354,16 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 	}
 }
 
+function normalizeTOTPParams(params: ICredentials): ICredentials {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
+		const user = params.user ?? params.username;
+		const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+		return { user, password };
+	}
+	return params;
+}
+
 function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -366,13 +384,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = store.getState().server.version;
-						if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
+						params = normalizeTOTPParams(params);
 
 						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					}
@@ -429,40 +441,6 @@ function abort() {
 	if (sdk.current) {
 		return sdk.current.abort();
 	}
-}
-
-function checkAndReopen() {
-	return sdk.current.checkAndReopen();
-}
-
-/**
- * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
- * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
- * close and can read true for a stale session. Redux resets to
- * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
- * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
- */
-async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
-	const isReady = () => {
-		const s = store.getState();
-		return s.login.isAuthenticated && s.meteor.connected;
-	};
-	if (isReady()) {
-		return;
-	}
-	await new Promise<void>(resolve => {
-		const unsub = store.subscribe(() => {
-			if (isReady()) {
-				clearTimeout(timer);
-				unsub();
-				resolve();
-			}
-		});
-		const timer = setTimeout(() => {
-			unsub();
-			resolve();
-		}, timeoutMs);
-	});
 }
 
 function disconnect() {
@@ -556,13 +534,12 @@ export {
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
-	checkAndReopen,
-	awaitDdpLoggedIn,
 	abort,
 	connect,
 	disconnect,
 	getWebsocketInfo,
 	stopListener,
 	getLoginServices,
-	determineAuthType
+	determineAuthType,
+	waitForLoginReady
 };

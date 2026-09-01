@@ -43,7 +43,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionMo
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as TSubscriptionModel);
+	}) as TSubscriptionModel;
 
 const withVoiceAndVideoCallEnabled = (Story: ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));

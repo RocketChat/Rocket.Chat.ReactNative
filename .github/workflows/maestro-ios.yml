@@ -7,9 +7,13 @@ on:
         required: true
         type: string
 
+permissions: {}
+
 jobs:
   ios-test:
     runs-on: macos-26
+    permissions:
+      contents: read
     timeout-minutes: 40
     env:
       MAESTRO_VERSION: 2.5.1

@@ -6,10 +6,10 @@ import { type TIconsName } from '../CustomIcon';
 type TAuthType = 'oauth' | 'oauth_custom' | 'saml' | 'cas' | 'apple';
 
 type TServiceName = 'facebook' | 'github' | 'gitlab' | 'google' | 'linkedin' | 'meteor-developer' | 'twitter' | 'wordpress';
-export interface IOpenOAuth {
+export interface IOpenSSOWebView {
 	url: string;
-	ssoToken?: string;
-	authType?: TAuthType;
+	ssoToken: string;
+	authType: 'saml' | 'cas';
 }
 
 export interface IItemService {

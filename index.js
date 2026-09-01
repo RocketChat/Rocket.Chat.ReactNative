@@ -23,7 +23,13 @@ if (process.env.USE_STORYBOOK) {
 
 	LogBox.ignoreAllLogs();
 
-	if (Platform.OS === 'android' && DeviceInfo.hasSystemFeatureSync('android.software.telecom')) {
+	// FEATURE_TELECOM is only declared from API 33; older releases declare its predecessor, FEATURE_CONNECTION_SERVICE.
+	const supportsTelecom =
+		Platform.OS === 'android' &&
+		(DeviceInfo.hasSystemFeatureSync('android.software.telecom') ||
+			DeviceInfo.hasSystemFeatureSync('android.software.connectionservice'));
+
+	if (supportsTelecom) {
 		const options = {
 			android: {
 				// TODO: i18n

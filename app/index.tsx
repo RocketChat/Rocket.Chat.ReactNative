@@ -21,7 +21,7 @@ import { type IThemePreference } from './definitions/ITheme';
 import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
-import parseQuery from './lib/methods/helpers/parseQuery';
+import parseDeepLinking from './lib/methods/helpers/parseDeepLinking';
 import {
 	getTheme,
 	initialTheme,
@@ -50,29 +50,6 @@ interface IState {
 	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 }
-
-const parseDeepLinking = (url: string) => {
-	if (url) {
-		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth|invite|shareextension)\?/;
-		const match = url.match(regex);
-		if (match) {
-			const matchedPattern = match[1];
-			const query = url.replace(regex, '').trim();
-
-			if (query) {
-				const parsedQuery = parseQuery(query);
-				return {
-					...parsedQuery,
-					type: matchedPattern === 'shareextension' ? matchedPattern : parsedQuery?.type
-				};
-			}
-		}
-	}
-
-	// Return null if the URL doesn't match or is not valid
-	return null;
-};
 
 export default class Root extends Component<{}, IState> {
 	private listenerTimeout!: any;

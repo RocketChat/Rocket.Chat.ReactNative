@@ -223,21 +223,10 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			if (!room.id) {
 				if (room.t === SubscriptionType.OMNICHANNEL) {
 					if (!this.isOmnichannelPreview) {
-						const result = await getSubscriptionByRoomId(room.rid);
-						if (result) {
-							this.setState({ room: result });
-						}
+						await this.loadOmnichannelRoom(room.rid);
 					}
 				} else {
-					try {
-						const result = await getChannelInfo(room.rid);
-						if (result.success) {
-							// @ts-ignore
-							this.setState({ room: { ...result.channel, rid: result.channel._id } });
-						}
-					} catch (e) {
-						log(e);
-					}
+					await this.loadChannelRoom(room.rid);
 				}
 			}
 
@@ -278,6 +267,25 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				canConvertTeam,
 				hasE2EEWarning
 			});
+		}
+	}
+
+	private async loadOmnichannelRoom(rid: string) {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (subscription) {
+			this.setState({ room: subscription });
+		}
+	}
+
+	private async loadChannelRoom(rid: string) {
+		try {
+			const channelInfo = await getChannelInfo(rid);
+			if (channelInfo.success) {
+				// @ts-ignore
+				this.setState({ room: { ...channelInfo.channel, rid: channelInfo.channel._id } });
+			}
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -486,8 +494,11 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
+		// member may not be fetched yet; the other user's id is derivable from the subscription
+		const blockedUserId = member._id || getUidDirectMessage(room);
+		if (!blockedUserId) return;
 		try {
-			await toggleBlockUser(rid, member._id as string, !blocker);
+			await toggleBlockUser(rid, blockedUserId as string, !blocker);
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
