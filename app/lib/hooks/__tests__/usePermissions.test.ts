@@ -14,9 +14,6 @@ jest.mock('../useAppSelector', () => ({
 jest.mock('../../database', () => ({ __esModule: true, default: { active: { get: jest.fn() } } }));
 jest.mock('../../store/auxStore', () => ({ store: { getState: jest.fn() } }));
 jest.mock('../../database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn() }));
-jest.mock('../../methods/helpers', () => ({
-	...jest.requireActual('../../methods/helpers')
-}));
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetState = reduxStore.getState as jest.Mock;
@@ -24,9 +21,7 @@ const mockGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.Mock;
 
 const PERMISSION = 'toggle-room-e2e-encryption';
 
-// Wire redux + WMDB so the sync usePermissions path (useAppSelector + getSubscriptionByRoomId)
-// and the old async hasPermission path (reduxStore + database) read identical roles.
-const configure = ({
+const configureIdenticalRolesForBothPaths = ({
 	userRoles,
 	subRoles,
 	permissionRoles
@@ -56,7 +51,7 @@ const configure = ({
 
 const flush = () => act(() => Promise.resolve());
 
-describe('usePermissions — hasPermission parity', () => {
+describe('usePermissions: hasPermission parity', () => {
 	beforeEach(() => jest.clearAllMocks());
 
 	const scenarios = [
@@ -67,7 +62,7 @@ describe('usePermissions — hasPermission parity', () => {
 
 	scenarios.forEach(scenario => {
 		it(`matches the old async hasPermission result when ${scenario.name}`, async () => {
-			configure(scenario);
+			configureIdenticalRolesForBothPaths(scenario);
 
 			const { result } = renderHook(() => usePermissions([PERMISSION], 'rid-1'));
 			await flush();
