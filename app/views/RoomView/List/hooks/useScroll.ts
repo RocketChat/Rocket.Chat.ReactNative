@@ -148,10 +148,10 @@ export const useScroll = ({
 
 	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
 	const reScrollWhenSettled = (targetId: string | null | undefined) => {
-		const settled = indexOfMessage(targetId);
-		if (settled !== -1) {
+		const index = indexOfMessage(targetId);
+		if (index !== -1) {
 			flatListRef.current?.scrollToIndex({
-				index: settled,
+				index,
 				...JUMP_SCROLL_POSITION
 			});
 		}
