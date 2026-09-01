@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
-import { MicOrSendButton, ActionsButton, BaseButton } from '..';
+import { MicOrSendButton, ActionsButton, BaseButton } from '../Buttons';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';

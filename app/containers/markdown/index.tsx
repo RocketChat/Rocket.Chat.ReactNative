@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { useMemo, type FC } from 'react';
 import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
@@ -120,15 +120,18 @@ const Markdown: FC<IMarkdownProps> = ({
 		}
 	}
 
-	const contextValue = {
-		mentions,
-		channels,
-		useRealName,
-		username,
-		navToRoomInfo,
-		onLinkPress,
-		textStyle
-	};
+	const contextValue = useMemo(
+		() => ({
+			mentions,
+			channels,
+			useRealName,
+			username,
+			navToRoomInfo,
+			onLinkPress,
+			textStyle
+		}),
+		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
+	);
 
 	if (!tokens) {
 		return null;

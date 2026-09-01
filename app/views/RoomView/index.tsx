@@ -12,14 +12,8 @@ import { type NavigatorScreenParams } from '@react-navigation/native';
 import { type TNavigation } from '../../stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
-import {
-	getRoutingConfig,
-	getUserInfo,
-	editMessage,
-	setReaction,
-	joinRoom,
-	toggleFollowMessage
-} from '../../lib/services/restApi';
+import { editMessage } from '../../lib/methods/editMessage';
+import { getRoutingConfig, getUserInfo, setReaction, joinRoom, toggleFollowMessage } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';

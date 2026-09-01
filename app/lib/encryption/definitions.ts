@@ -27,3 +27,9 @@ export interface IDecryptionFileQueue {
 	resolve: (value: string | null | PromiseLike<string | null>) => void;
 	reject: (reason?: any) => void;
 }
+
+export interface IEncryption {
+	privateKey: string | null;
+	publicKey: string | null;
+	deleteRoomInstance: (rid: string) => void;
+}
