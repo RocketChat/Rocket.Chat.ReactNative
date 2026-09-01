@@ -101,5 +101,5 @@ export function useJumpToMessage({
 	useChangedParam(route.params?.jumpToMessageId, id => consumeJumpParamRef.current(id));
 	useChangedParam(route.params?.jumpToThreadId, id => navToThreadRef.current({ tmid: id }));
 
-	return { jumpToMessage, cancelJumpToMessage, consumeJumpParam, onThreadMessagesLoaded };
+	return { jumpToMessage, cancelJumpToMessage, onThreadMessagesLoaded };
 }

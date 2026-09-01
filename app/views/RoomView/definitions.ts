@@ -309,7 +309,6 @@ export interface IUseJumpToMessageParams {
 export interface IUseJumpToMessageResult {
 	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
 	cancelJumpToMessage: () => void;
-	consumeJumpParam: (messageId: string) => void;
 	onThreadMessagesLoaded: () => void;
 }
 

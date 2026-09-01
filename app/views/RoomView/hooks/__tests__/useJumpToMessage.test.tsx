@@ -230,21 +230,6 @@ describe('useJumpToMessage', () => {
 			runAfterInteractionsSpy.mockRestore();
 		});
 
-		it('consumeJumpParam clears the pending jump, triggers the jump and resets the nav param', async () => {
-			const listContainerRef = createListRef();
-			listContainerRef.current.isMessageInWindow.mockReturnValue(true);
-			mockGetMessageInfo.mockResolvedValue({ id: 'm1', rid: RID, ts: 100 });
-			const { result } = renderJumpToMessage(listContainerRef);
-
-			await act(async () => {
-				result.current.consumeJumpParam('m1');
-				await Promise.resolve();
-			});
-
-			expect(mockGetMessageInfo).toHaveBeenCalledWith('m1');
-			expect(mockSetParams).toHaveBeenCalledWith({ jumpToMessageId: undefined });
-		});
-
 		it('onThreadMessagesLoaded consumes a pending jump queued from the mount param', async () => {
 			mockRouteParams = { jumpToMessageId: 'msg-7' };
 			const listContainerRef = createListRef();

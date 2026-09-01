@@ -18,7 +18,6 @@ jest.mock('../useJumpToMessage', () => ({
 	useJumpToMessage: jest.fn(() => ({
 		jumpToMessage: jest.fn(),
 		cancelJumpToMessage: jest.fn(),
-		consumeJumpParam: jest.fn(),
 		onThreadMessagesLoaded: jest.fn()
 	}))
 }));
