@@ -14,7 +14,7 @@ export type MessageRoomState = {
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
-	closeEmojiAndAction?: (action?: (params?: unknown) => void, params?: unknown) => void;
+	closeEmojiAndAction?: (action?: () => void) => void;
 	// row action handlers
 	onReactionPress?: (emoji: string, id: string) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;

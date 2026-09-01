@@ -48,12 +48,12 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 	const { theme } = useTheme();
 	const [selected, setSelected] = useState(!Array.isArray(initialValue) && initialValue);
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
-	const pickerStyle = {
+	const basePickerStyle = {
 		...styles.viewContainer,
-		...(isIOS ? styles.iosPadding : {}),
 		borderColor: themes[theme].strokeLight,
 		backgroundColor: themes[theme].surfaceRoom
 	};
+	const pickerStyle = isIOS ? { ...basePickerStyle, ...styles.iosPadding } : basePickerStyle;
 
 	const placeholderObject = useMemo(
 		() =>

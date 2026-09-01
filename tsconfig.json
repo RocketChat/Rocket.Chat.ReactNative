@@ -17,5 +17,5 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true
 	},
-	"exclude": ["node_modules", "__mocks__", "**/.worktrees/**"]
+	"exclude": ["node_modules", "__mocks__", "**/.worktrees/**", "tools/oxlint/anti-slop"]
 }

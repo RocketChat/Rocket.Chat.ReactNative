@@ -29,7 +29,5 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	actionIndicator: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
-	}
+	actionIndicator: I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {}
 });

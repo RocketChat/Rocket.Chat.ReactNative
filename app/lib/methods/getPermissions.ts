@@ -182,11 +182,8 @@ export function getPermissions(): Promise<void> {
 				return resolve();
 			}
 
-			const params: { updatedSince?: string } = {};
 			const updatedSince = getUpdatedSince(allRecords);
-			if (updatedSince) {
-				params.updatedSince = updatedSince;
-			}
+			const params = updatedSince ? { updatedSince } : {};
 			// RC 0.73.0
 			const result = await sdk.get('permissions.listAll', params);
 

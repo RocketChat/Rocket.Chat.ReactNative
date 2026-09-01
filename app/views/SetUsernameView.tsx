@@ -34,7 +34,7 @@ interface ISubmit {
 	name: string;
 }
 
-const schema = yup.object().shape({
+const schema = yup.object({
 	username: yup.string().required(),
 	name: yup.string().required()
 });

@@ -18,6 +18,21 @@ interface IEjson {
 	messageId: string;
 }
 
+const pathSegmentByRoomType = (roomType: string): string | undefined => {
+	switch (roomType) {
+		case SubscriptionType.CHANNEL:
+			return 'channel';
+		case SubscriptionType.DIRECT:
+			return 'direct';
+		case SubscriptionType.GROUP:
+			return 'group';
+		case SubscriptionType.OMNICHANNEL:
+			return 'channels';
+		default:
+			return undefined;
+	}
+};
+
 export const onNotification = (push: INotification): void => {
 	const identifier = String(push?.payload?.action?.identifier);
 
@@ -52,12 +67,6 @@ export const onNotification = (push: INotification): void => {
 				return;
 			}
 			const { rid, name, sender, type, host, messageId }: IEjson = notification;
-			const types: Record<string, string> = {
-				c: 'channel',
-				d: 'direct',
-				p: 'group',
-				l: 'channels'
-			};
 			let roomName = name;
 			if (type === SubscriptionType.DIRECT) {
 				roomName = sender?.username ?? name;
@@ -69,7 +78,7 @@ export const onNotification = (push: INotification): void => {
 				host,
 				rid,
 				messageId,
-				path: `${types[type]}/${roomName}`
+				path: `${pathSegmentByRoomType(type)}/${roomName}`
 			};
 			store.dispatch(deepLinkingOpen(params));
 			return;

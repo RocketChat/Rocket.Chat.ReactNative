@@ -1,4 +1,6 @@
-const localeKeys: { [key: string]: string } = {
+import { hasOwnKey } from '../lib/methods/helpers/hasOwnKey';
+
+const localeKeys = {
 	en: 'en',
 	ar: 'ar',
 	de: 'de',
@@ -17,6 +19,10 @@ const localeKeys: { [key: string]: string } = {
 	'zh-CN': 'zh-cn',
 	'zh-TW': 'zh-tw',
 	no: 'nb'
-};
+} satisfies Record<string, string>;
 
-export const toDayJsLocale = (locale: string): string => localeKeys[locale] || locale;
+type TLocaleKey = keyof typeof localeKeys;
+
+const isLocaleKey = (locale: string): locale is TLocaleKey => hasOwnKey(localeKeys, locale);
+
+export const toDayJsLocale = (locale: string): string => (isLocaleKey(locale) ? localeKeys[locale] : locale);

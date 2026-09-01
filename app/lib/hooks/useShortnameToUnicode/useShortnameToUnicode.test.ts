@@ -109,3 +109,11 @@ test('convert ascii when convertAsciiEmoji = true and isEmojiPicker = true', () 
 	const unicodeEmoji = renderShortnameToUnicode(':(', true);
 	expect(unicodeEmoji).toBe('😞');
 });
+
+test('keeps inherited object keys as literal text', () => {
+	expect(renderShortnameToUnicode(':toString:')).toBe(':toString:');
+	expect(renderShortnameToUnicode(':constructor:')).toBe(':constructor:');
+	expect(renderShortnameToUnicode(':__proto__:')).toBe(':__proto__:');
+	expect(renderShortnameToUnicode('&constructor;')).toBe('&constructor;');
+	expect(renderShortnameToUnicode('&valueOf;')).toBe('&valueOf;');
+});

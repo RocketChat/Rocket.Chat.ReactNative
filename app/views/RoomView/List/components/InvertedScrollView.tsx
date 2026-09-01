@@ -2,6 +2,25 @@ import { Component, type ComponentType, createRef, type MutableRefObject } from 
 import { Platform, StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
+interface Point {
+	x: number;
+	y: number;
+}
+
+const pointsDiffer = require('react-native/Libraries/Utilities/differ/pointsDiffer').default as (
+	a: Point | null,
+	b: Point | null
+) => boolean;
+
+type ViewAttribute = true | { diff: typeof pointsDiffer } | { process: typeof processColor };
+
+interface ViewConfig {
+	uiViewClassName: string;
+	bubblingEventTypes: Record<string, { phasedRegistrationNames: { bubbled: string; captured: string } }>;
+	directEventTypes: Record<string, { registrationName: string }>;
+	validAttributes: Record<string, ViewAttribute>;
+}
+
 // NativeComponentRegistry.get() registers components as proper Fabric host components.
 // requireNativeComponent() uses the legacy interop layer, which breaks Fabric's touch
 // event routing: when Fabric-rendered children (FlatList cells with pressable elements)
@@ -9,13 +28,8 @@ import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativ
 // shadow tree boundary and drops all interaction events. newArchEnabled=true exposes this.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const NativeComponentRegistry = require('react-native/Libraries/NativeComponent/NativeComponentRegistry') as {
-	get: (name: string, viewConfigProvider: () => object) => ComponentType<any>;
+	get: (name: string, viewConfigProvider: () => ViewConfig) => ComponentType<any>;
 };
-
-const pointsDiffer = require('react-native/Libraries/Utilities/differ/pointsDiffer').default as (
-	a: object | null,
-	b: object | null
-) => boolean;
 
 interface Props extends Omit<ScrollViewProps, 'scrollViewRef'> {
 	exitFocusNativeId?: string;

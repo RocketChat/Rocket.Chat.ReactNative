@@ -38,17 +38,31 @@ const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
 const mockCallStoreReset = jest.fn();
 const mockSetRoomId = jest.fn();
 const mockSetDirection = jest.fn();
-const mockUseCallStoreGetState = jest.fn(() => ({
-	reset: mockCallStoreReset,
-	setCall: jest.fn(),
-	setRoomId: mockSetRoomId,
-	setDirection: mockSetDirection,
-	resetNativeCallId: jest.fn(),
-	call: null as unknown,
-	callId: null as string | null,
-	nativeAcceptedCallId: null as string | null,
-	roomId: null as string | null
-}));
+interface IMockCallStoreState {
+	reset: jest.Mock;
+	setCall: jest.Mock;
+	setRoomId: jest.Mock;
+	setDirection: jest.Mock;
+	resetNativeCallId: jest.Mock;
+	call: IClientMediaCall | null;
+	callId: string | null;
+	nativeAcceptedCallId: string | null;
+	roomId: string | null;
+}
+
+const mockUseCallStoreGetState = jest.fn(
+	(): IMockCallStoreState => ({
+		reset: mockCallStoreReset,
+		setCall: jest.fn(),
+		setRoomId: mockSetRoomId,
+		setDirection: mockSetDirection,
+		resetNativeCallId: jest.fn(),
+		call: null,
+		callId: null,
+		nativeAcceptedCallId: null,
+		roomId: null
+	})
+);
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {

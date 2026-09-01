@@ -879,13 +879,10 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 		rid,
 		count,
 		offset
-	} as { rid: string; count: number; offset: number; text?: string };
-	if (text) {
-		params.text = text;
-	}
+	};
 
 	// RC 1.0
-	return sdk.get('chat.getThreadsList', params);
+	return sdk.get('chat.getThreadsList', text ? { ...params, text } : params);
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
@@ -1269,7 +1266,10 @@ export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {
 		const result = await (
-			sdk.get as unknown as (path: string, params?: object) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
+			sdk.get as unknown as (
+				path: string,
+				params?: { contractId: string }
+			) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
 		)('media-calls.stateSignals', { contractId });
 		return result;
 	} catch {

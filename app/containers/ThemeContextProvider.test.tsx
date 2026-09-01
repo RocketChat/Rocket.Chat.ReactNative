@@ -3,13 +3,13 @@ import { useContext, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import ThemeContextProvider from './ThemeContextProvider';
-import { ThemeContext } from '../theme';
+import { ThemeContext, type IThemeContextProps } from '../theme';
 import type { IThemePreference } from '../definitions/ITheme';
 
 const defaultPrefs: IThemePreference = { currentTheme: 'light', darkLevel: 'dark' };
 const setTheme = jest.fn();
 
-function ContextCapture({ onCapture }: { onCapture: (v: object) => void }) {
+function ContextCapture({ onCapture }: { onCapture: (v: IThemeContextProps) => void }) {
 	const value = useContext(ThemeContext);
 	onCapture(value);
 	return null;
@@ -18,7 +18,7 @@ function ContextCapture({ onCapture }: { onCapture: (v: object) => void }) {
 // Parent holds its own counter state; ThemeContextProvider receives fixed props.
 // This forces ThemeContextProvider to re-render on parent state changes, exercising the
 // useMemo dep-check rather than React's same-props bailout shortcut.
-function ParentWithCounter({ onCapture }: { onCapture: (v: object) => void }) {
+function ParentWithCounter({ onCapture }: { onCapture: (v: IThemeContextProps) => void }) {
 	const [count, setCount] = useState(0);
 	return (
 		<>

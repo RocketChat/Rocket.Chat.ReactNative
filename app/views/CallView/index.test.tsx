@@ -46,7 +46,7 @@ jest.mock('../../lib/native/NativeVoip', () => ({
 jest.mock('../../lib/methods/helpers', () => {
 	const actual = jest.requireActual('../../lib/methods/helpers');
 	const { Platform: RNPlatform } = jest.requireActual('react-native');
-	const proxy: Record<string, unknown> = { ...actual };
+	const proxy = { ...actual };
 	Object.defineProperty(proxy, 'isIOS', {
 		get() {
 			return RNPlatform.OS === 'ios';

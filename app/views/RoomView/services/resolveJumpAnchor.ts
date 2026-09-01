@@ -10,7 +10,7 @@ export interface IJumpTarget {
 }
 
 export interface IJumpAnchorDeps {
-	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<unknown>;
+	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<IMessage[]>;
 	getLocalAnchorTs: (rid: string, ts: Date | number | string) => Promise<number | null>;
 }
 
@@ -31,7 +31,7 @@ export const resolveJumpAnchor = async (
 	}
 
 	if (target.fromServer) {
-		const chunk = (await deps.loadSurroundingMessages({ messageId: target.id, rid })) as IMessage[];
+		const chunk = await deps.loadSurroundingMessages({ messageId: target.id, rid });
 		const anchorMessages: AnchorMessage[] = (Array.isArray(chunk) ? chunk : []).map(m => ({
 			id: m._id,
 			t: m.t,

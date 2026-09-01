@@ -3,7 +3,9 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable comma-spacing */
 /* eslint-disable key-spacing */
-const emojis: { [key: string]: string } = {
+import { hasOwnKey } from '../../methods/helpers/hasOwnKey';
+
+const emojis = {
 	':england:': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
 	':scotland:': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
 	':wales:': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
@@ -4632,5 +4634,8 @@ const emojis: { [key: string]: string } = {
 	':x:': '❌',
 	':yin_yang:': '☯️',
 	':zap:': '⚡'
-};
+} satisfies Record<string, string>;
+
+export const isEmojiShortname = (shortname: string): shortname is keyof typeof emojis => hasOwnKey(emojis, shortname);
+
 export default emojis;

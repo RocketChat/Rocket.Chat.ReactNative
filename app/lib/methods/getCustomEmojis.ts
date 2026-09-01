@@ -124,10 +124,7 @@ export function getCustomEmojis() {
 				}
 				return resolve();
 			}
-			const params: { updatedSince: string } = { updatedSince: '' };
-			if (updatedSince) {
-				params.updatedSince = updatedSince;
-			}
+			const params = { updatedSince: updatedSince || '' };
 
 			// RC 0.75.0
 			const result = await sdk.get('emoji-custom.list', params);

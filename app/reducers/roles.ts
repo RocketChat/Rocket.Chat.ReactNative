@@ -10,6 +10,7 @@ export default function roles(state = initialState, action: IActionRoles): IRole
 		case ROLES.SET:
 			return action.roles;
 		case ROLES.UPDATE:
+			// oxlint-disable-next-line anti-slop/no-known-value-widening -- IRoles keys are server role ids discovered at runtime
 			return {
 				...state,
 				[action.payload.id]: action.payload.desc || action.payload.id
@@ -17,6 +18,7 @@ export default function roles(state = initialState, action: IActionRoles): IRole
 		case ROLES.REMOVE: {
 			const newState = { ...state };
 			delete newState[action.payload.id];
+			// oxlint-disable-next-line anti-slop/no-known-value-widening -- IRoles keys are server role ids discovered at runtime
 			return newState;
 		}
 		default:

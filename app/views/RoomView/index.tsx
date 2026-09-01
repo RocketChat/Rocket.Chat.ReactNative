@@ -696,9 +696,10 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					this.consumeJumpParam(messageId);
 				}
 			} else {
+				const hasLastOpen = 'lastOpen' in room && !!room.lastOpen;
 				await RoomServices.getMessages({
 					rid: room.rid,
-					...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
+					t: hasLastOpen ? undefined : (room.t as RoomType)
 				});
 
 				// if room is joined

@@ -1,5 +1,10 @@
 import { type IShareAttachment } from '../../../definitions';
 
+export interface ICanUploadFileResult {
+	success: boolean;
+	error?: string;
+}
+
 export const canUploadFile = ({
 	file,
 	allowList,
@@ -10,7 +15,7 @@ export const canUploadFile = ({
 	allowList?: string;
 	maxFileSize?: number;
 	permissionToUploadFile: boolean;
-}): { success: boolean; error?: string } => {
+}): ICanUploadFileResult => {
 	if (!(file && file.path)) {
 		return { success: true };
 	}

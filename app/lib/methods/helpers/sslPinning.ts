@@ -82,7 +82,7 @@ const RCSSLPinning = Platform.select({
 			}),
 		setCertificate: (name: string, server: string) => {
 			if (name) {
-				const certificate = UserPreferences.getMap(name) as ICertificate;
+				const certificate = UserPreferences.getMap<ICertificate>(name);
 				if (certificate) {
 					persistCertificate(server, name, certificate.password);
 					SSLPinning?.setCertificate(server, certificate.path, certificate.password);

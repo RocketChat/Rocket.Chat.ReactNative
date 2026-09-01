@@ -75,7 +75,11 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 	sanitizedRaw: (raw: unknown) => raw
 }));
 
-const mockEncryptionGate: { promise: Promise<void> | null } = { promise: null };
+interface IEncryptionGate {
+	promise: Promise<void> | null;
+}
+
+const mockEncryptionGate: IEncryptionGate = { promise: null };
 jest.mock('../encryption', () => ({
 	Encryption: {
 		encryptMessage: jest.fn(async (message: unknown) => {

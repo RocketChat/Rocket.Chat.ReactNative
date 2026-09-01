@@ -1,50 +1,53 @@
-import emojis from './emojis';
-import ascii, { asciiRegexp } from './ascii';
+import emojis, { isEmojiShortname } from './emojis';
+import ascii, { asciiRegexp, isAsciiEmoji } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
+import { hasOwnKey } from '../../methods/helpers/hasOwnKey';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
-const replaceShortNameWithUnicode = (shortname: string) => emojis[shortname] || shortname;
+const replaceShortNameWithUnicode = (shortname: string) => (isEmojiShortname(shortname) ? emojis[shortname] : shortname);
 const regAscii = new RegExp(`((\\s|^)${asciiRegexp}(?=\\s|$|[!,.?]))`, 'gi');
 
-const unescapeHTML = (string: string) => {
-	const unescaped: { [key: string]: string } = {
-		'&amp;': '&',
-		'&#38;': '&',
-		'&#x26;': '&',
-		'&lt;': '<',
-		'&#60;': '<',
-		'&#x3C;': '<',
-		'&gt;': '>',
-		'&#62;': '>',
-		'&#x3E;': '>',
-		'&quot;': '"',
-		'&#34;': '"',
-		'&#x22;': '"',
-		'&apos;': "'",
-		'&#39;': "'",
-		'&#x27;': "'"
-	};
+const htmlEntities = {
+	'&amp;': '&',
+	'&#38;': '&',
+	'&#x26;': '&',
+	'&lt;': '<',
+	'&#60;': '<',
+	'&#x3C;': '<',
+	'&gt;': '>',
+	'&#62;': '>',
+	'&#x3E;': '>',
+	'&quot;': '"',
+	'&#34;': '"',
+	'&#x22;': '"',
+	'&apos;': "'",
+	'&#39;': "'",
+	'&#x27;': "'"
+} satisfies Record<string, string>;
 
-	return string.replace(/&(?:amp|#38|#x26|lt|#60|#x3C|gt|#62|#x3E|apos|#39|#x27|quot|#34|#x22);/gi, match => unescaped[match]);
-};
+const isHtmlEntity = (entity: string): entity is keyof typeof htmlEntities => hasOwnKey(htmlEntities, entity);
+
+const unescapeHTML = (string: string) =>
+	string.replace(/&(?:amp|#38|#x26|lt|#60|#x3C|gt|#62|#x3E|apos|#39|#x27|quot|#34|#x22);/gi, match =>
+		isHtmlEntity(match) ? htmlEntities[match] : match
+	);
 
 const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 	const formatShortnameToUnicode = (str: string) => {
 		str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
 		str = str.replace(regAscii, (entire, _m1, m2, m3) => {
-			if (!m3 || !(unescapeHTML(m3) in ascii)) {
+			const asciiEmoji = m3 ? unescapeHTML(m3) : m3;
+			if (!asciiEmoji || !isAsciiEmoji(asciiEmoji)) {
 				// if the ascii doesnt exist just return the entire match
 				return entire;
 			}
 
-			m3 = unescapeHTML(m3);
-
 			if (!convertAsciiEmoji && !isEmojiPicker) {
-				return m2 + m3;
+				return m2 + asciiEmoji;
 			}
-			return m2 + ascii[m3];
+			return m2 + ascii[asciiEmoji];
 		});
 		return str;
 	};

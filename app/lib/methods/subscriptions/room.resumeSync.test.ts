@@ -48,9 +48,15 @@ const missedMessage = {
 	u: { _id: 'user2', username: 'user2' }
 };
 
-const syncMessagesResponse = (
-	updated: unknown[]
-): { result: { updated: unknown[]; deleted: unknown[]; cursor: { next: number | null } } } => ({
+interface ISyncMessagesResponse {
+	result: {
+		updated: unknown[];
+		deleted: unknown[];
+		cursor: { next: number | null };
+	};
+}
+
+const syncMessagesResponse = (updated: unknown[]): ISyncMessagesResponse => ({
 	result: { updated, deleted: [], cursor: { next: null } }
 });
 

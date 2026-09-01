@@ -16,12 +16,12 @@ type ApiTypes<T> = T extends 'c'
 				? ETypes.Channels
 				: never;
 
-export const types: { [K in RoomTypes]: ApiTypes<K> } = {
+export const types = {
 	c: ETypes.Channels,
 	d: ETypes.Im,
 	p: ETypes.Groups,
 	l: ETypes.Channels
-};
+} satisfies { [K in RoomTypes]: ApiTypes<K> };
 
 export const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
 

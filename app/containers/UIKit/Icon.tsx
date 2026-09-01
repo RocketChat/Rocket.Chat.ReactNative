@@ -3,14 +3,19 @@ import { StyleSheet, View } from 'react-native';
 import { hasIcon, CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { type IIcon } from './interfaces';
+import { hasOwnKey } from '../../lib/methods/helpers/hasOwnKey';
 
-const iconAliases: Record<string, string> = {
+const iconAliases = {
 	'phone-end': 'phone-off',
 	microphone: 'mic',
 	'microphone-disabled': 'mic-off',
 	audio: 'volume',
 	'audio-disabled': 'volume-off'
-};
+} satisfies Record<string, string>;
+
+type TIconAlias = keyof typeof iconAliases;
+
+const isIconAlias = (icon: string): icon is TIconAlias => hasOwnKey(iconAliases, icon);
 
 const styles = StyleSheet.create({
 	frame: {
@@ -27,9 +32,11 @@ export const resolveIconName = (icon: string) => {
 		return icon as any;
 	}
 
-	const aliasedIcon = iconAliases[icon];
-	if (aliasedIcon && hasIcon(aliasedIcon)) {
-		return aliasedIcon as any;
+	if (isIconAlias(icon)) {
+		const aliasedIcon = iconAliases[icon];
+		if (hasIcon(aliasedIcon)) {
+			return aliasedIcon as any;
+		}
 	}
 
 	return 'info' as any;

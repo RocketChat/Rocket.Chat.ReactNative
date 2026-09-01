@@ -183,12 +183,12 @@ describe('RoomSubscription', () => {
 			const messageRecord = makeFakeRecord(`messages#${_id}`);
 			const threadRecord = makeFakeRecord(`threads#${_id}`);
 			const threadMessageRecord = makeFakeRecord(`thread_messages#${_id}`);
-			const collections: Record<string, unknown> = {
+			const collections = {
 				messages: { find: () => Promise.resolve(messageRecord) },
 				threads: { find: () => Promise.resolve(threadRecord) },
 				thread_messages: { find: () => Promise.resolve(threadMessageRecord) }
 			};
-			mockDbGet.mockImplementation((name: string) => collections[name]);
+			mockDbGet.mockImplementation((name: keyof typeof collections) => collections[name]);
 
 			const db = (database as any).active;
 

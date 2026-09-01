@@ -46,7 +46,6 @@ describe('createDirectMessageSubscriptionStub', () => {
 	let collectionWrites: any[];
 	let writeCallback: jest.Mock;
 	let createMock: jest.Mock;
-	let mockedDb: { write: jest.Mock; get: jest.Mock };
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -59,11 +58,10 @@ describe('createDirectMessageSubscriptionStub', () => {
 			return Promise.resolve();
 		});
 		writeCallback = jest.fn((cb: () => Promise<void>) => cb());
-		mockedDb = {
+		(database as any).active = {
 			write: writeCallback,
 			get: jest.fn(() => ({ create: createMock }))
 		};
-		(database as any).active = mockedDb;
 
 		(reduxStore.getState as jest.Mock).mockReturnValue(buildState());
 		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue(null);

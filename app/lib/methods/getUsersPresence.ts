@@ -15,7 +15,11 @@ import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
 
-export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
+interface IActiveUsersSubTimeout {
+	activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number;
+}
+
+export const _activeUsersSubTimeout: IActiveUsersSubTimeout = {
 	activeUsersSubTimeout: false
 };
 

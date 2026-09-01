@@ -63,7 +63,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	const { colors } = useTheme();
 	const fromProfileView = isFromRoute(navigation, 'ProfileView');
 
-	const validationSchema = yup.object().shape({
+	const validationSchema = yup.object({
 		currentPassword: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Current_password') })}`),
 		newPassword: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('New_Password') })}`),
 		confirmNewPassword: yup

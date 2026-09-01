@@ -9,9 +9,12 @@ export const computeExpiresAt = (value: ClearAfterValue, customDate: Date | null
 	return null;
 };
 
-export const getInitialClearAfterState = (
-	statusExpiresAt: string | undefined
-): { value: ClearAfterValue; customDate: Date | null } => {
+interface IClearAfterState {
+	value: ClearAfterValue;
+	customDate: Date | null;
+}
+
+export const getInitialClearAfterState = (statusExpiresAt: string | undefined): IClearAfterState => {
 	if (!statusExpiresAt) return { value: '', customDate: null };
 
 	const expiresAt = dayjs(statusExpiresAt);

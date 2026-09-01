@@ -46,7 +46,7 @@ const dirtyOptions: SetValueConfig = {
 	shouldDirty: true
 };
 
-const schema = yup.object().shape({
+const schema = yup.object({
 	name: yup.string().required(I18n.t('Name_required'))
 });
 

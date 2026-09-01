@@ -18,7 +18,7 @@ import styles from './styles';
 import SelectChannel from './SelectChannel';
 import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
 import { type ISearchLocal, type ISubscription } from '../../definitions';
-import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
+import { isE2ERoomType } from '../../lib/constants/keys';
 import { getRoomTitle } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
@@ -32,7 +32,7 @@ import SelectedUsers from '../../containers/SelectedUsers';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
-	const schema = yup.object().shape({
+	const schema = yup.object({
 		name: yup.string().required(I18n.t('Discussion_name_required'))
 	});
 	const { colors } = useTheme();
@@ -82,7 +82,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 	const inputValues = watch();
 	const prevLoading = useRef<boolean>(loading);
-	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
+	const isEncryptionEnabled = encryptionEnabled && isE2ERoomType(channel?.t);
 
 	const selectChannel = ({ value }: { value: ISearchLocal }) => {
 		logEvent(events.CD_SELECT_CHANNEL);

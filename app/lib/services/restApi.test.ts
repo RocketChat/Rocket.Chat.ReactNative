@@ -5,7 +5,8 @@ import { mediaCallsStateSignals } from './restApi';
 
 const mockSdkGet = jest.fn();
 const mockSdkPost = jest.fn();
-let mockSdkCurrent: unknown = {};
+const mockSdkDriver = { get: mockSdkGet, post: mockSdkPost };
+let mockSdkCurrent: typeof mockSdkDriver | null = mockSdkDriver;
 
 jest.mock('./sdk', () => ({
 	__esModule: true,
@@ -125,19 +126,19 @@ describe('registerPushToken', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockSdkPost.mockResolvedValue(undefined);
-		mockSdkCurrent = {};
+		mockSdkCurrent = mockSdkDriver;
 	});
 
 	it('does not post when SDK is not initialized, and a later call after init posts', async () => {
 		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
-		mockSdkCurrent = undefined;
+		mockSdkCurrent = null;
 
 		await registerPushToken();
 		expect(mockSdkPost).not.toHaveBeenCalled();
 
-		mockSdkCurrent = {};
+		mockSdkCurrent = mockSdkDriver;
 		await registerPushToken();
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 	});

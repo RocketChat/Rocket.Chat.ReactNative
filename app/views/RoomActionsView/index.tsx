@@ -38,7 +38,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import Touch from '../../containers/Touch';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
-import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
+import { isE2ERoomType } from '../../lib/constants/keys';
 import { themes } from '../../lib/constants/colors';
 import { getPermalinkChannel } from '../../lib/methods/getPermalinks';
 import {
@@ -851,7 +851,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			hasPermission = canToggleEncryption;
 		}
 
-		if (E2E_ROOM_TYPES[room.t]) {
+		if (isE2ERoomType(room.t)) {
 			return (
 				<List.Section>
 					<List.Separator />

@@ -1,4 +1,6 @@
-const translationLanguages: Record<string, string> = {
+import { hasOwnKey } from '../methods/helpers/hasOwnKey';
+
+const translationLanguages = {
 	af: 'Afrikaans',
 	ar: 'Arabic',
 	az: 'Azerbaijani',
@@ -200,6 +202,9 @@ const translationLanguages: Record<string, string> = {
 	yi: 'Yiddish',
 	yo: 'Yoruba',
 	yua: 'Yucatec Maya'
-};
+} satisfies Record<string, string>;
+
+export const isTranslationLanguage = (language: string): language is keyof typeof translationLanguages =>
+	hasOwnKey(translationLanguages, language);
 
 export default translationLanguages;

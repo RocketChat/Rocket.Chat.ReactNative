@@ -26,12 +26,12 @@ export const MAX_HEIGHT = 200;
 
 export const NO_CANNED_RESPONSES = 'no-canned-responses';
 
-export const MARKDOWN_STYLES: Record<TMarkdownStyle, string> = {
+export const MARKDOWN_STYLES = {
 	bold: '*',
 	italic: '_',
 	strike: '~',
 	code: '`',
 	'code-block': '```'
-};
+} satisfies Record<TMarkdownStyle, string>;
 
 export const COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH = 30;

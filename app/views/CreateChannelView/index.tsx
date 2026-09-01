@@ -49,7 +49,7 @@ export interface IFormData {
 }
 
 const CreateChannelView = () => {
-	const schema = yup.object().shape({
+	const schema = yup.object({
 		channelName: yup.string().trim().required(I18n.t('Channel_name_required'))
 	});
 

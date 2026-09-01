@@ -34,4 +34,4 @@ export const getSubscriptionSearchClause = (searchText: string): Q.Or => {
 	);
 };
 
-export const sanitizer = (r: object): object => r;
+export const sanitizer = <T>(r: T): T => r;

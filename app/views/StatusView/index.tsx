@@ -28,7 +28,7 @@ import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 import { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 import FooterComponent from './FooterComponent';
 
-const validationSchema = yup.object().shape({
+const validationSchema = yup.object({
 	statusText: yup
 		.string()
 		.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))

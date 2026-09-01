@@ -62,16 +62,12 @@ const LanguageView = () => {
 	const changeLanguage = async (language: string) => {
 		logEvent(events.LANG_SET_LANGUAGE);
 
-		const params: { language?: string } = {};
-
-		// language
-		if (languageDefault !== language) {
-			params.language = language;
-		}
+		const changedLanguage = languageDefault === language ? undefined : language;
+		const params = changedLanguage ? { language: changedLanguage } : {};
 
 		try {
 			await saveUserPreferences(params);
-			dispatch(setUser({ language: params.language }));
+			dispatch(setUser({ language: changedLanguage }));
 
 			const serversDB = database.servers;
 			const usersCollection = serversDB.get('users');
@@ -79,7 +75,7 @@ const LanguageView = () => {
 				try {
 					const userRecord = await usersCollection.find(id);
 					await userRecord.update(record => {
-						record.language = params.language;
+						record.language = changedLanguage;
 					});
 				} catch (e) {
 					logEvent(events.LANG_SET_LANGUAGE_F);
