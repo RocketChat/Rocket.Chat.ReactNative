@@ -291,19 +291,20 @@ export const useMessageId = (): TAnyMessageModel['id'] => useMessageField(item =
 
 export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(item => item.replies);
 
-const canAutoTranslateMessage = (
+const autoTranslateLanguageFor = (
 	item: TAnyMessageModel,
 	username: string | undefined,
 	autoTranslateRoom: boolean | undefined,
 	autoTranslateLanguage: string | undefined
-): boolean => !!(autoTranslateRoom && autoTranslateLanguage && item.autoTranslate && item.u?.username !== username);
+): string | undefined =>
+	autoTranslateRoom && autoTranslateLanguage && item.autoTranslate && item.u?.username !== username
+		? autoTranslateLanguage
+		: undefined;
 
 export const useTranslateLanguage = (): string | undefined => {
 	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
 	const user = useMessageUser();
-	return useMessageStore(s =>
-		canAutoTranslateMessage(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage) ? autoTranslateLanguage : undefined
-	);
+	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage));
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
@@ -313,8 +314,9 @@ export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTran
 		useShallow(s => {
 			let messageText = s.item.msg;
 			let isTranslated = false;
-			if (canAutoTranslateMessage(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage)) {
-				const translated = getMessageTranslation(s.item, autoTranslateLanguage as string);
+			const language = autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage);
+			if (language) {
+				const translated = getMessageTranslation(s.item, language);
 				isTranslated = !!translated;
 				messageText = translated || messageText;
 			}
