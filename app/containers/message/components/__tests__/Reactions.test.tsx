@@ -125,3 +125,29 @@ it('renders nothing when neither a reaction handler nor a reaction initializer w
 	expect(queryByTestId('message-reaction-👍')).toBeNull();
 	expect(queryByTestId('message-add-reaction')).toBeNull();
 });
+
+it('renders the reaction chips but no add-reaction button when only a reaction handler was supplied', () => {
+	const item = buildItem([{ _id: '1', emoji: '👍', usernames: ['john'], names: [] }]);
+
+	const { getByTestId, queryByTestId } = render(
+		<MessageProviders item={item} room={{ handlers: { onReactionPress: jest.fn() } }}>
+			<Reactions />
+		</MessageProviders>
+	);
+
+	expect(getByTestId('message-reaction-👍')).toBeTruthy();
+	expect(queryByTestId('message-add-reaction')).toBeNull();
+});
+
+it('renders the add-reaction button but no chips when only a reaction initializer was supplied', () => {
+	const item = buildItem([{ _id: '1', emoji: '👍', usernames: ['john'], names: [] }]);
+
+	const { getByTestId, queryByTestId } = render(
+		<MessageProviders item={item} room={{ reactionInit: jest.fn(), handlers: {} }}>
+			<Reactions />
+		</MessageProviders>
+	);
+
+	expect(queryByTestId('message-reaction-👍')).toBeNull();
+	expect(getByTestId('message-add-reaction')).toBeTruthy();
+});

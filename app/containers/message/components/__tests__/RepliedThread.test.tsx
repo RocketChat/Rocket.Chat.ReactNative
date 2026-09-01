@@ -88,4 +88,12 @@ describe('RepliedThread', () => {
 
 		expect(getByTestId('message-thread-replied-on-Thread')).toBeTruthy();
 	});
+
+	test('falls back to a generic thread header when the fetch rejects', async () => {
+		const fetchThreadName = jest.fn().mockRejectedValue(new Error('offline'));
+		const item = buildItem({ tmsg: undefined });
+		const { getByTestId } = renderRepliedThread(item, fetchThreadName);
+
+		await waitFor(() => expect(getByTestId('message-thread-replied-on-Thread')).toBeTruthy());
+	});
 });

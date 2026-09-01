@@ -24,11 +24,17 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 			return;
 		}
 		let ignore = false;
-		fetchThreadName(tmid, id).then(threadName => {
-			if (!ignore) {
-				setFetchedName(threadName ?? '');
-			}
-		});
+		fetchThreadName(tmid, id)
+			.then(threadName => {
+				if (!ignore) {
+					setFetchedName(threadName ?? '');
+				}
+			})
+			.catch(() => {
+				if (!ignore) {
+					setFetchedName('');
+				}
+			});
 		return () => {
 			ignore = true;
 		};
