@@ -20,17 +20,15 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	const [fetchedName, setFetchedName] = useState<string | undefined>();
 
 	useEffect(() => {
-		if (displayMsg || !tmid) {
+		if (displayMsg || !tmid || !fetchThreadName) {
 			return;
 		}
 		let ignore = false;
-		const fetch = async () => {
-			const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
+		fetchThreadName(tmid, id).then(threadName => {
 			if (!ignore) {
-				setFetchedName(threadName);
+				setFetchedName(threadName ?? '');
 			}
-		};
-		fetch();
+		});
 		return () => {
 			ignore = true;
 		};
@@ -40,11 +38,13 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 		return null;
 	}
 
-	const msg = displayMsg || fetchedName;
+	const isFetchingName = !!fetchThreadName && !displayMsg && fetchedName === undefined;
 
-	if (!msg) {
+	if (isFetchingName) {
 		return null;
 	}
+
+	const msg = displayMsg || fetchedName || I18n.t('Thread');
 
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${msg}`}>

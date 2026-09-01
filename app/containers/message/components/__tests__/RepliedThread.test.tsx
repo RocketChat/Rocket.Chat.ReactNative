@@ -81,4 +81,11 @@ describe('RepliedThread', () => {
 
 		expect(getByTestId('message-thread-replied-on-second reply')).toBeTruthy();
 	});
+
+	test('falls back to a generic thread header when no fetchThreadName handler was supplied', () => {
+		const item = buildItem({ tmsg: undefined });
+		const { getByTestId } = renderRepliedThread(item);
+
+		expect(getByTestId('message-thread-replied-on-Thread')).toBeTruthy();
+	});
 });
