@@ -182,7 +182,7 @@ describe('getThreadName', () => {
 	it('creates the thread once when two callers race for the same tmid', async () => {
 		const storedThreadIds = new Set<string>();
 		let writeQueue: Promise<unknown> = Promise.resolve();
-		const racingCollection = {
+		const threadsCollection = {
 			schema: {},
 			prepareCreate: jest.fn((cb: (t: any) => void) => {
 				const raw: any = {};
@@ -194,12 +194,11 @@ describe('getThreadName', () => {
 						return raw;
 					}
 				});
-				return { id: raw.id };
+				return { id: raw.id, table: 'threads' };
 			})
 		};
 		(database as any).active = {
-			get: jest.fn(() => racingCollection),
-			// watermelon serializes writers, so the second caller runs after the first commits
+			get: jest.fn(() => threadsCollection),
 			write: jest.fn((fn: () => Promise<void>) => {
 				const run = writeQueue.then(fn);
 				writeQueue = run.catch(() => {});
@@ -207,7 +206,7 @@ describe('getThreadName', () => {
 			}),
 			batch: jest.fn((...records: any[]) => {
 				records.forEach(record => {
-					if (!record?.id) return;
+					if (record?.table !== 'threads') return;
 					if (storedThreadIds.has(record.id)) {
 						throw new Error('UNIQUE constraint failed: threads.id');
 					}
@@ -217,7 +216,8 @@ describe('getThreadName', () => {
 			})
 		};
 
-		mockedGetMessageById.mockImplementation((id: string | null) => Promise.resolve(buildMessageRecord(id as string) as any));
+		const messageRecords = ['MESSAGE_A', 'MESSAGE_B'].map(buildMessageRecord);
+		mockedGetMessageById.mockImplementation(id => Promise.resolve(messageRecords.find(message => message.id === id) as any));
 		mockedGetThreadById.mockImplementation(() =>
 			Promise.resolve(storedThreadIds.has('THREAD_ID') ? ({ msg: 'thread name' } as any) : null)
 		);
@@ -227,6 +227,7 @@ describe('getThreadName', () => {
 		await Promise.all([getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_A'), getThreadName('ROOM_ID', 'THREAD_ID', 'MESSAGE_B')]);
 
 		expect(mockedLog).not.toHaveBeenCalled();
-		expect(racingCollection.prepareCreate).toHaveBeenCalledTimes(1);
+		expect(threadsCollection.prepareCreate).toHaveBeenCalledTimes(1);
+		expect(messageRecords.map(message => message.tmsg)).toEqual(['thread name', 'thread name']);
 	});
 });
