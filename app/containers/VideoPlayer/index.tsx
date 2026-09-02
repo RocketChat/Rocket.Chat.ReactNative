@@ -55,7 +55,14 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 
 	return (
 		<View style={[styles.container, { paddingBottom: bottom }]}>
-			<VideoView player={player} style={styles.container} contentFit='contain' nativeControls allowsFullscreen allowsPictureInPicture />
+			<VideoView
+				player={player}
+				style={styles.container}
+				contentFit='contain'
+				nativeControls
+				allowsFullscreen
+				allowsPictureInPicture
+			/>
 		</View>
 	);
 };
