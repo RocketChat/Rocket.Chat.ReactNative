@@ -335,11 +335,11 @@ export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): Room
 	const { rid } = screenParams;
 
 	useEffect(() => {
-		setStore(acquireRoomStore(screenParams, store));
+		setStore(current => acquireRoomStore(screenParams, current));
 		return () => {
 			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
 		};
-	}, [rid, screenParams, store]);
+	}, [rid, screenParams]);
 
 	return store;
 };
