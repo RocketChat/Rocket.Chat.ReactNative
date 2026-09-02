@@ -57,11 +57,7 @@ interface IShareViewProps {
 	navigation: NativeStackNavigationProp<InsideStackParamList, 'ShareView'>;
 	route: RouteProp<InsideStackParamList, 'ShareView'>;
 	theme: TSupportedThemes;
-	user: {
-		id: string;
-		username: string;
-		token: string;
-	};
+	user: IUser;
 	server: string;
 	serverVersion?: string;
 	FileUpload_MediaTypeWhiteList?: string;

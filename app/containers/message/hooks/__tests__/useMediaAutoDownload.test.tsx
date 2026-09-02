@@ -49,19 +49,6 @@ jest.mock('../../../../lib/methods/helpers/emitter', () => {
 	};
 });
 
-// The persisted/localFile logic is covered by useFile.test; here useFile is a plain
-// state cell so setCurrentFile merges are observable through the returned currentFile.
-jest.mock('../useFile', () => {
-	const { useState } = require('react');
-	return {
-		useFile: (file: IAttachment) => {
-			const [current, setCurrent] = useState(file);
-			const manage = (partial: Partial<IAttachment>) => setCurrent((prev: IAttachment) => ({ ...prev, ...partial }));
-			return [current, manage];
-		}
-	};
-});
-
 const mockDownloadMediaFile = downloadMediaFile as jest.Mock;
 const mockGetMediaCache = getMediaCache as jest.Mock;
 const mockIsDownloadActive = isDownloadActive as jest.Mock;
@@ -106,7 +93,14 @@ const renderMediaHook = ({
 			</MessageRoomProvider>
 		</Provider>
 	);
-	return renderHook(() => useMediaAutoDownload({ file, author, showAttachment }), { wrapper });
+	return renderHook(
+		(props: { file: IAttachment; author?: IUserMessage; showAttachment?: (file: IAttachment) => void }) =>
+			useMediaAutoDownload(props),
+		{
+			wrapper,
+			initialProps: { file, author, showAttachment }
+		}
+	);
 };
 
 describe('useMediaAutoDownload', () => {
@@ -174,6 +168,17 @@ describe('useMediaAutoDownload', () => {
 			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
 			const { result } = renderMediaHook({ file: { image_url: '/img' } });
 			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+			expect(result.current.currentFile.title_link).toBe('file://cache');
+		});
+
+		it('keeps the local title_link when the file prop changes back to the remote url', async () => {
+			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
+			const { result, rerender } = renderMediaHook({ file: { image_url: '/img', title: 'original.png' } });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+
+			rerender({ file: { image_url: '/img', title: 'renamed.png', title_link: '/remote' } });
+
+			expect(result.current.currentFile.title).toBe('renamed.png');
 			expect(result.current.currentFile.title_link).toBe('file://cache');
 		});
 

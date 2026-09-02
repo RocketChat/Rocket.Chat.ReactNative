@@ -1,0 +1,55 @@
+appId: ${APP_ID}
+name: Messages received while device is offline
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - setAirplaneMode: disabled
+  - stopApp: ${APP_ID}
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-3
+  - android-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.sender = output.utils.createUser()}
+- evalScript: ${output.tag = 'offline-' + output.random(6)}
+- evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-baseline')}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+      CLEAR_STATE: true
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.sender.username}
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-${output.tag}-baseline'
+    timeout: 60000
+
+# should deliver every message that arrived while the device had no network
+- setAirplaneMode: enabled
+- evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-1')}
+- evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-2')}
+- evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, '@' + output.user.username, output.tag + '-3')}
+- evalScript: ${output.utils.sleep(5000)}
+- assertNotVisible:
+    id: 'message-content-${output.tag}-1'
+- assertNotVisible:
+    id: 'message-content-${output.tag}-2'
+- assertNotVisible:
+    id: 'message-content-${output.tag}-3'
+- setAirplaneMode: disabled
+
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-${output.tag}-3'
+    timeout: 120000
+- assertVisible:
+    id: 'message-content-${output.tag}-1'
+- assertVisible:
+    id: 'message-content-${output.tag}-2'
