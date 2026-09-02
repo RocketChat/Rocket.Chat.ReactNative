@@ -57,13 +57,16 @@ export const MessageActionStoreContext = createContext<TMessageActionStore | nul
 // that falls back here reads `action`. Fixed at null (no `set` param).
 const inertStore = createStore<Pick<MessageActionState, 'action'>>()(() => ({ action: null }));
 
-const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): T => {
+export const useMessageActionStoreApi = (): TMessageActionStore => {
 	const store = useContext(MessageActionStoreContext);
 	if (!store) {
 		throw new Error('Message action hooks must be used within a MessageActionProvider');
 	}
-	return useStore(store, selector);
+	return store;
 };
+
+const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): T =>
+	useStore(useMessageActionStoreApi(), selector);
 
 // `action` is a single ref replaced wholesale on every `set` — no useShallow needed.
 export const useMessageAction = (): TMessageActionState => useMessageActionStore(s => s.action);
