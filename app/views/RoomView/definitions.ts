@@ -142,6 +142,8 @@ export interface IRoomActions {
 // The screen's own state, carried by RoomScreenContext — see that module for why it is per-screen.
 export interface IRoomScreenContextValue {
 	loading: boolean;
+	failed: boolean;
+	retry: () => void;
 	lastSeen: IRoomViewState['lastSeen'];
 	clearLastSeen: () => void;
 }

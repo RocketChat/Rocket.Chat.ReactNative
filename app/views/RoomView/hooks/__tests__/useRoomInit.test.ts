@@ -247,4 +247,41 @@ describe('useRoomInit', () => {
 
 		expect(result.current.loading).toBe(true);
 	});
+
+	it('reports failed once a failed run settles', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		expect(result.current.failed).toBe(false);
+
+		await resolveInitWith(0, { status: 'failed' });
+
+		expect(result.current.failed).toBe(true);
+		expect(result.current.loading).toBe(false);
+	});
+
+	it('clears failed and runs init again on retry', async () => {
+		const { roomStore, resolveInitWith, resolveInit } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'failed' });
+		expect(result.current.failed).toBe(true);
+
+		await act(async () => {
+			result.current.retry();
+		});
+		expect(result.current.failed).toBe(false);
+
+		await resolveInit(1);
+		expect(result.current.failed).toBe(false);
+	});
+
+	it('does not report failed for a skipped run', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'skipped' });
+
+		expect(result.current.failed).toBe(false);
+	});
 });

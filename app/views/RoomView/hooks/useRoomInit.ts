@@ -17,6 +17,12 @@ interface IUseRoomInitParams {
 	onQuoteInit: (messageId: string) => void;
 }
 
+interface IRunInitSetters {
+	setSettled: (settled: boolean) => void;
+	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void;
+	setFailed: (failed: boolean) => void;
+}
+
 // Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
 // early-return and on failure alike, so the finally is the only place that settles it; awaiting it is
 // what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
@@ -29,8 +35,7 @@ const runInit = async (
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
 	controller: AbortController,
-	setSettled: (settled: boolean) => void,
-	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void
+	{ setSettled, setLastSeen, setFailed }: IRunInitSetters
 ): Promise<void> => {
 	setSettled(false);
 	try {
@@ -39,12 +44,18 @@ const runInit = async (
 			onThreadMessagesLoaded: () => onLoadedRef.current?.(),
 			signal: controller.signal
 		});
-		// Only a loaded run carries an anchor; `failed` and `skipped` leave the current one alone.
-		if (!controller.signal.aborted && result.status === 'loaded') {
-			setLastSeen(result.lastSeen);
+		if (!controller.signal.aborted) {
+			// Only a loaded run carries an anchor; `failed` and `skipped` leave the current one alone.
+			if (result.status === 'loaded') {
+				setLastSeen(result.lastSeen);
+			}
+			setFailed(result.status === 'failed');
 		}
 	} catch (e) {
 		log(e);
+		if (!controller.signal.aborted) {
+			setFailed(true);
+		}
 	} finally {
 		if (!controller.signal.aborted) {
 			setSettled(true);
@@ -72,6 +83,7 @@ export function useRoomInit({
 	// `settled` tracks the init run, and only the init run. A screen that has no rid or no auth never
 	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
 	const [settled, setSettled] = useState(false);
+	const [failed, setFailed] = useState(false);
 	const hasInitWork = !!rid && isAuthenticated;
 	const loading = hasInitWork && !settled;
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
@@ -82,7 +94,8 @@ export function useRoomInit({
 		initControllerRef.current?.abort();
 		const controller = new AbortController();
 		initControllerRef.current = controller;
-		return runInit(roomStore, tmid, onLoadedRef, controller, setSettled, setLastSeen);
+		setFailed(false);
+		return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen, setFailed });
 	}, [roomStore, tmid, onLoadedRef]);
 
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
@@ -123,5 +136,5 @@ export function useRoomInit({
 		prevStatusRef.current = roomUpdate.status;
 	}, [roomUpdate.status, init]);
 
-	return { loading, lastSeen, clearLastSeen };
+	return { loading, failed: failed && !loading, retry: init, lastSeen, clearLastSeen };
 }

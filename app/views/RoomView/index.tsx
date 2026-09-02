@@ -32,6 +32,7 @@ import { RoomFooter } from './components/RoomFooter/RoomFooter';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { isRoomFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
+import { RoomLoadFailed } from './components/RoomLoadFailed';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 import { useRoomStoreForScreen } from './stores/RoomStore';
 import { RoomStoreContext } from './stores/RoomStoreContext';
@@ -232,6 +233,10 @@ const RoomView = (props: IRoomViewProps) => {
 		if (showE2EEDisabledRoom) {
 			return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
 		}
+	}
+
+	if (roomScreen.failed) {
+		return <RoomLoadFailed onRetry={roomScreen.retry} />;
 	}
 
 	let bannerClosed;
