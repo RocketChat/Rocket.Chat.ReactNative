@@ -10,11 +10,12 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { tsToMs } from '../../../../lib/dayjs';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
 import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
+import { findNewerLoaderAbove } from '../../services/getLocalAnchor';
 import { type AnchorMessage } from '../../definitions';
 
 const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
@@ -88,23 +89,14 @@ export const useMessages = ({
 			// invocation is stale and must not mutate count / highTs for the new window.
 			const sub = subscription.current;
 
-			// Read the Newer Loader closest to the Live Tail directly (highest ts above the bound) so non-loader rows can't crowd the boundary loader out of the fetched set.
-			const rows = (await database.active
-				.get('messages')
-				.query(
-					Q.where('rid', rid),
-					Q.where('t', MessageTypeLoad.NEXT_CHUNK),
-					Q.where('ts', Q.gt(currentHighTs)),
-					Q.sortBy('ts', Q.desc),
-					Q.take(1)
-				)
-				.fetch()) as TAnyMessageModel[];
+			// Read the Newer Loader closest to the Live Tail directly so non-loader rows can't crowd the boundary loader out of the fetched set.
+			const loader = await findNewerLoaderAbove(rid, currentHighTs, 'closestToLiveTail');
 
 			if (subscription.current !== sub) {
 				return;
 			}
 
-			const next = raiseOrRelease(rows as unknown as AnchorMessage[], currentHighTs);
+			const next = raiseOrRelease(loader ? [loader as unknown as AnchorMessage] : [], currentHighTs);
 
 			if (next === null) {
 				// Gap closed → release to a Live Window. First grow count by the number of messages now

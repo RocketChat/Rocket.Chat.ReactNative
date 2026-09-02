@@ -657,8 +657,8 @@ describe('useMessages', () => {
 		const takeBeforeRaise = findTakeClause(queryCalls[queryCalls.length - 1])?.count;
 		expect(takeBeforeRaise).toBe(QUERY_SIZE);
 
-		// The targeted read above the bound reveals the next batch plus a NEW Newer Loader at ts 1900.
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), newerLoaderAt('loader-H2', 1900)];
+		// The targeted read above the bound reveals a NEW Newer Loader at ts 1900.
+		fetchRows = [newerLoaderAt('loader-H2', 1900)];
 
 		// loadNextMessages REMOVED the boundary loader: re-emit WITHOUT it (still under the old bound).
 		emitRows([msg({ id: 'm1', ts: at(1000) })]);
@@ -683,8 +683,8 @@ describe('useMessages', () => {
 			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
 		});
 
-		// The targeted read reveals the next batch but NO new Newer Loader: the Gap to the Live Tail closed.
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), msg({ id: 'm3', ts: at(1800) })];
+		// The targeted read finds NO Newer Loader above the bound: the Gap to the Live Tail closed.
+		fetchRows = [];
 
 		// loadNextMessages consumed the boundary loader: re-emit WITHOUT it.
 		emitRows([msg({ id: 'm1', ts: at(1000) })]);
@@ -712,7 +712,7 @@ describe('useMessages', () => {
 		const anchoredTake = findTakeClause(queryCalls[queryCalls.length - 1])?.count ?? 0;
 
 		// Gap closed (no Newer Loader above the bound), but 120 messages sit above it (the cached island).
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), msg({ id: 'm3', ts: at(1800) })];
+		fetchRows = [];
 		fetchCountValue = 120;
 
 		// loadNextMessages consumed the boundary loader: re-emit without it.
@@ -739,8 +739,8 @@ describe('useMessages', () => {
 			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
 		});
 
-		// The targeted read still shows a Newer Loader above the bound — the Gap is NOT closed.
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), newerLoaderAt('loader-H2', 1900)];
+		// The targeted read still shows a Newer Loader above the bound: the Gap is NOT closed.
+		fetchRows = [newerLoaderAt('loader-H2', 1900)];
 
 		// Consume the boundary loader.
 		emitRows([msg({ id: 'm1', ts: at(1000) })]);
