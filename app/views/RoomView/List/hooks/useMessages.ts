@@ -16,7 +16,6 @@ import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
 import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
 import { findNewerLoaderAbove } from '../../services/getLocalAnchor';
-import { type AnchorMessage } from '../../definitions';
 
 const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
 	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
@@ -75,7 +74,7 @@ export const useMessages = ({
 	const raiseOrReleaseAnchor = useCallback(
 		async (observed: TAnyMessageModel[], currentHighTs: number) => {
 			const wasPresent = boundaryLoaderPresent.current;
-			const isPresent = (observed as unknown as AnchorMessage[]).some(m => isNewerLoader(m) && tsToMs(m.ts) === currentHighTs);
+			const isPresent = observed.some(m => isNewerLoader(m) && tsToMs(m.ts) === currentHighTs);
 			boundaryLoaderPresent.current = isPresent;
 
 			// Only a present → absent transition is a consume. Anything else (still present, or never
@@ -96,7 +95,7 @@ export const useMessages = ({
 				return;
 			}
 
-			const next = raiseOrRelease(loader ? [loader as unknown as AnchorMessage] : [], currentHighTs);
+			const next = raiseOrRelease(loader ? [loader] : [], currentHighTs);
 
 			if (next === null) {
 				// Gap closed → release to a Live Window. First grow count by the number of messages now

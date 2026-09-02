@@ -209,7 +209,7 @@ export type TGetMessageInfoResult = {
 export interface AnchorMessage {
 	id: string;
 	t?: string | null;
-	ts: Date | number;
+	ts: Date | number | string;
 }
 
 export interface IJumpTarget {
