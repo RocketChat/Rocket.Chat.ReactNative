@@ -164,7 +164,6 @@ const RoomView = (props: IRoomViewProps) => {
 		hideActionSheet,
 		rid,
 		tmid,
-		roomUserId,
 		onThreadPress,
 		messageComposerRef,
 		messageActionsRef,
@@ -266,6 +265,7 @@ const RoomView = (props: IRoomViewProps) => {
 						) : null}
 						<A11yGateProvider>
 							<RoomMessageProvider
+								roomActions={{ onThreadPress }}
 								jumpToMessage={jumpToMessageByUrl}
 								closeEmojiAndAction={handleCloseEmoji}
 								reactionInit={onReactionInit}

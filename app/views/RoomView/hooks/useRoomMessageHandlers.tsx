@@ -23,17 +23,16 @@ import {
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
-import { type IRoomViewProps } from '../definitions';
+import { type IRoomActions, type IRoomViewProps } from '../definitions';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
-import { pushThreadRoom } from '../services/pushThreadRoom';
 import { sendRoomMessage } from '../services/sendRoomMessage';
 import { useReactionActions } from './useReactionActions';
 
-export function useRoomMessageHandlers(tmid?: string): IUseRoomMessageHandlersResult {
+export function useRoomMessageHandlers({ tmid, onThreadPress }: IRoomActions & { tmid?: string }): IUseRoomMessageHandlersResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
@@ -44,7 +43,6 @@ export function useRoomMessageHandlers(tmid?: string): IUseRoomMessageHandlersRe
 	const { clearLastSeen } = useRoomScreen();
 	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);
-	const roomUserId = useRoomStore(s => s.roomUserId);
 
 	if (!messageActionStore) {
 		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
@@ -62,9 +60,6 @@ export function useRoomMessageHandlers(tmid?: string): IUseRoomMessageHandlersRe
 			});
 		}
 	};
-
-	// No orchestrator-owned cancelJumpToMessageRef to self-source here, so the loading overlay renders without a cancel button.
-	const onThreadPress = (item: TAnyMessageModel) => pushThreadRoom({ rid, item, roomUserId, navigation });
 
 	const navToRoomInfo = (navParam: IRoomInfoParam) => {
 		logEvent(events[`ROOM_GO_${navParam.t === SubscriptionType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);

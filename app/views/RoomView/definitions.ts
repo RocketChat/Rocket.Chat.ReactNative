@@ -133,6 +133,10 @@ export interface IListContainerProps {
 	serverVersion: string | null;
 }
 
+export interface IRoomActions {
+	onThreadPress: (item: TAnyMessageModel) => void;
+}
+
 // The screen's own state, carried by RoomScreenContext — see that module for why it is per-screen.
 export interface IRoomScreenContextValue {
 	loading: boolean;
@@ -247,7 +251,6 @@ export interface IUseMessageActionsParams {
 	hideActionSheet: () => void;
 	rid?: string;
 	tmid?: string;
-	roomUserId?: string | null;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
 	messageActionsRef: RefObject<IMessageActions | null>;

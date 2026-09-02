@@ -56,6 +56,7 @@ jest.mock('../../../../lib/methods/getThreadName', () => ({
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 const mockDispatch = jest.fn();
 const mockShowActionSheet = jest.fn();
+const mockOnThreadPress = jest.fn();
 const mockHideActionSheet = jest.fn();
 
 const mockToggleFollowMessage = toggleFollowMessage as jest.Mock;
@@ -92,7 +93,7 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	const messageActionStore = createMessageActionStore();
 	const clearLastSeen = jest.fn();
 
-	const { result } = renderHook(() => useRoomMessageHandlers(tmid), {
+	const { result } = renderHook(() => useRoomMessageHandlers({ tmid, onThreadPress: mockOnThreadPress }), {
 		wrapper: ({ children }) => (
 			<RoomStoreContext.Provider value={roomStore}>
 				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen }}>
@@ -105,7 +106,7 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	return { result, roomStore, messageActionStore, clearLastSeen };
 };
 
-const renderWithoutStores = () => renderHook(() => useRoomMessageHandlers());
+const renderWithoutStores = () => renderHook(() => useRoomMessageHandlers({ onThreadPress: mockOnThreadPress }));
 
 describe('useRoomMessageHandlers', () => {
 	beforeEach(() => {
