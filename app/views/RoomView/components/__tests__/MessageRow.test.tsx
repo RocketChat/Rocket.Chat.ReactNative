@@ -1,53 +1,53 @@
 import { InteractionManager } from 'react-native';
 import { act, render } from '@testing-library/react-native';
 
-import database from '../../../lib/database';
-import { warmRoomStore } from '../stores/RoomStore';
-import { RoomScreenContext } from '../stores/RoomScreenContext';
-import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
-import { mountAndReleaseRoomStore } from '../../../lib/testUtils/roomStoreLifecycle';
-import { MessageRow } from './MessageRow';
+import database from '../../../../lib/database';
+import { warmRoomStore } from '../../stores/RoomStore';
+import { RoomScreenContext } from '../../stores/RoomScreenContext';
+import { RoomStoreContext } from '../../../../lib/store/RoomStoreContext';
+import { mountAndReleaseRoomStore } from '../../../../lib/testUtils/roomStoreLifecycle';
+import { MessageRow } from '../MessageRow';
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services/getMessages', () => ({
+jest.mock('../../services/getMessages', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/loadThreadMessages', () => ({
+jest.mock('../../../../lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/readMessages', () => ({
+jest.mock('../../../../lib/methods/readMessages', () => ({
 	readMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/services/restApi', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({
 	getUserInfo: jest.fn()
 }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('../../../../lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1'),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => true)
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({
+jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
+jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 
 jest.mock('react-redux', () => ({
 	useSelector: jest.fn(() => undefined),
 	useDispatch: () => jest.fn()
 }));
 const mockMessage = jest.fn();
-jest.mock('../../../containers/message', () => ({
+jest.mock('../../../../containers/message', () => ({
 	__esModule: true,
 	default: (props: unknown) => {
 		mockMessage(props);
 		return null;
 	}
 }));
-jest.mock('../LoadMore', () => ({ __esModule: true, default: () => null }));
+jest.mock('../../LoadMore', () => ({ __esModule: true, default: () => null }));
 
 const mockGet = database.active.get as jest.Mock;
 

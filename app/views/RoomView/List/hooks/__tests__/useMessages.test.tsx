@@ -2,20 +2,20 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
-import { ROOM } from '../../../../actions/actionsTypes';
-import { type IRoomHistoryRequest } from '../../../../actions/room';
-import { type RoomType, type TAnyMessageModel } from '../../../../definitions';
-import database from '../../../../lib/database';
-import { getMessageById } from '../../../../lib/database/services/Message';
-import { getThreadById } from '../../../../lib/database/services/Thread';
-import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
-import { readThreads } from '../../../../lib/services/restApi';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
-import { useMessages } from './useMessages';
+import { ROOM } from '../../../../../actions/actionsTypes';
+import { type IRoomHistoryRequest } from '../../../../../actions/room';
+import { type RoomType, type TAnyMessageModel } from '../../../../../definitions';
+import database from '../../../../../lib/database';
+import { getMessageById } from '../../../../../lib/database/services/Message';
+import { getThreadById } from '../../../../../lib/database/services/Thread';
+import { MessageTypeLoad } from '../../../../../lib/constants/messageTypeLoad';
+import { readThreads } from '../../../../../lib/services/restApi';
+import { mockedStore } from '../../../../../reducers/mockedStore';
+import { MAX_AUTO_LOADS, QUERY_SIZE } from '../../constants';
+import { buildVisibleSystemTypesClause } from '../buildVisibleSystemTypesClause';
+import { useMessages } from '../useMessages';
 
-jest.mock('../../../../lib/database', () => ({
+jest.mock('../../../../../lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -24,20 +24,20 @@ jest.mock('../../../../lib/database', () => ({
 	}
 }));
 
-jest.mock('../../../../lib/database/services/Message', () => ({
+jest.mock('../../../../../lib/database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../../../../lib/database/services/Thread', () => ({
+jest.mock('../../../../../lib/database/services/Thread', () => ({
 	getThreadById: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../../../../lib/services/restApi', () => ({
+jest.mock('../../../../../lib/services/restApi', () => ({
 	readThreads: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../../../lib/methods/helpers', () => {
-	const actual = jest.requireActual('../../../../lib/methods/helpers');
+jest.mock('../../../../../lib/methods/helpers', () => {
+	const actual = jest.requireActual('../../../../../lib/methods/helpers');
 	return {
 		...actual,
 		useDebounce: (fn: (...args: unknown[]) => unknown) => Object.assign(fn, { cancel: jest.fn() })

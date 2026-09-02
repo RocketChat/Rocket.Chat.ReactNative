@@ -1,13 +1,13 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useRoomStore, useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
-import { useFooterMessage } from './useFooterMessage';
-import { useRoomFooterState } from './useRoomFooterState';
+import { useAppSelector } from '../../../../../lib/hooks/useAppSelector';
+import { useRoomStore, useRoomWithUpdate } from '../../../../../lib/store/RoomStoreContext';
+import { useFooterMessage } from '../useFooterMessage';
+import { useRoomFooterState } from '../useRoomFooterState';
 
-jest.mock('../../../../lib/hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }));
-jest.mock('../../../../lib/store/RoomStoreContext', () => ({ useRoomStore: jest.fn(), useRoomWithUpdate: jest.fn() }));
-jest.mock('./useFooterMessage', () => ({ useFooterMessage: jest.fn() }));
+jest.mock('../../../../../lib/hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }));
+jest.mock('../../../../../lib/store/RoomStoreContext', () => ({ useRoomStore: jest.fn(), useRoomWithUpdate: jest.fn() }));
+jest.mock('../useFooterMessage', () => ({ useFooterMessage: jest.fn() }));
 
 const mockUseAppSelector = useAppSelector as jest.Mock;
 const mockUseRoomStore = useRoomStore as jest.Mock;

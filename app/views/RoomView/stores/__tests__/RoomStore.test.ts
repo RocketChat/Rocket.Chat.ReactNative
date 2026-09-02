@@ -1,16 +1,16 @@
 import { InteractionManager } from 'react-native';
 import { renderHook } from '@testing-library/react-native';
 
-import database from '../../../lib/database';
-import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
-import { readMessages } from '../../../lib/methods/readMessages';
-import { getUserInfo } from '../../../lib/services/restApi';
-import { isGroupChat } from '../../../lib/methods/helpers';
-import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
-import log from '../../../lib/methods/helpers/log';
-import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
-import getMessages from '../services/getMessages';
-import { warmRoomStore, useRoomStoreByRid, useRoomStoreForScreen } from './RoomStore';
+import database from '../../../../lib/database';
+import { loadThreadMessages } from '../../../../lib/methods/loadThreadMessages';
+import { readMessages } from '../../../../lib/methods/readMessages';
+import { getUserInfo } from '../../../../lib/services/restApi';
+import { isGroupChat } from '../../../../lib/methods/helpers';
+import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
+import log from '../../../../lib/methods/helpers/log';
+import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../../constants';
+import getMessages from '../../services/getMessages';
+import { warmRoomStore, useRoomStoreByRid, useRoomStoreForScreen } from '../RoomStore';
 
 const mockScheduledSweeps: Array<() => void> = [];
 // Simulates a second screen (e.g. room + thread) sharing the same rid-keyed store, driven entirely
@@ -21,32 +21,32 @@ const flushSweeps = () => {
 	pending.forEach(cb => cb());
 };
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services/getMessages', () => ({
+jest.mock('../../services/getMessages', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/loadThreadMessages', () => ({
+jest.mock('../../../../lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/readMessages', () => ({
+jest.mock('../../../../lib/methods/readMessages', () => ({
 	readMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/services/restApi', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({
 	getUserInfo: jest.fn()
 }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('../../../../lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1'),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => true)
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({
+jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
+jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetMessages = getMessages as unknown as jest.Mock;

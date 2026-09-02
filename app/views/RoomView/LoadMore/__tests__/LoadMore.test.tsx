@@ -2,12 +2,12 @@ import { ActivityIndicator } from 'react-native';
 import { Provider } from 'react-redux';
 import { render, screen, userEvent } from '@testing-library/react-native';
 
-import { createMockedStore } from '../../../reducers/mockedStore';
-import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { type MessageType } from '../../../definitions';
-import LoadMore from '.';
+import { createMockedStore } from '../../../../reducers/mockedStore';
+import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { type MessageType } from '../../../../definitions';
+import LoadMore from '..';
 
-jest.unmock('../../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+jest.unmock('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
 
 const renderLoadMore = ({
 	type = MessageTypeLoad.MORE,

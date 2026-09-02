@@ -3,15 +3,15 @@ import path from 'path';
 
 import { transformFileSync } from '@babel/core';
 
-const ROOM_VIEW_DIR = path.resolve(__dirname);
-const REPO_ROOT = path.resolve(__dirname, '../../..');
+const ROOM_VIEW_DIR = path.resolve(__dirname, '..');
+const REPO_ROOT = path.resolve(__dirname, '../../../..');
 
 // A11yGate/MessageA11y* live under containers/message but are part of the RoomView compiler contract.
 // Named individually (not a directory scan) so pre-existing, unrelated files in that folder aren't pulled in.
 const EXTRA_FILES: string[] = [
-	path.resolve(__dirname, '../../containers/message/stores/A11yGate.tsx'),
-	path.resolve(__dirname, '../../containers/message/components/MessageA11yOrder.tsx'),
-	path.resolve(__dirname, '../../containers/message/components/MessageA11yIndex.tsx')
+	path.resolve(__dirname, '../../../containers/message/stores/A11yGate.tsx'),
+	path.resolve(__dirname, '../../../containers/message/components/MessageA11yOrder.tsx'),
+	path.resolve(__dirname, '../../../containers/message/components/MessageA11yIndex.tsx')
 ];
 
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.

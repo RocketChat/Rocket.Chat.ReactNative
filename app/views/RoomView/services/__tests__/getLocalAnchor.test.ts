@@ -1,11 +1,11 @@
 import { Q } from '@nozbe/watermelondb';
 
-import database from '../../../lib/database';
-import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { tsToMs } from '../../../lib/dayjs';
-import getLocalAnchorTs from './getLocalAnchor';
+import database from '../../../../lib/database';
+import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { tsToMs } from '../../../../lib/dayjs';
+import getLocalAnchorTs from '../getLocalAnchor';
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {

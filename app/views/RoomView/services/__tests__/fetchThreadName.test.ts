@@ -1,11 +1,11 @@
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
-import { fetchThreadName } from './fetchThreadName';
+import { getThreadById } from '../../../../lib/database/services/Thread';
+import getThreadName from '../../../../lib/methods/getThreadName';
+import { fetchThreadName } from '../fetchThreadName';
 
-jest.mock('../../../lib/database/services/Thread', () => ({
+jest.mock('../../../../lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
-jest.mock('../../../lib/methods/getThreadName', () => ({
+jest.mock('../../../../lib/methods/getThreadName', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve('Thread title'))
 }));

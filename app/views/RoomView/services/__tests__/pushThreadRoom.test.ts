@@ -1,13 +1,13 @@
-import { sendLoadingEvent } from '../../../containers/Loading';
-import { E2E_MESSAGE_TYPE } from '../../../lib/constants/keys';
-import { SubscriptionType } from '../../../definitions';
-import { fetchThreadName } from './fetchThreadName';
-import { pushThreadRoom } from './pushThreadRoom';
+import { sendLoadingEvent } from '../../../../containers/Loading';
+import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
+import { SubscriptionType } from '../../../../definitions';
+import { fetchThreadName } from '../fetchThreadName';
+import { pushThreadRoom } from '../pushThreadRoom';
 
-jest.mock('../../../containers/Loading', () => ({
+jest.mock('../../../../containers/Loading', () => ({
 	sendLoadingEvent: jest.fn()
 }));
-jest.mock('./fetchThreadName', () => ({
+jest.mock('../fetchThreadName', () => ({
 	fetchThreadName: jest.fn(() => Promise.resolve('Thread title'))
 }));
 

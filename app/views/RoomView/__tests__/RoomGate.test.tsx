@@ -3,42 +3,42 @@ import { render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore as createReduxStore } from 'redux';
 
-import RoomGate from './index';
-import { type IRoomViewProps } from './definitions';
-import { type RoomState } from '../../lib/store/definitions';
-import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { useE2EEStatus } from './hooks/useE2EEStatus';
+import RoomGate from '../index';
+import { type IRoomViewProps } from '../definitions';
+import { type RoomState } from '../../../lib/store/definitions';
+import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
+import { useE2EEStatus } from '../hooks/useE2EEStatus';
 
-jest.mock('./RoomScreen', () => {
+jest.mock('../RoomScreen', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { __esModule: true, default: () => createElement(RNView, { testID: 'room-screen' }) };
 });
-jest.mock('./components/InvitedRoomScreen', () => {
+jest.mock('../components/InvitedRoomScreen', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { InvitedRoomScreen: () => createElement(RNView, { testID: 'invited-screen' }) };
 });
-jest.mock('./components/MissingRoomE2EEKey', () => {
+jest.mock('../components/MissingRoomE2EEKey', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { MissingRoomE2EEKey: () => createElement(RNView, { testID: 'missing-key-screen' }) };
 });
-jest.mock('./components/EncryptedRoom', () => {
+jest.mock('../components/EncryptedRoom', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
-jest.mock('./hooks/useHeader', () => ({ useHeader: jest.fn() }));
-jest.mock('./hooks/useE2EEStatus', () => ({
+jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
+jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false }))
 }));
-jest.mock('../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
+jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
+jest.mock('../../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
 
 const room: { current: RoomState['room'] } = { current: { rid: 'rid-1', t: 'c' } };
 
-jest.mock('./stores/RoomStore', () => {
+jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
 	const store = createStore(() => ({ room: {}, roomUpdate: {} }));
 	return {

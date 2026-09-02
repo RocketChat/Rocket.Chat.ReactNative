@@ -1,29 +1,29 @@
-import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
-import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
-import { type IRoomViewState } from '../definitions';
-import { warmRoomStore } from './RoomStore';
+import { joinRoom as joinRoomService } from '../../../../lib/services/restApi';
+import { takeInquiry, takeResume } from '../../../../ee/omnichannel/lib';
+import { type IRoomViewState } from '../../definitions';
+import { warmRoomStore } from '../RoomStore';
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('../../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
 	events: {}
 }));
-jest.mock('../../../lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
-jest.mock('../../../ee/omnichannel/lib', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
+jest.mock('../../../../ee/omnichannel/lib', () => ({
 	takeInquiry: jest.fn(() => Promise.resolve()),
 	takeResume: jest.fn(() => Promise.resolve())
 }));

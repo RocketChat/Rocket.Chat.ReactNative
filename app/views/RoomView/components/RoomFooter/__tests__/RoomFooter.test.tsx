@@ -5,20 +5,20 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { createStore as createZustandStore } from 'zustand';
 
-import { type RoomState, type RoomStore, type TRoomInitResult } from '../../../../lib/store/definitions';
-import { RoomScreenContext } from '../../stores/RoomScreenContext';
-import { RoomStoreContext } from '../../../../lib/store/RoomStoreContext';
-import { RoomFooter } from './RoomFooter';
+import { type RoomState, type RoomStore, type TRoomInitResult } from '../../../../../lib/store/definitions';
+import { RoomScreenContext } from '../../../stores/RoomScreenContext';
+import { RoomStoreContext } from '../../../../../lib/store/RoomStoreContext';
+import { RoomFooter } from '../RoomFooter';
 
 // I18n identity: banner assertions match on the translation key itself.
-jest.mock('../../../../i18n', () => ({
+jest.mock('../../../../../i18n', () => ({
 	__esModule: true,
 	default: { t: (key: string) => key }
 }));
 
 // Mirrors production Touch semantics: it derives enabled from `disabled` (the caller `enabled` is
 // overridden), surfaced as an ancestor accessibilityState so RNTL's ancestor traversal can query it.
-jest.mock('../../../../containers/Touch', () => {
+jest.mock('../../../../../containers/Touch', () => {
 	const { createElement } = require('react');
 	const { View } = require('react-native');
 	return {
@@ -29,7 +29,7 @@ jest.mock('../../../../containers/Touch', () => {
 });
 
 // The composer subtree is heavy and out of scope; a sentinel proves the composer branch.
-jest.mock('../../../../containers/MessageComposer', () => {
+jest.mock('../../../../../containers/MessageComposer', () => {
 	const { createElement } = require('react');
 	const { View } = require('react-native');
 	return {
