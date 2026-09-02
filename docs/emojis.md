@@ -80,7 +80,7 @@ guards against reintroducing the ill-formed ones.
 `app/lib/constants/emojis/legacyShortnames.json` is **hand-maintained**, not generated. It holds
 shortnames older clients resolved that `data.ts` does not carry — `:iphone:`, `:bride_with_veil:`
 and around a thousand others, mostly the emojione-era tone naming, plus the 12 keycap components
-the generator skips. `legacyShortnames.ts` re-exports it typed for the app; the generator requires
+the generator skips. `legacyShortnamesMap.ts` re-exports it typed for the app (named differently because Metro resolves `.json` before `.ts`, so an extensionless import of a same-named module would load the JSON); the generator requires
 the same JSON.
 
 Most entries are there because emojibase dropped the name; the keycaps are there because the

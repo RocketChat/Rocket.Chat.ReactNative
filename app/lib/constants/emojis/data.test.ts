@@ -1,6 +1,6 @@
 import { aliasesByEmojiName, emojisByCategory, shortnameToUnicodeMap } from './data';
 import { emojis } from './emojis';
-import { legacyShortnameToUnicodeMap } from './legacyShortnames';
+import { legacyShortnameToUnicodeMap } from './legacyShortnamesMap';
 import pinnedShortnames from '../../../../scripts/pinned-shortnames';
 
 const bare = (unicode: string) => unicode.replace(/\uFE0F/g, '');
