@@ -270,6 +270,10 @@
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
 	},
 	{
+		"test": ".maestro/tests/room/reaction-list-scroll-to-last-user.yaml",
+		"dependsOn": ["app/containers/ReactionsList/**", "app/containers/ActionSheet/**"]
+	},
+	{
 		"test": ".maestro/tests/room/quote-thread-message.yaml",
 		"dependsOn": [
 			"app/views/RoomView/**",
