@@ -9,7 +9,7 @@ import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { MissingRoomE2EEKey } from './components/MissingRoomE2EEKey';
 import RoomScreen from './RoomScreen';
 import { useRoomStoreForScreen } from './stores/RoomStore';
-import { useRoomWithUpdateFromStore } from './stores/RoomStoreContext';
+import { useRoomWithUpdateFromStore } from '../../lib/store/RoomStoreContext';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 

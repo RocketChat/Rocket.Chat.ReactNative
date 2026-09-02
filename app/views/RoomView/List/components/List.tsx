@@ -13,7 +13,7 @@ import NavBottomFAB from './NavBottomFAB';
 import { type TAnyMessageModel } from '../../../../definitions';
 import { type IListProps } from '../../definitions';
 import { SCROLL_LIMIT } from '../constants';
-import { useIsAutocompleteVisible } from '../../stores/ComposerStore';
+import { useIsAutocompleteVisible } from '../../../../containers/MessageComposer/store';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);
 

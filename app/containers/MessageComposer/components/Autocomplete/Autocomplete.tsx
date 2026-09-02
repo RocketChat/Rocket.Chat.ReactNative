@@ -3,12 +3,11 @@ import { FlatList, type ViewStyle } from 'react-native';
 import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAutocompleteParams } from '../../context';
+import { useAutocompleteParams, useComposerRid, useUpdateAutocompleteVisible } from '../../store';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { type IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { useComposerRid, useUpdateAutocompleteVisible } from '../../../../views/RoomView/stores/ComposerStore';
 import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
 import { useStyle } from './styles';
 

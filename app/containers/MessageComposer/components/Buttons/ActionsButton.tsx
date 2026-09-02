@@ -9,7 +9,7 @@ import Navigation from '../../../../lib/navigation/appNavigation';
 import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
-import { useComposerRid, useComposerTmid, useComposerType } from '../../../../views/RoomView/stores/ComposerStore';
+import { useComposerRid, useComposerTmid, useComposerType } from '../../store';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();

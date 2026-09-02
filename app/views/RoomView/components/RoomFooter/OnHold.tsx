@@ -1,5 +1,5 @@
 import I18n from '../../../../i18n';
-import { useRoomStore } from '../../stores/RoomStoreContext';
+import { useRoomStore } from '../../../../lib/store/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
 export const OnHold = () => {

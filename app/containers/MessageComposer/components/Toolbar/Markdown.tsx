@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { BaseButton } from '../Buttons';
-import { useMessageComposerApi } from '../../context';
+import { useMessageComposerApi } from '../../store';
 import { Gap } from '../Gap';
 import { type TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../../../lib/methods/helpers/emitter';

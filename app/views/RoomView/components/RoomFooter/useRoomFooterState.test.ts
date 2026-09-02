@@ -1,12 +1,12 @@
 import { renderHook } from '@testing-library/react-native';
 
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore, useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 import { useRoomFooterState } from './useRoomFooterState';
 
 jest.mock('../../../../lib/hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }));
-jest.mock('../../stores/RoomStoreContext', () => ({ useRoomStore: jest.fn(), useRoomWithUpdate: jest.fn() }));
+jest.mock('../../../../lib/store/RoomStoreContext', () => ({ useRoomStore: jest.fn(), useRoomWithUpdate: jest.fn() }));
 jest.mock('./useFooterMessage', () => ({ useFooterMessage: jest.fn() }));
 
 const mockUseAppSelector = useAppSelector as jest.Mock;

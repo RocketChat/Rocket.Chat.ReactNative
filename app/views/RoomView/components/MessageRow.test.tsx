@@ -3,7 +3,7 @@ import { act, render } from '@testing-library/react-native';
 import database from '../../../lib/database';
 import { peekOrCreateRoomStore, releaseRoomStore } from '../stores/RoomStore';
 import { RoomScreenContext } from '../stores/RoomScreenContext';
-import { RoomStoreContext } from '../stores/RoomStoreContext';
+import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
 import { MessageRow } from './MessageRow';
 
 jest.mock('../../../lib/database', () => ({

@@ -7,8 +7,8 @@ import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
-import { useComposerRid, useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
-import { MessageInnerContext, useComposerAttachments, useMessageComposerApi, useMicOrSend } from '../../context';
+import { MessageInnerContext } from '../../context';
+import { useComposerAttachments, useComposerRid, useComposerSharing, useMessageComposerApi, useMicOrSend } from '../../store';
 import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 

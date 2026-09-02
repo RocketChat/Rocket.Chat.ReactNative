@@ -1,4 +1,4 @@
-import { type Ref, type RefObject } from 'react';
+import { type ReactElement, type Ref, type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
 import { type StoreApi } from 'zustand';
@@ -34,7 +34,7 @@ export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
 export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 
 export interface IRoomFooterProps {
-	messageComposerRef: RefObject<IMessageComposerRef | null>;
+	composer: ReactElement;
 	joinCodeRef: RefObject<IJoinCode | null>;
 }
 
@@ -68,27 +68,6 @@ export interface IRoomViewState {
 	member: any;
 	lastSeen: Date | null;
 }
-
-export type ComposerState = {
-	rid?: string;
-	t?: string;
-	tmid?: string;
-	room: IRoomViewState['room'];
-	roomUpdate?: IRoomViewState['roomUpdate'];
-	sharing?: boolean;
-	isAutocompleteVisible: boolean;
-	editCancel?: () => void;
-	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
-	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage?: (message?: string, tshow?: boolean) => void;
-	setQuotesAndText?: (text: string, quotes: string[]) => void;
-	getText?: () => string | undefined;
-	updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => void;
-};
-
-// The externally-suppliable slice of ComposerState — `isAutocompleteVisible`/`updateAutocompleteVisible`
-// are store-owned (seeded internally by `createComposerStore`), not passed in by callers.
-export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible' | 'updateAutocompleteVisible'>;
 
 export interface IUseE2EEStatusResult {
 	showMissingE2EEKey: boolean;
@@ -208,8 +187,6 @@ export interface IGetOrCreateRoomStoreParams {
 	serverVersion?: string | null;
 }
 
-export type ComposerStore = StoreApi<ComposerState>;
-
 export type TGetMessageInfoResult = {
 	id: string;
 	rid: string | undefined;
@@ -285,8 +262,6 @@ export interface IUseMessageActionsResult {
 	onReactionInit: (messageId: string) => void;
 	onMessageLongPress: (message: TAnyMessageModel) => void;
 	onReplyInit: (messageId: string) => Promise<void>;
-	setQuotesAndText: (text: string, quotes: string[]) => void;
-	getText: () => string | undefined;
 }
 
 export interface IUseSubscriptionUnreadsResult {

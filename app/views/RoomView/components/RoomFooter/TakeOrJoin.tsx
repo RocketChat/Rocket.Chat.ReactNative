@@ -1,6 +1,6 @@
 import I18n from '../../../../i18n';
 import { type ITakeOrJoinProps } from '../../definitions';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore, useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
 export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps) => {

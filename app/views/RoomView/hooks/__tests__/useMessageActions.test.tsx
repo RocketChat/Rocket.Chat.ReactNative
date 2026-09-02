@@ -38,9 +38,7 @@ const RID = 'rid-1';
 const createRefs = () => ({
 	messageComposerRef: {
 		current: {
-			closeEmojiKeyboardAndAction: jest.fn((action?: Function, params?: any) => action?.(params)),
-			setInput: jest.fn(),
-			getText: jest.fn(() => 'composer-text')
+			closeEmojiKeyboardAndAction: jest.fn((action?: Function, params?: any) => action?.(params))
 		}
 	},
 	messageActionsRef: {
@@ -342,33 +340,6 @@ describe('useMessageActions', () => {
 
 			expect(navigation.push).not.toHaveBeenCalled();
 			expect(onThreadPress).not.toHaveBeenCalled();
-		});
-	});
-
-	describe('composer bridge', () => {
-		it('setQuotesAndText stores the quote ids and forwards text to the composer', () => {
-			const { result, messageActionStore, refs } = renderMessageActions();
-
-			act(() => result.current.setQuotesAndText('hello', ['msg-1', 'msg-2']));
-
-			expect(messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
-			expect(refs.messageComposerRef.current.setInput).toHaveBeenCalledWith('hello');
-		});
-
-		it('setQuotesAndText clears quotes and defaults empty text', () => {
-			const { result, messageActionStore, refs } = renderMessageActions();
-
-			act(() => result.current.setQuotesAndText('', []));
-
-			expect(messageActionStore.getState().action).toBeNull();
-			expect(refs.messageComposerRef.current.setInput).toHaveBeenCalledWith('');
-		});
-
-		it('getText reads the current composer text', () => {
-			const { result, refs } = renderMessageActions();
-
-			expect(result.current.getText()).toBe('composer-text');
-			expect(refs.messageComposerRef.current.getText).toHaveBeenCalledTimes(1);
 		});
 	});
 });

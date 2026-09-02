@@ -1,11 +1,10 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { useFocused } from '../../context';
+import { useComposerSharing, useFocused } from '../../store';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
-import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
 
 export const Left = (): ReactElement | null => {
 	const sharing = useComposerSharing();

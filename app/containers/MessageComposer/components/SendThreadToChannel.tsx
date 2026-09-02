@@ -4,8 +4,7 @@ import { useEffect, useRef, type ReactElement } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
-import { useComposerTmid } from '../../../views/RoomView/stores/ComposerStore';
-import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
+import { useAlsoSendThreadToChannel, useComposerTmid, useMessageComposerApi } from '../store';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';

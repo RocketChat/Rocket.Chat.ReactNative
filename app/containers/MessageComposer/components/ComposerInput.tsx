@@ -13,7 +13,7 @@ import {
 	type IInputSelection,
 	type TSetInput
 } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../store';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -32,14 +32,8 @@ import {
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
-import {
-	useComposerRid,
-	useComposerRoom,
-	useComposerSharing,
-	useComposerTmid,
-	useSetQuotesAndText
-} from '../../../views/RoomView/stores/ComposerStore';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useComposerRid, useComposerRoom, useComposerSharing, useComposerTmid } from '../store';
+import { useMessageAction, useMessageActionStoreApi } from '../../message/stores/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
@@ -59,9 +53,9 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const sharing = useComposerSharing();
-	const setQuotesAndText = useSetQuotesAndText();
 	const room = useComposerRoom();
 	const action = useMessageAction();
+	const messageActionStore = useMessageActionStoreApi();
 	const focused = useFocused();
 	const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 	const autocompleteType = useAutocompleteParams()?.type;
@@ -96,7 +90,8 @@ export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ 
 			if (draftMessage) {
 				const parsedDraft = parseJson(draftMessage);
 				if (parsedDraft?.msg || parsedDraft?.quotes) {
-					setQuotesAndText?.(parsedDraft.msg, parsedDraft.quotes);
+					setInput(parsedDraft.msg || '');
+					messageActionStore.getState().actions.setQuoteMessageIds(parsedDraft.quotes || []);
 				} else {
 					setInput(draftMessage);
 				}

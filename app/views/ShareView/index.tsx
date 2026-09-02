@@ -37,9 +37,14 @@ import {
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomProviders } from '../RoomView/components/RoomProviders';
-import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+import {
+	createMessageActionStore,
+	MessageActionProvider,
+	type TMessageActionStore
+} from '../../containers/message/stores/MessageActionStore';
 import { appStart } from '../../actions/app';
+import { RoomStoreContext } from '../../lib/store/RoomStoreContext';
+import { createStaticRoomStore } from '../RoomView/stores/RoomStore';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -389,28 +394,24 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		if (attachments.length) {
 			return (
-				<RoomProviders
-					store={this.messageActionStore}
-					rid={room.rid}
-					t={room.t}
-					room={room}
-					tmid={this.getThreadId(thread)}
-					sharing
-					onSendMessage={this.send}
-					onRemoveQuoteMessage={this.onRemoveQuoteMessage}>
-					<View style={styles.container}>
-						<Preview
-							// using key just to reset zoom/move after change selected
-							key={selected?.path}
-							item={selected}
-							length={attachments.length}
-							theme={theme}
-						/>
-						<MessageComposerContainer ref={this.messageComposerRef}>
+				<MessageActionProvider store={this.messageActionStore}>
+					<RoomStoreContext.Provider value={createStaticRoomStore(room)}>
+						<MessageComposerContainer
+							ref={this.messageComposerRef}
+							tmid={this.getThreadId(thread)}
+							sharing
+							onSendMessage={this.send}
+							onRemoveQuoteMessage={this.onRemoveQuoteMessage}
+							render={composer => (
+								<View style={styles.container}>
+									<Preview key={selected?.path} item={selected} length={attachments.length} theme={theme} />
+									{composer}
+								</View>
+							)}>
 							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
 						</MessageComposerContainer>
-					</View>
-				</RoomProviders>
+					</RoomStoreContext.Provider>
+				</MessageActionProvider>
 			);
 		}
 

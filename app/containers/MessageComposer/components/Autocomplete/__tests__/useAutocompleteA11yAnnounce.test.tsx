@@ -2,26 +2,11 @@ import { act, renderHook } from '@testing-library/react-native';
 import { AccessibilityInfo } from 'react-native';
 import { type ReactNode } from 'react';
 
-import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
-import { createComposerStore, ComposerStoreContext } from '../../../../views/RoomView/stores/ComposerStore';
-import { type ComposerStore } from '../../../../views/RoomView/definitions';
-
-const externalState = {
-	rid: 'rid-1',
-	t: 'c',
-	tmid: undefined,
-	room: { rid: 'rid-1', t: 'c' },
-	sharing: false,
-	editCancel: jest.fn(),
-	editRequest: jest.fn(() => Promise.resolve()),
-	onRemoveQuoteMessage: jest.fn(),
-	onSendMessage: jest.fn(),
-	setQuotesAndText: jest.fn(),
-	getText: jest.fn(() => '')
-};
+import { useAutocompleteA11yAnnounce } from '../useAutocompleteA11yAnnounce';
+import { createComposerStore, type ComposerStore, ComposerStoreContext } from '../../../store';
 
 const setup = () => {
-	const store: ComposerStore = createComposerStore(externalState);
+	const store: ComposerStore = createComposerStore();
 	const wrapper = ({ children }: { children: ReactNode }) => (
 		<ComposerStoreContext.Provider value={store}>{children}</ComposerStoreContext.Provider>
 	);

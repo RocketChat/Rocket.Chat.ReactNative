@@ -1,5 +1,5 @@
 import { BaseButton } from './Buttons';
-import { useEditCancel } from '../../../views/RoomView/stores/ComposerStore';
+import { useEditCancel } from '../store';
 import { useMessageAction } from '../../message/stores/MessageActionStore';
 import { Gap } from './Gap';
 

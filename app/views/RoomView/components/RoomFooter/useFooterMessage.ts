@@ -3,7 +3,7 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { isBlocked } from '../../../../lib/methods/helpers/room';
 import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../../../lib/methods/isRoomFederated';
 import { useReadOnly } from '../../hooks/useReadOnly';
-import { useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 
 const getFederatedFooterDescription = (
 	federatedRoom: IRoomFederated,

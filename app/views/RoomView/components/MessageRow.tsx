@@ -1,5 +1,5 @@
 import dayjs from '../../../lib/dayjs';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore } from '../../../lib/store/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';

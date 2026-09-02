@@ -4,7 +4,7 @@ import MessageActions, { type IMessageActions, type IMessageActionsProps } from 
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
 import { type TRoomViewUser } from '../definitions';
 import { useReadOnly } from '../hooks/useReadOnly';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore } from '../../../lib/store/RoomStoreContext';
 
 type IRoomMessageActionsProps = Pick<
 	IMessageActionsProps,

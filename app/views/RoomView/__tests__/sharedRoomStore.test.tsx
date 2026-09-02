@@ -44,7 +44,7 @@ jest.mock('../List', () => {
 	const { createElement } = require('react');
 	const { Pressable, View } = require('react-native');
 	const { useRoomScreen } = require('../stores/RoomScreenContext');
-	const { useComposerTmid, useOnSendMessage } = require('../stores/ComposerStore');
+	const { useComposerTmid, useOnSendMessage } = require('../../../containers/MessageComposer/store');
 	return {
 		__esModule: true,
 		default: () => {
@@ -60,7 +60,19 @@ jest.mock('../List', () => {
 	};
 });
 // The composer itself is out of scope here; the List probe is what sends through the screen's store.
-jest.mock('../../../containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
+jest.mock('../../../containers/MessageComposer', () => {
+	const { createElement } = require('react');
+	const { View } = require('react-native');
+	const { ComposerStoreProvider } = require('../../../containers/MessageComposer/store');
+	return {
+		MessageComposerContainer: ({ render, ...props }: { render: (composer: ReactNode) => ReactNode; tmid?: string }) =>
+			createElement(
+				ComposerStoreProvider,
+				props,
+				render(createElement(View, { testID: props.tmid ? 'thread-composer' : 'room-composer' }))
+			)
+	};
+});
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));
 jest.mock('../hooks/useRoomMessageHandlers', () => ({ useRoomMessageHandlers: () => ({}) }));

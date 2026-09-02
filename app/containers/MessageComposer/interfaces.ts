@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { type IEmoji, type IPreviewItem, type TUserStatus } from '../../definitions';
+import { type IEmoji, type IMessage, type IMessageEditAttachment, type IPreviewItem, type TUserStatus } from '../../definitions';
 
 export interface IMessageComposerRef {
 	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;
@@ -11,7 +11,20 @@ export interface IMessageComposerRef {
 
 export interface IMessageComposerContainerProps {
 	children?: ReactElement | null;
+	tmid?: string;
+	sharing?: boolean;
+	onSendMessage?: TOnSendMessage;
+	editRequest?: TEditRequest;
+	editCancel?: () => void;
+	onRemoveQuoteMessage?: TOnRemoveQuoteMessage;
+	render?: (composer: ReactElement) => ReactElement;
 }
+
+export type TOnSendMessage = (message?: string, tshow?: boolean) => void;
+export type TEditRequest = (
+	message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }
+) => Promise<void>;
+export type TOnRemoveQuoteMessage = (messageId: string) => void;
 
 export interface IInputSelection {
 	start: number;

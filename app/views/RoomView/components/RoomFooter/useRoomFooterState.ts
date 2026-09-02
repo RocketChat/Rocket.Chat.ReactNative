@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore, useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 
 export type TRoomFooterState =

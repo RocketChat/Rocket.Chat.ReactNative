@@ -2,7 +2,7 @@ import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../../lib/
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { type IUseE2EEStatusResult } from '../definitions';
 import { peekRoomStore } from '../stores/RoomStore';
-import { useRoomWithUpdateFromStore } from '../stores/RoomStoreContext';
+import { useRoomWithUpdateFromStore } from '../../../lib/store/RoomStoreContext';
 
 // Callers render outside RoomView's provider — the native-stack header, and the orchestrator that
 // renders the provider itself — so they resolve the store by rid from the module registry.

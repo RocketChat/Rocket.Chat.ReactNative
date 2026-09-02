@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { useFocused } from '../../context';
+import { useFocused } from '../../store';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 import { MicOrSendButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';

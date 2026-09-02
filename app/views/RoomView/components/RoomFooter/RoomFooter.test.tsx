@@ -1,4 +1,5 @@
-import { type ReactNode } from 'react';
+import { createElement, type ReactNode } from 'react';
+import { View } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -6,7 +7,7 @@ import { createStore as createZustandStore } from 'zustand';
 
 import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
 import { RoomScreenContext } from '../../stores/RoomScreenContext';
-import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { RoomStoreContext } from '../../../../lib/store/RoomStoreContext';
 import { RoomFooter } from './RoomFooter';
 
 // I18n identity: banner assertions match on the translation key itself.
@@ -79,7 +80,7 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loadi
 			<RoomStoreContext.Provider value={roomStore}>
 				<RoomScreenContext.Provider
 					value={{ loading, failed: false, retry: jest.fn(), lastSeen: null, clearLastSeen: jest.fn() }}>
-					<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} />
+					<RoomFooter composer={createElement(View, { testID: 'message-composer' })} joinCodeRef={{ current: null }} />
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
 		</Provider>

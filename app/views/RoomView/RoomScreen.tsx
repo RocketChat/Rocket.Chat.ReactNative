@@ -19,9 +19,8 @@ import UploadProgress from './components/UploadProgress';
 import List from './List';
 import { type RoomType } from '../../definitions';
 import { useActionSheet } from '../../containers/ActionSheet';
-import { type IMessageComposerRef } from '../../containers/MessageComposer';
-import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
-import { RoomProviders } from './components/RoomProviders';
+import { MessageComposerContainer, type IMessageComposerRef } from '../../containers/MessageComposer';
+import { createMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
 import { RoomMessageProvider } from './components/RoomMessageProvider';
 import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import { type IJoinCode, type IListContainerRef, type IRoomScreenProps, type IRoomViewState, type TListRef } from './definitions';
@@ -29,7 +28,7 @@ import { RoomFooter } from './components/RoomFooter/RoomFooter';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { isRoomFederated } from '../../lib/methods/isRoomFederated';
 import { RoomLoadFailed } from './components/RoomLoadFailed';
-import { RoomStoreContext } from './stores/RoomStoreContext';
+import { RoomStoreContext } from '../../lib/store/RoomStoreContext';
 import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useMessageActions } from './hooks/useMessageActions';
 import { useRoomInit } from './hooks/useRoomInit';
@@ -120,9 +119,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 		onReactionPress,
 		onReactionInit,
 		onMessageLongPress,
-		onReplyInit,
-		setQuotesAndText,
-		getText
+		onReplyInit
 	} = useMessageActions({
 		messageActionStore,
 		showActionSheet,
@@ -180,8 +177,8 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 		return <RoomLoadFailed onRetry={roomScreen.retry} />;
 	}
 
-	let bannerClosed;
-	let announcement;
+	let bannerClosed: boolean | undefined;
+	let announcement: string | undefined;
 	if ('id' in room) {
 		({ bannerClosed, announcement } = room);
 	}
@@ -191,70 +188,72 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 	return (
 		<RoomStoreContext.Provider value={roomStore}>
 			<RoomScreenContext.Provider value={roomScreen}>
-				<RoomProviders
-					store={messageActionStore}
-					rid={room.rid}
-					t={room.t}
-					room={room}
-					roomUpdate={roomUpdate}
-					tmid={tmid}
-					sharing={false}
-					onRemoveQuoteMessage={onRemoveQuoteMessage}
-					editCancel={onEditCancel}
-					editRequest={onEditRequest}
-					onSendMessage={handleSendMessage}
-					setQuotesAndText={setQuotesAndText}
-					getText={getText}>
-					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
-						{!tmid ? (
-							<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
-						) : null}
-						<A11yGateProvider>
-							<RoomMessageProvider
-								roomActions={{ onThreadPress, onReactionPress, sendMessage: handleSendMessage }}
-								jumpToMessage={jumpToMessageByUrl}
-								closeEmojiAndAction={handleCloseEmoji}
-								reactionInit={onReactionInit}
-								errorActionsShow={errorActionsShow}
-								archived={'id' in room && room.archived}
-								isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
-								rid={room.rid}
-								broadcast={'id' in room && room.broadcast}
-								isThreadRoom={!!tmid}
-								tmid={tmid}
-								Message_GroupingPeriod={Message_GroupingPeriod}
-								autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-								autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
-								<List
-									ref={listContainerRef}
-									flatListRef={flatListRef}
-									rid={room.rid}
-									t={room.t as RoomType}
+				<MessageActionProvider store={messageActionStore}>
+					<MessageComposerContainer
+						ref={messageComposerRef}
+						tmid={tmid}
+						onRemoveQuoteMessage={onRemoveQuoteMessage}
+						editCancel={onEditCancel}
+						editRequest={onEditRequest}
+						onSendMessage={handleSendMessage}
+						render={composer => (
+							<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
+								{!tmid ? (
+									<Banner
+										title={I18n.t('Announcement')}
+										text={announcement}
+										bannerClosed={bannerClosed}
+										closeBanner={closeBanner}
+									/>
+								) : null}
+								<A11yGateProvider>
+									<RoomMessageProvider
+										roomActions={{ onThreadPress, onReactionPress, sendMessage: handleSendMessage }}
+										jumpToMessage={jumpToMessageByUrl}
+										closeEmojiAndAction={handleCloseEmoji}
+										reactionInit={onReactionInit}
+										errorActionsShow={errorActionsShow}
+										archived={'id' in room && room.archived}
+										isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
+										rid={room.rid}
+										broadcast={'id' in room && room.broadcast}
+										isThreadRoom={!!tmid}
+										tmid={tmid}
+										Message_GroupingPeriod={Message_GroupingPeriod}
+										autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+										autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}>
+										<List
+											ref={listContainerRef}
+											flatListRef={flatListRef}
+											rid={room.rid}
+											t={room.t as RoomType}
+											tmid={tmid}
+											onLongPress={onMessageLongPress}
+											hideSystemMessages={hideSystemMessages}
+											showMessageInMainThread={user.showMessageInMainThread ?? false}
+											serverVersion={serverVersion}
+										/>
+									</RoomMessageProvider>
+								</A11yGateProvider>
+								<RoomFooter composer={composer} joinCodeRef={joinCodeRef} />
+								<RoomMessageActions
 									tmid={tmid}
-									onLongPress={onMessageLongPress}
-									hideSystemMessages={hideSystemMessages}
-									showMessageInMainThread={user.showMessageInMainThread ?? false}
-									serverVersion={serverVersion}
+									user={user}
+									messageActionsRef={messageActionsRef}
+									messageErrorActionsRef={messageErrorActionsRef}
+									editInit={onEditInit}
+									replyInit={onReplyInit}
+									quoteInit={onQuoteInit}
+									reactionInit={onReactionInit}
+									onReactionPress={onReactionPress}
+									jumpToMessage={jumpToMessageByUrl}
 								/>
-							</RoomMessageProvider>
-						</A11yGateProvider>
-						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
-						<RoomMessageActions
-							tmid={tmid}
-							user={user}
-							messageActionsRef={messageActionsRef}
-							messageErrorActionsRef={messageErrorActionsRef}
-							editInit={onEditInit}
-							replyInit={onReplyInit}
-							quoteInit={onQuoteInit}
-							reactionInit={onReactionInit}
-							onReactionPress={onReactionPress}
-							jumpToMessage={jumpToMessageByUrl}
-						/>
-						<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
-						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
-					</SafeAreaView>
-				</RoomProviders>
+								<UploadProgress rid={room.rid} user={user} baseUrl={baseUrl} width={width} />
+								<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
+							</SafeAreaView>
+						)}
+					/>
+				</MessageActionProvider>
 			</RoomScreenContext.Provider>
 		</RoomStoreContext.Provider>
 	);

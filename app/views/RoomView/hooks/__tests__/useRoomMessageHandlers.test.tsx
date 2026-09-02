@@ -5,7 +5,7 @@ import { toggleFollowMessage } from '../../../../lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
 import { getUserSelector } from '../../../../selectors/login';
 import { type RoomState, type RoomStore } from '../../definitions';
-import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { RoomStoreContext } from '../../../../lib/store/RoomStoreContext';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
 jest.mock('@react-navigation/native', () => ({

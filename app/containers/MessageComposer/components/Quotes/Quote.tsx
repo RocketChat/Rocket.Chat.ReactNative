@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import dayjs from '../../../../lib/dayjs';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { useComposerTmid, useOnRemoveQuoteMessage } from '../../../../views/RoomView/stores/ComposerStore';
+import { useComposerTmid, useOnRemoveQuoteMessage } from '../../store';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';

@@ -1,4 +1,4 @@
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore } from '../../../lib/store/RoomStoreContext';
 import { useTheme } from '../../../theme';
 import { getBadgeColor } from '../../../lib/methods/helpers/room';
 

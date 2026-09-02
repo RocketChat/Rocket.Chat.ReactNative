@@ -116,13 +116,6 @@ export function useMessageActions({
 		onThreadPress(message);
 	};
 
-	const setQuotesAndText = (text: string, quotes: string[]) => {
-		messageActionStore.getState().actions.setQuoteMessageIds(quotes);
-		messageComposerRef.current?.setInput(text || '');
-	};
-
-	const getText = () => messageComposerRef.current?.getText();
-
 	return {
 		resetAction,
 		handleCloseEmoji,
@@ -135,8 +128,6 @@ export function useMessageActions({
 		onReactionPress,
 		onReactionInit,
 		onMessageLongPress,
-		onReplyInit,
-		setQuotesAndText,
-		getText
+		onReplyInit
 	};
 }

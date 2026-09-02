@@ -1,26 +1,27 @@
 import { act, render } from '@testing-library/react-native';
 
-import { type IShareAttachment } from '../../definitions';
+import { type IShareAttachment } from '../../../definitions';
+import { MessageComposerContainer } from '../MessageComposerContainer';
 import {
-	MessageComposerProvider,
+	ComposerStoreProvider,
 	useAlsoSendThreadToChannel,
 	useAutocompleteParams,
 	useComposerAttachments,
+	useComposerRoom,
+	useComposerTmid,
+	useEditCancel,
 	useFocused,
 	useMessageComposerApi,
 	useMicOrSend,
+	useOnRemoveQuoteMessage,
+	useOnSendMessage,
+	useEditRequest,
 	useRecordingAudio,
 	useShowMarkdownToolbar
-} from './context';
+} from '../store';
 
 type Api = ReturnType<typeof useMessageComposerApi>;
 
-// Tests for the composer store's public hook/provider contract and its per-slice re-render granularity.
-// Non-obvious constraint: the `actions` bag must stay a stable reference — a selector returning a fresh object
-// each render trips zustand v5's snapshot-equality loop. Renders are counted with jest.fn spies, not an outer
-// counter (a spy call in render is pure; mutation isn't).
-
-// One probe per `probes` entry (name -> hook) plus an api probe; returns the stable api and per-probe render/value readers.
 const renderComposer = (probes: Record<string, () => unknown>) => {
 	const probeSpies: Record<string, jest.Mock> = {};
 	const apiSpy = jest.fn();
@@ -41,12 +42,12 @@ const renderComposer = (probes: Record<string, () => unknown>) => {
 	};
 
 	render(
-		<MessageComposerProvider>
+		<ComposerStoreProvider>
 			<>
 				{probeElements}
 				<ApiProbe />
 			</>
-		</MessageComposerProvider>
+		</ComposerStoreProvider>
 	);
 
 	const renderCount = (name: string) => probeSpies[name].mock.calls.length;
@@ -55,7 +56,6 @@ const renderComposer = (probes: Record<string, () => unknown>) => {
 		return calls[calls.length - 1]?.[0];
 	};
 
-	// api is stable, so the first render's value is the one every test calls setters on.
 	const [[api]] = apiSpy.mock.calls as [Api][];
 	return { api, renderCount, latestValue };
 };
@@ -67,7 +67,6 @@ const attachment = (path: string, extra?: Partial<IShareAttachment>): IShareAtta
 	...extra
 });
 
-// One row per scalar slice; each runs the same set→read + granularity tests. (attachments is a list slice, tested below.)
 type ScalarCase = {
 	name: string;
 	useHook: () => unknown;
@@ -104,43 +103,104 @@ const SCALAR_SLICES: ScalarCase[] = [
 ];
 
 describe('MessageComposer state container', () => {
+	it('throws without a room provider', () => {
+		const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+		const Probe = () => {
+			useComposerRoom();
+			return null;
+		};
+
+		expect(() => render(<MessageComposerContainer render={() => <Probe />} />)).toThrow(
+			'Room store hooks must be used within a RoomStoreContext.Provider'
+		);
+		consoleError.mockRestore();
+	});
+
 	describe('per-instance isolation', () => {
-		it('keeps state independent across provider instances', () => {
+		it('keeps channel and thread state independent', () => {
 			const spyA = jest.fn();
 			const spyB = jest.fn();
 
 			const Probe = ({ spy }: { spy: jest.Mock }) => {
-				spy({ focused: useFocused(), api: useMessageComposerApi() });
+				spy({ focused: useFocused(), tmid: useComposerTmid(), api: useMessageComposerApi() });
 				return null;
 			};
 
 			render(
 				<>
-					<MessageComposerProvider>
-						<Probe spy={spyA} />
-					</MessageComposerProvider>
-					<MessageComposerProvider>
-						<Probe spy={spyB} />
-					</MessageComposerProvider>
+					<MessageComposerContainer render={() => <Probe spy={spyA} />} />
+					<MessageComposerContainer tmid='thread-id' render={() => <Probe spy={spyB} />} />
 				</>
 			);
 
-			const latest = (spy: jest.Mock): { focused: boolean; api: Api } => spy.mock.calls[spy.mock.calls.length - 1][0];
+			const latest = (spy: jest.Mock): { focused: boolean; tmid?: string; api: Api } =>
+				spy.mock.calls[spy.mock.calls.length - 1][0];
 
 			expect(latest(spyA).focused).toBe(false);
+			expect(latest(spyA).tmid).toBeUndefined();
 			expect(latest(spyB).focused).toBe(false);
+			expect(latest(spyB).tmid).toBe('thread-id');
 
-			// Mutating one instance must not leak into the other
 			act(() => latest(spyA).api.setFocused(true));
 
 			expect(latest(spyA).focused).toBe(true);
 			expect(latest(spyB).focused).toBe(false);
 
-			// And the reverse direction stays isolated too
 			act(() => latest(spyB).api.setRecordingAudio(true));
 
 			expect(latest(spyA).focused).toBe(true);
 		});
+	});
+
+	it('uses the latest host callbacks without replacing the store', async () => {
+		const firstCallbacks = {
+			onSendMessage: jest.fn(),
+			editRequest: jest.fn(() => Promise.resolve()),
+			editCancel: jest.fn(),
+			onRemoveQuoteMessage: jest.fn()
+		};
+		const latestCallbacks = {
+			onSendMessage: jest.fn(),
+			editRequest: jest.fn(() => Promise.resolve()),
+			editCancel: jest.fn(),
+			onRemoveQuoteMessage: jest.fn()
+		};
+		let callbacks: {
+			onSendMessage: ReturnType<typeof useOnSendMessage>;
+			editRequest: ReturnType<typeof useEditRequest>;
+			editCancel: ReturnType<typeof useEditCancel>;
+			onRemoveQuoteMessage: ReturnType<typeof useOnRemoveQuoteMessage>;
+		};
+
+		const Probe = () => {
+			callbacks = {
+				onSendMessage: useOnSendMessage(),
+				editRequest: useEditRequest(),
+				editCancel: useEditCancel(),
+				onRemoveQuoteMessage: useOnRemoveQuoteMessage()
+			};
+			return null;
+		};
+		const Host = ({ currentCallbacks }: { currentCallbacks: typeof firstCallbacks }) => (
+			<MessageComposerContainer {...currentCallbacks} render={() => <Probe />} />
+		);
+
+		const { rerender } = render(<Host currentCallbacks={firstCallbacks} />);
+		rerender(<Host currentCallbacks={latestCallbacks} />);
+
+		callbacks!.onSendMessage('hello', true);
+		await callbacks!.editRequest({ id: 'message-id', rid: 'room-id', msg: 'edited' });
+		callbacks!.editCancel();
+		callbacks!.onRemoveQuoteMessage('message-id');
+
+		expect(firstCallbacks.onSendMessage).not.toHaveBeenCalled();
+		expect(firstCallbacks.editRequest).not.toHaveBeenCalled();
+		expect(firstCallbacks.editCancel).not.toHaveBeenCalled();
+		expect(firstCallbacks.onRemoveQuoteMessage).not.toHaveBeenCalled();
+		expect(latestCallbacks.onSendMessage).toHaveBeenCalledWith('hello', true);
+		expect(latestCallbacks.editRequest).toHaveBeenCalledWith({ id: 'message-id', rid: 'room-id', msg: 'edited' });
+		expect(latestCallbacks.editCancel).toHaveBeenCalledTimes(1);
+		expect(latestCallbacks.onRemoveQuoteMessage).toHaveBeenCalledWith('message-id');
 	});
 
 	describe('scalar slices', () => {
@@ -156,7 +216,6 @@ describe('MessageComposer state container', () => {
 			});
 
 			it('re-renders its own consumer but not an unrelated one when it changes (granularity)', () => {
-				// attachments is the control slice — it is never the scalar under test
 				const { api, renderCount } = renderComposer({ [name]: useHook, attachments: useComposerAttachments });
 
 				const sliceBaseline = renderCount(name);
@@ -211,7 +270,6 @@ describe('MessageComposer state container', () => {
 			expect(latestValue('attachments')).toEqual([]);
 		});
 
-		// Reverse of the table's granularity check: a list mutation must not re-render scalar consumers.
 		it('does not re-render a scalar consumer when attachments change', () => {
 			const { api, renderCount } = renderComposer({ attachments: useComposerAttachments, focused: useFocused });
 
@@ -229,7 +287,6 @@ describe('MessageComposer state container', () => {
 		it('keeps the same api reference across slice updates', () => {
 			const probe = jest.fn();
 
-			// Subscribes to a changing slice AND the api, so the re-render is real — the api ref must still be identical.
 			const Probe = () => {
 				useFocused();
 				probe(useMessageComposerApi());
@@ -237,9 +294,9 @@ describe('MessageComposer state container', () => {
 			};
 
 			render(
-				<MessageComposerProvider>
+				<ComposerStoreProvider>
 					<Probe />
-				</MessageComposerProvider>
+				</ComposerStoreProvider>
 			);
 
 			const callsBefore = probe.mock.calls.length;

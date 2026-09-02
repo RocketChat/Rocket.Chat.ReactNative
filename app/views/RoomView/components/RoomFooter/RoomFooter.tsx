@@ -1,4 +1,3 @@
-import { MessageComposerContainer } from '../../../../containers/MessageComposer';
 import { type IRoomFooterProps } from '../../definitions';
 import { AirgappedWs } from './AirgappedWs';
 import { OnHold } from './OnHold';
@@ -6,7 +5,7 @@ import { Preview } from './Preview';
 import { TakeOrJoin } from './TakeOrJoin';
 import { useRoomFooterState } from './useRoomFooterState';
 
-export const RoomFooter = ({ messageComposerRef, joinCodeRef }: IRoomFooterProps) => {
+export const RoomFooter = ({ composer, joinCodeRef }: IRoomFooterProps) => {
 	const state = useRoomFooterState();
 
 	switch (state.kind) {
@@ -19,6 +18,6 @@ export const RoomFooter = ({ messageComposerRef, joinCodeRef }: IRoomFooterProps
 		case 'preview':
 			return <Preview message={state.message} />;
 		case 'composer':
-			return <MessageComposerContainer ref={messageComposerRef} />;
+			return composer;
 	}
 };

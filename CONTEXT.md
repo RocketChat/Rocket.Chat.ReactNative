@@ -124,6 +124,12 @@ A **Last Open** below a change's **Server Timestamp** only costs a re-fetch; one
 
 A **Last Open** and a **Last Seen** are not interchangeable — conflating them (one column serving as both fetch cursor and unread anchor) is what produced permanently invisible Messages.
 
+## Composer
+
+| Term              | Definition                                                                                                                                        | Aliases to avoid |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Composer Host** | A screen that provides the Room and Message Action State to a composer and supplies callbacks for sending, editing, canceling, and removing Quote | None             |
+
 ## Message Action & Position State
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.

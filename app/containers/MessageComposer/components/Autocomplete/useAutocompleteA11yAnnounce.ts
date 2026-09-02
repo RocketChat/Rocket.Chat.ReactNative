@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import I18n from '../../../../i18n';
-import { useIsAutocompleteVisible } from '../../../../views/RoomView/stores/ComposerStore';
+import { useIsAutocompleteVisible } from '../../store';
 
 export const useAutocompleteA11yAnnounce = (): void => {
 	const isAutocompleteVisible = useIsAutocompleteVisible();

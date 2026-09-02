@@ -4,22 +4,12 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import {
-	useComposerRid,
-	useComposerSharing,
-	useComposerStoreApi,
-	useComposerTmid
-} from '../../views/RoomView/stores/ComposerStore';
+import { useComposerRid, useComposerSharing, useComposerTmid, useEditRequest, useOnSendMessage } from './store';
 import { useMessageActionKind, useMessageActionStoreApi } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
-import {
-	MessageInnerContext,
-	useAlsoSendThreadToChannel,
-	useComposerAttachments,
-	useMessageComposerApi,
-	useRecordingAudio
-} from './context';
+import { MessageInnerContext } from './context';
+import { useAlsoSendThreadToChannel, useComposerAttachments, useMessageComposerApi, useRecordingAudio } from './store';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';
@@ -61,7 +51,8 @@ export const MessageComposer = ({
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const sharing = useComposerSharing();
-	const composerStore = useComposerStoreApi();
+	const editRequest = useEditRequest();
+	const onSendMessage = useOnSendMessage();
 	const messageActionStore = useMessageActionStoreApi();
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -103,7 +94,6 @@ export const MessageComposer = ({
 	const handleSendMessage = async () => {
 		if (!rid) return;
 
-		const { editRequest, onSendMessage, setQuotesAndText } = composerStore.getState();
 		const { action } = messageActionStore.getState();
 		const editingMessageId = action?.kind === 'edit' ? action.messageId : undefined;
 		const quotedMessageIds = action?.kind === 'quote' ? action.messageIds : [];
@@ -151,7 +141,7 @@ export const MessageComposer = ({
 					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
 				});
 				clearAttachments();
-				setQuotesAndText?.('', []);
+				messageActionStore.getState().actions.setQuoteMessageIds([]);
 				return;
 			} catch (e) {
 				log(e);
@@ -255,7 +245,9 @@ export const MessageComposer = ({
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
 				closeEmojiKeyboardAndAction,
-				focus: focusComposerInput
+				focus: focusComposerInput,
+				getText: () => composerInputComponentRef.current.getText(),
+				setInput: (...args) => composerInputComponentRef.current.setInput(...args)
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}

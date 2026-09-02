@@ -2,10 +2,9 @@ import { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { ActionsButton, BaseButton } from '../Buttons';
-import { useMessageComposerApi } from '../../context';
+import { useComposerSharing, useMessageComposerApi } from '../../store';
 import { Gap } from '../Gap';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
-import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {

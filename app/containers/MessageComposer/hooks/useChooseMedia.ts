@@ -1,4 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
+import { useContext } from 'react';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
@@ -9,11 +10,11 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useGetText, useSetQuotesAndText } from '../../../views/RoomView/stores/ComposerStore';
-import { useMessageAction, useQuotedMessageIds } from '../../message/stores/MessageActionStore';
+import { useMessageAction, useMessageActionStoreApi, useQuotedMessageIds } from '../../message/stores/MessageActionStore';
 import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { useMessageComposerApi } from '../context';
+import { MessageInnerContext } from '../context';
+import { useMessageComposerApi } from '../store';
 import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 
 const normalizeAttachment = (item: IShareAttachment) =>
@@ -30,8 +31,8 @@ export const useChooseMedia = ({
 }) => {
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { addAttachments } = useMessageComposerApi();
-	const setQuotesAndText = useSetQuotesAndText();
-	const getText = useGetText();
+	const { getText, setInput } = useContext(MessageInnerContext);
+	const messageActionStore = useMessageActionStoreApi();
 	const action = useMessageAction();
 	const quotedMessageIds = useQuotedMessageIds();
 	const altTextSupported = useAltTextSupported();
@@ -95,14 +96,17 @@ export const useChooseMedia = ({
 	};
 
 	const startShareView = () => {
-		const text = getText?.() || '';
+		const text = getText();
 		return {
 			selectedMessages: quotedMessageIds,
 			text
 		};
 	};
 
-	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+	const finishShareView = (text = '', quotes = []) => {
+		setInput(text);
+		messageActionStore.getState().actions.setQuoteMessageIds(quotes);
+	};
 
 	const openShareView = async (attachments: any) => {
 		if (!rid) return;

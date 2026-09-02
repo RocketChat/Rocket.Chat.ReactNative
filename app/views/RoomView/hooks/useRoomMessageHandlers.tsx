@@ -20,7 +20,7 @@ import {
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { type IRoomActions, type IRoomViewProps } from '../definitions';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore } from '../../../lib/store/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';

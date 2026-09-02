@@ -299,6 +299,9 @@ export const peekOrCreateRoomStore = ({
 	return store;
 };
 
+export const createStaticRoomStore = (room: IRoomViewState['room']): RoomStore =>
+	createStore<RoomState>(createRoomState(undefined, room));
+
 export const releaseRoomStore = (rid?: string): void => {
 	if (!rid) {
 		return;

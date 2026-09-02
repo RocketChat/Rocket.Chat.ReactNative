@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 
-jest.mock('../../lib/database', () => ({
+jest.mock('../../../lib/database', () => ({
 	servers: {
 		get: jest.fn(() => ({
 			find: jest.fn(() => Promise.resolve({}))
@@ -8,32 +9,59 @@ jest.mock('../../lib/database', () => ({
 	}
 }));
 
-jest.mock('../../containers/MessageComposer', () => {
-	const { forwardRef } = require('react');
+jest.mock('../../RoomView/stores/RoomStore', () => ({
+	createStaticRoomStore: (room: unknown) => require('zustand').createStore(() => ({ room, roomUpdate: {} }))
+}));
 
-	const MessageComposerContainer = forwardRef(({ children }: { children: ReactNode }, _ref: unknown) => children);
-	MessageComposerContainer.displayName = 'MessageComposerContainer';
-
+jest.mock('../../../containers/MessageComposer/MessageComposer', () => {
+	const { createElement } = require('react');
+	const { Pressable, View } = require('react-native');
+	const {
+		useComposerRoom,
+		useComposerTmid,
+		useOnRemoveQuoteMessage,
+		useOnSendMessage
+	} = require('../../../containers/MessageComposer/store');
 	return {
-		MessageComposerContainer
+		MessageComposer: () => {
+			const room = useComposerRoom();
+			const tmid = useComposerTmid();
+			const onSendMessage = useOnSendMessage();
+			const onRemoveQuoteMessage = useOnRemoveQuoteMessage();
+			return createElement(View, { testID: 'share-composer', accessibilityLabel: `${room.rid}:${tmid}` }, [
+				createElement(Pressable, { key: 'send', testID: 'share-send', onPress: () => onSendMessage('message') }),
+				createElement(Pressable, {
+					key: 'remove',
+					testID: 'share-remove-quote',
+					onPress: () => onRemoveQuoteMessage('message-id')
+				})
+			]);
+		}
 	};
 });
 
-jest.mock('./Preview', () => () => null);
-jest.mock('../../containers/Thumbs', () => () => null);
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('../../../containers/MessageComposer/hooks/useEmojiKeyboard', () => {
+	const { Fragment, createElement } = require('react');
+	return {
+		EmojiKeyboardProvider: ({ children }: { children: ReactNode }) => createElement(Fragment, null, children)
+	};
+});
+
+jest.mock('../Preview', () => () => null);
+jest.mock('../../../containers/Thumbs', () => () => null);
+jest.mock('../../../containers/ActionSheet', () => ({
 	showActionSheetRef: jest.fn()
 }));
-jest.mock('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
+jest.mock('../../../containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
 	AttachmentActionSheet: () => null
 }));
-jest.mock('../../lib/methods/sendMessage', () => ({
+jest.mock('../../../lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
 
-const { showActionSheetRef } = require('../../containers/ActionSheet');
-const { AttachmentActionSheet } = require('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet');
-const { ShareView } = require('./index');
+const { showActionSheetRef } = require('../../../containers/ActionSheet');
+const { AttachmentActionSheet } = require('../../../containers/MessageComposer/components/Attachments/AttachmentActionSheet');
+const { ShareView } = require('../index');
 
 const makeInstance = ({
 	mime,
@@ -147,6 +175,21 @@ describe('ShareView', () => {
 		expect(shareView.state.attachments[0].altText).toBe('a cat on a mat');
 	});
 
+	it('provides sending, quote removal, room and thread id to the composer', () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		shareView.state.thread = 'thread-id';
+		shareView.messageActionStore.getState().actions.setQuoteMessageIds(['message-id']);
+		shareView.send = jest.fn();
+
+		render(shareView.renderContent());
+
+		expect(screen.getByTestId('share-composer').props.accessibilityLabel).toBe('room-id:thread-id');
+		fireEvent.press(screen.getByTestId('share-send'));
+		fireEvent.press(screen.getByTestId('share-remove-quote'));
+		expect(shareView.send).toHaveBeenCalledWith('message', undefined);
+		expect(shareView.getSelectedMessageIds()).toEqual([]);
+	});
+
 	it('send() passes caption as msg and altText as description on server >= 8.4.0', async () => {
 		const shareView = makeInstance({
 			mime: 'image/jpeg',
@@ -162,10 +205,9 @@ describe('ShareView', () => {
 			selected: shareView.state.attachments[0]
 		};
 
-		// the composer ref isn't mounted here; don't let the caption flush clobber the fixture
 		shareView.saveSelectedDescription = jest.fn() as any;
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('../../../lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
 
 		await shareView.send();
@@ -193,10 +235,10 @@ describe('ShareView', () => {
 
 		shareView.messageActionStore.getState().actions.setQuoteMessageIds(['msg-1']);
 
-		const prepareQuoteMessageMod = require('../../containers/MessageComposer/helpers/prepareQuoteMessage');
+		const prepareQuoteMessageMod = require('../../../containers/MessageComposer/helpers/prepareQuoteMessage');
 		const prepareSpy = jest.spyOn(prepareQuoteMessageMod, 'prepareQuoteMessage').mockResolvedValue('quoted-text');
 
-		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const sendFileMessageMod = require('../../../lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
 
 		await shareView.send();

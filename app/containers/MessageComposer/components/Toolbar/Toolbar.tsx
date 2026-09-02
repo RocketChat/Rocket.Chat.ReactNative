@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { useFocused, useShowMarkdownToolbar } from '../../context';
+import { useFocused, useShowMarkdownToolbar } from '../../store';
 import { Markdown } from './Markdown';
 import { Default } from './Default';
 import { EmojiKeyboard } from './EmojiKeyboard';

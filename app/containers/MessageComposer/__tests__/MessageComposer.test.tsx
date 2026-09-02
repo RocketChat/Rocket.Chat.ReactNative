@@ -1,37 +1,38 @@
-import { useEffect, type ReactElement } from 'react';
+import { useEffect, type ContextType, type ReactElement } from 'react';
 import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { createStore as createZustandStore } from 'zustand';
 
-import { MessageComposerContainer } from './MessageComposerContainer';
-import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
-import { setPermissions } from '../../actions/permissions';
-import { addSettings } from '../../actions/settings';
-import { selectServerRequest } from '../../actions/server';
-import { setUser } from '../../actions/login';
-import { mockedStore } from '../../reducers/mockedStore';
-import { type IPermissionsState } from '../../reducers/permissions';
-import { type IMessage, type IShareAttachment, type TMessageActionState } from '../../definitions';
-import { colors } from '../../lib/constants/colors';
-import { type ComposerState } from '../../views/RoomView/definitions';
-import { ComposerProvider } from '../../views/RoomView/stores/ComposerStore';
-import { MessageActionProvider } from '../message/stores/MessageActionStore';
-import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
-import { initStore } from '../../lib/store/auxStore';
-import { searchRemote } from '../../lib/methods/search';
-import database from '../../lib/database';
-import { useMessageComposerApi } from './context';
-import { sendFileMessage } from '../../lib/methods/sendFileMessage';
-import { runSlashCommand } from '../../lib/services/restApi';
+import { MessageComposerContainer } from '../MessageComposerContainer';
+import { ComposerAttachments } from '../components/Attachments/ComposerAttachments';
+import { setPermissions } from '../../../actions/permissions';
+import { addSettings } from '../../../actions/settings';
+import { selectServerRequest } from '../../../actions/server';
+import { setUser } from '../../../actions/login';
+import { mockedStore } from '../../../reducers/mockedStore';
+import { type IPermissionsState } from '../../../reducers/permissions';
+import { type IMessage, type IShareAttachment, type TMessageActionState } from '../../../definitions';
+import { colors } from '../../../lib/constants/colors';
+import { MessageActionProvider } from '../../message/stores/MessageActionStore';
+import * as EmojiKeyboardHook from '../hooks/useEmojiKeyboard';
+import { initStore } from '../../../lib/store/auxStore';
+import { searchRemote } from '../../../lib/methods/search';
+import database from '../../../lib/database';
+import { useMessageComposerApi } from '../store';
+import { sendFileMessage } from '../../../lib/methods/sendFileMessage';
+import { runSlashCommand } from '../../../lib/services/restApi';
+import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
+import { type IMessageComposerContainerProps } from '../interfaces';
 
 jest.useFakeTimers();
 
 // Ensure search returns at least one item so autocomplete renders
-jest.mock('../../lib/methods/search', () => ({
+jest.mock('../../../lib/methods/search', () => ({
 	searchLocal: jest.fn(() => []),
 	searchRemote: jest.fn(() => [{ _id: 'u1', username: 'john', name: 'John' }])
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('../../../lib/services/restApi', () => ({
 	getListCannedResponse: jest.fn(() => ({
 		success: true,
 		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
@@ -39,7 +40,7 @@ jest.mock('../../lib/services/restApi', () => ({
 	runSlashCommand: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../lib/methods/sendFileMessage', () => ({
+jest.mock('../../../lib/methods/sendFileMessage', () => ({
 	sendFileMessage: jest.fn(() => Promise.resolve())
 }));
 
@@ -82,7 +83,7 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-jest.mock('../../lib/database/services/Message', () => ({
+jest.mock('../../../lib/database/services/Message', () => ({
 	getMessageById: (messageId: any) => ({
 		id: messageId,
 		rid: 'rid',
@@ -118,25 +119,28 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
+const createStaticTestRoomStore = (room: typeof initialContext.room) =>
+	createZustandStore(() => ({ room, roomUpdate: {} })) as unknown as NonNullable<ContextType<typeof RoomStoreContext>>;
+
 const Render = ({
 	context,
 	action,
 	children
 }: {
-	context?: Partial<ComposerState>;
+	context?: Partial<IMessageComposerContainerProps> & { room?: typeof initialContext.room };
 	action?: TMessageActionState;
 	children?: ReactElement;
 }) => (
 	<Provider store={mockedStore}>
 		<MessageActionProvider initialAction={action}>
-			<ComposerProvider {...initialContext} {...context}>
-				<MessageComposerContainer>
+			<RoomStoreContext.Provider value={createStaticTestRoomStore(context?.room ?? initialContext.room)}>
+				<MessageComposerContainer {...initialContext} {...context}>
 					<>
 						<ComposerAttachments />
 						{children}
 					</>
 				</MessageComposerContainer>
-			</ComposerProvider>
+			</RoomStoreContext.Provider>
 		</MessageActionProvider>
 	</Provider>
 );
@@ -649,7 +653,7 @@ describe('MessageComposer', () => {
 		const id = 'messageId';
 		beforeEach(() => {
 			return renderAndFlush(
-				<Render context={{ rid: 'rid', onSendMessage, editCancel, editRequest }} action={{ kind: 'edit', messageId: id }} />
+				<Render context={{ onSendMessage, editCancel, editRequest }} action={{ kind: 'edit', messageId: id }} />
 			);
 		});
 		test('init', async () => {
@@ -681,7 +685,7 @@ describe('MessageComposer', () => {
 		const editRequest = jest.fn();
 		const id = 'image';
 		test('edit image', async () => {
-			await renderAndFlush(<Render context={{ rid: 'rid', editRequest }} action={{ kind: 'edit', messageId: id }} />);
+			await renderAndFlush(<Render context={{ editRequest }} action={{ kind: 'edit', messageId: id }} />);
 			await screen.findByTestId('message-composer');
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(editRequest).toHaveBeenCalledWith({ id, msg: `Attachment description for ${id}`, rid: 'rid' });
@@ -689,7 +693,7 @@ describe('MessageComposer', () => {
 	});
 
 	const messageIds = ['abc', 'def'];
-	jest.mock('./hooks/useMessage', () => ({
+	jest.mock('../hooks/useMessage', () => ({
 		useMessage: (messageId: string) => {
 			if (!messageIds.includes(messageId)) {
 				return null;
@@ -705,7 +709,7 @@ describe('MessageComposer', () => {
 		}
 	}));
 
-	jest.mock('../../lib/store/auxStore', () => ({
+	jest.mock('../../../lib/store/auxStore', () => ({
 		store: {
 			getState: () => mockedStore.getState()
 		}
@@ -807,5 +811,28 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).not.toHaveBeenCalled();
 			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
 		});
+	});
+
+	test('updates the placeholder when the room emits an update', () => {
+		const room = { ...initialContext.room, t: 'c' };
+		const roomStore = createStaticTestRoomStore(room);
+
+		render(
+			<Provider store={mockedStore}>
+				<MessageActionProvider>
+					<RoomStoreContext.Provider value={roomStore}>
+						<MessageComposerContainer {...initialContext} />
+					</RoomStoreContext.Provider>
+				</MessageActionProvider>
+			</Provider>
+		);
+
+		const previousPlaceholder = screen.getByTestId('message-composer-input').props.placeholder;
+		room.name = 'Updated Room';
+		room.fname = 'Updated Room';
+		act(() => roomStore.setState({ roomUpdate: { fname: 'Updated Room' } }));
+
+		expect(screen.getByTestId('message-composer-input').props.placeholder).not.toBe(previousPlaceholder);
+		expect(screen.getByTestId('message-composer-input').props.placeholder).toContain('Updated Room');
 	});
 });

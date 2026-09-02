@@ -3,7 +3,7 @@ import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';
-import { useMessageComposerApi } from '../../context';
+import { useMessageComposerApi } from '../../store';
 
 export interface IBaseButton {
 	testID: string;

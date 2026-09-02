@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { useComposerAttachments, useMessageComposerApi } from '../../context';
+import { useComposerAttachments, useMessageComposerApi } from '../../store';
 import { useActionSheet } from '../../../ActionSheet';
 import Thumbs from '../../../Thumbs';
 import I18n from '../../../../i18n';
