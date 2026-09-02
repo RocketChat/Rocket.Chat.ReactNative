@@ -13,6 +13,7 @@ import Button from '../../containers/Button';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { e2eResetOwnKey } from '../../lib/services/restApi';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
 import { styles } from './styles';
@@ -42,6 +43,9 @@ const E2EEncryptionSecurityView = () => {
 						dispatch(logout());
 					}
 				} catch (e) {
+					if (isTwoFactorCancelled(e)) {
+						return;
+					}
 					log(e);
 					showErrorAlert(I18n.t('E2E_encryption_reset_error'));
 				}
