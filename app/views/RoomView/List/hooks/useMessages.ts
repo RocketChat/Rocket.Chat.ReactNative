@@ -190,11 +190,7 @@ export const useMessages = ({
 		}
 
 		subscription.current = observable.subscribe(result => {
-			const newMessages: TAnyMessageModel[] = [...result];
-
-			if (tmid && thread.current) {
-				newMessages.push(thread.current);
-			}
+			const newMessages: TAnyMessageModel[] = tmid && thread.current ? [...result, thread.current] : result;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
