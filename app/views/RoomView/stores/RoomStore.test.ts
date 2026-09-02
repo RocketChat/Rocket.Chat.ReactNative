@@ -503,14 +503,20 @@ describe('RoomStore', () => {
 			expect(observeWithColumns).toHaveBeenCalledTimes(2);
 		});
 
-		it('never shares state across rid-less stores and leaves an unmount a no-op', () => {
+		it('never shares state across rid-less stores and skips registry lifecycle on unmount', () => {
 			const first = warmRoomStore({ initialRoom: stubRoom });
 			const second = warmRoomStore({ initialRoom: stubRoom });
 
 			expect(second).not.toBe(first);
 
+			first.setState({ joined: false });
+			expect(second.getState().joined).toBe(true);
+
 			const { unmount } = renderHook(() => useRoomStoreForScreen({ initialRoom: stubRoom }));
-			expect(() => unmount()).not.toThrow();
+			unmount();
+
+			expect(() => flushSweeps()).not.toThrow();
+			expect(second.getState().joined).toBe(true);
 		});
 	});
 
@@ -545,6 +551,18 @@ describe('RoomStore', () => {
 			expect(unsubscribe).not.toHaveBeenCalled();
 
 			flushSweeps();
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not double unsubscribe when a screen pops during the grace window and the sweep runs again', () => {
+			const { unsubscribe } = setupObserve();
+
+			const { unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: stubRoom }));
+			unmount();
+			flushSweeps();
+
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
+			expect(() => flushSweeps()).not.toThrow();
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 

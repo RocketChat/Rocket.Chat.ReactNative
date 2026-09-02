@@ -1,10 +1,11 @@
 import { InteractionManager } from 'react-native';
-import { act, render, renderHook } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
-import { useRoomStoreForScreen, warmRoomStore } from '../stores/RoomStore';
+import { warmRoomStore } from '../stores/RoomStore';
 import { RoomScreenContext } from '../stores/RoomScreenContext';
 import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
+import { mountAndReleaseRoomStore } from '../../../lib/testUtils/roomStoreLifecycle';
 import { MessageRow } from './MessageRow';
 
 jest.mock('../../../lib/database', () => ({
@@ -73,10 +74,9 @@ describe('MessageRow', () => {
 		}) as unknown as typeof InteractionManager.runAfterInteractions);
 	});
 
-	// Isolate cases through the public screen-lifetime hook instead of a test-only registry reset.
 	afterEach(() => {
 		setupObserve();
-		renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: { rid: 'rid-1', t: 'c' } })).unmount();
+		mountAndReleaseRoomStore({ rid: 'rid-1', initialRoom: { rid: 'rid-1', t: 'c' } });
 	});
 
 	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', () => {

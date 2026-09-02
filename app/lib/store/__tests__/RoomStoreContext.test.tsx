@@ -1,13 +1,9 @@
 import { InteractionManager } from 'react-native';
-import { act, render, renderHook } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 import database from '../../database';
-import {
-	createStaticRoomStore,
-	peekRoomStore,
-	useRoomStoreForScreen,
-	warmRoomStore
-} from '../../../views/RoomView/stores/RoomStore';
+import { createStaticRoomStore, peekRoomStore, warmRoomStore } from '../../../views/RoomView/stores/RoomStore';
+import { mountAndReleaseRoomStore } from '../../testUtils/roomStoreLifecycle';
 import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
 
 jest.mock('../../database', () => ({
@@ -64,10 +60,9 @@ describe('RoomStoreContext', () => {
 		}) as unknown as typeof InteractionManager.runAfterInteractions);
 	});
 
-	// Isolate cases through the public screen-lifetime hook instead of a test-only registry reset.
 	afterEach(() => {
 		setupObserve();
-		renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: subscriptionRoom })).unmount();
+		mountAndReleaseRoomStore({ rid: 'rid-1', initialRoom: subscriptionRoom });
 	});
 
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {

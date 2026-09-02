@@ -279,7 +279,7 @@ const register = (rid: string, t: string | undefined, store: RoomStore, refCount
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
 // without touching refCount. Safe to call from a useState initializer, which may run twice under
 // StrictMode/concurrent render. Acquire/release own the lifetime.
-const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId, serverVersion }: IGetOrCreateRoomStoreParams): RoomStore => {
+export const warmRoomStore = ({ rid, t, initialRoom, roomUserId, serverVersion }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
 		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId, serverVersion));
 	}
@@ -292,11 +292,6 @@ const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId, serverVersion 
 	scheduleGraceSweep(rid);
 	return store;
 };
-
-// Warms the rid-keyed store ahead of navigation (goRoom's prefetch) without claiming ownership of
-// it: the entry stays at refCount 0 until a mounted screen acquires it, and the grace sweep reclaims
-// it otherwise.
-export const warmRoomStore = (params: IGetOrCreateRoomStoreParams): RoomStore => peekOrCreateRoomStore(params);
 
 export const createStaticRoomStore = (room: IRoomViewState['room']): RoomStore =>
 	createStore<RoomState>(createRoomState(undefined, room));
@@ -333,7 +328,7 @@ const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, 'rid' | 
 
 export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): RoomStore => {
 	const [screenParams] = useState(params);
-	const [store, setStore] = useState(() => peekOrCreateRoomStore(screenParams));
+	const [store, setStore] = useState(() => warmRoomStore(screenParams));
 	const { rid } = screenParams;
 
 	useEffect(() => {
