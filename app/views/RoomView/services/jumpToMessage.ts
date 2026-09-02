@@ -6,7 +6,7 @@ import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMes
 import { resolveJumpAnchor } from './resolveJumpAnchor';
 import getMessageInfo from './getMessageInfo';
 import getLocalAnchorTs from './getLocalAnchor';
-import { type IJumpToMessageArgs, type TGetMessageInfoResult } from '../definitions';
+import { type IJumpToMessageArgs } from '../definitions';
 
 export const jumpToMessage = async ({
 	messageId,
@@ -19,16 +19,6 @@ export const jumpToMessage = async ({
 	navToThread,
 	cancel
 }: IJumpToMessageArgs): Promise<void> => {
-	const isTargetOutsideCurrentView = (message: TGetMessageInfoResult) => {
-		if (message.tmid && message.tmid === tmid) {
-			return false;
-		}
-		if (!message.tmid && message.rid === rid) {
-			return false;
-		}
-		return true;
-	};
-
 	try {
 		sendLoadingEvent({ visible: true, onCancel: cancel });
 		const message = await getMessageInfo(messageId);
@@ -38,13 +28,16 @@ export const jumpToMessage = async ({
 			return;
 		}
 
-		if (isTargetOutsideCurrentView(message)) {
+		const inThisThread = !!message.tmid && message.tmid === tmid;
+		const inThisRoom = !message.tmid && message.rid === rid;
+
+		if (!inThisThread && !inThisRoom) {
 			if (message.rid !== rid) {
 				navToRoom(message);
 			} else {
 				navToThread(message);
 			}
-		} else if (!message.tmid && message.rid === rid && t === 'thread' && !message.replies) {
+		} else if (inThisRoom && t === 'thread' && !message.replies) {
 			/**
 			 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
 			 */
