@@ -51,7 +51,7 @@ Two dev-only guards protect this pattern from silent regressions (both no-op in 
 Rows can render outside a full provider stack (a **Message Preview** has no `MessageActionProvider`; some tests mount only `MessageStore`/`MessageRoomStore`). The three stores disagree deliberately on how to fail:
 
 - **MessageStore** and **MessageRoomStore** hooks throw (`'Message hooks must be used within a MessageProvider'` / `'...MessageRoomProvider'`) if no provider is present — every row and every Room-scoped view is expected to always supply both.
-- **MessageActionStore** distinguishes by hook: `useMessageAction()` throws without a provider, but `useIsBeingEdited(messageId)` falls back to a shared `inertStore` (`action: null`, and every action method throws `NO_OP_ACTIONS`) — a Message Preview rendered without a `MessageActionProvider` can ask "am I being edited?" and safely get `false` instead of crashing, since it can never actually enter an edit session.
+- **MessageActionStore** distinguishes by hook: `useMessageAction()` throws without a provider, but `useIsBeingEdited(messageId)` falls back to a shared `inertStore` holding only `action: null` — a Message Preview rendered without a `MessageActionProvider` can ask "am I being edited?" and safely get `false` instead of crashing, since it can never actually enter an edit session.
 
 ---
 
