@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
@@ -26,12 +26,13 @@ const styles = StyleSheet.create({
 const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const isAutocompleteVisible = useIsAutocompleteVisible();
+	const wasScrolledPastLimit = useSharedValue(false);
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
-				scheduleOnRN(setScrolledPastLimit, true);
-			} else {
-				scheduleOnRN(setScrolledPastLimit, false);
+			const isPastLimit = event.contentOffset.y > SCROLL_LIMIT;
+			if (isPastLimit !== wasScrolledPastLimit.value) {
+				wasScrolledPastLimit.value = isPastLimit;
+				scheduleOnRN(setScrolledPastLimit, isPastLimit);
 			}
 		}
 	});
