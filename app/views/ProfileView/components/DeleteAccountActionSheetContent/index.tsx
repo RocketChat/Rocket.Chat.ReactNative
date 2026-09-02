@@ -9,6 +9,7 @@ import sharedStyles from '../../../Styles';
 import FooterButtons from './FooterButtons';
 import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
+import { isTwoFactorCancelled } from '../../../../lib/services/twoFactor/twoFactorCancelled';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
@@ -63,6 +64,9 @@ const DeleteAccountActionSheetContent = (): ReactElement => {
 			await deleteOwnAccount(sha256(password));
 			hideActionSheet();
 		} catch (error: any) {
+			if (isTwoFactorCancelled(error)) {
+				return;
+			}
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });
