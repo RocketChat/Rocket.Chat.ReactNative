@@ -136,7 +136,7 @@ export interface IListContainerProps {
 export interface IRoomActions {
 	onThreadPress: (item: TAnyMessageModel) => void;
 	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
-	resetAction: () => void;
+	sendMessage: (message?: string, tshow?: boolean) => void;
 }
 
 // The screen's own state, carried by RoomScreenContext — see that module for why it is per-screen.

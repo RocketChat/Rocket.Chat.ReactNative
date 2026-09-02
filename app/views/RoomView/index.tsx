@@ -265,7 +265,7 @@ const RoomView = (props: IRoomViewProps) => {
 						) : null}
 						<A11yGateProvider>
 							<RoomMessageProvider
-								roomActions={{ onThreadPress, onReactionPress, resetAction }}
+								roomActions={{ onThreadPress, onReactionPress, sendMessage: handleSendMessage }}
 								jumpToMessage={jumpToMessageByUrl}
 								closeEmojiAndAction={handleCloseEmoji}
 								reactionInit={onReactionInit}

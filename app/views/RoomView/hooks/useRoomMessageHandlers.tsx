@@ -9,9 +9,7 @@ import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { isInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { getUserSelector } from '../../../selectors/login';
 import {
 	type IMessage,
 	type IRoomInfoParam,
@@ -23,25 +21,21 @@ import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { type IRoomActions, type IRoomViewProps } from '../definitions';
 import { useRoomStore } from '../stores/RoomStoreContext';
-import { useRoomScreen } from '../stores/RoomScreenContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
-import { sendRoomMessage } from '../services/sendRoomMessage';
 
 export function useRoomMessageHandlers({
 	tmid,
 	onThreadPress,
 	onReactionPress,
-	resetAction
+	sendMessage
 }: IRoomActions & { tmid?: string }): IUseRoomMessageHandlersResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
-	const user = useAppSelector(getUserSelector);
 	const { showActionSheet } = useActionSheet();
 
-	const { clearLastSeen } = useRoomScreen();
 	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);
 
@@ -115,9 +109,6 @@ export function useRoomMessageHandlers({
 		return toggleFollowThreadService(threadMessageId, isFollowingThread);
 	};
 
-	const onAnswerButtonPress = (message?: string, tshow?: boolean) =>
-		sendRoomMessage({ rid, message, tmid, user, tshow, onMessageSent: clearLastSeen, resetAction });
-
 	return {
 		blockAction: blockActionService,
 		navToRoomInfo,
@@ -131,6 +122,6 @@ export function useRoomMessageHandlers({
 		replyBroadcast,
 		fetchThreadName,
 		toggleFollowThread,
-		onAnswerButtonPress
+		onAnswerButtonPress: sendMessage
 	};
 }
