@@ -3,22 +3,20 @@ import { sendLoadingEvent } from '../../../containers/Loading';
 import log from '../../../lib/methods/helpers/log';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMessages';
-import { resolveJumpAnchor } from './resolveJumpAnchor';
-import getMessageInfo from './getMessageInfo';
+import { resolveJumpAnchor as resolveJumpAnchorDefault } from './resolveJumpAnchor';
+import getMessageInfoDefault from './getMessageInfo';
 import getLocalAnchorTs from './getLocalAnchor';
-import { type IJumpToMessageArgs } from '../definitions';
+import { type IJumpToMessageArgs, type IJumpToMessageDeps } from '../definitions';
 
-export const jumpToMessage = async ({
-	messageId,
-	isFromReply,
-	rid,
-	tmid,
-	t,
-	listContainerRef,
-	navToRoom,
-	navToThread,
-	cancel
-}: IJumpToMessageArgs): Promise<void> => {
+const defaultDeps: IJumpToMessageDeps = {
+	getMessageInfo: getMessageInfoDefault,
+	resolveJumpAnchor: resolveJumpAnchorDefault
+};
+
+export const jumpToMessage = async (
+	{ messageId, isFromReply, rid, tmid, t, listContainerRef, navToRoom, navToThread, cancel }: IJumpToMessageArgs,
+	{ getMessageInfo, resolveJumpAnchor }: IJumpToMessageDeps = defaultDeps
+): Promise<void> => {
 	try {
 		sendLoadingEvent({ visible: true, onCancel: cancel });
 		const message = await getMessageInfo(messageId);
