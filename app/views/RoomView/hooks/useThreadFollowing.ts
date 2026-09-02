@@ -1,27 +1,22 @@
-import { useEffect, useState } from 'react';
+import { Q } from '@nozbe/watermelondb';
+import { useMemo } from 'react';
 
-import { getMessageById } from '../../../lib/database/services/Message';
+import { type TMessageModel } from '../../../definitions';
+import database from '../../../lib/database';
+import { useObservable } from '../../../lib/hooks/useObservable';
 
 export function useThreadFollowing(tmid?: string, userId?: string): boolean {
-	const [isFollowingThread, setIsFollowingThread] = useState(true);
+	const threadObservable = useMemo(
+		() =>
+			tmid
+				? database.active.get<TMessageModel>('messages').query(Q.where('id', tmid)).observeWithColumns(['replies'])
+				: undefined,
+		[tmid]
+	);
+	const thread = useObservable(threadObservable)?.[0];
 
-	useEffect(() => {
-		if (!tmid) {
-			return;
-		}
-		let unsubscribe: (() => void) | undefined;
-		getMessageById(tmid).then(threadRecord => {
-			if (!threadRecord) {
-				return;
-			}
-			const subscription = threadRecord.observe().subscribe(thread => {
-				setIsFollowingThread(thread.replies?.some(replyUserId => replyUserId === userId) ?? false);
-			});
-			unsubscribe = () => subscription.unsubscribe();
-		});
-
-		return () => unsubscribe?.();
-	}, [tmid, userId]);
-
-	return isFollowingThread;
+	if (!thread) {
+		return true;
+	}
+	return thread.replies?.some(replyUserId => replyUserId === userId) ?? false;
 }
