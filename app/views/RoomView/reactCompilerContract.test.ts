@@ -17,9 +17,7 @@ const EXTRA_FILES: string[] = [
 // Files the React Compiler silently skips today. Fixing the underlying cause must remove its file from this list.
 const KNOWN_SKIPPED: string[] = [
 	// Disables a React ESLint rule, which makes the compiler bail out.
-	'app/views/RoomView/List/hooks/useMessages.ts',
-	// Reads a variable before its declaration.
-	'app/views/RoomView/components/ReactionPicker.tsx'
+	'app/views/RoomView/List/hooks/useMessages.ts'
 ];
 
 const collectSourceFiles = (dir: string): string[] => {

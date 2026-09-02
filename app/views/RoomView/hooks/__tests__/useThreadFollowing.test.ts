@@ -15,59 +15,58 @@ type Emit<T> = (value: T) => void;
 const setupObservable = () => {
 	let emit: Emit<any> | undefined;
 	const unsubscribe = jest.fn();
-	const subscribe = jest.fn((cb: Emit<any>) => {
-		emit = cb;
-		return { unsubscribe };
-	});
-	const threadRecord = { observe: () => ({ subscribe }) };
-	mockGet.mockImplementation(() => ({ find: jest.fn(() => Promise.resolve(threadRecord)) }));
+	const observeWithColumns = jest.fn(() => ({
+		subscribe: (cb: Emit<any>) => {
+			emit = cb;
+			return { unsubscribe };
+		}
+	}));
+	mockGet.mockImplementation(() => ({ query: () => ({ observeWithColumns }) }));
 	return {
+		observeWithColumns,
 		unsubscribe,
-		subscribe,
-		emitThread: (thread: any) => act(() => emit?.(thread))
+		emitThreads: (threads: any[]) => act(() => emit?.(threads))
 	};
 };
-
-const flush = () => act(() => Promise.resolve());
 
 describe('useThreadFollowing', () => {
 	beforeEach(() => jest.clearAllMocks());
 
-	it('reflects whether the user is a replier on the observed thread', async () => {
+	it('reflects whether the user is a replier on the observed thread', () => {
 		const observable = setupObservable();
 		const { result } = renderHook(() => useThreadFollowing('tmid-1', 'user-1'));
 
-		await flush();
-		observable.emitThread({ replies: ['user-1', 'other'] });
 		expect(result.current).toBe(true);
 
-		observable.emitThread({ replies: ['other'] });
+		observable.emitThreads([{ replies: ['user-1', 'other'] }]);
+		expect(result.current).toBe(true);
+
+		observable.emitThreads([{ replies: ['other'] }]);
+		expect(result.current).toBe(false);
+
+		observable.emitThreads([{ replies: undefined }]);
 		expect(result.current).toBe(false);
 	});
 
-	it('does not observe without a tmid', async () => {
+	it('does not observe without a tmid', () => {
 		setupObservable();
-		renderHook(() => useThreadFollowing(undefined, 'user-1'));
+		const { result } = renderHook(() => useThreadFollowing(undefined, 'user-1'));
 
-		await flush();
+		expect(result.current).toBe(true);
 		expect(mockGet).not.toHaveBeenCalled();
 	});
 
-	it('does not subscribe when unmounted before the thread record resolves', async () => {
+	it('observes the replies column of the thread', () => {
 		const observable = setupObservable();
-		const { unmount } = renderHook(() => useThreadFollowing('tmid-1', 'user-1'));
+		renderHook(() => useThreadFollowing('tmid-1', 'user-1'));
 
-		unmount();
-		await flush();
-
-		expect(observable.subscribe).not.toHaveBeenCalled();
+		expect(observable.observeWithColumns).toHaveBeenCalledWith(['replies']);
 	});
 
-	it('unsubscribes on unmount', async () => {
+	it('unsubscribes on unmount', () => {
 		const observable = setupObservable();
 		const { unmount } = renderHook(() => useThreadFollowing('tmid-1', 'user-1'));
 
-		await flush();
 		unmount();
 		expect(observable.unsubscribe).toHaveBeenCalledTimes(1);
 	});

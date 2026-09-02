@@ -21,16 +21,16 @@ const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReaction
 	const [searchedEmojis, setSearchedEmojis] = useState<IEmoji[]>([]);
 	const [searching, setSearching] = useState<boolean>(false);
 
-	const handleTextChange = useDebounce((text: string) => {
-		setSearching(text !== '');
-		handleSearchEmojis(text);
-	}, textInputDebounceTime);
-
 	const handleSearchEmojis = async (text: string) => {
 		logEvent(events.REACTION_PICKER_SEARCH_EMOJIS);
 		const emojis = await searchEmojis(text);
 		setSearchedEmojis(emojis);
 	};
+
+	const handleTextChange = useDebounce((text: string) => {
+		setSearching(text !== '');
+		handleSearchEmojis(text);
+	}, textInputDebounceTime);
 
 	const handleEmojiSelect = (_eventType: EventTypes, emoji?: IEmoji) => {
 		logEvent(events.REACTION_PICKER_EMOJI_SELECTED);
