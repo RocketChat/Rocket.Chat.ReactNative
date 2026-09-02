@@ -91,8 +91,10 @@ const useFrozenHandlersGuard: (state: MessageRoomState) => void = __DEV__
 	? useFrozenHandlersGuardDev
 	: useFrozenHandlersGuardProd;
 
-const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	const [store] = useState(() => createMessageRoomStore(state));
+export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
+	const timeFormatSetting = useSetting('Message_TimeFormat') as string;
+	const timeFormat = state.timeFormat ?? timeFormatSetting;
+	const [store] = useState(() => createMessageRoomStore({ ...state, timeFormat }));
 	useFrozenHandlersGuard(state);
 
 	// These fields can change mid-session (e.g. an open room gets archived), unlike the
@@ -100,7 +102,7 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 	useEffect(() => {
 		const reactiveState: ReactiveSnapshot = {
 			handlers: state.handlers,
-			timeFormat: state.timeFormat,
+			timeFormat,
 			autoTranslateRoom: state.autoTranslateRoom,
 			autoTranslateLanguage: state.autoTranslateLanguage,
 			archived: state.archived,
@@ -111,7 +113,7 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 		store.setState(reactiveState);
 	}, [
 		state.handlers,
-		state.timeFormat,
+		timeFormat,
 		state.autoTranslateRoom,
 		state.autoTranslateLanguage,
 		state.archived,
@@ -122,24 +124,6 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 	]);
 
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;
-};
-
-const MessageRoomProviderWithSetting = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	const Message_TimeFormat = useSetting('Message_TimeFormat') as string;
-
-	return (
-		<MessageRoomStoreProvider {...state} timeFormat={Message_TimeFormat}>
-			{children}
-		</MessageRoomStoreProvider>
-	);
-};
-
-export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	return state.timeFormat != null ? (
-		<MessageRoomStoreProvider {...state}>{children}</MessageRoomStoreProvider>
-	) : (
-		<MessageRoomProviderWithSetting {...state}>{children}</MessageRoomProviderWithSetting>
-	);
 };
 
 export const useJumpToMessage = (): ((link: string) => void) | undefined => useMessageRoomStore(s => s.jumpToMessage);
