@@ -32,7 +32,7 @@ export const useFloatingDate = (): IUseFloatingDate => {
 	const opacity = useSharedValue(0);
 	const isFadingIn = useSharedValue(false);
 
-	const { current: viewabilityConfigCallbackPairs } = useRef<TViewabilityConfigCallbackPairs>([
+	const [viewabilityConfigCallbackPairs] = useState<TViewabilityConfigCallbackPairs>(() => [
 		{
 			viewabilityConfig: { itemVisiblePercentThreshold: 0 },
 			onViewableItemsChanged: ({ viewableItems }) => {
