@@ -244,9 +244,9 @@ interface IRoomStoreRegistryEntry {
 
 const registry = new Map<string, IRoomStoreRegistryEntry>();
 
-// Tear down a still-unclaimed entry after the current interaction settles. Warm-up (goRoom) and
-// render (peekOrCreate) create entries at refCount 0; the sweep reclaims them if no mount acquired
-// them by the time the nav transition finishes. One sweep pending per entry keeps it idempotent.
+// Tear down a still-unclaimed entry after the current interaction settles: warmRoomStore creates
+// entries at refCount 0, and the sweep reclaims them if no screen acquired them by the time the nav
+// transition finishes. One sweep pending per entry keeps it idempotent.
 const scheduleGraceSweep = (rid: string): void => {
 	const entry = registry.get(rid);
 	if (!entry || entry.pendingSweep) {

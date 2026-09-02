@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react-native';
 import database from '../../../../lib/database';
 import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
 import { warmRoomStore } from '../../stores/RoomStore';
-import { mountAndReleaseRoomStore } from '../../../../lib/testUtils/roomStoreLifecycle';
+import { mountRoomScreenAndCaptureSweeps } from '../../stores/__tests__/roomStoreLifecycle';
 import { useSubscriptionUnreads } from '../useSubscriptionUnreads';
 
 jest.mock('../../../../lib/database', () => ({
@@ -45,7 +45,7 @@ describe('useSubscriptionUnreads', () => {
 	});
 
 	afterEach(() => {
-		const runAfterInteractionsSpy = mountAndReleaseRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		const runAfterInteractionsSpy = mountRoomScreenAndCaptureSweeps({ rid: 'rid-1', initialRoom: stubRoom });
 		runAfterInteractionsSpy.mockRestore();
 	});
 

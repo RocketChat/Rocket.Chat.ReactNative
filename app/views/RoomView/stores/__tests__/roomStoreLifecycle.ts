@@ -1,15 +1,15 @@
 import { InteractionManager } from 'react-native';
 import { renderHook } from '@testing-library/react-native';
 
-import { useRoomStoreForScreen } from '../../views/RoomView/stores/RoomStore';
-import type { IGetOrCreateRoomStoreParams } from '../store/definitions';
+import { useRoomStoreForScreen } from '../RoomStore';
+import type { IGetOrCreateRoomStoreParams } from '../../../../lib/store/definitions';
 
-export const mountAndReleaseRoomStore = (params: IGetOrCreateRoomStoreParams): jest.SpyInstance => {
-	const { unmount } = renderHook(() => useRoomStoreForScreen(params));
+export const mountRoomScreenAndCaptureSweeps = (params: IGetOrCreateRoomStoreParams): jest.SpyInstance => {
 	const runAfterInteractionsSpy = jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation(((cb: () => void) => {
 		cb();
 		return { then: () => {} };
 	}) as unknown as typeof InteractionManager.runAfterInteractions);
+	const { unmount } = renderHook(() => useRoomStoreForScreen(params));
 	unmount();
 	return runAfterInteractionsSpy;
 };

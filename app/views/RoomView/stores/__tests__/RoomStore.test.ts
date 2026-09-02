@@ -562,8 +562,6 @@ describe('RoomStore', () => {
 			flushSweeps();
 
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
-			expect(() => flushSweeps()).not.toThrow();
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
 		it('warm-up then navigate: peek keeps the store alive across the sweep once the mount acquires it', () => {

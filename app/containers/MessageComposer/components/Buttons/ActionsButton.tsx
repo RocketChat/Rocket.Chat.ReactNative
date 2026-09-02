@@ -13,10 +13,8 @@ import { useComposerTmid } from '../../store';
 import { useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 
 export const ActionsButton = () => {
-	const room = useRoomWithUpdate();
-	const rid = room.rid;
+	const { rid, t } = useRoomWithUpdate();
 	const tmid = useComposerTmid();
-	const t = room.t;
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);

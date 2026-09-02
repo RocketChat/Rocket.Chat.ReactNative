@@ -3,7 +3,7 @@ import { act, render } from '@testing-library/react-native';
 
 import database from '../../database';
 import { createStaticRoomStore, peekRoomStore, warmRoomStore } from '../../../views/RoomView/stores/RoomStore';
-import { mountAndReleaseRoomStore } from '../../testUtils/roomStoreLifecycle';
+import { mountRoomScreenAndCaptureSweeps } from '../../../views/RoomView/stores/__tests__/roomStoreLifecycle';
 import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
 
 jest.mock('../../database', () => ({
@@ -62,7 +62,8 @@ describe('RoomStoreContext', () => {
 
 	afterEach(() => {
 		setupObserve();
-		mountAndReleaseRoomStore({ rid: 'rid-1', initialRoom: subscriptionRoom });
+		const runAfterInteractionsSpy = mountRoomScreenAndCaptureSweeps({ rid: 'rid-1', initialRoom: subscriptionRoom });
+		runAfterInteractionsSpy.mockRestore();
 	});
 
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {

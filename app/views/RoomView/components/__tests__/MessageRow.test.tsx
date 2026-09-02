@@ -5,7 +5,7 @@ import database from '../../../../lib/database';
 import { warmRoomStore } from '../../stores/RoomStore';
 import { RoomScreenContext } from '../../stores/RoomScreenContext';
 import { RoomStoreContext } from '../../../../lib/store/RoomStoreContext';
-import { mountAndReleaseRoomStore } from '../../../../lib/testUtils/roomStoreLifecycle';
+import { mountRoomScreenAndCaptureSweeps } from '../../stores/__tests__/roomStoreLifecycle';
 import { MessageRow } from '../MessageRow';
 
 jest.mock('../../../../lib/database', () => ({
@@ -76,7 +76,8 @@ describe('MessageRow', () => {
 
 	afterEach(() => {
 		setupObserve();
-		mountAndReleaseRoomStore({ rid: 'rid-1', initialRoom: { rid: 'rid-1', t: 'c' } });
+		const runAfterInteractionsSpy = mountRoomScreenAndCaptureSweeps({ rid: 'rid-1', initialRoom: { rid: 'rid-1', t: 'c' } });
+		runAfterInteractionsSpy.mockRestore();
 	});
 
 	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', () => {
