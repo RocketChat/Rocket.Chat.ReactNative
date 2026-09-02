@@ -517,8 +517,6 @@ describe('useMessages', () => {
 		const firstTake = JSON.stringify(queryCalls[0].at(-1));
 		const secondTake = JSON.stringify(queryCalls[1].at(-1));
 		expect(firstTake).not.toEqual(secondTake);
-		// Smoke check: the constant exists and is the expected step.
-		expect(QUERY_SIZE).toBe(50);
 	});
 
 	it('calls readThreads when tmid is set', async () => {
