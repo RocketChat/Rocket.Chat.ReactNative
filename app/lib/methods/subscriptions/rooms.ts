@@ -12,7 +12,7 @@ import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
-import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
+import { INAPP_NOTIFICATION_EMITTER } from '../../constants/notifications';
 import { Encryption } from '../../encryption';
 import updateMessages from '../updateMessages';
 import {
@@ -39,7 +39,7 @@ import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/video
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
 let streamListener: Promise<any> | false;
-let subServer: string;
+let subscribedHost: string | null = null;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
 const WINDOW_TIME = 500;
@@ -301,8 +301,7 @@ export default function subscribeRooms() {
 	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const db = database.active;
 
-		// check if the server from variable is the same as the js sdk client
-		if (sdk && sdk.current.client && sdk.current.client.host !== subServer) {
+		if (!subscribedHost || sdk.host !== subscribedHost) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -386,17 +385,15 @@ export default function subscribeRooms() {
 				notification.avatar = getRoomAvatar(room);
 
 				// If it's from a encrypted room
-				if (message?.t === E2E_MESSAGE_TYPE) {
-					if (message.msg || message.content) {
-						// Decrypt this message content
-						const { msg } = await Encryption.decryptMessage({ ...message, rid });
-						// If it's a direct the content is the message decrypted
-						if (room.t === 'd') {
-							notification.text = msg;
-							// If it's a private group we should add the sender name
-						} else {
-							notification.text = `${getSenderName(sender)}: ${msg}`;
-						}
+				if (message?.t === E2E_MESSAGE_TYPE && (message.msg || message.content)) {
+					// Decrypt this message content
+					const { msg } = await Encryption.decryptMessage({ ...message, rid });
+					// If it's a direct the content is the message decrypted
+					if (room.t === 'd') {
+						notification.text = msg;
+						// If it's a private group we should add the sender name
+					} else {
+						notification.text = `${getSenderName(sender)}: ${msg}`;
 					}
 				}
 			} catch (e) {
@@ -433,14 +430,20 @@ export default function subscribeRooms() {
 			subTimer = false;
 		}
 		roomsSubscription = null;
+		subscribedHost = null;
 	};
+
+	const host = sdk.host;
+	if (!host) {
+		return null;
+	}
 
 	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
 		// set the server that started this task
-		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		subscribedHost = host;
+		sdk.subscribeNotifyUser().catch((e: unknown) => console.log(e));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

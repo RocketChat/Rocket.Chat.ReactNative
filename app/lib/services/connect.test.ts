@@ -1,4 +1,4 @@
-import { connect, determineAuthType, disconnect, getLoginServices } from './connect';
+import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import { setLoginServices, setUser } from '../../actions/login';
@@ -23,19 +23,26 @@ const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args
 const mockSdkConnect = jest.fn<Promise<void>, []>(() => Promise.resolve());
 const mockSdkAbort = jest.fn<void, []>();
 const mockSdkDisconnect = jest.fn<void, []>();
-const mockSdkInitialize = jest.fn<void, [string]>();
-const mockSdkCurrent = {
-	onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
-	connect: () => mockSdkConnect(),
-	abort: () => mockSdkAbort()
+const mockSdkLogin = jest.fn<Promise<void>, [unknown]>(() => Promise.resolve());
+const mockSdkCurrent: Record<string, unknown> = {
+	currentLogin: undefined
 };
+const mockSdkInitialize = jest.fn<void, [string]>();
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
 		initialize: (server: string) => mockSdkInitialize(server),
+		connect: () => mockSdkConnect(),
 		disconnect: () => mockSdkDisconnect(),
-		get current() {
-			return mockSdkCurrent;
+		onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
+		isInitialized: true,
+		login: async (credentials: unknown) => {
+			await mockSdkLogin(credentials);
+			return mockSdkCurrent.currentLogin ?? null;
+		},
+		abort: () => mockSdkAbort(),
+		get currentLogin() {
+			return mockSdkCurrent.currentLogin;
 		}
 	}
 }));
@@ -44,11 +51,13 @@ type MockStoreState = {
 	meteor: { connected: boolean };
 	login: { user: unknown; isAuthenticated: boolean };
 	settings: Record<string, unknown>;
+	server?: { version: string };
 };
 const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	meteor: { connected: false },
 	login: { user: null, isAuthenticated: false },
-	settings: {}
+	settings: {},
+	server: { version: '6.0.0' }
 }));
 const mockStoreDispatch = jest.fn<unknown, [unknown]>();
 const noopUnsubscribe = () => () => {};
@@ -83,6 +92,11 @@ jest.mock('../methods/helpers/events', () => ({
 }));
 
 const mockLog = jest.fn<void, unknown[]>();
+const mockTwoFactor = jest.fn<Promise<{ twoFactorCode: string }>, [unknown]>(() => Promise.resolve({ twoFactorCode: '123456' }));
+jest.mock('./twoFactor/twoFactor', () => ({
+	twoFactor: (params: unknown) => mockTwoFactor(params)
+}));
+
 jest.mock('../methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
@@ -90,7 +104,6 @@ jest.mock('../methods/helpers/log', () => ({
 
 const flushMicrotasks = async (): Promise<void> => {
 	for (let i = 0; i < 5; i += 1) {
-		// eslint-disable-next-line no-await-in-loop
 		await Promise.resolve();
 	}
 };
@@ -672,3 +685,69 @@ describe('getLoginServices (non-iOS)', () => {
 });
 
 // Note: Apple authentication when isIOS is true is tested in connect.ios.test.ts
+
+describe('login', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockSdkCurrent.currentLogin = undefined;
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('rejects when the SDK resolves login without a login result', async () => {
+		await expect(login({ user: 'user', password: 'password' })).rejects.toThrow('Login failed: missing login result');
+	}, 2000);
+
+	it('returns the logged user when the SDK provides a login result', async () => {
+		mockSdkCurrent.currentLogin = {
+			result: {
+				userId: 'userId',
+				authToken: 'authToken',
+				me: { username: 'username', name: 'name' }
+			}
+		};
+
+		await expect(login({ user: 'user', password: 'password' })).resolves.toEqual(
+			expect.objectContaining({ id: 'userId', token: 'authToken', username: 'username' })
+		);
+	}, 2000);
+});
+
+describe('loginTOTP', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockSdkCurrent.currentLogin = undefined;
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('rejects instead of hanging when the SDK resolves login without a login result', async () => {
+		await expect(loginTOTP({ user: 'user', password: 'password' })).rejects.toThrow('Login failed: missing login result');
+	}, 2000);
+
+	it('normalizes ldap credentials to user and password on the 2FA retry', async () => {
+		mockSdkLogin.mockImplementationOnce(() => Promise.reject({ data: { error: 'totp-required', details: {} } }));
+		mockSdkCurrent.currentLogin = { result: { userId: 'userId', authToken: 'authToken', me: { username: 'username' } } };
+
+		await loginTOTP({ username: 'user', ldapPass: 'password', ldap: true, ldapOptions: {} }, { retryWithPassword: true });
+
+		expect(mockSdkLogin).toHaveBeenLastCalledWith({ user: 'user', password: 'password', code: '123456' });
+	}, 2000);
+
+	it('normalizes crowd credentials to user and password on the 2FA retry', async () => {
+		mockSdkLogin.mockImplementationOnce(() => Promise.reject({ data: { error: 'totp-required', details: {} } }));
+		mockSdkCurrent.currentLogin = { result: { userId: 'userId', authToken: 'authToken', me: { username: 'username' } } };
+
+		await loginTOTP({ username: 'user', crowdPassword: 'password', crowd: true }, { retryWithPassword: true });
+
+		expect(mockSdkLogin).toHaveBeenLastCalledWith({ user: 'user', password: 'password', code: '123456' });
+	}, 2000);
+});

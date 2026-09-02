@@ -5,6 +5,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
+import { headers } from '../../lib/methods/helpers/fetch';
 import { SubscriptionType } from '../../definitions';
 import { type IAvatar } from './interfaces';
 import I18n from '../../i18n';
@@ -81,7 +82,7 @@ const Avatar = memo(
 					style={avatarStyle}
 					source={{
 						uri,
-						headers: RocketChatSettings.customHeaders
+						headers: RocketChatSettings.customHeaders ?? headers
 					}}
 					priority='high'
 				/>

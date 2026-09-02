@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -16,14 +16,13 @@ import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { type ICredentials } from '../../definitions';
+import { type ILoginCredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import log from '../../lib/methods/helpers/log';
-
-export const TWO_FACTOR = 'TWO_FACTOR';
+import { TWO_FACTOR } from '../../lib/constants/twoFactor';
 
 interface IMethodsProp {
 	text: string;
@@ -38,7 +37,7 @@ interface IMethods {
 }
 
 interface EventListenerMethod {
-	params?: ICredentials;
+	params?: ILoginCredentials;
 	method?: keyof IMethods;
 	submit?: (param: string) => void;
 	cancel?: () => void;
@@ -70,6 +69,7 @@ const TwoFactor = memo(() => {
 	const isMasterDetail = useMasterDetail();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
+	const pendingCancel = useRef<EventListenerMethod['cancel']>(undefined);
 	const {
 		control,
 		setValue,
@@ -87,12 +87,13 @@ const TwoFactor = memo(() => {
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
 	const params = data?.params;
+	const emailCodeRecipient = params && 'user' in params ? params.user : undefined;
 
 	const sendEmail = async () => {
 		try {
-			if (params?.user) {
+			if (emailCodeRecipient) {
 				clearErrors();
-				const response = await sendEmailCode(params?.user);
+				const response = await sendEmailCode(emailCodeRecipient);
 
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));
@@ -113,6 +114,8 @@ const TwoFactor = memo(() => {
 	}, [data]);
 
 	const showTwoFactor = (args: EventListenerMethod) => {
+		pendingCancel.current?.();
+		pendingCancel.current = args.cancel;
 		setData(args);
 		if (args.invalid) {
 			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
@@ -128,6 +131,7 @@ const TwoFactor = memo(() => {
 
 	const onCancel = () => {
 		const { cancel } = data;
+		pendingCancel.current = undefined;
 		if (cancel) {
 			cancel();
 		}
@@ -136,6 +140,7 @@ const TwoFactor = memo(() => {
 
 	const onSubmit = () => {
 		const { submit } = data;
+		pendingCancel.current = undefined;
 		if (submit) {
 			const { code } = getValues();
 			if (data.method === 'password') {
