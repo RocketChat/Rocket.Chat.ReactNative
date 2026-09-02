@@ -24,6 +24,13 @@ import { type TMessageActionStore } from '../../containers/message/stores/Messag
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
+export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
+	rid?: string;
+	t?: string;
+	tmid?: string;
+	roomStore: RoomStore;
+}
+
 export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 
 export interface IRoomFooterProps {
