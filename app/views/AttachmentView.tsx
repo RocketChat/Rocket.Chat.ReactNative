@@ -18,7 +18,8 @@ import I18n from '../i18n';
 import { useAltTextSupported } from '../lib/hooks/useAltTextSupported';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload } from '../lib/methods/helpers';
+import { encodeAttachmentUrl, formatAttachmentUrl, isAndroid, showErrorAlert } from '../lib/methods/helpers';
+import { fileDownload } from '../lib/methods/helpers/fileDownload';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
@@ -47,7 +48,7 @@ const RenderContent = ({
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
+		const uri = encodeAttachmentUrl(url);
 		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(url);
 		return (
 			<ImageViewer
