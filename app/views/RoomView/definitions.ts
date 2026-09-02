@@ -1,19 +1,17 @@
 import { type ReactElement, type Ref, type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
-import { type StoreApi } from 'zustand';
 
 import { type ChatsStackParamList } from '../../stacks/types';
 import {
 	type IBaseScreen,
 	type IEmoji,
-	type ILastMessage,
 	type ILoggedUser,
-	type IVisitor,
 	type RoomType,
 	type TAnyMessageModel,
 	type TSubscriptionModel
 } from '../../definitions';
+import { type RoomStore, type TRoomUpdate, type TRoomViewRoom } from '../../lib/store/roomStore.types';
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
@@ -37,26 +35,10 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-export type TRoomUpdate = keyof TSubscriptionModel;
-
 // The shapes the room screen reads off a subscription. The screen's own flags live with their
 // owners: room-wide ones in RoomState, per-screen ones in IRoomScreenContextValue.
 export interface IRoomViewState {
-	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				visitor?: IVisitor;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
-		  };
+	room: TRoomViewRoom;
 	roomUpdate: Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
 	member: any;
 	lastSeen: Date | null;
@@ -122,57 +104,10 @@ export interface IRoomScreenContextValue {
 	clearLastSeen: () => void;
 }
 
-export interface IRoomStoreInitParams {
-	tmid?: string;
-	onThreadMessagesLoaded?: () => void;
-	// Per-run cancel token: a run whose signal aborts stops retrying and reports `skipped`, so a
-	// superseded run can never write over the run that replaced it.
-	signal?: AbortSignal;
-}
-
-// The distinct outcomes of one init() run. `skipped` means the run produced nothing the caller may
-// act on: either no work was attempted (no rid, an invite subscription) or the run was aborted and
-// abandoned, which can happen even after a successful load. Only `loaded` carries an unread divider
-// anchor; `failed` means every attempt was made and none succeeded.
-export type TRoomInitResult =
-	| { status: 'loaded'; lastSeen: IRoomViewState['lastSeen'] }
-	| { status: 'skipped' }
-	| { status: 'failed' };
-
-export interface RoomState {
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	subscribed: boolean;
-	member: IRoomViewState['member'];
-	roomUserId?: string | null;
-	canAutoTranslate: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
-	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
-	lastMessageFromAgent: boolean;
-	// Resolves with the run's outcome; only `loaded` carries the screen's unread divider anchor.
-	init: (params?: IRoomStoreInitParams) => Promise<TRoomInitResult>;
-	join: () => void;
-	joinRoom: (requestJoinCode?: () => void) => Promise<void>;
-	resumeRoom: () => Promise<void>;
-}
-
 export interface IJoinRoomContext {
 	serverVersion?: string | null;
 	requestJoinCode?: () => void;
 	onJoin: () => void;
-}
-
-export type RoomStore = StoreApi<RoomState>;
-
-export interface IGetOrCreateRoomStoreParams {
-	rid?: string;
-	t?: string;
-	initialRoom: IRoomViewState['room'];
-	roomUserId?: string | null;
-	serverVersion?: string | null;
 }
 
 export type TGetMessageInfoResult = {

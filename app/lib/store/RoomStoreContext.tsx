@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { useStore, type StoreApi } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../views/RoomView/definitions';
+import { type RoomState, type RoomStore } from './roomStore.types';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 

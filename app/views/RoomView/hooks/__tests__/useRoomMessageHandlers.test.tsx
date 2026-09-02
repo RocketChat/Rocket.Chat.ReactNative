@@ -4,7 +4,7 @@ import { createStore } from 'zustand';
 import { toggleFollowMessage } from '../../../../lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
 import { getUserSelector } from '../../../../selectors/login';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '../../../../lib/store/roomStore.types';
 import { RoomStoreContext } from '../../../../lib/store/RoomStoreContext';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 

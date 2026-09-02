@@ -3,7 +3,7 @@ import { createStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../../lib/services/restApi';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '../../../../lib/store/roomStore.types';
 import { type IUseOmnichannelPermissionsParams } from '../useOmnichannelPermissions';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
 

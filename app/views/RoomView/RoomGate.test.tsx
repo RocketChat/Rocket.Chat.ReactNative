@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import { createStore as createReduxStore } from 'redux';
 
 import RoomGate from './index';
-import { type IRoomViewProps, type RoomState } from './definitions';
+import { type IRoomViewProps } from './definitions';
+import { type RoomState } from '../../lib/store/roomStore.types';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 

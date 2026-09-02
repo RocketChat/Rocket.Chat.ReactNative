@@ -23,7 +23,7 @@ import { sendFileMessage } from '../../../lib/methods/sendFileMessage';
 import { runSlashCommand } from '../../../lib/services/restApi';
 import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
 import { type IMessageComposerContainerProps } from '../interfaces';
-import { type RoomStore } from '../../../views/RoomView/definitions';
+import { type RoomStore } from '../../../lib/store/roomStore.types';
 
 jest.useFakeTimers();
 

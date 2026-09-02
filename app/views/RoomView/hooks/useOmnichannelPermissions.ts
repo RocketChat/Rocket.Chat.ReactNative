@@ -3,7 +3,8 @@ import { useStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { type IRoomViewState, type RoomStore } from '../definitions';
+import { type RoomStore } from '../../../lib/store/roomStore.types';
+import { type IRoomViewState } from '../definitions';
 
 export interface IUseOmnichannelPermissionsParams {
 	rid?: string;

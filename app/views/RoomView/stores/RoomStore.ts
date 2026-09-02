@@ -14,10 +14,10 @@ import { type RoomType, type TSubscriptionModel } from '../../../definitions';
 import {
 	type IGetOrCreateRoomStoreParams,
 	type IRoomStoreInitParams,
-	type IRoomViewState,
 	type RoomState,
 	type RoomStore
-} from '../definitions';
+} from '../../../lib/store/roomStore.types';
+import { type IRoomViewState } from '../definitions';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
 import { joinRoomImpl, resumeRoomImpl } from '../services/joinRoom';
