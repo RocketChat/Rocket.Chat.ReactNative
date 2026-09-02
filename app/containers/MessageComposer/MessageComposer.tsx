@@ -4,12 +4,21 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import { useComposerRid, useComposerSharing, useComposerTmid, useEditRequest, useOnSendMessage } from './store';
+import {
+	useAlsoSendThreadToChannel,
+	useComposerAttachments,
+	useComposerRid,
+	useComposerSharing,
+	useComposerTmid,
+	useEditRequest,
+	useMessageComposerApi,
+	useOnSendMessage,
+	useRecordingAudio
+} from './store';
 import { useMessageActionKind, useMessageActionStoreApi } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import { MessageInnerContext } from './context';
-import { useAlsoSendThreadToChannel, useComposerAttachments, useMessageComposerApi, useRecordingAudio } from './store';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';

@@ -9,15 +9,13 @@ import {
 	type IEmoji,
 	type ILastMessage,
 	type ILoggedUser,
-	type IMessage,
-	type IMessageEditAttachment,
 	type IVisitor,
 	type RoomType,
 	type TAnyMessageModel,
 	type TSubscriptionModel
 } from '../../definitions';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
-import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
+import { type IMessageComposerRef, type TEditRequest } from '../../containers/MessageComposer/interfaces';
 import { type IMessageActions } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
@@ -251,11 +249,7 @@ export interface IUseMessageActionsResult {
 	errorActionsShow: (message: TAnyMessageModel) => void;
 	onEditInit: (messageId: string) => void;
 	onEditCancel: () => void;
-	onEditRequest: (
-		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
-			attachments?: IMessageEditAttachment[];
-		}
-	) => Promise<void>;
+	onEditRequest: TEditRequest;
 	onQuoteInit: (messageId: string) => void;
 	onRemoveQuoteMessage: (messageId: string) => void;
 	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
