@@ -66,6 +66,8 @@ export const useMessages = ({
 		}
 	}, 1000);
 
+	useEffect(() => readThread.cancel, [readThread]);
+
 	// Rejoin the Live Tail from an Anchored Window. Called on each emit while anchored: when the
 	// boundary Newer Loader (ts === highTs) flips present → absent, loadNextMessages has consumed it
 	// and written the next batch + a new loader ABOVE the current bound — which the bounded

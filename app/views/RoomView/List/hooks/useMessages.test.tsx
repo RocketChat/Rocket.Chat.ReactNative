@@ -40,7 +40,7 @@ jest.mock('../../../../lib/methods/helpers', () => {
 	const actual = jest.requireActual('../../../../lib/methods/helpers');
 	return {
 		...actual,
-		useDebounce: (fn: (...args: unknown[]) => unknown) => fn
+		useDebounce: (fn: (...args: unknown[]) => unknown) => Object.assign(fn, { cancel: jest.fn() })
 	};
 });
 
