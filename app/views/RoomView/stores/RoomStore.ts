@@ -210,10 +210,9 @@ const observeRoom = (rid: string | undefined, t: string | undefined, store: Room
 				room: next,
 				// observeWithColumns re-emits the same cached model instance mutated in place, so a fresh
 				// snapshot object is what re-renders consumers on a tracked-column change.
-				roomUpdate: roomAttrsUpdate.reduce((ret: IRoomViewState['roomUpdate'], attr) => {
-					ret[attr] = (next as TSubscriptionModel)[attr];
-					return ret;
-				}, {}),
+				roomUpdate: Object.fromEntries(
+					roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
+				) as IRoomViewState['roomUpdate'],
 				subscribed: true,
 				joined: true
 			});

@@ -57,9 +57,7 @@ export interface IRoomViewState {
 				sysMes?: boolean;
 				onHold?: boolean;
 		  };
-	roomUpdate: {
-		[K in TRoomUpdate]?: any;
-	};
+	roomUpdate: Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
 	member: any;
 	lastSeen: Date | null;
 }
