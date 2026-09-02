@@ -45,7 +45,7 @@ type ComposerCallbacks = Pick<
 	'onSendMessage' | 'editRequest' | 'editCancel' | 'onRemoveQuoteMessage'
 >;
 
-export const createComposerStore = ({ tmid, sharing = false }: Pick<IMessageComposerContainerProps, 'tmid' | 'sharing'> = {}) =>
+const createComposerStore = ({ tmid, sharing = false }: Pick<IMessageComposerContainerProps, 'tmid' | 'sharing'> = {}) =>
 	createStore<ComposerState>()((set, get) => ({
 		tmid,
 		sharing,
@@ -81,12 +81,12 @@ export const createComposerStore = ({ tmid, sharing = false }: Pick<IMessageComp
 		}
 	}));
 
-export type ComposerStore = ReturnType<typeof createComposerStore>;
+type ComposerStore = ReturnType<typeof createComposerStore>;
 
-export const ComposerStoreContext = createContext<ComposerStore | null>(null);
+const ComposerStoreContext = createContext<ComposerStore | null>(null);
 const ComposerCallbacksContext = createContext<React.MutableRefObject<ComposerCallbacks> | null>(null);
 
-export const useComposerStoreApi = (): ComposerStore => {
+const useComposerStoreApi = (): ComposerStore => {
 	const store = useContext(ComposerStoreContext);
 	if (!store) {
 		throw new Error('MessageComposer hooks must be used within a MessageComposerContainer');

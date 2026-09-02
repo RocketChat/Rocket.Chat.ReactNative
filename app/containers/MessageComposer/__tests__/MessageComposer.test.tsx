@@ -47,7 +47,7 @@ jest.mock('../../../lib/methods/sendFileMessage', () => ({
 const user = userEvent.setup();
 
 const advanceComposerTimers = async (time = 500) => {
-	await act(() => {
+	await act(async () => {
 		jest.advanceTimersByTime(time);
 	});
 };

@@ -1,6 +1,8 @@
 import { type ReactNode } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
+const renderedRoomStores: unknown[] = [];
+
 jest.mock('../../../lib/database', () => ({
 	servers: {
 		get: jest.fn(() => ({
@@ -14,8 +16,9 @@ jest.mock('../../RoomView/stores/RoomStore', () => ({
 }));
 
 jest.mock('../../../containers/MessageComposer/MessageComposer', () => {
-	const { createElement } = require('react');
+	const { createElement, useContext } = require('react');
 	const { Pressable, View } = require('react-native');
+	const { RoomStoreContext } = require('../../../lib/store/RoomStoreContext');
 	const {
 		useComposerRoom,
 		useComposerTmid,
@@ -24,6 +27,7 @@ jest.mock('../../../containers/MessageComposer/MessageComposer', () => {
 	} = require('../../../containers/MessageComposer/store');
 	return {
 		MessageComposer: () => {
+			renderedRoomStores.push(useContext(RoomStoreContext));
 			const room = useComposerRoom();
 			const tmid = useComposerTmid();
 			const onSendMessage = useOnSendMessage();
@@ -145,6 +149,7 @@ const makeInstance = ({
 describe('ShareView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		renderedRoomStores.length = 0;
 	});
 
 	it('selectFile selects the attachment and opens the alt text action sheet', () => {
@@ -188,6 +193,17 @@ describe('ShareView', () => {
 		fireEvent.press(screen.getByTestId('share-remove-quote'));
 		expect(shareView.send).toHaveBeenCalledWith('message', undefined);
 		expect(shareView.getSelectedMessageIds()).toEqual([]);
+	});
+
+	it('keeps the same room store across ShareView re-renders', () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		const { rerender } = render(shareView.renderContent());
+
+		shareView.onChangeText('caption');
+		rerender(shareView.renderContent());
+
+		expect(renderedRoomStores.length).toBeGreaterThan(1);
+		expect(new Set(renderedRoomStores).size).toBe(1);
 	});
 
 	it('send() passes caption as msg and altText as description on server >= 8.4.0', async () => {

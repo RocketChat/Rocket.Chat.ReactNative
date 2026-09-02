@@ -45,6 +45,7 @@ import {
 import { appStart } from '../../actions/app';
 import { RoomStoreContext } from '../../lib/store/RoomStoreContext';
 import { createStaticRoomStore } from '../RoomView/stores/RoomStore';
+import { type RoomStore } from '../RoomView/definitions';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -80,6 +81,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
 	private messageActionStore: TMessageActionStore;
+	private roomStoreForRoom?: { room: TSubscriptionModel; store: RoomStore };
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -388,6 +390,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.messageActionStore.getState().actions.setQuoteMessageIds(newSelectedMessages);
 	};
 
+	getRoomStore = (room: TSubscriptionModel): RoomStore => {
+		if (this.roomStoreForRoom?.room !== room) {
+			this.roomStoreForRoom = { room, store: createStaticRoomStore(room) };
+		}
+		return this.roomStoreForRoom.store;
+	};
+
 	renderContent = () => {
 		const { attachments, selected, text, room, thread } = this.state;
 		const { theme } = this.props;
@@ -395,7 +404,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (attachments.length) {
 			return (
 				<MessageActionProvider store={this.messageActionStore}>
-					<RoomStoreContext.Provider value={createStaticRoomStore(room)}>
+					<RoomStoreContext.Provider value={this.getRoomStore(room)}>
 						<MessageComposerContainer
 							ref={this.messageComposerRef}
 							tmid={this.getThreadId(thread)}

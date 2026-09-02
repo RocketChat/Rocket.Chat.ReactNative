@@ -3,15 +3,17 @@ import { AccessibilityInfo } from 'react-native';
 import { type ReactNode } from 'react';
 
 import { useAutocompleteA11yAnnounce } from '../useAutocompleteA11yAnnounce';
-import { createComposerStore, type ComposerStore, ComposerStoreContext } from '../../../store';
+import { ComposerStoreProvider, useUpdateAutocompleteVisible } from '../../../store';
 
 const setup = () => {
-	const store: ComposerStore = createComposerStore();
-	const wrapper = ({ children }: { children: ReactNode }) => (
-		<ComposerStoreContext.Provider value={store}>{children}</ComposerStoreContext.Provider>
+	const wrapper = ({ children }: { children: ReactNode }) => <ComposerStoreProvider>{children}</ComposerStoreProvider>;
+	return renderHook(
+		() => {
+			useAutocompleteA11yAnnounce();
+			return useUpdateAutocompleteVisible();
+		},
+		{ wrapper }
 	);
-	const view = renderHook(() => useAutocompleteA11yAnnounce(), { wrapper });
-	return { store, ...view };
 };
 
 describe('useAutocompleteA11yAnnounce', () => {
@@ -28,9 +30,9 @@ describe('useAutocompleteA11yAnnounce', () => {
 	});
 
 	it('announces 800ms after a false→true transition', () => {
-		const { store } = setup();
+		const { result } = setup();
 
-		act(() => store.getState().updateAutocompleteVisible(true));
+		act(() => result.current(true));
 		expect(announceSpy).not.toHaveBeenCalled();
 
 		act(() => jest.advanceTimersByTime(800));
@@ -38,20 +40,20 @@ describe('useAutocompleteA11yAnnounce', () => {
 	});
 
 	it('clears the pending timeout when visibility flips back before 800ms', () => {
-		const { store } = setup();
+		const { result } = setup();
 
-		act(() => store.getState().updateAutocompleteVisible(true));
+		act(() => result.current(true));
 		act(() => jest.advanceTimersByTime(400));
-		act(() => store.getState().updateAutocompleteVisible(false));
+		act(() => result.current(false));
 
 		act(() => jest.advanceTimersByTime(800));
 		expect(announceSpy).not.toHaveBeenCalled();
 	});
 
 	it('clears the pending timeout on unmount', () => {
-		const { store, unmount } = setup();
+		const { result, unmount } = setup();
 
-		act(() => store.getState().updateAutocompleteVisible(true));
+		act(() => result.current(true));
 		unmount();
 
 		act(() => jest.advanceTimersByTime(800));
