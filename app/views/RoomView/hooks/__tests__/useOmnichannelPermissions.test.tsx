@@ -16,7 +16,7 @@ jest.mock('../../../../lib/hooks/usePermissions', () => ({
 const mockGetRoutingConfig = getRoutingConfig as jest.Mock;
 const mockUsePermissions = usePermissions as jest.Mock;
 
-const makeRoomStore = (): RoomStore =>
+const makeRoomStore = (lastMessageFromAgent = false): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { rid: 'rid-1', t: 'l' },
 		roomUpdate: {},
@@ -29,6 +29,7 @@ const makeRoomStore = (): RoomStore =>
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent,
 		init: jest.fn(),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
@@ -40,7 +41,6 @@ const renderOmnichannelPermissions = (overrides: Partial<IUseOmnichannelPermissi
 		useOmnichannelPermissions({
 			rid: 'rid-1',
 			t: 'l',
-			room: { rid: 'rid-1', t: 'l' },
 			roomUpdate: {},
 			joined: true,
 			livechatAllowManualOnHold: true,
@@ -61,10 +61,7 @@ describe('useOmnichannelPermissions', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
 		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
 
-		const { roomStore } = renderOmnichannelPermissions({
-			t: 'l',
-			room: { rid: 'rid-1', t: 'l', lastMessage: { token: undefined, u: { _id: 'u1' } }, onHold: false } as any
-		});
+		const { roomStore } = renderOmnichannelPermissions({ t: 'l', roomUpdate: { onHold: false } }, makeRoomStore(true));
 
 		expect(roomStore.getState().canForwardGuest).toBe(true);
 		expect(roomStore.getState().canViewCannedResponse).toBe(true);
@@ -79,7 +76,7 @@ describe('useOmnichannelPermissions', () => {
 	it('does not touch the flags for a non-livechat room', async () => {
 		mockUsePermissions.mockReturnValue([true, true]);
 
-		const { roomStore } = renderOmnichannelPermissions({ t: 'c', room: { rid: 'rid-1', t: 'c' } as any });
+		const { roomStore } = renderOmnichannelPermissions({ t: 'c' });
 
 		await act(async () => {});
 
@@ -106,7 +103,6 @@ describe('useOmnichannelPermissions', () => {
 			initialProps: {
 				rid: 'rid-1',
 				t: 'l',
-				room: { rid: 'rid-1', t: 'l' } as any,
 				roomUpdate: {},
 				joined: false,
 				livechatAllowManualOnHold: true,
@@ -129,7 +125,6 @@ describe('useOmnichannelPermissions', () => {
 		const baseProps: IUseOmnichannelPermissionsParams = {
 			rid: 'rid-1',
 			t: 'l',
-			room: { rid: 'rid-1', t: 'l' } as any,
 			roomUpdate: {},
 			joined: false,
 			livechatAllowManualOnHold: true,
@@ -151,17 +146,13 @@ describe('useOmnichannelPermissions', () => {
 	});
 
 	it('recomputes canPlaceLivechatOnHold on a pure on-hold flip of the same room instance', async () => {
-		const roomStore = makeRoomStore();
+		const roomStore = makeRoomStore(true);
 		mockUsePermissions.mockReturnValue([true, true]);
 		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
-
-		// WatermelonDB re-emits the same mutated model instance; only roomUpdate is a fresh snapshot.
-		const room = { rid: 'rid-1', t: 'l', lastMessage: { token: undefined, u: { _id: 'u1' } }, onHold: false } as any;
 
 		const baseProps: IUseOmnichannelPermissionsParams = {
 			rid: 'rid-1',
 			t: 'l',
-			room,
 			roomUpdate: { onHold: false },
 			joined: true,
 			livechatAllowManualOnHold: true,
@@ -176,7 +167,6 @@ describe('useOmnichannelPermissions', () => {
 			expect(roomStore.getState().canPlaceLivechatOnHold).toBe(true);
 		});
 
-		room.onHold = true;
 		rerender({ ...baseProps, roomUpdate: { onHold: true } });
 
 		await waitFor(() => {

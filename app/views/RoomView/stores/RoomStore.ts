@@ -138,6 +138,7 @@ const createRoomState =
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent: false,
 
 		// A transient failure retries a couple of times instead of leaving the screen empty until the
 		// user navigates away and back. The loop lives here so the caller's single `loading` window
@@ -223,6 +224,18 @@ const observeRoom = (rid: string | undefined, t: string | undefined, store: Room
 	return () => subscription.unsubscribe();
 };
 
+// last_message is excluded from the room observer so an incoming message does not re-render the
+// whole screen. Livechat rooms still need it: on-hold is only offered while the last message came
+// from the agent rather than the visitor.
+const observeLivechatLastMessage = (rid: string, store: RoomStore): (() => void) => {
+	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observeWithColumns(['last_message']);
+	const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
+		const lastMessage = rows[0]?.lastMessage;
+		store.setState({ lastMessageFromAgent: !!(lastMessage && !lastMessage.token && lastMessage.u) });
+	});
+	return () => subscription.unsubscribe();
+};
+
 interface IRoomStoreRegistryEntry {
 	store: RoomStore;
 	unsubscribe: () => void;
@@ -255,7 +268,13 @@ const scheduleGraceSweep = (rid: string): void => {
 };
 
 const register = (rid: string, t: string | undefined, store: RoomStore, refCount: number): void => {
-	registry.set(rid, { store, unsubscribe: observeRoom(rid, t, store), refCount, pendingSweep: false });
+	const unsubscribeRoom = observeRoom(rid, t, store);
+	const unsubscribeLivechat = t === 'l' ? observeLivechatLastMessage(rid, store) : undefined;
+	const unsubscribe = () => {
+		unsubscribeRoom();
+		unsubscribeLivechat?.();
+	};
+	registry.set(rid, { store, unsubscribe, refCount, pendingSweep: false });
 };
 
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight

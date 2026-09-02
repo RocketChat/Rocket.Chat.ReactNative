@@ -168,6 +168,55 @@ describe('RoomStore', () => {
 		expect(observeWithColumns).toHaveBeenCalledWith(Object.values(roomAttrsUpdateColumns));
 	});
 
+	it('does not observe last_message for a non-livechat room', () => {
+		const { observeWithColumns } = setupObserve();
+		peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+
+		expect(observeWithColumns).toHaveBeenCalledTimes(1);
+		expect(Object.values(roomAttrsUpdateColumns)).not.toContain('last_message');
+	});
+
+	describe('livechat last_message observer', () => {
+		const setupLivechatObserve = () => {
+			const emitters = new Map<string, (rows: any[]) => void>();
+			const unsubscribe = jest.fn();
+			const observeWithColumns = jest.fn((columns: string[]) => ({
+				subscribe: (cb: (rows: any[]) => void) => {
+					emitters.set(columns.join(','), cb);
+					return { unsubscribe };
+				}
+			}));
+			mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
+			return {
+				observeWithColumns,
+				unsubscribe,
+				emitLastMessage: (rows: any[]) => emitters.get('last_message')?.(rows)
+			};
+		};
+
+		it('flags the last message as agent-authored when it carries no visitor token', () => {
+			const { observeWithColumns, emitLastMessage } = setupLivechatObserve();
+			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'l', initialRoom: stubRoom });
+
+			expect(observeWithColumns).toHaveBeenCalledWith(['last_message']);
+
+			emitLastMessage([{ lastMessage: { u: { _id: 'agent-1' } } }]);
+			expect(store.getState().lastMessageFromAgent).toBe(true);
+
+			emitLastMessage([{ lastMessage: { token: 'visitor-token', u: { _id: 'visitor-1' } } }]);
+			expect(store.getState().lastMessageFromAgent).toBe(false);
+		});
+
+		it('tears the last_message observer down with the room observer', () => {
+			const { unsubscribe } = setupLivechatObserve();
+			acquireRoomStore({ rid: 'rid-1' }, peekOrCreateRoomStore({ rid: 'rid-1', t: 'l', initialRoom: stubRoom }));
+
+			releaseRoomStore('rid-1');
+
+			expect(unsubscribe).toHaveBeenCalledTimes(2);
+		});
+	});
+
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
 		setupObserve();
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });

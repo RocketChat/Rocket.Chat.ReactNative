@@ -42,6 +42,7 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		canReturnQueue: false,
 		canViewCannedResponse: false,
 		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent: false,
 		init: jest.fn(),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
@@ -76,18 +77,6 @@ describe('useHeader', () => {
 		});
 		expect(mockSetOptions).toHaveBeenCalledTimes(3);
 		expect(mockSetOptions.mock.calls[2][0]).toHaveProperty('headerTitle');
-	});
-
-	it('does not re-fire the title effect when only lastMessage changes', () => {
-		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'same', lastMessage: { msg: 'old' } } });
-
-		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
-		expect(mockSetOptions).toHaveBeenCalledTimes(2);
-
-		act(() => {
-			mockTestStore.setState({ roomUpdate: { topic: 'same', lastMessage: { msg: 'new' } } });
-		});
-		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 	});
 
 	it('keeps the thread title from the passed name when the observed room name changes', () => {

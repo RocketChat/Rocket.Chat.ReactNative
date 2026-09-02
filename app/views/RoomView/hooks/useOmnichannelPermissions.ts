@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { type IRoomViewState, type IUseOmnichannelPermissionsParams } from '../definitions';
+import { type IUseOmnichannelPermissionsParams } from '../definitions';
 
 const getCanReturnQueue = async () => {
 	try {
@@ -13,13 +14,9 @@ const getCanReturnQueue = async () => {
 	}
 };
 
-const getCanPlaceLivechatOnHold = (livechatAllowManualOnHold: boolean | undefined, room: IRoomViewState['room']) =>
-	!!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
-
 export function useOmnichannelPermissions({
 	rid,
 	t,
-	room,
 	roomUpdate,
 	joined,
 	livechatAllowManualOnHold,
@@ -57,24 +54,15 @@ export function useOmnichannelPermissions({
 		};
 	}, [t]);
 
+	const lastMessageFromAgent = useStore(roomStore, s => s.lastMessageFromAgent);
+
 	useEffect(() => {
 		if (t !== 'l') {
 			return;
 		}
 		roomStore.setState({
 			canReturnQueue,
-			canPlaceLivechatOnHold: getCanPlaceLivechatOnHold(livechatAllowManualOnHold, room)
+			canPlaceLivechatOnHold: !!(livechatAllowManualOnHold && lastMessageFromAgent && !roomUpdate.onHold)
 		});
-	}, [
-		t,
-		room,
-		roomStore,
-		canReturnQueue,
-		livechatAllowManualOnHold,
-		roomUpdate.lastMessage?.token,
-		roomUpdate.visitor,
-		roomUpdate.status,
-		roomUpdate.onHold,
-		joined
-	]);
+	}, [t, roomStore, canReturnQueue, livechatAllowManualOnHold, lastMessageFromAgent, roomUpdate.onHold, joined]);
 }

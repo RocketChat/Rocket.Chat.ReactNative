@@ -206,7 +206,6 @@ const RoomView = (props: IRoomViewProps) => {
 	useOmnichannelPermissions({
 		rid,
 		t,
-		room,
 		roomUpdate,
 		joined,
 		livechatAllowManualOnHold,
