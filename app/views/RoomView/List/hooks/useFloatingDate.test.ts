@@ -56,11 +56,19 @@ describe('useFloatingDate', () => {
 		expect(result.current.ts).toBe(dayBefore);
 	});
 
-	it('clears ts when nothing dated is viewable', () => {
+	it('keeps the last ts when nothing dated is viewable, so the pill does not flicker', () => {
 		const { result } = renderHook(() => useFloatingDate());
 		emit(result, [token(0, morning)]);
 		emit(result, []);
-		expect(result.current.ts).toBeNull();
+		expect(result.current.ts).toBe(morning);
+	});
+
+	it('does not resurrect a stale day after an empty batch on the same day', () => {
+		const { result } = renderHook(() => useFloatingDate());
+		emit(result, [token(0, morning)]);
+		emit(result, []);
+		emit(result, [token(0, evening)]);
+		expect(result.current.ts).toBe(morning);
 	});
 
 	it('keeps viewabilityConfigCallbackPairs identity stable across updates', () => {

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { type FlatListProps, type ViewToken } from 'react-native';
 import { type SharedValue, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
@@ -37,7 +37,12 @@ export const useFloatingDate = (): IUseFloatingDate => {
 			viewabilityConfig: { itemVisiblePercentThreshold: 0 },
 			onViewableItemsChanged: ({ viewableItems }) => {
 				const next = getHighestIndexViewableTs(viewableItems);
-				const nextDayKey = next ? dayjs(next).format('L') : null;
+				// keep the previous date when a fast fling outruns rendering and the batch comes back empty,
+				// so the pill doesn't unmount mid-fade and snap back at full opacity
+				if (!next) {
+					return;
+				}
+				const nextDayKey = dayjs(next).format('L');
 				if (nextDayKey === dayKey.current) {
 					return;
 				}
@@ -47,13 +52,13 @@ export const useFloatingDate = (): IUseFloatingDate => {
 		}
 	]);
 
-	const hide = (): void => {
+	const hide = useCallback((): void => {
 		'worklet';
 
 		opacity.set(withDelay(HIDE_DELAY, withTiming(0, { duration: FADE_OUT_DURATION })));
-	};
+	}, [opacity]);
 
-	const show = (): void => {
+	const show = useCallback((): void => {
 		'worklet';
 
 		if (isFadingIn.get()) {
@@ -70,7 +75,7 @@ export const useFloatingDate = (): IUseFloatingDate => {
 				hide();
 			})
 		);
-	};
+	}, [hide, isFadingIn, opacity]);
 
 	return { ts, opacity, show, viewabilityConfigCallbackPairs };
 };
