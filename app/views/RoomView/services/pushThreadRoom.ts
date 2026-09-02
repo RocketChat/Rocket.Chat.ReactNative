@@ -1,8 +1,7 @@
 import I18n from '../../../i18n';
-import { getThreadById } from '../../../lib/database/services/Thread';
-import getThreadName from '../../../lib/methods/getThreadName';
 import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { sendLoadingEvent } from '../../../containers/Loading';
+import { fetchThreadName } from './fetchThreadName';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
 import { SubscriptionType, type TAnyMessageModel } from '../../../definitions';
 import { type IRoomViewProps, type TGetMessageInfoResult } from '../definitions';
@@ -34,18 +33,12 @@ export const pushThreadRoom = async ({
 			jumpToMessageId = item.id;
 		}
 		sendLoadingEvent({ visible: true, onCancel });
-		const threadRecord = await getThreadById(item.tmid);
-		if (threadRecord?.t === 'rm') {
-			name = I18n.t('Thread');
+		const threadName = await fetchThreadName(rid, item.tmid, jumpToMessageId, name);
+		if (!threadName) {
+			sendLoadingEvent({ visible: false });
+			return;
 		}
-		if (!name) {
-			const threadName = await getThreadName(rid, item.tmid, jumpToMessageId);
-			if (!threadName) {
-				sendLoadingEvent({ visible: false });
-				return;
-			}
-			name = threadName;
-		}
+		name = threadName;
 		if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
 			name = I18n.t('Encrypted_message');
 		}
