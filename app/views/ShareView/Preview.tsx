@@ -19,7 +19,7 @@ const MESSAGE_COMPOSER_HEIGHT = 56;
 
 const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number; height?: number }) => {
 	const player = useVideoPlayer(uri, player => {
-		player.play();
+		player.pause();
 	});
 	const hasHandledErrorRef = useRef(false);
 
