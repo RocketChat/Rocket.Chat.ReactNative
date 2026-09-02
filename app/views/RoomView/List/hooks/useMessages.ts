@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
@@ -35,7 +35,7 @@ export const useMessages = ({
 	hideSystemMessages: string[];
 	t: RoomType;
 }) => {
-	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
+	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
 	// Optional UPPER ts bound for the Message Window. null => Live Window (newest-first, follows the
 	// Live Tail). A finite number (ms since epoch) => Anchored Window pinned below the Live Tail.
 	const [highTs, setHighTsState] = useState<number | null>(null);
@@ -202,7 +202,7 @@ export const useMessages = ({
 			}
 
 			readThread();
-			setRawMessages(newMessages);
+			setMessages(newMessages);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
 	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor]);
@@ -224,30 +224,22 @@ export const useMessages = ({
 		return unsubscribe;
 	}, [fetchMessages, unsubscribe]);
 
-	const visibleMessages = useMemo(
-		() =>
-			!hideSystemMessages || hideSystemMessages.length === 0
-				? rawMessages
-				: rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t)),
-		[rawMessages, hideSystemMessages]
-	);
-
-	// Sync the IDs ref after render, outside the memo, to satisfy the react-hooks/refs rule
-	// while still keeping the ref up to date before any paint (useLayoutEffect timing).
+	// Sync the IDs ref after render so the react-hooks/refs rule holds while the ref stays up to
+	// date before any paint (useLayoutEffect timing).
 	useLayoutEffect(() => {
-		messagesIds.current = visibleMessages.map(m => m.id);
-	}, [visibleMessages]);
+		messagesIds.current = messages.map(m => m.id);
+	}, [messages]);
 
 	useEffect(
 		() => {
 			// Snapshot the currently-visible loader into lastDispatchedLoaderId so the
 			// auto-dispatch effect treats it as already-seen when it re-fires after the rid
-			// change — rawMessages may still reflect the previous room until the new
+			// change — messages may still reflect the previous room until the new
 			// subscription emits, and we must not dispatch with a stale loader.
-			lastDispatchedLoaderId.current = findFirstLoaderId(visibleMessages);
+			lastDispatchedLoaderId.current = findFirstLoaderId(messages);
 			autoLoadCount.current = 0;
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- visibleMessages intentionally omitted: stale read at rid-change is the desired behaviour
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- messages intentionally omitted: stale read at rid-change is the desired behaviour
 		[rid]
 	);
 
@@ -269,7 +261,7 @@ export const useMessages = ({
 			return;
 		}
 
-		const loaderId = findFirstLoaderId(visibleMessages);
+		const loaderId = findFirstLoaderId(messages);
 
 		if (loaderId && loaderId !== lastDispatchedLoaderId.current) {
 			// Skip if a fetch for this loader is already in flight (push happens before the DB subscription emits)
@@ -280,7 +272,7 @@ export const useMessages = ({
 			autoLoadCount.current += 1;
 			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
-	}, [highTs, serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
+	}, [highTs, serverVersion, rid, t, hideSystemMessages, messages, dispatch, store]);
 
-	return [visibleMessages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
+	return [messages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
 };

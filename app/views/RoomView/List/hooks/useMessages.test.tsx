@@ -12,6 +12,7 @@ import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { readThreads } from '../../../../lib/services/restApi';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
+import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { useMessages } from './useMessages';
 
 jest.mock('../../../../lib/database', () => ({
@@ -194,12 +195,12 @@ describe('useMessages', () => {
 		expect(mockDbGet).not.toHaveBeenCalled();
 	});
 
-	it('filters out system message types listed in hideSystemMessages', async () => {
-		emittedRows = [msg({ id: '1', t: 'uj' }), msg({ id: '2', t: undefined }), msg({ id: '3', t: 'room_changed_topic' })];
-		const { result } = renderUseMessages({ hideSystemMessages: ['uj'] });
+	it('asks the database to exclude system message types listed in hideSystemMessages', async () => {
+		renderUseMessages({ hideSystemMessages: ['uj'] });
 		await waitFor(() => {
-			expect(result.current[0].map(m => m.id)).toEqual(['2', '3']);
+			expect(queryCalls.length).toBeGreaterThan(0);
 		});
+		expect(queryCalls[0]).toContainEqual(buildVisibleSystemTypesClause(['uj']));
 	});
 
 	it('returns visibleMessagesIds aligned with visible messages', async () => {
