@@ -9,7 +9,7 @@ import { getUserSelector } from '../../../../selectors/login';
 import { type RoomState, type RoomStore } from '../../definitions';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { RoomScreenContext } from '../../stores/RoomScreenContext';
-import { createMessageActionStore, MessageActionStoreContext } from '../../../../containers/message/stores/MessageActionStore';
+import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
 jest.mock('@react-navigation/native', () => ({
@@ -57,6 +57,7 @@ const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 const mockDispatch = jest.fn();
 const mockShowActionSheet = jest.fn();
 const mockOnThreadPress = jest.fn();
+const mockOnReactionPress = jest.fn();
 const mockHideActionSheet = jest.fn();
 
 const mockToggleFollowMessage = toggleFollowMessage as jest.Mock;
@@ -92,21 +93,32 @@ const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, 
 	const roomStore = makeRoomStore(roomStoreOverrides);
 	const messageActionStore = createMessageActionStore();
 	const clearLastSeen = jest.fn();
+	const resetAction = () => messageActionStore.getState().actions.clear();
 
-	const { result } = renderHook(() => useRoomMessageHandlers({ tmid, onThreadPress: mockOnThreadPress }), {
-		wrapper: ({ children }) => (
-			<RoomStoreContext.Provider value={roomStore}>
-				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen }}>
-					<MessageActionStoreContext.Provider value={messageActionStore}>{children}</MessageActionStoreContext.Provider>
-				</RoomScreenContext.Provider>
-			</RoomStoreContext.Provider>
-		)
-	});
+	const { result } = renderHook(
+		() => useRoomMessageHandlers({ tmid, onThreadPress: mockOnThreadPress, onReactionPress: mockOnReactionPress, resetAction }),
+		{
+			wrapper: ({ children }) => (
+				<RoomStoreContext.Provider value={roomStore}>
+					<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen }}>
+						{children}
+					</RoomScreenContext.Provider>
+				</RoomStoreContext.Provider>
+			)
+		}
+	);
 
 	return { result, roomStore, messageActionStore, clearLastSeen };
 };
 
-const renderWithoutStores = () => renderHook(() => useRoomMessageHandlers({ onThreadPress: mockOnThreadPress }));
+const renderWithoutStores = () =>
+	renderHook(() =>
+		useRoomMessageHandlers({
+			onThreadPress: mockOnThreadPress,
+			onReactionPress: mockOnReactionPress,
+			resetAction: jest.fn()
+		})
+	);
 
 describe('useRoomMessageHandlers', () => {
 	beforeEach(() => {

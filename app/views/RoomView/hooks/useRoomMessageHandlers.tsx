@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,7 +21,6 @@ import {
 } from '../../../definitions';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
-import { MessageActionStoreContext } from '../../../containers/message/stores/MessageActionStore';
 import { type IRoomActions, type IRoomViewProps } from '../definitions';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
@@ -30,25 +28,22 @@ import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
 import { sendRoomMessage } from '../services/sendRoomMessage';
-import { useReactionActions } from './useReactionActions';
 
-export function useRoomMessageHandlers({ tmid, onThreadPress }: IRoomActions & { tmid?: string }): IUseRoomMessageHandlersResult {
+export function useRoomMessageHandlers({
+	tmid,
+	onThreadPress,
+	onReactionPress,
+	resetAction
+}: IRoomActions & { tmid?: string }): IUseRoomMessageHandlersResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
 	const user = useAppSelector(getUserSelector);
-	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { showActionSheet } = useActionSheet();
 
-	const messageActionStore = useContext(MessageActionStoreContext);
 	const { clearLastSeen } = useRoomScreen();
 	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);
-
-	if (!messageActionStore) {
-		throw new Error('useRoomMessageHandlers must be used within a MessageActionProvider');
-	}
-
-	const { resetAction, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
 
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {
 		if (!drid) return;
