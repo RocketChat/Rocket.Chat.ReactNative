@@ -263,5 +263,6 @@ output.utils = {
     post,
     login,
     getDeepLink,
-    createDM
+    createDM,
+    sleep
 };

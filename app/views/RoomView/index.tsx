@@ -12,14 +12,8 @@ import { type NavigatorScreenParams } from '@react-navigation/native';
 import { type TNavigation } from '../../stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
-import {
-	getRoutingConfig,
-	getUserInfo,
-	editMessage,
-	setReaction,
-	joinRoom,
-	toggleFollowMessage
-} from '../../lib/services/restApi';
+import { editMessage } from '../../lib/methods/editMessage';
+import { getRoutingConfig, getUserInfo, setReaction, joinRoom, toggleFollowMessage } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -306,33 +300,54 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		this.consumeJumpParams(prevProps);
+		this.updateOmnichannelIfNeeded(prevState);
+		this.setHeaderIfNeeded(prevProps, prevState);
+		this.setReadOnly();
+		this.updateE2EEStateIfNeeded(prevProps, prevState);
+		this.initIfInviteAccepted(prevState);
+	}
+
+	private consumeJumpParams(prevProps: IRoomViewProps) {
+		const params = this.props.route?.params;
+		const previousParams = prevProps.route?.params;
+
+		if (params?.jumpToMessageId && params.jumpToMessageId !== previousParams?.jumpToMessageId) {
+			this.consumeJumpParam(params.jumpToMessageId);
+		}
+
+		if (params?.jumpToThreadId && params.jumpToThreadId !== previousParams?.jumpToThreadId) {
+			this.navToThread({ tmid: params.jumpToThreadId });
+		}
+	}
+
+	private updateOmnichannelIfNeeded(prevState: IRoomViewState) {
+		if (this.t !== 'l') return;
+
 		const { roomUpdate, joined } = this.state;
-		const { insets, route, encryptionEnabled } = this.props;
-
-		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.consumeJumpParam(route?.params?.jumpToMessageId);
+		if (
+			!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
+			!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
+			!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
+			prevState.joined !== joined
+		) {
+			this.updateOmnichannel();
 		}
+	}
 
-		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
-			this.navToThread({ tmid: route?.params?.jumpToThreadId });
-		}
+	private setHeaderIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+		const { insets } = this.props;
 
-		// If it's a livechat room
-		if (this.t === 'l') {
-			if (
-				!dequal(prevState.roomUpdate.lastMessage?.token, roomUpdate.lastMessage?.token) ||
-				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
-				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
-				prevState.joined !== joined
-			) {
-				this.updateOmnichannel();
-			}
-		}
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
-		this.setReadOnly();
+	}
+
+	private updateE2EEStateIfNeeded(prevProps: IRoomViewProps, prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+		const { encryptionEnabled } = this.props;
 
 		if (
 			encryptionEnabled !== prevProps.encryptionEnabled ||
@@ -341,8 +356,11 @@ export class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		) {
 			this.updateE2EEState();
 		}
+	}
 
-		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+	private initIfInviteAccepted(prevState: IRoomViewState) {
+		const { roomUpdate } = this.state;
+
 		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
 			this.init();
 		}
