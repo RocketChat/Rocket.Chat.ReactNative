@@ -149,7 +149,6 @@ export const useMessages = ({
 		// hideSystemMessages applied here so Q.take() counts only visible rows
 		const visibleSystemClause = buildVisibleSystemTypesClause(hideSystemMessages);
 
-		let observable;
 		if (tmid) {
 			// Prefer threads table; fall back to messages while thread record isn't available yet
 			if (!thread.current || thread.current.collection.table !== 'threads') {
@@ -158,36 +157,22 @@ export const useMessages = ({
 					thread.current = await getMessageById(tmid);
 				}
 			}
-			observable = db
-				.get('thread_messages')
-				.query(
-					Q.where('rid', tmid),
-					...(visibleSystemClause ? [visibleSystemClause] : []),
-					// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
-					...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
-					Q.sortBy('ts', Q.desc),
-					Q.skip(0),
-					Q.take(count.current)
-				)
-				.observe();
-		} else {
-			const whereClause: Q.Clause[] = [
-				Q.where('rid', rid),
-				...(visibleSystemClause ? [visibleSystemClause] : []),
-				// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
-				...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
-				Q.sortBy('ts', Q.desc),
-				Q.skip(0),
-				Q.take(count.current)
-			];
-			if (!showMessageInMainThread) {
-				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
-			}
-			observable = db
-				.get('messages')
-				.query(...whereClause)
-				.observe();
 		}
+
+		const clauses: Q.Clause[] = [
+			Q.where('rid', tmid ?? rid),
+			...(visibleSystemClause ? [visibleSystemClause] : []),
+			// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
+			...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
+			...(!tmid && !showMessageInMainThread ? [Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true)))] : []),
+			Q.sortBy('ts', Q.desc),
+			Q.take(count.current)
+		];
+
+		const observable = db
+			.get(tmid ? 'thread_messages' : 'messages')
+			.query(...clauses)
+			.observe();
 
 		subscription.current = observable.subscribe(result => {
 			const newMessages: TAnyMessageModel[] = tmid && thread.current ? [...result, thread.current] : result;
