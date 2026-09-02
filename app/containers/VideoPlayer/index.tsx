@@ -6,7 +6,7 @@ import { useEventListener } from 'expo';
 import { useAppNavigation } from '../../lib/hooks/navigation';
 import I18n from '../../i18n';
 import { type IAttachment } from '../../definitions';
-import { formatAttachmentUrl } from '../../lib/methods/helpers';
+import { formatAttachmentUrl, encodeAttachmentUrl } from '../../lib/methods/helpers';
 
 interface IVideoPlayerProps {
 	attachment: IAttachment;
@@ -20,7 +20,7 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 	const hasHandledErrorRef = useRef(false);
 
 	const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-	const uri = encodeURI(url);
+	const uri = encodeAttachmentUrl(url);
 
 	const player = useVideoPlayer(uri, player => {
 		player.play();
