@@ -11,7 +11,6 @@ interface IUseRoomInitParams {
 	tmid?: string;
 	isAuthenticated: boolean;
 	roomStore: RoomStore;
-	roomUpdate: IRoomViewState['roomUpdate'];
 	onThreadMessagesLoaded: () => void;
 	messageActionStore: TMessageActionStore;
 	onQuoteInit: (messageId: string) => void;
@@ -68,7 +67,6 @@ export function useRoomInit({
 	tmid,
 	isAuthenticated,
 	roomStore,
-	roomUpdate,
 	onThreadMessagesLoaded,
 	messageActionStore,
 	onQuoteInit
@@ -127,14 +125,5 @@ export function useRoomInit({
 		return () => task.cancel();
 	}, [messageActionStore, onQuoteInitRef]);
 
-	// init() is skipped for invite subscriptions. Initialize when invite has been accepted
-	const prevStatusRef = useRef(roomUpdate.status);
-	useEffect(() => {
-		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			init();
-		}
-		prevStatusRef.current = roomUpdate.status;
-	}, [roomUpdate.status, init]);
-
-	return { loading, failed: failed && !loading, retry: init, lastSeen, clearLastSeen };
+	return { loading, failed: hasInitWork && failed && !loading, retry: init, lastSeen, clearLastSeen };
 }

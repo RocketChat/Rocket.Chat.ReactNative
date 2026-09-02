@@ -140,7 +140,6 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 		tmid,
 		isAuthenticated,
 		roomStore,
-		roomUpdate,
 		onThreadMessagesLoaded,
 		messageActionStore,
 		onQuoteInit
