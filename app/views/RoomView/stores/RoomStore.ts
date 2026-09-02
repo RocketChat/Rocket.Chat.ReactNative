@@ -123,8 +123,7 @@ const createRoomState =
 	(
 		rid: string | undefined,
 		initialRoom: IRoomViewState['room'] = EMPTY_ROOM,
-		roomUserId: string | null | undefined = null,
-		serverVersion: string | null | undefined = null
+		roomUserId: string | null | undefined = null
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: initialRoom,
@@ -191,7 +190,6 @@ const createRoomState =
 		// store, so the caller passes its own trigger instead of registering one here.
 		joinRoom: requestJoinCode =>
 			joinRoomImpl(get().room, {
-				serverVersion,
 				requestJoinCode,
 				onJoin: get().join
 			}),
@@ -279,21 +277,15 @@ const register = (rid: string, t: string | undefined, store: RoomStore, refCount
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
 // without touching refCount. Safe to call from a useState initializer, which may run twice under
 // StrictMode/concurrent render. Acquire/release own the lifetime.
-export const peekOrCreateRoomStore = ({
-	rid,
-	t,
-	initialRoom,
-	roomUserId,
-	serverVersion
-}: IGetOrCreateRoomStoreParams): RoomStore => {
+export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
-		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId, serverVersion));
+		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	}
 	const existing = registry.get(rid);
 	if (existing) {
 		return existing.store;
 	}
-	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId, serverVersion));
+	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	register(rid, t, store, 0);
 	scheduleGraceSweep(rid);
 	return store;

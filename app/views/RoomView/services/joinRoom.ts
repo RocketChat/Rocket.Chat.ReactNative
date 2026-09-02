@@ -5,13 +5,13 @@ import { type IJoinRoomContext, type IRoomViewState } from '../definitions';
 
 export const joinRoomImpl = async (
 	room: IRoomViewState['room'],
-	{ serverVersion, requestJoinCode, onJoin }: IJoinRoomContext
+	{ requestJoinCode, onJoin }: IJoinRoomContext
 ): Promise<void> => {
 	logEvent(events.ROOM_JOIN);
 	try {
 		if (room.t === 'l') {
 			if ('_id' in room) {
-				await takeInquiry(room._id, serverVersion as string);
+				await takeInquiry(room._id);
 			}
 			onJoin();
 			return;

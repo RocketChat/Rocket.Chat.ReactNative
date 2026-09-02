@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { getRoomTitle, getUidDirectMessage } from '../../lib/methods/helpers';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
@@ -17,8 +16,6 @@ import { useHeader } from './hooks/useHeader';
 // opens the subscription or runs init, and unblocking mounts the tree once.
 const RoomGate = (props: IRoomViewProps) => {
 	const { route, navigation } = props;
-
-	const serverVersion = useAppSelector(state => state.server.version);
 
 	// Screen identity is captured once at mount: navigation can transiently wipe this route's params
 	// to undefined (e.g. popTo with no params while retained below the stack top), and a room screen's
@@ -45,7 +42,7 @@ const RoomGate = (props: IRoomViewProps) => {
 	}));
 	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
 
-	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId, serverVersion });
+	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId });
 	const room = useRoomWithUpdateFromStore(roomStore);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);

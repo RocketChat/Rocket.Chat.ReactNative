@@ -193,7 +193,6 @@ export interface RoomState {
 }
 
 export interface IJoinRoomContext {
-	serverVersion?: string | null;
 	requestJoinCode?: () => void;
 	onJoin: () => void;
 }
@@ -205,7 +204,6 @@ export interface IGetOrCreateRoomStoreParams {
 	t?: string;
 	initialRoom: IRoomViewState['room'];
 	roomUserId?: string | null;
-	serverVersion?: string | null;
 }
 
 export type ComposerStore = StoreApi<ComposerState>;
