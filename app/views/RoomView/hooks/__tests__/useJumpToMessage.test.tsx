@@ -186,6 +186,101 @@ describe('useJumpToMessage', () => {
 		expect(listContainerRef.current.jumpToMessage).not.toHaveBeenCalled();
 	});
 
+	it('navigates to the main room when jumping from a thread to a different thread parent with replies', async () => {
+		const listContainerRef = createListRef();
+		mockGetMessageInfo.mockResolvedValue({ id: 'other-parent', rid: RID, ts: 100, replies: ['u1'] });
+		const { result, navToRoom } = renderJumpToMessage(listContainerRef, { tmid: 'tmid-1', t: 'thread' });
+
+		await act(async () => {
+			await result.current.jumpToMessage('other-parent');
+		});
+
+		expect(navToRoom).toHaveBeenCalledWith({ id: 'other-parent', rid: RID, ts: 100, replies: ['u1'] });
+		expect(listContainerRef.current.jumpToMessage).not.toHaveBeenCalled();
+	});
+
+	it('scrolls in place when jumping to the parent of the thread being viewed', async () => {
+		const listContainerRef = createListRef();
+		listContainerRef.current.isMessageInWindow.mockReturnValue(true);
+		mockGetMessageInfo.mockResolvedValue({ id: 'tmid-1', rid: RID, ts: 100, replies: ['u1'] });
+		const { result, navToRoom } = renderJumpToMessage(listContainerRef, { tmid: 'tmid-1', t: 'thread' });
+
+		await act(async () => {
+			await result.current.jumpToMessage('tmid-1');
+		});
+
+		expect(navToRoom).not.toHaveBeenCalled();
+		expect(listContainerRef.current.jumpToMessage).toHaveBeenCalledWith('tmid-1', null);
+	});
+
+	it('handles a rejected room navigation as an error instead of leaking it', async () => {
+		const listContainerRef = createListRef();
+		const error = new Error('room lookup failed');
+		mockGetMessageInfo.mockResolvedValue({ id: 'm2', rid: 'rid-2', ts: 100 });
+		const { result, navToRoom } = renderJumpToMessage(listContainerRef);
+		navToRoom.mockRejectedValue(error);
+
+		await act(async () => {
+			await result.current.jumpToMessage('m2');
+		});
+
+		expect(mockLog).toHaveBeenCalledWith(error);
+		expect(listContainerRef.current.cancelJumpToMessage).toHaveBeenCalledTimes(1);
+		expect(mockSendLoadingEvent).toHaveBeenLastCalledWith({ visible: false });
+	});
+
+	it('handles a rejected thread navigation as an error instead of leaking it', async () => {
+		const listContainerRef = createListRef();
+		const error = new Error('thread name failed');
+		mockGetMessageInfo.mockResolvedValue({ id: 'm3', rid: RID, tmid: 'other-tmid', ts: 100 });
+		const { result, navToThread } = renderJumpToMessage(listContainerRef, { tmid: 'tmid-1' });
+		navToThread.mockRejectedValue(error);
+
+		await act(async () => {
+			await result.current.jumpToMessage('m3');
+		});
+
+		expect(mockLog).toHaveBeenCalledWith(error);
+		expect(listContainerRef.current.cancelJumpToMessage).toHaveBeenCalledTimes(1);
+		expect(mockSendLoadingEvent).toHaveBeenLastCalledWith({ visible: false });
+	});
+
+	it('drops the jump when cancelled before the message lookup resolves', async () => {
+		const listContainerRef = createListRef();
+		let resolveMessage: (value: unknown) => void = () => {};
+		mockGetMessageInfo.mockReturnValue(new Promise(res => (resolveMessage = res)));
+		const { result, navToRoom } = renderJumpToMessage(listContainerRef, { tmid: 'tmid-1', t: 'thread' });
+
+		await act(async () => {
+			const jump = result.current.jumpToMessage('m5');
+			result.current.cancelJumpToMessage();
+			resolveMessage({ id: 'm5', rid: RID, ts: 100 });
+			await jump;
+		});
+
+		expect(navToRoom).not.toHaveBeenCalled();
+		expect(listContainerRef.current.jumpToMessage).not.toHaveBeenCalled();
+	});
+
+	it('drops the jump when cancelled before the anchor resolves', async () => {
+		const listContainerRef = createListRef();
+		listContainerRef.current.isMessageInWindow.mockReturnValue(true);
+		mockGetMessageInfo.mockResolvedValue({ id: 'm6', rid: RID, ts: 100 });
+		let resolveAnchor: (value: unknown) => void = () => {};
+		mockResolveJumpAnchor.mockReturnValue(new Promise(res => (resolveAnchor = res)));
+		const { result } = renderJumpToMessage(listContainerRef);
+
+		await act(async () => {
+			const jump = result.current.jumpToMessage('m6');
+			await Promise.resolve();
+			result.current.cancelJumpToMessage();
+			resolveAnchor(null);
+			await jump;
+		});
+
+		expect(listContainerRef.current.jumpToMessage).not.toHaveBeenCalled();
+	});
+
 	it('logs and cancels the jump on an unexpected error', async () => {
 		const listContainerRef = createListRef();
 		const error = new Error('boom');

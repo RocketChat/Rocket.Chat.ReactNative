@@ -33,9 +33,15 @@ export const pushThreadRoom = async ({
 			jumpToMessageId = item.id;
 		}
 		sendLoadingEvent({ visible: true, onCancel });
-		const threadName = await fetchThreadName(rid, item.tmid, jumpToMessageId, name);
+		let threadName: string | undefined;
+		try {
+			threadName = await fetchThreadName(rid, item.tmid, jumpToMessageId, name);
+		} finally {
+			if (!threadName) {
+				sendLoadingEvent({ visible: false });
+			}
+		}
 		if (!threadName) {
-			sendLoadingEvent({ visible: false });
 			return;
 		}
 		name = threadName;

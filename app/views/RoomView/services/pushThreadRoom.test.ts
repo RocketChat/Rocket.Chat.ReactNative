@@ -49,6 +49,16 @@ describe('pushThreadRoom', () => {
 		expect(navigation.push).not.toHaveBeenCalled();
 	});
 
+	it('hides the overlay and rethrows when the thread name lookup fails', async () => {
+		const error = new Error('lookup failed');
+		mockFetchThreadName.mockRejectedValue(error);
+
+		await expect(push({ id: 'msg-1', tmid: 'tmid-1' })).rejects.toThrow(error);
+
+		expect(mockSendLoadingEvent).toHaveBeenLastCalledWith({ visible: false });
+		expect(navigation.push).not.toHaveBeenCalled();
+	});
+
 	it('titles an undecrypted thread as an encrypted message', async () => {
 		await push({ id: 'msg-1', tmid: 'tmid-1', t: E2E_MESSAGE_TYPE, e2e: 'pending' });
 

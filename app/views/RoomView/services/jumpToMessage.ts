@@ -17,11 +17,15 @@ export const jumpToMessage = async ({
 	listContainerRef,
 	navToRoom,
 	navToThread,
-	cancel
+	cancel,
+	isCancelled
 }: IJumpToMessageArgs): Promise<void> => {
 	try {
 		sendLoadingEvent({ visible: true, onCancel: cancel });
 		const message = await getMessageInfo(messageId);
+		if (isCancelled()) {
+			return;
+		}
 
 		if (!message) {
 			cancel();
@@ -33,15 +37,15 @@ export const jumpToMessage = async ({
 
 		if (!inThisThread && !inThisRoom) {
 			if (message.rid !== rid) {
-				navToRoom(message);
+				await navToRoom(message);
 			} else {
-				navToThread(message);
+				await navToThread(message);
 			}
-		} else if (inThisRoom && t === 'thread' && !message.replies) {
+		} else if (inThisRoom && t === 'thread' && message.id !== tmid) {
 			/**
 			 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
 			 */
-			return navToRoom(message);
+			await navToRoom(message);
 		} else {
 			/**
 			 * if it's from server, we don't have it saved locally and so we fetch surroundings
@@ -60,8 +64,14 @@ export const jumpToMessage = async ({
 				inWindow,
 				{ loadSurroundingMessages, getLocalAnchorTs }
 			);
+			if (isCancelled()) {
+				return;
+			}
 			// Synchronization needed for Fabric to work
 			await new Promise(res => setTimeout(res, 100));
+			if (isCancelled()) {
+				return;
+			}
 			await listContainerRef.current?.jumpToMessage(message.id, highTs);
 			sendLoadingEvent({ visible: false });
 		}

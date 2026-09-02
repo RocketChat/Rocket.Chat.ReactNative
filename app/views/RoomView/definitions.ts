@@ -102,9 +102,10 @@ export interface IJumpToMessageArgs {
 	tmid?: string;
 	t?: string;
 	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void;
-	navToThread: (message: TGetMessageInfoResult) => void;
+	navToRoom: (message: TGetMessageInfoResult) => void | Promise<void>;
+	navToThread: (message: TGetMessageInfoResult) => void | Promise<void>;
 	cancel: () => void;
+	isCancelled: () => boolean;
 }
 
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
@@ -300,8 +301,8 @@ export interface IUseJumpToMessageParams {
 	tmid?: string;
 	t?: string;
 	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void;
-	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void;
+	navToRoom: (message: TGetMessageInfoResult) => void | Promise<void>;
+	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void | Promise<void>;
 }
 
 export interface IUseJumpToMessageResult {
