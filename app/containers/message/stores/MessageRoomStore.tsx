@@ -1,31 +1,25 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
 import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '../../../definitions';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { useSetting } from '../../../lib/hooks/useSetting';
 import { getUserSelector } from '../../../selectors/login';
 
-// Captured once at mount by the provider (handlers + room constants); callers MUST pass
-// referentially stable values (see FROZEN_KEYS / the dev guard below).
-type FrozenState = {
-	// stable handlers
+type LiveCallbacks = {
 	jumpToMessage?: (link: string) => void;
 	closeEmojiAndAction?: (action?: (params?: unknown) => void, params?: unknown) => void;
-	// row action handlers
 	reactionInit?: (messageId: string) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
-	// room constants
+};
+
+export type MessageRoomState = LiveCallbacks & {
+	handlers?: Partial<IUseRoomMessageHandlersResult>;
 	rid?: string;
 	isThreadRoom?: boolean;
 	tmid?: string;
-};
-
-// Reactive tail: can change mid-session (e.g. an open room gets archived); the provider resyncs
-// these into the store on change (see the effect below).
-type ReactiveState = {
-	handlers?: Partial<IUseRoomMessageHandlersResult>;
 	archived?: boolean;
 	broadcast?: boolean;
 	isReadReceiptEnabled?: boolean;
@@ -35,11 +29,11 @@ type ReactiveState = {
 	autoTranslateLanguage?: string;
 };
 
-export type MessageRoomState = FrozenState & ReactiveState;
+// Exact snapshot: `-?` forces every key to be present, so the sync effect's setState payload can
+// never silently drift from MessageRoomState.
+type MessageRoomSnapshot = { [K in keyof Required<MessageRoomState>]: MessageRoomState[K] };
 
-// Exact reactive snapshot: `-?` forces every reactive key to be present, so the resync effect's
-// setState payload can never silently drift from ReactiveState.
-type ReactiveSnapshot = { [K in keyof Required<ReactiveState>]: ReactiveState[K] };
+type LiveCallbacksSnapshot = { [K in keyof Required<LiveCallbacks>]: LiveCallbacks[K] };
 
 export const createMessageRoomStore = (initial: MessageRoomState) => createStore<MessageRoomState>(() => ({ ...initial }));
 
@@ -55,53 +49,44 @@ const useMessageRoomStore = <T,>(selector: (state: MessageRoomState) => T): T =>
 	return useStore(store, selector);
 };
 
-// Handlers and room constants captured once at mount by MessageRoomStoreProvider below (everything
-// outside the reactive-tail resync effect). Callers MUST pass referentially stable values for these.
-const FROZEN_KEYS = [
-	'jumpToMessage',
-	'closeEmojiAndAction',
-	'reactionInit',
-	'errorActionsShow',
-	'rid',
-	'isThreadRoom',
-	'tmid'
-] as const satisfies readonly (keyof MessageRoomState)[];
+const useLiveCallbacks = (callbacks: LiveCallbacks): LiveCallbacksSnapshot => {
+	const latest = useLiveRef(callbacks);
+	const [wrappers] = useState<Required<LiveCallbacks>>(() => ({
+		jumpToMessage: (...args) => latest.current.jumpToMessage?.(...args),
+		closeEmojiAndAction: (...args) => latest.current.closeEmojiAndAction?.(...args),
+		reactionInit: (...args) => latest.current.reactionInit?.(...args),
+		errorActionsShow: (...args) => latest.current.errorActionsShow?.(...args)
+	}));
 
-const useFrozenHandlersGuardProd = (_state: MessageRoomState): void => {};
+	const hasJumpToMessage = !!callbacks.jumpToMessage;
+	const hasCloseEmojiAndAction = !!callbacks.closeEmojiAndAction;
+	const hasReactionInit = !!callbacks.reactionInit;
+	const hasErrorActionsShow = !!callbacks.errorActionsShow;
 
-// Warns once (after mount) if a frozen handler/constant's identity changes, since the provider
-// only captures the initial value and never re-syncs it (see FROZEN_KEYS above).
-const useFrozenHandlersGuardDev = (state: MessageRoomState): void => {
-	const initialRef = useRef(state);
-	const warnedRef = useRef(false);
-	useEffect(() => {
-		if (warnedRef.current) return;
-		const changed = FROZEN_KEYS.filter(key => !Object.is(initialRef.current[key], state[key]));
-		if (changed.length > 0) {
-			warnedRef.current = true;
-			console.warn(
-				`[MessageRoomStore] handler/constant identity changed after mount for: ${changed.join(', ')}. ` +
-					'MessageRoomProvider captures these once; pass referentially stable values.'
-			);
-		}
-	});
+	return useMemo(
+		() => ({
+			jumpToMessage: hasJumpToMessage ? wrappers.jumpToMessage : undefined,
+			closeEmojiAndAction: hasCloseEmojiAndAction ? wrappers.closeEmojiAndAction : undefined,
+			reactionInit: hasReactionInit ? wrappers.reactionInit : undefined,
+			errorActionsShow: hasErrorActionsShow ? wrappers.errorActionsShow : undefined
+		}),
+		[wrappers, hasJumpToMessage, hasCloseEmojiAndAction, hasReactionInit, hasErrorActionsShow]
+	);
 };
-
-const useFrozenHandlersGuard: (state: MessageRoomState) => void = __DEV__
-	? useFrozenHandlersGuardDev
-	: useFrozenHandlersGuardProd;
 
 export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
 	const timeFormatSetting = useSetting('Message_TimeFormat') as string;
 	const timeFormat = state.timeFormat ?? timeFormatSetting;
-	const [store] = useState(() => createMessageRoomStore({ ...state, timeFormat }));
-	useFrozenHandlersGuard(state);
+	const callbacks = useLiveCallbacks(state);
+	const [store] = useState(() => createMessageRoomStore({ ...state, ...callbacks, timeFormat }));
 
-	// These fields can change mid-session (e.g. an open room gets archived), unlike the
-	// constants/handlers captured once above. The dep array keeps store writes on-change only.
 	useEffect(() => {
-		const reactiveState: ReactiveSnapshot = {
+		const snapshot: MessageRoomSnapshot = {
+			...callbacks,
 			handlers: state.handlers,
+			rid: state.rid,
+			isThreadRoom: state.isThreadRoom,
+			tmid: state.tmid,
 			timeFormat,
 			autoTranslateRoom: state.autoTranslateRoom,
 			autoTranslateLanguage: state.autoTranslateLanguage,
@@ -110,9 +95,13 @@ export const MessageRoomProvider = ({ children, ...state }: { children: ReactNod
 			isReadReceiptEnabled: state.isReadReceiptEnabled,
 			Message_GroupingPeriod: state.Message_GroupingPeriod
 		};
-		store.setState(reactiveState);
+		store.setState(snapshot);
 	}, [
+		callbacks,
 		state.handlers,
+		state.rid,
+		state.isThreadRoom,
+		state.tmid,
 		timeFormat,
 		state.autoTranslateRoom,
 		state.autoTranslateLanguage,
