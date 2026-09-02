@@ -3,7 +3,8 @@ import { FlatList, type ViewStyle } from 'react-native';
 import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAutocompleteParams, useComposerRid, useUpdateAutocompleteVisible } from '../../store';
+import { useAutocompleteParams, useUpdateAutocompleteVisible } from '../../store';
+import { useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { type IAutocompleteItemProps } from '../../interfaces';
@@ -22,7 +23,7 @@ export const Autocomplete = ({
 }): ReactElement | null => {
 	useAutocompleteA11yAnnounce();
 
-	const rid = useComposerRid();
+	const rid = useRoomWithUpdate().rid;
 	const updateAutocompleteVisible = useUpdateAutocompleteVisible();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({

@@ -2,12 +2,13 @@ import { useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useRef } from 'react';
 
 import { saveDraftMessage } from '../../../lib/methods/draftMessage';
-import { useComposerRid, useComposerTmid, useFocused } from '../store';
+import { useComposerTmid, useFocused } from '../store';
 import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useRoomWithUpdate } from '../../../lib/store/RoomStoreContext';
 
 export const useAutoSaveDraft = (text = '') => {
 	const route = useRoute();
-	const rid = useComposerRid();
+	const rid = useRoomWithUpdate().rid;
 	const tmid = useComposerTmid();
 	const action = useMessageAction();
 	const focused = useFocused();

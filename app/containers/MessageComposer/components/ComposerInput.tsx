@@ -32,7 +32,8 @@ import {
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
-import { useComposerRid, useComposerRoom, useComposerSharing, useComposerTmid } from '../store';
+import { useComposerSharing, useComposerTmid } from '../store';
+import { useRoomWithUpdate } from '../../../lib/store/RoomStoreContext';
 import { useMessageAction, useMessageActionStoreApi } from '../../message/stores/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
@@ -50,10 +51,10 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 	const { colors, theme } = useTheme();
-	const rid = useComposerRid();
+	const room = useRoomWithUpdate();
+	const rid = room.rid;
 	const tmid = useComposerTmid();
 	const sharing = useComposerSharing();
-	const room = useComposerRoom();
 	const action = useMessageAction();
 	const messageActionStore = useMessageActionStoreApi();
 	const focused = useFocused();

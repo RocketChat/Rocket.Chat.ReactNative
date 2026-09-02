@@ -18,17 +18,12 @@ jest.mock('../../RoomView/stores/RoomStore', () => ({
 jest.mock('../../../containers/MessageComposer/MessageComposer', () => {
 	const { createElement, useContext } = require('react');
 	const { Pressable, View } = require('react-native');
-	const { RoomStoreContext } = require('../../../lib/store/RoomStoreContext');
-	const {
-		useComposerRoom,
-		useComposerTmid,
-		useOnRemoveQuoteMessage,
-		useOnSendMessage
-	} = require('../../../containers/MessageComposer/store');
+	const { RoomStoreContext, useRoomWithUpdate } = require('../../../lib/store/RoomStoreContext');
+	const { useComposerTmid, useOnRemoveQuoteMessage, useOnSendMessage } = require('../../../containers/MessageComposer/store');
 	return {
 		MessageComposer: () => {
 			renderedRoomStores.push(useContext(RoomStoreContext));
-			const room = useComposerRoom();
+			const room = useRoomWithUpdate();
 			const tmid = useComposerTmid();
 			const onSendMessage = useOnSendMessage();
 			const onRemoveQuoteMessage = useOnRemoveQuoteMessage();

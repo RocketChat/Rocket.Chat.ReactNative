@@ -10,7 +10,8 @@ import { BaseButton } from '../Buttons';
 import { CustomIcon } from '../../../CustomIcon';
 import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
-import { useComposerRid, useComposerTmid, useMessageComposerApi } from '../../store';
+import { useComposerTmid, useMessageComposerApi } from '../../store';
+import { useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
 import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants/audio';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
@@ -29,7 +30,7 @@ export const RecordAudio = (): ReactElement | null => {
 	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
-	const rid = useComposerRid();
+	const rid = useRoomWithUpdate().rid;
 	const tmid = useComposerTmid();
 	const server = useAppSelector(state => state.server.server);
 	const user = useAppSelector(state => ({ id: state.login.user.id, token: state.login.user.token }), shallowEqual);

@@ -7,7 +7,6 @@ import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanima
 import {
 	useAlsoSendThreadToChannel,
 	useComposerAttachments,
-	useComposerRid,
 	useComposerSharing,
 	useComposerTmid,
 	useEditRequest,
@@ -23,6 +22,7 @@ import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
+import { useRoomWithUpdate } from '../../lib/store/RoomStoreContext';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods/actions';
 import { runSlashCommand } from '../../lib/services/restApi';
@@ -57,7 +57,7 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 	useCloseKeyboardWhenOrientationChanges();
-	const rid = useComposerRid();
+	const rid = useRoomWithUpdate().rid;
 	const tmid = useComposerTmid();
 	const sharing = useComposerSharing();
 	const editRequest = useEditRequest();

@@ -8,12 +8,13 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
 import { MessageInnerContext } from '../../context';
-import { useComposerAttachments, useComposerRid, useComposerSharing, useMessageComposerApi, useMicOrSend } from '../../store';
+import { useComposerAttachments, useComposerSharing, useMessageComposerApi, useMicOrSend } from '../../store';
+import { useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 
 export const MicOrSendButton = (): ReactElement | null => {
-	const rid = useComposerRid();
+	const rid = useRoomWithUpdate().rid;
 	const sharing = useComposerSharing();
 	const micOrSend = useMicOrSend();
 	const attachments = useComposerAttachments();

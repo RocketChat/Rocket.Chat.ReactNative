@@ -9,12 +9,14 @@ import Navigation from '../../../../lib/navigation/appNavigation';
 import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
-import { useComposerRid, useComposerTmid, useComposerType } from '../../store';
+import { useComposerTmid } from '../../store';
+import { useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 
 export const ActionsButton = () => {
-	const rid = useComposerRid();
+	const room = useRoomWithUpdate();
+	const rid = room.rid;
 	const tmid = useComposerTmid();
-	const t = useComposerType();
+	const t = room.t;
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);

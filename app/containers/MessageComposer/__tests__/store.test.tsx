@@ -2,12 +2,12 @@ import { act, render } from '@testing-library/react-native';
 
 import { type IShareAttachment } from '../../../definitions';
 import { MessageComposerContainer } from '../MessageComposerContainer';
+import { useRoomWithUpdate } from '../../../lib/store/RoomStoreContext';
 import {
 	ComposerStoreProvider,
 	useAlsoSendThreadToChannel,
 	useAutocompleteParams,
 	useComposerAttachments,
-	useComposerRoom,
 	useComposerTmid,
 	useEditCancel,
 	useFocused,
@@ -106,7 +106,7 @@ describe('MessageComposer state container', () => {
 	it('throws without a room provider', () => {
 		const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 		const Probe = () => {
-			useComposerRoom();
+			useRoomWithUpdate();
 			return null;
 		};
 

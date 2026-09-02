@@ -2,7 +2,6 @@ import { createContext, type ReactElement, type ReactNode, useCallback, useConte
 import { createStore, useStore } from 'zustand';
 
 import { type IShareAttachment } from '../../definitions';
-import { useRoomWithUpdate } from '../../lib/store/RoomStoreContext';
 import {
 	type IAutocompleteBase,
 	type IMessageComposerContainerProps,
@@ -138,10 +137,6 @@ export const useIsAutocompleteVisible = (): ComposerState['isAutocompleteVisible
 	useComposerStore(state => state.isAutocompleteVisible);
 export const useUpdateAutocompleteVisible = (): ComposerState['updateAutocompleteVisible'] =>
 	useComposerStore(state => state.updateAutocompleteVisible);
-export const useComposerRoom = () => useRoomWithUpdate();
-export const useComposerRid = () => useComposerRoom().rid;
-export const useComposerType = () => useComposerRoom().t;
-
 export const useEditCancel = (): (() => void) => {
 	const callbacks = useComposerCallbacks();
 	return useCallback(() => callbacks.current.editCancel?.(), [callbacks]);
