@@ -182,7 +182,9 @@ export const useMessages = ({
 				raiseOrReleaseAnchor(result as TAnyMessageModel[], highTs).catch(() => {});
 			}
 
-			readThread();
+			if (tmid) {
+				readThread();
+			}
 			setMessages(newMessages);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
