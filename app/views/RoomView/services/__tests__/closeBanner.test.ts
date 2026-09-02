@@ -20,7 +20,7 @@ describe('closeBanner', () => {
 		});
 		const room = { id: 'room-1', update } as unknown as IRoomViewState['room'];
 
-		await closeBanner(room)();
+		await closeBanner(room);
 
 		expect(mockWrite).toHaveBeenCalledTimes(1);
 		expect(update).toHaveBeenCalledTimes(1);
@@ -29,7 +29,7 @@ describe('closeBanner', () => {
 	it('is a no-op for a room without a database identity', async () => {
 		const room = { rid: 'rid-1', t: 'c' } as IRoomViewState['room'];
 
-		await closeBanner(room)();
+		await closeBanner(room);
 
 		expect(mockWrite).not.toHaveBeenCalled();
 	});
@@ -38,6 +38,6 @@ describe('closeBanner', () => {
 		mockWrite.mockRejectedValueOnce(new Error('boom'));
 		const room = { id: 'room-1', update: jest.fn() } as unknown as IRoomViewState['room'];
 
-		await expect(closeBanner(room)()).resolves.toBeUndefined();
+		await expect(closeBanner(room)).resolves.toBeUndefined();
 	});
 });

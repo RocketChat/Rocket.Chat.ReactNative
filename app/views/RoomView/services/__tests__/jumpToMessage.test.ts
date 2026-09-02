@@ -1,8 +1,8 @@
 import { sendLoadingEvent } from '../../../../containers/Loading';
 import log from '../../../../lib/methods/helpers/log';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
-import { type IJumpToMessageArgs, type IJumpToMessageDeps, type TGetMessageInfoResult } from '../../definitions';
-import { jumpToMessage } from '../jumpToMessage';
+import { type IJumpToMessageArgs, type TGetMessageInfoResult } from '../../definitions';
+import { jumpToMessage, type IJumpToMessageDeps } from '../jumpToMessage';
 
 jest.mock('../../../../containers/Loading', () => ({
 	sendLoadingEvent: jest.fn()
@@ -52,7 +52,7 @@ describe('jumpToMessage', () => {
 		jest.clearAllMocks();
 	});
 
-	it('cancels and turns off loading when the message cannot be found', async () => {
+	it('cancels without navigating when the message cannot be found', async () => {
 		const args = createArgs();
 		const deps = createDeps({ getMessageInfo: jest.fn().mockResolvedValue(null) });
 

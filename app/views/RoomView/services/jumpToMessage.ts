@@ -3,19 +3,24 @@ import { sendLoadingEvent } from '../../../containers/Loading';
 import log from '../../../lib/methods/helpers/log';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMessages';
-import { resolveJumpAnchor as resolveJumpAnchorDefault } from './resolveJumpAnchor';
-import getMessageInfoDefault from './getMessageInfo';
+import { resolveJumpAnchor } from './resolveJumpAnchor';
+import getMessageInfo from './getMessageInfo';
 import getLocalAnchorTs from './getLocalAnchor';
-import { type IJumpToMessageArgs, type IJumpToMessageDeps } from '../definitions';
+import { type IJumpToMessageArgs } from '../definitions';
 
-const defaultDeps: IJumpToMessageDeps = {
-	getMessageInfo: getMessageInfoDefault,
-	resolveJumpAnchor: resolveJumpAnchorDefault
+export interface IJumpToMessageDeps {
+	getMessageInfo: typeof getMessageInfo;
+	resolveJumpAnchor: typeof resolveJumpAnchor;
+}
+
+const productionDeps: IJumpToMessageDeps = {
+	getMessageInfo,
+	resolveJumpAnchor
 };
 
 export const jumpToMessage = async (
 	{ messageId, isFromReply, rid, tmid, t, listContainerRef, navToRoom, navToThread, cancel }: IJumpToMessageArgs,
-	{ getMessageInfo, resolveJumpAnchor }: IJumpToMessageDeps = defaultDeps
+	{ getMessageInfo, resolveJumpAnchor }: IJumpToMessageDeps = productionDeps
 ): Promise<void> => {
 	try {
 		sendLoadingEvent({ visible: true, onCancel: cancel });

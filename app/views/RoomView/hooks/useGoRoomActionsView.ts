@@ -7,18 +7,8 @@ import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../../definitions';
 import { type TNavigation } from '../../../stacks/stackType';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { type IRoomViewProps, type IRoomViewState } from '../definitions';
+import { type IRoomViewProps } from '../definitions';
 import { useRoomStoreByRid } from '../stores/RoomStore';
-
-interface IGoRoomActionsViewState {
-	room: IRoomViewState['room'];
-	member: IRoomViewState['member'];
-	joined: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
-	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
-}
 
 export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackParamList) => void) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
@@ -27,17 +17,15 @@ export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackP
 	const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } =
 		useRoomStoreByRid(
 			rid,
-			useShallow(
-				(s): IGoRoomActionsViewState => ({
-					room: s.room,
-					member: s.member,
-					joined: s.joined,
-					canForwardGuest: s.canForwardGuest,
-					canReturnQueue: s.canReturnQueue,
-					canViewCannedResponse: s.canViewCannedResponse,
-					canPlaceLivechatOnHold: s.canPlaceLivechatOnHold
-				})
-			)
+			useShallow(s => ({
+				room: s.room,
+				member: s.member,
+				joined: s.joined,
+				canForwardGuest: s.canForwardGuest,
+				canReturnQueue: s.canReturnQueue,
+				canViewCannedResponse: s.canViewCannedResponse,
+				canPlaceLivechatOnHold: s.canPlaceLivechatOnHold
+			}))
 		);
 	const t = room.t;
 

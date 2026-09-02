@@ -162,8 +162,6 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 
 	useInAppFeedback();
 
-	const onCloseBanner = closeBanner(room);
-
 	useOmnichannelPermissions({
 		rid,
 		t,
@@ -203,7 +201,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 										title={I18n.t('Announcement')}
 										text={announcement}
 										bannerClosed={bannerClosed}
-										closeBanner={onCloseBanner}
+										closeBanner={() => closeBanner(room)}
 									/>
 								) : null}
 								<A11yGateProvider>

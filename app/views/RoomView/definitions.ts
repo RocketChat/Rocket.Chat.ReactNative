@@ -84,16 +84,6 @@ export interface IJumpToMessageArgs {
 	cancel: () => void;
 }
 
-export interface IJumpToMessageDeps {
-	getMessageInfo: (messageId: string) => Promise<TGetMessageInfoResult | null>;
-	resolveJumpAnchor: (
-		rid: string | undefined,
-		target: IJumpTarget,
-		inWindow: boolean,
-		deps: IJumpAnchorDeps
-	) => Promise<number | null>;
-}
-
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;

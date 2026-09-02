@@ -75,9 +75,13 @@ const getRoomHeaderProps = ({
 export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-	const { room, roomUpdate, roomUserId } = useRoomStoreByRid(
+	const { room, roomUserId } = useRoomStoreByRid(
 		rid,
-		useShallow(s => ({ room: s.room, roomUpdate: s.roomUpdate, roomUserId: s.roomUserId }))
+		useShallow(s => ({ room: s.room, roomUserId: s.roomUserId }))
+	);
+	const roomUpdate = useRoomStoreByRid(
+		rid,
+		useShallow(s => s.roomUpdate)
 	);
 	const goRoomActionsView = useGoRoomActionsView(rid);
 
