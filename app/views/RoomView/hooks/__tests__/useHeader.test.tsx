@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../../../lib/store/roomStore.types';
+import { type RoomState, type RoomStore } from '../../../../lib/store/definitions';
 import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;

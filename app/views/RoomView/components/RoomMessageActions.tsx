@@ -2,9 +2,11 @@ import { type RefObject } from 'react';
 
 import MessageActions, { type IMessageActions, type IMessageActionsProps } from '../../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
-import { type TRoomViewUser } from '../definitions';
+import { type ILoggedUser } from '../../../definitions';
 import { useReadOnly } from '../hooks/useReadOnly';
 import { useRoomStore } from '../../../lib/store/RoomStoreContext';
+
+type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 
 type IRoomMessageActionsProps = Pick<
 	IMessageActionsProps,

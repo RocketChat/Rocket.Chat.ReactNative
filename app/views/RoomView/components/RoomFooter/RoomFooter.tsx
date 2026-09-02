@@ -1,9 +1,16 @@
-import { type IRoomFooterProps } from '../../definitions';
+import { type ReactElement, type RefObject } from 'react';
+
+import { type IJoinCode } from '../../definitions';
 import { AirgappedWs } from './AirgappedWs';
 import { OnHold } from './OnHold';
 import { Preview } from './Preview';
 import { TakeOrJoin } from './TakeOrJoin';
 import { useRoomFooterState } from './useRoomFooterState';
+
+export interface IRoomFooterProps {
+	composer: ReactElement;
+	joinCodeRef: RefObject<IJoinCode | null>;
+}
 
 export const RoomFooter = ({ composer, joinCodeRef }: IRoomFooterProps) => {
 	const state = useRoomFooterState();

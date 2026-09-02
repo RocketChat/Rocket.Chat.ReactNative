@@ -23,7 +23,8 @@ import { MessageComposerContainer, type IMessageComposerRef } from '../../contai
 import { createMessageActionStore, MessageActionProvider } from '../../containers/message/stores/MessageActionStore';
 import { RoomMessageProvider } from './components/RoomMessageProvider';
 import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
-import { type IJoinCode, type IListContainerRef, type IRoomScreenProps, type IRoomViewState, type TListRef } from './definitions';
+import { type IJoinCode, type IListContainerRef, type IRoomViewProps, type IRoomViewState, type TListRef } from './definitions';
+import { type RoomStore } from '../../lib/store/definitions';
 import { RoomFooter } from './components/RoomFooter/RoomFooter';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { isRoomFederated } from '../../lib/methods/isRoomFederated';
@@ -56,6 +57,13 @@ const getHideSystemMessages = (room: IRoomViewState['room'], Hide_System_Message
 	}
 	return EMPTY_HIDE_SYSTEM_MESSAGES;
 };
+
+interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
+	rid?: string;
+	t?: string;
+	tmid?: string;
+	roomStore: RoomStore;
+}
 
 const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 	const { colors } = useTheme();

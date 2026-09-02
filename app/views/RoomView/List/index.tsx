@@ -1,12 +1,24 @@
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
+import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useDebounce } from '../../../lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
 import { MessageRow } from '../components/MessageRow';
-import { type IListContainerProps, type IListContainerRef, type IListProps } from '../definitions';
+import { type IListContainerRef, type IListProps, type TListRef } from '../definitions';
 import { useMessages } from './hooks/useMessages';
 import { useScroll } from './hooks/useScroll';
+
+interface IListContainerProps {
+	onLongPress: (item: TAnyMessageModel) => void;
+	rid: string;
+	t: RoomType;
+	tmid?: string;
+	flatListRef: TListRef;
+	hideSystemMessages: string[];
+	showMessageInMainThread: boolean;
+	serverVersion: string | null;
+}
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {

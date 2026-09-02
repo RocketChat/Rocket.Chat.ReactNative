@@ -6,7 +6,14 @@ import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
-import { type IRoomViewState, type TMessageRowProps } from '../definitions';
+import { type IRoomViewState } from '../definitions';
+
+type TMessageRowProps = {
+	item: TAnyMessageModel;
+	previousItem: TAnyMessageModel;
+	highlightedMessage?: string;
+	onLongPress: (item: TAnyMessageModel) => void;
+};
 
 // The room model mutates in place (same ref per emit), and the React Compiler caches derived
 // values on that stable ref. Deriving the boolean inside the selector keeps it fresh per emit

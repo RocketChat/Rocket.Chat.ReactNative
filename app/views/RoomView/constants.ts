@@ -1,4 +1,4 @@
-import { type TRoomUpdate } from '../../lib/store/roomStore.types';
+import { type TRoomUpdate } from '../../lib/store/definitions';
 
 export const roomAttrsUpdate = [
 	'f',

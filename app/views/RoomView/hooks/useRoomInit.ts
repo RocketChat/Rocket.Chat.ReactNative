@@ -4,7 +4,7 @@ import { InteractionManager } from 'react-native';
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import log from '../../../lib/methods/helpers/log';
 import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
-import { type RoomStore } from '../../../lib/store/roomStore.types';
+import { type RoomStore } from '../../../lib/store/definitions';
 import { type IRoomScreenContextValue, type IRoomViewState } from '../definitions';
 
 interface IUseRoomInitParams {

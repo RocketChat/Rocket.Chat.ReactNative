@@ -1,7 +1,9 @@
 import I18n from '../../../../i18n';
-import { type ITakeOrJoinProps } from '../../definitions';
 import { useRoomStore, useRoomWithUpdate } from '../../../../lib/store/RoomStoreContext';
 import { FooterAction } from './FooterAction';
+import { type IRoomFooterProps } from './RoomFooter';
+
+type ITakeOrJoinProps = Pick<IRoomFooterProps, 'joinCodeRef'>;
 
 export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps) => {
 	const room = useRoomWithUpdate();

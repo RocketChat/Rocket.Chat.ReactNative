@@ -16,7 +16,7 @@ import {
 	type IRoomStoreInitParams,
 	type RoomState,
 	type RoomStore
-} from '../../../lib/store/roomStore.types';
+} from '../../../lib/store/definitions';
 import { type IRoomViewState } from '../definitions';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';

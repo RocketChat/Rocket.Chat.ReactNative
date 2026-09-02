@@ -1,7 +1,19 @@
 import { type IMessage } from '../../../definitions';
 import { tsToMs } from '../../../lib/dayjs';
 import { anchorForServerChunk } from './anchorResolver';
-import { type AnchorMessage, type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
+import { type AnchorMessage } from '../definitions';
+
+export interface IJumpTarget {
+	id: string;
+	tmid?: string;
+	ts: Date | number | string;
+	fromServer?: boolean;
+}
+
+export interface IJumpAnchorDeps {
+	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<unknown>;
+	getLocalAnchorTs: (rid: string, ts: Date | number | string) => Promise<number | null>;
+}
 
 /**
  * Upper ts bound (ms) for the re-seeded window, or null to stay on the Live Tail.

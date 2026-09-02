@@ -45,7 +45,7 @@ import {
 import { appStart } from '../../actions/app';
 import { RoomStoreContext } from '../../lib/store/RoomStoreContext';
 import { createStaticRoomStore } from '../RoomView/stores/RoomStore';
-import { type RoomStore } from '../../lib/store/roomStore.types';
+import { type RoomStore } from '../../lib/store/definitions';
 
 interface IShareViewState {
 	selected: IShareAttachment;

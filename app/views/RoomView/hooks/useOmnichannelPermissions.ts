@@ -3,13 +3,12 @@ import { useStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { type RoomStore } from '../../../lib/store/roomStore.types';
-import { type IRoomViewState } from '../definitions';
+import { type RoomState, type RoomStore } from '../../../lib/store/definitions';
 
 export interface IUseOmnichannelPermissionsParams {
 	rid?: string;
 	t?: string;
-	roomUpdate: IRoomViewState['roomUpdate'];
+	roomUpdate: RoomState['roomUpdate'];
 	joined: boolean;
 	livechatAllowManualOnHold?: boolean;
 	roomStore: RoomStore;

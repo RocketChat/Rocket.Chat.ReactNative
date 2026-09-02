@@ -2,8 +2,11 @@ import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';
-import { type IFooterPreviewProps } from '../../definitions';
 import styles from './styles';
+
+interface IFooterPreviewProps {
+	message: string;
+}
 
 export const Preview = ({ message }: IFooterPreviewProps) => {
 	const { colors } = useTheme();

@@ -1,7 +1,8 @@
 import { sendLoadingEvent } from '../../../../containers/Loading';
 import log from '../../../../lib/methods/helpers/log';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
-import { type IJumpToMessageArgs, type TGetMessageInfoResult } from '../../definitions';
+import { type TGetMessageInfoResult } from '../../definitions';
+import { type IJumpToMessageArgs } from '../jumpToMessage';
 import { jumpToMessage, type IJumpToMessageDeps } from '../jumpToMessage';
 
 jest.mock('../../../../containers/Loading', () => ({

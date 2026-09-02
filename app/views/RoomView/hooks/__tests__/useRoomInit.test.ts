@@ -3,7 +3,7 @@ import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
-import { type RoomState, type RoomStore, type TRoomInitResult } from '../../../../lib/store/roomStore.types';
+import { type RoomState, type RoomStore, type TRoomInitResult } from '../../../../lib/store/definitions';
 import { useRoomInit } from '../useRoomInit';
 
 jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));

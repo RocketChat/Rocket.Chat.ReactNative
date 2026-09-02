@@ -1,3 +1,5 @@
+import { type RefObject } from 'react';
+
 import I18n from '../../../i18n';
 import { sendLoadingEvent } from '../../../containers/Loading';
 import log from '../../../lib/methods/helpers/log';
@@ -6,7 +8,19 @@ import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMes
 import { resolveJumpAnchor } from './resolveJumpAnchor';
 import getMessageInfo from './getMessageInfo';
 import getLocalAnchorTs from './getLocalAnchor';
-import { type IJumpToMessageArgs } from '../definitions';
+import { type IListContainerRef, type TGetMessageInfoResult } from '../definitions';
+
+export interface IJumpToMessageArgs {
+	messageId: string;
+	isFromReply?: boolean;
+	rid?: string;
+	tmid?: string;
+	t?: string;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	navToRoom: (message: TGetMessageInfoResult) => void;
+	navToThread: (message: TGetMessageInfoResult) => void;
+	cancel: () => void;
+}
 
 export interface IJumpToMessageDeps {
 	getMessageInfo: typeof getMessageInfo;

@@ -1,7 +1,13 @@
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
-import { type IJoinRoomContext, type IRoomViewState } from '../definitions';
+import { type IRoomViewState } from '../definitions';
+
+interface IJoinRoomContext {
+	serverVersion?: string | null;
+	requestJoinCode?: () => void;
+	onJoin: () => void;
+}
 
 export const joinRoomImpl = async (
 	room: IRoomViewState['room'],

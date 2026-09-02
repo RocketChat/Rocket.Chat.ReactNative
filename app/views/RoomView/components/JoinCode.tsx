@@ -1,4 +1,4 @@
-import { memo, useImperativeHandle, useState } from 'react';
+import { memo, type Ref, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, type TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -10,7 +10,14 @@ import sharedStyles from '../../Styles';
 import { useTheme } from '../../../theme';
 import { joinRoom } from '../../../lib/services/restApi';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { type IJoinCodeProps } from '../definitions';
+import { type IJoinCode } from '../definitions';
+
+interface IJoinCodeProps {
+	rid: string;
+	t: string;
+	onJoin: () => void;
+	ref?: Ref<IJoinCode>;
+}
 
 const styles = StyleSheet.create({
 	container: {
