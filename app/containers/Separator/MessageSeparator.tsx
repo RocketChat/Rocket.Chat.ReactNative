@@ -2,9 +2,10 @@ import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
+import { formatLongDate } from '../../lib/dayjs';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import DateSeparator, { formatSeparatorDate } from './DateSeparator';
+import DateSeparator from './DateSeparator';
 import { separatorStyles } from './styles';
 
 const styles = StyleSheet.create({
@@ -28,7 +29,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 			<View style={separatorStyles.container}>
 				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
 				<View style={[separatorStyles.line, unreadLine]} />
-				<Text style={[styles.text, unreadText]}>{formatSeparatorDate(ts)}</Text>
+				<Text style={[styles.text, unreadText]}>{formatLongDate(ts)}</Text>
 			</View>
 		);
 	}

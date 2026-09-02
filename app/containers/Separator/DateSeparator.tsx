@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import dayjs from '../../lib/dayjs';
+import { formatLongDate } from '../../lib/dayjs';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { separatorStyles } from './styles';
@@ -18,21 +18,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const formatSeparatorDate = (ts: Date | string): string => dayjs(ts).format('LL');
-
 export const DateSeparatorLabel = ({ ts }: { ts: Date | string }): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={[styles.label, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
-			<Text style={[styles.text, { color: colors.buttonFontSecondary }]}>{formatSeparatorDate(ts)}</Text>
+			<Text style={[styles.text, { color: colors.buttonFontSecondary }]}>{formatLongDate(ts)}</Text>
 		</View>
 	);
 };
 
 const DateSeparator = ({ ts }: { ts: Date | string }): ReactElement => {
 	const { colors } = useTheme();
-	const lineStyle = { backgroundColor: colors.strokeLight };
+	const lineStyle = { backgroundColor: colors.strokeExtraLight };
 
 	return (
 		<View style={separatorStyles.container}>

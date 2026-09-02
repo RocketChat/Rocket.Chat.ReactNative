@@ -23564,7 +23564,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       >
-        November 10, 2017
+        November 10th, 2017
       </Text>
     </View>
     <A11yOrderView
@@ -24802,7 +24802,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
@@ -24840,7 +24840,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             ]
           }
         >
-          November 10, 2017
+          November 10th, 2017
         </Text>
       </View>
       <View
@@ -24851,7 +24851,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
@@ -25873,7 +25873,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       >
-        November 10, 2017
+        November 10th, 2017
       </Text>
     </View>
     <A11yOrderView
@@ -27111,7 +27111,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }
@@ -27149,7 +27149,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             ]
           }
         >
-          November 10, 2017
+          November 10th, 2017
         </Text>
       </View>
       <View
@@ -27160,7 +27160,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "height": 1,
             },
             {
-              "backgroundColor": "#CBCED1",
+              "backgroundColor": "#EBECEF",
             },
           ]
         }

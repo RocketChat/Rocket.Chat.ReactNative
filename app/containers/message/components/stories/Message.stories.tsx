@@ -7,7 +7,7 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
 import { messagesStatus } from '../../../../lib/constants/messagesStatus';
 import { themes } from '../../../../lib/constants/colors';
-import { MessageSeparator } from '../../../Separator';
+import MessageSeparator from '../../../Separator/MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,

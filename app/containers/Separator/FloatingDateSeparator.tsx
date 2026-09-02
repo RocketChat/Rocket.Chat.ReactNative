@@ -23,7 +23,11 @@ const FloatingDateSeparator = ({ ts, opacity }: { ts?: Date | string | null; opa
 	}
 
 	return (
-		<Animated.View pointerEvents='none' style={[styles.container, style]}>
+		<Animated.View
+			pointerEvents='none'
+			accessibilityElementsHidden
+			importantForAccessibility='no-hide-descendants'
+			style={[styles.container, style]}>
 			<DateSeparatorLabel ts={ts} />
 		</Animated.View>
 	);
