@@ -1,10 +1,12 @@
 import { editMessage } from '../../../lib/methods/editMessage';
 import log from '../../../lib/methods/helpers/log';
+import { Review } from '../../../lib/methods/helpers/review';
+import { getEmojiContent } from '../../../lib/methods/emojis';
+import { setReaction } from '../../../lib/services/restApi';
 import { getMessageById } from '../../../lib/database/services/Message';
-import { type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '../../../definitions';
+import { type IEmoji, type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '../../../definitions';
 import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../components/ReactionPicker';
-import { useReactionActions } from './useReactionActions';
 
 export function useMessageActions({
 	messageActionStore,
@@ -17,7 +19,24 @@ export function useMessageActions({
 	messageActionsRef,
 	messageErrorActionsRef
 }: IUseMessageActionsParams): IUseMessageActionsResult {
-	const { resetAction, onReactionClose, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
+	const resetAction = () => {
+		messageActionStore.getState().actions.clear();
+	};
+
+	const onReactionClose = () => {
+		resetAction();
+		hideActionSheet();
+	};
+
+	const onReactionPress = async (emoji: IEmoji, messageId: string) => {
+		try {
+			await setReaction(getEmojiContent(emoji), messageId);
+			onReactionClose();
+			Review.pushPositiveEvent();
+		} catch (e) {
+			log(e);
+		}
+	};
 
 	const handleCloseEmoji = (action?: (params?: unknown) => void, params?: unknown) => {
 		if (messageComposerRef?.current) {
