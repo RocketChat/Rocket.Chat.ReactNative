@@ -9,9 +9,10 @@ export function useThreadFollowing(tmid?: string, userId?: string): boolean {
 		if (!tmid) {
 			return;
 		}
+		let cancelled = false;
 		let unsubscribe: (() => void) | undefined;
 		getMessageById(tmid).then(threadRecord => {
-			if (!threadRecord) {
+			if (cancelled || !threadRecord) {
 				return;
 			}
 			const subscription = threadRecord.observe().subscribe(thread => {
@@ -20,7 +21,10 @@ export function useThreadFollowing(tmid?: string, userId?: string): boolean {
 			unsubscribe = () => subscription.unsubscribe();
 		});
 
-		return () => unsubscribe?.();
+		return () => {
+			cancelled = true;
+			unsubscribe?.();
+		};
 	}, [tmid, userId]);
 
 	return isFollowingThread;

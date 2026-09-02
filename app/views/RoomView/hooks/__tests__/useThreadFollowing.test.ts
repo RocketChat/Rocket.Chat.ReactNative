@@ -15,17 +15,15 @@ type Emit<T> = (value: T) => void;
 const setupObservable = () => {
 	let emit: Emit<any> | undefined;
 	const unsubscribe = jest.fn();
-	const threadRecord = {
-		observe: () => ({
-			subscribe: (cb: Emit<any>) => {
-				emit = cb;
-				return { unsubscribe };
-			}
-		})
-	};
+	const subscribe = jest.fn((cb: Emit<any>) => {
+		emit = cb;
+		return { unsubscribe };
+	});
+	const threadRecord = { observe: () => ({ subscribe }) };
 	mockGet.mockImplementation(() => ({ find: jest.fn(() => Promise.resolve(threadRecord)) }));
 	return {
 		unsubscribe,
+		subscribe,
 		emitThread: (thread: any) => act(() => emit?.(thread))
 	};
 };
@@ -53,6 +51,16 @@ describe('useThreadFollowing', () => {
 
 		await flush();
 		expect(mockGet).not.toHaveBeenCalled();
+	});
+
+	it('does not subscribe when unmounted before the thread record resolves', async () => {
+		const observable = setupObservable();
+		const { unmount } = renderHook(() => useThreadFollowing('tmid-1', 'user-1'));
+
+		unmount();
+		await flush();
+
+		expect(observable.subscribe).not.toHaveBeenCalled();
 	});
 
 	it('unsubscribes on unmount', async () => {
