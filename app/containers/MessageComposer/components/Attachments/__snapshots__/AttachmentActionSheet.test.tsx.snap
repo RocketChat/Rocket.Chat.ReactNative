@@ -11,14 +11,9 @@ exports[`Story Snapshots: File should match snapshot 1`] = `
 >
   <View
     contentContainerStyle={
-      [
-        {
-          "paddingTop": 8,
-        },
-        {
-          "paddingBottom": undefined,
-        },
-      ]
+      {
+        "paddingTop": 8,
+      }
     }
     keyboardShouldPersistTaps="handled"
     showsVerticalScrollIndicator={false}
@@ -203,14 +198,9 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
 >
   <View
     contentContainerStyle={
-      [
-        {
-          "paddingTop": 8,
-        },
-        {
-          "paddingBottom": undefined,
-        },
-      ]
+      {
+        "paddingTop": 8,
+      }
     }
     keyboardShouldPersistTaps="handled"
     showsVerticalScrollIndicator={false}
@@ -365,14 +355,9 @@ exports[`Story Snapshots: ImageOnLegacyServer should match snapshot 1`] = `
 >
   <View
     contentContainerStyle={
-      [
-        {
-          "paddingTop": 8,
-        },
-        {
-          "paddingBottom": undefined,
-        },
-      ]
+      {
+        "paddingTop": 8,
+      }
     }
     keyboardShouldPersistTaps="handled"
     showsVerticalScrollIndicator={false}
@@ -527,14 +512,9 @@ exports[`Story Snapshots: ImageWithPrefilledAltText should match snapshot 1`] = 
 >
   <View
     contentContainerStyle={
-      [
-        {
-          "paddingTop": 8,
-        },
-        {
-          "paddingBottom": undefined,
-        },
-      ]
+      {
+        "paddingTop": 8,
+      }
     }
     keyboardShouldPersistTaps="handled"
     showsVerticalScrollIndicator={false}
@@ -689,14 +669,9 @@ exports[`Story Snapshots: Video should match snapshot 1`] = `
 >
   <View
     contentContainerStyle={
-      [
-        {
-          "paddingTop": 8,
-        },
-        {
-          "paddingBottom": undefined,
-        },
-      ]
+      {
+        "paddingTop": 8,
+      }
     }
     keyboardShouldPersistTaps="handled"
     showsVerticalScrollIndicator={false}

@@ -1,6 +1,14 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
+
+let mockIsAndroid = false;
+
+jest.mock('../../lib/methods/helpers/deviceInfo', () => ({
+	get isAndroid() {
+		return mockIsAndroid;
+	}
+}));
 
 describe('useActionSheetDetents', () => {
 	const windowHeight = 1000;
@@ -84,5 +92,45 @@ describe('useActionSheetDetents', () => {
 		);
 
 		expect(result.current.detents).toEqual([0.15]);
+	});
+});
+
+describe('getSheetContentPaddingBottom', () => {
+	const bottom = 24;
+
+	beforeEach(() => {
+		mockIsAndroid = false;
+	});
+
+	it('returns the safe-area bottom when no flags are set', () => {
+		expect(getSheetContentPaddingBottom({ bottom })).toBe(bottom);
+	});
+
+	it('returns the safe-area bottom on iOS even for a full-container sheet', () => {
+		expect(getSheetContentPaddingBottom({ bottom, fullContainer: true, scrollEnabled: false })).toBe(bottom);
+	});
+
+	it('adds the handle height on Android for a non-scrollable full-container sheet', () => {
+		mockIsAndroid = true;
+
+		expect(getSheetContentPaddingBottom({ bottom, fullContainer: true, scrollEnabled: false })).toBe(bottom + HANDLE_HEIGHT);
+	});
+
+	it('returns the safe-area bottom on Android for a scrollable full-container sheet', () => {
+		mockIsAndroid = true;
+
+		expect(getSheetContentPaddingBottom({ bottom, fullContainer: true, scrollEnabled: true })).toBe(bottom);
+	});
+
+	it('returns the safe-area bottom on Android when hugging content', () => {
+		mockIsAndroid = true;
+
+		expect(getSheetContentPaddingBottom({ bottom, fullContainer: true, hugContent: true, scrollEnabled: false })).toBe(bottom);
+	});
+
+	it('returns the safe-area bottom on Android for a regular sheet', () => {
+		mockIsAndroid = true;
+
+		expect(getSheetContentPaddingBottom({ bottom })).toBe(bottom);
 	});
 });
