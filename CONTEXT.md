@@ -83,11 +83,11 @@ Independent boolean markers on a Message, orthogonal to its Status — a Message
 
 ## Message Separators
 
-| Term                        | Definition                                                                                                                    | Aliases to avoid  |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| **Date Separator**          | A divider rendered inline between two Messages on different days, showing the date of the newer Message                       | Date divider      |
-| **Floating Date Separator** | An overlay showing the date of the topmost visible Message; fades in while the user scrolls and out once the list settles     | Sticky date       |
-| **Unread Separator**        | A divider rendered between the last read Message and the first unread Message in a Room                                      | Unread divider    |
+| Term                        | Definition                                                                                                                | Aliases to avoid |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Date Separator**          | A divider rendered inline between two Messages on different days, showing the date of the newer Message                   | Date divider     |
+| **Floating Date Separator** | An overlay showing the date of the topmost visible Message; fades in while the user scrolls and out once the list settles | Sticky date      |
+| **Unread Separator**        | A divider rendered between the last read Message and the first unread Message in a Room                                   | Unread divider   |
 
 ## Message Loading
 
