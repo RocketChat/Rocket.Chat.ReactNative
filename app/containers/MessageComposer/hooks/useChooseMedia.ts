@@ -103,7 +103,7 @@ export const useChooseMedia = ({
 		};
 	};
 
-	const finishShareView = (text = '', quotes = []) => {
+	const finishShareView = (text = '', quotes: string[] = []): void => {
 		setInput(text);
 		messageActionStore.getState().actions.setQuoteMessageIds(quotes);
 	};

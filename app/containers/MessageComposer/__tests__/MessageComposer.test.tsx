@@ -1,4 +1,4 @@
-import { useEffect, type ContextType, type ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore as createZustandStore } from 'zustand';
@@ -23,6 +23,7 @@ import { sendFileMessage } from '../../../lib/methods/sendFileMessage';
 import { runSlashCommand } from '../../../lib/services/restApi';
 import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
 import { type IMessageComposerContainerProps } from '../interfaces';
+import { type RoomStore } from '../../../views/RoomView/definitions';
 
 jest.useFakeTimers();
 
@@ -119,8 +120,8 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const createStaticTestRoomStore = (room: typeof initialContext.room) =>
-	createZustandStore(() => ({ room, roomUpdate: {} })) as unknown as NonNullable<ContextType<typeof RoomStoreContext>>;
+const createStaticTestRoomStore = (room: typeof initialContext.room): RoomStore =>
+	createZustandStore(() => ({ room, roomUpdate: {} })) as unknown as RoomStore;
 
 const Render = ({
 	context,
@@ -130,7 +131,7 @@ const Render = ({
 	context?: Partial<IMessageComposerContainerProps> & { room?: typeof initialContext.room };
 	action?: TMessageActionState;
 	children?: ReactElement;
-}) => (
+}): ReactElement => (
 	<Provider store={mockedStore}>
 		<MessageActionProvider initialAction={action}>
 			<RoomStoreContext.Provider value={createStaticTestRoomStore(context?.room ?? initialContext.room)}>

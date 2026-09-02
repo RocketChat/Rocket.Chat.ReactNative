@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { act, renderHook, waitFor } from '@testing-library/react-native';
+import { act, renderHook, waitFor, type RenderHookResult } from '@testing-library/react-native';
 
 import { MessageActionProvider, createMessageActionStore } from '../../../message/stores/MessageActionStore';
 import { MessageInnerContext } from '../../context';
@@ -75,7 +75,11 @@ describe('useChooseMedia', () => {
 		});
 	});
 
-	const setup = (initialAction: Parameters<typeof createMessageActionStore>[0] = null) => {
+	const setup = (
+		initialAction: Parameters<typeof createMessageActionStore>[0] = null
+	): RenderHookResult<ReturnType<typeof useChooseMedia>, unknown> & {
+		messageActionStore: ReturnType<typeof createMessageActionStore>;
+	} => {
 		const messageActionStore = createMessageActionStore(initialAction);
 		const wrapper = ({ children }: { children: ReactNode }) => (
 			<MessageActionProvider store={messageActionStore}>
