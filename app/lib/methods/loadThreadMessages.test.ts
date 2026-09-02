@@ -1,4 +1,5 @@
 import { loadThreadMessages } from './loadThreadMessages';
+import { type IReaction } from '../../definitions';
 import database from '../database';
 import { getThreadById } from '../database/services/Thread';
 import { Encryption } from '../encryption';
@@ -42,7 +43,25 @@ const mockedGetThreadById = getThreadById as jest.MockedFunction<typeof getThrea
 const TMID = 'PARENT_ID';
 const RID = 'ROOM_ID';
 
-const buildParent = (updatedAt: Date, reactions: any) => ({
+interface IParentFixture {
+	_id: string;
+	rid: string;
+	msg: string;
+	tlm: Date;
+	tcount: number;
+	_updatedAt: Date;
+	reactions: Partial<IReaction>[];
+}
+
+interface IReplyFixture {
+	_id: string;
+	rid: string;
+	tmid: string;
+	msg: string;
+	_updatedAt: Date;
+}
+
+const buildParent = (updatedAt: Date, reactions: Partial<IReaction>[]): IParentFixture => ({
 	_id: TMID,
 	rid: RID,
 	msg: 'parent',
@@ -52,12 +71,12 @@ const buildParent = (updatedAt: Date, reactions: any) => ({
 	reactions
 });
 
-const buildReply = () => ({ _id: 'REPLY_ID', rid: RID, tmid: TMID, msg: 'reply', _updatedAt: new Date() });
+const buildReply = (): IReplyFixture => ({ _id: 'REPLY_ID', rid: RID, tmid: TMID, msg: 'reply', _updatedAt: new Date() });
 
 let batched: any[] = [];
 let threadsCreated: any[] = [];
 
-const setupDatabase = () => {
+const setupDatabase = (): void => {
 	batched = [];
 	threadsCreated = [];
 	const threadsCollection = {
@@ -158,6 +177,19 @@ describe('loadThreadMessages', () => {
 
 		expect(mockedGetThreadById).not.toHaveBeenCalled();
 		expect(threadsCreated).toHaveLength(0);
+	});
+
+	it('drops messages buildMessage could not normalize before decrypting', async () => {
+		mockedMethodCall.mockResolvedValue([buildParent(new Date('2026-01-02'), []), null, buildReply()] as any);
+		mockedGetThreadById.mockResolvedValue(null);
+
+		await loadThreadMessages({ tmid: TMID, rid: RID });
+
+		expect(Encryption.decryptMessages).toHaveBeenCalledWith([
+			expect.objectContaining({ _id: TMID }),
+			expect.objectContaining({ _id: 'REPLY_ID' })
+		]);
+		expect(threadsCreated).toHaveLength(1);
 	});
 
 	it('decrypts the parent along with the replies', async () => {

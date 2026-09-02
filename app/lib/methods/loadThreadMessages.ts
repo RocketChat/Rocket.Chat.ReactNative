@@ -52,13 +52,16 @@ async function prepareThreadUpsert(threadParent: TThreadModel | undefined, rid: 
 	return null;
 }
 
-export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
+export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }): Promise<void> {
 	return new Promise<void>(async (resolve, reject) => {
 		try {
 			let data = await load({ tmid });
 			if (data && data.length) {
 				try {
-					data = data.map((m: TThreadMessageModel) => buildMessage(m));
+					data = data
+						.filter(Boolean)
+						.map((m: TThreadMessageModel) => buildMessage(m))
+						.filter((m: TThreadMessageModel | null): m is TThreadMessageModel => !!m);
 					data = await Encryption.decryptMessages(data);
 					const threadParent = data.find((m: TThreadMessageModel) => m._id === tmid);
 					data = data.filter((m: TThreadMessageModel) => m.tmid);
