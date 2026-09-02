@@ -38,7 +38,7 @@ import { useRoomRemoved } from './hooks/useRoomRemoved';
 import { useRoomNavigation } from './hooks/useRoomNavigation';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 import { useInAppFeedback } from './hooks/useInAppFeedback';
-import { useCloseBanner } from './hooks/useCloseBanner';
+import { closeBanner } from './services/closeBanner';
 import { useLiveRef } from '../../lib/hooks/useLiveRef';
 
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
@@ -162,7 +162,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 
 	useInAppFeedback();
 
-	const closeBanner = useCloseBanner(room);
+	const onCloseBanner = closeBanner(room);
 
 	useOmnichannelPermissions({
 		rid,
@@ -203,7 +203,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 										title={I18n.t('Announcement')}
 										text={announcement}
 										bannerClosed={bannerClosed}
-										closeBanner={closeBanner}
+										closeBanner={onCloseBanner}
 									/>
 								) : null}
 								<A11yGateProvider>
