@@ -27,7 +27,6 @@ jest.mock('../../../ee/omnichannel/lib', () => ({
 	takeInquiry: jest.fn(() => Promise.resolve()),
 	takeResume: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/store/auxStore', () => ({ store: { getState: () => ({ server: { version: '6.1.0' } }) } }));
 
 const mockJoinRoomService = joinRoomService as jest.Mock;
 const mockTakeInquiry = takeInquiry as jest.Mock;
@@ -35,7 +34,7 @@ const mockTakeResume = takeResume as jest.Mock;
 
 // rid-less stores bypass the registry, so each case gets an isolated store with the full creator actions.
 const makeStore = (room: IRoomViewState['room']) => {
-	const store = peekOrCreateRoomStore({ initialRoom: room });
+	const store = peekOrCreateRoomStore({ initialRoom: room, serverVersion: '6.1.0' });
 	store.setState({ join: jest.fn() });
 	return store;
 };

@@ -122,7 +122,7 @@ const RoomView = (props: IRoomViewProps) => {
 
 	const userRef = useLiveRef(user);
 
-	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId });
+	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId, serverVersion });
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);

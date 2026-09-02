@@ -190,6 +190,7 @@ export interface IGetOrCreateRoomStoreParams {
 	t?: string;
 	initialRoom: IRoomViewState['room'];
 	roomUserId?: string | null;
+	serverVersion?: string | null;
 }
 
 export type ComposerStore = StoreApi<ComposerState>;
