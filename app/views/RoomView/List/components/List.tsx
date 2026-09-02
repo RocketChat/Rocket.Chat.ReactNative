@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -10,9 +10,12 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
+import { type TAnyMessageModel } from '../../../../definitions';
 import { type IListProps } from '../../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useIsAutocompleteVisible } from '../../stores/ComposerStore';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);
 
 const styles = StyleSheet.create({
 	list: {
@@ -45,8 +48,7 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 	const renderScrollComponent = !isIOS && (isScreenReaderEnabled || isExternalKeyboardConnected());
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
-			<Animated.FlatList
+			<AnimatedFlatList
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
