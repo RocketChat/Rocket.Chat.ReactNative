@@ -319,20 +319,7 @@ describe('useMessageActions', () => {
 	});
 
 	describe('reply', () => {
-		it('onReplyInit navigates to the thread when one already exists', async () => {
-			const message = { id: 'msg-1', tlm: '2024-01-01' };
-			mockGetMessageById.mockResolvedValue(message);
-			const { result, onThreadPress, navigation } = renderMessageActions();
-
-			await act(async () => {
-				await result.current.onReplyInit('msg-1');
-			});
-
-			expect(onThreadPress).toHaveBeenCalledWith(message);
-			expect(navigation.push).not.toHaveBeenCalled();
-		});
-
-		it('onReplyInit delegates to the thread press when no thread exists yet', async () => {
+		it('onReplyInit delegates the message to the thread press', async () => {
 			const message = { id: 'msg-1', msg: 'hello' };
 			mockGetMessageById.mockResolvedValue(message);
 			const { result, onThreadPress, navigation } = renderMessageActions();
