@@ -1,7 +1,7 @@
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
 import { type IRoomViewState } from '../definitions';
-import { peekOrCreateRoomStore } from './RoomStore';
+import { warmRoomStore } from './RoomStore';
 
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
@@ -34,7 +34,7 @@ const mockTakeResume = takeResume as jest.Mock;
 
 // rid-less stores bypass the registry, so each case gets an isolated store with the full creator actions.
 const makeStore = (room: IRoomViewState['room']) => {
-	const store = peekOrCreateRoomStore({ initialRoom: room, serverVersion: '6.1.0' });
+	const store = warmRoomStore({ initialRoom: room, serverVersion: '6.1.0' });
 	store.setState({ join: jest.fn() });
 	return store;
 };

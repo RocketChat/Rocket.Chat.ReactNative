@@ -1,11 +1,12 @@
-import { act, render } from '@testing-library/react-native';
+import { InteractionManager } from 'react-native';
+import { act, render, renderHook } from '@testing-library/react-native';
 
 import database from '../../database';
 import {
 	createStaticRoomStore,
-	peekOrCreateRoomStore,
 	peekRoomStore,
-	releaseRoomStore
+	useRoomStoreForScreen,
+	warmRoomStore
 } from '../../../views/RoomView/stores/RoomStore';
 import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
 
@@ -57,15 +58,21 @@ const setupObserve = () => {
 describe('RoomStoreContext', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation(((cb: () => void) => {
+			cb();
+			return { then: () => {} };
+		}) as unknown as typeof InteractionManager.runAfterInteractions);
 	});
 
+	// Isolate cases through the public screen-lifetime hook instead of a test-only registry reset.
 	afterEach(() => {
-		releaseRoomStore('rid-1');
+		setupObserve();
+		renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: subscriptionRoom })).unmount();
 	});
 
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subscriptionRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subscriptionRoom });
 		const spy = jest.fn();
 
 		const RoomTopic = () => {
@@ -93,7 +100,7 @@ describe('RoomStoreContext', () => {
 
 	it('does not re-render a plain room selector on the same mutated-in-place emit', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subscriptionRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subscriptionRoom });
 		const spy = jest.fn();
 
 		const RoomTopic = () => {

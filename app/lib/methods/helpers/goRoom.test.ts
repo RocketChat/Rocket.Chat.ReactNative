@@ -1,7 +1,8 @@
 import { InteractionManager } from 'react-native';
+import { renderHook } from '@testing-library/react-native';
 
 import { goRoom } from './goRoom';
-import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore } from '../../../views/RoomView/stores/RoomStore';
+import { warmRoomStore, useRoomStoreForScreen } from '../../../views/RoomView/stores/RoomStore';
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
@@ -68,14 +69,16 @@ describe('goRoom RoomStore warm-up', () => {
 		expect(graceCb).toBeDefined();
 
 		// Peek the warmed entry to capture its instance (peek does not touch refCount).
-		const warmed = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
+		const warmed = warmRoomStore({ rid: 'r1', initialRoom: {} as any });
 
 		graceCb!(); // grace sweep: refCount 0 -> entry torn down
 
-		const fresh = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any }); // brand-new instance
+		const fresh = warmRoomStore({ rid: 'r1', initialRoom: {} as any }); // brand-new instance
 		expect(fresh).not.toBe(warmed);
 
-		releaseRoomStore('r1');
+		const { unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'r1', initialRoom: {} as any }));
+		unmount();
+		graceCb!();
 	});
 
 	it('keeps the store alive when RoomView mounts before the grace sweep fires', async () => {
@@ -83,17 +86,17 @@ describe('goRoom RoomStore warm-up', () => {
 
 		expect(graceCb).toBeDefined();
 
-		// Simulate RoomView mounting against the warmed entry and acquiring it: refCount 0 -> 1.
-		const mounted = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
-		acquireRoomStore({ rid: 'r1' }, mounted);
+		// RoomView mounts against the warmed entry: useRoomStoreForScreen's effect acquires it, refCount 0 -> 1.
+		const { result, unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'r1', initialRoom: {} as any }));
 
-		// Grace sweep fires after the transition: refCount is 1, so the entry stays alive.
+		// The warm-up's grace sweep fires after the transition; refCount is 1, so the entry stays alive.
 		graceCb!();
 
-		const stillAlive = peekOrCreateRoomStore({ rid: 'r1', initialRoom: {} as any });
-		expect(stillAlive).toBe(mounted);
+		const stillAlive = warmRoomStore({ rid: 'r1', initialRoom: {} as any });
+		expect(stillAlive).toBe(result.current);
 
-		releaseRoomStore('r1');
+		unmount();
+		graceCb!();
 	});
 
 	it('does not warm up the store when there is no rid', async () => {

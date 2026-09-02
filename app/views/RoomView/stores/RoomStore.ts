@@ -279,13 +279,7 @@ const register = (rid: string, t: string | undefined, store: RoomStore, refCount
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
 // without touching refCount. Safe to call from a useState initializer, which may run twice under
 // StrictMode/concurrent render. Acquire/release own the lifetime.
-export const peekOrCreateRoomStore = ({
-	rid,
-	t,
-	initialRoom,
-	roomUserId,
-	serverVersion
-}: IGetOrCreateRoomStoreParams): RoomStore => {
+const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId, serverVersion }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
 		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId, serverVersion));
 	}
@@ -299,10 +293,15 @@ export const peekOrCreateRoomStore = ({
 	return store;
 };
 
+// Warms the rid-keyed store ahead of navigation (goRoom's prefetch) without claiming ownership of
+// it: the entry stays at refCount 0 until a mounted screen acquires it, and the grace sweep reclaims
+// it otherwise.
+export const warmRoomStore = (params: IGetOrCreateRoomStoreParams): RoomStore => peekOrCreateRoomStore(params);
+
 export const createStaticRoomStore = (room: IRoomViewState['room']): RoomStore =>
 	createStore<RoomState>(createRoomState(undefined, room));
 
-export const releaseRoomStore = (rid?: string): void => {
+const releaseRoomStore = (rid?: string): void => {
 	if (!rid) {
 		return;
 	}
@@ -319,7 +318,7 @@ export const releaseRoomStore = (rid?: string): void => {
 
 // Claims ownership of the rid-keyed store for one screen: increments refCount, re-registering the
 // observer if the grace sweep reclaimed the entry between render and effect.
-export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, 'rid' | 't'>, store: RoomStore): RoomStore => {
+const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, 'rid' | 't'>, store: RoomStore): RoomStore => {
 	if (!rid) {
 		return store;
 	}

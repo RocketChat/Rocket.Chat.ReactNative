@@ -10,10 +10,12 @@ import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription'
 import log from '../../../lib/methods/helpers/log';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
-import { peekOrCreateRoomStore, acquireRoomStore, releaseRoomStore, useRoomStoreByRid, useRoomStoreForScreen } from './RoomStore';
+import { warmRoomStore, useRoomStoreByRid, useRoomStoreForScreen } from './RoomStore';
 
 const mockScheduledSweeps: Array<() => void> = [];
-const acquire = (rid = 'rid-1') => acquireRoomStore({ rid }, peekOrCreateRoomStore({ rid, initialRoom: stubRoom }));
+// Simulates a second screen (e.g. room + thread) sharing the same rid-keyed store, driven entirely
+// through the public screen-lifetime hook rather than the private acquire/release primitives.
+const mountScreen = (rid = 'rid-1') => renderHook(() => useRoomStoreForScreen({ rid, initialRoom: stubRoom }));
 const flushSweeps = () => {
 	const pending = mockScheduledSweeps.splice(0);
 	pending.forEach(cb => cb());
@@ -91,18 +93,15 @@ describe('RoomStore', () => {
 		mockLoadThreadMessages.mockResolvedValue(undefined);
 	});
 
-	// Isolate cases through the public release API instead of a test-only registry reset. peekOrCreate
-	// leaves entries at refCount 0, so a release drives them below zero and tears them down; flushing
-	// any queued grace sweep clears the pending-callback list between cases.
+	// Each case is responsible for unmounting any screen it mounted, driving its entry back to
+	// refCount 0 through the public hook; flushing here just runs whatever sweep that left pending.
 	afterEach(() => {
-		releaseRoomStore('rid-1');
-		releaseRoomStore('rid-1');
 		flushSweeps();
 	});
 
 	it('exposes the initial room synchronously on creation', () => {
 		setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 		expect(store.getState().room).toBe(stubRoom);
 		expect(store.getState().joined).toBe(true);
@@ -112,7 +111,7 @@ describe('RoomStore', () => {
 
 	it('flips to preview mode (not subscribed, not joined) when a non-DM has no subscription', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
 
 		emit([]);
 
@@ -123,7 +122,7 @@ describe('RoomStore', () => {
 
 	it('keeps a DM joined even with no subscription yet', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'd', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'd', initialRoom: stubRoom });
 
 		emit([]);
 
@@ -133,7 +132,7 @@ describe('RoomStore', () => {
 
 	it('flips joined back to true once the subscription appears later', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
 
 		emit([]);
 		expect(store.getState().joined).toBe(false);
@@ -146,7 +145,7 @@ describe('RoomStore', () => {
 	it('rebuilds a fresh roomUpdate snapshot when the same model instance re-emits a mutated column', () => {
 		const { emit } = setupObserve();
 		const mutable = { ...subRoom, topic: 'old' };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
 
 		emit([mutable]);
 		const first = store.getState().roomUpdate;
@@ -163,14 +162,14 @@ describe('RoomStore', () => {
 
 	it('observes with exactly the roomAttrsUpdateColumns values', () => {
 		const { observeWithColumns } = setupObserve();
-		peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 		expect(observeWithColumns).toHaveBeenCalledWith(Object.values(roomAttrsUpdateColumns));
 	});
 
 	it('does not observe last_message for a non-livechat room', () => {
 		const { observeWithColumns } = setupObserve();
-		peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+		warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
 
 		expect(observeWithColumns).toHaveBeenCalledTimes(1);
 		expect(Object.values(roomAttrsUpdateColumns)).not.toContain('last_message');
@@ -196,7 +195,7 @@ describe('RoomStore', () => {
 
 		it('flags the last message as agent-authored when it carries no visitor token', () => {
 			const { observeWithColumns, emitLastMessage } = setupLivechatObserve();
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'l', initialRoom: stubRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'l', initialRoom: stubRoom });
 
 			expect(observeWithColumns).toHaveBeenCalledWith(['last_message']);
 
@@ -209,9 +208,10 @@ describe('RoomStore', () => {
 
 		it('tears the last_message observer down with the room observer', () => {
 			const { unsubscribe } = setupLivechatObserve();
-			acquireRoomStore({ rid: 'rid-1' }, peekOrCreateRoomStore({ rid: 'rid-1', t: 'l', initialRoom: stubRoom }));
+			const { unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', t: 'l', initialRoom: stubRoom }));
 
-			releaseRoomStore('rid-1');
+			unmount();
+			flushSweeps();
 
 			expect(unsubscribe).toHaveBeenCalledTimes(2);
 		});
@@ -219,7 +219,7 @@ describe('RoomStore', () => {
 
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
 		setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 		await store.getState().init();
 
@@ -230,7 +230,7 @@ describe('RoomStore', () => {
 
 	it('loads messages without a read receipt for a route-param room that lacks a subscription row', async () => {
 		setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
 
 		await store.getState().init();
 
@@ -240,7 +240,7 @@ describe('RoomStore', () => {
 
 	it('routes a cursor-less subscribed room to the room-history loader directly', async () => {
 		setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 		await store.getState().init();
 
@@ -252,7 +252,7 @@ describe('RoomStore', () => {
 	it('routes a subscribed room with a cursor to the missed-messages loader', async () => {
 		setupObserve();
 		const roomWithCursor = { ...subRoom, lastOpen: new Date('2026-01-01T00:00:00.000Z') };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: roomWithCursor });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: roomWithCursor });
 
 		await store.getState().init();
 
@@ -263,7 +263,7 @@ describe('RoomStore', () => {
 	it('runs the thread init path when tmid is set: loads thread messages and fires the callback', async () => {
 		setupObserve();
 		const onThreadMessagesLoaded = jest.fn();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+		const store = warmRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 
 		await store.getState().init({ tmid: 'tmid-1', onThreadMessagesLoaded });
 
@@ -275,7 +275,7 @@ describe('RoomStore', () => {
 	it('early-returns without fetching messages when the room is an invite subscription', async () => {
 		setupObserve();
 		mockIsInviteSubscription.mockReturnValue(true);
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 		await expect(store.getState().init()).resolves.toEqual({ status: 'skipped' });
 
@@ -286,7 +286,7 @@ describe('RoomStore', () => {
 		setupObserve();
 		mockGetUserInfo.mockResolvedValue({ success: true, user: { _id: 'uid-1', username: 'alice' } });
 		const dmRoom = { ...subRoom, t: 'd' };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'd', initialRoom: dmRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'd', initialRoom: dmRoom });
 
 		await store.getState().init();
 
@@ -304,7 +304,7 @@ describe('RoomStore', () => {
 			})
 		);
 		const dmRoom = { ...subRoom, t: 'd' };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'd', initialRoom: dmRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'd', initialRoom: dmRoom });
 
 		const initPromise = store.getState().init();
 		await Promise.resolve();
@@ -326,7 +326,7 @@ describe('RoomStore', () => {
 			controller.abort();
 			return Promise.resolve();
 		});
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 		await expect(store.getState().init({ signal: controller.signal })).resolves.toEqual({ status: 'skipped' });
 
@@ -347,7 +347,7 @@ describe('RoomStore', () => {
 			setupObserve();
 			const error = new Error('boom');
 			mockGetMessages.mockRejectedValueOnce(error);
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(1000);
@@ -360,7 +360,7 @@ describe('RoomStore', () => {
 			setupObserve();
 			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-01-01T00:00:00.000Z') };
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: unreadRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: unreadRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(1000);
@@ -372,7 +372,7 @@ describe('RoomStore', () => {
 		it('gives up after three attempts and resolves as failed', async () => {
 			setupObserve();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
@@ -384,7 +384,7 @@ describe('RoomStore', () => {
 		it('retries against the room the observer delivered after the first attempt failed on an empty store', async () => {
 			const { emit } = setupObserve();
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: { rid: '', t: '' } });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: { rid: '', t: '' } });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(0);
@@ -401,7 +401,7 @@ describe('RoomStore', () => {
 			const { emit } = setupObserve();
 			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-02-02T00:00:00.000Z') };
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(0);
@@ -414,7 +414,7 @@ describe('RoomStore', () => {
 		it('does not retry an invite subscription', async () => {
 			setupObserve();
 			mockIsInviteSubscription.mockReturnValue(true);
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 			const initPromise = store.getState().init();
 			await jest.advanceTimersByTimeAsync(10000);
@@ -427,7 +427,7 @@ describe('RoomStore', () => {
 			setupObserve();
 			mockGetMessages.mockRejectedValue(new Error('boom'));
 			const controller = new AbortController();
-			const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+			const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
 
 			const initPromise = store.getState().init({ signal: controller.signal });
 			await jest.advanceTimersByTimeAsync(0);
@@ -440,7 +440,7 @@ describe('RoomStore', () => {
 	});
 
 	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
-		const store = peekOrCreateRoomStore({ initialRoom: stubRoom });
+		const store = warmRoomStore({ initialRoom: stubRoom });
 
 		await expect(store.getState().init()).resolves.toEqual({ status: 'skipped' });
 
@@ -449,7 +449,7 @@ describe('RoomStore', () => {
 
 	it('join() sets joined true', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: stubRoom });
 
 		emit([]);
 		expect(store.getState().joined).toBe(false);
@@ -467,45 +467,50 @@ describe('RoomStore', () => {
 		it('returns the same store for the same rid and starts observation only once', () => {
 			const { observeWithColumns } = setupObserve();
 
-			const first = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			const second = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			const first = warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			const second = warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 			expect(second).toBe(first);
 			expect(observeWithColumns).toHaveBeenCalledTimes(1);
 		});
 
-		it('unsubscribes only when the last release brings the refcount to zero', () => {
+		it('shares the store between two mounted screens and unsubscribes only after both release it', () => {
 			const { unsubscribe } = setupObserve();
 
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquire();
-			acquire();
+			const screenA = mountScreen();
+			const screenB = mountScreen();
+			expect(screenB.result.current).toBe(screenA.result.current);
 
-			releaseRoomStore('rid-1');
+			screenA.unmount();
+			flushSweeps();
 			expect(unsubscribe).not.toHaveBeenCalled();
 
-			releaseRoomStore('rid-1');
+			screenB.unmount();
+			flushSweeps();
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
 		it('creates a fresh store after the previous one was fully released', () => {
 			const { observeWithColumns } = setupObserve();
 
-			const first = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquire();
-			releaseRoomStore('rid-1');
-			const second = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			const first = mountScreen();
+			first.unmount();
+			flushSweeps();
 
-			expect(second).not.toBe(first);
+			const second = warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+
+			expect(second).not.toBe(first.result.current);
 			expect(observeWithColumns).toHaveBeenCalledTimes(2);
 		});
 
-		it('never shares state across rid-less stores and leaves release a no-op', () => {
-			const first = peekOrCreateRoomStore({ initialRoom: stubRoom });
-			const second = peekOrCreateRoomStore({ initialRoom: stubRoom });
+		it('never shares state across rid-less stores and leaves an unmount a no-op', () => {
+			const first = warmRoomStore({ initialRoom: stubRoom });
+			const second = warmRoomStore({ initialRoom: stubRoom });
 
 			expect(second).not.toBe(first);
-			expect(() => releaseRoomStore(undefined)).not.toThrow();
+
+			const { unmount } = renderHook(() => useRoomStoreForScreen({ initialRoom: stubRoom }));
+			expect(() => unmount()).not.toThrow();
 		});
 	});
 
@@ -517,12 +522,15 @@ describe('RoomStore', () => {
 				return { then: () => {} };
 			}) as unknown as typeof InteractionManager.runAfterInteractions);
 
-			const { result } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', t: 'c', initialRoom: stubRoom }));
+			const { result, unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', t: 'c', initialRoom: stubRoom }));
 
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
 			expect(observeWithColumns).toHaveBeenCalledTimes(2);
 			emit([subRoom]);
 			expect(result.current.getState().room).toBe(subRoom);
+
+			unmount();
+			flushSweeps();
 		});
 
 		it('owns the store until the screen transition finishes', () => {
@@ -543,52 +551,26 @@ describe('RoomStore', () => {
 		it('warm-up then navigate: peek keeps the store alive across the sweep once the mount acquires it', () => {
 			const { unsubscribe } = setupObserve();
 
-			// goRoom warms the store at press time (peek, no acquire).
-			const warmed = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			// goRoom warms the store at press time (warmRoomStore, no acquire).
+			const warmed = warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 			// RoomView mounts against the same warmed entry and acquires it before the sweep runs.
-			const mounted = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquire();
+			const { result, unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: stubRoom }));
 
 			flushSweeps();
 
-			expect(mounted).toBe(warmed);
+			expect(result.current).toBe(warmed);
 			expect(unsubscribe).not.toHaveBeenCalled();
-		});
 
-		it('re-registers an owned observer when the grace sweep reclaims an entry before the acquire commits', () => {
-			const { unsubscribe, observeWithColumns } = setupObserve();
-
-			// Warm at refCount 0, then let the sweep tear it down before the mount effect acquires.
-			const warmed = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			unmount();
 			flushSweeps();
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
-
-			acquireRoomStore({ rid: 'rid-1' }, warmed);
-			flushSweeps();
-
-			expect(observeWithColumns).toHaveBeenCalledTimes(2);
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
-		});
-
-		it('pop during grace: an entry released to zero before the sweep is torn down immediately, sweep is a no-op', () => {
-			const { unsubscribe } = setupObserve();
-
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			acquire();
-			releaseRoomStore('rid-1');
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
-
-			// The still-pending sweep must not double-unsubscribe a deleted entry.
-			expect(() => flushSweeps()).not.toThrow();
-			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 
 		it('schedules at most one grace sweep per entry (idempotent across repeated peeks)', () => {
 			const { unsubscribe } = setupObserve();
 
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+			warmRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 
 			expect(mockScheduledSweeps).toHaveLength(1);
 
@@ -600,7 +582,7 @@ describe('RoomStore', () => {
 	describe('useRoomStoreByRid', () => {
 		it('reads the rid-keyed store from the registry without warning on a hit', () => {
 			setupObserve();
-			peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+			warmRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 			const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
 			const { result } = renderHook(() => useRoomStoreByRid('rid-1', s => s.room));

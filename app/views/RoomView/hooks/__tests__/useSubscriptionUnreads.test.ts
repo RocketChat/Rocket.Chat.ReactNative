@@ -1,8 +1,9 @@
+import { InteractionManager } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 
 import database from '../../../../lib/database';
 import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
-import { peekOrCreateRoomStore, releaseRoomStore } from '../../stores/RoomStore';
+import { useRoomStoreForScreen, warmRoomStore } from '../../stores/RoomStore';
 import { useSubscriptionUnreads } from '../useSubscriptionUnreads';
 
 jest.mock('../../../../lib/database', () => ({
@@ -33,7 +34,7 @@ const setupObservedRoom = (rid: string) => {
 		}
 	}));
 	mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
-	peekOrCreateRoomStore({ rid, initialRoom: stubRoom });
+	warmRoomStore({ rid, initialRoom: stubRoom });
 	return { emitRow: (row: any) => act(() => emit?.([row])) };
 };
 
@@ -43,8 +44,17 @@ describe('useSubscriptionUnreads', () => {
 		mockGetUidDirectMessage.mockReturnValue(undefined);
 	});
 
+	// Isolate cases through the public screen-lifetime hook instead of a test-only registry reset.
+	// The mount runs against whatever InteractionManager the case left in place (real, so its own
+	// grace sweep never fires mid-test); only the release on unmount is forced synchronous, so the
+	// entry is actually torn down before the next case runs.
 	afterEach(() => {
-		releaseRoomStore('rid-1');
+		const { unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: stubRoom }));
+		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation(((cb: () => void) => {
+			cb();
+			return { then: () => {} };
+		}) as unknown as typeof InteractionManager.runAfterInteractions);
+		unmount();
 	});
 
 	it('maps the observed subscription to the tunread trio and isSelfDm', () => {

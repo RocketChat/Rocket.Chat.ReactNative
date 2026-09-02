@@ -1,7 +1,8 @@
-import { act, render } from '@testing-library/react-native';
+import { InteractionManager } from 'react-native';
+import { act, render, renderHook } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
-import { peekOrCreateRoomStore, releaseRoomStore } from '../stores/RoomStore';
+import { useRoomStoreForScreen, warmRoomStore } from '../stores/RoomStore';
 import { RoomScreenContext } from '../stores/RoomScreenContext';
 import { RoomStoreContext } from '../../../lib/store/RoomStoreContext';
 import { MessageRow } from './MessageRow';
@@ -66,18 +67,23 @@ const setupObserve = () => {
 describe('MessageRow', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation(((cb: () => void) => {
+			cb();
+			return { then: () => {} };
+		}) as unknown as typeof InteractionManager.runAfterInteractions);
 	});
 
-	// Release the 'rid-1' store the case acquires, isolating via the public API (no test-only reset).
+	// Isolate cases through the public screen-lifetime hook instead of a test-only registry reset.
 	afterEach(() => {
-		releaseRoomStore('rid-1');
+		setupObserve();
+		renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', initialRoom: { rid: 'rid-1', t: 'c' } })).unmount();
 	});
 
 	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', () => {
 		const { emit } = setupObserve();
 		const sub: any = { id: 'sub-1', rid: 'rid-1', t: 'c', ignored: [] };
 		const item: any = { id: 'msg-1', ts: new Date('2024-01-01T10:00:00Z'), u: { _id: 'author-1' } };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: sub });
+		const store = warmRoomStore({ rid: 'rid-1', t: 'c', initialRoom: sub });
 
 		render(
 			<RoomStoreContext.Provider value={store}>

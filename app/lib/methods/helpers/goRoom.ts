@@ -12,7 +12,7 @@ import {
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
-import type { peekOrCreateRoomStore as TPeekOrCreateRoomStore } from '../../../views/RoomView/stores/RoomStore';
+import type { warmRoomStore as TWarmRoomStore } from '../../../views/RoomView/stores/RoomStore';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -56,17 +56,17 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	}
 
 	// Warm the RoomStore at press time so its DB observer runs during the nav transition and
-	// RoomView mounts against a hydrated store. peekOrCreate leaves the entry at refCount 0 and
+	// RoomView mounts against a hydrated store. warmRoomStore leaves the entry at refCount 0 and
 	// schedules its own grace sweep: if RoomView acquires it, it stays alive; otherwise (cancelled/
 	// failed navigation) the sweep reclaims it after the transition. No explicit release needed.
 	if (routeParams.rid) {
 		// Lazy require: goRoom is a low-level helper imported across the app, RoomStore lives in the
 		// view layer and pulls the encryption/native graph. Loading it only when a warm-up actually
 		// runs keeps that graph out of every goRoom importer.
-		const { peekOrCreateRoomStore } = require('../../../views/RoomView/stores/RoomStore') as {
-			peekOrCreateRoomStore: typeof TPeekOrCreateRoomStore;
+		const { warmRoomStore } = require('../../../views/RoomView/stores/RoomStore') as {
+			warmRoomStore: typeof TWarmRoomStore;
 		};
-		peekOrCreateRoomStore({
+		warmRoomStore({
 			rid: routeParams.rid,
 			t: routeParams.t,
 			initialRoom: {
