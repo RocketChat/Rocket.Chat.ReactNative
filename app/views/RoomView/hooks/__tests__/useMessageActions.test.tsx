@@ -8,7 +8,7 @@ import { getMessageById } from '../../../../lib/database/services/Message';
 import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
 import ReactionPicker from '../../components/ReactionPicker';
 import { useMessageActions } from '../useMessageActions';
-import { type IUseMessageActionsParams } from '../../definitions';
+import { type IUseMessageActionsParams } from '../useMessageActions';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('@react-navigation/native', () => ({

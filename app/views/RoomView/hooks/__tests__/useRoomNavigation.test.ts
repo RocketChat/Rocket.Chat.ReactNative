@@ -8,7 +8,7 @@ import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { sendLoadingEvent } from '../../../../containers/Loading';
 import { useJumpToMessage } from '../useJumpToMessage';
 import { useRoomNavigation } from '../useRoomNavigation';
-import { type IUseRoomNavigationParams } from '../../definitions';
+import { type IUseRoomNavigationParams } from '../useRoomNavigation';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn(), setParams: jest.fn(), addListener: jest.fn() };
 jest.mock('@react-navigation/native', () => ({

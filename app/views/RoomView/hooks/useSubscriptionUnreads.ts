@@ -2,8 +2,15 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { type TSubscriptionModel } from '../../../definitions';
-import { type IUseSubscriptionUnreadsResult } from '../definitions';
 import { useRoomStoreByRid } from '../stores/RoomStore';
+
+export interface IUseSubscriptionUnreadsResult {
+	tunread: string[];
+	tunreadUser: string[];
+	tunreadGroup: string[];
+	isSelfDm: boolean;
+	subscription?: TSubscriptionModel;
+}
 
 const EMPTY_UNREADS: string[] = [];
 

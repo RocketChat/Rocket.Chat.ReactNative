@@ -3,7 +3,16 @@ import { useStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../lib/services/restApi';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { type IUseOmnichannelPermissionsParams } from '../definitions';
+import { type IRoomViewState, type RoomStore } from '../definitions';
+
+export interface IUseOmnichannelPermissionsParams {
+	rid?: string;
+	t?: string;
+	roomUpdate: IRoomViewState['roomUpdate'];
+	joined: boolean;
+	livechatAllowManualOnHold?: boolean;
+	roomStore: RoomStore;
+}
 
 const getCanReturnQueue = async () => {
 	try {

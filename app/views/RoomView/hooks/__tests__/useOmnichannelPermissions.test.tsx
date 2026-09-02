@@ -3,7 +3,8 @@ import { createStore } from 'zustand';
 
 import { getRoutingConfig } from '../../../../lib/services/restApi';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { type IUseOmnichannelPermissionsParams, type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '../../definitions';
+import { type IUseOmnichannelPermissionsParams } from '../useOmnichannelPermissions';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
 
 jest.mock('../../../../lib/services/restApi', () => ({

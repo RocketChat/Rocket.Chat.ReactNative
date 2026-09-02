@@ -14,11 +14,6 @@ import {
 	type TAnyMessageModel,
 	type TSubscriptionModel
 } from '../../definitions';
-import { type TActionSheetOptions } from '../../containers/ActionSheet';
-import { type IMessageComposerRef, type TEditRequest } from '../../containers/MessageComposer/interfaces';
-import { type IMessageActions } from '../../containers/MessageActions';
-import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
-import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
@@ -65,11 +60,6 @@ export interface IRoomViewState {
 	roomUpdate: Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
 	member: any;
 	lastSeen: Date | null;
-}
-
-export interface IUseE2EEStatusResult {
-	showMissingE2EEKey: boolean;
-	showE2EEDisabledRoom: boolean;
 }
 
 export interface IJumpToMessageArgs {
@@ -229,78 +219,4 @@ export interface IJoinCodeProps {
 
 export interface IJoinCode {
 	show: () => void;
-}
-
-export interface IUseMessageActionsParams {
-	messageActionStore: TMessageActionStore;
-	showActionSheet: (options: TActionSheetOptions) => void;
-	hideActionSheet: () => void;
-	rid?: string;
-	tmid?: string;
-	onThreadPress: (item: TAnyMessageModel) => void;
-	messageComposerRef: RefObject<IMessageComposerRef | null>;
-	messageActionsRef: RefObject<IMessageActions | null>;
-	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
-}
-
-export interface IUseMessageActionsResult {
-	resetAction: () => void;
-	handleCloseEmoji: (action?: (params?: unknown) => void, params?: unknown) => void;
-	errorActionsShow: (message: TAnyMessageModel) => void;
-	onEditInit: (messageId: string) => void;
-	onEditCancel: () => void;
-	onEditRequest: TEditRequest;
-	onQuoteInit: (messageId: string) => void;
-	onRemoveQuoteMessage: (messageId: string) => void;
-	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
-	onReactionInit: (messageId: string) => void;
-	onMessageLongPress: (message: TAnyMessageModel) => void;
-	onReplyInit: (messageId: string) => Promise<void>;
-}
-
-export interface IUseSubscriptionUnreadsResult {
-	tunread: string[];
-	tunreadUser: string[];
-	tunreadGroup: string[];
-	isSelfDm: boolean;
-	subscription?: TSubscriptionModel;
-}
-
-export interface IUseJumpToMessageParams {
-	rid?: string;
-	tmid?: string;
-	t?: string;
-	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void;
-	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void;
-}
-
-export interface IUseJumpToMessageResult {
-	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
-	cancelJumpToMessage: () => void;
-	onThreadMessagesLoaded: () => void;
-}
-
-export interface IUseRoomNavigationParams {
-	rid?: string;
-	tmid?: string;
-	t?: string;
-	isMasterDetail: boolean;
-	listContainerRef: RefObject<IListContainerRef | null>;
-	roomUserIdRef: RefObject<string | null | undefined>;
-}
-
-export interface IUseRoomNavigationResult {
-	onThreadMessagesLoaded: () => void;
-	onThreadPress: (item: TAnyMessageModel) => void;
-	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
-}
-
-export interface IUseOmnichannelPermissionsParams {
-	rid?: string;
-	t?: string;
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	livechatAllowManualOnHold?: boolean;
-	roomStore: RoomStore;
 }

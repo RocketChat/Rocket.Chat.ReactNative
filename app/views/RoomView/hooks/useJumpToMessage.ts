@@ -1,11 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { type RefObject, useEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { sendLoadingEvent } from '../../../containers/Loading';
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
-import { type IRoomViewProps, type IUseJumpToMessageParams, type IUseJumpToMessageResult } from '../definitions';
+import { type IListContainerRef, type IRoomViewProps, type TGetMessageInfoResult } from '../definitions';
 import { jumpToMessage as jumpToMessageService } from '../services/jumpToMessage';
+
+export interface IUseJumpToMessageParams {
+	rid?: string;
+	tmid?: string;
+	t?: string;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	navToRoom: (message: TGetMessageInfoResult) => void;
+	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void;
+}
+
+export interface IUseJumpToMessageResult {
+	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
+	cancelJumpToMessage: () => void;
+	onThreadMessagesLoaded: () => void;
+}
 
 // Fire onChange whenever a one-shot route param transitions to a new truthy value (undefined -> id, or
 // id -> different id). onChange is live-mirrored so an unstable inline callback doesn't retrigger the effect.

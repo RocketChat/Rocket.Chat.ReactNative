@@ -1,3 +1,5 @@
+import { type RefObject } from 'react';
+
 import { editMessage } from '../../../lib/methods/editMessage';
 import log from '../../../lib/methods/helpers/log';
 import { Review } from '../../../lib/methods/helpers/review';
@@ -5,8 +7,39 @@ import { getEmojiContent } from '../../../lib/methods/emojis';
 import { setReaction } from '../../../lib/services/restApi';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { type IEmoji, type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '../../../definitions';
-import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
+import { type TActionSheetOptions } from '../../../containers/ActionSheet';
+import { type IMessageComposerRef, type TEditRequest } from '../../../containers/MessageComposer/interfaces';
+import { type IMessageActions } from '../../../containers/MessageActions';
+import { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
+import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import ReactionPicker from '../components/ReactionPicker';
+
+export interface IUseMessageActionsParams {
+	messageActionStore: TMessageActionStore;
+	showActionSheet: (options: TActionSheetOptions) => void;
+	hideActionSheet: () => void;
+	rid?: string;
+	tmid?: string;
+	onThreadPress: (item: TAnyMessageModel) => void;
+	messageComposerRef: RefObject<IMessageComposerRef | null>;
+	messageActionsRef: RefObject<IMessageActions | null>;
+	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
+}
+
+export interface IUseMessageActionsResult {
+	resetAction: () => void;
+	handleCloseEmoji: (action?: (params?: unknown) => void, params?: unknown) => void;
+	errorActionsShow: (message: TAnyMessageModel) => void;
+	onEditInit: (messageId: string) => void;
+	onEditCancel: () => void;
+	onEditRequest: TEditRequest;
+	onQuoteInit: (messageId: string) => void;
+	onRemoveQuoteMessage: (messageId: string) => void;
+	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
+	onReactionInit: (messageId: string) => void;
+	onMessageLongPress: (message: TAnyMessageModel) => void;
+	onReplyInit: (messageId: string) => Promise<void>;
+}
 
 export function useMessageActions({
 	messageActionStore,

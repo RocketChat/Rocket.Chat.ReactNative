@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { type RefObject, useEffect, useRef } from 'react';
 import parse from 'url-parse';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,14 +7,24 @@ import { goRoom, type TGoRoomItem } from '../../../lib/methods/helpers/goRoom';
 import { useDebounce } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
 import { type TAnyMessageModel } from '../../../definitions';
-import {
-	type IRoomViewProps,
-	type IUseRoomNavigationParams,
-	type IUseRoomNavigationResult,
-	type TGetMessageInfoResult
-} from '../definitions';
+import { type IListContainerRef, type IRoomViewProps, type TGetMessageInfoResult } from '../definitions';
 import { pushThreadRoom } from '../services/pushThreadRoom';
 import { useJumpToMessage } from './useJumpToMessage';
+
+export interface IUseRoomNavigationParams {
+	rid?: string;
+	tmid?: string;
+	t?: string;
+	isMasterDetail: boolean;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	roomUserIdRef: RefObject<string | null | undefined>;
+}
+
+export interface IUseRoomNavigationResult {
+	onThreadMessagesLoaded: () => void;
+	onThreadPress: (item: TAnyMessageModel) => void;
+	jumpToMessageByUrl: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
+}
 
 export function useRoomNavigation({
 	rid,
