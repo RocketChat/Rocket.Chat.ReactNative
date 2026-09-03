@@ -46,23 +46,25 @@ jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
 	const store = createStore(() => ({ room: {}, roomUpdate: {} }));
 	return {
-		useRoomStoreForScreen: () => {
+		createRoomStore: () => {
 			store.setState({ room: room.current, roomUpdate: {} }, true);
 			return store;
+		},
+		observeRoom: (_rid: string, _store: unknown, onReady: () => void) => {
+			onReady();
+			return jest.fn();
 		}
 	};
 });
 
 const renderGate = (params: Record<string, unknown> | null = { rid: 'rid-1', t: 'c' }) => {
 	const reduxStore = createReduxStore(() => ({ server: { version: '6.1.0' } }));
-	const props = {
-		route: { params: params ?? undefined },
-		navigation: { setOptions: jest.fn() }
-	} as unknown as IRoomViewProps;
+	const route = { params: params ?? undefined } as unknown as IRoomViewProps['route'];
+	const navigation = { setOptions: jest.fn() } as unknown as IRoomViewProps['navigation'];
 	return render(
 		<Provider store={reduxStore}>
 			<View>
-				<RoomGate {...props} />
+				<RoomGate route={route} navigation={navigation} />
 			</View>
 		</Provider>
 	);

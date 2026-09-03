@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+import { useStore } from 'zustand';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -28,11 +29,12 @@ import { useE2EEStatus } from '../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../hooks/useSubscriptionUnreads';
 import { useThreadFollowing } from '../hooks/useThreadFollowing';
 import { toggleFollowThread } from '../../../lib/methods/toggleFollowThread';
-import { useRoomStoreByRid } from '../stores/RoomStore';
+import { type RoomStore } from '../definitions';
 
 interface IRightButtonsProps {
 	rid?: string;
 	tmid?: string;
+	roomStore: RoomStore;
 }
 
 type RightButtonsNavigation = NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
@@ -122,7 +124,7 @@ const closeLivechat = async ({
 	}
 };
 
-const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null => {
+const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>>();
 	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
@@ -133,16 +135,16 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 
-	const room = useRoomStoreByRid(rid, s => s.room);
-	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);
+	const room = useStore(roomStore, s => s.room);
+	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
 	const canReturnQueue = useCanReturnQueue(room.t === 'l');
-	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(rid);
+	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
-	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
+	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 	const hasE2EEWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
 
 	const isFollowingThread = useThreadFollowing(tmid, userId);
-	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(rid, userId);
+	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(roomStore, userId);
 	const [canToggleEncryption] = usePermissions(['toggle-room-e2e-encryption'], rid);
 
 	const t = room.t as SubscriptionType;

@@ -11,6 +11,7 @@ interface IRenderRoomInitParams {
 	rid?: string;
 	tmid?: string;
 	isAuthenticated: boolean;
+	ready: boolean;
 	roomStore: RoomStore;
 	onThreadMessagesLoaded: () => void;
 }
@@ -63,6 +64,7 @@ const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStor
 		isAuthenticated: true,
 		roomStore,
 		onThreadMessagesLoaded: jest.fn(),
+		ready: true,
 		...overrides
 	};
 	const { rerender, result, unmount } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), {

@@ -1,6 +1,6 @@
 import { type AnyAction } from 'redux';
-import { ROUTING_CONFIG } from '../../../actions/actionsTypes';
-import { SERVER } from '../../../actions/actionsTypes';
+
+import { ROUTING_CONFIG, SERVER } from '../../../actions/actionsTypes';
 
 export interface IRoutingConfig {
 	returnQueue: boolean | null;

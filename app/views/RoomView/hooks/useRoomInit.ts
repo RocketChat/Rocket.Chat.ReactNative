@@ -9,6 +9,7 @@ interface IUseRoomInitParams {
 	rid?: string;
 	tmid?: string;
 	isAuthenticated: boolean;
+	ready: boolean;
 	roomStore: RoomStore;
 	onThreadMessagesLoaded: () => void;
 }
@@ -62,6 +63,7 @@ export function useRoomInit({
 	rid,
 	tmid,
 	isAuthenticated,
+	ready,
 	roomStore,
 	onThreadMessagesLoaded
 }: IUseRoomInitParams): IRoomScreenContextValue {
@@ -75,7 +77,7 @@ export function useRoomInit({
 	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
 	const [settled, setSettled] = useState(false);
 	const [failed, setFailed] = useState(false);
-	const hasInitWork = !!rid && isAuthenticated;
+	const hasInitWork = !!rid && isAuthenticated && ready;
 	const loading = hasInitWork && !settled;
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
 	// still-in-flight predecessor can no longer un-cancel itself and write for a screen that moved on.
@@ -105,7 +107,7 @@ export function useRoomInit({
 			task.cancel();
 		};
 		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
-	}, [rid, isAuthenticated, hasInitWork, init]);
+	}, [rid, isAuthenticated, ready, hasInitWork, init]);
 
 	return { loading, failed: hasInitWork && failed && !loading, retry: init, lastSeen, clearLastSeen };
 }

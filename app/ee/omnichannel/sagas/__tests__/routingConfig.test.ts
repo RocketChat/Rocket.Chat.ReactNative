@@ -1,9 +1,9 @@
-jest.mock('../../../lib/services/restApi', () => ({ getRoutingConfig: jest.fn() }));
+jest.mock('../../../../lib/services/restApi', () => ({ getRoutingConfig: jest.fn() }));
 
-import { getRoutingConfig } from '../../../lib/services/restApi';
-import { routingConfigRequest } from '../actions/routingConfig';
-import routingConfig from './routingConfig';
-import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../../lib/testUtils/sagaStore';
+import { getRoutingConfig } from '../../../../lib/services/restApi';
+import { routingConfigRequest } from '../../actions/routingConfig';
+import routingConfig from '../routingConfig';
+import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../../../lib/testUtils/sagaStore';
 
 const mockGetRoutingConfig = getRoutingConfig as jest.MockedFunction<typeof getRoutingConfig>;
 

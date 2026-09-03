@@ -7,9 +7,6 @@ import RoomView from '../index';
 import { type IRoomViewProps } from '../definitions';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
 
-// A thread mounts a second RoomView on the parent's rid, so both screens share one rid-keyed store.
-// This harness mounts that pair and is reusable by any test about per-screen vs per-room state.
-
 jest.mock('../../../i18n', () => ({
 	__esModule: true,
 	default: { t: (key: string) => key }
@@ -182,7 +179,7 @@ const renderRoomAndThread = ({
 	};
 };
 
-describe('RoomView screens sharing one rid-keyed store', () => {
+describe('RoomView room and thread screens on the same rid', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockSubscriptionRows.current = [];
@@ -231,7 +228,7 @@ describe('RoomView screens sharing one rid-keyed store', () => {
 		expect(screen.getByTestId('last-seen-room').props.accessibilityLabel).toBe(String(ls));
 	});
 
-	it('shares the Livechat agent-authored flag when the thread screen mounts first', async () => {
+	it('reflects the Livechat agent-authored flag on both screens when the thread screen mounts first', async () => {
 		const rid = 'rid-livechat-shared';
 		mockSubscriptionRows.current = [{ id: 'sub-1', rid, t: 'l', lastMessage: { u: { _id: 'agent-1' } } }];
 		renderRoomAndThread({ rid, type: 'l', startWithThread: true });

@@ -20,12 +20,8 @@ export const pushThreadRoom = async ({ rid, item, roomUserId, navigation, onCanc
 	}
 
 	if (item.tmid) {
-		let name = '';
-		let jumpToMessageId = '';
-		if ('id' in item) {
-			name = 'tmsg' in item ? (item.tmsg ?? '') : '';
-			jumpToMessageId = item.id;
-		}
+		const jumpToMessageId = 'id' in item ? item.id : '';
+		const knownName = 'id' in item && 'tmsg' in item ? (item.tmsg ?? '') : '';
 		let cancelled = false;
 		sendLoadingEvent({
 			visible: true,
@@ -36,19 +32,17 @@ export const pushThreadRoom = async ({ rid, item, roomUserId, navigation, onCanc
 		});
 		let threadName: string | undefined;
 		try {
-			threadName = await fetchThreadName(rid, item.tmid, jumpToMessageId, name);
-		} finally {
-			if (!threadName || cancelled) {
-				sendLoadingEvent({ visible: false });
-			}
+			threadName = await fetchThreadName(rid, item.tmid, jumpToMessageId, knownName);
+		} catch (e) {
+			sendLoadingEvent({ visible: false });
+			throw e;
 		}
 		if (!threadName || cancelled) {
+			sendLoadingEvent({ visible: false });
 			return;
 		}
-		name = threadName;
-		if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
-			name = I18n.t('Encrypted_message');
-		}
+		const isUndecryptable =
+			'id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE;
 		if (!jumpToMessageId) {
 			setTimeout(() => {
 				sendLoadingEvent({ visible: false });
@@ -57,7 +51,7 @@ export const pushThreadRoom = async ({ rid, item, roomUserId, navigation, onCanc
 		return navigation.push('RoomView', {
 			rid,
 			tmid: item.tmid,
-			name,
+			name: isUndecryptable ? I18n.t('Encrypted_message') : threadName,
 			t: SubscriptionType.THREAD,
 			roomUserId,
 			jumpToMessageId
