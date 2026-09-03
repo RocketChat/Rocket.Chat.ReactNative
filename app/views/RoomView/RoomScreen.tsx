@@ -68,7 +68,6 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 	const Message_GroupingPeriod = useSetting('Message_GroupingPeriod') as number;
 	const Message_Read_Receipt_Enabled = useSetting('Message_Read_Receipt_Enabled') as boolean;
 	const Hide_System_Messages = useSetting('Hide_System_Messages') as string[];
-	const livechatAllowManualOnHold = useSetting('Livechat_allow_manual_on_hold') as boolean;
 	const { width } = useWindowDimensions();
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
@@ -91,7 +90,6 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
-	const joined = useStore(roomStore, s => s.joined);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const canAutoTranslate = useStore(roomStore, s => s.canAutoTranslate);
 
@@ -166,14 +164,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 
 	const closeBanner = useCloseBanner(room);
 
-	useOmnichannelPermissions({
-		rid,
-		t,
-		roomUpdate,
-		joined,
-		livechatAllowManualOnHold,
-		roomStore
-	});
+	useOmnichannelPermissions({ rid, t, roomStore });
 
 	if (roomScreen.failed) {
 		return <RoomLoadFailed onRetry={roomScreen.retry} />;

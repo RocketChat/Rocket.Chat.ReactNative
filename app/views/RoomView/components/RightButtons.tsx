@@ -13,6 +13,7 @@ import { closeLivechat as closeLivechatService } from '../../../lib/methods/help
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '../../../lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useCanReturnQueue } from '../../../lib/hooks/useCanReturnQueue';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../../lib/services/restApi';
@@ -21,6 +22,7 @@ import { type TNavigation } from '../../../stacks/stackType';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';
 import { HeaderCallButton } from './HeaderCallButton';
+import { useCanPlaceLivechatOnHold } from '../hooks/useCanPlaceLivechatOnHold';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../hooks/useSubscriptionUnreads';
 import { useThreadFollowing } from '../hooks/useThreadFollowing';
@@ -134,8 +136,8 @@ const RightButtons = ({ rid, tmid }: IRightButtonsProps): ReactElement | null =>
 
 	const room = useRoomStoreByRid(rid, s => s.room);
 	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);
-	const canReturnQueue = useRoomStoreByRid(rid, s => s.canReturnQueue);
-	const canPlaceLivechatOnHold = useRoomStoreByRid(rid, s => s.canPlaceLivechatOnHold);
+	const canReturnQueue = useCanReturnQueue(room.t === 'l');
+	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(rid);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
 	const hasE2EEWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
