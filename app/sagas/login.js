@@ -33,7 +33,6 @@ import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancell
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
-import { useRoutingConfigStore } from '../lib/hooks/useCanReturnQueue';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
@@ -449,7 +448,6 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 	const server = yield select(getServer);
 	if (server) {
 		try {
-			useRoutingConfigStore.getState().reset();
 			yield call(removeServerData, { server });
 			yield call(removeServerDatabase, { server });
 			const loggedInServer = yield call(findLoggedInServer);

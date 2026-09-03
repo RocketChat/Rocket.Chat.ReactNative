@@ -67,7 +67,7 @@ describe('useCanReturnQueue', () => {
 		expect(mockGetRoutingConfig).toHaveBeenCalledTimes(2);
 	});
 
-	it('refetches after logging out of the same server', async () => {
+	it('refetches after the cache is reset', async () => {
 		mockGetRoutingConfig.mockResolvedValueOnce({ returnQueue: true }).mockResolvedValueOnce({ returnQueue: false });
 
 		const first = renderHook(() => useCanReturnQueue(true));

@@ -27,6 +27,8 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
+	useRoutingConfigStore.getState().reset();
+
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
@@ -96,8 +98,6 @@ export async function removeServer({ server }: { server: string }): Promise<void
 }
 
 export async function logout({ server }: { server: string }): Promise<void> {
-	useRoutingConfigStore.getState().reset();
-
 	if (roomsSubscription?.stop) {
 		roomsSubscription.stop();
 	}
