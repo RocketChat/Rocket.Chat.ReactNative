@@ -33,7 +33,7 @@ export function useJumpToMessage({
 
 	const pendingJumpRef = useRef<string | undefined>(route.params?.jumpToMessageId);
 	const jumpToThreadIdRef = useRef<string | undefined>(route.params?.jumpToThreadId);
-	const threadMessagesLoadedRef = useRef(!tmid);
+	const loadedThreadRef = useRef<string | undefined>(undefined);
 
 	const jumpGenerationRef = useRef(0);
 
@@ -72,16 +72,14 @@ export function useJumpToMessage({
 	// Thread jump: fired from the store init's `onThreadMessagesLoaded` callback — the thread window is
 	// populated by then, so the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
 	const onThreadMessagesLoaded = () => {
-		threadMessagesLoadedRef.current = true;
+		loadedThreadRef.current = tmid;
 		if (pendingJumpRef.current) {
 			consumeJumpParam(pendingJumpRef.current);
 		}
 	};
 
-	// Same gate for a param delivered via setParams: a thread whose rows haven't loaded yet parks the jump
-	// for onThreadMessagesLoaded instead of firing into an empty list.
 	const onJumpParamChanged = (messageId: string) => {
-		if (threadMessagesLoadedRef.current) {
+		if (!tmid || loadedThreadRef.current === tmid) {
 			consumeJumpParam(messageId);
 		} else {
 			pendingJumpRef.current = messageId;
