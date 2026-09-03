@@ -7,6 +7,38 @@ import sharedStyles from '../../Styles';
 
 const GAP = 32;
 
+const styles = StyleSheet.create({
+	root: { flex: 1 },
+	container: {
+		flex: 1,
+		marginHorizontal: 24,
+		justifyContent: 'center'
+	},
+	textView: { alignItems: 'center' },
+	icon: {
+		width: 58,
+		height: 58,
+		borderRadius: 30,
+		marginBottom: GAP,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	title: {
+		...sharedStyles.textBold,
+		fontSize: 24,
+		lineHeight: 32,
+		textAlign: 'center',
+		marginBottom: GAP
+	},
+	description: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		lineHeight: 24,
+		textAlign: 'center'
+	},
+	gapBottom: { marginBottom: GAP }
+});
+
 interface RoomPlaceholderProps {
 	icon: TIconsName;
 	title: string;
@@ -18,62 +50,20 @@ interface RoomPlaceholderProps {
 
 export const RoomPlaceholder = ({ icon, title, description, detail, testID, children }: RoomPlaceholderProps): ReactElement => {
 	const { colors } = useTheme();
-	const styles = useStyle(colors);
 
 	return (
-		<View style={styles.root} testID={testID}>
+		<View style={[styles.root, { backgroundColor: colors.surfaceRoom }]} testID={testID}>
 			<View style={styles.container}>
 				<View style={styles.textView}>
-					<View style={styles.icon}>
+					<View style={[styles.icon, { backgroundColor: colors.surfaceNeutral }]}>
 						<CustomIcon name={icon} size={42} color={colors.fontSecondaryInfo} />
 					</View>
-					<Text style={styles.title}>{title}</Text>
-					<Text style={[styles.description, !detail && styles.gapBottom]}>{description}</Text>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
+					<Text style={[styles.description, { color: colors.fontDefault }, !detail && styles.gapBottom]}>{description}</Text>
 					{detail ? <View style={styles.gapBottom}>{detail}</View> : null}
 				</View>
 				{children}
 			</View>
 		</View>
 	);
-};
-
-const useStyle = (colors: ReturnType<typeof useTheme>['colors']) => {
-	const styles = StyleSheet.create({
-		root: {
-			flex: 1,
-			backgroundColor: colors.surfaceRoom
-		},
-		container: {
-			flex: 1,
-			marginHorizontal: 24,
-			justifyContent: 'center'
-		},
-		textView: { alignItems: 'center' },
-		icon: {
-			width: 58,
-			height: 58,
-			borderRadius: 30,
-			marginBottom: GAP,
-			backgroundColor: colors.surfaceNeutral,
-			alignItems: 'center',
-			justifyContent: 'center'
-		},
-		title: {
-			...sharedStyles.textBold,
-			fontSize: 24,
-			lineHeight: 32,
-			textAlign: 'center',
-			color: colors.fontTitlesLabels,
-			marginBottom: GAP
-		},
-		description: {
-			...sharedStyles.textRegular,
-			fontSize: 16,
-			lineHeight: 24,
-			textAlign: 'center',
-			color: colors.fontDefault
-		},
-		gapBottom: { marginBottom: GAP }
-	});
-	return styles;
 };

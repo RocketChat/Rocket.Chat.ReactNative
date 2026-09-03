@@ -15,46 +15,43 @@ interface IBannerProps {
 	closeBanner: () => void;
 }
 
-const Banner = memo(
-	({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
-		const [showModal, openModal] = useState(false);
-		const { colors } = useTheme();
+const Banner = memo(({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
+	const [showModal, openModal] = useState(false);
+	const { colors } = useTheme();
 
-		const toggleModal = () => openModal(prevState => !prevState);
+	const toggleModal = () => openModal(prevState => !prevState);
 
-		if (text && !bannerClosed) {
-			return (
-				<>
-					<BorderlessButton
-						style={[styles.bannerContainer, { backgroundColor: colors.surfaceNeutral }]}
-						testID='room-view-banner'
-						onPress={toggleModal}>
-						<MarkdownPreview msg={text} style={styles.bannerText} />
-						<BorderlessButton onPress={closeBanner} hitSlop={10}>
-							<CustomIcon color={colors.fontSecondaryInfo} name='close' size={20} />
-						</BorderlessButton>
+	if (text && !bannerClosed) {
+		return (
+			<>
+				<BorderlessButton
+					style={[styles.bannerContainer, { backgroundColor: colors.surfaceNeutral }]}
+					testID='room-view-banner'
+					onPress={toggleModal}>
+					<MarkdownPreview msg={text} style={styles.bannerText} />
+					<BorderlessButton onPress={closeBanner} hitSlop={10}>
+						<CustomIcon color={colors.fontSecondaryInfo} name='close' size={20} />
 					</BorderlessButton>
-					<Modal
-						onBackdropPress={toggleModal}
-						onBackButtonPress={toggleModal}
-						useNativeDriver
-						isVisible={showModal}
-						animationIn='fadeIn'
-						animationOut='fadeOut'>
-						<GestureHandlerRootView style={[styles.modalView, { backgroundColor: colors.surfaceNeutral }]}>
-							<Text style={[styles.bannerModalTitle, { color: colors.fontSecondaryInfo }]}>{title}</Text>
-							<ScrollView style={styles.modalScrollView}>
-								<Markdown msg={text} />
-							</ScrollView>
-						</GestureHandlerRootView>
-					</Modal>
-				</>
-			);
-		}
+				</BorderlessButton>
+				<Modal
+					onBackdropPress={toggleModal}
+					onBackButtonPress={toggleModal}
+					useNativeDriver
+					isVisible={showModal}
+					animationIn='fadeIn'
+					animationOut='fadeOut'>
+					<GestureHandlerRootView style={[styles.modalView, { backgroundColor: colors.surfaceNeutral }]}>
+						<Text style={[styles.bannerModalTitle, { color: colors.fontSecondaryInfo }]}>{title}</Text>
+						<ScrollView style={styles.modalScrollView}>
+							<Markdown msg={text} />
+						</ScrollView>
+					</GestureHandlerRootView>
+				</Modal>
+			</>
+		);
+	}
 
-		return null;
-	},
-	(prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.bannerClosed === nextProps.bannerClosed
-);
+	return null;
+});
 
 export default Banner;

@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useSetting } from '../../../../lib/hooks/useSetting';
 import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 
@@ -12,9 +12,9 @@ export type TRoomFooterState =
 export const useRoomFooterState = (): TRoomFooterState => {
 	const room = useRoomWithUpdate();
 	const joined = useRoomStore(s => s.joined);
-	const airGappedRestrictionRemainingDays = useAppSelector(
-		state => state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days as number | undefined
-	);
+	const airGappedRestrictionRemainingDays = useSetting('Cloud_Workspace_AirGapped_Restrictions_Remaining_Days') as
+		| number
+		| undefined;
 	const footerMessage = useFooterMessage();
 
 	if ('onHold' in room && room.onHold) {
