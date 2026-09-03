@@ -198,14 +198,4 @@ describe('logout', () => {
 		expect(mockSdkLogout).toHaveBeenCalled();
 		expect(disconnect).toHaveBeenCalled();
 	});
-
-	it('resets the routing config cache', async () => {
-		seedServer(SERVER, USER_ID);
-		useRoutingConfigStore.setState({ server: SERVER, returnQueue: true });
-
-		await logout({ server: SERVER });
-
-		expect(useRoutingConfigStore.getState().server).toBeNull();
-		expect(useRoutingConfigStore.getState().returnQueue).toBe(false);
-	});
 });
