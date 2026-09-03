@@ -20,7 +20,7 @@ jest.mock('../../../views/RoomView/stores/ComposerStore', () => ({
 }));
 
 jest.mock('../../message/stores/MessageActionStore', () => ({
-	useMessageAction: jest.fn(),
+	useMessageActionKind: jest.fn(),
 	useQuotedMessageIds: jest.fn(() => [])
 }));
 
@@ -53,7 +53,7 @@ const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSe
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
 const mockUseSetQuotesAndText = require('../../../views/RoomView/stores/ComposerStore').useSetQuotesAndText as jest.Mock;
 const mockUseGetText = require('../../../views/RoomView/stores/ComposerStore').useGetText as jest.Mock;
-const mockUseMessageAction = require('../../message/stores/MessageActionStore').useMessageAction as jest.Mock;
+const mockUseMessageActionKind = require('../../message/stores/MessageActionStore').useMessageActionKind as jest.Mock;
 const mockUseQuotedMessageIds = require('../../message/stores/MessageActionStore').useQuotedMessageIds as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
 const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
@@ -77,7 +77,7 @@ describe('useChooseMedia', () => {
 		mockUseMessageComposerApi.mockReturnValue({ addAttachments });
 		mockUseSetQuotesAndText.mockReturnValue(jest.fn());
 		mockUseGetText.mockReturnValue(jest.fn(() => 'draft'));
-		mockUseMessageAction.mockReturnValue(null);
+		mockUseMessageActionKind.mockReturnValue(null);
 		mockGetSubscriptionByRoomId.mockResolvedValue({ rid: 'room-id', t: 'c' });
 		mockGetThreadById.mockResolvedValue({ id: 'thread-id' });
 	});
@@ -136,7 +136,7 @@ describe('useChooseMedia', () => {
 
 	it('forwards quoted message ids to ShareView as selectedMessages', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
-		mockUseMessageAction.mockReturnValue({ kind: 'quote', messageIds: ['msg-1', 'msg-2'] });
+		mockUseMessageActionKind.mockReturnValue('quote');
 		mockUseQuotedMessageIds.mockReturnValue(['msg-1', 'msg-2']);
 		mockGetDocumentAsync.mockResolvedValue({
 			canceled: false,
@@ -155,7 +155,7 @@ describe('useChooseMedia', () => {
 
 	it('does not quote the message when the action is edit', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
-		mockUseMessageAction.mockReturnValue({ kind: 'edit', messageId: 'msg-1' });
+		mockUseMessageActionKind.mockReturnValue('edit');
 		mockUseQuotedMessageIds.mockReturnValue([]);
 		mockGetDocumentAsync.mockResolvedValue({
 			canceled: false,
