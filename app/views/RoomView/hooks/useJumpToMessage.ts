@@ -33,6 +33,7 @@ export function useJumpToMessage({
 
 	const pendingJumpRef = useRef<string | undefined>(route.params?.jumpToMessageId);
 	const jumpToThreadIdRef = useRef<string | undefined>(route.params?.jumpToThreadId);
+	const threadMessagesLoadedRef = useRef(!tmid);
 
 	const jumpGenerationRef = useRef(0);
 
@@ -71,15 +72,25 @@ export function useJumpToMessage({
 	// Thread jump: fired from the store init's `onThreadMessagesLoaded` callback — the thread window is
 	// populated by then, so the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
 	const onThreadMessagesLoaded = () => {
+		threadMessagesLoadedRef.current = true;
 		if (pendingJumpRef.current) {
-			const messageId = pendingJumpRef.current;
-			pendingJumpRef.current = undefined;
+			consumeJumpParam(pendingJumpRef.current);
+		}
+	};
+
+	// Same gate for a param delivered via setParams: a thread whose rows haven't loaded yet parks the jump
+	// for onThreadMessagesLoaded instead of firing into an empty list.
+	const onJumpParamChanged = (messageId: string) => {
+		if (threadMessagesLoadedRef.current) {
 			consumeJumpParam(messageId);
+		} else {
+			pendingJumpRef.current = messageId;
 		}
 	};
 
 	// Live-mirrored (see useLiveRef) so the mount effect can key on [tmid] despite these being unstable.
 	const consumeJumpParamRef = useLiveRef(consumeJumpParam);
+	const onJumpParamChangedRef = useLiveRef(onJumpParamChanged);
 	const navToThreadRef = useLiveRef(navToThread);
 
 	useEffect(() => {
@@ -105,7 +116,7 @@ export function useJumpToMessage({
 		return () => task.cancel();
 	}, [navToThreadRef]);
 
-	useChangedParam(route.params?.jumpToMessageId, id => consumeJumpParamRef.current(id));
+	useChangedParam(route.params?.jumpToMessageId, id => onJumpParamChangedRef.current(id));
 	useChangedParam(route.params?.jumpToThreadId, id => navToThreadRef.current({ tmid: id }));
 
 	return { jumpToMessage, cancelJumpToMessage, onThreadMessagesLoaded };
