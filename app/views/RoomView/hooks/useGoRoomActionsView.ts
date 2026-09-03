@@ -1,4 +1,5 @@
 import { type NavigatorScreenParams, useNavigation } from '@react-navigation/native';
+import { useShallow } from 'zustand/react/shallow';
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
@@ -13,13 +14,17 @@ import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackParamList) => void) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const isMasterDetail = useMasterDetail();
-	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
-	const room = useRoomStoreByRid(rid, s => s.room);
+	const { room, member, joined, canForwardGuest, canViewCannedResponse } = useRoomStoreByRid(
+		rid,
+		useShallow(s => ({
+			room: s.room,
+			member: s.member,
+			joined: s.joined,
+			canForwardGuest: s.canForwardGuest,
+			canViewCannedResponse: s.canViewCannedResponse
+		}))
+	);
 	const t = room.t;
-	const member = useRoomStoreByRid(rid, s => s.member);
-	const joined = useRoomStoreByRid(rid, s => s.joined);
-	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);
-	const canViewCannedResponse = useRoomStoreByRid(rid, s => s.canViewCannedResponse);
 	const canReturnQueue = useCanReturnQueue(t === 'l');
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(rid);
 
