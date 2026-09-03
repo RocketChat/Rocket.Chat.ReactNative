@@ -46,9 +46,13 @@ jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
 	const store = createStore(() => ({ room: {}, roomUpdate: {} }));
 	return {
-		useRoomStoreForScreen: () => {
+		createRoomStore: () => {
 			store.setState({ room: room.current, roomUpdate: {} }, true);
 			return store;
+		},
+		observeRoom: (_rid: string, _initialRoom: unknown, _store: unknown, onReady: () => void) => {
+			onReady();
+			return jest.fn();
 		}
 	};
 });

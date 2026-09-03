@@ -40,6 +40,7 @@ export type TRoomRouteParse = { status: 'valid'; input: IRoomScreenInput } | { s
 
 export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IRoomScreenInput, 'rid' | 't' | 'tmid'> {
 	roomStore: RoomStore;
+	ready: boolean;
 }
 
 export interface IRoomFooterProps {
@@ -318,6 +319,7 @@ export interface IUseRoomMessagingParams {
 	rid?: string;
 	t?: string;
 	tmid?: string;
+	ready: boolean;
 	roomStore: RoomStore;
 	roomUserId?: string | null;
 	quoteMessageId?: string;

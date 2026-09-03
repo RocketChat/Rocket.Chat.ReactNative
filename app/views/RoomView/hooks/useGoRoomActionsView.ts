@@ -7,21 +7,23 @@ import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../
 import { type TNavigation } from '../../../stacks/stackType';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { type IRoomViewProps } from '../definitions';
-import { useRoomStoreByRid } from '../stores/RoomStore';
+import { useStore } from 'zustand';
+import { type RoomStore } from '../definitions';
 import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 
-export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackParamList) => void) => {
+export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof ModalStackParamList) => void) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const isMasterDetail = useMasterDetail();
 	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
-	const room = useRoomStoreByRid(rid, s => s.room);
+	const rid = useStore(roomStore, s => s.room.rid);
+	const room = useStore(roomStore, s => s.room);
 	const t = room.t;
-	const member = useRoomStoreByRid(rid, s => s.member);
-	const joined = useRoomStoreByRid(rid, s => s.joined);
-	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);
-	const canViewCannedResponse = useRoomStoreByRid(rid, s => s.canViewCannedResponse);
+	const member = useStore(roomStore, s => s.member);
+	const joined = useStore(roomStore, s => s.joined);
+	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
+	const canViewCannedResponse = useStore(roomStore, s => s.canViewCannedResponse);
 	const canReturnQueue = useCanReturnQueue(t === 'l');
-	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(rid);
+	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
 	const omnichannelPermissions = { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold };
 

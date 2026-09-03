@@ -6,10 +6,6 @@ import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
 
-jest.mock('../../stores/RoomStore', () => ({
-	useRoomStoreByRid: (_rid: string | undefined, selector: (state: RoomState) => unknown) =>
-		jest.requireActual('zustand').useStore(mockTestStore, selector)
-}));
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('../../components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('../../components/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
@@ -55,7 +51,7 @@ describe('useHeader', () => {
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
-		renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general' }));
+		renderHook(() => useHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
 		expect(mockSetOptions).toHaveBeenCalledTimes(1);
 		const options = mockSetOptions.mock.calls[0][0];
@@ -67,7 +63,7 @@ describe('useHeader', () => {
 	it('re-fires the title effect when a rendered field changes even though the room reference is stable', () => {
 		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'old' } });
 
-		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
@@ -78,7 +74,7 @@ describe('useHeader', () => {
 	});
 
 	it('keeps the thread title from the passed name when the observed room name changes', () => {
-		renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread name' }));
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread name', roomStore: mockTestStore }));
 
 		const titleOptions = mockSetOptions.mock.calls[1][0];
 		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
@@ -91,7 +87,7 @@ describe('useHeader', () => {
 	});
 
 	it('renders each header callback without throwing', () => {
-		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general' }));
+		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 
 		const sideOptions = mockSetOptions.mock.calls[0][0];
 		const titleOptions = mockSetOptions.mock.calls[1][0];

@@ -1,7 +1,7 @@
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
 import { type IRoomViewState } from '../definitions';
-import { peekOrCreateRoomStore, releaseRoomStore } from './RoomStore';
+import { createRoomStore } from './RoomStore';
 
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
@@ -45,9 +45,9 @@ const mockJoinRoomService = joinRoomService as jest.Mock;
 const mockTakeInquiry = takeInquiry as jest.Mock;
 const mockTakeResume = takeResume as jest.Mock;
 
-// rid-less stores bypass the registry, so each case gets an isolated store with the full creator actions.
+// Each case gets an isolated screen-owned store with the full creator actions.
 const makeStore = (room: IRoomViewState['room']) => {
-	const store = peekOrCreateRoomStore({ initialRoom: room });
+	const store = createRoomStore({ initialRoom: room });
 	store.setState({ join: jest.fn() });
 	return store;
 };
@@ -86,14 +86,13 @@ describe('RoomStore join/resume actions', () => {
 
 	it('joinRoom omnichannel path on a warmed rid-keyed store passes no server version', async () => {
 		const room = { _id: 'room-id-2', rid: 'warm-rid', t: 'l' } as any;
-		const warmed = peekOrCreateRoomStore({ rid: 'warm-rid', initialRoom: room });
+		const warmed = createRoomStore({ rid: 'warm-rid', initialRoom: room });
 		warmed.setState({ room, join: jest.fn() });
 
 		await warmed.getState().joinRoom();
 
 		expect(mockTakeInquiry).toHaveBeenCalledWith('room-id-2');
 		expect(warmed.getState().join).toHaveBeenCalledTimes(1);
-		releaseRoomStore('warm-rid');
 	});
 
 	it('joinRoom plain path calls the join service then joins the store', async () => {

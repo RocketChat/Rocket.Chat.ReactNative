@@ -22,7 +22,7 @@ import { useRoomRemoved } from './hooks/useRoomRemoved';
 import { useOmnichannelPermissions } from './hooks/useOmnichannelPermissions';
 import { useInAppFeedback } from './hooks/useInAppFeedback';
 
-const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
+const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps) => {
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 
@@ -59,12 +59,13 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 		t,
 		tmid,
 		roomStore,
+		ready,
 		roomUserId,
 		quoteMessageId: route.params?.messageId
 	});
 	useRoomSubscription(rid, tmid);
 	useRoomAudioLifecycle(rid, tmid);
-	useRoomRemoved(rid, isMasterDetail);
+	useRoomRemoved(rid, isMasterDetail, roomStore);
 	useInAppFeedback();
 	useOmnichannelPermissions({ rid, t, roomStore });
 

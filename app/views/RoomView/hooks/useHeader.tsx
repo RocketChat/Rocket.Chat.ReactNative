@@ -2,6 +2,7 @@ import { type ComponentProps, useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useShallow } from 'zustand/react/shallow';
+import { useStore } from 'zustand';
 
 import RoomHeader from '../../../containers/RoomHeader';
 import { getRoomTitle, isGroupChat } from '../../../lib/methods/helpers';
@@ -10,7 +11,7 @@ import { type IOmnichannelSource, type ISubscription, type IVisitor } from '../.
 import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons';
 import { type IRoomViewProps, type IRoomViewState } from '../definitions';
-import { useRoomStoreByRid } from '../stores/RoomStore';
+import { type RoomStore } from '../definitions';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
 interface IUseHeaderParams {
@@ -18,6 +19,7 @@ interface IUseHeaderParams {
 	tmid?: string;
 	/** Thread name on a thread; only read when `tmid` is set, since the room title is derived from the room. */
 	name?: string;
+	roomStore: RoomStore;
 }
 
 interface IGetRoomHeaderPropsParams {
@@ -72,16 +74,16 @@ const getRoomHeaderProps = ({
 
 // rid/tmid/name come from the screen's mount-time snapshot: route.params can be wiped to undefined
 // while this RoomView is retained below the stack top, which would break the header permanently.
-export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void => {
+export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderParams): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-	const room = useRoomStoreByRid(rid, s => s.room);
-	const roomUpdate = useRoomStoreByRid(
-		rid,
+	const room = useStore(roomStore, s => s.room);
+	const roomUpdate = useStore(
+		roomStore,
 		useShallow(s => s.roomUpdate)
 	);
-	const roomUserId = useRoomStoreByRid(rid, s => s.roomUserId);
-	const goRoomActionsView = useGoRoomActionsView(rid);
+	const roomUserId = useStore(roomStore, s => s.roomUserId);
+	const goRoomActionsView = useGoRoomActionsView(roomStore);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -90,10 +92,10 @@ export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void
 			return;
 		}
 		navigation.setOptions({
-			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} />,
-			headerRight: () => <RightButtons rid={rid} tmid={tmid} />
+			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
+			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
 		});
-	}, [rid, tmid, navigation]);
+	}, [rid, tmid, navigation, roomStore]);
 
 	useLayoutEffect(() => {
 		if (!rid) {

@@ -25,6 +25,7 @@ export function useRoomMessaging({
 	t,
 	tmid,
 	roomStore,
+	ready,
 	roomUserId,
 	quoteMessageId
 }: IUseRoomMessagingParams): IUseRoomMessagingResult {
@@ -82,7 +83,7 @@ export function useRoomMessaging({
 		messageErrorActionsRef
 	});
 
-	const roomScreen = useRoomInit({ rid, tmid, isAuthenticated, roomStore, onThreadMessagesLoaded });
+	const roomScreen = useRoomInit({ rid, tmid, isAuthenticated, roomStore, onThreadMessagesLoaded, ready });
 
 	const sendMessage = (message?: string, tshow?: boolean) =>
 		sendRoomMessage({
