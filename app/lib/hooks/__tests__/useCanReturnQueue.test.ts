@@ -16,7 +16,7 @@ describe('useCanReturnQueue', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockServer = 'https://one.example';
-		useRoutingConfigStore.setState({ server: null, returnQueue: false });
+		useRoutingConfigStore.getState().reset();
 	});
 
 	it('fetches the routing config once for every screen on the same server', async () => {
@@ -65,5 +65,19 @@ describe('useCanReturnQueue', () => {
 		await waitFor(() => expect(second.result.current).toBe(true));
 
 		expect(mockGetRoutingConfig).toHaveBeenCalledTimes(2);
+	});
+
+	it('refetches after the cache is reset', async () => {
+		mockGetRoutingConfig.mockResolvedValueOnce({ returnQueue: true }).mockResolvedValueOnce({ returnQueue: false });
+
+		const first = renderHook(() => useCanReturnQueue(true));
+		await waitFor(() => expect(first.result.current).toBe(true));
+
+		act(() => useRoutingConfigStore.getState().reset());
+
+		const second = renderHook(() => useCanReturnQueue(true));
+		await waitFor(() => expect(mockGetRoutingConfig).toHaveBeenCalledTimes(2));
+
+		expect(second.result.current).toBe(false);
 	});
 });

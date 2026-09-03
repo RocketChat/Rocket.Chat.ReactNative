@@ -4,15 +4,16 @@ import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { type IUseOmnichannelPermissionsParams } from '../definitions';
 
 export function useOmnichannelPermissions({ rid, t, roomStore }: IUseOmnichannelPermissionsParams): void {
+	const isLivechat = t === 'l';
 	const [canForwardGuest, canViewCannedResponse] = usePermissions(
 		['transfer-livechat-guest', 'view-canned-responses'],
-		t === 'l' ? rid : undefined
+		isLivechat ? rid : undefined
 	);
 
 	useEffect(() => {
-		if (t !== 'l') {
-			return;
-		}
-		roomStore.setState({ canForwardGuest, canViewCannedResponse });
-	}, [t, canForwardGuest, canViewCannedResponse, roomStore]);
+		roomStore.setState({
+			canForwardGuest: isLivechat && canForwardGuest,
+			canViewCannedResponse: isLivechat && canViewCannedResponse
+		});
+	}, [isLivechat, canForwardGuest, canViewCannedResponse, roomStore]);
 }

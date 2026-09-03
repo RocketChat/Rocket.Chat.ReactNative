@@ -212,8 +212,9 @@ const observeRoom = (rid: string | undefined, initialRoom: IRoomViewState['room'
 			const roomUpdate = Object.fromEntries(
 				roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
 			) as IRoomViewState['roomUpdate'];
-			const previousRoomUpdate = store.getState().roomUpdate;
-			const roomChanged = roomAttrsUpdate.some(attr => previousRoomUpdate[attr] !== roomUpdate[attr]);
+			const { room: previousRoom, roomUpdate: previousRoomUpdate } = store.getState();
+			const rowRecreated = next !== previousRoom;
+			const roomChanged = rowRecreated || roomAttrsUpdate.some(attr => previousRoomUpdate[attr] !== roomUpdate[attr]);
 			const state = roomChanged
 				? {
 						room: next,
@@ -222,7 +223,7 @@ const observeRoom = (rid: string | undefined, initialRoom: IRoomViewState['room'
 						joined: true
 					}
 				: { subscribed: true, joined: true };
-			if (next.t === 'l' && nextLastMessageFromAgent !== lastMessageFromAgent) {
+			if (nextLastMessageFromAgent !== lastMessageFromAgent) {
 				lastMessageFromAgent = nextLastMessageFromAgent;
 				store.setState({ ...state, lastMessageFromAgent });
 			} else if (roomChanged || !store.getState().subscribed) {
