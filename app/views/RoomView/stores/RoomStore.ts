@@ -1,7 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { useEffect, useState } from 'react';
-import { InteractionManager } from 'react-native';
-import { createStore, useStore, type StateCreator } from 'zustand';
+import { createStore, type StateCreator } from 'zustand';
 
 import database from '../../../lib/database';
 import { loadThreadMessages } from '../../../lib/methods/loadThreadMessages';
@@ -12,7 +10,6 @@ import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
 import {
-	type IGetOrCreateRoomStoreParams,
 	type IRoomStoreInitParams,
 	type IRoomViewState,
 	type RoomState,
@@ -66,10 +63,11 @@ const loadRoom = async (
 	rid: string,
 	room: IRoomViewState['room'],
 	joined: boolean,
-	{ tmid, onThreadMessagesLoaded }: IRoomStoreInitParams
+	{ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams
 ): Promise<TLoadRoomResult> => {
+	const isAborted = () => signal?.aborted === true;
 	try {
-		if ('id' in room && isInviteSubscription(room)) {
+		if (isAborted() || ('id' in room && isInviteSubscription(room))) {
 			return { status: 'skipped' };
 		}
 
@@ -79,12 +77,18 @@ const loadRoom = async (
 		let shouldMarkRead = false;
 		if (tmid) {
 			await loadThreadMessages({ tmid, rid });
+			if (isAborted()) {
+				return { status: 'skipped' };
+			}
 			onThreadMessagesLoaded?.();
 		} else {
 			await getMessages({
 				rid: room.rid,
 				...('lastOpen' in room && room.lastOpen ? {} : { t: room.t as RoomType })
 			});
+			if (isAborted()) {
+				return { status: 'skipped' };
+			}
 
 			if (joined && 'id' in room) {
 				lastSeen = room.alert || room.unread || room.userMentions ? room.ls : null;
@@ -94,6 +98,9 @@ const loadRoom = async (
 
 		const canAutoTranslate = canAutoTranslateMethod();
 		const { roomUserId, member } = await pendingRoomMember;
+		if (isAborted()) {
+			return { status: 'skipped' };
+		}
 
 		return {
 			status: 'loaded',
@@ -131,7 +138,7 @@ const createRoomState =
 			}
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
 				const { room, joined } = get();
-				const result = await loadRoom(rid, room, joined, { tmid, onThreadMessagesLoaded });
+				const result = await loadRoom(rid, room, joined, { tmid, onThreadMessagesLoaded, signal });
 				if (signal?.aborted || result.status === 'skipped') {
 					return { status: 'skipped' };
 				}
@@ -156,28 +163,15 @@ const createRoomState =
 
 		join: () => set({ joined: true }),
 
-		joinRoom: requestJoinCode =>
+		joinRoom: (requestJoinCode?: () => void): Promise<void> =>
 			joinRoom(get().room, {
 				requestJoinCode,
 				onJoin: get().join
 			}),
-		resumeRoom: () => resumeRoom(get().room, get().join)
+		resumeRoom: (): Promise<void> => resumeRoom(get().room, get().join)
 	});
 
-export function observeRoom(rid: string | undefined, store: RoomStore): () => void;
-export function observeRoom(
-	rid: string | undefined,
-	_initialRoom: IRoomViewState['room'],
-	store: RoomStore,
-	onReady?: () => void
-): () => void;
-export function observeRoom(
-	rid: string | undefined,
-	initialRoomOrStore: IRoomViewState['room'] | RoomStore,
-	maybeStore?: RoomStore,
-	onReady?: () => void
-): () => void {
-	const store = maybeStore ?? (initialRoomOrStore as RoomStore);
+export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
 	if (!rid) {
 		return () => {};
 	}
@@ -225,109 +219,3 @@ export const createRoomStore = ({
 	initialRoom: IRoomViewState['room'];
 	roomUserId?: string | null;
 }): RoomStore => createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
-
-interface IRoomStoreRegistryEntry {
-	store: RoomStore;
-	unsubscribe: () => void;
-	refCount: number;
-	pendingSweep: boolean;
-}
-
-const registry = new Map<string, IRoomStoreRegistryEntry>();
-
-const scheduleGraceSweep = (rid: string): void => {
-	const entry = registry.get(rid);
-	if (!entry || entry.pendingSweep) {
-		return;
-	}
-	entry.pendingSweep = true;
-	InteractionManager.runAfterInteractions(() => {
-		const current = registry.get(rid);
-		if (!current) {
-			return;
-		}
-		current.pendingSweep = false;
-		if (current.refCount === 0) {
-			current.unsubscribe();
-			registry.delete(rid);
-		}
-	});
-};
-
-const register = (rid: string, store: RoomStore, refCount: number): void => {
-	const unsubscribe = observeRoom(rid, store);
-	registry.set(rid, { store, unsubscribe, refCount, pendingSweep: false });
-};
-
-export const peekOrCreateRoomStore = ({ rid, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
-	if (!rid) {
-		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
-	}
-	const existing = registry.get(rid);
-	if (existing) {
-		return existing.store;
-	}
-	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
-	register(rid, store, 0);
-	scheduleGraceSweep(rid);
-	return store;
-};
-
-export const releaseRoomStore = (rid?: string): void => {
-	if (!rid) {
-		return;
-	}
-	const entry = registry.get(rid);
-	if (!entry) {
-		return;
-	}
-	entry.refCount -= 1;
-	if (entry.refCount <= 0) {
-		entry.unsubscribe();
-		registry.delete(rid);
-	}
-};
-
-export const acquireRoomStore = ({ rid }: Pick<IGetOrCreateRoomStoreParams, 'rid'>, store: RoomStore): RoomStore => {
-	if (!rid) {
-		return store;
-	}
-	const entry = registry.get(rid);
-	if (entry) {
-		entry.refCount += 1;
-		return entry.store;
-	}
-	register(rid, store, 1);
-	return store;
-};
-
-export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): RoomStore => {
-	const [screenParams] = useState(params);
-	const [peekedStore] = useState(() => peekOrCreateRoomStore(screenParams));
-	const [store, setStore] = useState(peekedStore);
-	const { rid } = screenParams;
-
-	useEffect(() => {
-		const acquiredStore = acquireRoomStore(screenParams, peekedStore);
-		if (acquiredStore !== peekedStore) {
-			setStore(acquiredStore);
-		}
-		return () => {
-			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
-		};
-	}, [rid, screenParams, peekedStore]);
-
-	return store;
-};
-
-const fallbackRoomStore = createStore<RoomState>(createRoomState(undefined));
-
-export const peekRoomStore = (rid?: string): RoomStore => (rid ? registry.get(rid)?.store : undefined) ?? fallbackRoomStore;
-
-export function useRoomStoreByRid<T>(rid: string | undefined, selector: (state: RoomState) => T): T {
-	const entry = rid ? registry.get(rid) : undefined;
-	if (__DEV__ && rid && !entry) {
-		console.warn(`useRoomStoreByRid: no store registered for rid "${rid}"; falling back to empty room.`);
-	}
-	return useStore(entry?.store ?? fallbackRoomStore, selector);
-}

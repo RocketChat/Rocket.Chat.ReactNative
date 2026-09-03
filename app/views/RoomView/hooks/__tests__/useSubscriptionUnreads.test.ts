@@ -35,7 +35,7 @@ const setupObservedRoom = (rid: string) => {
 	}));
 	mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
 	observedStore = createRoomStore({ rid, initialRoom: stubRoom });
-	observeRoom(rid, stubRoom, observedStore);
+	observeRoom(rid, observedStore);
 	return { emitRow: (row: any) => act(() => emit?.([row])) };
 };
 

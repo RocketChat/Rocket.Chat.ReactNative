@@ -4,7 +4,6 @@ import { type IUseE2EEStatusResult } from '../definitions';
 import { type RoomStore } from '../definitions';
 import { useRoomWithUpdateFromStore } from '../stores/RoomStoreContext';
 
-// The store is supplied by the owning RoomView, including to native-stack header callbacks.
 export const useE2EEStatus = (roomStore: RoomStore): IUseE2EEStatusResult => {
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);
 	const room = useRoomWithUpdateFromStore(roomStore);

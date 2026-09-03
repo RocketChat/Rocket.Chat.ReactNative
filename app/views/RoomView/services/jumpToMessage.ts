@@ -52,7 +52,7 @@ export const jumpToMessage = async ({
 			await navToRoom(message);
 		} else {
 			const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
-			const highTs = await resolveJumpAnchor(
+			const highTsMs = await resolveJumpAnchor(
 				rid,
 				{ id: message.id, tmid: message.tmid, ts: message.ts, fromServer: message.fromServer },
 				inWindow,
@@ -65,7 +65,7 @@ export const jumpToMessage = async ({
 			if (isCancelled()) {
 				return;
 			}
-			await listContainerRef.current?.jumpToMessage(message.id, highTs);
+			await listContainerRef.current?.jumpToMessage(message.id, highTsMs);
 			sendLoadingEvent({ visible: false });
 		}
 	} catch (error: any) {

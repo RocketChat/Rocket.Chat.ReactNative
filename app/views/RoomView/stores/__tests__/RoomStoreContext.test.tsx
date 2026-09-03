@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '../../../../lib/database';
-import { peekOrCreateRoomStore, releaseRoomStore } from '../RoomStore';
+import { createRoomStore, observeRoom } from '../RoomStore';
 import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
 
 jest.mock('../../../../lib/database', () => ({
@@ -54,14 +54,10 @@ describe('useRoomWithUpdate', () => {
 		jest.clearAllMocks();
 	});
 
-	// Release the 'rid-1' store each case acquires, isolating via the public API (no test-only reset).
-	afterEach(() => {
-		releaseRoomStore('rid-1');
-	});
-
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+		observeRoom('rid-1', store);
 		const spy = jest.fn();
 
 		const Probe = () => {
@@ -90,7 +86,8 @@ describe('useRoomWithUpdate', () => {
 
 	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
+		observeRoom('rid-1', store);
 		const spy = jest.fn();
 
 		const PlainProbe = () => {

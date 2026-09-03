@@ -29,7 +29,6 @@ export interface IRoomScreenInput {
 	rid: string;
 	t: string;
 	tmid?: string;
-	/** Thread name on a thread; the observed subscription row never carries it. */
 	name?: string;
 	initialRoom: IRoomViewState['room'];
 	roomUserId?: string | null;
@@ -124,8 +123,7 @@ export interface IListProps extends FlatListProps<TAnyMessageModel> {
 }
 
 export interface IListContainerRef {
-	// highTs is in milliseconds
-	jumpToMessage: (messageId: string, highTs?: number | null) => Promise<void>;
+	jumpToMessage: (messageId: string, highTsMs?: number | null) => Promise<void>;
 	cancelJumpToMessage: () => void;
 	isMessageInWindow: (messageId: string) => boolean;
 }
@@ -190,12 +188,6 @@ export interface IJoinRoomContext {
 }
 
 export type RoomStore = StoreApi<RoomState>;
-
-export interface IGetOrCreateRoomStoreParams {
-	rid?: string;
-	initialRoom: IRoomViewState['room'];
-	roomUserId?: string | null;
-}
 
 export type ComposerStore = StoreApi<ComposerState>;
 
