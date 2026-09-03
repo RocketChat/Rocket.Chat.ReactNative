@@ -18,7 +18,7 @@ export const getSheetContentPaddingBottom = ({
 	fullContainer?: boolean;
 	hugContent?: boolean;
 	scrollEnabled?: boolean;
-}): number => bottom + (isAndroid && fullContainer && !hugContent && !scrollEnabled ? HANDLE_HEIGHT : 0);
+}): number => Math.max(32, bottom) + (isAndroid && fullContainer && !hugContent && !scrollEnabled ? HANDLE_HEIGHT : 0);
 
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps
