@@ -96,7 +96,7 @@ describe('useActionSheetDetents', () => {
 });
 
 describe('getSheetContentPaddingBottom', () => {
-	const bottom = 24;
+	const bottom = 32;
 
 	beforeEach(() => {
 		mockIsAndroid = false;
