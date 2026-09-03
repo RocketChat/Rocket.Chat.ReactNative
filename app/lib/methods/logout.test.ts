@@ -38,6 +38,7 @@ jest.mock('../services/sdk', () => {
 });
 
 import { logout, removeServerData } from './logout';
+import { useRoutingConfigStore } from '../hooks/useCanReturnQueue';
 import sdk from '../services/sdk';
 import { disconnect } from '../services/connect';
 import database from '../database';
@@ -186,5 +187,15 @@ describe('logout', () => {
 
 		expect(mockSdkLogout).toHaveBeenCalled();
 		expect(disconnect).toHaveBeenCalled();
+	});
+
+	it('resets the routing config cache', async () => {
+		seedServer(SERVER, USER_ID);
+		useRoutingConfigStore.setState({ server: SERVER, returnQueue: true });
+
+		await logout({ server: SERVER });
+
+		expect(useRoutingConfigStore.getState().server).toBeNull();
+		expect(useRoutingConfigStore.getState().returnQueue).toBe(false);
 	});
 });
