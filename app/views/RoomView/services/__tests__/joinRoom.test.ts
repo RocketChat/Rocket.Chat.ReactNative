@@ -1,9 +1,9 @@
-import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
-import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
-import { type IRoomViewState } from '../definitions';
-import { createRoomStore } from './RoomStore';
+import { joinRoom as joinRoomService } from '../../../../lib/services/restApi';
+import { takeInquiry, takeResume } from '../../../../ee/omnichannel/lib';
+import { type IRoomViewState } from '../../definitions';
+import { peekOrCreateRoomStore, releaseRoomStore } from '../../stores/RoomStore';
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -20,23 +20,23 @@ jest.mock('../../../lib/database', () => ({
 		}
 	}
 }));
-jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('../../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../../../lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
 	events: {}
 }));
-jest.mock('../../../lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
-jest.mock('../../../ee/omnichannel/lib', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({ joinRoom: jest.fn(() => Promise.resolve()), getUserInfo: jest.fn() }));
+jest.mock('../../../../ee/omnichannel/lib', () => ({
 	takeInquiry: jest.fn(() => Promise.resolve()),
 	takeResume: jest.fn(() => Promise.resolve())
 }));
@@ -45,9 +45,9 @@ const mockJoinRoomService = joinRoomService as jest.Mock;
 const mockTakeInquiry = takeInquiry as jest.Mock;
 const mockTakeResume = takeResume as jest.Mock;
 
-// Each case gets an isolated screen-owned store with the full creator actions.
+// rid-less stores bypass the registry, so each case gets an isolated store with the full creator actions.
 const makeStore = (room: IRoomViewState['room']) => {
-	const store = createRoomStore({ initialRoom: room });
+	const store = peekOrCreateRoomStore({ initialRoom: room });
 	store.setState({ join: jest.fn() });
 	return store;
 };
@@ -86,13 +86,14 @@ describe('RoomStore join/resume actions', () => {
 
 	it('joinRoom omnichannel path on a warmed rid-keyed store passes no server version', async () => {
 		const room = { _id: 'room-id-2', rid: 'warm-rid', t: 'l' } as any;
-		const warmed = createRoomStore({ rid: 'warm-rid', initialRoom: room });
+		const warmed = peekOrCreateRoomStore({ rid: 'warm-rid', initialRoom: room });
 		warmed.setState({ room, join: jest.fn() });
 
 		await warmed.getState().joinRoom();
 
 		expect(mockTakeInquiry).toHaveBeenCalledWith('room-id-2');
 		expect(warmed.getState().join).toHaveBeenCalledTimes(1);
+		releaseRoomStore('warm-rid');
 	});
 
 	it('joinRoom plain path calls the join service then joins the store', async () => {

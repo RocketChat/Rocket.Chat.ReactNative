@@ -15,14 +15,13 @@ const useRoomStoreApi = (): RoomStore => {
 
 export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => useStore(useRoomStoreApi(), selector);
 
-// The room model mutates in place, so tracked-column changes keep the same `room` reference.
-// Subscribing to `roomUpdate` (a fresh snapshot per emit) is what re-renders the caller. Works on
-// any store carrying `{ room, roomUpdate }` (RoomStore or ComposerStore); read both from the same
-// instance so the returned room stays fresh per emit.
-export const useRoomWithUpdateFromStore = <S extends { room: unknown; roomUpdate?: unknown }>(store: StoreApi<S>): S['room'] => {
-	const room = useStore(store, s => s.room);
+const useRerenderOnRoomMutatedInPlace = <S extends { roomUpdate?: unknown }>(store: StoreApi<S>): void => {
 	useStore(store, s => s.roomUpdate);
-	return room;
+};
+
+export const useRoomWithUpdateFromStore = <S extends { room: unknown; roomUpdate?: unknown }>(store: StoreApi<S>): S['room'] => {
+	useRerenderOnRoomMutatedInPlace(store);
+	return useStore(store, s => s.room);
 };
 
 export const useRoomWithUpdate = (): RoomState['room'] => useRoomWithUpdateFromStore(useRoomStoreApi());

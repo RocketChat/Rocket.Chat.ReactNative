@@ -8,6 +8,13 @@ import getMessageInfo from './getMessageInfo';
 import getLocalAnchorTs from './getLocalAnchor';
 import { type IJumpToMessageArgs } from '../definitions';
 
+const FABRIC_COMMIT_DELAY = 100;
+
+const waitForFabricCommit = (): Promise<void> =>
+	new Promise(resolve => {
+		setTimeout(resolve, FABRIC_COMMIT_DELAY);
+	});
+
 export const jumpToMessage = async ({
 	messageId,
 	isFromReply,
@@ -42,21 +49,8 @@ export const jumpToMessage = async ({
 				await navToThread(message);
 			}
 		} else if (inThisRoom && t === 'thread' && message.id !== tmid) {
-			/**
-			 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
-			 */
 			await navToRoom(message);
 		} else {
-			/**
-			 * if it's from server, we don't have it saved locally and so we fetch surroundings
-			 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
-			 *
-			 * The fetched Chunk lets us re-anchor the Message Window onto the target in ONE step: if a
-			 * Newer Loader brackets the target's Chunk it is non-contiguous with the Live Tail, so we
-			 * derive a finite upper ts bound (highTs) for an Anchored Window centered on it. A
-			 * contiguous target resolves to null and stays a Live Window. Thread/local targets are
-			 * never anchored.
-			 */
 			const inWindow = listContainerRef.current?.isMessageInWindow(message.id) ?? false;
 			const highTs = await resolveJumpAnchor(
 				rid,
@@ -67,8 +61,7 @@ export const jumpToMessage = async ({
 			if (isCancelled()) {
 				return;
 			}
-			// Synchronization needed for Fabric to work
-			await new Promise(res => setTimeout(res, 100));
+			await waitForFabricCommit();
 			if (isCancelled()) {
 				return;
 			}
