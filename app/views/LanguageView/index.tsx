@@ -13,7 +13,7 @@ import { setUser } from '../../actions/login';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { RootEnum } from '../../definitions';
-import I18n, { isRTL, LANGUAGES } from '../../i18n';
+import I18n, { isRTL, LANGUAGES, setLanguage } from '../../i18n';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { type SettingsStackParamList } from '../../stacks/types';
@@ -50,7 +50,11 @@ const LanguageView = () => {
 		dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Change_language_loading') }));
 
 		// shows loading for at least 300ms
-		await Promise.all([changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
+		const [changed] = await Promise.all([changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
+
+		if (changed) {
+			setLanguage(language);
+		}
 
 		if (shouldRestart) {
 			await RNRestart.Restart();
@@ -59,7 +63,7 @@ const LanguageView = () => {
 		}
 	};
 
-	const changeLanguage = async (language: string) => {
+	const changeLanguage = async (language: string): Promise<boolean> => {
 		logEvent(events.LANG_SET_LANGUAGE);
 
 		const params: { language?: string } = {};
@@ -76,19 +80,18 @@ const LanguageView = () => {
 			const serversDB = database.servers;
 			const usersCollection = serversDB.get('users');
 			await serversDB.write(async () => {
-				try {
-					const userRecord = await usersCollection.find(id);
-					await userRecord.update(record => {
-						record.language = params.language;
-					});
-				} catch (e) {
-					logEvent(events.LANG_SET_LANGUAGE_F);
-				}
+				const userRecord = await usersCollection.find(id);
+				await userRecord.update(record => {
+					record.language = params.language;
+				});
 			});
+
+			return true;
 		} catch (e) {
 			logEvent(events.LANG_SET_LANGUAGE_F);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
+			return false;
 		}
 	};
 
