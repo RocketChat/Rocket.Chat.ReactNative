@@ -8,8 +8,6 @@ import { type RoomStore } from '../definitions';
 
 const EMPTY_UNREADS: string[] = [];
 
-// The rid-keyed RoomStore already observes the subscription row on the tunread columns, so the
-// thread-unread badges read it from there instead of opening a second observer on the same row.
 export function useSubscriptionUnreads(roomStore: RoomStore, userId?: string): IUseSubscriptionUnreadsResult {
 	return useStore(
 		roomStore,
