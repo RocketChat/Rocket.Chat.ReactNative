@@ -202,7 +202,6 @@ export type RoomStore = StoreApi<RoomState>;
 
 export interface IGetOrCreateRoomStoreParams {
 	rid?: string;
-	t?: string;
 	initialRoom: IRoomViewState['room'];
 	roomUserId?: string | null;
 }

@@ -77,7 +77,7 @@ describe('MessageRow', () => {
 		const { emit } = setupObserve();
 		const sub: any = { id: 'sub-1', rid: 'rid-1', t: 'c', ignored: [] };
 		const item: any = { id: 'msg-1', ts: new Date('2024-01-01T10:00:00Z'), u: { _id: 'author-1' } };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: sub });
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: sub });
 
 		render(
 			<RoomStoreContext.Provider value={store}>

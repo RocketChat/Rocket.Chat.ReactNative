@@ -196,39 +196,45 @@ const createRoomState =
 		resumeRoom: () => resumeRoomImpl(get().room, { onJoin: get().join })
 	});
 
-const observeRoom = (rid: string | undefined, t: string | undefined, store: RoomStore): (() => void) => {
+const observeRoom = (rid: string | undefined, initialRoom: IRoomViewState['room'], store: RoomStore): (() => void) => {
 	if (!rid) {
 		return () => {};
 	}
-	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observeWithColumns(OBSERVED_COLUMNS);
+	let lastRoomType = initialRoom.t;
+	let lastMessageFromAgent = store.getState().lastMessageFromAgent;
+	const observable = database.active
+		.get('subscriptions')
+		.query(Q.where('rid', rid))
+		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
 	const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
 		const next = rows[0];
 		if (next) {
-			store.setState({
-				room: next,
-				// observeWithColumns re-emits the same cached model instance mutated in place, so a fresh
-				// snapshot object is what re-renders consumers on a tracked-column change.
-				roomUpdate: Object.fromEntries(
-					roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
-				) as IRoomViewState['roomUpdate'],
-				subscribed: true,
-				joined: true
-			});
+			lastRoomType = next.t;
+			const nextLastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
+			const roomUpdate = Object.fromEntries(
+				roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
+			) as IRoomViewState['roomUpdate'];
+			const previousRoomUpdate = store.getState().roomUpdate;
+			const roomChanged = roomAttrsUpdate.some(attr => previousRoomUpdate[attr] !== roomUpdate[attr]);
+			const state = roomChanged
+				? {
+						room: next,
+						// observeWithColumns re-emits the same cached model instance mutated in place, so a fresh
+						// snapshot object is what re-renders consumers on a tracked-column change.
+						roomUpdate,
+						subscribed: true,
+						joined: true
+					}
+				: { subscribed: true, joined: true };
+			if (next.t === 'l' && nextLastMessageFromAgent !== lastMessageFromAgent) {
+				lastMessageFromAgent = nextLastMessageFromAgent;
+				store.setState({ ...state, lastMessageFromAgent });
+			} else if (roomChanged || !store.getState().subscribed) {
+				store.setState(state);
+			}
 			return;
 		}
-		store.setState({ subscribed: false, ...(t !== 'd' ? { joined: false } : {}) });
-	});
-	return () => subscription.unsubscribe();
-};
-
-// last_message is excluded from the room observer so an incoming message does not re-render the
-// whole screen. Livechat rooms still need it: on-hold is only offered while the last message came
-// from the agent rather than the visitor.
-const observeLivechatLastMessage = (rid: string, store: RoomStore): (() => void) => {
-	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observeWithColumns(['last_message']);
-	const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
-		const lastMessage = rows[0]?.lastMessage;
-		store.setState({ lastMessageFromAgent: !!(lastMessage && !lastMessage.token && lastMessage.u) });
+		store.setState({ subscribed: false, ...(lastRoomType !== 'd' ? { joined: false } : {}) });
 	});
 	return () => subscription.unsubscribe();
 };
@@ -264,20 +270,15 @@ const scheduleGraceSweep = (rid: string): void => {
 	});
 };
 
-const register = (rid: string, t: string | undefined, store: RoomStore, refCount: number): void => {
-	const unsubscribeRoom = observeRoom(rid, t, store);
-	const unsubscribeLivechat = t === 'l' ? observeLivechatLastMessage(rid, store) : undefined;
-	const unsubscribe = () => {
-		unsubscribeRoom();
-		unsubscribeLivechat?.();
-	};
+const register = (rid: string, initialRoom: IRoomViewState['room'], store: RoomStore, refCount: number): void => {
+	const unsubscribe = observeRoom(rid, initialRoom, store);
 	registry.set(rid, { store, unsubscribe, refCount, pendingSweep: false });
 };
 
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
 // without touching refCount. Safe to call from a useState initializer, which may run twice under
 // StrictMode/concurrent render. Acquire/release own the lifetime.
-export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
+export const peekOrCreateRoomStore = ({ rid, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
 		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	}
@@ -286,7 +287,7 @@ export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetO
 		return existing.store;
 	}
 	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
-	register(rid, t, store, 0);
+	register(rid, initialRoom, store, 0);
 	scheduleGraceSweep(rid);
 	return store;
 };
@@ -308,7 +309,7 @@ export const releaseRoomStore = (rid?: string): void => {
 
 // Claims ownership of the rid-keyed store for one screen: increments refCount, re-registering the
 // observer if the grace sweep reclaimed the entry between render and effect.
-export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, 'rid' | 't'>, store: RoomStore): RoomStore => {
+export const acquireRoomStore = ({ rid }: Pick<IGetOrCreateRoomStoreParams, 'rid'>, store: RoomStore): RoomStore => {
 	if (!rid) {
 		return store;
 	}
@@ -317,7 +318,7 @@ export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, '
 		entry.refCount += 1;
 		return entry.store;
 	}
-	register(rid, t, store, 1);
+	register(rid, store.getState().room, store, 1);
 	return store;
 };
 

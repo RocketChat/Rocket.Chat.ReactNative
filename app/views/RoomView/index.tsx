@@ -42,7 +42,7 @@ const RoomGate = (props: IRoomViewProps) => {
 	}));
 	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
 
-	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId });
+	const roomStore = useRoomStoreForScreen({ rid, initialRoom, roomUserId: initialRoomUserId });
 	const room = useRoomWithUpdateFromStore(roomStore);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);

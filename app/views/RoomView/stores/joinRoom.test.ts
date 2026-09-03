@@ -86,7 +86,7 @@ describe('RoomStore join/resume actions', () => {
 
 	it('joinRoom omnichannel path on a warmed rid-keyed store passes no server version', async () => {
 		const room = { _id: 'room-id-2', rid: 'warm-rid', t: 'l' } as any;
-		const warmed = peekOrCreateRoomStore({ rid: 'warm-rid', t: 'l', initialRoom: room });
+		const warmed = peekOrCreateRoomStore({ rid: 'warm-rid', initialRoom: room });
 		warmed.setState({ room, join: jest.fn() });
 
 		await warmed.getState().joinRoom();
