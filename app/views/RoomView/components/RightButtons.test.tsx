@@ -35,7 +35,7 @@ let mockRoomState = {
 	room: { rid: 'rid-1', t: 'c', name: 'general' },
 	canForwardGuest: false
 };
-jest.mock('../../../lib/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => false }));
+jest.mock('../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => false }));
 jest.mock('../hooks/useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => false }));
 jest.mock('../stores/RoomStore', () => ({
 	useRoomStoreByRid: (_rid: string | undefined, selector: (state: typeof mockRoomState) => unknown) => selector(mockRoomState)

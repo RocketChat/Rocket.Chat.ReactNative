@@ -13,7 +13,7 @@ import { closeLivechat as closeLivechatService } from '../../../lib/methods/help
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '../../../lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useCanReturnQueue } from '../../../lib/hooks/useCanReturnQueue';
+import { useCanReturnQueue } from '../../../ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../../lib/services/restApi';

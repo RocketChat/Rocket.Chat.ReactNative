@@ -25,7 +25,7 @@ const mockState = {
 	canForwardGuest: true,
 	canViewCannedResponse: true
 };
-jest.mock('../../../../lib/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
+jest.mock('../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
 jest.mock('../useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => true }));
 
 jest.mock('../../stores/RoomStore', () => ({

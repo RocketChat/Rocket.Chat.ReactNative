@@ -167,17 +167,19 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Omnichannel / Livechat
 
-| Term                   | Definition                                                                                           | Aliases to avoid             |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------- |
-| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                | Livechat room, support chat  |
-| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token         | Client, customer, end-user   |
-| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable) | Support agent, operator, rep |
-| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                           | Queue item, ticket           |
-| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                    | Team (ambiguous), group      |
-| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                         | Channel origin               |
-| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                           | Assigned agent, handler      |
-| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                  | Paused, suspended            |
-| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                        | Forward, reassign, handoff   |
+| Term                   | Definition                                                                                                    | Aliases to avoid                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                         | Livechat room, support chat       |
+| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token                  | Client, customer, end-user        |
+| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable)          | Support agent, operator, rep      |
+| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                                    | Queue item, ticket                |
+| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                             | Team (ambiguous), group           |
+| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                                  | Channel origin                    |
+| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                                    | Assigned agent, handler           |
+| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                           | Paused, suspended                 |
+| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                                 | Forward, reassign, handoff        |
+| **Routing Config**     | Per-server Omnichannel routing settings that say whether Agents may Return to Queue and see the Inquiry queue | Livechat config, routing settings |
+| **Return to Queue**    | An Agent handing an Omnichannel Room back so it becomes an Inquiry again                                      | Return inquiry, release chat      |
 
 ## Encryption
 

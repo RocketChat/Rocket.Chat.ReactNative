@@ -2,7 +2,7 @@ import { type NavigatorScreenParams, useNavigation } from '@react-navigation/nat
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { useCanReturnQueue } from '../../../lib/hooks/useCanReturnQueue';
+import { useCanReturnQueue } from '../../../ee/omnichannel/hooks/useCanReturnQueue';
 import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../../definitions';
 import { type TNavigation } from '../../../stacks/stackType';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
