@@ -12,7 +12,6 @@ import { MessageTypeLoad } from '../../../../../lib/constants/messageTypeLoad';
 import { readThreads } from '../../../../../lib/services/restApi';
 import { mockedStore } from '../../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../../constants';
-import { buildVisibleSystemTypesClause } from '../buildVisibleSystemTypesClause';
 import { useMessages } from '../useMessages';
 
 jest.mock('../../../../../lib/database', () => ({
@@ -195,12 +194,13 @@ describe('useMessages', () => {
 		expect(mockDbGet).not.toHaveBeenCalled();
 	});
 
-	it('asks the database to exclude system message types listed in hideSystemMessages', async () => {
-		renderUseMessages({ hideSystemMessages: ['uj'] });
+	it('renders the visible rows returned when system message types are hidden', async () => {
+		emittedRows = [msg({ id: 'regular' }), msg({ id: 'load-more', t: MessageTypeLoad.MORE })];
+		const { result } = renderUseMessages({ hideSystemMessages: ['uj'] });
+
 		await waitFor(() => {
-			expect(queryCalls.length).toBeGreaterThan(0);
+			expect(result.current[0].map(({ id }) => id)).toEqual(['regular', 'load-more']);
 		});
-		expect(queryCalls[0]).toContainEqual(buildVisibleSystemTypesClause(['uj']));
 	});
 
 	it('returns visibleMessagesIds aligned with visible messages', async () => {
