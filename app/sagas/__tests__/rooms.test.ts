@@ -62,14 +62,14 @@ const serversCollection = (database as any).servers.get('servers') as { find: je
 const setupStore = (): RecordingStore => createRecordingStore(roomsRoot);
 
 /** Signs in and selects a server so `root()` lets `ROOMS.REQUEST` through. */
-const authenticate = (store: RecordingStore['store']) => {
+const authenticate = (store: RecordingStore['store']): void => {
 	store.dispatch(selectServerSuccess({ server: SERVER, version: '7.0.0', name: 'Rocket.Chat' }));
 	store.dispatch(loginSuccess(USER));
 };
 
 /** Holds `getRooms` open so a sync can be interrupted mid-flight. */
-const deferGetRooms = () => {
-	let release = () => {};
+const deferGetRooms = (): (() => void) => {
+	let release: () => void = () => {};
 	jest.mocked(getRooms).mockImplementation(
 		() =>
 			new Promise(resolve => {
@@ -79,7 +79,8 @@ const deferGetRooms = () => {
 	return () => release();
 };
 
-const typesOf = (dispatchedActions: RecordingStore['dispatchedActions']) => dispatchedActions.map(action => action.type);
+const typesOf = (dispatchedActions: RecordingStore['dispatchedActions']): string[] =>
+	dispatchedActions.map(action => action.type);
 
 afterEach(cancelSagaTasks);
 
