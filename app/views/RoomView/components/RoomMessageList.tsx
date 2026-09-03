@@ -28,7 +28,9 @@ export const RoomMessageList = ({
 	listContainerRef,
 	flatListRef,
 	onLongPress,
-	roomActions,
+	onThreadPress,
+	onReactionPress,
+	sendMessage,
 	jumpToMessage,
 	closeEmojiAndAction,
 	reactionInit,
@@ -48,7 +50,9 @@ export const RoomMessageList = ({
 	return (
 		<A11yGateProvider>
 			<RoomMessageProvider
-				roomActions={roomActions}
+				onThreadPress={onThreadPress}
+				onReactionPress={onReactionPress}
+				sendMessage={sendMessage}
 				jumpToMessage={jumpToMessage}
 				closeEmojiAndAction={closeEmojiAndAction}
 				reactionInit={reactionInit}

@@ -19,7 +19,7 @@ import {
 } from '../../../definitions';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
-import { type IRoomActions, type IRoomViewProps } from '../definitions';
+import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
 import { useRoomStore } from '../stores/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
@@ -30,7 +30,7 @@ export function useRoomMessageHandlers({
 	onThreadPress,
 	onReactionPress,
 	sendMessage
-}: IRoomActions & { tmid?: string }): IUseRoomMessageHandlersResult {
+}: IRoomMessageHandlersInput): IUseRoomMessageHandlersResult {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useMasterDetail();
