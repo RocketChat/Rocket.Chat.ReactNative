@@ -5,7 +5,7 @@ import { getUserSelector } from '../../../selectors/login';
 import { type RoomType } from '../../../definitions';
 import { A11yGateProvider } from '../../../containers/message/stores/A11yGate';
 import { type IRoomMessageListProps, type IRoomViewState } from '../definitions';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoomStore, useRoomWithUpdate } from '../stores/RoomStoreContext';
 import List from '../List';
 import { RoomMessageProvider } from './RoomMessageProvider';
 
@@ -36,7 +36,7 @@ export const RoomMessageList = ({
 	reactionInit,
 	errorActionsShow
 }: IRoomMessageListProps) => {
-	const room = useRoomStore(s => s.room);
+	const room = useRoomWithUpdate();
 	const canAutoTranslate = useRoomStore(s => s.canAutoTranslate);
 	const showMessageInMainThread = useAppSelector(state => getUserSelector(state).showMessageInMainThread ?? false);
 	const serverVersion = useAppSelector(state => state.server.version);
