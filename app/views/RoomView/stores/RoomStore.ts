@@ -134,9 +134,7 @@ const createRoomState =
 		roomUserId,
 		canAutoTranslate: false,
 		canForwardGuest: false,
-		canReturnQueue: false,
 		canViewCannedResponse: false,
-		canPlaceLivechatOnHold: false,
 		lastMessageFromAgent: false,
 
 		// A transient failure retries a couple of times instead of leaving the screen empty until the

@@ -24,10 +24,21 @@ import { type TMessageActionStore } from '../../containers/message/stores/Messag
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
-export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
-	rid?: string;
-	t?: string;
+// The route parsed once at mount. A room screen's identity never legitimately changes, and a route
+// without one renders a failure state instead of a room.
+export interface IRoomScreenInput {
+	rid: string;
+	t: string;
 	tmid?: string;
+	/** Thread name on a thread; the observed subscription row never carries it. */
+	name?: string;
+	initialRoom: IRoomViewState['room'];
+	roomUserId?: string | null;
+}
+
+export type TRoomRouteParse = { status: 'valid'; input: IRoomScreenInput } | { status: 'invalid' };
+
+export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IRoomScreenInput, 'rid' | 't' | 'tmid'> {
 	roomStore: RoomStore;
 }
 
@@ -182,9 +193,7 @@ export interface RoomState {
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
-	canReturnQueue: boolean;
 	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
 	lastMessageFromAgent: boolean;
 	// Resolves with the run's outcome; only `loaded` carries the screen's unread divider anchor.
 	init: (params?: IRoomStoreInitParams) => Promise<TRoomInitResult>;
@@ -328,8 +337,5 @@ export interface IUseRoomNavigationResult {
 export interface IUseOmnichannelPermissionsParams {
 	rid?: string;
 	t?: string;
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	livechatAllowManualOnHold?: boolean;
 	roomStore: RoomStore;
 }

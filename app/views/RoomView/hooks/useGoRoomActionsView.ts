@@ -2,11 +2,13 @@ import { type NavigatorScreenParams, useNavigation } from '@react-navigation/nat
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { useCanReturnQueue } from '../../../lib/hooks/useCanReturnQueue';
 import type { ISubscription, SubscriptionType, TSubscriptionModel } from '../../../definitions';
 import { type TNavigation } from '../../../stacks/stackType';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { type IRoomViewProps } from '../definitions';
 import { useRoomStoreByRid } from '../stores/RoomStore';
+import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 
 export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackParamList) => void) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
@@ -17,9 +19,9 @@ export const useGoRoomActionsView = (rid?: string): ((screen?: keyof ModalStackP
 	const member = useRoomStoreByRid(rid, s => s.member);
 	const joined = useRoomStoreByRid(rid, s => s.joined);
 	const canForwardGuest = useRoomStoreByRid(rid, s => s.canForwardGuest);
-	const canReturnQueue = useRoomStoreByRid(rid, s => s.canReturnQueue);
 	const canViewCannedResponse = useRoomStoreByRid(rid, s => s.canViewCannedResponse);
-	const canPlaceLivechatOnHold = useRoomStoreByRid(rid, s => s.canPlaceLivechatOnHold);
+	const canReturnQueue = useCanReturnQueue(t === 'l');
+	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(rid);
 
 	const omnichannelPermissions = { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold };
 
