@@ -8,11 +8,13 @@ interface IRoutingConfigState {
 	server: string | null;
 	returnQueue: boolean;
 	load: (server: string) => Promise<void>;
+	reset: () => void;
 }
 
 export const useRoutingConfigStore = create<IRoutingConfigState>((set, get) => ({
 	server: null,
 	returnQueue: false,
+	reset: () => set({ server: null, returnQueue: false }),
 	load: async server => {
 		if (get().server === server) {
 			return;

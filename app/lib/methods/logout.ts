@@ -13,6 +13,7 @@ import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
+import { useRoutingConfigStore } from '../hooks/useCanReturnQueue';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
@@ -95,6 +96,8 @@ export async function removeServer({ server }: { server: string }): Promise<void
 }
 
 export async function logout({ server }: { server: string }): Promise<void> {
+	useRoutingConfigStore.getState().reset();
+
 	if (roomsSubscription?.stop) {
 		roomsSubscription.stop();
 	}
