@@ -88,7 +88,6 @@ export function useJumpToMessage({
 
 	// Live-mirrored (see useLiveRef) so the mount effect can key on [tmid] despite these being unstable.
 	const consumeJumpParamRef = useLiveRef(consumeJumpParam);
-	const onJumpParamChangedRef = useLiveRef(onJumpParamChanged);
 	const navToThreadRef = useLiveRef(navToThread);
 
 	useEffect(() => {
@@ -114,8 +113,8 @@ export function useJumpToMessage({
 		return () => task.cancel();
 	}, [navToThreadRef]);
 
-	useChangedParam(route.params?.jumpToMessageId, id => onJumpParamChangedRef.current(id));
-	useChangedParam(route.params?.jumpToThreadId, id => navToThreadRef.current({ tmid: id }));
+	useChangedParam(route.params?.jumpToMessageId, onJumpParamChanged);
+	useChangedParam(route.params?.jumpToThreadId, id => navToThread({ tmid: id }));
 
 	return { jumpToMessage, cancelJumpToMessage, onThreadMessagesLoaded };
 }
