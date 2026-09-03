@@ -59,7 +59,7 @@ describe('useOmnichannelPermissions', () => {
 		expect(roomStore.getState().canViewCannedResponse).toBe(false);
 	});
 
-	it('does not touch the flags for a non-livechat room', () => {
+	it('keeps the flags off for a non-livechat room', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
 		const roomStore = makeRoomStore();
 
