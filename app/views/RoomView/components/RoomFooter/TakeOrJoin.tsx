@@ -9,7 +9,6 @@ export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps): ReactElement => {
 	const room = useRoomWithUpdate();
 	const joinRoom = useRoomStore(s => s.joinRoom);
 
-	// The join-code modal lives on this screen, so the trigger is handed to joinRoom per call.
 	const onPressJoin = (): Promise<void> => joinRoom(() => joinCodeRef.current?.show());
 
 	return (

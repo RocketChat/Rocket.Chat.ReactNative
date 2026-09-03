@@ -8,9 +8,6 @@ import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type IRoomViewState, type TMessageRowProps } from '../definitions';
 
-// The room model mutates in place (same ref per emit), and the React Compiler caches derived
-// values on that stable ref. Deriving the boolean inside the selector keeps it fresh per emit
-// and only re-renders the caller when the derived value actually changes.
 const useIsIgnored = (authorId?: string): boolean =>
 	useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
 
@@ -42,40 +39,31 @@ export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress
 	const { lastSeen } = useRoomScreen();
 	const { dateSeparator, showUnreadSeparator } = getMessageSeparators(item, previousItem, lastSeen);
 
-	let content = null;
 	if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
-		const runOnRender = () => {
-			if (item.t === MessageTypeLoad.MORE) {
-				if (!previousItem) return true;
-				if (previousItem?.tmid) return true;
-			}
-			return false;
-		};
-		content = (
+		const runOnRender = item.t === MessageTypeLoad.MORE && (!previousItem || !!previousItem.tmid);
+		return (
 			<LoadMore
 				rid={room.rid}
 				t={room.t as RoomType}
 				loaderId={item.id}
 				type={item.t}
-				runOnRender={runOnRender()}
-				dateSeparator={dateSeparator}
-				showUnreadSeparator={showUnreadSeparator}
-			/>
-		);
-	} else {
-		content = (
-			<Message
-				item={item}
-				isIgnored={isIgnored}
-				previousItem={previousItem}
-				onLongPress={onLongPress}
-				threadBadgeColor={threadBadgeColor}
-				highlighted={highlightedMessage === item.id}
+				runOnRender={runOnRender}
 				dateSeparator={dateSeparator}
 				showUnreadSeparator={showUnreadSeparator}
 			/>
 		);
 	}
 
-	return content;
+	return (
+		<Message
+			item={item}
+			isIgnored={isIgnored}
+			previousItem={previousItem}
+			onLongPress={onLongPress}
+			threadBadgeColor={threadBadgeColor}
+			highlighted={highlightedMessage === item.id}
+			dateSeparator={dateSeparator}
+			showUnreadSeparator={showUnreadSeparator}
+		/>
+	);
 };
