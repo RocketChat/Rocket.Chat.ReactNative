@@ -4,7 +4,6 @@ import timezone from 'dayjs/plugin/timezone';
 import calendar from 'dayjs/plugin/calendar';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
 
 import 'dayjs/locale/en';
 import 'dayjs/locale/ar';
@@ -37,15 +36,8 @@ dayjs.extend(timezone);
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
-dayjs.extend(advancedFormat);
 
-// Web's date-fns `PPP` (its `LL`) uses an ordinal day in English only; dayjs' `LL` never does.
-const ORDINAL_DAY_LOCALES = ['en'];
-
-export const formatLongDate = (ts: Date | number | string): string => {
-	const date = dayjs(ts);
-	return ORDINAL_DAY_LOCALES.includes(date.locale()) ? date.format('MMMM Do, YYYY') : date.format('LL');
-};
+export const formatLongDate = (ts: Date | number | string): string => dayjs(ts).format('LL');
 
 // WatermelonDB hands a message `ts` back as Date, ms number, or ISO string depending on the read path;
 // dayjs parses all three where Number(ts) / new Date(ts) each NaN on one. Normalize to ms since epoch.

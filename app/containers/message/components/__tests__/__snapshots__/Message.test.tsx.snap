@@ -23574,7 +23574,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "gap": 12,
           "margin": 12,
         }
       }
@@ -23610,6 +23609,9 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             {
               "backgroundColor": "#EC0D2A",
             },
+            {
+              "marginHorizontal": 14,
+            },
           ]
         }
       />
@@ -23632,7 +23634,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       >
-        November 10th, 2017
+        November 10, 2017
       </Text>
     </View>
     <A11yOrderView
@@ -24110,7 +24112,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "gap": 12,
           "margin": 12,
         }
       }
@@ -24130,6 +24131,9 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             },
             {
               "color": "#D40C26",
+            },
+            {
+              "marginRight": 14,
             },
           ]
         }
@@ -24854,12 +24858,16 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
     </A11yOrderView>
     <View
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "gap": 12,
-          "margin": 12,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 12,
+          },
+          {
+            "gap": 12,
+          },
+        ]
       }
     >
       <View
@@ -24908,7 +24916,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             ]
           }
         >
-          November 10th, 2017
+          November 10, 2017
         </Text>
       </View>
       <View
@@ -25883,7 +25891,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "gap": 12,
           "margin": 12,
         }
       }
@@ -25919,6 +25926,9 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             {
               "backgroundColor": "#EC0D2A",
             },
+            {
+              "marginHorizontal": 14,
+            },
           ]
         }
       />
@@ -25941,7 +25951,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       >
-        November 10th, 2017
+        November 10, 2017
       </Text>
     </View>
     <A11yOrderView
@@ -26419,7 +26429,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "gap": 12,
           "margin": 12,
         }
       }
@@ -26439,6 +26448,9 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             },
             {
               "color": "#D40C26",
+            },
+            {
+              "marginRight": 14,
             },
           ]
         }
@@ -27163,12 +27175,16 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
     </A11yOrderView>
     <View
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "gap": 12,
-          "margin": 12,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "margin": 12,
+          },
+          {
+            "gap": 12,
+          },
+        ]
       }
     >
       <View
@@ -27217,7 +27233,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             ]
           }
         >
-          November 10th, 2017
+          November 10, 2017
         </Text>
       </View>
       <View

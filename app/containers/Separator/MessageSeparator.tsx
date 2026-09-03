@@ -12,6 +12,12 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		...sharedStyles.textMedium
+	},
+	marginRight: {
+		marginRight: 14
+	},
+	marginHorizontal: {
+		marginHorizontal: 14
 	}
 });
 
@@ -28,7 +34,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 		return (
 			<View style={separatorStyles.container}>
 				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
-				<View style={[separatorStyles.line, unreadLine]} />
+				<View style={[separatorStyles.line, unreadLine, styles.marginHorizontal]} />
 				<Text style={[styles.text, unreadText]}>{formatLongDate(ts)}</Text>
 			</View>
 		);
@@ -38,7 +44,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	}
 	return (
 		<View style={separatorStyles.container}>
-			<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
+			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
 			<View style={[separatorStyles.line, unreadLine]} />
 		</View>
 	);

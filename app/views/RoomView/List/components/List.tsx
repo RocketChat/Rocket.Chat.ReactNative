@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
@@ -28,35 +28,21 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
-	const { ts, opacity: floatingDateOpacity, show: showFloatingDate, viewabilityConfigCallbackPairs } = useFloatingDate();
-
-	// onScroll also fires for programmatic scrolls (jump to bottom/message) and maintainVisibleContentPosition
-	// autoscroll at the live tail, so the floating date only shows while the user is dragging or flinging.
-	const isUserScrolling = useSharedValue(false);
+	const {
+		ts,
+		opacity: floatingDateOpacity,
+		scrollEvents: floatingDateScrollEvents,
+		viewabilityConfigCallbackPairs
+	} = useFloatingDate();
 
 	const scrollHandler = useAnimatedScrollHandler({
-		onBeginDrag: () => {
-			isUserScrolling.set(true);
-		},
-		onMomentumBegin: () => {
-			isUserScrolling.set(true);
-		},
+		...floatingDateScrollEvents,
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
 				scheduleOnRN(setScrolledPastLimit, true);
 			} else {
 				scheduleOnRN(setScrolledPastLimit, false);
 			}
-			if (isUserScrolling.get()) {
-				showFloatingDate();
-			}
-		},
-		// a drag released at near-zero velocity emits no momentum events, so onEndDrag must also clear the flag
-		onEndDrag: () => {
-			isUserScrolling.set(false);
-		},
-		onMomentumEnd: () => {
-			isUserScrolling.set(false);
 		}
 	});
 
