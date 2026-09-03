@@ -161,7 +161,6 @@ describe('useRoomInit', () => {
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result } = renderRoomInit({}, roomStore);
 
-		// retry starts a second run while the mount run is still in flight.
 		await act(async () => {
 			result.current.retry();
 		});

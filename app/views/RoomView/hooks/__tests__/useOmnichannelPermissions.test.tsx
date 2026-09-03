@@ -44,7 +44,22 @@ describe('useOmnichannelPermissions', () => {
 		expect(roomStore.getState().canViewCannedResponse).toBe(true);
 	});
 
-	it('does not touch the flags for a non-livechat room', () => {
+	it('clears the flags when the room stops being a livechat room', () => {
+		mockUsePermissions.mockReturnValue([true, true]);
+		const roomStore = makeRoomStore();
+
+		const { rerender } = renderHook(({ t }: { t: string }) => useOmnichannelPermissions({ rid: 'rid-1', t, roomStore }), {
+			initialProps: { t: 'l' }
+		});
+		expect(roomStore.getState().canForwardGuest).toBe(true);
+
+		rerender({ t: 'c' });
+
+		expect(roomStore.getState().canForwardGuest).toBe(false);
+		expect(roomStore.getState().canViewCannedResponse).toBe(false);
+	});
+
+	it('keeps the flags off for a non-livechat room', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
 		const roomStore = makeRoomStore();
 

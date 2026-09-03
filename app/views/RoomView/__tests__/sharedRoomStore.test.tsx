@@ -49,11 +49,19 @@ jest.mock('../List', () => {
 		__esModule: true,
 		default: () => {
 			const { lastSeen } = useRoomScreen();
+			const lastMessageFromAgent = require('../stores/RoomStoreContext').useRoomStore(
+				(s: { lastMessageFromAgent: boolean }) => s.lastMessageFromAgent
+			);
 			const tmid = useComposerTmid();
 			const onSendMessage = useOnSendMessage();
 			const screenName = tmid ? 'thread' : 'room';
 			return createElement(View, null, [
 				createElement(View, { key: 'seen', testID: `last-seen-${screenName}`, accessibilityLabel: String(lastSeen) }),
+				createElement(View, {
+					key: 'agent',
+					testID: `agent-message-${screenName}`,
+					accessibilityLabel: String(lastMessageFromAgent)
+				}),
 				createElement(Pressable, { key: 'send', testID: `send-${screenName}`, onPress: () => onSendMessage?.('hello') })
 			]);
 		}
@@ -154,13 +162,17 @@ const makeProps = (params: Record<string, unknown>): IRoomViewProps =>
  * Renders the room screen plus, optionally, a thread screen on the same rid — the pair a user
  * gets after opening a thread. Re-render with `withThread: false` to unmount the thread screen.
  */
-const renderRoomAndThread = ({ startWithThread = true, rid = RID }: { startWithThread?: boolean; rid?: string } = {}) => {
+const renderRoomAndThread = ({
+	startWithThread = true,
+	rid = RID,
+	type = 'c'
+}: { startWithThread?: boolean; rid?: string; type?: string } = {}) => {
 	const reduxStore = makeReduxStore();
-	const roomParams = { rid, t: 'c', name: 'general', joinCodeRequired: true };
+	const roomParams = { rid, t: type, name: 'general', joinCodeRequired: true };
 	const Screens = ({ withThread }: { withThread: boolean }) => (
 		<Provider store={reduxStore}>
-			<RoomView {...makeProps(roomParams)} />
 			{withThread ? <RoomView {...makeProps({ ...roomParams, tmid: 'tmid-1', name: 'thread' })} /> : null}
+			<RoomView {...makeProps(roomParams)} />
 		</Provider>
 	);
 	const { rerender } = render(<Screens withThread={startWithThread} />);
@@ -196,7 +208,7 @@ describe('RoomView screens sharing one rid-keyed store', () => {
 
 		openThread();
 
-		const [roomButton, threadButton] = screen.getAllByTestId('room-view-join-button');
+		const [threadButton, roomButton] = screen.getAllByTestId('room-view-join-button');
 		expect(roomButton).toBeEnabled();
 		expect(threadButton).toBeDisabled();
 	});
@@ -217,5 +229,14 @@ describe('RoomView screens sharing one rid-keyed store', () => {
 
 		expect(screen.getByTestId('last-seen-thread').props.accessibilityLabel).toBe('null');
 		expect(screen.getByTestId('last-seen-room').props.accessibilityLabel).toBe(String(ls));
+	});
+
+	it('shares the Livechat agent-authored flag when the thread screen mounts first', async () => {
+		const rid = 'rid-livechat-shared';
+		mockSubscriptionRows.current = [{ id: 'sub-1', rid, t: 'l', lastMessage: { u: { _id: 'agent-1' } } }];
+		renderRoomAndThread({ rid, type: 'l', startWithThread: true });
+
+		await waitFor(() => expect(screen.getByTestId('agent-message-room').props.accessibilityLabel).toBe('true'));
+		expect(screen.getByTestId('agent-message-thread').props.accessibilityLabel).toBe('true');
 	});
 });

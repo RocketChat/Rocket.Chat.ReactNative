@@ -3,41 +3,46 @@ import { render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore as createReduxStore } from 'redux';
 
-import RoomGate from './index';
-import { type IRoomViewProps, type RoomState } from './definitions';
-import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { useE2EEStatus } from './hooks/useE2EEStatus';
+import RoomGate from '../index';
+import { type IRoomViewProps, type RoomState } from '../definitions';
+import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
+import { useE2EEStatus } from '../hooks/useE2EEStatus';
 
-jest.mock('./RoomScreen', () => {
+jest.mock('../RoomScreen', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { __esModule: true, default: () => createElement(RNView, { testID: 'room-screen' }) };
 });
-jest.mock('./components/InvitedRoomScreen', () => {
+jest.mock('../components/InvitedRoomScreen', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { InvitedRoomScreen: () => createElement(RNView, { testID: 'invited-screen' }) };
 });
-jest.mock('./components/MissingRoomE2EEKey', () => {
+jest.mock('../components/MissingRoomE2EEKey', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { MissingRoomE2EEKey: () => createElement(RNView, { testID: 'missing-key-screen' }) };
 });
-jest.mock('./components/EncryptedRoom', () => {
+jest.mock('../components/EncryptedRoom', () => {
 	const { createElement } = require('react');
 	const { View: RNView } = require('react-native');
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
-jest.mock('./hooks/useHeader', () => ({ useHeader: jest.fn() }));
-jest.mock('./hooks/useE2EEStatus', () => ({
+jest.mock('../components/RoomRouteInvalid', () => {
+	const { createElement } = require('react');
+	const { View: RNView } = require('react-native');
+	return { RoomRouteInvalid: () => createElement(RNView, { testID: 'route-invalid-screen' }) };
+});
+jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
+jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false }))
 }));
-jest.mock('../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
+jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
+jest.mock('../../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
 
 const room: { current: RoomState['room'] } = { current: { rid: 'rid-1', t: 'c' } };
 
-jest.mock('./stores/RoomStore', () => {
+jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
 	const store = createStore(() => ({ room: {}, roomUpdate: {} }));
 	return {
@@ -48,10 +53,10 @@ jest.mock('./stores/RoomStore', () => {
 	};
 });
 
-const renderGate = () => {
+const renderGate = (params: Record<string, unknown> | null = { rid: 'rid-1', t: 'c' }) => {
 	const reduxStore = createReduxStore(() => ({ server: { version: '6.1.0' } }));
 	const props = {
-		route: { params: { rid: 'rid-1', t: 'c' } },
+		route: { params: params ?? undefined },
 		navigation: { setOptions: jest.fn() }
 	} as unknown as IRoomViewProps;
 	return render(
@@ -75,6 +80,20 @@ describe('RoomGate', () => {
 		renderGate();
 
 		expect(screen.getByTestId('room-screen')).toBeOnTheScreen();
+	});
+
+	it('renders the invalid-route state instead of a room when the route has no identity', () => {
+		renderGate(null);
+
+		expect(screen.getByTestId('route-invalid-screen')).toBeOnTheScreen();
+		expect(screen.queryByTestId('room-screen')).toBeNull();
+	});
+
+	it('renders the invalid-route state when the route has a rid but no type', () => {
+		renderGate({ rid: 'rid-1' });
+
+		expect(screen.getByTestId('route-invalid-screen')).toBeOnTheScreen();
+		expect(screen.queryByTestId('room-screen')).toBeNull();
 	});
 
 	it('keeps the room screen unmounted while the room is an invite', () => {

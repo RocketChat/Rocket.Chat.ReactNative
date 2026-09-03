@@ -61,7 +61,7 @@ describe('useRoomWithUpdate', () => {
 
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		const spy = jest.fn();
 
 		const Probe = () => {
@@ -90,7 +90,7 @@ describe('useRoomWithUpdate', () => {
 
 	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', () => {
 		const { emit } = setupObserve();
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', t: 'c', initialRoom: subRoom });
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		const spy = jest.fn();
 
 		const PlainProbe = () => {

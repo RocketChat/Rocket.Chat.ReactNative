@@ -53,8 +53,6 @@ export type TMessageActionStore = ReturnType<typeof createMessageActionStore>;
 
 export const MessageActionStoreContext = createContext<TMessageActionStore | null>(null);
 
-// Rows rendered outside a RoomView (search, pinned) can never be in edit mode, and the only hook
-// that falls back here reads `action`. Fixed at null (no `set` param).
 const inertStore = createStore<Pick<MessageActionState, 'action'>>()(() => ({ action: null }));
 
 export const useMessageActionStoreApi = (): TMessageActionStore => {

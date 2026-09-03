@@ -18,7 +18,7 @@ interface RoomPlaceholderProps {
 
 export const RoomPlaceholder = ({ icon, title, description, detail, testID, children }: RoomPlaceholderProps): ReactElement => {
 	const { colors } = useTheme();
-	const styles = useStyle();
+	const styles = useStyle(colors);
 
 	return (
 		<View style={styles.root} testID={testID}>
@@ -29,7 +29,7 @@ export const RoomPlaceholder = ({ icon, title, description, detail, testID, chil
 					</View>
 					<Text style={styles.title}>{title}</Text>
 					<Text style={[styles.description, !detail && styles.gapBottom]}>{description}</Text>
-					{detail ? <View style={styles.detail}>{detail}</View> : null}
+					{detail ? <View style={styles.gapBottom}>{detail}</View> : null}
 				</View>
 				{children}
 			</View>
@@ -37,8 +37,7 @@ export const RoomPlaceholder = ({ icon, title, description, detail, testID, chil
 	);
 };
 
-const useStyle = () => {
-	const { colors } = useTheme();
+const useStyle = (colors: ReturnType<typeof useTheme>['colors']) => {
 	const styles = StyleSheet.create({
 		root: {
 			flex: 1,
@@ -74,7 +73,6 @@ const useStyle = () => {
 			textAlign: 'center',
 			color: colors.fontDefault
 		},
-		detail: { marginBottom: GAP },
 		gapBottom: { marginBottom: GAP }
 	});
 	return styles;

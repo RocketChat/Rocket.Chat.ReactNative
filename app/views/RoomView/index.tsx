@@ -1,48 +1,27 @@
 import { useState } from 'react';
 
-import { getRoomTitle, getUidDirectMessage } from '../../lib/methods/helpers';
+import { getRoomTitle } from '../../lib/methods/helpers';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { type IRoomViewProps, type IRoomViewState } from './definitions';
+import { type IRoomScreenInput, type IRoomViewProps } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
 import { MissingRoomE2EEKey } from './components/MissingRoomE2EEKey';
+import { RoomRouteInvalid } from './components/RoomRouteInvalid';
 import RoomScreen from './RoomScreen';
+import { parseRoomRoute } from './services/parseRoomRoute';
 import { useRoomStoreForScreen } from './stores/RoomStore';
 import { useRoomWithUpdateFromStore } from './stores/RoomStoreContext';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 
-// Blocked rooms are decided before the room tree mounts, so an invited or E2EE-blocked room never
-// opens the subscription or runs init, and unblocking mounts the tree once.
-const RoomGate = (props: IRoomViewProps) => {
-	const { route, navigation } = props;
+interface IRoomGateProps extends IRoomViewProps {
+	input: IRoomScreenInput;
+}
 
-	// Screen identity is captured once at mount: navigation can transiently wipe this route's params
-	// to undefined (e.g. popTo with no params while retained below the stack top), and a room screen's
-	// rid/t/tmid never legitimately change.
-	const [rid] = useState(() => route.params?.rid);
-	const [t] = useState(() => route.params?.t);
-	/**
-	 * On threads, we don't have a subscription.
-	 * `room` is going to have only a few properties sent during navigation.
-	 * Use `tmid` as thread id.
-	 */
-	const [tmid] = useState(() => route.params?.tmid);
-	// On a thread this is the thread name, which the observed subscription row never carries.
-	const [name] = useState(() => route.params?.name);
+const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
+	const { rid, t, tmid, name, initialRoom, roomUserId } = input;
 
-	const [initialRoom] = useState<IRoomViewState['room']>(() => ({
-		rid: rid as string,
-		t: t as string,
-		name,
-		fname: route.params?.fname,
-		prid: route.params?.prid,
-		visitor: route.params?.visitor,
-		joinCodeRequired: route.params?.joinCodeRequired
-	}));
-	const [initialRoomUserId] = useState(() => route.params?.roomUserId ?? getUidDirectMessage(initialRoom));
-
-	const roomStore = useRoomStoreForScreen({ rid, t, initialRoom, roomUserId: initialRoomUserId });
+	const roomStore = useRoomStoreForScreen({ rid, initialRoom, roomUserId });
 	const room = useRoomWithUpdateFromStore(roomStore);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
@@ -66,4 +45,14 @@ const RoomGate = (props: IRoomViewProps) => {
 	return <RoomScreen route={route} rid={rid} t={t} tmid={tmid} roomStore={roomStore} />;
 };
 
-export default RoomGate;
+const RoomView = ({ route, navigation }: IRoomViewProps) => {
+	const [parsed] = useState(() => parseRoomRoute(route.params));
+
+	if (parsed.status === 'invalid') {
+		return <RoomRouteInvalid navigation={navigation} />;
+	}
+
+	return <RoomGate route={route} navigation={navigation} input={parsed.input} />;
+};
+
+export default RoomView;

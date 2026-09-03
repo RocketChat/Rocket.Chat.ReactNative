@@ -10,15 +10,13 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { tsToMs } from '../../../../lib/dayjs';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
+import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
 import { roomHistoryRequest } from '../../../../actions/room';
 import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
 import { findNewerLoaderAbove } from '../../services/getLocalAnchor';
 
-const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
-	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
+const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null => messages.find(isLoaderMessage)?.id ?? null;
 
 export const useMessages = ({
 	rid,
@@ -90,7 +88,6 @@ export const useMessages = ({
 			// invocation is stale and must not mutate count / highTs for the new window.
 			const sub = subscription.current;
 
-			// Read the Newer Loader closest to the Live Tail directly so non-loader rows can't crowd the boundary loader out of the fetched set.
 			const loader = await findNewerLoaderAbove(rid, currentHighTs, 'closestToLiveTail');
 
 			if (subscription.current !== sub) {
@@ -168,7 +165,9 @@ export const useMessages = ({
 			.observe();
 
 		subscription.current = observable.subscribe(result => {
-			const newMessages: TAnyMessageModel[] = tmid && thread.current ? [...result, thread.current] : result;
+			const visibleThreadParent =
+				tmid && thread.current && !isHiddenSystemMessage(thread.current, hideSystemMessages) ? thread.current : null;
+			const newMessages: TAnyMessageModel[] = visibleThreadParent ? [...result, visibleThreadParent] : result;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
@@ -200,18 +199,12 @@ export const useMessages = ({
 		return unsubscribe;
 	}, [fetchMessages, unsubscribe]);
 
-	// Sync the IDs ref after render so the react-hooks/refs rule holds while the ref stays up to
-	// date before any paint (useLayoutEffect timing).
 	useLayoutEffect(() => {
 		messagesIds.current = messages.map(m => m.id);
 	}, [messages]);
 
 	useEffect(
 		() => {
-			// Snapshot the currently-visible loader into lastDispatchedLoaderId so the
-			// auto-dispatch effect treats it as already-seen when it re-fires after the rid
-			// change — messages may still reflect the previous room until the new
-			// subscription emits, and we must not dispatch with a stale loader.
 			lastDispatchedLoaderId.current = findFirstLoaderId(messages);
 			autoLoadCount.current = 0;
 		},

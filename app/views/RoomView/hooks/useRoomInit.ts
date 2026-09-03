@@ -41,7 +41,6 @@ const runInit = async (
 			signal: controller.signal
 		});
 		if (!controller.signal.aborted) {
-			// Only a loaded run carries an anchor; `failed` and `skipped` leave the current one alone.
 			if (result.status === 'loaded') {
 				setLastSeen(result.lastSeen);
 			}

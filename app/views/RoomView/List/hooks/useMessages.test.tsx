@@ -12,7 +12,7 @@ import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { readThreads } from '../../../../lib/services/restApi';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
+import { buildVisibleSystemTypesClause } from '../visibleSystemMessages';
 import { useMessages } from './useMessages';
 
 jest.mock('../../../../lib/database', () => ({
@@ -655,7 +655,6 @@ describe('useMessages', () => {
 		const takeBeforeRaise = findTakeClause(queryCalls[queryCalls.length - 1])?.count;
 		expect(takeBeforeRaise).toBe(QUERY_SIZE);
 
-		// The targeted read above the bound reveals a NEW Newer Loader at ts 1900.
 		fetchRows = [newerLoaderAt('loader-H2', 1900)];
 
 		// loadNextMessages REMOVED the boundary loader: re-emit WITHOUT it (still under the old bound).
@@ -681,7 +680,6 @@ describe('useMessages', () => {
 			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
 		});
 
-		// The targeted read finds NO Newer Loader above the bound: the Gap to the Live Tail closed.
 		fetchRows = [];
 
 		// loadNextMessages consumed the boundary loader: re-emit WITHOUT it.
@@ -737,7 +735,6 @@ describe('useMessages', () => {
 			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
 		});
 
-		// The targeted read still shows a Newer Loader above the bound: the Gap is NOT closed.
 		fetchRows = [newerLoaderAt('loader-H2', 1900)];
 
 		// Consume the boundary loader.
