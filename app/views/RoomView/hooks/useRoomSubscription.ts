@@ -1,18 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { InteractionManager } from 'react-native';
 
 import log from '../../../lib/methods/helpers/log';
-import type RoomClass from '../../../lib/methods/subscriptions/room';
+import RoomClass from '../../../lib/methods/subscriptions/room';
 
-const safeSubscribe = (sub?: RoomClass) => {
+const safeSubscribe = (sub: RoomClass) => {
 	try {
-		sub?.subscribe?.();
+		sub.subscribe?.();
 	} catch (e) {
 		log(e);
 	}
 };
 
-export function useRoomSubscription(sub?: RoomClass): void {
+// A thread screen shares its parent's subscription, so only the parent screen (no tmid) opens one.
+export function useRoomSubscription(rid: string | undefined, tmid: string | undefined): void {
+	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
+
 	useEffect(() => {
 		if (!sub) {
 			return;

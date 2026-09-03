@@ -8,7 +8,6 @@ import {
 	type IBaseScreen,
 	type IEmoji,
 	type ILastMessage,
-	type ILoggedUser,
 	type IMessage,
 	type IMessageEditAttachment,
 	type IVisitor,
@@ -18,9 +17,10 @@ import {
 } from '../../definitions';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
-import { type IMessageActions } from '../../containers/MessageActions';
+import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+import { type MessageRoomState } from '../../containers/message/stores/MessageRoomStore';
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
@@ -30,8 +30,6 @@ export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
 	tmid?: string;
 	roomStore: RoomStore;
 }
-
-export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -286,6 +284,47 @@ export interface IUseMessageActionsResult {
 	onReplyInit: (messageId: string) => Promise<void>;
 	setQuotesAndText: (text: string, quotes: string[]) => void;
 	getText: () => string | undefined;
+}
+
+export interface IRoomMessageListProps extends Pick<
+	MessageRoomState,
+	'jumpToMessage' | 'closeEmojiAndAction' | 'reactionInit' | 'errorActionsShow'
+> {
+	tmid?: string;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	flatListRef: TListRef;
+	onLongPress: IListContainerProps['onLongPress'];
+	roomActions: IRoomActions;
+}
+
+export type IRoomMessageActionsProps = Pick<
+	IMessageActionsProps,
+	'editInit' | 'replyInit' | 'quoteInit' | 'reactionInit' | 'onReactionPress' | 'jumpToMessage'
+> & {
+	tmid?: string;
+	messageActionsRef: RefObject<IMessageActions | null>;
+	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
+};
+
+export interface IUseRoomMessagingParams {
+	rid?: string;
+	t?: string;
+	tmid?: string;
+	roomStore: RoomStore;
+	roomUserId?: string | null;
+	quoteMessageId?: string;
+}
+
+export interface IUseRoomMessagingResult {
+	messageActionStore: TMessageActionStore;
+	roomScreen: IRoomScreenContextValue;
+	messageComposerRef: RefObject<IMessageComposerRef | null>;
+	composer: Pick<
+		TComposerExternalState,
+		'onRemoveQuoteMessage' | 'editCancel' | 'editRequest' | 'onSendMessage' | 'setQuotesAndText' | 'getText'
+	>;
+	messageList: Omit<IRoomMessageListProps, 'tmid'>;
+	messageActions: Omit<IRoomMessageActionsProps, 'tmid'>;
 }
 
 export interface IUseSubscriptionUnreadsResult {

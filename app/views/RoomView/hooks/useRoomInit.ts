@@ -3,7 +3,6 @@ import { InteractionManager } from 'react-native';
 
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import log from '../../../lib/methods/helpers/log';
-import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import { type IRoomScreenContextValue, type IRoomViewState, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
@@ -12,8 +11,6 @@ interface IUseRoomInitParams {
 	isAuthenticated: boolean;
 	roomStore: RoomStore;
 	onThreadMessagesLoaded: () => void;
-	messageActionStore: TMessageActionStore;
-	onQuoteInit: (messageId: string) => void;
 }
 
 interface IRunInitSetters {
@@ -67,14 +64,11 @@ export function useRoomInit({
 	tmid,
 	isAuthenticated,
 	roomStore,
-	onThreadMessagesLoaded,
-	messageActionStore,
-	onQuoteInit
+	onThreadMessagesLoaded
 }: IUseRoomInitParams): IRoomScreenContextValue {
 	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
-	const onQuoteInitRef = useLiveRef(onQuoteInit);
 
 	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
 	const [lastSeen, setLastSeen] = useState<IRoomViewState['lastSeen']>(null);
@@ -113,17 +107,6 @@ export function useRoomInit({
 		};
 		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
 	}, [rid, isAuthenticated, hasInitWork, init]);
-
-	// messageActionStore is useState-stable, so this fires once per screen.
-	useEffect(() => {
-		const task = InteractionManager.runAfterInteractions(() => {
-			const { action } = messageActionStore.getState();
-			if (action?.kind === 'quote' && action.messageIds.length === 1) {
-				onQuoteInitRef.current(action.messageIds[0]);
-			}
-		});
-		return () => task.cancel();
-	}, [messageActionStore, onQuoteInitRef]);
 
 	return { loading, failed: hasInitWork && failed && !loading, retry: init, lastSeen, clearLastSeen };
 }
