@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
@@ -44,7 +44,7 @@ describe('MessageRoomStore', () => {
 			spy(useTimeFormat());
 			return null;
 		};
-		const wrap = (timeFormat: string) => (
+		const wrap = (timeFormat: string): ReactElement => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat={timeFormat}>
 					<Consumer />
@@ -123,7 +123,7 @@ describe('MessageRoomStore', () => {
 			return null;
 		});
 
-		const wrap = (autoTranslateRoom: boolean) => (
+		const wrap = (autoTranslateRoom: boolean): ReactElement => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' autoTranslateRoom={autoTranslateRoom}>
 					<TimeFormatConsumer />
@@ -148,7 +148,7 @@ describe('MessageRoomStore', () => {
 			spy(useIsArchived());
 			return null;
 		};
-		const wrap = (archived: boolean) => (
+		const wrap = (archived: boolean): ReactElement => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' archived={archived}>
 					<Consumer />
@@ -233,7 +233,7 @@ describe('MessageRoomStore', () => {
 	});
 
 	describe('live callbacks', () => {
-		const wrap = (reactionInit?: MessageRoomState['reactionInit']) => (
+		const wrap = (reactionInit?: MessageRoomState['reactionInit']): ReactElement => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
 					<ReactionInitConsumer />

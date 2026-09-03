@@ -7,6 +7,7 @@ import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscripti
 import log from '../../../../lib/methods/helpers/log';
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../../constants';
 import getMessages from '../../services/getMessages';
+import { type RoomStore } from '../../definitions';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
 jest.mock('../../../../lib/database', () => ({
@@ -48,11 +49,19 @@ const mockLog = log as jest.Mock;
 const stubRoom = { rid: 'rid-1', t: 'c' };
 const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general' };
 
-const createObservedStore = ({ rid = 'rid-1', initialRoom }: { rid?: string; initialRoom: any }) => {
+const stopObserving: (() => void)[] = [];
+
+const createObservedStore = ({ rid = 'rid-1', initialRoom }: { rid?: string; initialRoom: any }): RoomStore => {
 	const store = createRoomStore({ rid, initialRoom });
-	observeRoom(rid, store);
+	stopObserving.push(observeRoom(rid, store));
 	return store;
 };
+
+afterEach(() => {
+	while (stopObserving.length) {
+		stopObserving.pop()?.();
+	}
+});
 
 const setupObserve = () => {
 	let emit: ((rows: any[]) => void) | undefined;
