@@ -54,7 +54,7 @@ export function useRoomNavigation({
 
 	useEffect(() => {
 		cancelJumpToMessageRef.current = cancelJumpToMessage;
-	});
+	}, [cancelJumpToMessage]);
 
 	const onThreadPress = useDebounce((item: TAnyMessageModel) => navToThread(item), 1000, { leading: true, trailing: false });
 

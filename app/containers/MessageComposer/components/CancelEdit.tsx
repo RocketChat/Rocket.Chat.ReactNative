@@ -1,13 +1,15 @@
+import { type ReactElement } from 'react';
+
 import { BaseButton } from './Buttons';
 import { useEditCancel } from '../../../views/RoomView/stores/ComposerStore';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useMessageActionKind } from '../../message/stores/MessageActionStore';
 import { Gap } from './Gap';
 
-export const CancelEdit = () => {
+export const CancelEdit = (): ReactElement | null => {
 	const editCancel = useEditCancel();
-	const action = useMessageAction();
+	const actionKind = useMessageActionKind();
 
-	if (action?.kind !== 'edit') {
+	if (actionKind !== 'edit') {
 		return null;
 	}
 	return (

@@ -101,6 +101,26 @@ export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void
 		}
 
 		const headerProps = getRoomHeaderProps({ room, tmid, roomName, roomUserId, onPress: goRoomActionsView });
-		navigation.setOptions({ headerTitle: () => <RoomHeader {...headerProps} /> });
+		navigation.setOptions({
+			headerTitle: () => (
+				<RoomHeader
+					prid={headerProps.prid}
+					tmid={headerProps.tmid}
+					title={headerProps.title}
+					teamMain={headerProps.teamMain}
+					parentTitle={headerProps.parentTitle}
+					subtitle={headerProps.subtitle}
+					type={headerProps.type}
+					roomUserId={headerProps.roomUserId}
+					visitor={headerProps.visitor}
+					isGroupChat={headerProps.isGroupChat}
+					onPress={headerProps.onPress}
+					testID={headerProps.testID}
+					sourceType={headerProps.sourceType}
+					abacAttributes={headerProps.abacAttributes}
+					disabled={headerProps.disabled}
+				/>
+			)
+		});
 	}, [rid, tmid, roomName, room, roomUpdate, roomUserId, navigation, goRoomActionsView]);
 };

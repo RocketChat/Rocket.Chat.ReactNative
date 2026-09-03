@@ -1,30 +1,13 @@
 import { triggerBlockAction } from '../../../lib/methods/triggerActions';
-import { ContainerTypes } from '../../../containers/UIKit/interfaces';
+import { ContainerTypes, type ITriggerBlockAction } from '../../../containers/UIKit/interfaces';
 
-export const blockAction = ({
-	actionId,
-	appId,
-	value,
-	blockId,
-	rid,
-	mid
-}: {
-	actionId: string;
-	appId: string;
-	value: any;
-	blockId: string;
-	rid: string;
-	mid: string;
-}): ReturnType<typeof triggerBlockAction> =>
+type TBlockActionParams = Omit<ITriggerBlockAction, 'container' | 'mid'> & { mid: string };
+
+export const blockAction = (params: TBlockActionParams): ReturnType<typeof triggerBlockAction> =>
 	triggerBlockAction({
-		blockId,
-		actionId,
-		value,
-		mid,
-		rid,
-		appId,
+		...params,
 		container: {
 			type: ContainerTypes.MESSAGE,
-			id: mid
+			id: params.mid
 		}
 	});

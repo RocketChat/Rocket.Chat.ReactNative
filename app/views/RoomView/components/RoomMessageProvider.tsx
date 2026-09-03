@@ -1,17 +1,14 @@
 import { type ReactElement, type ReactNode } from 'react';
 
 import { MessageRoomProvider, type MessageRoomState } from '../../../containers/message/stores/MessageRoomStore';
-import { type IRoomMessageHandlersInput } from '../definitions';
+import { type IRoomActions } from '../definitions';
 import { useRoomMessageHandlers } from '../hooks/useRoomMessageHandlers';
 
-type IRoomMessageProviderProps = Omit<MessageRoomState, 'handlers'> &
-	Pick<IRoomMessageHandlersInput, 'onThreadPress' | 'onReactionPress' | 'sendMessage'> & { children: ReactNode };
+type IRoomMessageProviderProps = Omit<MessageRoomState, 'handlers'> & { children: ReactNode; roomActions: IRoomActions };
 
 export const RoomMessageProvider = ({
 	children,
-	onThreadPress,
-	onReactionPress,
-	sendMessage,
+	roomActions,
 	rid,
 	tmid,
 	isThreadRoom,
@@ -27,7 +24,7 @@ export const RoomMessageProvider = ({
 	reactionInit,
 	errorActionsShow
 }: IRoomMessageProviderProps): ReactElement => {
-	const handlers = useRoomMessageHandlers({ tmid, onThreadPress, onReactionPress, sendMessage });
+	const handlers = useRoomMessageHandlers({ tmid, ...roomActions });
 
 	return (
 		<MessageRoomProvider
