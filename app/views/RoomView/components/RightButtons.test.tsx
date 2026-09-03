@@ -33,10 +33,10 @@ jest.mock('../../../lib/hooks/useAppSelector', () => ({
 
 let mockRoomState = {
 	room: { rid: 'rid-1', t: 'c', name: 'general' },
-	canForwardGuest: false,
-	canReturnQueue: false,
-	canPlaceLivechatOnHold: false
+	canForwardGuest: false
 };
+jest.mock('../../../lib/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => false }));
+jest.mock('../hooks/useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => false }));
 jest.mock('../stores/RoomStore', () => ({
 	useRoomStoreByRid: (_rid: string | undefined, selector: (state: typeof mockRoomState) => unknown) => selector(mockRoomState)
 }));
@@ -79,9 +79,7 @@ describe('RightButtons', () => {
 		jest.clearAllMocks();
 		mockRoomState = {
 			room: { rid: 'rid-1', t: 'c', name: 'general' },
-			canForwardGuest: false,
-			canReturnQueue: false,
-			canPlaceLivechatOnHold: false
+			canForwardGuest: false
 		};
 		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
 		mockHeaderHooks = {

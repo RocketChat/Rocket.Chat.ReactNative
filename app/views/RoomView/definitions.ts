@@ -182,9 +182,7 @@ export interface RoomState {
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
-	canReturnQueue: boolean;
 	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
 	lastMessageFromAgent: boolean;
 	// Resolves with the run's outcome; only `loaded` carries the screen's unread divider anchor.
 	init: (params?: IRoomStoreInitParams) => Promise<TRoomInitResult>;
@@ -329,8 +327,5 @@ export interface IUseRoomNavigationResult {
 export interface IUseOmnichannelPermissionsParams {
 	rid?: string;
 	t?: string;
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	livechatAllowManualOnHold?: boolean;
 	roomStore: RoomStore;
 }
