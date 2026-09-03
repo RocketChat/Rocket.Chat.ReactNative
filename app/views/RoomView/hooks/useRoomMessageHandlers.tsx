@@ -36,8 +36,8 @@ export function useRoomMessageHandlers({
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet } = useActionSheet();
 
-	const rid = useRoomStore(s => s.room.rid);
 	const room = useRoomStore(s => s.room);
+	const rid = room.rid;
 
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {
 		if (!drid) return;

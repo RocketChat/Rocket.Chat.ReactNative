@@ -85,7 +85,7 @@ export const MessageComposer = ({
 
 	const closeEmojiKeyboardAndAction = (onClosed?: Function, params?: any) => {
 		resetKeyboard();
-		onClosed && onClosed(params);
+		onClosed?.(params);
 	};
 
 	useImperativeHandle(forwardedRef, () => ({

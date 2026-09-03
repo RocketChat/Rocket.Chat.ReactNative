@@ -1,4 +1,5 @@
 import { type NavigatorScreenParams, useNavigation } from '@react-navigation/native';
+import { useShallow } from 'zustand/react/shallow';
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
@@ -16,12 +17,17 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 	const isMasterDetail = useMasterDetail();
 	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
 	const rid = useStore(roomStore, s => s.room.rid);
-	const room = useStore(roomStore, s => s.room);
+	const { room, member, joined, canForwardGuest, canViewCannedResponse } = useStore(
+		roomStore,
+		useShallow(s => ({
+			room: s.room,
+			member: s.member,
+			joined: s.joined,
+			canForwardGuest: s.canForwardGuest,
+			canViewCannedResponse: s.canViewCannedResponse
+		}))
+	);
 	const t = room.t;
-	const member = useStore(roomStore, s => s.member);
-	const joined = useStore(roomStore, s => s.joined);
-	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
-	const canViewCannedResponse = useStore(roomStore, s => s.canViewCannedResponse);
 	const canReturnQueue = useCanReturnQueue(t === 'l');
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
