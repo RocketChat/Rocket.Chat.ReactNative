@@ -180,6 +180,18 @@ describe('RoomStore', () => {
 		expect(store.getState().lastMessageFromAgent).toBe(false);
 	});
 
+	it('clears the agent-authored flag when the row stops being a Livechat room', () => {
+		const { emit } = setupObserve();
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+
+		emit([{ id: 'sub-1', rid: 'rid-1', t: 'l', lastMessage: { u: { _id: 'agent-1' } } }]);
+		expect(store.getState().lastMessageFromAgent).toBe(true);
+
+		emit([{ id: 'sub-1', rid: 'rid-1', t: 'c', lastMessage: { u: { _id: 'agent-1' } } }]);
+
+		expect(store.getState().lastMessageFromAgent).toBe(false);
+	});
+
 	it('runs the main init path: fetches messages and sets member and canAutoTranslate', async () => {
 		setupObserve();
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: subRoom });

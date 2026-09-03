@@ -9,10 +9,11 @@ export function useOmnichannelPermissions({ rid, t, roomStore }: IUseOmnichannel
 		t === 'l' ? rid : undefined
 	);
 
+	const isLivechat = t === 'l';
 	useEffect(() => {
-		if (t !== 'l') {
-			return;
-		}
-		roomStore.setState({ canForwardGuest, canViewCannedResponse });
-	}, [t, canForwardGuest, canViewCannedResponse, roomStore]);
+		roomStore.setState({
+			canForwardGuest: isLivechat && canForwardGuest,
+			canViewCannedResponse: isLivechat && canViewCannedResponse
+		});
+	}, [isLivechat, canForwardGuest, canViewCannedResponse, roomStore]);
 }

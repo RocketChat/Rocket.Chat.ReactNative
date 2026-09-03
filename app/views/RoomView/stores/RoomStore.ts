@@ -222,7 +222,7 @@ const observeRoom = (rid: string | undefined, initialRoom: IRoomViewState['room'
 						joined: true
 					}
 				: { subscribed: true, joined: true };
-			if (next.t === 'l' && nextLastMessageFromAgent !== lastMessageFromAgent) {
+			if (nextLastMessageFromAgent !== lastMessageFromAgent) {
 				lastMessageFromAgent = nextLastMessageFromAgent;
 				store.setState({ ...state, lastMessageFromAgent });
 			} else if (roomChanged || !store.getState().subscribed) {
