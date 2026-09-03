@@ -7,13 +7,14 @@ import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerRid, useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
 import { MessageInnerContext, useComposerAttachments, useMessageComposerApi, useMicOrSend } from '../../context';
 import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 
 export const MicOrSendButton = (): ReactElement | null => {
-	const { rid, sharing } = useRoomContext();
+	const rid = useComposerRid();
+	const sharing = useComposerSharing();
 	const micOrSend = useMicOrSend();
 	const attachments = useComposerAttachments();
 	const { sendMessage } = useContext(MessageInnerContext);

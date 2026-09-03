@@ -1,9 +1,19 @@
 import { memo } from 'react';
-import { act, render } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { MessageRoomProvider, useAutoTranslate, useIsArchived, useTimeFormat } from '../MessageRoomStore';
+import {
+	MessageRoomProvider,
+	type MessageRoomState,
+	useAutoTranslate,
+	useBlockAction,
+	useIsArchived,
+	useNavToRoomInfo,
+	useReactionInit,
+	useShowAttachment,
+	useTimeFormat
+} from '../MessageRoomStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { updateSettings } from '../../../../actions/settings';
 
@@ -20,24 +30,24 @@ describe('MessageRoomStore', () => {
 		});
 
 		it('useIsArchived throws', () => {
-			const Probe = () => {
+			const Consumer = () => {
 				useIsArchived();
 				return null;
 			};
-			expect(() => render(<Probe />)).toThrow('Message room hooks must be used within a MessageRoomProvider');
+			expect(() => render(<Consumer />)).toThrow('Message room hooks must be used within a MessageRoomProvider');
 		});
 	});
 
 	it('mirrors updated provider props into the store after mount', () => {
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useTimeFormat());
 			return null;
 		};
 		const wrap = (timeFormat: string) => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat={timeFormat}>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -51,7 +61,7 @@ describe('MessageRoomStore', () => {
 
 	it('does not subscribe to Message_TimeFormat when a timeFormat prop is passed', () => {
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useTimeFormat());
 			return null;
 		};
@@ -59,7 +69,7 @@ describe('MessageRoomStore', () => {
 		render(
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='literal-format'>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -78,7 +88,7 @@ describe('MessageRoomStore', () => {
 		mockedStore.dispatch(updateSettings('Message_TimeFormat', 'MMM Do YYYY'));
 
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useTimeFormat());
 			return null;
 		};
@@ -86,7 +96,7 @@ describe('MessageRoomStore', () => {
 		render(
 			<Provider store={mockedStore}>
 				<MessageRoomProvider>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -104,11 +114,11 @@ describe('MessageRoomStore', () => {
 		const autoTranslateSpy = jest.fn();
 		// memoized so re-renders only come from the store notifying its own subscription,
 		// not from the parent tree re-rendering with a new element identity
-		const TimeFormatProbe = memo(() => {
+		const TimeFormatConsumer = memo(() => {
 			timeFormatSpy(useTimeFormat());
 			return null;
 		});
-		const AutoTranslateProbe = memo(() => {
+		const AutoTranslateConsumer = memo(() => {
 			autoTranslateSpy(useAutoTranslate());
 			return null;
 		});
@@ -116,8 +126,8 @@ describe('MessageRoomStore', () => {
 		const wrap = (autoTranslateRoom: boolean) => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' autoTranslateRoom={autoTranslateRoom}>
-					<TimeFormatProbe />
-					<AutoTranslateProbe />
+					<TimeFormatConsumer />
+					<AutoTranslateConsumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -134,14 +144,14 @@ describe('MessageRoomStore', () => {
 
 	it('resyncs archived when a room gets archived mid-session', () => {
 		const spy = jest.fn();
-		const Probe = () => {
+		const Consumer = () => {
 			spy(useIsArchived());
 			return null;
 		};
 		const wrap = (archived: boolean) => (
 			<Provider store={mockedStore}>
 				<MessageRoomProvider timeFormat='fixed-format' archived={archived}>
-					<Probe />
+					<Consumer />
 				</MessageRoomProvider>
 			</Provider>
 		);
@@ -153,48 +163,130 @@ describe('MessageRoomStore', () => {
 		expect(spy).toHaveBeenLastCalledWith(true);
 	});
 
-	describe('frozen handler guard (dev)', () => {
-		let warnSpy: jest.SpyInstance;
+	describe('handlers bag', () => {
+		it('reads a handler through the fine-grained selector on the first render', () => {
+			const blockAction = jest.fn();
+			const spy = jest.fn();
+			const Consumer = () => {
+				spy(useBlockAction());
+				return null;
+			};
 
-		beforeEach(() => {
-			warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-		});
-
-		afterEach(() => {
-			warnSpy.mockRestore();
-		});
-
-		it('warns once when a frozen handler identity changes after mount', () => {
-			const wrap = (navToRoomInfo: () => void) => (
+			render(
 				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' navToRoomInfo={navToRoomInfo}>
-						<Text>probe</Text>
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction }}>
+						<Consumer />
 					</MessageRoomProvider>
 				</Provider>
 			);
 
-			const { rerender } = render(wrap(() => {}));
-			expect(warnSpy).not.toHaveBeenCalled();
-
-			act(() => rerender(wrap(() => {})));
-
-			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('navToRoomInfo'));
+			expect(spy).toHaveBeenNthCalledWith(1, blockAction);
 		});
 
-		it('does not warn when the same handler reference is passed across re-renders', () => {
-			const navToRoomInfo = () => {};
-			const wrap = () => (
+		it('exposes navToRoomInfo/showAttachment from the handler bag', () => {
+			const bagNav = jest.fn();
+			const bagShow = jest.fn();
+			const navSpy = jest.fn();
+			const showSpy = jest.fn();
+			const Consumer = () => {
+				navSpy(useNavToRoomInfo());
+				showSpy(useShowAttachment());
+				return null;
+			};
+
+			render(
 				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' navToRoomInfo={navToRoomInfo}>
-						<Text>probe</Text>
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ navToRoomInfo: bagNav, showAttachment: bagShow }}>
+						<Consumer />
 					</MessageRoomProvider>
 				</Provider>
 			);
 
+			expect(navSpy).toHaveBeenLastCalledWith(bagNav);
+			expect(showSpy).toHaveBeenLastCalledWith(bagShow);
+		});
+
+		it('resyncs the bag when the provider receives a new handlers prop', () => {
+			const first = jest.fn();
+			const second = jest.fn();
+			const spy = jest.fn();
+			const Consumer = () => {
+				spy(useBlockAction());
+				return null;
+			};
+			const tree = (blockAction: jest.Mock) => (
+				<Provider store={mockedStore}>
+					<MessageRoomProvider timeFormat='fixed-format' handlers={{ blockAction }}>
+						<Consumer />
+					</MessageRoomProvider>
+				</Provider>
+			);
+
+			const { rerender } = render(tree(first));
+
+			expect(spy).toHaveBeenLastCalledWith(first);
+
+			rerender(tree(second));
+
+			expect(spy).toHaveBeenLastCalledWith(second);
+		});
+	});
+
+	describe('live callbacks', () => {
+		const wrap = (reactionInit?: MessageRoomState['reactionInit']) => (
+			<Provider store={mockedStore}>
+				<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
+					<ReactionInitConsumer />
+				</MessageRoomProvider>
+			</Provider>
+		);
+
+		const renderSpy = jest.fn();
+		const ReactionInitConsumer = memo(() => {
+			const reactionInit = useReactionInit();
+			renderSpy(reactionInit);
+			return <Text onPress={() => reactionInit?.('message-id')}>reaction</Text>;
+		});
+
+		beforeEach(() => renderSpy.mockClear());
+
+		it('invokes the latest callback after a rerender', () => {
+			const first = jest.fn();
+			const second = jest.fn();
+
+			const { rerender } = render(wrap(first));
+			act(() => rerender(wrap(second)));
+
+			fireEvent.press(screen.getByText('reaction'));
+
+			expect(second).toHaveBeenCalledWith('message-id');
+			expect(first).not.toHaveBeenCalled();
+		});
+
+		it('keeps the callback identity stable across rerenders', () => {
+			const { rerender } = render(wrap(jest.fn()));
+			const renderCallsBefore = renderSpy.mock.calls.length;
+
+			act(() => rerender(wrap(jest.fn())));
+
+			expect(renderSpy.mock.calls.length).toBe(renderCallsBefore);
+		});
+
+		it('stays undefined when the provider does not supply the callback', () => {
+			render(wrap());
+
+			expect(renderSpy).toHaveBeenLastCalledWith(undefined);
+		});
+
+		it('becomes defined when the provider starts supplying the callback', () => {
+			const reactionInit = jest.fn();
 			const { rerender } = render(wrap());
-			act(() => rerender(wrap()));
+			expect(renderSpy).toHaveBeenLastCalledWith(undefined);
 
-			expect(warnSpy).not.toHaveBeenCalled();
+			act(() => rerender(wrap(reactionInit)));
+			fireEvent.press(screen.getByText('reaction'));
+
+			expect(reactionInit).toHaveBeenCalledWith('message-id');
 		});
 	});
 });

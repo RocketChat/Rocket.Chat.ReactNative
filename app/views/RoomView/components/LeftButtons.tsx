@@ -1,0 +1,60 @@
+import { StyleSheet, useWindowDimensions } from 'react-native';
+import { type ReactElement } from 'react';
+
+import Avatar from '../../../containers/Avatar';
+import { useAppNavigation } from '../../../lib/hooks/navigation';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
+import { getUserSelector } from '../../../selectors/login';
+import { HeaderBackButton } from '../../../containers/Header/components/HeaderBackButton';
+import { useUnreadsCount } from '../hooks/useUnreadsCount';
+import { useGoRoomActionsView } from '../hooks/useGoRoomActionsView';
+import { useStore } from 'zustand';
+import { type RoomStore } from '../definitions';
+
+const styles = StyleSheet.create({
+	avatar: {
+		borderRadius: 10
+	}
+});
+
+interface ILeftButtonsProps {
+	rid?: string;
+	tmid?: string;
+	roomStore: RoomStore;
+}
+
+const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement | null => {
+	const { goBack } = useAppNavigation();
+	const goRoomActionsView = useGoRoomActionsView(roomStore);
+	const isMasterDetail = useMasterDetail();
+	const baseUrl = useAppSelector(state => state.server.server);
+	const { id: userId, token } = useAppSelector(getUserSelector);
+	const room = useStore(roomStore, s => s.room);
+	const { t } = room;
+	const title = 'id' in room ? room.name : undefined;
+
+	const onPress = () => goRoomActionsView();
+	const { fontScale } = useWindowDimensions();
+	const unreadsCount = useUnreadsCount(rid);
+
+	if (!isMasterDetail || tmid) {
+		let label: string | undefined;
+		let marginLeft = 0;
+		let fontSize = 0;
+		if (unreadsCount) {
+			label = unreadsCount > 99 ? '+99' : unreadsCount.toString();
+			const labelLength = label.length;
+			marginLeft = -4 * labelLength;
+			fontSize = labelLength > 1 ? 14 : 17;
+		}
+		return <HeaderBackButton label={label} onPress={goBack} labelStyle={{ fontSize: fontSize * fontScale, marginLeft }} />;
+	}
+
+	if (baseUrl && userId && token) {
+		return <Avatar rid={rid} text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;
+	}
+	return null;
+};
+
+export default LeftButtons;

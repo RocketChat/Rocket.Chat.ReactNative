@@ -2,18 +2,21 @@
 
 ## Rooms & Conversations
 
-| Term                | Definition                                                                                                                            | Aliases to avoid              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                         | Chat, conversation            |
-| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open) — never a **DDP Subscription** | Membership, room entry        |
-| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                             | Public room                   |
-| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                           | Private room, private channel |
-| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                  | DM, PM, private message       |
-| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                       | Reply chain                   |
-| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms        | Sub-room, sub-channel         |
-| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                             | Workspace (a different thing) |
-| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                       | Broadcast channel             |
-| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                            | Broadcast reply               |
+| Term                | Definition                                                                                                                                                                                               | Aliases to avoid              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                                                                                            | Chat, conversation            |
+| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open), never a **DDP Subscription**                                                                     | Membership, room entry        |
+| **Subscribed Room** | A Room the user has joined, backed by a persisted Subscription model. Detected by the presence of a Subscription record.                                                                                 | Joined room                   |
+| **Preview Mode**    | Viewing a Room without joining: no Subscription record exists and the Room data comes from navigation params or a REST lookup. Persists until the user joins. Detected by the absence of a Subscription. | —                             |
+| **Invited**         | A Room where a Subscription exists but its status is `invited` and not yet accepted. Detected by a Subscription whose status is `invited`.                                                               | —                             |
+| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                                                                                                | Public room                   |
+| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                                                                                              | Private room, private channel |
+| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                                                                                     | DM, PM, private message       |
+| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                                                                                          | Reply chain                   |
+| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms                                                                           | Sub-room, sub-channel         |
+| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                                                                                                | Workspace (a different thing) |
+| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                                                                                          | Broadcast channel             |
+| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                                                                                               | Broadcast reply               |
 
 ## Messages
 
@@ -125,10 +128,12 @@ A **Last Open** and a **Last Seen** are not interchangeable — conflating them 
 
 Two distinct kinds of transient per-Room state drive how the Room view renders Messages. Keep them apart.
 
-| Term                     | Definition                                                                                                        |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **Message Action State** | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active |
-| **Positional State**     | Which Message is highlighted and the jump or scroll position                                                      |
+| Term                               | Definition                                                                                                        | Owner                         | Scope                                |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------ |
+| **Message Action State**           | The active Message Action in the Room (Quote, Edit, or React) and its target Message(s); null when none is active | A per-Room MessageActionStore | One Room's Message rows and composer |
+| **Positional State**               | Umbrella for which Message is highlighted and the jump or scroll position. Splits across two owners (below).      | —                             | —                                    |
+| **Jump orchestration**             | Deciding to jump to a Message, resolving its anchor, and requesting the jump                                      | RoomView (`useJumpToMessage`) | The Room screen                      |
+| **Scroll and highlight execution** | Performing the scroll onto the target Message and rendering its highlight                                         | The List component            | The rendered Message list            |
 
 ### Message Actions
 
@@ -162,17 +167,19 @@ A **Message Action** is the active mode on a Message in the Room view. The three
 
 ## Omnichannel / Livechat
 
-| Term                   | Definition                                                                                           | Aliases to avoid             |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------- |
-| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                | Livechat room, support chat  |
-| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token         | Client, customer, end-user   |
-| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable) | Support agent, operator, rep |
-| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                           | Queue item, ticket           |
-| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                    | Team (ambiguous), group      |
-| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                         | Channel origin               |
-| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                           | Assigned agent, handler      |
-| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                  | Paused, suspended            |
-| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                        | Forward, reassign, handoff   |
+| Term                   | Definition                                                                                                    | Aliases to avoid                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| **Omnichannel Room**   | A customer-service Room (type `'l'`) connecting a Visitor to an Agent                                         | Livechat room, support chat       |
+| **Visitor**            | An external customer who initiates an Omnichannel conversation, identified by a unique token                  | Client, customer, end-user        |
+| **Agent**              | A User designated to handle Omnichannel conversations, with `statusLivechat` (available/unavailable)          | Support agent, operator, rep      |
+| **Inquiry**            | A queued Omnichannel request waiting to be picked up or routed to an Agent                                    | Queue item, ticket                |
+| **Department**         | An organizational unit that groups Agents for Omnichannel routing                                             | Team (ambiguous), group           |
+| **Omnichannel Source** | How an Omnichannel conversation was initiated (widget, email, sms, app, api)                                  | Channel origin                    |
+| **Served By**          | The Agent currently assigned to handle an Omnichannel Room                                                    | Assigned agent, handler           |
+| **On Hold**            | An Omnichannel Room temporarily paused by the Agent                                                           | Paused, suspended                 |
+| **Transfer**           | Moving an Omnichannel Room to a different Agent or Department                                                 | Forward, reassign, handoff        |
+| **Routing Config**     | Per-server Omnichannel routing settings that say whether Agents may Return to Queue and see the Inquiry queue | Livechat config, routing settings |
+| **Return to Queue**    | An Agent handing an Omnichannel Room back so it becomes an Inquiry again                                      | Return inquiry, release chat      |
 
 ## Encryption
 

@@ -9,6 +9,7 @@ import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-cont
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
@@ -24,7 +25,6 @@ import {
 	type IApplicationState,
 	type IRoomInfoParam,
 	type TMessageModel,
-	type ISubscription,
 	SubscriptionType,
 	type IAttachment,
 	type IMessage,
@@ -44,7 +44,6 @@ interface IMessagesViewProps {
 		username: string;
 		token: string;
 	};
-	baseUrl: string;
 	navigation: CompositeNavigationProp<
 		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
@@ -72,7 +71,6 @@ interface IParams {
 	name?: string;
 	fname?: string;
 	prid?: string;
-	room?: ISubscription;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
 	roomUserId?: string;
@@ -82,7 +80,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;
-	private room?: ISubscription;
 
 	constructor(props: IMessagesViewProps) {
 		super(props);
@@ -141,8 +138,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		let params: IParams = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
-			t: this.t,
-			room: this.room
+			t: this.t
 		};
 		if (item.tmid) {
 			Navigation.popToRoom(isMasterDetail);
@@ -291,6 +287,8 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
+	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
+
 	onLongPress = (message: IMessage) => {
 		this.setState({ message }, this.showActionSheet);
 	};
@@ -334,7 +332,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme, user, baseUrl, insets } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -342,31 +340,25 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<MessageRoomProvider
-					navToRoomInfo={this.navToRoomInfo}
-					showAttachment={this.showAttachment}
-					user={user}
-					baseUrl={baseUrl}
-					rid={this.rid}
-					isThreadRoom
-					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
-					<FlatList
-						data={messages}
-						renderItem={this.renderItem}
-						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-						keyExtractor={item => item._id}
-						onEndReached={this.load}
-						contentContainerStyle={{ paddingBottom: insets.bottom }}
-						ListFooterComponent={loading ? <ActivityIndicator /> : null}
-					/>
-				</MessageRoomProvider>
+				<A11yGateProvider>
+					<MessageRoomProvider handlers={this.messageHandlers} rid={this.rid} isThreadRoom timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+						<FlatList
+							data={messages}
+							renderItem={this.renderItem}
+							style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+							keyExtractor={item => item._id}
+							onEndReached={this.load}
+							contentContainerStyle={{ paddingBottom: insets.bottom }}
+							ListFooterComponent={loading ? <ActivityIndicator /> : null}
+						/>
+					</MessageRoomProvider>
+				</A11yGateProvider>
 			</SafeAreaView>
 		);
 	}
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
 	user: getUserSelector(state)
 });
 

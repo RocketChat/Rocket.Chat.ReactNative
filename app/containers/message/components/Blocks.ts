@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 
 import { messageBlockWithContext } from '../../UIKit/MessageBlock';
-import { useBlockAction, useRid } from '../stores/MessageRoomStore';
+import { useRid, useBlockAction } from '../stores/MessageRoomStore';
 import { useBlocks } from '../stores/MessageStore';
 
 const Blocks = () => {

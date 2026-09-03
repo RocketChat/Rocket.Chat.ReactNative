@@ -5,11 +5,11 @@ import { ActionsButton, BaseButton } from '../Buttons';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
-	const { sharing } = useRoomContext();
+	const sharing = useComposerSharing();
 	const { setMarkdownToolbar } = useMessageComposerApi();
 	const { openEmojiKeyboard } = useEmojiKeyboard();
 

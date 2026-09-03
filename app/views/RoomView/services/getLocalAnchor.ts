@@ -5,24 +5,29 @@ import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { tsToMs } from '../../../lib/dayjs';
 import { type TAnyMessageModel } from '../../../definitions';
 
-/**
- * ts of the nearest Newer Loader above the target = the upper bracket of its Chunk; null when the
- * cached region runs contiguous to the Live Tail (caller falls back to the target's own ts).
- */
-const getLocalAnchorTs = async (rid: string, targetTs: Date | number | string): Promise<number | null> => {
-	const targetMs = tsToMs(targetTs);
-	const loaders = (await database.active
+export const findNewerLoaderAbove = async (
+	rid: string,
+	aboveTs: Date | number | string,
+	direction: 'nearest' | 'closestToLiveTail'
+): Promise<TAnyMessageModel | null> => {
+	const rows = (await database.active
 		.get('messages')
 		.query(
 			Q.where('rid', rid),
 			Q.where('t', MessageTypeLoad.NEXT_CHUNK),
-			Q.where('ts', Q.gt(targetMs)),
-			Q.sortBy('ts', Q.asc),
+			Q.where('ts', Q.gt(tsToMs(aboveTs))),
+			Q.sortBy('ts', direction === 'nearest' ? Q.asc : Q.desc),
 			Q.take(1)
 		)
 		.fetch()) as TAnyMessageModel[];
 
-	return loaders.length ? tsToMs(loaders[0].ts) : null;
+	return rows[0] ?? null;
+};
+
+const getLocalAnchorTs = async (rid: string, targetTs: Date | number | string): Promise<number | null> => {
+	const loader = await findNewerLoaderAbove(rid, targetTs, 'nearest');
+
+	return loader ? tsToMs(loader.ts) : null;
 };
 
 export default getLocalAnchorTs;

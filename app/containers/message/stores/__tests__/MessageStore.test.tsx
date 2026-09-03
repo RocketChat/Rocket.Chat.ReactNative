@@ -598,7 +598,7 @@ describe('MessageStore', () => {
 				u: { _id: 'u2', username: 'bob' }
 			});
 			const { latest } = renderDerived(model, useMessageText, {
-				config: { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR', user: { username: 'alice' } }
+				config: { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR' }
 			});
 			expect(latest()).toEqual({ messageText: 'Olá mundo', isTranslated: true });
 		});
@@ -891,7 +891,7 @@ describe('MessageStore', () => {
 		it('reveals an ignored message instead of pressing', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { isIgnored: true, config: { onThreadPress } });
+			const { result } = renderMessageHook(useMessagePress, model, { isIgnored: true, config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 
@@ -904,7 +904,10 @@ describe('MessageStore', () => {
 			const onPress = jest.fn();
 			const onThreadPress = jest.fn();
 			const onDiscussionPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { onPress, config: { onThreadPress, onDiscussionPress } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				onPress,
+				config: { handlers: { onThreadPress, onDiscussionPress } }
+			});
 
 			act(() => result.current());
 
@@ -917,7 +920,7 @@ describe('MessageStore', () => {
 		it('dismisses the keyboard and routes to thread press for a threaded reply', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress } });
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 
@@ -928,7 +931,7 @@ describe('MessageStore', () => {
 		it('routes to thread press for a root message that has replies (tlm)', () => {
 			const model = buildFakeModel({ tlm: new Date() });
 			const onThreadPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress } });
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 
@@ -938,7 +941,9 @@ describe('MessageStore', () => {
 		it('does not route to thread press while already inside the thread room', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress, isThreadRoom: true } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				config: { isThreadRoom: true, handlers: { onThreadPress } }
+			});
 
 			act(() => result.current());
 
@@ -948,7 +953,7 @@ describe('MessageStore', () => {
 		it('routes to discussion press when the message has a discussion', () => {
 			const model = buildFakeModel({ dlm: new Date(), drid: 'drid-1' });
 			const onDiscussionPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onDiscussionPress } });
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onDiscussionPress } } });
 
 			act(() => result.current());
 
@@ -958,7 +963,7 @@ describe('MessageStore', () => {
 		it('debounces on the leading edge, suppressing an immediate repeat until the window elapses', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress } });
+			const { result } = renderMessageHook(useMessagePress, model, { config: { handlers: { onThreadPress } } });
 
 			act(() => result.current());
 			expect(onThreadPress).toHaveBeenCalledTimes(1);
@@ -976,7 +981,9 @@ describe('MessageStore', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
 			const closeEmojiAndAction = jest.fn();
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress, closeEmojiAndAction } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				config: { closeEmojiAndAction, handlers: { onThreadPress } }
+			});
 
 			act(() => result.current());
 
@@ -989,7 +996,9 @@ describe('MessageStore', () => {
 			const model = buildFakeModel({ tmid: 't1' });
 			const onThreadPress = jest.fn();
 			const closeEmojiAndAction = jest.fn((action?: (params?: unknown) => void) => action?.());
-			const { result } = renderMessageHook(useMessagePress, model, { config: { onThreadPress, closeEmojiAndAction } });
+			const { result } = renderMessageHook(useMessagePress, model, {
+				config: { closeEmojiAndAction, handlers: { onThreadPress } }
+			});
 
 			act(() => result.current());
 
@@ -999,7 +1008,7 @@ describe('MessageStore', () => {
 	});
 
 	describe('translation boundary on item.autoTranslate', () => {
-		const translationConfig = { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR', user: { username: 'alice' } };
+		const translationConfig = { autoTranslateRoom: true, autoTranslateLanguage: 'pt-BR' };
 
 		it('useTranslateLanguage returns undefined when autoTranslate is undefined', () => {
 			const model = buildFakeModel({ autoTranslate: undefined, u: { _id: 'u2', username: 'bob' } });

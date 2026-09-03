@@ -4,8 +4,13 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import { useRoomContext } from '../../views/RoomView/context';
-import { useMessageAction } from '../message/stores/MessageActionStore';
+import {
+	useComposerRid,
+	useComposerSharing,
+	useComposerStoreApi,
+	useComposerTmid
+} from '../../views/RoomView/stores/ComposerStore';
+import { useMessageActionKind, useMessageActionStoreApi } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import {
@@ -53,8 +58,12 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 	useCloseKeyboardWhenOrientationChanges();
-	const { rid, tmid, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
-	const action = useMessageAction();
+	const rid = useComposerRid();
+	const tmid = useComposerTmid();
+	const sharing = useComposerSharing();
+	const composerStore = useComposerStoreApi();
+	const messageActionStore = useMessageActionStoreApi();
+	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
@@ -74,9 +83,9 @@ export const MessageComposer = ({
 		return false;
 	});
 
-	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
+	const closeEmojiKeyboardAndAction = (onClosed?: Function, params?: any) => {
 		resetKeyboard();
-		action && action(params);
+		onClosed?.(params);
 	};
 
 	useImperativeHandle(forwardedRef, () => ({
@@ -94,6 +103,11 @@ export const MessageComposer = ({
 	const handleSendMessage = async () => {
 		if (!rid) return;
 
+		const { editRequest, onSendMessage, setQuotesAndText } = composerStore.getState();
+		const { action } = messageActionStore.getState();
+		const editingMessageId = action?.kind === 'edit' ? action.messageId : undefined;
+		const quotedMessageIds = action?.kind === 'quote' ? action.messageIds : [];
+
 		if (alsoSendThreadToChannel) {
 			setAlsoSendThreadToChannel(false);
 		}
@@ -108,13 +122,13 @@ export const MessageComposer = ({
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
-		if (action?.kind === 'edit') {
+		if (editingMessageId) {
 			const updatedAttachments = attachments.length
 				? attachments.map(({ description, altText, fileId, filename }) =>
 						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
 					)
 				: undefined;
-			editRequest?.({ id: action.messageId, msg: textFromInput, rid, attachments: updatedAttachments });
+			editRequest?.({ id: editingMessageId, msg: textFromInput, rid, attachments: updatedAttachments });
 			clearAttachments();
 			return;
 		}
@@ -122,8 +136,8 @@ export const MessageComposer = ({
 		if (attachments.length) {
 			let quotedMessage: string | undefined;
 
-			if (action?.kind === 'quote') {
-				quotedMessage = await prepareQuoteMessage(textFromInput, action.messageIds, tmid);
+			if (quotedMessageIds.length) {
+				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			}
 
 			try {
@@ -146,8 +160,8 @@ export const MessageComposer = ({
 			}
 		}
 
-		if (action?.kind === 'quote') {
-			const quoteMessage = await prepareQuoteMessage(textFromInput, action.messageIds, tmid);
+		if (quotedMessageIds.length) {
+			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			onSendMessage?.(quoteMessage);
 			return;
 		}
@@ -245,7 +259,7 @@ export const MessageComposer = ({
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
-				action={action?.kind ?? null}
+				action={actionKind}
 				showEmojiSearchbar={showEmojiSearchbar}
 				composerInputComponentRef={composerInputComponentRef}
 				composerInputRef={composerInputRef}

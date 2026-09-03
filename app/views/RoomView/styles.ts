@@ -9,12 +9,6 @@ export default StyleSheet.create({
 	safeAreaView: {
 		flex: 1
 	},
-	readOnly: {
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		margin: 16,
-		marginBottom: 32
-	},
 	reactionSearchContainer: {
 		marginHorizontal: 12,
 		marginBottom: 8
@@ -46,35 +40,6 @@ export default StyleSheet.create({
 	},
 	modalCloseButton: {
 		alignSelf: 'flex-end'
-	},
-	joinRoomContainer: {
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		marginVertical: 15
-	},
-	joinRoomButton: {
-		width: 107,
-		height: 44,
-		marginTop: 15,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 4
-	},
-	joinRoomText: {
-		fontSize: 14,
-		...sharedStyles.textMedium
-	},
-	previewMode: {
-		fontSize: 16,
-		lineHeight: 24,
-		...sharedStyles.textSemibold
-	},
-	readOnlyDescription: {
-		fontSize: 16,
-		lineHeight: 24,
-		...sharedStyles.textRegular,
-		textAlign: 'center'
 	},
 	searchbarContainer: {
 		height: 56,

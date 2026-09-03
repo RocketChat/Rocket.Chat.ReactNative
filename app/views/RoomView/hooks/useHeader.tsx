@@ -1,0 +1,128 @@
+import { type ComponentProps, useLayoutEffect } from 'react';
+import { PixelRatio, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useShallow } from 'zustand/react/shallow';
+import { useStore } from 'zustand';
+
+import RoomHeader from '../../../containers/RoomHeader';
+import { getRoomTitle, isGroupChat } from '../../../lib/methods/helpers';
+import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
+import { type IOmnichannelSource, type ISubscription, type IVisitor } from '../../../definitions';
+import LeftButtons from '../components/LeftButtons';
+import RightButtons from '../components/RightButtons';
+import { type IRoomViewProps, type IRoomViewState } from '../definitions';
+import { type RoomStore } from '../definitions';
+import { useGoRoomActionsView } from './useGoRoomActionsView';
+
+interface IUseHeaderParams {
+	rid?: string;
+	tmid?: string;
+	/** Thread name on a thread; only read when `tmid` is set, since the room title is derived from the room. */
+	name?: string;
+	roomStore: RoomStore;
+}
+
+interface IGetRoomHeaderPropsParams {
+	room: IRoomViewState['room'];
+	tmid?: string;
+	roomName?: string;
+	roomUserId?: string | null;
+	onPress: () => void;
+}
+
+const getRoomHeaderProps = ({
+	room,
+	tmid,
+	roomName,
+	roomUserId,
+	onPress
+}: IGetRoomHeaderPropsParams): ComponentProps<typeof RoomHeader> => {
+	const title = tmid ? roomName : getRoomTitle(room);
+	const parentTitle = tmid ? getRoomTitle(room) : '';
+
+	let subtitle: string | undefined;
+	let visitor: IVisitor | undefined;
+	let sourceType: IOmnichannelSource | undefined;
+	if ('id' in room) {
+		subtitle = room.topic;
+		visitor = room.visitor;
+	}
+	if ('source' in room) {
+		sourceType = room.source;
+		visitor = room.visitor;
+	}
+
+	const subscription = room as ISubscription;
+	return {
+		prid: room?.prid,
+		tmid,
+		title,
+		teamMain: 'teamMain' in room ? room?.teamMain : false,
+		parentTitle,
+		subtitle,
+		type: room?.t,
+		roomUserId,
+		visitor,
+		isGroupChat: isGroupChat(subscription),
+		onPress,
+		testID: `room-view-title-${title}`,
+		sourceType,
+		abacAttributes: subscription.abacAttributes,
+		disabled: isInviteSubscription(subscription)
+	};
+};
+
+// rid/tmid/name come from the screen's mount-time snapshot: route.params can be wiped to undefined
+// while this RoomView is retained below the stack top, which would break the header permanently.
+export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderParams): void => {
+	const navigation = useNavigation<IRoomViewProps['navigation']>();
+
+	const room = useStore(roomStore, s => s.room);
+	const roomUpdate = useStore(
+		roomStore,
+		useShallow(s => s.roomUpdate)
+	);
+	const roomUserId = useStore(roomStore, s => s.roomUserId);
+	const goRoomActionsView = useGoRoomActionsView(roomStore);
+
+	useLayoutEffect(() => {
+		if (!rid) {
+			const height = 37 * PixelRatio.getFontScale();
+			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
+			return;
+		}
+		navigation.setOptions({
+			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />,
+			headerRight: () => <RightButtons rid={rid} tmid={tmid} roomStore={roomStore} />
+		});
+	}, [rid, tmid, navigation, roomStore]);
+
+	useLayoutEffect(() => {
+		if (!rid) {
+			return;
+		}
+
+		const headerProps = getRoomHeaderProps({ room, tmid, roomName, roomUserId, onPress: goRoomActionsView });
+		navigation.setOptions({
+			headerTitle: () => (
+				<RoomHeader
+					prid={headerProps.prid}
+					tmid={headerProps.tmid}
+					title={headerProps.title}
+					teamMain={headerProps.teamMain}
+					parentTitle={headerProps.parentTitle}
+					subtitle={headerProps.subtitle}
+					type={headerProps.type}
+					roomUserId={headerProps.roomUserId}
+					visitor={headerProps.visitor}
+					isGroupChat={headerProps.isGroupChat}
+					onPress={headerProps.onPress}
+					testID={headerProps.testID}
+					sourceType={headerProps.sourceType}
+					abacAttributes={headerProps.abacAttributes}
+					disabled={headerProps.disabled}
+				/>
+			)
+		});
+	}, [rid, tmid, roomName, room, roomUpdate, roomUserId, navigation, goRoomActionsView]);
+};

@@ -1,5 +1,6 @@
 // ACTIONS
 import { type TActionInquiry } from '../../ee/omnichannel/actions/inquiry';
+import { type TActionRoutingConfig } from '../../ee/omnichannel/actions/routingConfig';
 import { type TActionActiveUsers } from '../../actions/activeUsers';
 import { type TActionApp } from '../../actions/app';
 import { type TActionCreateChannel } from '../../actions/createChannel';
@@ -35,6 +36,7 @@ import { type IServer } from '../../reducers/server';
 import { type TSettingsState } from '../../reducers/settings';
 import { type IShare } from '../../reducers/share';
 import { type IInquiry } from '../../ee/omnichannel/reducers/inquiry';
+import { type IRoutingConfig } from '../../ee/omnichannel/reducers/routingConfig';
 import { type IPermissionsState } from '../../reducers/permissions';
 import { type IEnterpriseModules } from '../../reducers/enterpriseModules';
 import { type IVideoConf } from '../../reducers/videoConf';
@@ -67,6 +69,7 @@ export interface IApplicationState {
 	inviteLinks: IInviteLinks;
 	createDiscussion: ICreateDiscussion;
 	inquiry: IInquiry;
+	routingConfig: IRoutingConfig;
 	enterpriseModules: IEnterpriseModules;
 	encryption: IEncryption;
 	permissions: IPermissionsState;
@@ -93,6 +96,7 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionServer &
 	TActionApp &
 	TActionInquiry &
+	TActionRoutingConfig &
 	TActionPermissions &
 	TActionEnterpriseModules &
 	TActionVideoConf &

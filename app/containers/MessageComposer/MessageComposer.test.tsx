@@ -12,7 +12,8 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { type IPermissionsState } from '../../reducers/permissions';
 import { type IMessage, type IShareAttachment, type TMessageActionState } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
-import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
+import { type ComposerState } from '../../views/RoomView/definitions';
+import { ComposerProvider } from '../../views/RoomView/stores/ComposerStore';
 import { MessageActionProvider } from '../message/stores/MessageActionStore';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
@@ -122,20 +123,20 @@ const Render = ({
 	action,
 	children
 }: {
-	context?: Partial<IRoomContext>;
+	context?: Partial<ComposerState>;
 	action?: TMessageActionState;
 	children?: ReactElement;
 }) => (
 	<Provider store={mockedStore}>
 		<MessageActionProvider initialAction={action}>
-			<RoomContext.Provider value={{ ...initialContext, ...context }}>
+			<ComposerProvider {...initialContext} {...context}>
 				<MessageComposerContainer>
 					<>
 						<ComposerAttachments />
 						{children}
 					</>
 				</MessageComposerContainer>
-			</RoomContext.Provider>
+			</ComposerProvider>
 		</MessageActionProvider>
 	</Provider>
 );

@@ -1,0 +1,142 @@
+import { editMessage } from '../../../lib/methods/editMessage';
+import log from '../../../lib/methods/helpers/log';
+import { getMessageById } from '../../../lib/database/services/Message';
+import { type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '../../../definitions';
+import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
+import ReactionPicker from '../components/ReactionPicker';
+import { useReactionActions } from './useReactionActions';
+
+export function useMessageActions({
+	messageActionStore,
+	showActionSheet,
+	hideActionSheet,
+	rid,
+	tmid,
+	onThreadPress,
+	messageComposerRef,
+	messageActionsRef,
+	messageErrorActionsRef
+}: IUseMessageActionsParams): IUseMessageActionsResult {
+	const { resetAction, onReactionClose, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
+
+	const handleCloseEmoji = (action?: (params?: unknown) => void, params?: unknown) => {
+		if (messageComposerRef?.current) {
+			return messageComposerRef.current.closeEmojiKeyboardAndAction(action, params);
+		}
+		action?.(params);
+	};
+
+	const errorActionsShow = (message: TAnyMessageModel) => {
+		handleCloseEmoji(() => messageErrorActionsRef.current?.showMessageErrorActions(message));
+	};
+
+	const onEditInit = (messageId: string) => {
+		const { action, actions } = messageActionStore.getState();
+		if (action) {
+			return;
+		}
+		actions.startEditing(messageId);
+	};
+
+	const onEditCancel = () => {
+		resetAction();
+	};
+
+	const onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: IMessageEditAttachment[];
+		}
+	) => {
+		try {
+			resetAction();
+			await editMessage(message);
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const onQuoteInit = (messageId: string) => {
+		const { action, actions } = messageActionStore.getState();
+		if (action?.kind === 'quote') {
+			if (!action.messageIds.includes(messageId)) {
+				actions.addQuote(messageId);
+			}
+			return;
+		}
+		if (action) {
+			return;
+		}
+		actions.startQuote(messageId);
+	};
+
+	const onRemoveQuoteMessage = (messageId: string) => {
+		messageActionStore.getState().actions.removeQuote(messageId);
+	};
+
+	const showReactionPicker = () => {
+		const { action } = messageActionStore.getState();
+		const messageId = action?.kind === 'react' ? action.messageId : undefined;
+		setTimeout(() => {
+			showActionSheet({
+				children: <ReactionPicker messageId={messageId} onEmojiSelected={onReactionPress} reactionClose={onReactionClose} />,
+				snaps: ['50%'],
+				enableContentPanningGesture: false,
+				onClose: resetAction,
+				fullContainer: true
+			});
+		}, 300);
+	};
+
+	const onReactionInit = (messageId: string) => {
+		if (messageActionStore.getState().action) {
+			return;
+		}
+		handleCloseEmoji(() => {
+			messageActionStore.getState().actions.startReacting(messageId);
+			showReactionPicker();
+		});
+	};
+
+	const onMessageLongPress = (message: TAnyMessageModel) => {
+		const { action } = messageActionStore.getState();
+		if (action && action.kind !== 'quote') {
+			return;
+		}
+		if (message.tmid && !tmid) {
+			return;
+		}
+		handleCloseEmoji(() => messageActionsRef.current?.showMessageActions(message));
+	};
+
+	const onReplyInit = async (messageId: string) => {
+		const message = await getMessageById(messageId);
+		if (!message || !rid) {
+			return;
+		}
+		onThreadPress(message);
+	};
+
+	const setQuotesAndText = (text: string, quotes: string[]) => {
+		messageActionStore.getState().actions.setQuoteMessageIds(quotes);
+		messageComposerRef.current?.setInput(text || '');
+	};
+
+	const getText = () => messageComposerRef.current?.getText();
+
+	return {
+		resetAction,
+		handleCloseEmoji,
+		errorActionsShow,
+		onEditInit,
+		onEditCancel,
+		onEditRequest,
+		onQuoteInit,
+		onRemoveQuoteMessage,
+		onReactionPress,
+		onReactionInit,
+		onMessageLongPress,
+		onReplyInit,
+		setQuotesAndText,
+		getText
+	};
+}

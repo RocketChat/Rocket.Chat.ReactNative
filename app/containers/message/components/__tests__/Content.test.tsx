@@ -53,8 +53,7 @@ const buildItem = (
 const tree = (overrides: TOverrides) => {
 	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, isIgnored } = overrides;
 	const contextValue: Partial<MessageRoomState> = {
-		user: { username: 'john' },
-		navToRoomInfo: jest.fn(),
+		handlers: { navToRoomInfo: jest.fn() },
 		autoTranslateLanguage
 	};
 	return (

@@ -32,7 +32,13 @@ import {
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
-import { useRoomContext } from '../../../views/RoomView/context';
+import {
+	useComposerRid,
+	useComposerRoom,
+	useComposerSharing,
+	useComposerTmid,
+	useSetQuotesAndText
+} from '../../../views/RoomView/stores/ComposerStore';
 import { useMessageAction } from '../../message/stores/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
@@ -51,7 +57,11 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, setQuotesAndText, room } = useRoomContext();
+		const rid = useComposerRid();
+		const tmid = useComposerTmid();
+		const sharing = useComposerSharing();
+		const setQuotesAndText = useSetQuotesAndText();
+		const room = useComposerRoom();
 		const action = useMessageAction();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
@@ -266,11 +276,11 @@ export const ComposerInput = memo(
 			const { start, end } = selectionRef.current;
 			const cursor = Math.max(start, end);
 			const regexp = getMentionRegexp();
-			let result = text.substr(0, cursor).replace(regexp, '');
+			let textBeforeMention = text.substr(0, cursor).replace(regexp, '');
 			// Remove the ! after select the canned response
 			if (item.type === '!') {
 				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
-				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+				textBeforeMention = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
 			}
 			let mention = '';
 			switch (item.type) {
@@ -292,9 +302,9 @@ export const ComposerInput = memo(
 				default:
 					mention = '';
 			}
-			const newText = `${result}${mention} ${text.slice(cursor)}`;
+			const newText = `${textBeforeMention}${mention} ${text.slice(cursor)}`;
 
-			const newCursor = result.length + mention.length + 1;
+			const newCursor = textBeforeMention.length + mention.length + 1;
 			setInput(newText, { start: newCursor, end: newCursor });
 			focus();
 			requestAnimationFrame(() => {

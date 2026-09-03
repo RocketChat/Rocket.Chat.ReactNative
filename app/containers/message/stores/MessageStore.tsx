@@ -19,8 +19,8 @@ import {
 	useJumpToMessage,
 	useMessageGroupingPeriod,
 	useMessageUser,
-	useOnDiscussionPress,
-	useOnThreadPress
+	useOnThreadPress,
+	useOnDiscussionPress
 } from './MessageRoomStore';
 
 type MessageStoreState = {
@@ -291,14 +291,20 @@ export const useMessageId = (): TAnyMessageModel['id'] => useMessageField(item =
 
 export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(item => item.replies);
 
+const autoTranslateLanguageFor = (
+	item: TAnyMessageModel,
+	username: string | undefined,
+	autoTranslateRoom: boolean | undefined,
+	autoTranslateLanguage: string | undefined
+): string | undefined =>
+	autoTranslateRoom && autoTranslateLanguage && item.autoTranslate && item.u?.username !== username
+		? autoTranslateLanguage
+		: undefined;
+
 export const useTranslateLanguage = (): string | undefined => {
 	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
 	const user = useMessageUser();
-	return useMessageStore(s => {
-		const otherUserMessage = s.item.u?.username !== user?.username;
-		const canTranslate = autoTranslateRoom && autoTranslateLanguage && s.item.autoTranslate && otherUserMessage;
-		return canTranslate ? autoTranslateLanguage : undefined;
-	});
+	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage));
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
@@ -308,9 +314,9 @@ export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTran
 		useShallow(s => {
 			let messageText = s.item.msg;
 			let isTranslated = false;
-			const otherUserMessage = s.item.u?.username !== user?.username;
-			if (autoTranslateRoom && s.item.autoTranslate && autoTranslateLanguage && otherUserMessage) {
-				const translated = getMessageTranslation(s.item, autoTranslateLanguage);
+			const language = autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage);
+			if (language) {
+				const translated = getMessageTranslation(s.item, language);
 				isTranslated = !!translated;
 				messageText = translated || messageText;
 			}

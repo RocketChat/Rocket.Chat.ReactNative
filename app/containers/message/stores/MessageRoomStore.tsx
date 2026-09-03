@@ -1,44 +1,37 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type IAttachment, type IRoomInfoParam, type TAnyMessageModel } from '../../../definitions';
+import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '../../../definitions';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { useSetting } from '../../../lib/hooks/useSetting';
+import { getUserSelector } from '../../../selectors/login';
 
-export type MessageRoomState = {
-	// stable handlers
-	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
-	showAttachment?: (file: IAttachment) => void;
-	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	handleEnterCall?: () => void;
-	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
-	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
+type LiveCallbacks = {
 	jumpToMessage?: (link: string) => void;
 	closeEmojiAndAction?: (action?: (params?: unknown) => void, params?: unknown) => void;
-	// row action handlers
-	onReactionPress?: (emoji: string, id: string) => void;
-	onReactionLongPress?: (item: TAnyMessageModel) => void;
 	reactionInit?: (messageId: string) => void;
-	onDiscussionPress?: (drid: TAnyMessageModel['drid']) => void;
-	onThreadPress?: (item: TAnyMessageModel) => void;
-	replyBroadcast?: (item: TAnyMessageModel) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
-	onAnswerButtonPress?: (message: string, tshow?: boolean) => void;
-	onEncryptedPress?: () => void;
-	archived?: boolean;
-	isReadReceiptEnabled?: boolean;
-	// room constants
+};
+
+export type MessageRoomState = LiveCallbacks & {
+	handlers?: Partial<IUseRoomMessageHandlersResult>;
 	rid?: string;
-	user?: { id?: string; username?: string; token?: string };
-	baseUrl?: string;
-	broadcast?: boolean;
 	isThreadRoom?: boolean;
+	tmid?: string;
+	archived?: boolean;
+	broadcast?: boolean;
+	isReadReceiptEnabled?: boolean;
 	Message_GroupingPeriod?: number;
 	timeFormat?: string;
-	// reactive tail (provider keeps current)
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
 };
+
+type MessageRoomSnapshot = { [K in keyof Required<MessageRoomState>]: MessageRoomState[K] };
+
+type LiveCallbacksSnapshot = { [K in keyof Required<LiveCallbacks>]: LiveCallbacks[K] };
 
 export const createMessageRoomStore = (initial: MessageRoomState) => createStore<MessageRoomState>(() => ({ ...initial }));
 
@@ -54,74 +47,60 @@ const useMessageRoomStore = <T,>(selector: (state: MessageRoomState) => T): T =>
 	return useStore(store, selector);
 };
 
-// Handlers and room constants captured once at mount by MessageRoomStoreProvider below (everything
-// outside the reactive-tail resync effect). Callers MUST pass referentially stable values for these.
-const FROZEN_KEYS = [
-	'navToRoomInfo',
-	'showAttachment',
-	'blockAction',
-	'handleEnterCall',
-	'fetchThreadName',
-	'toggleFollowThread',
-	'jumpToMessage',
-	'closeEmojiAndAction',
-	'onReactionPress',
-	'onReactionLongPress',
-	'reactionInit',
-	'onDiscussionPress',
-	'onThreadPress',
-	'replyBroadcast',
-	'errorActionsShow',
-	'onAnswerButtonPress',
-	'onEncryptedPress',
-	'rid',
-	'user',
-	'baseUrl',
-	'isThreadRoom'
-] as const satisfies readonly (keyof MessageRoomState)[];
+const useLiveCallbacks = (callbacks: LiveCallbacks): LiveCallbacksSnapshot => {
+	const latest = useLiveRef(callbacks);
+	const [wrappers] = useState<Required<LiveCallbacks>>(() => ({
+		jumpToMessage: (...args) => latest.current.jumpToMessage?.(...args),
+		closeEmojiAndAction: (...args) => latest.current.closeEmojiAndAction?.(...args),
+		reactionInit: (...args) => latest.current.reactionInit?.(...args),
+		errorActionsShow: (...args) => latest.current.errorActionsShow?.(...args)
+	}));
 
-const useFrozenHandlersGuardProd = (_state: MessageRoomState): void => {};
+	const hasJumpToMessage = !!callbacks.jumpToMessage;
+	const hasCloseEmojiAndAction = !!callbacks.closeEmojiAndAction;
+	const hasReactionInit = !!callbacks.reactionInit;
+	const hasErrorActionsShow = !!callbacks.errorActionsShow;
 
-// Warns once (after mount) if a frozen handler/constant's identity changes, since the provider
-// only captures the initial value and never re-syncs it (see FROZEN_KEYS above).
-const useFrozenHandlersGuardDev = (state: MessageRoomState): void => {
-	const initialRef = useRef(state);
-	const warnedRef = useRef(false);
-	useEffect(() => {
-		if (warnedRef.current) return;
-		const changed = FROZEN_KEYS.filter(key => !Object.is(initialRef.current[key], state[key]));
-		if (changed.length > 0) {
-			warnedRef.current = true;
-			console.warn(
-				`[MessageRoomStore] handler/constant identity changed after mount for: ${changed.join(', ')}. ` +
-					'MessageRoomProvider captures these once; pass referentially stable values.'
-			);
-		}
-	});
+	return useMemo(
+		() => ({
+			jumpToMessage: hasJumpToMessage ? wrappers.jumpToMessage : undefined,
+			closeEmojiAndAction: hasCloseEmojiAndAction ? wrappers.closeEmojiAndAction : undefined,
+			reactionInit: hasReactionInit ? wrappers.reactionInit : undefined,
+			errorActionsShow: hasErrorActionsShow ? wrappers.errorActionsShow : undefined
+		}),
+		[wrappers, hasJumpToMessage, hasCloseEmojiAndAction, hasReactionInit, hasErrorActionsShow]
+	);
 };
 
-const useFrozenHandlersGuard: (state: MessageRoomState) => void = __DEV__
-	? useFrozenHandlersGuardDev
-	: useFrozenHandlersGuardProd;
+export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
+	const timeFormatSetting = useSetting('Message_TimeFormat') as string;
+	const timeFormat = state.timeFormat ?? timeFormatSetting;
+	const callbacks = useLiveCallbacks(state);
+	const [store] = useState(() => createMessageRoomStore({ ...state, ...callbacks, timeFormat }));
 
-const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	const [store] = useState(() => createMessageRoomStore(state));
-	useFrozenHandlersGuard(state);
-
-	// These fields can change mid-session (e.g. an open room gets archived), unlike the
-	// constants/handlers captured once above. The dep array keeps store writes on-change only.
 	useEffect(() => {
-		store.setState({
-			timeFormat: state.timeFormat,
+		const snapshot: MessageRoomSnapshot = {
+			...callbacks,
+			handlers: state.handlers,
+			rid: state.rid,
+			isThreadRoom: state.isThreadRoom,
+			tmid: state.tmid,
+			timeFormat,
 			autoTranslateRoom: state.autoTranslateRoom,
 			autoTranslateLanguage: state.autoTranslateLanguage,
 			archived: state.archived,
 			broadcast: state.broadcast,
 			isReadReceiptEnabled: state.isReadReceiptEnabled,
 			Message_GroupingPeriod: state.Message_GroupingPeriod
-		});
+		};
+		store.setState(snapshot);
 	}, [
-		state.timeFormat,
+		callbacks,
+		state.handlers,
+		state.rid,
+		state.isThreadRoom,
+		state.tmid,
+		timeFormat,
 		state.autoTranslateRoom,
 		state.autoTranslateLanguage,
 		state.archived,
@@ -134,51 +113,44 @@ const MessageRoomStoreProvider = ({ children, ...state }: { children: ReactNode 
 	return <MessageRoomStoreContext.Provider value={store}>{children}</MessageRoomStoreContext.Provider>;
 };
 
-const MessageRoomProviderWithSetting = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	const Message_TimeFormat = useSetting('Message_TimeFormat') as string;
-
-	return (
-		<MessageRoomStoreProvider {...state} timeFormat={Message_TimeFormat}>
-			{children}
-		</MessageRoomStoreProvider>
-	);
-};
-
-export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
-	return state.timeFormat != null ? (
-		<MessageRoomStoreProvider {...state}>{children}</MessageRoomStoreProvider>
-	) : (
-		<MessageRoomProviderWithSetting {...state}>{children}</MessageRoomProviderWithSetting>
-	);
-};
-
-export const useNavToRoomInfo = (): ((navParam: IRoomInfoParam) => void) | undefined => useMessageRoomStore(s => s.navToRoomInfo);
-export const useShowAttachment = (): ((file: IAttachment) => void) | undefined => useMessageRoomStore(s => s.showAttachment);
-export const useBlockAction = (): MessageRoomState['blockAction'] => useMessageRoomStore(s => s.blockAction);
-export const useHandleEnterCall = (): (() => void) | undefined => useMessageRoomStore(s => s.handleEnterCall);
-export const useFetchThreadName = (): MessageRoomState['fetchThreadName'] => useMessageRoomStore(s => s.fetchThreadName);
-export const useToggleFollowThread = (): MessageRoomState['toggleFollowThread'] => useMessageRoomStore(s => s.toggleFollowThread);
 export const useJumpToMessage = (): ((link: string) => void) | undefined => useMessageRoomStore(s => s.jumpToMessage);
 export const useCloseEmojiAndAction = (): MessageRoomState['closeEmojiAndAction'] =>
 	useMessageRoomStore(s => s.closeEmojiAndAction);
 
-export const useOnReactionPress = (): MessageRoomState['onReactionPress'] => useMessageRoomStore(s => s.onReactionPress);
-export const useOnReactionLongPress = (): MessageRoomState['onReactionLongPress'] =>
-	useMessageRoomStore(s => s.onReactionLongPress);
 export const useReactionInit = (): MessageRoomState['reactionInit'] => useMessageRoomStore(s => s.reactionInit);
-export const useOnDiscussionPress = (): MessageRoomState['onDiscussionPress'] => useMessageRoomStore(s => s.onDiscussionPress);
-export const useOnThreadPress = (): MessageRoomState['onThreadPress'] => useMessageRoomStore(s => s.onThreadPress);
-export const useReplyBroadcast = (): MessageRoomState['replyBroadcast'] => useMessageRoomStore(s => s.replyBroadcast);
 export const useErrorActionsShow = (): MessageRoomState['errorActionsShow'] => useMessageRoomStore(s => s.errorActionsShow);
-export const useOnAnswerButtonPress = (): MessageRoomState['onAnswerButtonPress'] =>
-	useMessageRoomStore(s => s.onAnswerButtonPress);
-export const useOnEncryptedPress = (): MessageRoomState['onEncryptedPress'] => useMessageRoomStore(s => s.onEncryptedPress);
+export const useNavToRoomInfo = (): IUseRoomMessageHandlersResult['navToRoomInfo'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.navToRoomInfo);
+export const useShowAttachment = (): IUseRoomMessageHandlersResult['showAttachment'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.showAttachment);
+export const useBlockAction = (): IUseRoomMessageHandlersResult['blockAction'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.blockAction);
+export const useHandleEnterCall = (): IUseRoomMessageHandlersResult['handleEnterCall'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.handleEnterCall);
+export const useOnDiscussionPress = (): IUseRoomMessageHandlersResult['onDiscussionPress'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.onDiscussionPress);
+export const useOnThreadPress = (): IUseRoomMessageHandlersResult['onThreadPress'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.onThreadPress);
+export const useOnEncryptedPress = (): IUseRoomMessageHandlersResult['onEncryptedPress'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.onEncryptedPress);
+export const useOnReactionPress = (): IUseRoomMessageHandlersResult['onReactionPress'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.onReactionPress);
+export const useOnReactionLongPress = (): IUseRoomMessageHandlersResult['onReactionLongPress'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.onReactionLongPress);
+export const useReplyBroadcast = (): IUseRoomMessageHandlersResult['replyBroadcast'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.replyBroadcast);
+export const useFetchThreadName = (): IUseRoomMessageHandlersResult['fetchThreadName'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.fetchThreadName);
+export const useToggleFollowThread = (): IUseRoomMessageHandlersResult['toggleFollowThread'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.toggleFollowThread);
+export const useOnAnswerButtonPress = (): IUseRoomMessageHandlersResult['onAnswerButtonPress'] | undefined =>
+	useMessageRoomStore(s => s.handlers?.onAnswerButtonPress);
 export const useIsArchived = (): boolean | undefined => useMessageRoomStore(s => s.archived);
 export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
-export const useMessageUser = (): MessageRoomState['user'] => useMessageRoomStore(s => s.user);
-export const useBaseUrl = (): string | undefined => useMessageRoomStore(s => s.baseUrl);
+export const useMessageUser = (): IUser => useAppSelector(getUserSelector);
+export const useBaseUrl = (): string => useAppSelector(state => state.server.server);
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
 export const useTimeFormat = (): string | undefined => useMessageRoomStore(s => s.timeFormat);
 export const useIsThreadRoom = (): boolean | undefined => useMessageRoomStore(s => s.isThreadRoom);

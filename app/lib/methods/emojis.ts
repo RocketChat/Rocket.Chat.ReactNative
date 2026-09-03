@@ -10,7 +10,7 @@ const FREQUENTLY_USED_TABLE = 'frequently_used_emojis';
 
 // Looked up by content, never used as the record id: emoji content / custom names can be
 // non-ASCII and corrupt across the native SQLite bridge when used as WatermelonDB ids.
-const getEmojiContent = (emoji: IEmoji) => (typeof emoji === 'string' ? emoji : emoji.name);
+export const getEmojiContent = (emoji: IEmoji) => (typeof emoji === 'string' ? emoji : emoji.name);
 
 export const addFrequentlyUsed = async (emoji: IEmoji) => {
 	const db = database.active;

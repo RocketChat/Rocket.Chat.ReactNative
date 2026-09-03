@@ -13,10 +13,10 @@ const Thread = () => {
 	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
 	const threadBadgeColor = useThreadBadgeColor();
+	const onThreadPress = useOnThreadPress();
 	const toggleFollowThread = useToggleFollowThread();
 	const user = useMessageUser();
 	const replies = useReplies();
-	const onThreadPress = useOnThreadPress();
 	const { tcount, tlm, id } = useThreadData();
 	const { messageText } = useMessageText();
 

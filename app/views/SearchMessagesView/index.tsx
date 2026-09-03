@@ -14,6 +14,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
 import { MessageRoomProvider } from '../../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../../containers/message/stores/A11yGate';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import log from '../../lib/methods/helpers/log';
@@ -26,7 +27,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import styles from './styles';
 import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
 import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
@@ -37,8 +37,7 @@ import {
 	type IUrl,
 	type IAttachment,
 	type IRoomInfoParam,
-	SubscriptionType,
-	type TSubscriptionModel
+	SubscriptionType
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -63,7 +62,6 @@ interface INavigationOption {
 
 interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
-	baseUrl: string;
 	serverVersion: string;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
@@ -77,8 +75,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 	private t: SubscriptionType;
 
 	private encrypted: boolean | undefined;
-
-	private room?: IRoomInfoResult;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: NativeStackNavigationOptions = {
@@ -102,10 +98,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		this.rid = props.route.params.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
-	}
-
-	async componentDidMount() {
-		this.room = (await getRoomInfo(this.rid)) ?? undefined;
 	}
 
 	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: ISearchMessagesViewState) {
@@ -210,20 +202,20 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
+	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
+
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const { isMasterDetail } = this.props;
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
 			t: SubscriptionType;
-			room: TSubscriptionModel | undefined;
 			tmid?: string;
 			name?: string;
 		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
-			t: this.t,
-			room: this.room as TSubscriptionModel
+			t: this.t
 		};
 		if ('tmid' in item && item.tmid) {
 			Navigation.popToRoom(isMasterDetail);
@@ -251,8 +243,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			Navigation.setParams({
 				rid: this.rid,
 				jumpToMessageId: messageId,
-				t: this.t,
-				room: this.room as TSubscriptionModel
+				t: this.t
 			});
 		} catch (e) {
 			log(e);
@@ -290,35 +281,34 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme, user, baseUrl, insets } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
 		}
 
 		return (
-			<MessageRoomProvider
-				navToRoomInfo={this.navToRoomInfo}
-				showAttachment={this.showAttachment}
-				jumpToMessage={this.jumpToMessageByUrl}
-				user={user}
-				baseUrl={baseUrl}
-				rid={this.rid}
-				isThreadRoom
-				timeFormat={'MMM Do YYYY, h:mm:ss a'}>
-				<FlatList
-					data={messages}
-					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-					contentContainerStyle={{ paddingBottom: insets.bottom }}
-					keyExtractor={item => item._id}
-					onEndReached={this.onEndReached}
-					ListFooterComponent={loading ? <ActivityIndicator /> : null}
-					onEndReachedThreshold={0.5}
-					removeClippedSubviews={isIOS}
-					{...scrollPersistTaps}
-				/>
-			</MessageRoomProvider>
+			<A11yGateProvider>
+				<MessageRoomProvider
+					handlers={this.messageHandlers}
+					jumpToMessage={this.jumpToMessageByUrl}
+					rid={this.rid}
+					isThreadRoom
+					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+					<FlatList
+						data={messages}
+						renderItem={this.renderItem}
+						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+						contentContainerStyle={{ paddingBottom: insets.bottom }}
+						keyExtractor={item => item._id}
+						onEndReached={this.onEndReached}
+						ListFooterComponent={loading ? <ActivityIndicator /> : null}
+						onEndReachedThreshold={0.5}
+						removeClippedSubviews={isIOS}
+						{...scrollPersistTaps}
+					/>
+				</MessageRoomProvider>
+			</A11yGateProvider>
 		);
 	};
 
@@ -345,7 +335,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
-	baseUrl: state.server.server,
 	user: getUserSelector(state)
 });
 

@@ -8,9 +8,7 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import { mockedStore } from '../../../../reducers/mockedStore';
 
 const baseContextValue: Partial<MessageRoomState> = {
-	toggleFollowThread: jest.fn(),
-	user: { id: 'user1', username: 'user1' },
-	onThreadPress: jest.fn()
+	handlers: { toggleFollowThread: jest.fn(), onThreadPress: jest.fn() }
 };
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>

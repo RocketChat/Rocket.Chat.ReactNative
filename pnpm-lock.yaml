@@ -502,6 +502,9 @@ importers:
       react-native-dotenv:
         specifier: 3.4.8
         version: 3.4.8(@babel/runtime@7.25.9)
+      reassure:
+        specifier: ^1.5.1
+        version: 1.6.0(react@19.1.0)
       sniffler:
         specifier: 0.4.0
         version: 0.4.0
@@ -1294,6 +1297,24 @@ packages:
     resolution: {integrity: sha512-DCCXhiY1CdCy3Eo6SS/qHnBuyrXY0jyefsJBpXemwI5eXEAR0KrhnhxbGU7Ga/8ysssD1A22J5488BYH1t4pgQ==}
     hasBin: true
 
+  '@callstack/reassure-cli@1.6.0':
+    resolution: {integrity: sha512-GO32KZ295S4s2IBrfr4obQO7S4g/cAHtaFXCBHwfV7U2gyjGsFRM/4h1c4haxBbeky852TnEsZCPkudhs9F+zQ==}
+    hasBin: true
+
+  '@callstack/reassure-compare@1.6.0':
+    resolution: {integrity: sha512-wseMpUagjrd2T9uJ8gR7dACe0lvY7MibEZM4HzQ8Q3Tw7dLbQp25hnlFddv4YupCpE8uBiYknr/XbAmp49b5rw==}
+
+  '@callstack/reassure-danger@1.6.0':
+    resolution: {integrity: sha512-m1/OXw6M12jtCmtokkPDE5qWm6tzzgWjH7Boa0y8YE8poirh7rMzum+/bF9HLfVPkvaY+MGdxQYjQXvtdIMUXQ==}
+
+  '@callstack/reassure-logger@1.6.0':
+    resolution: {integrity: sha512-cDcCkDUZB6Q4p37KViSKAeU5fDoAUbJN2OpcPm7Oddv9Iqh7FTs/kOphW9PrZoKHeaM7EJ9f+AQgW15/FFsSLg==}
+
+  '@callstack/reassure-measure@1.6.0':
+    resolution: {integrity: sha512-05gIhKYk8/7Ka02hjiKYmE+9i0/Rz3NZGTnpjnK9IKRJ6819h12XGmNBsPkzZGqFUei3Vz8NSxoq4SA8kuz7SA==}
+    peerDependencies:
+      react: '>=18.0.0'
+
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
     engines: {node: '>=0.8.0'}
@@ -1964,6 +1985,10 @@ packages:
     resolution: {integrity: sha512-DmdYgtezMkh3cpU8/1uyXakv3tJRcmcXxBOcO0tbaozPwpmh4YMsnWrQm9ZmZMfa5ocbxzbFk6O4bDPEc/iAnA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
+  '@jest/schemas@30.4.1':
+    resolution: {integrity: sha512-i6b4qw5qnP8c5FEeBJg/uZQ4ddrkN6Ca8qISJh0pr7a5hfn3h3v5x60BEbOC7OYAGZNMs1LfFLwnW2CuK8F57Q==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+
   '@jest/source-map@29.6.3':
     resolution: {integrity: sha512-MHjT95QuipcPrpLM+8JMSzFx6eHp5Bm+4XeFDJlwsvVBjmKNiIAvasGK2fxz2WbGRlnvqehFbh07MMa7n3YJnw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -1999,6 +2024,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@kwsites/file-exists@1.1.1':
+    resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
+
+  '@kwsites/promise-deferred@1.1.1':
+    resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
   '@lodev09/react-native-true-sheet@3.7.3':
     resolution: {integrity: sha512-vX/3F6lD3qH0GZfSVXL+JD/bjFPZtJa35Vyr9KCv94szOHXsjoEyCyi/52r5jw6jmq/KRALCqwidt9A15qq9gw==}
@@ -2656,6 +2687,12 @@ packages:
 
   '@sideway/pinpoint@2.0.0':
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
+
+  '@simple-git/args-pathspec@1.0.3':
+    resolution: {integrity: sha512-ngJMaHlsWDTfjyq9F3VIQ8b7NXbBLq5j9i5bJ6XLYtD6qlDXT7fdKY2KscWWUF8t18xx052Y/PUO1K1TRc9yKA==}
+
+  '@simple-git/argv-parser@1.1.1':
+    resolution: {integrity: sha512-Q9lBcfQ+VQCpQqGJFHe5yooOS5hGdLFFbJ5R+R5aDsnkPCahtn1hSkMcORX65J2Z5lxSkD0lQorMsncuBQxYUw==}
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -3862,6 +3899,9 @@ packages:
   common-path-prefix@3.0.0:
     resolution: {integrity: sha512-QE33hToZseCH3jS0qN96O/bSh3kaw/h+Tq7ngyY9eWDUnTlTNUyqfqvCXioLe5Na5jFsL78ra/wuBU4iuEgd4w==}
 
+  complex.js@2.4.3:
+    resolution: {integrity: sha512-UrQVSUur14tNX6tiP4y8T4w4FeJAX3bi2cIv0pu/DTLFNxoq7z2Yh83Vfzztj6Px3X/lubqQ9IrPp7Bpn6p4MQ==}
+
   compressible@2.0.18:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
     engines: {node: '>= 0.6'}
@@ -4264,6 +4304,9 @@ packages:
 
   escape-html@1.0.3:
     resolution: {integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==}
+
+  escape-latex@1.2.0:
+    resolution: {integrity: sha512-nV5aVWW1K0wEiUIEdZ4erkGGH8mDxGyxSeqPzRNtWP7ataw+/olFObw7hujFWlVjNsaDFw5VZ5NzVSIqRgfTiw==}
 
   escape-string-regexp@1.0.5:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
@@ -4724,6 +4767,9 @@ packages:
   form-data@4.0.5:
     resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
+
+  fraction.js@5.3.4:
+    resolution: {integrity: sha512-1X1NTtiJphryn/uLQz3whtY6jK3fTqoE3ohKs0tT+Ujr1W59oopxmoEh7Lu5p6vBaPbgoM0bzveAW4Qi5RyWDQ==}
 
   freeport-async@2.0.0:
     resolution: {integrity: sha512-K7od3Uw45AJg00XUmy15+Hae2hOcgKcmN3/EF6Y7i01O0gaqiRx8sUSpsb9+BRNL8RPBrhzPsVfy8q9ADlJuWQ==}
@@ -5236,6 +5282,9 @@ packages:
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
+  javascript-natural-sort@0.7.1:
+    resolution: {integrity: sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==}
+
   jest-changed-files@29.7.0:
     resolution: {integrity: sha512-fEArFiwf1BpQ+4bXSprcDc3/x4HSzL4al2tozwVpDFpsxALjLYdyiIK4e5Vz66GQJIbXJ82+35PtysofptNX2w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5696,6 +5745,11 @@ packages:
   mathjax-full@3.2.2:
     resolution: {integrity: sha512-+LfG9Fik+OuI8SLwsiR02IVdjcnRCy5MufYLi0C3TdMT56L/pjB0alMVGgoWJF8pN9Rc7FESycZB9BMNWIid5w==}
     deprecated: Version 4 replaces this package with the scoped package @mathjax/src
+
+  mathjs@15.2.0:
+    resolution: {integrity: sha512-UAQzSVob9rNLdGpqcFMYmSu9dkuLYy7Lr2hBEQS5SHQdknA9VppJz3cy2KkpMzTODunad6V6cNv+5kOLsePLow==}
+    engines: {node: '>= 18'}
+    hasBin: true
 
   mdn-data@2.0.14:
     resolution: {integrity: sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==}
@@ -6252,6 +6306,10 @@ packages:
     resolution: {integrity: sha512-9uBdv/B4EefsuAL+pWqueZyZS2Ba+LxfFeQ9DN14HU4bN8bhaxKdkpjpB6fs9+pSjIBu+FXQHImEg8j/Lw0+vA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
+  pretty-format@30.4.1:
+    resolution: {integrity: sha512-K6KiKMHTL4jjX4u3Kir2EW07nRfcqVTXIImx50wbjHQTcZPgg+gjVeNTIT3l3L1Rd4UefxfogquC9J37SoFyyw==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+
   proc-log@4.2.0:
     resolution: {integrity: sha512-g8+OnU/L2v+wyiVK+D5fA34J7EH8jZ8DDlvwhRCMxmMj7UCBvxiO1mGeN+36JXIKF4zevU4kRBd8lVgG9vLelA==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -6367,6 +6425,9 @@ packages:
 
   react-is@19.1.0:
     resolution: {integrity: sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==}
+
+  react-is@19.2.8:
+    resolution: {integrity: sha512-s5un28nYxKJw5gvUHyW5PCC28CvBqLu9r3cWgzHT4Vo/5fqqkFcdRYsGcKf50WMPpjjFZS5d76fn3YCo2njKwQ==}
 
   react-native-a11y-order@0.4.0:
     resolution: {integrity: sha512-qtx+cvHWcCKu2UukjuKLGAwMqTFWQG3LxblR7E2QBOjLlt204kk33vZHotGW+U7jvE+aikL7t/DcNNCwj05Kiw==}
@@ -6632,6 +6693,11 @@ packages:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
 
+  react-test-config@1.0.0:
+    resolution: {integrity: sha512-uoYlGns8YSB/FS0aAzUVg/wgS4z882rygig4gcwf0hEzAWEM6O2zN2r3gYLyYwm8MMRuqwLUOBWWq60K5/pBPQ==}
+    peerDependencies:
+      react: '*'
+
   react-test-renderer@19.1.0:
     resolution: {integrity: sha512-jXkSl3CpvPYEF+p/eGDLB4sPoDX8pKkYvRl9+rR8HxLY0X04vW7hCm1/0zHoUSjPZ3bDa+wXWNTDVIw/R8aDVw==}
     peerDependencies:
@@ -6661,6 +6727,10 @@ packages:
       react-native: '*'
       react-native-gesture-handler: '>=2.9.0'
       react-native-reanimated: '>=3.0.0'
+
+  reassure@1.6.0:
+    resolution: {integrity: sha512-DjfhKCqIFcmb1zAkRFrM4eDtMG63kbs6/4tjP6QOqf+mnREfQIoUX4xM8D5sF6GfkjNnehRM5pk8Bi/vaW3eyA==}
+    hasBin: true
 
   recast@0.23.11:
     resolution: {integrity: sha512-YTUo+Flmw4ZXiWfQKGcwwc11KnoRAYgzAE2E7mXKCjSviTKShtxBsN6YUUBB2gtaBzKzeKunxhUwNHQuRryhWA==}
@@ -6836,6 +6906,9 @@ packages:
     resolution: {integrity: sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==}
     engines: {node: '>= 10.13.0'}
 
+  seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+
   semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
@@ -6943,6 +7016,9 @@ packages:
 
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
+
+  simple-git@3.36.0:
+    resolution: {integrity: sha512-cGQjLjK8bxJw4QuYT7gxHw3/IouVESbhahSsHrX97MzCL1gu2u7oy38W6L2ZIGECEfIBG4BabsWDPjBxJENv9Q==}
 
   simple-plist@1.3.1:
     resolution: {integrity: sha512-iMSw5i0XseMnrhtIzRb7XpQEXepa9xhWxGUojHBL43SIpQuDQkh3Wpy67ZbDzZVr6EKxvwVChnVpdl8hEVLDiw==}
@@ -7273,6 +7349,9 @@ packages:
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
+  tiny-emitter@2.1.0:
+    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==}
+
   tiny-events@1.0.1:
     resolution: {integrity: sha512-QuhRLBsUWwrj+7mVvffHWmtHmMjt4GihlCN8/WucyHBqDINW9n9K5xsdfK3MdIeJIHRlmI4zI6izU1jbD3kn6Q==}
 
@@ -7343,6 +7422,14 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
+  ts-markdown-builder@0.6.0:
+    resolution: {integrity: sha512-O0ZmHM5fLRgO+FkXol2yCPV5oqbNA3InmuuuXdbwT+j249l+30Ty6gL4B540Ru/D2JEY91qwS+L3irUfDivfjQ==}
+    engines: {node: '>= 18.0.0'}
+
+  ts-regex-builder@1.8.2:
+    resolution: {integrity: sha512-Y8HovHFheDKm/jgLIWSO8o81xA/I9O5AGc3/vNG1sVSskatOifr3SQzAsatBXGLjL3nYhQif1MpwQRS5GF8ADg==}
+    engines: {node: '>= 18.0.0'}
+
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
@@ -7403,6 +7490,10 @@ packages:
   typed-array-length@1.0.7:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
+
+  typed-function@4.2.2:
+    resolution: {integrity: sha512-VwaXim9Gp1bngi/q3do8hgttYn2uC3MoT/gfuMWylnj1IeZBUAyPddHZlo1K05BDoj8DYPpMdiHqH1dDYdJf2A==}
+    engines: {node: '>= 18'}
 
   typed-redux-saga@1.5.0:
     resolution: {integrity: sha512-XHKliNtRNUegYAAztbVDb5Q+FMqYNQPaed6Xq2N8kz8AOmiOCVxW3uIj7TEptR1/ms6M9u3HEDfJr4qqz/PYrw==}
@@ -7814,6 +7905,9 @@ packages:
   yup@0.32.11:
     resolution: {integrity: sha512-Z2Fe1bn+eLstG8DRR6FTavGD+MeAwyfmouhHsIUgaADz8jvFKbO/fXc2trJKZg+5EBjh4gGm3iU/t3onKlXHIg==}
     engines: {node: '>=10'}
+
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
   zustand@5.0.12:
     resolution: {integrity: sha512-i77ae3aZq4dhMlRhJVCYgMLKuSiZAaUPAct2AksxQ+gOtimhGMdXljRT21P5BNpeT4kXlLIckvkPM029OljD7g==}
@@ -8793,6 +8887,38 @@ snapshots:
       glob: 7.2.3
       read-pkg-up: 7.0.1
 
+  '@callstack/reassure-cli@1.6.0':
+    dependencies:
+      '@callstack/reassure-compare': 1.6.0
+      '@callstack/reassure-logger': 1.6.0
+      chalk: 4.1.2
+      simple-git: 3.36.0
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - supports-color
+
+  '@callstack/reassure-compare@1.6.0':
+    dependencies:
+      '@callstack/reassure-logger': 1.6.0
+      mathjs: 15.2.0
+      ts-markdown-builder: 0.6.0
+      ts-regex-builder: 1.8.2
+      zod: 4.4.3
+
+  '@callstack/reassure-danger@1.6.0': {}
+
+  '@callstack/reassure-logger@1.6.0':
+    dependencies:
+      chalk: 4.1.2
+
+  '@callstack/reassure-measure@1.6.0(react@19.1.0)':
+    dependencies:
+      '@callstack/reassure-logger': 1.6.0
+      mathjs: 15.2.0
+      pretty-format: 30.4.1
+      react: 19.1.0
+      react-test-config: 1.0.0(react@19.1.0)
+
   '@egjs/hammerjs@2.0.17':
     dependencies:
       '@types/hammerjs': 2.0.46
@@ -9770,6 +9896,10 @@ snapshots:
     dependencies:
       '@sinclair/typebox': 0.34.46
 
+  '@jest/schemas@30.4.1':
+    dependencies:
+      '@sinclair/typebox': 0.34.46
+
   '@jest/source-map@29.6.3':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
@@ -9837,6 +9967,14 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@kwsites/file-exists@1.1.1':
+    dependencies:
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
+
+  '@kwsites/promise-deferred@1.1.1': {}
 
   '@lodev09/react-native-true-sheet@3.7.3(261280a80c394a7dcf8d9609d62c37ca)':
     dependencies:
@@ -10546,6 +10684,12 @@ snapshots:
   '@sideway/formula@3.0.1': {}
 
   '@sideway/pinpoint@2.0.0': {}
+
+  '@simple-git/args-pathspec@1.0.3': {}
+
+  '@simple-git/argv-parser@1.1.1':
+    dependencies:
+      '@simple-git/args-pathspec': 1.0.3
 
   '@sinclair/typebox@0.27.8': {}
 
@@ -11793,6 +11937,8 @@ snapshots:
 
   common-path-prefix@3.0.0: {}
 
+  complex.js@2.4.3: {}
+
   compressible@2.0.18:
     dependencies:
       mime-db: 1.54.0
@@ -12245,6 +12391,8 @@ snapshots:
   escalade@3.2.0: {}
 
   escape-html@1.0.3: {}
+
+  escape-latex@1.2.0: {}
 
   escape-string-regexp@1.0.5: {}
 
@@ -12793,6 +12941,8 @@ snapshots:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
+
+  fraction.js@5.3.4: {}
 
   freeport-async@2.0.0: {}
 
@@ -13356,6 +13506,8 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+
+  javascript-natural-sort@0.7.1: {}
 
   jest-changed-files@29.7.0:
     dependencies:
@@ -14016,6 +14168,18 @@ snapshots:
       mhchemparser: 4.2.1
       mj-context-menu: 0.6.1
       speech-rule-engine: 4.1.2
+
+  mathjs@15.2.0:
+    dependencies:
+      '@babel/runtime': 7.28.4
+      complex.js: 2.4.3
+      decimal.js: 10.6.0
+      escape-latex: 1.2.0
+      fraction.js: 5.3.4
+      javascript-natural-sort: 0.7.1
+      seedrandom: 3.0.5
+      tiny-emitter: 2.1.0
+      typed-function: 4.2.2
 
   mdn-data@2.0.14: {}
 
@@ -14689,6 +14853,13 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
+  pretty-format@30.4.1:
+    dependencies:
+      '@jest/schemas': 30.4.1
+      ansi-styles: 5.2.0
+      react-is-18: react-is@18.3.1
+      react-is-19: react-is@19.2.8
+
   proc-log@4.2.0: {}
 
   progress@2.0.3: {}
@@ -14814,6 +14985,8 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.1.0: {}
+
+  react-is@19.2.8: {}
 
   react-native-a11y-order@0.4.0(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -15134,6 +15307,10 @@ snapshots:
 
   react-refresh@0.14.2: {}
 
+  react-test-config@1.0.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+
   react-test-renderer@19.1.0(react@19.1.0):
     dependencies:
       react: 19.1.0
@@ -15167,6 +15344,16 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0)
       react-native-gesture-handler: 2.28.0(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-reanimated: 4.1.3(@babel/core@7.25.9)(react-native-worklets@0.6.1(@babel/core@7.25.9)(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.25.9)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/metro-config@0.81.5(@babel/core@7.25.9))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+
+  reassure@1.6.0(react@19.1.0):
+    dependencies:
+      '@callstack/reassure-cli': 1.6.0
+      '@callstack/reassure-compare': 1.6.0
+      '@callstack/reassure-danger': 1.6.0
+      '@callstack/reassure-measure': 1.6.0(react@19.1.0)
+    transitivePeerDependencies:
+      - react
+      - supports-color
 
   recast@0.23.11:
     dependencies:
@@ -15357,6 +15544,8 @@ snapshots:
       ajv-formats: 2.1.1(ajv@8.18.0)
       ajv-keywords: 5.1.0(ajv@8.18.0)
 
+  seedrandom@3.0.5: {}
+
   semver@5.7.2: {}
 
   semver@6.3.1: {}
@@ -15494,6 +15683,16 @@ snapshots:
       decompress-response: 6.0.0
       once: 1.4.0
       simple-concat: 1.0.1
+
+  simple-git@3.36.0:
+    dependencies:
+      '@kwsites/file-exists': 1.1.1
+      '@kwsites/promise-deferred': 1.1.1
+      '@simple-git/args-pathspec': 1.0.3
+      '@simple-git/argv-parser': 1.1.1
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
 
   simple-plist@1.3.1:
     dependencies:
@@ -15867,6 +16066,8 @@ snapshots:
 
   through@2.3.8: {}
 
+  tiny-emitter@2.1.0: {}
+
   tiny-events@1.0.1: {}
 
   tiny-invariant@1.3.3: {}
@@ -15920,6 +16121,10 @@ snapshots:
   ts-dedent@2.2.0: {}
 
   ts-interface-checker@0.1.13: {}
+
+  ts-markdown-builder@0.6.0: {}
+
+  ts-regex-builder@1.8.2: {}
 
   tsconfig-paths@3.15.0:
     dependencies:
@@ -15994,6 +16199,8 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
     optional: true
+
+  typed-function@4.2.2: {}
 
   typed-redux-saga@1.5.0(redux-saga@1.1.3):
     dependencies:
@@ -16455,6 +16662,8 @@ snapshots:
       nanoclone: 0.2.1
       property-expr: 2.0.6
       toposort: 2.0.2
+
+  zod@4.4.3: {}
 
   zustand@5.0.12(@types/react@19.1.17)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0)):
     optionalDependencies:

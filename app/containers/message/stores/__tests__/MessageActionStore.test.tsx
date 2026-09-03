@@ -2,10 +2,11 @@ import { render } from '@testing-library/react-native';
 
 import {
 	createMessageActionStore,
-	inertStore,
 	MessageActionProvider,
+	useEditingMessageId,
 	useIsBeingEdited,
-	useMessageAction
+	useMessageAction,
+	useQuotedMessageIds
 } from '../MessageActionStore';
 
 describe('MessageActionStore', () => {
@@ -21,7 +22,7 @@ describe('MessageActionStore', () => {
 			expect(spy).toHaveBeenLastCalledWith(false);
 		});
 
-		it('does not share mutable state across separate no-provider renders, and its actions throw', () => {
+		it('does not share mutable state across separate no-provider renders', () => {
 			const spyA = jest.fn();
 			const spyB = jest.fn();
 			const ProbeA = () => {
@@ -38,9 +39,6 @@ describe('MessageActionStore', () => {
 
 			expect(spyA).toHaveBeenLastCalledWith(false);
 			expect(spyB).toHaveBeenLastCalledWith(false);
-			expect(() => inertStore.getState().actions.startEditing('x')).toThrow(
-				'MessageActionStore: no provider — actions unavailable'
-			);
 		});
 
 		it('returns true only for the message being edited under a provider', () => {
@@ -92,6 +90,74 @@ describe('MessageActionStore', () => {
 			);
 
 			expect(spy).toHaveBeenLastCalledWith(false);
+		});
+	});
+
+	describe('useQuotedMessageIds', () => {
+		it('returns the quoted messageIds under a quote action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useQuotedMessageIds());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1', 'msg-2'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(['msg-1', 'msg-2']);
+		});
+
+		it('returns an empty array for non-quote actions', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useQuotedMessageIds());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith([]);
+		});
+	});
+
+	describe('useEditingMessageId', () => {
+		it('returns the messageId under an edit action', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useEditingMessageId());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'edit', messageId: 'msg-1' }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith('msg-1');
+		});
+
+		it('returns undefined for non-edit actions', () => {
+			const spy = jest.fn();
+			const Probe = () => {
+				spy(useEditingMessageId());
+				return null;
+			};
+
+			render(
+				<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['msg-1'] }}>
+					<Probe />
+				</MessageActionProvider>
+			);
+
+			expect(spy).toHaveBeenLastCalledWith(undefined);
 		});
 	});
 

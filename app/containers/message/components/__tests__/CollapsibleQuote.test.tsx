@@ -38,7 +38,6 @@ const initialMockedStoreState = () => {
 initialMockedStoreState();
 
 const contextValue: Partial<MessageRoomState> = {
-	user: { username: 'Marcos' },
 	timeFormat: 'LT'
 };
 

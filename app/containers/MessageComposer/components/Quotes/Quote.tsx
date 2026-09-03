@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import dayjs from '../../../../lib/dayjs';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerTmid, useOnRemoveQuoteMessage } from '../../../../views/RoomView/stores/ComposerStore';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
@@ -11,9 +11,10 @@ import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
 	const [styles, colors] = useStyle();
-	const { tmid, onRemoveQuoteMessage } = useRoomContext();
+	const tmid = useComposerTmid();
 	const message = useMessage(messageId, tmid);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
+	const onRemoveQuoteMessage = useOnRemoveQuoteMessage();
 
 	let username = '';
 	let msg = '';

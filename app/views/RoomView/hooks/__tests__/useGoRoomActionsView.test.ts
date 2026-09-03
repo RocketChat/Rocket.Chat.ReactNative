@@ -1,0 +1,70 @@
+import { renderHook } from '@testing-library/react-native';
+
+import { useGoRoomActionsView } from '../useGoRoomActionsView';
+
+const mockNavigate = jest.fn();
+const mockPush = jest.fn();
+let mockIsMasterDetail = false;
+
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => ({ navigate: mockNavigate, push: mockPush })
+}));
+jest.mock('../../../../lib/hooks/useMasterDetail', () => ({
+	useMasterDetail: () => mockIsMasterDetail
+}));
+jest.mock('../../../../lib/methods/helpers/log', () => ({
+	__esModule: true,
+	events: { ROOM_GO_RA: 'ROOM_GO_RA' },
+	logEvent: jest.fn()
+}));
+
+const mockState = {
+	room: { rid: 'rid-1', t: 'l' } as { rid: string; t: string },
+	member: { _id: 'm1' },
+	joined: true,
+	canForwardGuest: true,
+	canViewCannedResponse: true
+};
+jest.mock('../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
+jest.mock('../useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => true }));
+
+jest.mock('zustand', () => ({
+	useStore: (_store: unknown, selector: (state: typeof mockState) => unknown) => selector(mockState)
+}));
+
+describe('useGoRoomActionsView', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockIsMasterDetail = false;
+		mockState.room = { rid: 'rid-1', t: 'l' };
+	});
+
+	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
+		const { result } = renderHook(() => useGoRoomActionsView({} as any));
+
+		result.current();
+
+		expect(mockPush).toHaveBeenCalledWith('RoomActionsView', {
+			rid: 'rid-1',
+			t: 'l',
+			room: { rid: 'rid-1', t: 'l' },
+			member: { _id: 'm1' },
+			joined: true,
+			omnichannelPermissions: {
+				canForwardGuest: true,
+				canReturnQueue: true,
+				canViewCannedResponse: true,
+				canPlaceLivechatOnHold: true
+			}
+		});
+	});
+
+	it('navigates through ModalStackNavigator on master-detail', () => {
+		mockIsMasterDetail = true;
+		const { result } = renderHook(() => useGoRoomActionsView({} as any));
+
+		result.current();
+
+		expect(mockNavigate).toHaveBeenCalledWith('ModalStackNavigator', expect.objectContaining({ screen: 'RoomActionsView' }));
+	});
+});

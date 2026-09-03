@@ -14,7 +14,7 @@ const canPostReadOnly = async (room: Partial<ISubscription>, username?: string) 
 const isMuted = (room: Partial<ISubscription>, username?: string) =>
 	room && room.muted && room.muted.find && !!room.muted.find(m => m === username);
 
-export const isReadOnly = async (room: Partial<ISubscription>, username?: string): Promise<boolean> => {
+const evaluateReadOnly = (room: Partial<ISubscription>, username: string | undefined, allowPost: boolean): boolean => {
 	if (room.archived) {
 		return true;
 	}
@@ -22,11 +22,30 @@ export const isReadOnly = async (room: Partial<ISubscription>, username?: string
 		return true;
 	}
 	if (room?.ro) {
-		const allowPost = await canPostReadOnly(room, username);
-		if (allowPost) {
-			return false;
-		}
-		return true;
+		return !allowPost;
 	}
 	return false;
+};
+
+export const isReadOnly = async (room: Partial<ISubscription>, username?: string): Promise<boolean> => {
+	if (room.archived || isMuted(room, username)) {
+		return true;
+	}
+	const allowPost = room?.ro ? await canPostReadOnly(room, username) : false;
+	return evaluateReadOnly(room, username, allowPost);
+};
+
+export const isReadOnlySync = (
+	room: Partial<ISubscription>,
+	username: string,
+	postReadOnlyPermission: string[] | undefined,
+	userRoles: string[]
+): boolean => {
+	let allowPost = false;
+	if (room?.ro) {
+		const isUnmuted = !!room?.unmuted?.find(m => m === username);
+		const mergedRoles = [...new Set([...(room.roles || []), ...userRoles])];
+		allowPost = !!postReadOnlyPermission?.some(r => mergedRoles.includes(r)) || isUnmuted;
+	}
+	return evaluateReadOnly(room, username, allowPost);
 };

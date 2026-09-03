@@ -1,13 +1,13 @@
 import { BaseButton } from './Buttons';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useEditCancel } from '../../../views/RoomView/stores/ComposerStore';
+import { useMessageActionKind } from '../../message/stores/MessageActionStore';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
-	const { editCancel } = useRoomContext();
-	const action = useMessageAction();
+	const editCancel = useEditCancel();
+	const actionKind = useMessageActionKind();
 
-	if (action?.kind !== 'edit') {
+	if (actionKind !== 'edit') {
 		return null;
 	}
 	return (
