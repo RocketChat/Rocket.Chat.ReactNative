@@ -25,9 +25,6 @@ const getHideSystemMessages = (room: IRoomViewState['room'], Hide_System_Message
 	return EMPTY_HIDE_SYSTEM_MESSAGES;
 };
 
-// The message tree of a room screen: the per-room message context plus the list that renders it.
-// Everything message rows read about the room comes from the room store and server settings here,
-// so the screen only wires the handlers in.
 export const RoomMessageList = ({
 	tmid,
 	listContainerRef,

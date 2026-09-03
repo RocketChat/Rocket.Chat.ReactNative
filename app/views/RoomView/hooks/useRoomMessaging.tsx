@@ -20,9 +20,6 @@ import { useMessageActions } from './useMessageActions';
 import { useRoomInit } from './useRoomInit';
 import { useRoomNavigation } from './useRoomNavigation';
 
-// Everything a room screen does with messages: the message-action store, the imperative handles
-// (composer, list, action sheets), navigation between messages, and the init run that anchors them.
-// The result is grouped by the component that consumes each slice.
 export function useRoomMessaging({
 	rid,
 	t,
@@ -102,33 +99,25 @@ export function useRoomMessaging({
 		messageActionStore,
 		roomScreen,
 		messageComposerRef,
-		composer: {
-			onRemoveQuoteMessage,
-			editCancel: onEditCancel,
-			editRequest: onEditRequest,
-			onSendMessage: sendMessage,
-			setQuotesAndText,
-			getText
-		},
-		messageList: {
-			listContainerRef,
-			flatListRef,
-			onLongPress: onMessageLongPress,
-			roomActions: { onThreadPress, onReactionPress, sendMessage },
-			jumpToMessage: jumpToMessageByUrl,
-			closeEmojiAndAction: handleCloseEmoji,
-			reactionInit: onReactionInit,
-			errorActionsShow
-		},
-		messageActions: {
-			messageActionsRef,
-			messageErrorActionsRef,
-			editInit: onEditInit,
-			replyInit: onReplyInit,
-			quoteInit: onQuoteInit,
-			reactionInit: onReactionInit,
-			onReactionPress,
-			jumpToMessage: jumpToMessageByUrl
-		}
+		listContainerRef,
+		flatListRef,
+		messageActionsRef,
+		messageErrorActionsRef,
+		roomActions: { onThreadPress, onReactionPress, sendMessage },
+		sendMessage,
+		jumpToMessage: jumpToMessageByUrl,
+		closeEmojiAndAction: handleCloseEmoji,
+		errorActionsShow,
+		onMessageLongPress,
+		onEditInit,
+		onEditCancel,
+		onEditRequest,
+		onQuoteInit,
+		onRemoveQuoteMessage,
+		onReactionInit,
+		onReactionPress,
+		onReplyInit,
+		setQuotesAndText,
+		getText
 	};
 }

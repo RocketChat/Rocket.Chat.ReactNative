@@ -12,7 +12,6 @@ const safeSubscribe = (sub: RoomClass) => {
 	}
 };
 
-// A thread screen shares its parent's subscription, so only the parent screen (no tmid) opens one.
 export function useRoomSubscription(rid: string | undefined, tmid: string | undefined): void {
 	const [sub] = useState(() => (rid && !tmid ? new RoomClass(rid) : undefined));
 

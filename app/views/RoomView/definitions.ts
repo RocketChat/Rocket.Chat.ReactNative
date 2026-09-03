@@ -317,12 +317,26 @@ export interface IUseRoomMessagingResult {
 	messageActionStore: TMessageActionStore;
 	roomScreen: IRoomScreenContextValue;
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
-	composer: Pick<
-		TComposerExternalState,
-		'onRemoveQuoteMessage' | 'editCancel' | 'editRequest' | 'onSendMessage' | 'setQuotesAndText' | 'getText'
-	>;
-	messageList: Omit<IRoomMessageListProps, 'tmid'>;
-	messageActions: Omit<IRoomMessageActionsProps, 'tmid'>;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	flatListRef: TListRef;
+	messageActionsRef: RefObject<IMessageActions | null>;
+	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
+	roomActions: IRoomActions;
+	sendMessage: TComposerExternalState['onSendMessage'];
+	jumpToMessage: IMessageActionsProps['jumpToMessage'];
+	closeEmojiAndAction: IRoomMessageListProps['closeEmojiAndAction'];
+	errorActionsShow: IRoomMessageListProps['errorActionsShow'];
+	onMessageLongPress: IListContainerProps['onLongPress'];
+	onEditInit: IMessageActionsProps['editInit'];
+	onEditCancel: TComposerExternalState['editCancel'];
+	onEditRequest: TComposerExternalState['editRequest'];
+	onQuoteInit: IMessageActionsProps['quoteInit'];
+	onRemoveQuoteMessage: TComposerExternalState['onRemoveQuoteMessage'];
+	onReactionInit: IMessageActionsProps['reactionInit'];
+	onReactionPress: IMessageActionsProps['onReactionPress'];
+	onReplyInit: IMessageActionsProps['replyInit'];
+	setQuotesAndText: TComposerExternalState['setQuotesAndText'];
+	getText: TComposerExternalState['getText'];
 }
 
 export interface IUseSubscriptionUnreadsResult {

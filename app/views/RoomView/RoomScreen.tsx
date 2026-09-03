@@ -30,13 +30,31 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 
-	useRoomSubscription(rid, tmid);
-	useRoomAudioLifecycle(rid, tmid);
-	useRoomRemoved(rid, isMasterDetail);
-	useInAppFeedback();
-	useOmnichannelPermissions({ rid, t, roomStore });
-
-	const { messageActionStore, roomScreen, messageComposerRef, composer, messageList, messageActions } = useRoomMessaging({
+	const {
+		messageActionStore,
+		roomScreen,
+		messageComposerRef,
+		listContainerRef,
+		flatListRef,
+		messageActionsRef,
+		messageErrorActionsRef,
+		roomActions,
+		sendMessage,
+		jumpToMessage,
+		closeEmojiAndAction,
+		errorActionsShow,
+		onMessageLongPress,
+		onEditInit,
+		onEditCancel,
+		onEditRequest,
+		onQuoteInit,
+		onRemoveQuoteMessage,
+		onReactionInit,
+		onReactionPress,
+		onReplyInit,
+		setQuotesAndText,
+		getText
+	} = useRoomMessaging({
 		rid,
 		t,
 		tmid,
@@ -44,6 +62,11 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 		roomUserId,
 		quoteMessageId: route.params?.messageId
 	});
+	useRoomSubscription(rid, tmid);
+	useRoomAudioLifecycle(rid, tmid);
+	useRoomRemoved(rid, isMasterDetail);
+	useInAppFeedback();
+	useOmnichannelPermissions({ rid, t, roomStore });
 
 	const joinCodeRef = useRef<IJoinCode | null>(null);
 	const onJoin = () => {
@@ -65,12 +88,37 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 					roomUpdate={roomUpdate}
 					tmid={tmid}
 					sharing={false}
-					{...composer}>
+					onRemoveQuoteMessage={onRemoveQuoteMessage}
+					editCancel={onEditCancel}
+					editRequest={onEditRequest}
+					onSendMessage={sendMessage}
+					setQuotesAndText={setQuotesAndText}
+					getText={getText}>
 					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
 						{!tmid ? <RoomAnnouncementBanner /> : null}
-						<RoomMessageList tmid={tmid} {...messageList} />
+						<RoomMessageList
+							tmid={tmid}
+							listContainerRef={listContainerRef}
+							flatListRef={flatListRef}
+							onLongPress={onMessageLongPress}
+							roomActions={roomActions}
+							jumpToMessage={jumpToMessage}
+							closeEmojiAndAction={closeEmojiAndAction}
+							reactionInit={onReactionInit}
+							errorActionsShow={errorActionsShow}
+						/>
 						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} />
-						<RoomMessageActions tmid={tmid} {...messageActions} />
+						<RoomMessageActions
+							tmid={tmid}
+							messageActionsRef={messageActionsRef}
+							messageErrorActionsRef={messageErrorActionsRef}
+							editInit={onEditInit}
+							replyInit={onReplyInit}
+							quoteInit={onQuoteInit}
+							reactionInit={onReactionInit}
+							onReactionPress={onReactionPress}
+							jumpToMessage={jumpToMessage}
+						/>
 						<RoomUploadProgress />
 						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={room.rid} t={room.t} />
 					</SafeAreaView>
