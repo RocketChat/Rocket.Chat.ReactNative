@@ -9,25 +9,13 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { getUserSelector } from '../../../selectors/login';
-import {
-	type IListContainerRef,
-	type IUseRoomMessagingParams,
-	type IUseRoomMessagingResult,
-	type TListRef
-} from '../definitions';
+import { type IListContainerRef, type IUseRoomMessagingParams, type TListRef } from '../definitions';
 import { sendRoomMessage } from '../services/sendRoomMessage';
 import { useMessageActions } from './useMessageActions';
 import { useRoomInit } from './useRoomInit';
 import { useRoomNavigation } from './useRoomNavigation';
 
-export function useRoomMessaging({
-	rid,
-	t,
-	tmid,
-	roomStore,
-	roomUserId,
-	quoteMessageId
-}: IUseRoomMessagingParams): IUseRoomMessagingResult {
+export function useRoomMessaging({ rid, t, tmid, roomStore, roomUserId, quoteMessageId }: IUseRoomMessagingParams) {
 	const isAuthenticated = useAppSelector(state => state.login.isAuthenticated);
 	const user = useAppSelector(getUserSelector);
 	const isMasterDetail = useMasterDetail();
@@ -103,7 +91,7 @@ export function useRoomMessaging({
 		flatListRef,
 		messageActionsRef,
 		messageErrorActionsRef,
-		roomActions: { onThreadPress, onReactionPress, sendMessage },
+		onThreadPress,
 		sendMessage,
 		jumpToMessage: jumpToMessageByUrl,
 		closeEmojiAndAction: handleCloseEmoji,

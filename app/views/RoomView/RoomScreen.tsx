@@ -38,7 +38,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 		flatListRef,
 		messageActionsRef,
 		messageErrorActionsRef,
-		roomActions,
+		onThreadPress,
 		sendMessage,
 		jumpToMessage,
 		closeEmojiAndAction,
@@ -101,7 +101,9 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 							listContainerRef={listContainerRef}
 							flatListRef={flatListRef}
 							onLongPress={onMessageLongPress}
-							roomActions={roomActions}
+							onThreadPress={onThreadPress}
+							onReactionPress={onReactionPress}
+							sendMessage={sendMessage}
 							jumpToMessage={jumpToMessage}
 							closeEmojiAndAction={closeEmojiAndAction}
 							reactionInit={onReactionInit}
