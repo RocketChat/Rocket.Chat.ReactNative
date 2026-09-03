@@ -12,7 +12,7 @@ import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { readThreads } from '../../../../lib/services/restApi';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
+import { buildVisibleSystemTypesClause } from '../visibleSystemMessages';
 import { useMessages } from './useMessages';
 
 jest.mock('../../../../lib/database', () => ({

@@ -10,15 +10,13 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { tsToMs } from '../../../../lib/dayjs';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
+import { buildVisibleSystemTypesClause, isHiddenSystemMessage, isLoaderMessage } from '../visibleSystemMessages';
 import { roomHistoryRequest } from '../../../../actions/room';
 import { isNewerLoader, raiseOrRelease } from '../../services/anchorResolver';
 import { findNewerLoaderAbove } from '../../services/getLocalAnchor';
 
-const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
-	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
+const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null => messages.find(isLoaderMessage)?.id ?? null;
 
 export const useMessages = ({
 	rid,
@@ -167,7 +165,9 @@ export const useMessages = ({
 			.observe();
 
 		subscription.current = observable.subscribe(result => {
-			const newMessages: TAnyMessageModel[] = tmid && thread.current ? [...result, thread.current] : result;
+			const visibleThreadParent =
+				tmid && thread.current && !isHiddenSystemMessage(thread.current, hideSystemMessages) ? thread.current : null;
+			const newMessages: TAnyMessageModel[] = visibleThreadParent ? [...result, visibleThreadParent] : result;
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
