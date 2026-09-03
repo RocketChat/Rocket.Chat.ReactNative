@@ -3,7 +3,7 @@ import { tsToMs } from '../../../lib/dayjs';
 import { type AnchorMessage } from '../definitions';
 
 // Pure anchor math for the bounded Message Window — no React, no DB (unit-tested with plain objects).
-// Returns an upper ts bound (ms): null = Live Window, finite = Anchored Window. See docs/ARCHITECTURE.md.
+// Returns an upper ts bound (ms): null = Live Window, finite = Anchored Window.
 export const isNewerLoader = (message: AnchorMessage): boolean => message.t === MessageTypeLoad.NEXT_CHUNK;
 
 // Nearest Newer Loader ABOVE the target = upper bracket of its Chunk. null = target absent, or
