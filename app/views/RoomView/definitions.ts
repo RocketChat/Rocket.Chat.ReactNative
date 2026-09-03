@@ -13,7 +13,8 @@ import {
 	type IVisitor,
 	type RoomType,
 	type TAnyMessageModel,
-	type TSubscriptionModel
+	type TSubscriptionModel,
+	type IUseRoomMessageHandlersResult
 } from '../../definitions';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
@@ -150,11 +151,12 @@ export interface IListContainerProps {
 	serverVersion: string | null;
 }
 
-export interface IRoomActions {
-	onThreadPress: (item: TAnyMessageModel) => void;
-	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
-	sendMessage: (message?: string, tshow?: boolean) => void;
-}
+export type IRoomMessageHandlersInput = {
+	tmid?: string;
+	onThreadPress: IUseRoomMessageHandlersResult['onThreadPress'];
+	onReactionPress: IUseRoomMessageHandlersResult['onReactionPress'];
+	sendMessage: IUseRoomMessageHandlersResult['onAnswerButtonPress'];
+};
 
 // The screen's own state, carried by RoomScreenContext — see that module for why it is per-screen.
 export interface IRoomScreenContextValue {
@@ -294,15 +296,14 @@ export interface IUseMessageActionsResult {
 	getText: () => string | undefined;
 }
 
-export interface IRoomMessageListProps extends Pick<
-	MessageRoomState,
-	'jumpToMessage' | 'closeEmojiAndAction' | 'reactionInit' | 'errorActionsShow'
-> {
+export interface IRoomMessageListProps
+	extends
+		Pick<MessageRoomState, 'jumpToMessage' | 'closeEmojiAndAction' | 'reactionInit' | 'errorActionsShow'>,
+		Pick<IRoomMessageHandlersInput, 'onThreadPress' | 'onReactionPress' | 'sendMessage'> {
 	tmid?: string;
 	listContainerRef: RefObject<IListContainerRef | null>;
 	flatListRef: TListRef;
 	onLongPress: IListContainerProps['onLongPress'];
-	roomActions: IRoomActions;
 }
 
 export type IRoomMessageActionsProps = Pick<
@@ -321,32 +322,6 @@ export interface IUseRoomMessagingParams {
 	roomStore: RoomStore;
 	roomUserId?: string | null;
 	quoteMessageId?: string;
-}
-
-export interface IUseRoomMessagingResult {
-	messageActionStore: TMessageActionStore;
-	roomScreen: IRoomScreenContextValue;
-	messageComposerRef: RefObject<IMessageComposerRef | null>;
-	listContainerRef: RefObject<IListContainerRef | null>;
-	flatListRef: TListRef;
-	messageActionsRef: RefObject<IMessageActions | null>;
-	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
-	roomActions: IRoomActions;
-	sendMessage: TComposerExternalState['onSendMessage'];
-	jumpToMessage: IMessageActionsProps['jumpToMessage'];
-	closeEmojiAndAction: IRoomMessageListProps['closeEmojiAndAction'];
-	errorActionsShow: IRoomMessageListProps['errorActionsShow'];
-	onMessageLongPress: IListContainerProps['onLongPress'];
-	onEditInit: IMessageActionsProps['editInit'];
-	onEditCancel: TComposerExternalState['editCancel'];
-	onEditRequest: TComposerExternalState['editRequest'];
-	onQuoteInit: IMessageActionsProps['quoteInit'];
-	onRemoveQuoteMessage: TComposerExternalState['onRemoveQuoteMessage'];
-	onReactionInit: IMessageActionsProps['reactionInit'];
-	onReactionPress: IMessageActionsProps['onReactionPress'];
-	onReplyInit: IMessageActionsProps['replyInit'];
-	setQuotesAndText: TComposerExternalState['setQuotesAndText'];
-	getText: TComposerExternalState['getText'];
 }
 
 export interface IUseSubscriptionUnreadsResult {
