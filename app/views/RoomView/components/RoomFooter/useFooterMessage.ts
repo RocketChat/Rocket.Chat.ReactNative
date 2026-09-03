@@ -1,5 +1,6 @@
 import I18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useSetting } from '../../../../lib/hooks/useSetting';
 import { isBlocked } from '../../../../lib/methods/helpers/room';
 import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../../../lib/methods/isRoomFederated';
 import { useReadOnly } from '../../hooks/useReadOnly';
@@ -25,9 +26,9 @@ const getFederatedFooterDescription = (
 export const useFooterMessage = (): string | null => {
 	const room = useRoomWithUpdate();
 	const readOnly = useReadOnly();
-	const isFederationEnabled = useAppSelector(
-		state => (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean
-	);
+	const federationMatrixEnabled = useSetting('Federation_Matrix_enabled');
+	const federationServiceEnabled = useSetting('Federation_Service_Enabled');
+	const isFederationEnabled = !!(federationMatrixEnabled || federationServiceEnabled);
 	const isFederationModuleEnabled = useAppSelector(state => state.enterpriseModules.includes('federation'));
 
 	if (readOnly) {

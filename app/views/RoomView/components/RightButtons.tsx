@@ -14,6 +14,7 @@ import { closeLivechat as closeLivechatService } from '../../../lib/methods/help
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '../../../lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useSetting } from '../../../lib/hooks/useSetting';
 import { useCanReturnQueue } from '../../../ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
@@ -130,10 +131,8 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 	const { showActionSheet } = useActionSheet();
 
 	const userId = useAppSelector(state => getUserSelector(state).id);
-	const threadsEnabled = useAppSelector(state => state.settings.Threads_enabled as boolean);
-	const livechatRequestComment = useAppSelector(
-		state => state.settings.Livechat_request_comment_when_closing_conversation as boolean
-	);
+	const threadsEnabled = useSetting('Threads_enabled') as boolean;
+	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 
 	const room = useStore(roomStore, s => s.room);
@@ -237,15 +236,12 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 		if (!rid) {
 			return;
 		}
-		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make this work
-			navigation.navigate('ModalStackNavigator', {
-				screen: 'SearchMessagesView',
-				params: { rid, showCloseModal: true, encrypted }
-			});
-		} else {
-			navigation.navigate('SearchMessagesView', { rid, t, encrypted });
-		}
+		navigateToScreen({
+			navigation,
+			isMasterDetail,
+			screen: 'SearchMessagesView',
+			params: isMasterDetail ? { rid, t, encrypted, showCloseModal: true } : { rid, t, encrypted }
+		});
 	};
 
 	const goE2EEToggleRoomView = () => {
