@@ -6,7 +6,7 @@ import { loadSurroundingMessages } from '../../../lib/methods/loadSurroundingMes
 import { resolveJumpAnchor } from './resolveJumpAnchor';
 import getMessageInfo from './getMessageInfo';
 import getLocalAnchorTs from './getLocalAnchor';
-import { type IJumpToMessageArgs, type TGetMessageInfoResult } from '../definitions';
+import { type IJumpToMessageArgs } from '../definitions';
 
 export const jumpToMessage = async ({
 	messageId,
@@ -17,38 +17,35 @@ export const jumpToMessage = async ({
 	listContainerRef,
 	navToRoom,
 	navToThread,
-	cancel
+	cancel,
+	isCancelled
 }: IJumpToMessageArgs): Promise<void> => {
-	const isTargetOutsideCurrentView = (message: TGetMessageInfoResult) => {
-		if (message.tmid && message.tmid === tmid) {
-			return false;
-		}
-		if (!message.tmid && message.rid === rid) {
-			return false;
-		}
-		return true;
-	};
-
 	try {
 		sendLoadingEvent({ visible: true, onCancel: cancel });
 		const message = await getMessageInfo(messageId);
+		if (isCancelled()) {
+			return;
+		}
 
 		if (!message) {
 			cancel();
 			return;
 		}
 
-		if (isTargetOutsideCurrentView(message)) {
+		const inThisThread = !!message.tmid && message.tmid === tmid;
+		const inThisRoom = !message.tmid && message.rid === rid;
+
+		if (!inThisThread && !inThisRoom) {
 			if (message.rid !== rid) {
-				navToRoom(message);
+				await navToRoom(message);
 			} else {
-				navToThread(message);
+				await navToThread(message);
 			}
-		} else if (!message.tmid && message.rid === rid && t === 'thread' && !message.replies) {
+		} else if (inThisRoom && t === 'thread' && message.id !== tmid) {
 			/**
 			 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
 			 */
-			return navToRoom(message);
+			await navToRoom(message);
 		} else {
 			/**
 			 * if it's from server, we don't have it saved locally and so we fetch surroundings
@@ -67,12 +64,21 @@ export const jumpToMessage = async ({
 				inWindow,
 				{ loadSurroundingMessages, getLocalAnchorTs }
 			);
+			if (isCancelled()) {
+				return;
+			}
 			// Synchronization needed for Fabric to work
 			await new Promise(res => setTimeout(res, 100));
+			if (isCancelled()) {
+				return;
+			}
 			await listContainerRef.current?.jumpToMessage(message.id, highTs);
 			sendLoadingEvent({ visible: false });
 		}
 	} catch (error: any) {
+		if (isCancelled()) {
+			return;
+		}
 		if (isFromReply && error.data?.errorType === 'error-not-allowed') {
 			showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
 		} else {

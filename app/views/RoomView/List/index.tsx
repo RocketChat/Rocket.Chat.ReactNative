@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
 import { useDebounce } from '../../../lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
@@ -31,6 +31,8 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
 		}, 300);
+
+		useEffect(() => onEndReached.cancel, [onEndReached]);
 
 		useImperativeHandle(ref, () => ({
 			jumpToMessage,

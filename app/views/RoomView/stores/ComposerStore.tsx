@@ -17,7 +17,7 @@ export const createComposerStore = (initial: TComposerExternalState) =>
 
 export const ComposerStoreContext = createContext<ComposerStore | null>(null);
 
-const useComposerStoreApi = (): ComposerStore => {
+export const useComposerStoreApi = (): ComposerStore => {
 	const store = useContext(ComposerStoreContext);
 	if (!store) {
 		throw new Error('Composer store hooks must be used within a ComposerProvider');

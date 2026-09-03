@@ -1,14 +1,16 @@
 import { memo } from 'react';
-import { act, render } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import {
 	MessageRoomProvider,
+	type MessageRoomState,
 	useAutoTranslate,
 	useBlockAction,
 	useIsArchived,
 	useNavToRoomInfo,
+	useReactionInit,
 	useShowAttachment,
 	useTimeFormat
 } from '../MessageRoomStore';
@@ -230,48 +232,61 @@ describe('MessageRoomStore', () => {
 		});
 	});
 
-	describe('frozen handler guard (dev)', () => {
-		let warnSpy: jest.SpyInstance;
+	describe('live callbacks', () => {
+		const wrap = (config: Partial<MessageRoomState>) => (
+			<Provider store={mockedStore}>
+				<MessageRoomProvider timeFormat='fixed-format' {...config}>
+					<ReactionInitConsumer />
+				</MessageRoomProvider>
+			</Provider>
+		);
 
-		beforeEach(() => {
-			warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+		const renderSpy = jest.fn();
+		const ReactionInitConsumer = memo(() => {
+			const reactionInit = useReactionInit();
+			renderSpy(reactionInit);
+			return <Text onPress={() => reactionInit?.('message-id')}>reaction</Text>;
 		});
 
-		afterEach(() => {
-			warnSpy.mockRestore();
+		beforeEach(() => renderSpy.mockClear());
+
+		it('invokes the latest callback after a rerender', () => {
+			const first = jest.fn();
+			const second = jest.fn();
+
+			const { rerender } = render(wrap({ reactionInit: first }));
+			act(() => rerender(wrap({ reactionInit: second })));
+
+			fireEvent.press(screen.getByText('reaction'));
+
+			expect(second).toHaveBeenCalledWith('message-id');
+			expect(first).not.toHaveBeenCalled();
 		});
 
-		it('warns once when a frozen handler identity changes after mount', () => {
-			const wrap = (reactionInit: () => void) => (
-				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
-						<Text>child</Text>
-					</MessageRoomProvider>
-				</Provider>
-			);
+		it('keeps the callback identity stable across rerenders', () => {
+			const { rerender } = render(wrap({ reactionInit: jest.fn() }));
+			const renderCallsBefore = renderSpy.mock.calls.length;
 
-			const { rerender } = render(wrap(() => {}));
-			expect(warnSpy).not.toHaveBeenCalled();
+			act(() => rerender(wrap({ reactionInit: jest.fn() })));
 
-			act(() => rerender(wrap(() => {})));
-
-			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('reactionInit'));
+			expect(renderSpy.mock.calls.length).toBe(renderCallsBefore);
 		});
 
-		it('does not warn when the same handler reference is passed across re-renders', () => {
-			const reactionInit = () => {};
-			const wrap = () => (
-				<Provider store={mockedStore}>
-					<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
-						<Text>child</Text>
-					</MessageRoomProvider>
-				</Provider>
-			);
+		it('stays undefined when the provider does not supply the callback', () => {
+			render(wrap({}));
 
-			const { rerender } = render(wrap());
-			act(() => rerender(wrap()));
+			expect(renderSpy).toHaveBeenLastCalledWith(undefined);
+		});
 
-			expect(warnSpy).not.toHaveBeenCalled();
+		it('becomes defined when the provider starts supplying the callback', () => {
+			const reactionInit = jest.fn();
+			const { rerender } = render(wrap({}));
+			expect(renderSpy).toHaveBeenLastCalledWith(undefined);
+
+			act(() => rerender(wrap({ reactionInit })));
+			fireEvent.press(screen.getByText('reaction'));
+
+			expect(reactionInit).toHaveBeenCalledWith('message-id');
 		});
 	});
 });

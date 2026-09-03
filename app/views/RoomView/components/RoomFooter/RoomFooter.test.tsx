@@ -62,9 +62,8 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		roomUserId: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
-		canReturnQueue: false,
 		canViewCannedResponse: false,
-		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent: false,
 		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
@@ -76,7 +75,8 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loadi
 	render(
 		<Provider store={reduxStore}>
 			<RoomStoreContext.Provider value={roomStore}>
-				<RoomScreenContext.Provider value={{ loading, lastSeen: null, clearLastSeen: jest.fn() }}>
+				<RoomScreenContext.Provider
+					value={{ loading, failed: false, retry: jest.fn(), lastSeen: null, clearLastSeen: jest.fn() }}>
 					<RoomFooter messageComposerRef={{ current: null }} joinCodeRef={{ current: null }} />
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>

@@ -2,7 +2,6 @@ import { InteractionManager } from 'react-native';
 import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
 import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
 import { useRoomInit } from '../useRoomInit';
 
@@ -13,10 +12,7 @@ interface IRenderRoomInitParams {
 	tmid?: string;
 	isAuthenticated: boolean;
 	roomStore: RoomStore;
-	roomUpdate: { status?: string };
 	onThreadMessagesLoaded: () => void;
-	messageActionStore: ReturnType<typeof createMessageActionStore>;
-	onQuoteInit: (messageId: string) => void;
 }
 
 const makeRoomStore = (): RoomStore =>
@@ -29,9 +25,8 @@ const makeRoomStore = (): RoomStore =>
 		roomUserId: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
-		canReturnQueue: false,
 		canViewCannedResponse: false,
-		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent: false,
 		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
@@ -67,10 +62,7 @@ const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStor
 		tmid: undefined,
 		isAuthenticated: true,
 		roomStore,
-		roomUpdate: {},
 		onThreadMessagesLoaded: jest.fn(),
-		messageActionStore: createMessageActionStore(),
-		onQuoteInit: jest.fn(),
 		...overrides
 	};
 	const { rerender, result, unmount } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), {
@@ -113,44 +105,6 @@ describe('useRoomInit', () => {
 		renderRoomInit({ isAuthenticated: false }, roomStore);
 
 		expect(roomStore.getState().init).not.toHaveBeenCalled();
-	});
-
-	it('re-initializes the room store when the room transitions out of INVITED status', () => {
-		const roomStore = makeRoomStore();
-		const { rerender } = renderRoomInit({ roomUpdate: { status: 'INVITED' } }, roomStore);
-
-		expect(roomStore.getState().init).toHaveBeenCalledTimes(1);
-
-		rerender({ roomUpdate: { status: 'READY' } });
-
-		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
-	});
-
-	it('does not re-initialize the room store when the status changes without having been INVITED', () => {
-		const roomStore = makeRoomStore();
-		const { rerender } = renderRoomInit({ roomUpdate: { status: 'READY' } }, roomStore);
-
-		expect(roomStore.getState().init).toHaveBeenCalledTimes(1);
-
-		rerender({ roomUpdate: { status: 'ANOTHER' } });
-
-		expect(roomStore.getState().init).toHaveBeenCalledTimes(1);
-	});
-
-	it('fires onQuoteInit once on mount when the message action store has a single-message quote action', () => {
-		const onQuoteInit = jest.fn();
-		const messageActionStore = createMessageActionStore({ kind: 'quote', messageIds: ['msg-1'] });
-		renderRoomInit({ onQuoteInit, messageActionStore });
-
-		expect(onQuoteInit).toHaveBeenCalledTimes(1);
-		expect(onQuoteInit).toHaveBeenCalledWith('msg-1');
-	});
-
-	it('does not fire onQuoteInit when there is no pending quote action', () => {
-		const onQuoteInit = jest.fn();
-		renderRoomInit({ onQuoteInit, messageActionStore: createMessageActionStore() });
-
-		expect(onQuoteInit).not.toHaveBeenCalled();
 	});
 
 	it('clears loading once init rejects', async () => {
@@ -205,10 +159,11 @@ describe('useRoomInit', () => {
 		const stale = new Date('2026-01-01T00:00:00.000Z');
 		const fresh = new Date('2026-02-02T00:00:00.000Z');
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
-		const { result, rerender } = renderRoomInit({ roomUpdate: { status: 'INVITED' } }, roomStore);
+		const { result } = renderRoomInit({}, roomStore);
 
-		// The INVITED transition starts a second run while the mount run is still in flight.
-		rerender({ roomUpdate: { status: 'READY' } });
+		await act(async () => {
+			result.current.retry();
+		});
 		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
 
 		await resolveInit(0, stale);
@@ -225,12 +180,14 @@ describe('useRoomInit', () => {
 	it.each([['failed'], ['skipped']] as const)('leaves lastSeen untouched when init reports %s', async status => {
 		const loaded = new Date('2026-01-01T00:00:00.000Z');
 		const { roomStore, resolveInit, resolveInitWith } = makeDeferredRoomStore();
-		const { result, rerender } = renderRoomInit({ roomUpdate: { status: 'INVITED' } }, roomStore);
+		const { result } = renderRoomInit({}, roomStore);
 
 		await resolveInit(0, loaded);
 		expect(result.current.lastSeen).toBe(loaded);
 
-		rerender({ roomUpdate: { status: 'READY' } });
+		await act(async () => {
+			result.current.retry();
+		});
 		await resolveInitWith(1, { status });
 
 		expect(result.current.lastSeen).toBe(loaded);
@@ -245,5 +202,54 @@ describe('useRoomInit', () => {
 		await resolveInit();
 
 		expect(result.current.loading).toBe(true);
+	});
+
+	it('reports failed once a failed run settles', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		expect(result.current.failed).toBe(false);
+
+		await resolveInitWith(0, { status: 'failed' });
+
+		expect(result.current.failed).toBe(true);
+		expect(result.current.loading).toBe(false);
+	});
+
+	it('clears failed and runs init again on retry', async () => {
+		const { roomStore, resolveInitWith, resolveInit } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'failed' });
+		expect(result.current.failed).toBe(true);
+
+		await act(async () => {
+			result.current.retry();
+		});
+		expect(result.current.failed).toBe(false);
+
+		await resolveInit(1);
+		expect(result.current.failed).toBe(false);
+	});
+
+	it('stops reporting failed once the screen has no init work left', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result, rerender } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'failed' });
+		expect(result.current.failed).toBe(true);
+
+		rerender({ isAuthenticated: false });
+
+		expect(result.current.failed).toBe(false);
+	});
+
+	it('does not report failed for a skipped run', async () => {
+		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
+		const { result } = renderRoomInit({}, roomStore);
+
+		await resolveInitWith(0, { status: 'skipped' });
+
+		expect(result.current.failed).toBe(false);
 	});
 });

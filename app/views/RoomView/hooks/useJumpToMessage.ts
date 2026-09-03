@@ -33,14 +33,20 @@ export function useJumpToMessage({
 
 	const pendingJumpRef = useRef<string | undefined>(route.params?.jumpToMessageId);
 	const jumpToThreadIdRef = useRef<string | undefined>(route.params?.jumpToThreadId);
+	const loadedThreadRef = useRef<string | undefined>(undefined);
 
-	const cancelJumpToMessage = () => {
+	const jumpGenerationRef = useRef(0);
+
+	const cancelJumpToMessage = (): void => {
+		jumpGenerationRef.current += 1;
 		listContainerRef.current?.cancelJumpToMessage();
 		sendLoadingEvent({ visible: false });
 	};
 
-	const jumpToMessage = (messageId: string, isFromReply?: boolean) =>
-		jumpToMessageService({
+	const jumpToMessage = (messageId: string, isFromReply?: boolean): Promise<void> => {
+		jumpGenerationRef.current += 1;
+		const generation = jumpGenerationRef.current;
+		return jumpToMessageService({
 			messageId,
 			isFromReply,
 			rid,
@@ -49,8 +55,10 @@ export function useJumpToMessage({
 			listContainerRef,
 			navToRoom,
 			navToThread,
-			cancel: cancelJumpToMessage
+			cancel: cancelJumpToMessage,
+			isCancelled: () => jumpGenerationRef.current !== generation
 		});
+	};
 
 	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
 	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
@@ -64,15 +72,23 @@ export function useJumpToMessage({
 	// Thread jump: fired from the store init's `onThreadMessagesLoaded` callback — the thread window is
 	// populated by then, so the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
 	const onThreadMessagesLoaded = () => {
+		loadedThreadRef.current = tmid;
 		if (pendingJumpRef.current) {
-			const messageId = pendingJumpRef.current;
-			pendingJumpRef.current = undefined;
+			consumeJumpParam(pendingJumpRef.current);
+		}
+	};
+
+	const onJumpParamChanged = (messageId: string) => {
+		if (!tmid || loadedThreadRef.current === tmid) {
 			consumeJumpParam(messageId);
+		} else {
+			pendingJumpRef.current = messageId;
 		}
 	};
 
 	// Live-mirrored (see useLiveRef) so the mount effect can key on [tmid] despite these being unstable.
 	const consumeJumpParamRef = useLiveRef(consumeJumpParam);
+	const onJumpParamChangedRef = useLiveRef(onJumpParamChanged);
 	const navToThreadRef = useLiveRef(navToThread);
 
 	useEffect(() => {
@@ -98,7 +114,7 @@ export function useJumpToMessage({
 		return () => task.cancel();
 	}, [navToThreadRef]);
 
-	useChangedParam(route.params?.jumpToMessageId, id => consumeJumpParamRef.current(id));
+	useChangedParam(route.params?.jumpToMessageId, id => onJumpParamChangedRef.current(id));
 	useChangedParam(route.params?.jumpToThreadId, id => navToThreadRef.current({ tmid: id }));
 
 	return { jumpToMessage, cancelJumpToMessage, onThreadMessagesLoaded };

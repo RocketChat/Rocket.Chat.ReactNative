@@ -7,12 +7,10 @@ import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanima
 import {
 	useComposerRid,
 	useComposerSharing,
-	useComposerTmid,
-	useEditRequest,
-	useOnSendMessage,
-	useSetQuotesAndText
+	useComposerStoreApi,
+	useComposerTmid
 } from '../../views/RoomView/stores/ComposerStore';
-import { useEditingMessageId, useMessageActionKind, useQuotedMessageIds } from '../message/stores/MessageActionStore';
+import { useMessageActionKind, useMessageActionStoreApi } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import {
@@ -63,12 +61,9 @@ export const MessageComposer = ({
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const sharing = useComposerSharing();
-	const editRequest = useEditRequest();
-	const onSendMessage = useOnSendMessage();
-	const setQuotesAndText = useSetQuotesAndText();
+	const composerStore = useComposerStoreApi();
+	const messageActionStore = useMessageActionStoreApi();
 	const actionKind = useMessageActionKind();
-	const editingMessageId = useEditingMessageId();
-	const quotedMessageIds = useQuotedMessageIds();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
@@ -107,6 +102,11 @@ export const MessageComposer = ({
 
 	const handleSendMessage = async () => {
 		if (!rid) return;
+
+		const { editRequest, onSendMessage, setQuotesAndText } = composerStore.getState();
+		const { action } = messageActionStore.getState();
+		const editingMessageId = action?.kind === 'edit' ? action.messageId : undefined;
+		const quotedMessageIds = action?.kind === 'quote' ? action.messageIds : [];
 
 		if (alsoSendThreadToChannel) {
 			setAlsoSendThreadToChannel(false);

@@ -21,7 +21,6 @@ import {
 import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
 import { joinRoomImpl, resumeRoomImpl } from '../services/joinRoom';
-import { store as reduxStore } from '../../../lib/store/auxStore';
 
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
 
@@ -135,9 +134,8 @@ const createRoomState =
 		roomUserId,
 		canAutoTranslate: false,
 		canForwardGuest: false,
-		canReturnQueue: false,
 		canViewCannedResponse: false,
-		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent: false,
 
 		// A transient failure retries a couple of times instead of leaving the screen empty until the
 		// user navigates away and back. The loop lives here so the caller's single `loading` window
@@ -190,35 +188,50 @@ const createRoomState =
 		// store, so the caller passes its own trigger instead of registering one here.
 		joinRoom: requestJoinCode =>
 			joinRoomImpl(get().room, {
-				serverVersion: reduxStore.getState().server.version,
 				requestJoinCode,
 				onJoin: get().join
 			}),
 		resumeRoom: () => resumeRoomImpl(get().room, { onJoin: get().join })
 	});
 
-const observeRoom = (rid: string | undefined, t: string | undefined, store: RoomStore): (() => void) => {
+const observeRoom = (rid: string | undefined, initialRoom: IRoomViewState['room'], store: RoomStore): (() => void) => {
 	if (!rid) {
 		return () => {};
 	}
-	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observeWithColumns(OBSERVED_COLUMNS);
+	let lastRoomType = initialRoom.t;
+	let lastMessageFromAgent = store.getState().lastMessageFromAgent;
+	const observable = database.active
+		.get('subscriptions')
+		.query(Q.where('rid', rid))
+		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
 	const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
 		const next = rows[0];
 		if (next) {
-			store.setState({
-				room: next,
-				// observeWithColumns re-emits the same cached model instance mutated in place, so a fresh
-				// snapshot object is what re-renders consumers on a tracked-column change.
-				roomUpdate: roomAttrsUpdate.reduce((ret: IRoomViewState['roomUpdate'], attr) => {
-					ret[attr] = (next as TSubscriptionModel)[attr];
-					return ret;
-				}, {}),
-				subscribed: true,
-				joined: true
-			});
+			lastRoomType = next.t;
+			const nextLastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
+			const roomUpdate = Object.fromEntries(
+				roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
+			) as IRoomViewState['roomUpdate'];
+			const { room: previousRoom, roomUpdate: previousRoomUpdate } = store.getState();
+			const rowRecreated = next !== previousRoom;
+			const roomChanged = rowRecreated || roomAttrsUpdate.some(attr => previousRoomUpdate[attr] !== roomUpdate[attr]);
+			const state = roomChanged
+				? {
+						room: next,
+						roomUpdate,
+						subscribed: true,
+						joined: true
+					}
+				: { subscribed: true, joined: true };
+			if (nextLastMessageFromAgent !== lastMessageFromAgent) {
+				lastMessageFromAgent = nextLastMessageFromAgent;
+				store.setState({ ...state, lastMessageFromAgent });
+			} else if (roomChanged || !store.getState().subscribed) {
+				store.setState(state);
+			}
 			return;
 		}
-		store.setState({ subscribed: false, ...(t !== 'd' ? { joined: false } : {}) });
+		store.setState({ subscribed: false, ...(lastRoomType !== 'd' ? { joined: false } : {}) });
 	});
 	return () => subscription.unsubscribe();
 };
@@ -254,14 +267,15 @@ const scheduleGraceSweep = (rid: string): void => {
 	});
 };
 
-const register = (rid: string, t: string | undefined, store: RoomStore, refCount: number): void => {
-	registry.set(rid, { store, unsubscribe: observeRoom(rid, t, store), refCount, pendingSweep: false });
+const register = (rid: string, initialRoom: IRoomViewState['room'], store: RoomStore, refCount: number): void => {
+	const unsubscribe = observeRoom(rid, initialRoom, store);
+	registry.set(rid, { store, unsubscribe, refCount, pendingSweep: false });
 };
 
 // Render-safe: returns the rid-keyed store, creating it (observer + grace sweep) on first sight
 // without touching refCount. Safe to call from a useState initializer, which may run twice under
 // StrictMode/concurrent render. Acquire/release own the lifetime.
-export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
+export const peekOrCreateRoomStore = ({ rid, initialRoom, roomUserId }: IGetOrCreateRoomStoreParams): RoomStore => {
 	if (!rid) {
 		return createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
 	}
@@ -270,7 +284,7 @@ export const peekOrCreateRoomStore = ({ rid, t, initialRoom, roomUserId }: IGetO
 		return existing.store;
 	}
 	const store = createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
-	register(rid, t, store, 0);
+	register(rid, initialRoom, store, 0);
 	scheduleGraceSweep(rid);
 	return store;
 };
@@ -292,7 +306,7 @@ export const releaseRoomStore = (rid?: string): void => {
 
 // Claims ownership of the rid-keyed store for one screen: increments refCount, re-registering the
 // observer if the grace sweep reclaimed the entry between render and effect.
-export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, 'rid' | 't'>, store: RoomStore): RoomStore => {
+export const acquireRoomStore = ({ rid }: Pick<IGetOrCreateRoomStoreParams, 'rid'>, store: RoomStore): RoomStore => {
 	if (!rid) {
 		return store;
 	}
@@ -301,21 +315,22 @@ export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, '
 		entry.refCount += 1;
 		return entry.store;
 	}
-	register(rid, t, store, 1);
+	register(rid, store.getState().room, store, 1);
 	return store;
 };
 
 export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): RoomStore => {
 	const [screenParams] = useState(params);
-	const [store, setStore] = useState(() => peekOrCreateRoomStore(screenParams));
+	const [peekedStore] = useState(() => peekOrCreateRoomStore(screenParams));
+	const [store, setStore] = useState(peekedStore);
 	const { rid } = screenParams;
 
 	useEffect(() => {
-		setStore(acquireRoomStore(screenParams, store));
+		setStore(acquireRoomStore(screenParams, peekedStore));
 		return () => {
 			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
 		};
-	}, [rid, screenParams, store]);
+	}, [rid, screenParams, peekedStore]);
 
 	return store;
 };

@@ -1,24 +1,13 @@
-import { type RefObject } from 'react';
-
-import MessageActions, { type IMessageActions, type IMessageActionsProps } from '../../../containers/MessageActions';
+import MessageActions, { type IMessageActions } from '../../../containers/MessageActions';
 import MessageErrorActions, { type IMessageErrorActions } from '../../../containers/MessageErrorActions';
-import { type TRoomViewUser } from '../definitions';
+import { type IRoomMessageActionsProps } from '../definitions';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { getUserSelector } from '../../../selectors/login';
 import { useReadOnly } from '../hooks/useReadOnly';
 import { useRoomStore } from '../stores/RoomStoreContext';
 
-type IRoomMessageActionsProps = Pick<
-	IMessageActionsProps,
-	'editInit' | 'replyInit' | 'quoteInit' | 'reactionInit' | 'onReactionPress' | 'jumpToMessage'
-> & {
-	tmid?: string;
-	user: TRoomViewUser;
-	messageActionsRef: RefObject<IMessageActions | null>;
-	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
-};
-
 export const RoomMessageActions = ({
 	tmid,
-	user,
 	messageActionsRef,
 	messageErrorActionsRef,
 	editInit,
@@ -29,6 +18,7 @@ export const RoomMessageActions = ({
 	jumpToMessage
 }: IRoomMessageActionsProps) => {
 	const room = useRoomStore(s => s.room);
+	const user = useAppSelector(getUserSelector);
 	const readOnly = useReadOnly();
 
 	if (!('id' in room)) {

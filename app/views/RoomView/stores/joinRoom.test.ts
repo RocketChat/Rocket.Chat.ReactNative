@@ -1,11 +1,24 @@
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
 import { type IRoomViewState } from '../definitions';
-import { peekOrCreateRoomStore } from './RoomStore';
+import { peekOrCreateRoomStore, releaseRoomStore } from './RoomStore';
 
 jest.mock('../../../lib/database', () => ({
 	__esModule: true,
-	default: { active: { get: jest.fn() } }
+	default: {
+		active: {
+			get: () => ({
+				query: () => ({
+					observeWithColumns: () => ({
+						subscribe: (next: (rows: unknown[]) => void) => {
+							next([]);
+							return { unsubscribe: jest.fn() };
+						}
+					})
+				})
+			})
+		}
+	}
 }));
 jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
 jest.mock('../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
@@ -27,7 +40,6 @@ jest.mock('../../../ee/omnichannel/lib', () => ({
 	takeInquiry: jest.fn(() => Promise.resolve()),
 	takeResume: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/store/auxStore', () => ({ store: { getState: () => ({ server: { version: '6.1.0' } }) } }));
 
 const mockJoinRoomService = joinRoomService as jest.Mock;
 const mockTakeInquiry = takeInquiry as jest.Mock;
@@ -63,13 +75,25 @@ describe('RoomStore join/resume actions', () => {
 		expect(store.getState().join).not.toHaveBeenCalled();
 	});
 
-	it('joinRoom omnichannel path calls takeInquiry with the room id and server version, then joins', async () => {
+	it('joinRoom omnichannel path calls takeInquiry with the room id, then joins', async () => {
 		const store = makeStore({ _id: 'room-id-1', rid: 'rid-1', t: 'l' } as any);
 
 		await store.getState().joinRoom();
 
-		expect(mockTakeInquiry).toHaveBeenCalledWith('room-id-1', '6.1.0');
+		expect(mockTakeInquiry).toHaveBeenCalledWith('room-id-1');
 		expect(store.getState().join).toHaveBeenCalledTimes(1);
+	});
+
+	it('joinRoom omnichannel path on a warmed rid-keyed store passes no server version', async () => {
+		const room = { _id: 'room-id-2', rid: 'warm-rid', t: 'l' } as any;
+		const warmed = peekOrCreateRoomStore({ rid: 'warm-rid', initialRoom: room });
+		warmed.setState({ room, join: jest.fn() });
+
+		await warmed.getState().joinRoom();
+
+		expect(mockTakeInquiry).toHaveBeenCalledWith('room-id-2');
+		expect(warmed.getState().join).toHaveBeenCalledTimes(1);
+		releaseRoomStore('warm-rid');
 	});
 
 	it('joinRoom plain path calls the join service then joins the store', async () => {

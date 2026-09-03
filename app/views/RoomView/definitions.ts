@@ -8,7 +8,6 @@ import {
 	type IBaseScreen,
 	type IEmoji,
 	type ILastMessage,
-	type ILoggedUser,
 	type IMessage,
 	type IMessageEditAttachment,
 	type IVisitor,
@@ -18,13 +17,30 @@ import {
 } from '../../definitions';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
-import { type IMessageActions } from '../../containers/MessageActions';
+import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
 import { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import { type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+import { type MessageRoomState } from '../../containers/message/stores/MessageRoomStore';
 
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
-export type TRoomViewUser = Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
+// The route parsed once at mount. A room screen's identity never legitimately changes, and a route
+// without one renders a failure state instead of a room.
+export interface IRoomScreenInput {
+	rid: string;
+	t: string;
+	tmid?: string;
+	/** Thread name on a thread; the observed subscription row never carries it. */
+	name?: string;
+	initialRoom: IRoomViewState['room'];
+	roomUserId?: string | null;
+}
+
+export type TRoomRouteParse = { status: 'valid'; input: IRoomScreenInput } | { status: 'invalid' };
+
+export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'>, Pick<IRoomScreenInput, 'rid' | 't' | 'tmid'> {
+	roomStore: RoomStore;
+}
 
 export interface IRoomFooterProps {
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -57,9 +73,7 @@ export interface IRoomViewState {
 				sysMes?: boolean;
 				onHold?: boolean;
 		  };
-	roomUpdate: {
-		[K in TRoomUpdate]?: any;
-	};
+	roomUpdate: Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
 	member: any;
 	lastSeen: Date | null;
 }
@@ -97,9 +111,10 @@ export interface IJumpToMessageArgs {
 	tmid?: string;
 	t?: string;
 	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void;
-	navToThread: (message: TGetMessageInfoResult) => void;
+	navToRoom: (message: TGetMessageInfoResult) => void | Promise<void>;
+	navToThread: (message: TGetMessageInfoResult) => void | Promise<void>;
 	cancel: () => void;
+	isCancelled: () => boolean;
 }
 
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
@@ -135,9 +150,17 @@ export interface IListContainerProps {
 	serverVersion: string | null;
 }
 
+export interface IRoomActions {
+	onThreadPress: (item: TAnyMessageModel) => void;
+	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
+	sendMessage: (message?: string, tshow?: boolean) => void;
+}
+
 // The screen's own state, carried by RoomScreenContext — see that module for why it is per-screen.
 export interface IRoomScreenContextValue {
 	loading: boolean;
+	failed: boolean;
+	retry: () => void;
 	lastSeen: IRoomViewState['lastSeen'];
 	clearLastSeen: () => void;
 }
@@ -168,9 +191,8 @@ export interface RoomState {
 	roomUserId?: string | null;
 	canAutoTranslate: boolean;
 	canForwardGuest: boolean;
-	canReturnQueue: boolean;
 	canViewCannedResponse: boolean;
-	canPlaceLivechatOnHold: boolean;
+	lastMessageFromAgent: boolean;
 	// Resolves with the run's outcome; only `loaded` carries the screen's unread divider anchor.
 	init: (params?: IRoomStoreInitParams) => Promise<TRoomInitResult>;
 	join: () => void;
@@ -179,7 +201,6 @@ export interface RoomState {
 }
 
 export interface IJoinRoomContext {
-	serverVersion?: string | null;
 	requestJoinCode?: () => void;
 	onJoin: () => void;
 }
@@ -188,7 +209,6 @@ export type RoomStore = StoreApi<RoomState>;
 
 export interface IGetOrCreateRoomStoreParams {
 	rid?: string;
-	t?: string;
 	initialRoom: IRoomViewState['room'];
 	roomUserId?: string | null;
 }
@@ -208,7 +228,7 @@ export type TGetMessageInfoResult = {
 export interface AnchorMessage {
 	id: string;
 	t?: string | null;
-	ts: Date | number;
+	ts: Date | number | string;
 }
 
 export interface IJumpTarget {
@@ -247,7 +267,6 @@ export interface IUseMessageActionsParams {
 	hideActionSheet: () => void;
 	rid?: string;
 	tmid?: string;
-	roomUserId?: string | null;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
 	messageActionsRef: RefObject<IMessageActions | null>;
@@ -275,6 +294,61 @@ export interface IUseMessageActionsResult {
 	getText: () => string | undefined;
 }
 
+export interface IRoomMessageListProps extends Pick<
+	MessageRoomState,
+	'jumpToMessage' | 'closeEmojiAndAction' | 'reactionInit' | 'errorActionsShow'
+> {
+	tmid?: string;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	flatListRef: TListRef;
+	onLongPress: IListContainerProps['onLongPress'];
+	roomActions: IRoomActions;
+}
+
+export type IRoomMessageActionsProps = Pick<
+	IMessageActionsProps,
+	'editInit' | 'replyInit' | 'quoteInit' | 'reactionInit' | 'onReactionPress' | 'jumpToMessage'
+> & {
+	tmid?: string;
+	messageActionsRef: RefObject<IMessageActions | null>;
+	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
+};
+
+export interface IUseRoomMessagingParams {
+	rid?: string;
+	t?: string;
+	tmid?: string;
+	roomStore: RoomStore;
+	roomUserId?: string | null;
+	quoteMessageId?: string;
+}
+
+export interface IUseRoomMessagingResult {
+	messageActionStore: TMessageActionStore;
+	roomScreen: IRoomScreenContextValue;
+	messageComposerRef: RefObject<IMessageComposerRef | null>;
+	listContainerRef: RefObject<IListContainerRef | null>;
+	flatListRef: TListRef;
+	messageActionsRef: RefObject<IMessageActions | null>;
+	messageErrorActionsRef: RefObject<IMessageErrorActions | null>;
+	roomActions: IRoomActions;
+	sendMessage: TComposerExternalState['onSendMessage'];
+	jumpToMessage: IMessageActionsProps['jumpToMessage'];
+	closeEmojiAndAction: IRoomMessageListProps['closeEmojiAndAction'];
+	errorActionsShow: IRoomMessageListProps['errorActionsShow'];
+	onMessageLongPress: IListContainerProps['onLongPress'];
+	onEditInit: IMessageActionsProps['editInit'];
+	onEditCancel: TComposerExternalState['editCancel'];
+	onEditRequest: TComposerExternalState['editRequest'];
+	onQuoteInit: IMessageActionsProps['quoteInit'];
+	onRemoveQuoteMessage: TComposerExternalState['onRemoveQuoteMessage'];
+	onReactionInit: IMessageActionsProps['reactionInit'];
+	onReactionPress: IMessageActionsProps['onReactionPress'];
+	onReplyInit: IMessageActionsProps['replyInit'];
+	setQuotesAndText: TComposerExternalState['setQuotesAndText'];
+	getText: TComposerExternalState['getText'];
+}
+
 export interface IUseSubscriptionUnreadsResult {
 	tunread: string[];
 	tunreadUser: string[];
@@ -288,8 +362,8 @@ export interface IUseJumpToMessageParams {
 	tmid?: string;
 	t?: string;
 	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void;
-	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void;
+	navToRoom: (message: TGetMessageInfoResult) => void | Promise<void>;
+	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void | Promise<void>;
 }
 
 export interface IUseJumpToMessageResult {
@@ -316,9 +390,5 @@ export interface IUseRoomNavigationResult {
 export interface IUseOmnichannelPermissionsParams {
 	rid?: string;
 	t?: string;
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
-	joined: boolean;
-	livechatAllowManualOnHold?: boolean;
 	roomStore: RoomStore;
 }

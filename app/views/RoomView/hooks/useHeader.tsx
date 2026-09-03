@@ -76,15 +76,9 @@ export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	const room = useRoomStoreByRid(rid, s => s.room);
-	// last_message re-emits on every incoming message; exclude it so the title effect only re-fires
-	// on fields the header actually renders.
-	const titleUpdate = useRoomStoreByRid(
+	const roomUpdate = useRoomStoreByRid(
 		rid,
-		useShallow(s => {
-			const rest = { ...s.roomUpdate };
-			delete rest.lastMessage;
-			return rest;
-		})
+		useShallow(s => s.roomUpdate)
 	);
 	const roomUserId = useRoomStoreByRid(rid, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(rid);
@@ -108,5 +102,5 @@ export const useHeader = ({ rid, tmid, name: roomName }: IUseHeaderParams): void
 
 		const headerProps = getRoomHeaderProps({ room, tmid, roomName, roomUserId, onPress: goRoomActionsView });
 		navigation.setOptions({ headerTitle: () => <RoomHeader {...headerProps} /> });
-	}, [rid, tmid, roomName, room, titleUpdate, roomUserId, navigation, goRoomActionsView]);
+	}, [rid, tmid, roomName, room, roomUpdate, roomUserId, navigation, goRoomActionsView]);
 };

@@ -53,31 +53,18 @@ export type TMessageActionStore = ReturnType<typeof createMessageActionStore>;
 
 export const MessageActionStoreContext = createContext<TMessageActionStore | null>(null);
 
-const noOpAction = (): never => {
-	throw new Error('MessageActionStore: no provider — actions unavailable');
-};
+const inertStore = createStore<Pick<MessageActionState, 'action'>>()(() => ({ action: null }));
 
-const NO_OP_ACTIONS: TMessageActionActions = {
-	startEditing: noOpAction,
-	startQuote: noOpAction,
-	addQuote: noOpAction,
-	removeQuote: noOpAction,
-	startReacting: noOpAction,
-	setQuoteMessageIds: noOpAction,
-	clear: noOpAction
-};
-
-// Rows rendered outside a RoomView (search, pinned) can never be in edit mode.
-// `action` is fixed at null (no `set` param) and its actions always throw — a safe, inert fallback.
-export const inertStore = createStore<MessageActionState>()(() => ({ action: null, actions: NO_OP_ACTIONS }));
-
-const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): T => {
+export const useMessageActionStoreApi = (): TMessageActionStore => {
 	const store = useContext(MessageActionStoreContext);
 	if (!store) {
 		throw new Error('Message action hooks must be used within a MessageActionProvider');
 	}
-	return useStore(store, selector);
+	return store;
 };
+
+const useMessageActionStore = <T,>(selector: (state: MessageActionState) => T): T =>
+	useStore(useMessageActionStoreApi(), selector);
 
 // `action` is a single ref replaced wholesale on every `set` — no useShallow needed.
 export const useMessageAction = (): TMessageActionState => useMessageActionStore(s => s.action);
@@ -91,7 +78,10 @@ export const useMessageActionKind = (): NonNullable<TMessageActionState>['kind']
  */
 export const useIsBeingEdited = (messageId: string): boolean => {
 	const store = useContext(MessageActionStoreContext) ?? inertStore;
-	return useStore(store, s => s.action?.kind === 'edit' && s.action.messageId === messageId);
+	return useStore(
+		store,
+		(s: Pick<MessageActionState, 'action'>) => s.action?.kind === 'edit' && s.action.messageId === messageId
+	);
 };
 
 // Stable ref so the selector doesn't emit a fresh array when not quoting.

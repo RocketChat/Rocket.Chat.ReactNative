@@ -5,7 +5,6 @@ import { setReaction } from '../../../../lib/services/restApi';
 import log from '../../../../lib/methods/helpers/log';
 import { Review } from '../../../../lib/methods/helpers/review';
 import { getMessageById } from '../../../../lib/database/services/Message';
-import { SubscriptionType } from '../../../../definitions';
 import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
 import ReactionPicker from '../../components/ReactionPicker';
 import { useMessageActions } from '../useMessageActions';
@@ -65,7 +64,6 @@ const renderMessageActions = (overrides: Partial<IUseMessageActionsParams> = {},
 			hideActionSheet,
 			rid: RID,
 			tmid: undefined,
-			roomUserId: 'room-user-1',
 			onThreadPress,
 			messageComposerRef: refs.messageComposerRef as any,
 			messageActionsRef: refs.messageActionsRef as any,
@@ -321,8 +319,8 @@ describe('useMessageActions', () => {
 	});
 
 	describe('reply', () => {
-		it('onReplyInit navigates to the thread when one already exists', async () => {
-			const message = { id: 'msg-1', tlm: '2024-01-01' };
+		it('onReplyInit delegates the message to the thread press', async () => {
+			const message = { id: 'msg-1', msg: 'hello' };
 			mockGetMessageById.mockResolvedValue(message);
 			const { result, onThreadPress, navigation } = renderMessageActions();
 
@@ -332,24 +330,6 @@ describe('useMessageActions', () => {
 
 			expect(onThreadPress).toHaveBeenCalledWith(message);
 			expect(navigation.push).not.toHaveBeenCalled();
-		});
-
-		it('onReplyInit pushes a new thread RoomView when none exists yet', async () => {
-			const message = { id: 'msg-1', msg: 'hello' };
-			mockGetMessageById.mockResolvedValue(message);
-			const { result, navigation } = renderMessageActions();
-
-			await act(async () => {
-				await result.current.onReplyInit('msg-1');
-			});
-
-			expect(navigation.push).toHaveBeenCalledWith('RoomView', {
-				rid: RID,
-				tmid: 'msg-1',
-				name: 'hello',
-				t: SubscriptionType.THREAD,
-				roomUserId: 'room-user-1'
-			});
 		});
 
 		it('onReplyInit no-ops when the message cannot be found', async () => {

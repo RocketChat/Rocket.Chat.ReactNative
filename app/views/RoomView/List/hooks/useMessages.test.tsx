@@ -12,6 +12,7 @@ import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { readThreads } from '../../../../lib/services/restApi';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
+import { buildVisibleSystemTypesClause } from '../visibleSystemMessages';
 import { useMessages } from './useMessages';
 
 jest.mock('../../../../lib/database', () => ({
@@ -39,7 +40,7 @@ jest.mock('../../../../lib/methods/helpers', () => {
 	const actual = jest.requireActual('../../../../lib/methods/helpers');
 	return {
 		...actual,
-		useDebounce: (fn: (...args: unknown[]) => unknown) => fn
+		useDebounce: (fn: (...args: unknown[]) => unknown) => Object.assign(fn, { cancel: jest.fn() })
 	};
 });
 
@@ -194,12 +195,12 @@ describe('useMessages', () => {
 		expect(mockDbGet).not.toHaveBeenCalled();
 	});
 
-	it('filters out system message types listed in hideSystemMessages', async () => {
-		emittedRows = [msg({ id: '1', t: 'uj' }), msg({ id: '2', t: undefined }), msg({ id: '3', t: 'room_changed_topic' })];
-		const { result } = renderUseMessages({ hideSystemMessages: ['uj'] });
+	it('asks the database to exclude system message types listed in hideSystemMessages', async () => {
+		renderUseMessages({ hideSystemMessages: ['uj'] });
 		await waitFor(() => {
-			expect(result.current[0].map(m => m.id)).toEqual(['2', '3']);
+			expect(queryCalls.length).toBeGreaterThan(0);
 		});
+		expect(queryCalls[0]).toContainEqual(buildVisibleSystemTypesClause(['uj']));
 	});
 
 	it('returns visibleMessagesIds aligned with visible messages', async () => {
@@ -516,8 +517,6 @@ describe('useMessages', () => {
 		const firstTake = JSON.stringify(queryCalls[0].at(-1));
 		const secondTake = JSON.stringify(queryCalls[1].at(-1));
 		expect(firstTake).not.toEqual(secondTake);
-		// Smoke check: the constant exists and is the expected step.
-		expect(QUERY_SIZE).toBe(50);
 	});
 
 	it('calls readThreads when tmid is set', async () => {
@@ -656,8 +655,7 @@ describe('useMessages', () => {
 		const takeBeforeRaise = findTakeClause(queryCalls[queryCalls.length - 1])?.count;
 		expect(takeBeforeRaise).toBe(QUERY_SIZE);
 
-		// The targeted read above the bound reveals the next batch plus a NEW Newer Loader at ts 1900.
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), newerLoaderAt('loader-H2', 1900)];
+		fetchRows = [newerLoaderAt('loader-H2', 1900)];
 
 		// loadNextMessages REMOVED the boundary loader: re-emit WITHOUT it (still under the old bound).
 		emitRows([msg({ id: 'm1', ts: at(1000) })]);
@@ -682,8 +680,7 @@ describe('useMessages', () => {
 			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
 		});
 
-		// The targeted read reveals the next batch but NO new Newer Loader: the Gap to the Live Tail closed.
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), msg({ id: 'm3', ts: at(1800) })];
+		fetchRows = [];
 
 		// loadNextMessages consumed the boundary loader: re-emit WITHOUT it.
 		emitRows([msg({ id: 'm1', ts: at(1000) })]);
@@ -711,7 +708,7 @@ describe('useMessages', () => {
 		const anchoredTake = findTakeClause(queryCalls[queryCalls.length - 1])?.count ?? 0;
 
 		// Gap closed (no Newer Loader above the bound), but 120 messages sit above it (the cached island).
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), msg({ id: 'm3', ts: at(1800) })];
+		fetchRows = [];
 		fetchCountValue = 120;
 
 		// loadNextMessages consumed the boundary loader: re-emit without it.
@@ -738,8 +735,7 @@ describe('useMessages', () => {
 			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
 		});
 
-		// The targeted read still shows a Newer Loader above the bound — the Gap is NOT closed.
-		fetchRows = [msg({ id: 'm2', ts: at(1700) }), newerLoaderAt('loader-H2', 1900)];
+		fetchRows = [newerLoaderAt('loader-H2', 1900)];
 
 		// Consume the boundary loader.
 		emitRows([msg({ id: 'm1', ts: at(1000) })]);

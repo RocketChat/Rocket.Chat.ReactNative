@@ -68,7 +68,6 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		};
 		peekOrCreateRoomStore({
 			rid: routeParams.rid,
-			t: routeParams.t,
 			initialRoom: {
 				rid: routeParams.rid,
 				t: routeParams.t as string,

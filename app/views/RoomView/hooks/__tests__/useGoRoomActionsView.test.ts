@@ -23,10 +23,10 @@ const mockState = {
 	member: { _id: 'm1' },
 	joined: true,
 	canForwardGuest: true,
-	canReturnQueue: true,
-	canViewCannedResponse: true,
-	canPlaceLivechatOnHold: true
+	canViewCannedResponse: true
 };
+jest.mock('../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
+jest.mock('../useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => true }));
 
 jest.mock('../../stores/RoomStore', () => ({
 	useRoomStoreByRid: (_rid: string | undefined, selector: (state: typeof mockState) => unknown) => selector(mockState)

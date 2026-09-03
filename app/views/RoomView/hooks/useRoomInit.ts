@@ -3,7 +3,6 @@ import { InteractionManager } from 'react-native';
 
 import { useLiveRef } from '../../../lib/hooks/useLiveRef';
 import log from '../../../lib/methods/helpers/log';
-import { type TMessageActionStore } from '../../../containers/message/stores/MessageActionStore';
 import { type IRoomScreenContextValue, type IRoomViewState, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
@@ -11,10 +10,13 @@ interface IUseRoomInitParams {
 	tmid?: string;
 	isAuthenticated: boolean;
 	roomStore: RoomStore;
-	roomUpdate: IRoomViewState['roomUpdate'];
 	onThreadMessagesLoaded: () => void;
-	messageActionStore: TMessageActionStore;
-	onQuoteInit: (messageId: string) => void;
+}
+
+interface IRunInitSetters {
+	setSettled: (settled: boolean) => void;
+	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void;
+	setFailed: (failed: boolean) => void;
 }
 
 // Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
@@ -29,8 +31,7 @@ const runInit = async (
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
 	controller: AbortController,
-	setSettled: (settled: boolean) => void,
-	setLastSeen: (lastSeen: IRoomViewState['lastSeen']) => void
+	{ setSettled, setLastSeen, setFailed }: IRunInitSetters
 ): Promise<void> => {
 	setSettled(false);
 	try {
@@ -39,12 +40,17 @@ const runInit = async (
 			onThreadMessagesLoaded: () => onLoadedRef.current?.(),
 			signal: controller.signal
 		});
-		// Only a loaded run carries an anchor; `failed` and `skipped` leave the current one alone.
-		if (!controller.signal.aborted && result.status === 'loaded') {
-			setLastSeen(result.lastSeen);
+		if (!controller.signal.aborted) {
+			if (result.status === 'loaded') {
+				setLastSeen(result.lastSeen);
+			}
+			setFailed(result.status === 'failed');
 		}
 	} catch (e) {
 		log(e);
+		if (!controller.signal.aborted) {
+			setFailed(true);
+		}
 	} finally {
 		if (!controller.signal.aborted) {
 			setSettled(true);
@@ -57,21 +63,18 @@ export function useRoomInit({
 	tmid,
 	isAuthenticated,
 	roomStore,
-	roomUpdate,
-	onThreadMessagesLoaded,
-	messageActionStore,
-	onQuoteInit
+	onThreadMessagesLoaded
 }: IUseRoomInitParams): IRoomScreenContextValue {
 	// onThreadMessagesLoaded is recreated every render; a live ref keeps it out of the init effects'
 	// deps so they don't re-fire on identity change alone (see ticket NATIVE-1356).
 	const onLoadedRef = useLiveRef(onThreadMessagesLoaded);
-	const onQuoteInitRef = useLiveRef(onQuoteInit);
 
 	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
 	const [lastSeen, setLastSeen] = useState<IRoomViewState['lastSeen']>(null);
 	// `settled` tracks the init run, and only the init run. A screen that has no rid or no auth never
 	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
 	const [settled, setSettled] = useState(false);
+	const [failed, setFailed] = useState(false);
 	const hasInitWork = !!rid && isAuthenticated;
 	const loading = hasInitWork && !settled;
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
@@ -82,7 +85,8 @@ export function useRoomInit({
 		initControllerRef.current?.abort();
 		const controller = new AbortController();
 		initControllerRef.current = controller;
-		return runInit(roomStore, tmid, onLoadedRef, controller, setSettled, setLastSeen);
+		setFailed(false);
+		return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen, setFailed });
 	}, [roomStore, tmid, onLoadedRef]);
 
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
@@ -103,25 +107,5 @@ export function useRoomInit({
 		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
 	}, [rid, isAuthenticated, hasInitWork, init]);
 
-	// messageActionStore is useState-stable, so this fires once per screen.
-	useEffect(() => {
-		const task = InteractionManager.runAfterInteractions(() => {
-			const { action } = messageActionStore.getState();
-			if (action?.kind === 'quote' && action.messageIds.length === 1) {
-				onQuoteInitRef.current(action.messageIds[0]);
-			}
-		});
-		return () => task.cancel();
-	}, [messageActionStore, onQuoteInitRef]);
-
-	// init() is skipped for invite subscriptions. Initialize when invite has been accepted
-	const prevStatusRef = useRef(roomUpdate.status);
-	useEffect(() => {
-		if (prevStatusRef.current === 'INVITED' && roomUpdate.status !== 'INVITED') {
-			init();
-		}
-		prevStatusRef.current = roomUpdate.status;
-	}, [roomUpdate.status, init]);
-
-	return { loading, lastSeen, clearLastSeen };
+	return { loading, failed: hasInitWork && failed && !loading, retry: init, lastSeen, clearLastSeen };
 }

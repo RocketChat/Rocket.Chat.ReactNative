@@ -1,19 +1,14 @@
-import { act, renderHook, waitFor } from '@testing-library/react-native';
+import { renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { getRoutingConfig } from '../../../../lib/services/restApi';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { type IUseOmnichannelPermissionsParams, type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState, type RoomStore } from '../../definitions';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
 
-jest.mock('../../../../lib/services/restApi', () => ({
-	getRoutingConfig: jest.fn()
-}));
 jest.mock('../../../../lib/hooks/usePermissions', () => ({
 	usePermissions: jest.fn()
 }));
 
-const mockGetRoutingConfig = getRoutingConfig as jest.Mock;
 const mockUsePermissions = usePermissions as jest.Mock;
 
 const makeRoomStore = (): RoomStore =>
@@ -26,161 +21,51 @@ const makeRoomStore = (): RoomStore =>
 		roomUserId: null,
 		canAutoTranslate: false,
 		canForwardGuest: false,
-		canReturnQueue: false,
 		canViewCannedResponse: false,
-		canPlaceLivechatOnHold: false,
+		lastMessageFromAgent: false,
 		init: jest.fn(),
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve())
 	}));
 
-const renderOmnichannelPermissions = (overrides: Partial<IUseOmnichannelPermissionsParams> = {}, roomStore = makeRoomStore()) => {
-	const { result } = renderHook(() =>
-		useOmnichannelPermissions({
-			rid: 'rid-1',
-			t: 'l',
-			room: { rid: 'rid-1', t: 'l' },
-			roomUpdate: {},
-			joined: true,
-			livechatAllowManualOnHold: true,
-			roomStore,
-			...overrides
-		})
-	);
-
-	return { result, roomStore };
-};
-
 describe('useOmnichannelPermissions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it('publishes the four flags into the store for a livechat room', async () => {
+	it('publishes the permission flags into the store for a livechat room', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
-		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
+		const roomStore = makeRoomStore();
 
-		const { roomStore } = renderOmnichannelPermissions({
-			t: 'l',
-			room: { rid: 'rid-1', t: 'l', lastMessage: { token: undefined, u: { _id: 'u1' } }, onHold: false } as any
-		});
+		renderHook(() => useOmnichannelPermissions({ rid: 'rid-1', t: 'l', roomStore }));
 
 		expect(roomStore.getState().canForwardGuest).toBe(true);
 		expect(roomStore.getState().canViewCannedResponse).toBe(true);
-
-		await waitFor(() => {
-			expect(roomStore.getState().canReturnQueue).toBe(true);
-		});
-
-		expect(roomStore.getState().canPlaceLivechatOnHold).toBe(true);
 	});
 
-	it('does not touch the flags for a non-livechat room', async () => {
+	it('clears the flags when the room stops being a livechat room', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
+		const roomStore = makeRoomStore();
 
-		const { roomStore } = renderOmnichannelPermissions({ t: 'c', room: { rid: 'rid-1', t: 'c' } as any });
+		const { rerender } = renderHook(({ t }: { t: string }) => useOmnichannelPermissions({ rid: 'rid-1', t, roomStore }), {
+			initialProps: { t: 'l' }
+		});
+		expect(roomStore.getState().canForwardGuest).toBe(true);
 
-		await act(async () => {});
+		rerender({ t: 'c' });
 
-		expect(mockGetRoutingConfig).not.toHaveBeenCalled();
 		expect(roomStore.getState().canForwardGuest).toBe(false);
-		expect(roomStore.getState().canReturnQueue).toBe(false);
 		expect(roomStore.getState().canViewCannedResponse).toBe(false);
-		expect(roomStore.getState().canPlaceLivechatOnHold).toBe(false);
 	});
 
-	it('drops a return-queue result that resolves after the screen unmounted', async () => {
-		const roomStore = makeRoomStore();
-		let resolveRoutingConfig: (value: { returnQueue: boolean }) => void = () => {};
-
+	it('keeps the flags off for a non-livechat room', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
-		mockGetRoutingConfig.mockImplementation(
-			() =>
-				new Promise(resolve => {
-					resolveRoutingConfig = resolve;
-				})
-		);
-
-		const { unmount } = renderHook((props: IUseOmnichannelPermissionsParams) => useOmnichannelPermissions(props), {
-			initialProps: {
-				rid: 'rid-1',
-				t: 'l',
-				room: { rid: 'rid-1', t: 'l' } as any,
-				roomUpdate: {},
-				joined: false,
-				livechatAllowManualOnHold: true,
-				roomStore
-			}
-		});
-
-		unmount();
-		resolveRoutingConfig({ returnQueue: true });
-		await act(async () => {});
-
-		expect(roomStore.getState().canReturnQueue).toBe(false);
-	});
-
-	it('fetches the server-global routing config once, not again when the room is joined', async () => {
 		const roomStore = makeRoomStore();
-		mockUsePermissions.mockReturnValue([true, true]);
-		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
 
-		const baseProps: IUseOmnichannelPermissionsParams = {
-			rid: 'rid-1',
-			t: 'l',
-			room: { rid: 'rid-1', t: 'l' } as any,
-			roomUpdate: {},
-			joined: false,
-			livechatAllowManualOnHold: true,
-			roomStore
-		};
+		renderHook(() => useOmnichannelPermissions({ rid: 'rid-1', t: 'c', roomStore }));
 
-		const { rerender } = renderHook((props: IUseOmnichannelPermissionsParams) => useOmnichannelPermissions(props), {
-			initialProps: baseProps
-		});
-
-		await waitFor(() => {
-			expect(roomStore.getState().canReturnQueue).toBe(true);
-		});
-
-		rerender({ ...baseProps, joined: true });
-		await act(async () => {});
-
-		expect(mockGetRoutingConfig).toHaveBeenCalledTimes(1);
-	});
-
-	it('recomputes canPlaceLivechatOnHold on a pure on-hold flip of the same room instance', async () => {
-		const roomStore = makeRoomStore();
-		mockUsePermissions.mockReturnValue([true, true]);
-		mockGetRoutingConfig.mockResolvedValue({ returnQueue: true });
-
-		// WatermelonDB re-emits the same mutated model instance; only roomUpdate is a fresh snapshot.
-		const room = { rid: 'rid-1', t: 'l', lastMessage: { token: undefined, u: { _id: 'u1' } }, onHold: false } as any;
-
-		const baseProps: IUseOmnichannelPermissionsParams = {
-			rid: 'rid-1',
-			t: 'l',
-			room,
-			roomUpdate: { onHold: false },
-			joined: true,
-			livechatAllowManualOnHold: true,
-			roomStore
-		};
-
-		const { rerender } = renderHook((props: IUseOmnichannelPermissionsParams) => useOmnichannelPermissions(props), {
-			initialProps: baseProps
-		});
-
-		await waitFor(() => {
-			expect(roomStore.getState().canPlaceLivechatOnHold).toBe(true);
-		});
-
-		room.onHold = true;
-		rerender({ ...baseProps, roomUpdate: { onHold: true } });
-
-		await waitFor(() => {
-			expect(roomStore.getState().canPlaceLivechatOnHold).toBe(false);
-		});
+		expect(roomStore.getState().canForwardGuest).toBe(false);
+		expect(roomStore.getState().canViewCannedResponse).toBe(false);
 	});
 });

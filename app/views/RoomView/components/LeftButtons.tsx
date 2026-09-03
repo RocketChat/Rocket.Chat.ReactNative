@@ -37,13 +37,12 @@ const LeftButtons = ({ rid, tmid }: ILeftButtonsProps): ReactElement | null => {
 	const unreadsCount = useUnreadsCount(rid);
 
 	if (!isMasterDetail || tmid) {
-		let label = ' ';
-		let labelLength = 1;
+		let label: string | undefined;
 		let marginLeft = 0;
 		let fontSize = 0;
 		if (unreadsCount) {
-			label = unreadsCount > 99 ? '+99' : unreadsCount.toString() || ' ';
-			labelLength = label.length ? label.length : 1;
+			label = unreadsCount > 99 ? '+99' : unreadsCount.toString();
+			const labelLength = label.length;
 			marginLeft = -4 * labelLength;
 			fontSize = labelLength > 1 ? 14 : 17;
 		}

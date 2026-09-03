@@ -2,7 +2,6 @@ import { render } from '@testing-library/react-native';
 
 import {
 	createMessageActionStore,
-	inertStore,
 	MessageActionProvider,
 	useEditingMessageId,
 	useIsBeingEdited,
@@ -23,7 +22,7 @@ describe('MessageActionStore', () => {
 			expect(spy).toHaveBeenLastCalledWith(false);
 		});
 
-		it('does not share mutable state across separate no-provider renders, and its actions throw', () => {
+		it('does not share mutable state across separate no-provider renders', () => {
 			const spyA = jest.fn();
 			const spyB = jest.fn();
 			const ProbeA = () => {
@@ -40,9 +39,6 @@ describe('MessageActionStore', () => {
 
 			expect(spyA).toHaveBeenLastCalledWith(false);
 			expect(spyB).toHaveBeenLastCalledWith(false);
-			expect(() => inertStore.getState().actions.startEditing('x')).toThrow(
-				'MessageActionStore: no provider — actions unavailable'
-			);
 		});
 
 		it('returns true only for the message being edited under a provider', () => {

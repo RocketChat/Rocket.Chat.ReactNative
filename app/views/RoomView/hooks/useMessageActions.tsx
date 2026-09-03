@@ -1,11 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-
 import { editMessage } from '../../../lib/methods/editMessage';
 import log from '../../../lib/methods/helpers/log';
-import { makeThreadName } from '../../../lib/methods/helpers/room';
 import { getMessageById } from '../../../lib/database/services/Message';
-import { type IMessage, type IMessageEditAttachment, SubscriptionType, type TAnyMessageModel } from '../../../definitions';
-import { type IRoomViewProps, type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
+import { type IMessage, type IMessageEditAttachment, type TAnyMessageModel } from '../../../definitions';
+import { type IUseMessageActionsParams, type IUseMessageActionsResult } from '../definitions';
 import ReactionPicker from '../components/ReactionPicker';
 import { useReactionActions } from './useReactionActions';
 
@@ -15,14 +12,11 @@ export function useMessageActions({
 	hideActionSheet,
 	rid,
 	tmid,
-	roomUserId,
 	onThreadPress,
 	messageComposerRef,
 	messageActionsRef,
 	messageErrorActionsRef
 }: IUseMessageActionsParams): IUseMessageActionsResult {
-	const navigation = useNavigation<IRoomViewProps['navigation']>();
-
 	const { resetAction, onReactionClose, onReactionPress } = useReactionActions({ messageActionStore, hideActionSheet });
 
 	const handleCloseEmoji = (action?: (params?: unknown) => void, params?: unknown) => {
@@ -119,16 +113,7 @@ export function useMessageActions({
 		if (!message || !rid) {
 			return;
 		}
-		if (message.tlm) {
-			return onThreadPress(message);
-		}
-		navigation.push('RoomView', {
-			rid,
-			tmid: messageId,
-			name: makeThreadName(message),
-			t: SubscriptionType.THREAD,
-			roomUserId
-		});
+		onThreadPress(message);
 	};
 
 	const setQuotesAndText = (text: string, quotes: string[]) => {
