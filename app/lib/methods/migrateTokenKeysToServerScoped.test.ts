@@ -74,6 +74,28 @@ describe('migrateTokenKeysToServerScoped', () => {
 		expect(UserPreferences.getBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED)).toBe(true);
 	});
 
+	it('confines a shared userId to its own servers while the rest of the run migrates', async () => {
+		const serverA = 'https://a.rocket.chat';
+		const serverB = 'https://b.rocket.chat';
+		const serverC = 'https://c.rocket.chat';
+		const sharedUserId = 'shared';
+		const soleUserId = 'sole';
+		UserPreferences.setString(`${TOKEN_KEY}-${serverA}`, sharedUserId);
+		UserPreferences.setString(`${TOKEN_KEY}-${serverB}`, sharedUserId);
+		UserPreferences.setString(`${TOKEN_KEY}-${serverC}`, soleUserId);
+		UserPreferences.setString(`${TOKEN_KEY}-${sharedUserId}`, 'ambiguous-token');
+		UserPreferences.setString(`${TOKEN_KEY}-${soleUserId}`, 'sole-token');
+		setServers([serverA, serverB, serverC]);
+
+		await migrateTokenKeysToServerScoped();
+
+		expect(UserPreferences.getString(getUserTokenKey(serverA, sharedUserId))).toBeNull();
+		expect(UserPreferences.getString(getUserTokenKey(serverB, sharedUserId))).toBeNull();
+		expect(UserPreferences.getString(getUserTokenKey(serverC, soleUserId))).toBe('sole-token');
+		expect(UserPreferences.getString(getServerUserIdKey(serverA))).toBe(sharedUserId);
+		expect(UserPreferences.getString(getServerUserIdKey(serverB))).toBe(sharedUserId);
+	});
+
 	it('does not overwrite an existing server-scoped token', async () => {
 		const server = 'https://open.rocket.chat';
 		const userId = 'user1';

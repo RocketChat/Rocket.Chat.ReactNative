@@ -153,6 +153,20 @@ const declineDeepLinkLogin = function* declineDeepLinkLogin() {
 	yield fallbackNavigation();
 };
 
+// Consent before touching anything on the deep link's server: a resume token means this link can
+// sign the user in, so every entry point asks through here while declining is still a no-op.
+const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
+	if (!params.token) {
+		return true;
+	}
+	const confirmed = yield call(confirmDeepLinkLogin, host, params);
+	if (!confirmed) {
+		yield declineDeepLinkLogin();
+		return false;
+	}
+	return true;
+};
+
 let consumedOAuthToken;
 
 const handleOAuth = function* handleOAuth({ params }) {
@@ -246,14 +260,8 @@ const handleOpen = function* handleOpen({ params }) {
 		} catch (e) {
 			// do nothing?
 		}
-		// Consent before touching anything on the deep link's server: a resume token means this
-		// link can sign the user in, so ask while declining is still a no-op.
-		if (params.token) {
-			const confirmed = yield call(confirmDeepLinkLogin, host, params);
-			if (!confirmed) {
-				yield declineDeepLinkLogin();
-				return;
-			}
+		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+			return;
 		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
@@ -365,14 +373,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			yield handleNavigateCallRoom({ params });
 			return;
 		}
-		// Consent before touching anything on the deep link's server: a resume token means this
-		// link can sign the user in, so ask while declining is still a no-op.
-		if (params.token) {
-			const confirmed = yield call(confirmDeepLinkLogin, host, params);
-			if (!confirmed) {
-				yield declineDeepLinkLogin();
-				return;
-			}
+		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+			return;
 		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
