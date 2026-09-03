@@ -45,14 +45,14 @@ const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	return <RoomScreen route={route} rid={rid} t={t} tmid={tmid} roomStore={roomStore} />;
 };
 
-const RoomView = (props: IRoomViewProps) => {
-	const [parsed] = useState(() => parseRoomRoute(props.route.params));
+const RoomView = ({ route, navigation }: IRoomViewProps) => {
+	const [parsed] = useState(() => parseRoomRoute(route.params));
 
 	if (parsed.status === 'invalid') {
-		return <RoomRouteInvalid navigation={props.navigation} />;
+		return <RoomRouteInvalid navigation={navigation} />;
 	}
 
-	return <RoomGate {...props} input={parsed.input} />;
+	return <RoomGate route={route} navigation={navigation} input={parsed.input} />;
 };
 
 export default RoomView;

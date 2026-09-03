@@ -14,13 +14,7 @@ interface IPushThreadRoomParams {
 	onCancel?: () => void;
 }
 
-export const pushThreadRoom = async ({
-	rid,
-	item,
-	roomUserId,
-	navigation,
-	onCancel
-}: IPushThreadRoomParams): Promise<void | undefined> => {
+export const pushThreadRoom = async ({ rid, item, roomUserId, navigation, onCancel }: IPushThreadRoomParams): Promise<void> => {
 	if (!rid) {
 		return;
 	}
