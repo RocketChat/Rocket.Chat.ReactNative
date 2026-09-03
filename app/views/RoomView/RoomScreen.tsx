@@ -3,7 +3,6 @@ import { useStore } from 'zustand';
 
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { useSetting } from '../../lib/hooks/useSetting';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import JoinCode from './components/JoinCode';
 import { type IJoinCode, type IRoomScreenProps } from './definitions';
@@ -26,18 +25,16 @@ import { useInAppFeedback } from './hooks/useInAppFeedback';
 const RoomScreen = ({ route, rid, t, tmid, roomStore }: IRoomScreenProps) => {
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
-	const livechatAllowManualOnHold = useSetting('Livechat_allow_manual_on_hold') as boolean;
 
 	const room = useStore(roomStore, s => s.room);
 	const roomUpdate = useStore(roomStore, s => s.roomUpdate);
-	const joined = useStore(roomStore, s => s.joined);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 
 	useRoomSubscription(rid, tmid);
 	useRoomAudioLifecycle(rid, tmid);
 	useRoomRemoved(rid, isMasterDetail);
 	useInAppFeedback();
-	useOmnichannelPermissions({ rid, t, roomUpdate, joined, livechatAllowManualOnHold, roomStore });
+	useOmnichannelPermissions({ rid, t, roomStore });
 
 	const { messageActionStore, roomScreen, messageComposerRef, composer, messageList, messageActions } = useRoomMessaging({
 		rid,
