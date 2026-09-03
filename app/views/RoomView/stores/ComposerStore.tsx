@@ -5,14 +5,10 @@ import { type ComposerState, type ComposerStore, type TComposerExternalState } f
 import { useRoomWithUpdateFromStore } from './RoomStoreContext';
 
 export const createComposerStore = (initial: TComposerExternalState) =>
-	createStore<ComposerState>()((set, get) => ({
+	createStore<ComposerState>()(set => ({
 		...initial,
 		isAutocompleteVisible: false,
-		updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => {
-			if (updatedAutocompleteVisible !== get().isAutocompleteVisible) {
-				set({ isAutocompleteVisible: updatedAutocompleteVisible });
-			}
-		}
+		updateAutocompleteVisible: (isAutocompleteVisible: boolean) => set({ isAutocompleteVisible })
 	}));
 
 export const ComposerStoreContext = createContext<ComposerStore | null>(null);
@@ -30,11 +26,14 @@ const useComposerStore = <T,>(selector: (state: ComposerState) => T): T => useSt
 export const ComposerProvider = ({ children, ...state }: { children: ReactNode } & TComposerExternalState): ReactElement => {
 	const [store] = useState(() => createComposerStore(state));
 
-	// `state` is exactly TComposerExternalState (children is destructured out), so this syncs every
-	// externally-suppliable field and none of the store-owned ones (isAutocompleteVisible/updateAutocompleteVisible).
-	// React Compiler keeps `state` referentially stable until a field changes, so the sync fires only then.
 	useEffect(() => {
-		store.setState(state);
+		const current = store.getState();
+		const changedFields = Object.fromEntries(
+			Object.entries(state).filter(([field, value]) => current[field as keyof ComposerState] !== value)
+		) as Partial<ComposerState>;
+		if (Object.keys(changedFields).length) {
+			store.setState(changedFields);
+		}
 	}, [store, state]);
 
 	return <ComposerStoreContext.Provider value={store}>{children}</ComposerStoreContext.Provider>;
