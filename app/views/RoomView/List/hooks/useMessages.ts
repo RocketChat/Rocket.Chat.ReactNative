@@ -90,7 +90,6 @@ export const useMessages = ({
 			// invocation is stale and must not mutate count / highTs for the new window.
 			const sub = subscription.current;
 
-			// Read the Newer Loader closest to the Live Tail directly so non-loader rows can't crowd the boundary loader out of the fetched set.
 			const loader = await findNewerLoaderAbove(rid, currentHighTs, 'closestToLiveTail');
 
 			if (subscription.current !== sub) {
@@ -200,18 +199,12 @@ export const useMessages = ({
 		return unsubscribe;
 	}, [fetchMessages, unsubscribe]);
 
-	// Sync the IDs ref after render so the react-hooks/refs rule holds while the ref stays up to
-	// date before any paint (useLayoutEffect timing).
 	useLayoutEffect(() => {
 		messagesIds.current = messages.map(m => m.id);
 	}, [messages]);
 
 	useEffect(
 		() => {
-			// Snapshot the currently-visible loader into lastDispatchedLoaderId so the
-			// auto-dispatch effect treats it as already-seen when it re-fires after the rid
-			// change — messages may still reflect the previous room until the new
-			// subscription emits, and we must not dispatch with a stale loader.
 			lastDispatchedLoaderId.current = findFirstLoaderId(messages);
 			autoLoadCount.current = 0;
 		},

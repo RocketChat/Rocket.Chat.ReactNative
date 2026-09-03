@@ -45,8 +45,6 @@ import { useLiveRef } from '../../lib/hooks/useLiveRef';
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
 // FIXME: handle servers with version < 3.0.0
-// Return stable refs (model field / redux prop / shared empty) — a fresh [] here re-subscribes
-// the message-list WatermelonDB query on every RoomView render (fetchMessages dep).
 const getHideSystemMessages = (room: IRoomViewState['room'], Hide_System_Messages?: string[]): string[] => {
 	const { sysMes } = room;
 	if (Array.isArray(sysMes)) {

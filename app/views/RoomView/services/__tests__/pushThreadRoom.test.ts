@@ -1,13 +1,13 @@
-import { sendLoadingEvent } from '../../../containers/Loading';
-import { E2E_MESSAGE_TYPE } from '../../../lib/constants/keys';
-import { SubscriptionType } from '../../../definitions';
-import { fetchThreadName } from './fetchThreadName';
-import { pushThreadRoom } from './pushThreadRoom';
+import { sendLoadingEvent } from '../../../../containers/Loading';
+import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
+import { SubscriptionType } from '../../../../definitions';
+import { fetchThreadName } from '../fetchThreadName';
+import { pushThreadRoom } from '../pushThreadRoom';
 
-jest.mock('../../../containers/Loading', () => ({
+jest.mock('../../../../containers/Loading', () => ({
 	sendLoadingEvent: jest.fn()
 }));
-jest.mock('./fetchThreadName', () => ({
+jest.mock('../fetchThreadName', () => ({
 	fetchThreadName: jest.fn(() => Promise.resolve('Thread title'))
 }));
 
@@ -29,7 +29,7 @@ describe('pushThreadRoom', () => {
 		await push({ id: 'msg-1', tmid: 'tmid-1', tmsg: 'known name' });
 
 		expect(mockFetchThreadName).toHaveBeenCalledWith('rid-1', 'tmid-1', 'msg-1', 'known name');
-		expect(mockSendLoadingEvent).toHaveBeenCalledWith({ visible: true, onCancel });
+		expect(mockSendLoadingEvent).toHaveBeenCalledWith({ visible: true, onCancel: expect.any(Function) });
 		expect(navigation.push).toHaveBeenCalledWith('RoomView', {
 			rid: 'rid-1',
 			tmid: 'tmid-1',
@@ -75,6 +75,21 @@ describe('pushThreadRoom', () => {
 			t: SubscriptionType.THREAD,
 			roomUserId: 'user-1'
 		});
+	});
+
+	it('cancelling during the fetch stops the thread from opening and hides the overlay', async () => {
+		let resolveFetch: (value: string) => void;
+		mockFetchThreadName.mockReturnValue(new Promise<string>(resolve => (resolveFetch = resolve)));
+
+		const pending = push({ id: 'msg-1', tmid: 'tmid-1', tmsg: 'known name' });
+
+		const { onCancel: overlayOnCancel } = mockSendLoadingEvent.mock.calls[0][0];
+		overlayOnCancel();
+		resolveFetch!('Thread title');
+		await pending;
+
+		expect(mockSendLoadingEvent).toHaveBeenLastCalledWith({ visible: false });
+		expect(navigation.push).not.toHaveBeenCalled();
 	});
 
 	it('does nothing without a rid', async () => {

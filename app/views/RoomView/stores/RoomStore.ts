@@ -219,8 +219,6 @@ const observeRoom = (rid: string | undefined, initialRoom: IRoomViewState['room'
 			const state = roomChanged
 				? {
 						room: next,
-						// observeWithColumns re-emits the same cached model instance mutated in place, so a fresh
-						// snapshot object is what re-renders consumers on a tracked-column change.
 						roomUpdate,
 						subscribed: true,
 						joined: true

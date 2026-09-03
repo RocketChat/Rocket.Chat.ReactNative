@@ -1,5 +1,5 @@
-import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
-import { MESSAGE_TYPE_ANY_LOAD } from '../../../../lib/constants/messageTypeLoad';
+import { buildVisibleSystemTypesClause } from '../buildVisibleSystemTypesClause';
+import { MESSAGE_TYPE_ANY_LOAD } from '../../../../../lib/constants/messageTypeLoad';
 
 describe('buildVisibleSystemTypesClause', () => {
 	it('returns null when nothing is hidden', () => {

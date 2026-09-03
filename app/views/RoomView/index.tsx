@@ -12,14 +12,9 @@ import { useRoomWithUpdateFromStore } from './stores/RoomStoreContext';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 
-// Blocked rooms are decided before the room tree mounts, so an invited or E2EE-blocked room never
-// opens the subscription or runs init, and unblocking mounts the tree once.
 const RoomGate = (props: IRoomViewProps) => {
 	const { route, navigation } = props;
 
-	// Screen identity is captured once at mount: navigation can transiently wipe this route's params
-	// to undefined (e.g. popTo with no params while retained below the stack top), and a room screen's
-	// rid/t/tmid never legitimately change.
 	const [rid] = useState(() => route.params?.rid);
 	const [t] = useState(() => route.params?.t);
 	/**

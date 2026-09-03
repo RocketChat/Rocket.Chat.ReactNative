@@ -1,14 +1,14 @@
-import { Review } from '../../../lib/methods/helpers/review';
-import { sendMessage } from '../../../lib/methods/sendMessage';
-import { sendRoomMessage } from './sendRoomMessage';
+import { Review } from '../../../../lib/methods/helpers/review';
+import { sendMessage } from '../../../../lib/methods/sendMessage';
+import { sendRoomMessage } from '../sendRoomMessage';
 
-jest.mock('../../../lib/methods/sendMessage', () => ({
+jest.mock('../../../../lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/helpers/review', () => ({
+jest.mock('../../../../lib/methods/helpers/review', () => ({
 	Review: { pushPositiveEvent: jest.fn() }
 }));
-jest.mock('../../../lib/methods/helpers/log', () => ({
+jest.mock('../../../../lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),

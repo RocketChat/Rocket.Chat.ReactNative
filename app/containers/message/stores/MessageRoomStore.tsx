@@ -29,8 +29,6 @@ export type MessageRoomState = LiveCallbacks & {
 	autoTranslateLanguage?: string;
 };
 
-// Exact snapshot: `-?` forces every key to be present, so the sync effect's setState payload can
-// never silently drift from MessageRoomState.
 type MessageRoomSnapshot = { [K in keyof Required<MessageRoomState>]: MessageRoomState[K] };
 
 type LiveCallbacksSnapshot = { [K in keyof Required<LiveCallbacks>]: LiveCallbacks[K] };
