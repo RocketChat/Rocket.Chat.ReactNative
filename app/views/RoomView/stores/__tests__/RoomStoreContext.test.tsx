@@ -1,35 +1,35 @@
 import { act, render } from '@testing-library/react-native';
 
-import database from '../../../lib/database';
-import { peekOrCreateRoomStore, releaseRoomStore } from './RoomStore';
-import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from './RoomStoreContext';
+import database from '../../../../lib/database';
+import { peekOrCreateRoomStore, releaseRoomStore } from '../RoomStore';
+import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
 
-jest.mock('../../../lib/database', () => ({
+jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services/getMessages', () => ({
+jest.mock('../../services/getMessages', () => ({
 	__esModule: true,
 	default: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/loadThreadMessages', () => ({
+jest.mock('../../../../lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/methods/readMessages', () => ({
+jest.mock('../../../../lib/methods/readMessages', () => ({
 	readMessages: jest.fn(() => Promise.resolve())
 }));
-jest.mock('../../../lib/services/restApi', () => ({
+jest.mock('../../../../lib/services/restApi', () => ({
 	getUserInfo: jest.fn()
 }));
-jest.mock('../../../lib/methods/helpers', () => ({
+jest.mock('../../../../lib/methods/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1'),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => true)
 }));
-jest.mock('../../../lib/methods/isInviteSubscription', () => ({
+jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 	isInviteSubscription: jest.fn(() => false)
 }));
-jest.mock('../../../lib/methods/helpers/log', () => jest.fn());
+jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 
 const mockGet = database.active.get as jest.Mock;
 
