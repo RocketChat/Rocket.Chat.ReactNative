@@ -162,6 +162,39 @@ describe('RoomStore', () => {
 		expect(store.getState().roomUpdate).not.toBe(first);
 	});
 
+	it('keeps room pointing at the live model instance when only lastMessage changes on a Livechat row', () => {
+		const { emit } = setupObserve();
+		const mutable: Record<string, unknown> = {
+			id: 'sub-1',
+			rid: 'rid-1',
+			t: 'l',
+			lastMessage: { u: { _id: 'visitor-1' }, token: 'v' }
+		};
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+
+		emit([mutable]);
+		expect(store.getState().lastMessageFromAgent).toBe(false);
+
+		mutable.lastMessage = { u: { _id: 'agent-1' } };
+		emit([mutable]);
+
+		expect(store.getState().lastMessageFromAgent).toBe(true);
+		expect(store.getState().room).toBe(mutable);
+	});
+
+	it('replaces room when the subscription row is recreated with identical attributes', () => {
+		const { emit } = setupObserve();
+		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+
+		emit([subRoom]);
+		emit([]);
+		const recreated = { ...subRoom, id: 'sub-2' };
+		emit([recreated]);
+
+		expect(store.getState().subscribed).toBe(true);
+		expect(store.getState().room).toBe(recreated);
+	});
+
 	it('derives the agent-authored flag from a Livechat row', () => {
 		const { emit } = setupObserve();
 		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
