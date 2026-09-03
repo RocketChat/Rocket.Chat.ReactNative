@@ -281,6 +281,48 @@ describe('useJumpToMessage', () => {
 		expect(listContainerRef.current.jumpToMessage).not.toHaveBeenCalled();
 	});
 
+	it('drops an earlier jump that resolves after a newer one started', async () => {
+		const listContainerRef = createListRef();
+		listContainerRef.current.isMessageInWindow.mockReturnValue(true);
+		let resolveFirst: (value: unknown) => void = () => {};
+		mockGetMessageInfo.mockReturnValueOnce(new Promise(res => (resolveFirst = res)));
+		mockGetMessageInfo.mockResolvedValueOnce({ id: 'mB', rid: RID, ts: 200 });
+		const { result } = renderJumpToMessage(listContainerRef);
+
+		await act(async () => {
+			const first = result.current.jumpToMessage('mA');
+			await result.current.jumpToMessage('mB');
+			resolveFirst({ id: 'mA', rid: RID, ts: 100 });
+			await first;
+		});
+
+		expect(listContainerRef.current.jumpToMessage).toHaveBeenCalledTimes(1);
+		expect(listContainerRef.current.jumpToMessage).toHaveBeenCalledWith('mB', null);
+	});
+
+	it('keeps the newer jump alive when an earlier one fails after it started', async () => {
+		const listContainerRef = createListRef();
+		listContainerRef.current.isMessageInWindow.mockReturnValue(true);
+		let rejectFirst: (error: unknown) => void = () => {};
+		mockGetMessageInfo.mockReturnValueOnce(new Promise((_, rej) => (rejectFirst = rej)));
+		let resolveSecond: (value: unknown) => void = () => {};
+		mockGetMessageInfo.mockReturnValueOnce(new Promise(res => (resolveSecond = res)));
+		const { result } = renderJumpToMessage(listContainerRef);
+
+		await act(async () => {
+			const first = result.current.jumpToMessage('mA');
+			const second = result.current.jumpToMessage('mB');
+			rejectFirst(new Error('boom'));
+			await first;
+			resolveSecond({ id: 'mB', rid: RID, ts: 200 });
+			await second;
+		});
+
+		expect(mockLog).not.toHaveBeenCalled();
+		expect(listContainerRef.current.cancelJumpToMessage).not.toHaveBeenCalled();
+		expect(listContainerRef.current.jumpToMessage).toHaveBeenCalledWith('mB', null);
+	});
+
 	it('logs and cancels the jump on an unexpected error', async () => {
 		const listContainerRef = createListRef();
 		const error = new Error('boom');

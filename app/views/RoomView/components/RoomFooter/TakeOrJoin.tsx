@@ -1,14 +1,16 @@
+import { type ReactElement } from 'react';
+
 import I18n from '../../../../i18n';
 import { type ITakeOrJoinProps } from '../../definitions';
 import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
-export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps) => {
+export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps): ReactElement => {
 	const room = useRoomWithUpdate();
 	const joinRoom = useRoomStore(s => s.joinRoom);
 
 	// The join-code modal lives on this screen, so the trigger is handed to joinRoom per call.
-	const onPressJoin = () => joinRoom(() => joinCodeRef.current?.show());
+	const onPressJoin = (): Promise<void> => joinRoom(() => joinCodeRef.current?.show());
 
 	return (
 		<FooterAction

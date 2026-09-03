@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { InteractionManager } from 'react-native';
 import { renderHook } from '@testing-library/react-native';
 
@@ -537,6 +538,19 @@ describe('RoomStore', () => {
 			expect(unsubscribe).not.toHaveBeenCalled();
 
 			flushSweeps();
+			expect(unsubscribe).toHaveBeenCalledTimes(1);
+		});
+
+		it('releases every reference under StrictMode so the observer is torn down after unmount', () => {
+			const { unsubscribe } = setupObserve();
+			const { unmount } = renderHook(() => useRoomStoreForScreen({ rid: 'rid-1', t: 'c', initialRoom: stubRoom }), {
+				wrapper: StrictMode
+			});
+
+			flushSweeps();
+			unmount();
+			flushSweeps();
+
 			expect(unsubscribe).toHaveBeenCalledTimes(1);
 		});
 

@@ -323,15 +323,16 @@ export const acquireRoomStore = ({ rid, t }: Pick<IGetOrCreateRoomStoreParams, '
 
 export const useRoomStoreForScreen = (params: IGetOrCreateRoomStoreParams): RoomStore => {
 	const [screenParams] = useState(params);
-	const [store, setStore] = useState(() => peekOrCreateRoomStore(screenParams));
+	const [peekedStore] = useState(() => peekOrCreateRoomStore(screenParams));
+	const [store, setStore] = useState(peekedStore);
 	const { rid } = screenParams;
 
 	useEffect(() => {
-		setStore(current => acquireRoomStore(screenParams, current));
+		setStore(acquireRoomStore(screenParams, peekedStore));
 		return () => {
 			InteractionManager.runAfterInteractions(() => releaseRoomStore(rid));
 		};
-	}, [rid, screenParams]);
+	}, [rid, screenParams, peekedStore]);
 
 	return store;
 };

@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
@@ -7,16 +7,16 @@ import sharedStyles from '../../Styles';
 
 const GAP = 32;
 
-type RoomPlaceholderProps = {
+interface RoomPlaceholderProps {
 	icon: TIconsName;
 	title: string;
 	description: string;
 	detail?: ReactNode;
 	testID?: string;
 	children: ReactNode;
-};
+}
 
-export const RoomPlaceholder = ({ icon, title, description, detail, testID, children }: RoomPlaceholderProps) => {
+export const RoomPlaceholder = ({ icon, title, description, detail, testID, children }: RoomPlaceholderProps): ReactElement => {
 	const { colors } = useTheme();
 	const styles = useStyle();
 

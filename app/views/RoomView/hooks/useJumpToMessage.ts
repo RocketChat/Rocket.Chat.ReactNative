@@ -36,13 +36,14 @@ export function useJumpToMessage({
 
 	const jumpGenerationRef = useRef(0);
 
-	const cancelJumpToMessage = () => {
+	const cancelJumpToMessage = (): void => {
 		jumpGenerationRef.current += 1;
 		listContainerRef.current?.cancelJumpToMessage();
 		sendLoadingEvent({ visible: false });
 	};
 
-	const jumpToMessage = (messageId: string, isFromReply?: boolean) => {
+	const jumpToMessage = (messageId: string, isFromReply?: boolean): Promise<void> => {
+		jumpGenerationRef.current += 1;
 		const generation = jumpGenerationRef.current;
 		return jumpToMessageService({
 			messageId,

@@ -76,6 +76,9 @@ export const jumpToMessage = async ({
 			sendLoadingEvent({ visible: false });
 		}
 	} catch (error: any) {
+		if (isCancelled()) {
+			return;
+		}
 		if (isFromReply && error.data?.errorType === 'error-not-allowed') {
 			showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
 		} else {

@@ -1,3 +1,4 @@
+import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,7 +19,7 @@ export const FooterAction = ({
 	buttonTestID: string;
 	buttonLabel: string;
 	onPress: () => void;
-}) => {
+}): ReactElement => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const { loading } = useRoomScreen();

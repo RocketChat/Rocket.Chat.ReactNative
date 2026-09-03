@@ -1,8 +1,10 @@
+import { type ReactElement } from 'react';
+
 import I18n from '../../../../i18n';
 import { useRoomStore } from '../../stores/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
-export const OnHold = () => {
+export const OnHold = (): ReactElement => {
 	const resumeRoom = useRoomStore(s => s.resumeRoom);
 
 	return (
