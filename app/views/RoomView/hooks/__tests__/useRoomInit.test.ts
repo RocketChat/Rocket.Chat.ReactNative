@@ -2,7 +2,6 @@ import { InteractionManager } from 'react-native';
 import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { createMessageActionStore } from '../../../../containers/message/stores/MessageActionStore';
 import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
 import { useRoomInit } from '../useRoomInit';
 
@@ -14,8 +13,6 @@ interface IRenderRoomInitParams {
 	isAuthenticated: boolean;
 	roomStore: RoomStore;
 	onThreadMessagesLoaded: () => void;
-	messageActionStore: ReturnType<typeof createMessageActionStore>;
-	onQuoteInit: (messageId: string) => void;
 }
 
 const makeRoomStore = (): RoomStore =>
@@ -66,8 +63,6 @@ const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStor
 		isAuthenticated: true,
 		roomStore,
 		onThreadMessagesLoaded: jest.fn(),
-		messageActionStore: createMessageActionStore(),
-		onQuoteInit: jest.fn(),
 		...overrides
 	};
 	const { rerender, result, unmount } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), {
@@ -110,22 +105,6 @@ describe('useRoomInit', () => {
 		renderRoomInit({ isAuthenticated: false }, roomStore);
 
 		expect(roomStore.getState().init).not.toHaveBeenCalled();
-	});
-
-	it('fires onQuoteInit once on mount when the message action store has a single-message quote action', () => {
-		const onQuoteInit = jest.fn();
-		const messageActionStore = createMessageActionStore({ kind: 'quote', messageIds: ['msg-1'] });
-		renderRoomInit({ onQuoteInit, messageActionStore });
-
-		expect(onQuoteInit).toHaveBeenCalledTimes(1);
-		expect(onQuoteInit).toHaveBeenCalledWith('msg-1');
-	});
-
-	it('does not fire onQuoteInit when there is no pending quote action', () => {
-		const onQuoteInit = jest.fn();
-		renderRoomInit({ onQuoteInit, messageActionStore: createMessageActionStore() });
-
-		expect(onQuoteInit).not.toHaveBeenCalled();
 	});
 
 	it('clears loading once init rejects', async () => {
