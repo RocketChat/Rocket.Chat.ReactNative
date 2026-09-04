@@ -1,0 +1,65 @@
+appId: ${APP_ID}
+name: Reaction List Scroll To Last User
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-6
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.randomMessage = 'reaction-list-message-' + output.random()}
+- evalScript: ${output.message = output.utils.sendMessage(output.user.username, output.user.password, output.room.name, output.randomMessage)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.randomMessage}.*'
+    timeout: 60000
+
+# Create 15 users and have them react to the message with a thumbs-up emoji
+- evalScript: ${output.reactors = output.utils.reactAsNewUsers(15, output.message.message._id, ':thumbsup:')}
+
+- extendedWaitUntil:
+    visible:
+      id: 'message-reaction-:thumbsup:'
+    timeout: 60000
+- longPressOn:
+    id: 'message-reaction-:thumbsup:'
+- extendedWaitUntil:
+    visible:
+      id: reactionsList
+    timeout: 60000
+- tapOn:
+    id: 'reactions-tab-:thumbsup:'
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Scroll until the last user is visible in the list of users who reacted to the message.
+- evalScript: ${output.userFound = 0}
+- repeat:
+    while:
+      true: ${output.userFound == 0}
+    commands:
+      - swipe:
+          from:
+            id: 'usersList-:thumbsup:'
+          direction: up
+      - runFlow:
+          when:
+            visible:
+              text: ${output.reactors[14].username}
+          commands:
+            - evalScript: ${output.userFound = 1}

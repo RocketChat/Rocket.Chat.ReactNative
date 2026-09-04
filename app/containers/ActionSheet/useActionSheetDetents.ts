@@ -1,10 +1,28 @@
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
 
+import { isAndroid } from '../../lib/methods/helpers';
+
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const SCROLL_ENABLED_THRESHOLD = 0.6;
 export const HANDLE_HEIGHT = 28;
+// home-button devices returns a 0 bottom inset, hiding content off-screen without this floor.
+const SHEET_CONTENT_MIN_BOTTOM_PADDING = 32;
+
+export const getSheetContentPaddingBottom = ({
+	bottom,
+	fullContainer,
+	hugContent,
+	scrollEnabled
+}: {
+	bottom: number;
+	fullContainer?: boolean;
+	hugContent?: boolean;
+	scrollEnabled?: boolean;
+}): number =>
+	Math.max(SHEET_CONTENT_MIN_BOTTOM_PADDING, bottom) +
+	(isAndroid && fullContainer && !hugContent && !scrollEnabled ? HANDLE_HEIGHT : 0);
 
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps

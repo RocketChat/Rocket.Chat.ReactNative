@@ -180,6 +180,21 @@ const post = (endpoint, username, password, body) => {
     return response;
 };
 
+// Creates `count` new users and has each of them react to `messageId` with `emoji`.
+// Used to reproduce "who reacted" sheets with many reactors (e.g. the reaction-list
+// scroll/clipping regression). Created users are tracked by createUser() for cleanup.
+const reactAsNewUsers = (count, messageId, emoji) => {
+    const reactors = [];
+
+    for (let i = 0; i < count; i++) {
+        const reactor = createUser();
+        post('chat.react', reactor.username, reactor.password, { messageId, emoji, shouldReact: true });
+        reactors.push(reactor);
+    }
+
+    return reactors;
+};
+
 const createDM = (username, password, otherUsername) => {
     login(username, password);
 
@@ -261,6 +276,7 @@ output.utils = {
     sendMessage,
     getProfileInfo,
     post,
+    reactAsNewUsers,
     login,
     getDeepLink,
     createDM,

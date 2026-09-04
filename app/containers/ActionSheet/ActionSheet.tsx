@@ -36,10 +36,6 @@ const ActionSheet = memo(
 
 		const itemHeight = useActionSheetItemHeight();
 
-		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-			setContentHeight(layout.height);
-		};
-
 		const hide = () => {
 			if (!isVisible) return;
 			sheetRef.current?.dismiss();
@@ -116,6 +112,11 @@ const ActionSheet = memo(
 		const hasSnaps = !!effectiveSnaps?.length;
 		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
+		const contentScrollEnabled = hasOptions ? scrollEnabled : isScrollable;
+
+		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+			setContentHeight(layout.height);
+		};
 
 		const contentMinHeight =
 			data.fullContainer && effectiveSnaps?.length
@@ -152,7 +153,7 @@ const ActionSheet = memo(
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
-							scrollEnabled={scrollEnabled}>
+							scrollEnabled={contentScrollEnabled}>
 							{data?.children}
 						</BottomSheetContent>
 					</GestureHandlerRootView>
