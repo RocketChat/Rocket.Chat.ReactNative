@@ -19,7 +19,7 @@ import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/meth
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -169,7 +169,17 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	try {
-		yield localAuthenticate(server);
+		try {
+			yield localAuthenticate(server);
+		} catch (e) {
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
+			}
+			// Unlock canceled or superseded by another lock request — restart the normal flow instead
+			// of leaving the share extension stuck on the loading root.
+			yield put(appInit());
+			return;
+		}
 		const serverRecord = yield getServerById(server);
 		if (!serverRecord) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -237,7 +247,12 @@ const handleOpen = function* handleOpen({ params }) {
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
-			yield localAuthenticate(host);
+			try {
+				yield localAuthenticate(host);
+			} catch (e) {
+				logUnlessUserCanceled(e);
+				return;
+			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
@@ -253,7 +268,12 @@ const handleOpen = function* handleOpen({ params }) {
 				return;
 			}
 		} catch (e) {
-			// do nothing?
+			logUnlessUserCanceled(e);
+			// Don't fall through to the add-server flow — it would connect to the very server whose
+			// unlock just failed. fallbackNavigation only acts on a cold start, where returning here
+			// would otherwise leave the app stuck on the splash screen with no navigator.
+			yield fallbackNavigation();
+			return;
 		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
@@ -347,14 +367,24 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
-			yield localAuthenticate(host);
+			try {
+				yield localAuthenticate(host);
+			} catch (e) {
+				logUnlessUserCanceled(e);
+				return;
+			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
 		yield handleNavigateCallRoom({ params });
 	} else {
 		if (user && serverRecord) {
-			yield localAuthenticate(host);
+			try {
+				yield localAuthenticate(host);
+			} catch (e) {
+				logUnlessUserCanceled(e);
+				return;
+			}
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });

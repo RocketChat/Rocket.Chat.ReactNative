@@ -10,13 +10,16 @@ import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication
 import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
+import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
+import { type BiometricInvalidationReason } from '../definitions';
 import Touch from '../containers/Touch';
 
 interface IData {
 	submit?: () => void;
 	cancel?: () => void;
 	hasBiometry?: boolean;
-	force?: boolean;
+	canClose?: boolean;
+	reason?: BiometricInvalidationReason;
 }
 
 const styles = StyleSheet.create({
@@ -33,6 +36,8 @@ const styles = StyleSheet.create({
 const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
+	const [requestId, setRequestId] = useState(0);
+	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -43,9 +48,13 @@ const ScreenLockedView = () => {
 	}, [data]);
 
 	const showScreenLock = (args: IData) => {
+		onShow(args);
+		setRequestId(current => current + 1);
 		setData(args);
 	};
 
+	// Empty deps, so this closes over the first render's showScreenLock: safe only because
+	// useDeferredModalSettle is entirely ref-backed. Adding state there wedges it on a stale closure.
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		return () => {
@@ -54,18 +63,12 @@ const ScreenLockedView = () => {
 	}, []);
 
 	const onSubmit = () => {
-		const { submit } = data;
-		if (submit) {
-			submit();
-		}
+		defer(data.submit || null);
 		setData({});
 	};
 
 	const onCancel = () => {
-		const { cancel } = data;
-		if (cancel) {
-			cancel();
-		}
+		defer(data.cancel || null);
 		setData({});
 	};
 
@@ -76,10 +79,11 @@ const ScreenLockedView = () => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
-			animationOut='fadeOut'>
+			animationOut='fadeOut'
+			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
-				<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
-				{data?.force ? (
+				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
+				{data?.canClose ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />
 					</Touch>

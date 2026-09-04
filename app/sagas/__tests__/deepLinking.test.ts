@@ -24,9 +24,19 @@ jest.mock('../../lib/methods/helpers/goRoom', () => ({
 	navigateToRoom: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
-	localAuthenticate: jest.fn()
-}));
+jest.mock('../../lib/methods/helpers/localAuthentication', () => {
+	class UserCanceledError extends Error {
+		constructor() {
+			super('User canceled local authentication');
+			this.name = 'UserCanceledError';
+		}
+	}
+	return {
+		localAuthenticate: jest.fn(),
+		logUnlessUserCanceled: jest.fn(),
+		UserCanceledError
+	};
+});
 
 jest.mock('../../lib/services/connect', () => ({
 	loginOAuthOrSso: jest.fn()
@@ -94,10 +104,11 @@ import { selectServerFailure, selectServerSuccess } from '../../actions/server';
 import { appStart } from '../../actions/app';
 import { APP, LOGOUT, SERVER } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
+import { TOKEN_KEY } from '../../lib/constants/keys';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
-import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '../../lib/methods/helpers/localAuthentication';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
@@ -149,6 +160,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -163,6 +175,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 		// getServerInfo succeeds → unknown-server-with-token path
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 
 		// canOpenRoom returns a room object
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
@@ -355,6 +368,8 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
+		jest.mocked(logUnlessUserCanceled).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -367,6 +382,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 		});
 		jest.mocked(getServerById).mockResolvedValue(null);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
 		jest.mocked(waitForNavigationReady).mockResolvedValue(undefined);
 		jest.mocked(goRoom).mockResolvedValue(undefined);
@@ -430,6 +446,74 @@ describe('deepLinking saga — server already connected, should skip changing se
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 		emitSpy.mockRestore();
 	});
+
+	const setupFailedUnlock = (error: Error) => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			if (key === `${TOKEN_KEY}-${HOST}`) return makeStoredUser();
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(localAuthenticate).mockRejectedValue(error);
+	};
+
+	// The catch must hand the error to logUnlessUserCanceled and bail, not fall through to the
+	// unknown-server path — a canceled unlock would otherwise re-add the server the user just locked.
+	it.each([
+		['a failed unlock', () => new Error('unlock failed')],
+		['a canceled unlock', () => new UserCanceledError()]
+	])('drops the deep link on %s for an existing secondary server', async (_label, makeError) => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, dispatchedActions } = setupStore();
+		const error = makeError();
+		setupFailedUnlock(error);
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(localAuthenticate)).toHaveBeenCalledWith(HOST);
+		expect(jest.mocked(logUnlessUserCanceled)).toHaveBeenCalledWith(error);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(dispatchedActions).not.toEqual(expect.arrayContaining([expect.objectContaining({ type: 'SERVER.SELECT_REQUEST' })]));
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		emitSpy.mockRestore();
+	});
+
+	// Cold start: the deep link arrived over the splash screen, so bailing out with no root would
+	// leave the app with no navigator and only a force-quit to recover.
+	it('recovers the app root when the unlock fails with no root set', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlock(new UserCanceledError());
+
+		expect(store.getState().app.root).toBeUndefined();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
+	});
+
+	// Warm app: a failed unlock must not re-initialize and throw the user out of where they were.
+	it('leaves an already-initialized root alone when the unlock fails', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlock(new UserCanceledError());
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const dispatchedBefore = dispatchedActions.length;
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.slice(dispatchedBefore)).not.toEqual(
+			expect.arrayContaining([expect.objectContaining({ type: APP.INIT })])
+		);
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
+	});
 });
 
 // ─── handleClickCallPush (OPEN_VIDEO_CONF) — new server + token ───────────────
@@ -444,6 +528,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(navigateToRoom).mockReset();
 		jest.mocked(database.active.get).mockReset();
 
@@ -454,6 +539,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		});
 		jest.mocked(getServerById).mockResolvedValue(null);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 
 		// handleNavigateCallRoom resolves the subscription for params.rid.
 		jest.mocked(database.active.get).mockReturnValue({

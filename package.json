@@ -105,6 +105,7 @@
 		"react-native-incall-manager": "^4.2.1",
 		"react-native-katex": "git+https://github.com/RocketChat/react-native-katex.git",
 		"react-native-keyboard-controller": "1.18.5",
+		"react-native-keychain": "10.0.0",
 		"react-native-linear-gradient": "2.6.2",
 		"react-native-localize": "2.1.1",
 		"react-native-math-view": "3.9.5",

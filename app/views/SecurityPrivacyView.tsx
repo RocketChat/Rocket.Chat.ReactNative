@@ -9,7 +9,7 @@ import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
 import { type SettingsStackParamList } from '../stacks/types';
-import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
+import { handleLocalAuthentication, logUnlessUserCanceled } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
 	getReportAnalyticsEventsValue,
@@ -59,7 +59,12 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 
 	const navigateToScreenLockConfigView = async () => {
 		if (server?.autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication({ canCloseModal: true });
+			} catch (e) {
+				logUnlessUserCanceled(e);
+				return;
+			}
 		}
 		navigateToScreen('ScreenLockConfigView');
 	};

@@ -8,17 +8,24 @@ import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
+import { biometricTrustStore } from '../../biometricTrustStore';
 import {
 	ATTEMPTS_KEY,
-	BIOMETRY_ENABLED_KEY,
 	CHANGE_PASSCODE_EMITTER,
+	E2E_TESTS_AUTO_LOCK_TIME,
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
 } from '../../constants/localAuthentication';
 import I18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
-import { type TServerModel } from '../../../definitions';
+import {
+	type BiometricInvalidationReason,
+	type BiometricPromptCopy,
+	type TServerModel,
+	type TrustResult
+} from '../../../definitions';
+import log from './log';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
@@ -50,13 +57,29 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = (hasBiometry: boolean, force?: boolean) =>
+// Lets catch blocks tell a benign cancel/supersede apart from a real failure.
+export class UserCanceledError extends Error {
+	constructor() {
+		super('User canceled local authentication');
+		this.name = 'UserCanceledError';
+	}
+}
+
+// A dismissed unlock modal is benign; a real failure must not be swallowed as a cancel.
+export const logUnlessUserCanceled = (e: unknown): void => {
+	if (!(e instanceof UserCanceledError)) {
+		log(e);
+	}
+};
+
+const openModal = (hasBiometry: boolean, canClose?: boolean, reason?: BiometricInvalidationReason) =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
 			hasBiometry,
-			force,
-			cancel: () => reject()
+			canClose,
+			reason,
+			cancel: () => reject(new UserCanceledError())
 		});
 	});
 
@@ -64,7 +87,7 @@ const openChangePasscodeModal = ({ force }: { force: boolean }) =>
 	new Promise<string>((resolve, reject) => {
 		EventEmitter.emit(CHANGE_PASSCODE_EMITTER, {
 			submit: (passcode: string) => resolve(passcode),
-			cancel: () => reject(),
+			cancel: () => reject(new UserCanceledError()),
 			force
 		});
 	});
@@ -74,23 +97,126 @@ export const changePasscode = async ({ force = false }: { force: boolean }): Pro
 	UserPreferences.setString(PASSCODE_KEY, sha256(passcode));
 };
 
-export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.LocalAuthenticationResult> =>
-	LocalAuthentication.authenticateAsync({
-		disableDeviceFallback: true,
-		cancelLabel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback'),
-		promptMessage: I18n.t('Local_authentication_biometry_title')
-	});
+const buildPromptCopy = (force?: boolean): BiometricPromptCopy => ({
+	title: I18n.t('Local_authentication_biometry_title'),
+	cancel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback')
+});
+
+const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationError): TrustResult => {
+	switch (error) {
+		case 'user_cancel':
+		case 'app_cancel':
+		case 'system_cancel':
+		case 'user_fallback':
+		// Deliberate: a non-match ends the prompt with nothing proven, same as a cancel. The toggle
+		// flipping back is the feedback; an alert here would fire on every mistimed finger.
+		case 'authentication_failed':
+			return { kind: 'canceled' };
+		case 'not_enrolled':
+			return { kind: 'unavailable' };
+		// 'not_available' deliberately falls through to the non-destructive default, as 'lockout' does:
+		// expo maps the transient ERROR_HW_UNAVAILABLE onto it alongside ERROR_NO_BIOMETRICS, and
+		// `unavailable` tears the enrollment down for good.
+		default:
+			return { kind: 'error', cause: error };
+	}
+};
+
+// Single source for the sentinel-then-key-check order; the platform split is in PLATFORMS.md.
+type EnrollmentCheck = { state: 'valid' | 'absent' | 'invalid' } | { state: 'error'; cause: unknown };
+
+const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
+	try {
+		if (!(await biometricTrustStore.hasEnrollment())) {
+			return { state: 'absent' };
+		}
+		return { state: (await biometricTrustStore.isEnrollmentValid()) ? 'valid' : 'invalid' };
+	} catch (cause) {
+		return { state: 'error', cause };
+	}
+};
+
+// Proves presence, not just an unchanged enrollment. See PLATFORMS.md, "Why the sentinel read can't prove presence".
+export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
+	const promptCopy = buildPromptCopy(force);
+
+	if (isIOS) {
+		return biometricTrustStore.verify({ promptCopy });
+	}
+
+	const enrollment = await checkBiometricEnrollment();
+	if (enrollment.state === 'absent') {
+		return { kind: 'unavailable' };
+	}
+	if (enrollment.state === 'invalid') {
+		return { kind: 'enrollmentChanged' };
+	}
+	if (enrollment.state === 'error') {
+		return { kind: 'error', cause: enrollment.cause };
+	}
+
+	try {
+		const presence = await LocalAuthentication.authenticateAsync({
+			disableDeviceFallback: true,
+			// Class 3 only; expo defaults to 'weak'. See PLATFORMS.md, "Weak (Class 2) biometrics".
+			biometricsSecurityLevel: 'strong',
+			cancelLabel: promptCopy.cancel,
+			promptMessage: promptCopy.title
+		});
+		return presence.success ? { kind: 'success' } : classifyPresenceError(presence.error);
+	} catch (e) {
+		return { kind: 'error', cause: e };
+	}
+};
+
+// Class 3 only. See PLATFORMS.md, "Weak (Class 2) biometrics".
+export const hasSupportedBiometry = async (): Promise<boolean> => {
+	try {
+		if (!(await LocalAuthentication.isEnrolledAsync())) {
+			return false;
+		}
+		const level = await LocalAuthentication.getEnrolledLevelAsync();
+		return level === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG;
+	} catch {
+		return false;
+	}
+};
 
 /*
- * It'll help us to get the permission to use FaceID
- * and enable/disable the biometry when user put their first passcode
+ * Binds the trust sentinel and captures the user's consent for biometric unlock. Every enable path
+ * (first passcode, settings toggle) must go through here: the sentinel write is silent, so it can't
+ * double as consent. See ARCHITECTURE.md, "Why writing the sentinel is not consent".
  */
-const checkBiometry = async () => {
-	const result = await biometryAuth(true);
-	const isBiometryEnabled = !!result?.success;
-	UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
-	return isBiometryEnabled;
+export const enableBiometry = async (): Promise<TrustResult> => {
+	// Without a strong biometric enroll() can only produce a downgraded sentinel, so don't offer the
+	// opt-in at all rather than offering and revoking it.
+	if (!(await hasSupportedBiometry())) {
+		biometricTrustStore.setEnabled(false);
+		return { kind: 'unavailable' };
+	}
+
+	const enrollResult = await biometricTrustStore.enroll();
+	if (enrollResult.kind !== 'success') {
+		// disenroll() first: the reverse order can orphan a sentinel a partial enroll left behind.
+		await biometricTrustStore.disenroll();
+		biometricTrustStore.setEnabled(false);
+		return enrollResult;
+	}
+
+	// Via biometryAuth, not verify(): a prompt that never appeared isn't consent.
+	const consent = await biometryAuth(true);
+	if (consent.kind !== 'success') {
+		await biometricTrustStore.disenroll();
+		biometricTrustStore.setEnabled(false);
+		return consent;
+	}
+
+	biometricTrustStore.setEnabled(true);
+	return { kind: 'success' };
 };
+
+// Captures the biometry opt-in when the user sets their first passcode.
+const checkBiometry = async () => (await enableBiometry()).kind === 'success';
 
 export const checkHasPasscode = async ({ force = true }: { force?: boolean }): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = UserPreferences.getString(PASSCODE_KEY);
@@ -110,18 +236,70 @@ const hideSplashScreen = async () => {
 	}
 };
 
-export const handleLocalAuthentication = async (canCloseModal = false) => {
-	// let hasBiometry = false;
-	let hasBiometry = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+/*
+ * Non-prompting. Lets an enrollment change force the passcode even inside the auto-lock window.
+ * `checkFailed` is a separate state on purpose: a trust check that could not complete must fail
+ * closed without failing destructive. See ARCHITECTURE.md, "A failed check is not a change".
+ */
+export type TRelockReason = 'none' | 'checkFailed' | BiometricInvalidationReason;
 
-	// if biometry is enabled on the app
-	if (hasBiometry) {
-		const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-		hasBiometry = isEnrolled;
+const getRelockReason = async (): Promise<TRelockReason> => {
+	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
+	if (biometricTrustStore.isEnabled()) {
+		const enrollment = await checkBiometricEnrollment();
+		if (enrollment.state === 'error') {
+			log(enrollment.cause);
+			return 'checkFailed';
+		}
+		if (enrollment.state === 'invalid') {
+			return 'enrollmentChanged';
+		}
+		if (enrollment.state === 'absent') {
+			return 'trustLost';
+		}
+		return biometricTrustStore.isRelockPending() ? 'relockRequired' : 'none';
+	}
+	// Warm foreground surfaces the change live; cold launch reads the marker the init migration left.
+	return biometricTrustStore.isRelockPending() ? 'trustLost' : 'none';
+};
+
+interface IHandleLocalAuthentication {
+	canCloseModal?: boolean;
+	// Result of a check the caller already ran; omit it to compute here. `'none'` skips the recheck.
+	relockReason?: TRelockReason;
+}
+
+export const handleLocalAuthentication = async ({ canCloseModal = false, relockReason }: IHandleLocalAuthentication = {}) => {
+	const biometryEnabled = biometricTrustStore.isEnabled();
+
+	const reason = relockReason ?? (await getRelockReason());
+	if (reason !== 'none' && reason !== 'checkFailed') {
+		// No else: with the flag off, both routes to a non-'none' reason run through getRelockReason,
+		// whose only such return is gated on isRelockPending() — already true, so re-arming was a no-op.
+		if (biometryEnabled) {
+			await biometricTrustStore.invalidate();
+		}
+		await openModal(false, canCloseModal, reason);
+		biometricTrustStore.setRelockPending(false);
+		return;
 	}
 
-	// Authenticate
+	/*
+	 * The check itself failed — a busy sensor, a one-off keychain error, a broken bridge. Demand the
+	 * passcode and hide a biometry button we can't vouch for, but leave the enrollment intact: the
+	 * teardown is irreversible and the user would have to re-opt-in with no idea why. The relock
+	 * marker is deliberately left as it is, so a persistent failure keeps forcing the passcode.
+	 */
+	if (reason === 'checkFailed') {
+		await openModal(false, canCloseModal);
+		return;
+	}
+
+	const hasBiometry = biometryEnabled && (await hasSupportedBiometry());
+
+	// Modal first so it covers the app; PasscodeEnter prompts biometry from behind it.
 	await openModal(hasBiometry, canCloseModal);
+	biometricTrustStore.setRelockPending(false);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {
@@ -143,33 +321,44 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// Check if the app has passcode
 		const result = await checkHasPasscode({});
 
+		// Refreshed after the modal: the stale pre-modal timesync would immediately re-lock the session.
+		let authenticatedTimesync = timesync;
+
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
 			// diff to last authenticated session
 			const diffToLastSession = dayjs(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
-			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
-			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
+			// During E2E runs we use a shorter threshold so tests don't have to wait past the smallest user-facing option (60s)
+			const autoLockTime = process.env.RUNNING_E2E_TESTS === 'true' ? E2E_TESTS_AUTO_LOCK_TIME : serverRecord?.autoLockTime;
+
+			// Must force the lock screen regardless of how recently the user authenticated.
+			const relockReason = await getRelockReason();
+
+			// if it was not possible to get `timesync` from server, the biometric enrollment changed, or the last authenticated session is older than the configured auto lock time, authentication is required
+			if (!timesync || relockReason !== 'none' || (autoLockTime && diffToLastSession >= autoLockTime)) {
 				await hideSplashScreen();
 
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
-				await handleLocalAuthentication();
+				await handleLocalAuthentication({ relockReason });
 
 				// set isLocalAuthenticated to true
 				store.dispatch(setLocalAuthenticated(true));
+
+				authenticatedTimesync = await getServerTimeSync(server);
 			}
 		}
 
 		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord, timesync);
+		await saveLastLocalAuthenticationSession(server, serverRecord, authenticatedTimesync);
 	}
 };
 
 export const supportedBiometryLabel = async (): Promise<string | null> => {
 	try {
-		const enrolled = await LocalAuthentication.isEnrolledAsync();
+		const enrolled = await hasSupportedBiometry();
 
 		if (!enrolled) {
 			return null;
