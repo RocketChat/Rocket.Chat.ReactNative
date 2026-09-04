@@ -1,24 +1,26 @@
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { type IAttachment } from '../../../../definitions';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
+import { fileDownloadAndPreview } from '../../../../lib/methods/helpers/fileDownload';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
-import { Attachments } from './components';
-import Quote from './Quote';
 import { useBaseUrl, useMessageUser, useTimeFormat } from '../../stores/MessageRoomStore';
-import { useIsEncrypted, useMessageId } from '../../stores/MessageStore';
+import { useIsEncrypted, useMessageId, useTranslateLanguage } from '../../stores/MessageStore';
 import MessageActionTouchable from '../Touchable/MessageActionTouchable';
 import messageStyles from '../../styles';
+import { getMessageFromAttachment } from '../../utils';
 import dayjs from '../../../../lib/dayjs';
 
 const styles = StyleSheet.create({
+	container: {
+		gap: 4
+	},
 	button: {
 		flex: 1,
 		flexDirection: 'row',
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
 
 interface IMessageReply {
 	attachment: IAttachment;
-	msg?: string;
+	children?: ReactNode;
 }
 
 const Title = ({ attachment }: { attachment: IAttachment }) => {
@@ -156,17 +158,20 @@ const Fields = ({ attachment }: { attachment: IAttachment }) => {
 	);
 };
 
-const Reply = ({ attachment, msg }: IMessageReply) => {
+const Reply = ({ attachment, children }: IMessageReply) => {
 	const [loading, setLoading] = useState(false);
 	const { colors, theme } = useTheme();
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const id = useMessageId();
 	const isEncrypted = useIsEncrypted();
+	const translateLanguage = useTranslateLanguage();
 
 	if (!attachment || isEncrypted) {
 		return null;
 	}
+
+	const msg = getMessageFromAttachment(attachment, translateLanguage);
 
 	const onPress = async () => {
 		let url = attachment.title_link || attachment.author_link;
@@ -189,7 +194,7 @@ const Reply = ({ attachment, msg }: IMessageReply) => {
 	}
 
 	return (
-		<View style={{ gap: 4 }}>
+		<View style={styles.container}>
 			<MessageActionTouchable
 				testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 				onPress={onPress}
@@ -204,8 +209,7 @@ const Reply = ({ attachment, msg }: IMessageReply) => {
 					<View style={styles.titleAndDescriptionContainer}>
 						<Title attachment={attachment} />
 						<Description attachment={attachment} />
-						<Quote attachments={attachment.attachments} />
-						<Attachments attachments={attachment.attachments} />
+						{children}
 						<Fields attachment={attachment} />
 						{loading ? (
 							<View style={styles.backdrop}>

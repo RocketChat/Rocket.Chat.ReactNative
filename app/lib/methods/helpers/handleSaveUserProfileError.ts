@@ -1,7 +1,11 @@
 import I18n from '../../../i18n';
 import { showErrorAlert } from '.';
+import { isTwoFactorCancelled } from '../../services/twoFactor/twoFactorCancelled';
 
 const handleSaveUserProfileError = (e: any, action: string) => {
+	if (isTwoFactorCancelled(e)) {
+		return;
+	}
 	if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 		return showErrorAlert(e.data.error);
 	}

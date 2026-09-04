@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -19,7 +19,7 @@ import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/meth
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
-import { localAuthenticate, logUnlessUserCanceled } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -143,6 +143,21 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+let consumedSamlToken;
+
+const handleSaml = function* handleSaml({ params }) {
+	const { credentialToken } = params;
+	if (!credentialToken || credentialToken === consumedSamlToken) {
+		return;
+	}
+	consumedSamlToken = credentialToken;
+	try {
+		yield loginOAuthOrSso({ saml: true, credentialToken });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
 	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
@@ -154,22 +169,41 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	try {
-		yield localAuthenticate(server);
+		try {
+			yield localAuthenticate(server);
+		} catch (e) {
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
+			}
+			// Unlock canceled or superseded by another lock request — restart the normal flow instead
+			// of leaving the share extension stuck on the loading root.
+			yield put(appInit());
+			return;
+		}
+		const serverRecord = yield getServerById(server);
+		if (!serverRecord) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			return;
+		}
+		yield put(selectServerRequest(server, serverRecord.version));
+		if (sdk.host !== server) {
+			const { loginSuccess } = yield race({
+				loginSuccess: take(types.LOGIN.SUCCESS),
+				loginFailure: take(types.LOGIN.FAILURE),
+				selectServerFailure: take(types.SERVER.SELECT_FAILURE),
+				logout: take(types.LOGOUT)
+			});
+			if (!loginSuccess) {
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				return;
+			}
+		}
+		yield put(shareSetParams(params));
+		yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 	} catch (e) {
-		logUnlessUserCanceled(e);
-		yield put(appInit());
-		return;
+		log(e);
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
-	const serverRecord = yield getServerById(server);
-	if (!serverRecord) {
-		return;
-	}
-	yield put(selectServerRequest(server, serverRecord.version));
-	if (sdk.current?.client?.host !== server) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-	yield put(shareSetParams(params));
-	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 };
 
 const handleOpen = function* handleOpen({ params }) {
@@ -179,6 +213,10 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
+		return;
+	}
+	if (params.type === 'saml') {
+		yield handleSaml({ params });
 		return;
 	}
 
@@ -245,7 +283,7 @@ const handleOpen = function* handleOpen({ params }) {
 			return;
 		}
 		// if the host is different from the current one, we need to connect to it before navigating
-		const hostAlreadyConnected = sdk.current?.client?.host === host;
+		const hostAlreadyConnected = sdk.host === host;
 		if (!hostAlreadyConnected) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			yield put(serverInitAdd(server));

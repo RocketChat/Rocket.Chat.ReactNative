@@ -2,13 +2,13 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
+import { findLoggedInServer, isLoggedInServer } from '../lib/methods/loggedInServer';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
-import database from '../lib/database';
 import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
@@ -17,61 +17,71 @@ import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
 
+const PUSH_NOTIFICATION_KEY = 'pushNotification';
+
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const restore = function* restore() {
+const restoreServer = async () => {
+	const server = UserPreferences.getString(CURRENT_SERVER);
+	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : await findLoggedInServer();
+
+	if (restoredServer) {
+		try {
+			await localAuthenticate(restoredServer.id);
+		} catch (e) {
+			// A superseded unlock still has a newer modal gating the screen, so keep booting.
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
+			}
+		}
+	}
+
+	return restoredServer;
+};
+
+const getServerToRestore = function* getServerToRestore() {
 	try {
-		yield call(runBiometricTrustMigration);
-		const server = UserPreferences.getString(CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		return (yield call(restoreServer)) || null;
+	} catch (e) {
+		log(e);
+		return null;
+	}
+};
 
-		if (!server) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else if (!userId) {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-
-			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						return yield put(selectServerRequest(newServer, newServer.version));
-					}
-				}
-			}
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else {
-			try {
-				yield localAuthenticate(server);
-			} catch (e) {
-				// A superseded unlock still has a newer modal gating the screen, so keep booting.
-				if (!(e instanceof UserCanceledError)) {
-					throw e;
-				}
-			}
-			const serverRecord = yield getServerById(server);
-			if (!serverRecord) {
-				return;
-			}
-			yield put(selectServerRequest(server, serverRecord.version));
+const deliverPendingPushNotification = function* deliverPendingPushNotification(restoredServer) {
+	try {
+		const pushNotification = yield call(AsyncStorage.getItem, PUSH_NOTIFICATION_KEY);
+		if (!pushNotification) {
+			return;
 		}
 
-		yield put(appReady({}));
-		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
-		if (pushNotification) {
-			const pushNotification = yield call(AsyncStorage.removeItem, 'pushNotification');
-			yield call(deepLinkingClickCallPush, JSON.parse(pushNotification));
+		yield call(AsyncStorage.removeItem, PUSH_NOTIFICATION_KEY);
+
+		if (restoredServer) {
+			yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
 		}
 	} catch (e) {
 		log(e);
+	}
+};
+
+const restore = function* restore() {
+	yield call(runBiometricTrustMigration);
+
+	const restoredServer = yield* getServerToRestore();
+
+	if (restoredServer) {
+		yield put(selectServerRequest(restoredServer.id, restoredServer.version));
+	} else {
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
+
+	yield put(appReady({}));
+
+	yield* deliverPendingPushNotification(restoredServer);
 };
 
 const start = function* start() {

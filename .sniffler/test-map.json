@@ -18,6 +18,17 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/assorted/channel-deeplink.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/views/RoomsListView/**",
+			"app/sagas/deepLinking.js",
+			"app/sagas/room.js",
+			"app/sagas/login.js",
+			"app/sagas/rooms.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/assorted/change-avatar.yaml",
 		"dependsOn": ["app/views/ChangeAvatarView/**", "app/views/ProfileView/**"]
 	},
@@ -29,7 +40,9 @@
 			"app/views/RegisterView/**",
 			"app/views/RoomsListView/**",
 			"app/sagas/login.js",
-			"app/sagas/rooms.js"
+			"app/sagas/rooms.js",
+			"app/sagas/selectServer.ts",
+			"app/lib/services/connect.ts"
 		]
 	},
 	{
@@ -55,7 +68,9 @@
 			"app/views/RegisterView/**",
 			"app/views/RoomsListView/**",
 			"app/sagas/login.js",
-			"app/sagas/rooms.js"
+			"app/sagas/rooms.js",
+			"app/sagas/selectServer.ts",
+			"app/lib/services/connect.ts"
 		]
 	},
 	{
@@ -252,6 +267,18 @@
 	{
 		"test": ".maestro/tests/room/mark-as-unread.yaml",
 		"dependsOn": ["app/views/RoomsListView/**", "app/containers/MessageActions/**", "app/sagas/rooms.js"]
+	},
+	{
+		"test": ".maestro/tests/room/messages-received-while-offline.yaml",
+		"dependsOn": [
+			"app/lib/services/sdk.ts",
+			"app/lib/services/socketHealth.ts",
+			"app/lib/methods/loadMissedMessages.ts",
+			"app/lib/methods/subscriptions/room.ts",
+			"app/lib/methods/subscribeRooms.ts",
+			"app/sagas/rooms.js",
+			"app/views/RoomView/**"
+		]
 	},
 	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
