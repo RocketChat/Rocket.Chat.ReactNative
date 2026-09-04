@@ -6,7 +6,7 @@ export type TrustResult =
 	| { kind: 'error'; cause: unknown };
 
 // Why a passcode-only modal is being forced; surfaces as PasscodeEnter's subtitle.
-export type BiometricInvalidationReason = 'enrollmentChanged';
+export type BiometricInvalidationReason = 'enrollmentChanged' | 'trustLost' | 'relockRequired';
 
 // Localized copy for the OS biometric prompt shown by verify().
 export type BiometricPromptCopy = { title: string; cancel: string };

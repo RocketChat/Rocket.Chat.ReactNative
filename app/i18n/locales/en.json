@@ -499,6 +499,8 @@
   "Local_authentication_auto_lock_60": "After 1 minute",
   "Local_authentication_auto_lock_900": "After 15 minutes",
   "Local_authentication_biometric_enrollment_changed": "Biometric enrollment changed,\nplease use your passcode",
+  "Local_authentication_biometric_relock_required": "Please confirm your passcode\nto continue",
+  "Local_authentication_biometric_trust_lost": "Biometric unlock was turned off,\nplease use your passcode",
   "Local_authentication_biometry_enable_failed": "Couldn't enable biometric unlock.",
   "Local_authentication_biometry_fallback": "Use passcode",
   "Local_authentication_biometry_title": "Authenticate",

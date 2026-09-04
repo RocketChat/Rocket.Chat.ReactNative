@@ -15,6 +15,12 @@ import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import I18n from '../../i18n';
 
+const SUBTITLE_KEYS: Record<BiometricInvalidationReason, string> = {
+	enrollmentChanged: 'Local_authentication_biometric_enrollment_changed',
+	trustLost: 'Local_authentication_biometric_trust_lost',
+	relockRequired: 'Local_authentication_biometric_relock_required'
+};
+
 interface IPasscodePasscodeEnter {
 	hasBiometry: boolean;
 	reason?: BiometricInvalidationReason;
@@ -95,7 +101,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 		return <Locked setStatus={setStatus} />;
 	}
 
-	const subtitle = reason === 'enrollmentChanged' ? I18n.t('Local_authentication_biometric_enrollment_changed') : null;
+	const subtitle = reason ? I18n.t(SUBTITLE_KEYS[reason]) : null;
 
 	return (
 		<Base

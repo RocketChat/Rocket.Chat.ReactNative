@@ -133,7 +133,15 @@ Nothing below the migration closes that gap, because **binding a baseline is not
 
 So the grandfather branch sets the relock marker **and then binds the baseline**, forcing the next unlock to demand the passcode regardless of the auto-lock window. When that forced unlock fires, `handleLocalAuthentication` treats the pending relock like any enrollment-change signal: it tears the freshly-bound sentinel back down (`disenroll()`), clears the biometry flag (`setEnabled(false)`), and shows the passcode. The migration-bound baseline is therefore **not** trusted going forward — the user re-opts into biometry deliberately from settings, which re-binds the baseline through an explicit `biometryAuth(true)` consent prompt. This is a one-time cost on the first post-upgrade unlock for pre-feature biometry users: they authenticate with the passcode once and re-enable biometry if they still want it.
 
-> **Copy caveat.** The relock marker shares the single `enrollmentChanged` reason code, so this forced passcode shows the "Biometric enrollment changed" subtitle even though the grandfathered user's enrollment never actually changed. This is a known imprecision for the grandfather cohort (and, because iOS surfaces a real enrollment change as `unavailable` with no subtitle, the subtitle is effectively Android-only for genuine changes yet shown on both platforms here). The behavior is the correct fail-closed outcome; only the wording is imprecise. Distinguishing the relock cause to suppress the subtitle would mean giving the relock marker its own reason — deliberately deferred to keep the security-critical state a single boolean.
+> **Copy.** The grandfather relock does **not** show the "Biometric enrollment changed" subtitle, because nothing changed. `BiometricInvalidationReason` carries three codes, all with the identical fail-closed handling and differing only in what the subtitle claims:
+>
+> | Reason | Shown when | Claim |
+> | --- | --- | --- |
+> | `enrollmentChanged` | The Android probe key reports the enrollment set changed, or a sentinel read raised `errSecItemNotFound` | The enrollment demonstrably changed |
+> | `trustLost` | The sentinel is gone (the usual shape of a real iOS enrollment change — but equally of a restore onto a new device), or the init migration reconciled the flag off | Biometric unlock was turned off; no cause asserted |
+> | `relockRequired` | The enrollment checks all pass and only the relock marker is outstanding — i.e. this grandfather path | Nothing changed; one confirming passcode is owed |
+>
+> The three-way split is derived in `getRelockReason`, so the persisted state stays a single boolean: `isEnabled()` plus the live enrollment check already distinguish the cases at the moment the modal opens. Replacing `kBiometricPendingRelock` with a persisted reason enum is still deliberately deferred — it would put a wider security-critical value on disk to buy nothing the derivation doesn't already give.
 
 ### The invariant that makes the grandfather marker safe
 

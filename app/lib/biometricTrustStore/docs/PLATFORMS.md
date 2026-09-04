@@ -13,7 +13,7 @@ On iOS, changing the Face ID / Touch ID enrollment **deletes** the keychain item
 1. **Before any prompt** — `verify()` calls `hasEnrollment()` first (`hasGenericPassword`, silent). The item is already gone, so this returns false and `verify()` returns **`unavailable`** — no biometric sheet is ever shown.
 2. **After a prompt** — if the item still appeared to exist and the read (`getGenericPassword`) raised `errSecItemNotFound` (`-25300`), `classifyError` maps it to **`enrollmentChanged`**.
 
-In practice on iOS the enrollment-change case usually lands as **`unavailable`** via path 1, because the deletion is observed by the silent existence check before the read path runs. `resolveBiometricTrust` treats both the same way at the security level — disenroll, clear the flag, hide the biometry button — but `unavailable` shows **no** "enrollment changed" subtitle, because it is not necessarily an enrollment change (see below).
+In practice on iOS the enrollment-change case usually lands as **`unavailable`** via path 1, because the deletion is observed by the silent existence check before the read path runs. `resolveBiometricTrust` treats both the same way at the security level — disenroll, clear the flag, hide the biometry button — but `unavailable` does not show the "enrollment changed" subtitle, because it is not necessarily an enrollment change (see below).
 
 ### Why `unavailable` has no subtitle
 
@@ -22,7 +22,9 @@ A missing sentinel on iOS is not _always_ an attack signal. The sentinel is `WHE
 - restoring an app backup onto a new device (the item never transfers), or
 - any other benign loss of the keychain item.
 
-So `unavailable` clears biometric unlock defensively (fail closed — require the passcode) but does **not** accuse the user of an enrollment change. Only the explicit `enrollmentChanged` kind shows the subtitle copy.
+So `unavailable` clears biometric unlock defensively (fail closed — require the passcode) but does **not** accuse the user of an enrollment change. Only the explicit `enrollmentChanged` kind shows that copy.
+
+It is not left silent either: `unavailable` — and, on the non-prompting path, an `absent` sentinel — carries the neutral **`trustLost`** reason ("Biometric unlock was turned off, please use your passcode"). Since on iOS this is how a genuine enrollment change *usually* surfaces, showing nothing at all would leave the common case unexplained — the user finds biometric unlock switched off in Settings with no indication why. `trustLost` states the outcome, which is true in both the enrollment-change and the restored-backup reading. See ARCHITECTURE.md, "Copy", for the full reason table.
 
 ### Prompt-behind-modal requirement
 

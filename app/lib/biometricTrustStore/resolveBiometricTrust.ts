@@ -18,7 +18,7 @@ export const resolveBiometricTrust = async (result: TrustResult): Promise<Biomet
 			return { unlocked: false, modal: { hasBiometry: false, reason: 'enrollmentChanged' } };
 		case 'unavailable':
 			await biometricTrustStore.invalidate();
-			return { unlocked: false, modal: { hasBiometry: false } };
+			return { unlocked: false, modal: { hasBiometry: false, reason: 'trustLost' } };
 		// No `default:` — exhaustiveness must break the build on a new TrustResult variant.
 		case 'canceled':
 		case 'error':

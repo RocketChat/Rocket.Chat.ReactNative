@@ -153,14 +153,14 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it('warm path: biometry enabled but sentinel gone (enrollment changed) → forces passcode, disables biometry, sets reason', async () => {
+	it('warm path: biometry enabled but sentinel gone → forces passcode, disables biometry, sets a neutral reason', async () => {
 		mockedIsEnabled.mockReturnValue(true);
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 
 		await handleLocalAuthentication();
 
-		// Modal opens with biometry hidden and the enrollment-changed notice...
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		// Modal opens with biometry hidden and a notice...
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'trustLost' });
 		// ...trust state torn down, and the relock debt cleared once the passcode came back.
 		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
 		expect(mockedSetRelockPending).toHaveBeenCalledWith(false);
@@ -213,6 +213,17 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
+	it('grandfather relock: enrollment intact with a debt outstanding → forces passcode, neutral reason', async () => {
+		mockedIsEnabled.mockReturnValue(true);
+		mockedIsRelockPending.mockReturnValue(true);
+
+		await handleLocalAuthentication();
+
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'relockRequired' });
+		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
+		expect(mockedSetRelockPending).toHaveBeenLastCalledWith(false);
+	});
+
 	// The marker is the only thing that survives the process, so a persistent failure must not clear it.
 	it('leaves a pending relock marker set when the check fails', async () => {
 		mockedIsEnabled.mockReturnValue(true);
@@ -231,7 +242,7 @@ describe('handleLocalAuthentication', () => {
 
 		await handleLocalAuthentication();
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'trustLost' });
 		// Flag already cleared by the migration, so no teardown here.
 		expect(mockedInvalidate).not.toHaveBeenCalled();
 		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(1, true);
@@ -256,7 +267,7 @@ describe('handleLocalAuthentication', () => {
 		await new Promise(resolve => setImmediate(resolve));
 
 		expect(settled).toBe(false);
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'trustLost' });
 		// invalidate() arms the debt (see biometricTrustStore/index.test.ts); what matters here is that
 		// nothing clears it while the modal is still up.
 		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
@@ -318,7 +329,7 @@ describe('localAuthenticate', () => {
 		});
 	});
 
-	it('enrollmentChanged forces the passcode modal inside the auto-lock window', async () => {
+	it('a lost enrollment forces the passcode modal inside the auto-lock window', async () => {
 		const serverRecord = {
 			autoLock: true,
 			autoLockTime: 60,
@@ -332,7 +343,7 @@ describe('localAuthenticate', () => {
 
 		await localAuthenticate('server-id');
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'trustLost' });
 		expect(mockedGetServerTimeSync).toHaveBeenCalledTimes(2);
 		expect(mockedDispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ isLocalAuthenticated: false }));
 		expect(mockedDispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ isLocalAuthenticated: true }));
@@ -717,6 +728,19 @@ describe('handleLocalAuthentication relockReason option', () => {
 		expect(lastEmitPayload()?.reason).toBe('enrollmentChanged');
 		expect(mockedSetRelockPending).toHaveBeenLastCalledWith(false);
 	});
+
+	it.each(['trustLost', 'relockRequired'] as const)(
+		"forces the enrollment-changed teardown when passed '%s', with that reason's own copy",
+		async relockReason => {
+			mockedInvalidate.mockResolvedValueOnce(undefined);
+
+			await handleLocalAuthentication({ relockReason });
+
+			expect(mockedInvalidate).toHaveBeenCalledTimes(1);
+			expect(lastEmitPayload()?.reason).toBe(relockReason);
+			expect(mockedSetRelockPending).toHaveBeenLastCalledWith(false);
+		}
+	);
 
 	it("forces the passcode without a teardown when passed 'checkFailed'", async () => {
 		await handleLocalAuthentication({ relockReason: 'checkFailed' });

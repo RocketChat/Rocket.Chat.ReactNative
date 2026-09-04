@@ -62,10 +62,10 @@ describe('resolveBiometricTrust', () => {
 		});
 	});
 
-	it('unavailable → invalidates trust, passcode-only modal, no reason', async () => {
+	it('unavailable → invalidates trust, passcode-only modal, neutral reason', async () => {
 		const outcome = await resolveBiometricTrust({ kind: 'unavailable' });
 
 		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
-		expect(outcome).toEqual({ unlocked: false, modal: { hasBiometry: false } });
+		expect(outcome).toEqual({ unlocked: false, modal: { hasBiometry: false, reason: 'trustLost' } });
 	});
 });

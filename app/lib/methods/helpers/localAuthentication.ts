@@ -239,7 +239,7 @@ const hideSplashScreen = async () => {
  * `checkFailed` is a separate state on purpose: a trust check that could not complete must fail
  * closed without failing destructive. See ARCHITECTURE.md, "A failed check is not a change".
  */
-export type TRelockReason = 'none' | 'enrollmentChanged' | 'checkFailed';
+export type TRelockReason = 'none' | 'checkFailed' | BiometricInvalidationReason;
 
 const getRelockReason = async (): Promise<TRelockReason> => {
 	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
@@ -249,12 +249,16 @@ const getRelockReason = async (): Promise<TRelockReason> => {
 			log(enrollment.cause);
 			return 'checkFailed';
 		}
-		if (enrollment.state !== 'valid') {
+		if (enrollment.state === 'invalid') {
 			return 'enrollmentChanged';
 		}
+		if (enrollment.state === 'absent') {
+			return 'trustLost';
+		}
+		return biometricTrustStore.isRelockPending() ? 'relockRequired' : 'none';
 	}
 	// Warm foreground surfaces the change live; cold launch reads the marker the init migration left.
-	return biometricTrustStore.isRelockPending() ? 'enrollmentChanged' : 'none';
+	return biometricTrustStore.isRelockPending() ? 'trustLost' : 'none';
 };
 
 interface IHandleLocalAuthentication {
@@ -267,14 +271,14 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
 	const reason = relockReason ?? (await getRelockReason());
-	if (reason === 'enrollmentChanged') {
+	if (reason !== 'none' && reason !== 'checkFailed') {
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
 		} else {
 			// Migration already cleared the flag; re-affirm the marker so the clear below stays balanced.
 			biometricTrustStore.setRelockPending(true);
 		}
-		await openModal(false, canCloseModal, 'enrollmentChanged');
+		await openModal(false, canCloseModal, reason);
 		biometricTrustStore.setRelockPending(false);
 		return;
 	}

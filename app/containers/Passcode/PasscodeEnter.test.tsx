@@ -121,15 +121,19 @@ describe('PasscodeEnter biometry', () => {
 	});
 });
 
-describe('PasscodeEnter enrollmentChanged subtitle', () => {
+describe('PasscodeEnter invalidation subtitle', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it('renders explanatory subtitle when reason === "enrollmentChanged"', () => {
-		const { getByText } = render(<PasscodeEnter hasBiometry={false} reason='enrollmentChanged' finishProcess={jest.fn()} />);
+	it.each([
+		['enrollmentChanged', 'Local_authentication_biometric_enrollment_changed'],
+		['trustLost', 'Local_authentication_biometric_trust_lost'],
+		['relockRequired', 'Local_authentication_biometric_relock_required']
+	] as const)('renders the %s subtitle', (reason, key) => {
+		const { getByText } = render(<PasscodeEnter hasBiometry={false} reason={reason} finishProcess={jest.fn()} />);
 
-		expect(getByText('Local_authentication_biometric_enrollment_changed')).toBeTruthy();
+		expect(getByText(key)).toBeTruthy();
 	});
 
 	it('does not render subtitle when reason is undefined', () => {
