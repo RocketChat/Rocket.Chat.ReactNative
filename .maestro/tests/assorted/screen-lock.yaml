@@ -117,7 +117,7 @@ tags:
 - tapOn:
     id: 'passcode-button-6'
 
-# After unlock, we land back on Screen Lock config. Tap "Change passcode"
+# launchApp cold-starts, so unlocking lands on the rooms list. Navigate back to Screen Lock config.
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -190,7 +190,7 @@ tags:
 - tapOn:
     id: 'passcode-button-6'
 
-# Now the ChangePasscodeView (PasscodeChoose) opens; choose new passcode 3455678
+# Now the ChangePasscodeView (PasscodeChoose) opens; choose new passcode 345678
 - extendedWaitUntil:
     visible:
       text: 'Choose your new passcode'
@@ -208,7 +208,7 @@ tags:
 - tapOn:
     id: 'passcode-button-8'
 
-# Confirm new passcode 3455678
+# Confirm new passcode 345678
 - extendedWaitUntil:
     visible:
       text: 'Confirm your new passcode'
@@ -257,3 +257,14 @@ tags:
     id: 'passcode-button-7'
 - tapOn:
     id: 'passcode-button-8'
+
+# The taps above pass whether or not the app accepts the digits, so assert the lock actually lifted.
+# launchApp cold-starts, so navigation resets to the rooms list rather than the Screen Lock screen.
+- extendedWaitUntil:
+    notVisible:
+      id: 'passcode-button-3'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
