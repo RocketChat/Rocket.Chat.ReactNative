@@ -35,7 +35,7 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 
 	const replaceShortnameWithUnicode = (shortname: string) => {
 		const name = shortname.replace(/:/g, '');
-		
+
 		// a custom emoji sharing a built-in shortcode/alias must win
 		if (customEmojis(name)) {
 			return shortname;
