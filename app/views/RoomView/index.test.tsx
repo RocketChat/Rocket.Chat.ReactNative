@@ -32,10 +32,12 @@ jest.mock('../../lib/methods/subscriptions/room', () =>
 jest.mock('../../lib/services/restApi', () => ({
 	getRoutingConfig: jest.fn().mockResolvedValue({ returnQueue: false }),
 	getUserInfo: jest.fn().mockResolvedValue({ success: false }),
-	editMessage: jest.fn(),
 	setReaction: jest.fn(),
 	joinRoom: jest.fn(),
 	toggleFollowMessage: jest.fn()
+}));
+jest.mock('../../lib/methods/editMessage', () => ({
+	editMessage: jest.fn()
 }));
 jest.mock('../../lib/encryption/utils', () => ({
 	isE2EEDisabledEncryptedRoom: () => false,
