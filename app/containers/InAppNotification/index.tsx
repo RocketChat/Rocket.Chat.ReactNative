@@ -38,7 +38,7 @@ const showNotification = (notification: INotifierNotification) => {
 		componentProps: {
 			notification
 		},
-		duration: notification.customTime || (process.env.RUNNING_E2E_TESTS ? 5000 : 3000), // default 3s,
+		duration: notification.customTime || (process.env.RUNNING_E2E_TESTS === 'true' ? 5000 : 3000), // default 3s,
 		// our components handle their own presses; the library's press wrapper swallows taps on them
 		hideOnPress: notification.hideOnPress ?? false,
 		swipeEnabled: notification.swipeEnabled ?? true
