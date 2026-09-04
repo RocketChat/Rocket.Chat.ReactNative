@@ -154,6 +154,8 @@ export const biometryAuth = async (force?: boolean): Promise<TrustResult> => {
 	try {
 		const presence = await LocalAuthentication.authenticateAsync({
 			disableDeviceFallback: true,
+			// Class 3 only; expo defaults to 'weak'. See PLATFORMS.md, "Weak (Class 2) biometrics".
+			biometricsSecurityLevel: 'strong',
 			cancelLabel: promptCopy.cancel,
 			promptMessage: promptCopy.title
 		});

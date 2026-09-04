@@ -84,7 +84,7 @@ sequenceDiagram
             Store->>OS: getGenericPassword → OS biometric sheet
         else Android
             LocalAuth->>Store: hasEnrollment() + isEnrollmentValid() (both silent)
-            LocalAuth->>OS: authenticateAsync({ disableDeviceFallback: true })
+            LocalAuth->>OS: authenticateAsync({ disableDeviceFallback: true, strong })
         end
         OS->>User: prompt
         alt user authenticates
@@ -145,7 +145,7 @@ sequenceDiagram
             alt probe key invalidated
                 Store-->>Passcode: { kind: 'enrollmentChanged' }
             else enrollment intact
-                Passcode->>OS: authenticateAsync({ disableDeviceFallback: true })
+                Passcode->>OS: authenticateAsync({ disableDeviceFallback: true, strong })
                 alt biometric matches
                     OS-->>Passcode: { kind: 'success' }
                 else user_cancel / authentication_failed / …

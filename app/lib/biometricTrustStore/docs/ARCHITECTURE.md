@@ -171,7 +171,7 @@ If a crash happens between the two, the surviving state is _flag set, sentinel g
 
 ## Invariants summary
 
-1. **Writing/probing the sentinel never prompts, and presence is proved per platform.** Consent requires a prompt, so it requires `biometryAuth(true)`, not an `enroll()`. `verify()` proves presence on **iOS only**; Android uses `authenticateAsync({ disableDeviceFallback: true })`, because the sentinel's keystore key accepts a 5s device-credential window and can resolve with no prompt at all.
+1. **Writing/probing the sentinel never prompts, and presence is proved per platform.** Consent requires a prompt, so it requires `biometryAuth(true)`, not an `enroll()`. `verify()` proves presence on **iOS only**; Android uses `authenticateAsync({ disableDeviceFallback: true, biometricsSecurityLevel: 'strong' })`, because the sentinel's keystore key accepts a 5s device-credential window and can resolve with no prompt at all.
 2. **Every successful `enroll()` sets the migration marker.** Keeps app-driven enrolls out of the grandfather branch.
 3. **On invalidation, `disenroll()` precedes `setEnabled(false)`.** Keeps a crash recoverable by reconciliation.
 4. **Flag and sentinel are kept in lockstep.** `setBiometryEnabled`, `enableBiometry`, and `resolveBiometricTrust` never leave one set without the other (the migration is the safety net for crashes that break this). On Android the native probe key is bound/torn down in lockstep with the sentinel inside `enroll()`/`disenroll()`.

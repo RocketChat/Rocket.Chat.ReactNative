@@ -466,9 +466,12 @@ describe('biometryAuth', () => {
 			// what gates the unlock on Android.
 			expect(mockedVerify).not.toHaveBeenCalled();
 			expect(mockedAuthenticateAsync).toHaveBeenCalledTimes(1);
-			// disableDeviceFallback is the whole point: a device PIN must not satisfy this.
+			// disableDeviceFallback is the whole point: a device PIN must not satisfy this. 'strong' is the
+			// other half — expo defaults to 'weak', which would accept a Class 2 face neither the probe key
+			// nor the sentinel can see.
 			expect(mockedAuthenticateAsync).toHaveBeenCalledWith({
 				disableDeviceFallback: true,
+				biometricsSecurityLevel: 'strong',
 				promptMessage: 'Local_authentication_biometry_title',
 				cancelLabel: 'Local_authentication_biometry_fallback'
 			});
