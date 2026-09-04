@@ -31,6 +31,7 @@ interface IPasscodePasscodeEnter {
 const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
 	const attempts = useRef(0);
+	const autoPrompted = useRef(false);
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
 	// Mirrored locally so an invalidation hides the biometry button within the same modal session.
@@ -71,12 +72,20 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 		} else {
 			setStatus(TYPE.ENTER);
 		}
-		// Auto-prompt from behind this modal so app content stays covered during the OS prompt.
-		biometry();
 	};
 
 	useEffect(() => {
 		readStorage();
+	}, [status]);
+
+	// Auto-prompt from behind this modal so app content stays covered during the OS prompt. Latched:
+	// readStorage re-runs on every status change, and a lockout expiry must not re-prompt unasked.
+	useEffect(() => {
+		if (status !== TYPE.ENTER || autoPrompted.current) {
+			return;
+		}
+		autoPrompted.current = true;
+		biometry();
 	}, [status]);
 
 	const onEndProcess = (p: string) => {

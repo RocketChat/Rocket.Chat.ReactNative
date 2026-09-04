@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface ISettleableRequest {
 	cancel?: () => void;
@@ -33,6 +33,10 @@ export const useDeferredModalSettle = <T extends ISettleableRequest>() => {
 		pendingSettle.current = null;
 		settle?.();
 	};
+
+	// Third flush path, for the host that unmounts with a settle still pending: onModalHide can no
+	// longer fire and the caller's promise would hang until the next request arrives to flush it.
+	useEffect(() => () => onModalHide(), []);
 
 	return { onShow, defer, onModalHide };
 };

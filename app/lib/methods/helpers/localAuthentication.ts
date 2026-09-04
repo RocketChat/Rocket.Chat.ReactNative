@@ -108,6 +108,8 @@ const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationEr
 		case 'app_cancel':
 		case 'system_cancel':
 		case 'user_fallback':
+		// Deliberate: a non-match ends the prompt with nothing proven, same as a cancel. The toggle
+		// flipping back is the feedback; an alert here would fire on every mistimed finger.
 		case 'authentication_failed':
 			return { kind: 'canceled' };
 		case 'not_enrolled':
@@ -120,7 +122,7 @@ const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationEr
 	}
 };
 
-// Single source for the sentinel-then-probe order; the platform split is in PLATFORMS.md.
+// Single source for the sentinel-then-key-check order; the platform split is in PLATFORMS.md.
 type EnrollmentCheck = { state: 'valid' | 'absent' | 'invalid' } | { state: 'error'; cause: unknown };
 
 const checkBiometricEnrollment = async (): Promise<EnrollmentCheck> => {
@@ -272,11 +274,10 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 
 	const reason = relockReason ?? (await getRelockReason());
 	if (reason !== 'none' && reason !== 'checkFailed') {
+		// No else: with the flag off, both routes to a non-'none' reason run through getRelockReason,
+		// whose only such return is gated on isRelockPending() — already true, so re-arming was a no-op.
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
-		} else {
-			// Migration already cleared the flag; re-affirm the marker so the clear below stays balanced.
-			biometricTrustStore.setRelockPending(true);
 		}
 		await openModal(false, canCloseModal, reason);
 		biometricTrustStore.setRelockPending(false);

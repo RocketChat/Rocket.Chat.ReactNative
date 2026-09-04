@@ -15,7 +15,7 @@ Participants used below:
 
 ## 1. Enable / disable from the settings toggle
 
-`toggleBiometry` enables through `enableBiometry` (the shared enroll-then-consent path, §2) and disables through `setBiometryEnabled(false)`. Either way the keychain and the flag stay in sync, and a failure is reported so the switch can roll back.
+`toggleBiometry` enables through `enableBiometry` (the shared enroll-then-consent path, §2) and disables through `disableBiometry()`. Either way the keychain and the flag stay in sync; only the enable path can fail, and it reports the failure so the switch can roll back.
 
 ```mermaid
 sequenceDiagram
@@ -48,7 +48,7 @@ sequenceDiagram
     end
 
     User->>Settings: flip biometry switch OFF
-    Settings->>Store: setBiometryEnabled(false)
+    Settings->>Store: disableBiometry()
     Store->>OS: disenroll() — resetGenericPassword (best-effort)
     Store->>Store: setEnabled(false)
     Store-->>Settings: { kind: 'success' }
@@ -141,8 +141,8 @@ sequenceDiagram
         alt sentinel absent
             Store-->>Passcode: { kind: 'unavailable' }
         else sentinel present
-            Passcode->>Store: isEnrollmentValid() — silent probe-key cipher.init()
-            alt probe key invalidated
+            Passcode->>Store: isEnrollmentValid() — silent enrollment-key cipher.init()
+            alt enrollment key invalidated
                 Store-->>Passcode: { kind: 'enrollmentChanged' }
             else enrollment intact
                 Passcode->>OS: authenticateAsync({ disableDeviceFallback: true, strong })

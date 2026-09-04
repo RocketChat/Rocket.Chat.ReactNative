@@ -3,7 +3,7 @@ import * as Keychain from 'react-native-keychain';
 import { type BiometricPromptCopy, type IBiometricTrustStore, type TrustResult } from '../../definitions';
 import UserPreferences from '../methods/userPreferences';
 import { isAndroid } from '../methods/helpers/deviceInfo';
-import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
+import { clearEnrollmentKey, bindEnrollmentKey, isEnrollmentValid } from './nativeEnrollmentCheck';
 import {
 	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
 	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
@@ -20,11 +20,13 @@ const writeOptions = (): Keychain.SetOptions => ({
 	accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY
 });
 
+// No `cancel`: this read is iOS-only (biometryAuth calls verify() under isIOS) and the library's iOS
+// path forwards only `title`, as kSecUseOperationPrompt. The Android negative button comes from
+// authenticateAsync's cancelLabel instead.
 const readOptions = (promptCopy: BiometricPromptCopy): Keychain.GetOptions => ({
 	service: SENTINEL_SERVICE,
 	authenticationPrompt: {
-		title: promptCopy.title,
-		cancel: promptCopy.cancel
+		title: promptCopy.title
 	}
 });
 
@@ -42,7 +44,8 @@ export const classifyError = (e: unknown): TrustResult => {
 	const message = err?.message ?? '';
 	const blob = `${code} ${name} ${message}`;
 
-	// Matched on the code only: a message that merely mentions -25300 must not reach invalidate().
+	// -128 is matched on the code only, so an unrelated error merely quoting it in its message stays an
+	// error. The two enrollmentChanged branches below do read the message, which only over-forces a prompt.
 	if (code === '-128' || /errSecUserCancel|UserCancel|user.?cancel|AuthenticationCanceled/i.test(blob)) {
 		return { kind: 'canceled' };
 	}
@@ -67,14 +70,14 @@ export const biometricTrustStore: IBiometricTrustStore = {
 				await biometricTrustStore.disenroll();
 				return { kind: 'unavailable' };
 			}
-			// Binds the Android probe key in lockstep with the sentinel. The iOS fallback answers false,
-			// hence the guard. Without a probe the next warm unlock reads the missing alias as a change.
-			if (isAndroid && !(await enrollProbe())) {
+			// Binds the Android enrollment key in lockstep with the sentinel. The iOS fallback answers false,
+			// hence the guard. Without an enrollment key the next warm unlock reads the missing alias as a change.
+			if (isAndroid && !(await bindEnrollmentKey())) {
 				await biometricTrustStore.disenroll();
 				return { kind: 'unavailable' };
 			}
 			// Marks the install trust-initialized so invalidation can't reach the grandfather path.
-			// After the probe: a marker left behind on the failure path would block the grandfather rescue.
+			// After the enrollment key: a marker left behind on the failure path would block the grandfather rescue.
 			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 			return { kind: 'success' };
 		} catch (e) {
@@ -88,7 +91,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		} catch {
 			// best-effort delete; sentinel may already be absent
 		}
-		await disenrollProbe();
+		await clearEnrollmentKey();
 	},
 
 	async verify({ promptCopy }) {
@@ -113,7 +116,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		return !!result;
 	},
 
-	// Android: silent keystore cipher.init() probe. iOS: always true, the sentinel covers it.
+	// Android: silent keystore cipher.init() check. iOS: always true, the sentinel covers it.
 	isEnrollmentValid() {
 		return isEnrollmentValid();
 	},
@@ -144,18 +147,11 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		}
 	},
 
-	async setBiometryEnabled(enabled: boolean) {
-		if (enabled) {
-			const result = await biometricTrustStore.enroll();
-			if (result.kind !== 'success') {
-				biometricTrustStore.setEnabled(false);
-				return result;
-			}
-		} else {
-			await biometricTrustStore.disenroll();
-		}
-		biometricTrustStore.setEnabled(enabled);
-		return { kind: 'success' };
+	// Disable only. Enabling has to capture consent, which is enableBiometry's job — a second enable
+	// path here would be one that silently skips the prompt.
+	async disableBiometry() {
+		await biometricTrustStore.disenroll();
+		biometricTrustStore.setEnabled(false);
 	}
 };
 

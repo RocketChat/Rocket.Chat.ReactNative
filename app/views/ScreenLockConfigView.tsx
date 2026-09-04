@@ -199,11 +199,17 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 			({ biometry }) => ({ biometry: !biometry, biometryBusy: true }),
 			async () => {
 				const { biometry } = this.state;
-				// Enabling goes through enableBiometry so a re-bind carries an explicit consent prompt.
-				const result = biometry ? await enableBiometry() : await biometricTrustStore.setBiometryEnabled(false);
+				if (!biometry) {
+					// Best-effort teardown that cannot fail; the switch must always be able to go off.
+					await biometricTrustStore.disableBiometry();
+					this.setState({ biometryBusy: false });
+					return;
+				}
+				// Via enableBiometry so a re-bind carries an explicit consent prompt.
+				const result = await enableBiometry();
 				if (result.kind !== 'success') {
-					// Only the enable path can fail, and it always forces the persisted flag off, so the
-					// correct UI state is unconditionally `false`.
+					// enableBiometry always forces the persisted flag off on failure, so the correct UI
+					// state is unconditionally `false`.
 					this.setState({ biometry: false, biometryBusy: false });
 					if (result.kind === 'unavailable') {
 						showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));

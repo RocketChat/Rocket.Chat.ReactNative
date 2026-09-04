@@ -23,8 +23,13 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 			// Arm the relock debt before enroll() binds the baseline, so a crash in between can't strand a trusted baseline with no debt recorded.
 			biometricTrustStore.setRelockPending(true);
 			const result = await biometricTrustStore.enroll();
-			if (result.kind === 'error') {
-				log(result.cause);
+			// Every non-success kind: the marker stays unset so the next boot retries, and without this
+			// a user whose hardware can't produce a sentinel retries silently on every launch forever.
+			if (result.kind !== 'success') {
+				log(new Error(`biometric trust migration: enroll returned ${result.kind}`));
+				if (result.kind === 'error') {
+					log(result.cause);
+				}
 			}
 			return;
 		}

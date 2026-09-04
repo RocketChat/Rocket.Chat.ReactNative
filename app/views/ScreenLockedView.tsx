@@ -53,6 +53,8 @@ const ScreenLockedView = () => {
 		setData(args);
 	};
 
+	// Empty deps, so this closes over the first render's showScreenLock: safe only because
+	// useDeferredModalSettle is entirely ref-backed. Adding state there wedges it on a stale closure.
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		return () => {

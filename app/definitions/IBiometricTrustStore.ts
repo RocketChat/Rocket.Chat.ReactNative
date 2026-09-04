@@ -15,7 +15,7 @@ export interface IBiometricTrustStore {
 	enroll(): Promise<TrustResult>;
 	disenroll(): Promise<void>;
 	verify(opts: { promptCopy: BiometricPromptCopy }): Promise<TrustResult>;
-	// Silent. Rejects on probe/storage failures so callers can tell errors from true absence.
+	// Silent. Rejects on keystore/storage failures so callers can tell errors from true absence.
 	hasEnrollment(): Promise<boolean>;
 	// Silent. False only on a detected Android enrollment change; always true on iOS, where
 	// hasEnrollment covers it.
@@ -26,7 +26,7 @@ export interface IBiometricTrustStore {
 	isRelockPending(): boolean;
 	setRelockPending(pending: boolean): void;
 	invalidate(): Promise<void>;
-	// Enroll/disenroll and persist the flag as one operation. Returns the enroll result so callers can
-	// roll back their UI.
-	setBiometryEnabled(enabled: boolean): Promise<TrustResult>;
+	// Disenroll and clear the flag as one operation. Disenroll is best-effort, so this cannot fail:
+	// the user must always be able to turn biometry off. Enabling goes through enableBiometry.
+	disableBiometry(): Promise<void>;
 }

@@ -1,25 +1,25 @@
 import NativeBiometricEnrollment from '../native/NativeBiometricEnrollment';
 
-// Android-only silent enrollment probe; no-op on iOS. See PLATFORMS.md, "The silent enrollment probe key".
+// Android-only silent enrollment check; no-op on iOS. See PLATFORMS.md, "The silent enrollment key".
 
 /*
- * Fails closed like isEnrollmentValid below: without a probe key the next warm unlock's silent check
+ * Fails closed like isEnrollmentValid below: without a enrollment key the next warm unlock's silent check
  * finds no alias and reports a change, so a swallowed failure here becomes a bogus "enrollment
  * changed" teardown later. The caller refuses to enable biometry instead. The native module resolves
  * false rather than rejecting for a keystore failure, so both paths answer false.
  */
-export const enrollProbe = async (): Promise<boolean> => {
+export const bindEnrollmentKey = async (): Promise<boolean> => {
 	try {
-		return await NativeBiometricEnrollment.enrollProbe();
+		return await NativeBiometricEnrollment.bindEnrollmentKey();
 	} catch {
 		return false;
 	}
 };
 
-// Delete the probe key alongside the sentinel teardown.
-export const disenrollProbe = async (): Promise<void> => {
+// Delete the enrollment key alongside the sentinel teardown.
+export const clearEnrollmentKey = async (): Promise<void> => {
 	try {
-		await NativeBiometricEnrollment.disenrollProbe();
+		await NativeBiometricEnrollment.clearEnrollmentKey();
 	} catch {
 		// best effort
 	}

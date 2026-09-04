@@ -24,7 +24,7 @@ jest.mock('./index', () => ({
 		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
-		setBiometryEnabled: jest.fn(),
+		disableBiometry: jest.fn(),
 		isRelockPending: jest.fn(),
 		setRelockPending: jest.fn()
 	}
@@ -114,7 +114,7 @@ describe('runBiometricTrustMigration', () => {
 		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
 	});
 
-	it('flag=false → no-op (no probe, no enroll, no setBool)', async () => {
+	it('flag=false → no-op (no enrollment key, no enroll, no setBool)', async () => {
 		setPrefs({ biometryEnabled: false, migrated: false });
 
 		await runBiometricTrustMigration();
@@ -171,7 +171,7 @@ describe('runBiometricTrustMigration', () => {
 
 	it('hasEnrollment throws → swallowed, logged, no enroll(), no flag mutation', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
-		const boom = new Error('probe failed');
+		const boom = new Error('enrollment check failed');
 		mockedHasEnrollment.mockRejectedValueOnce(boom);
 
 		await runBiometricTrustMigration();

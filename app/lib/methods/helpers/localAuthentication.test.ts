@@ -64,7 +64,7 @@ jest.mock('../../biometricTrustStore', () => ({
 		isEnrollmentValid: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
-		setBiometryEnabled: jest.fn(),
+		disableBiometry: jest.fn(),
 		isRelockPending: jest.fn(),
 		setRelockPending: jest.fn(),
 		invalidate: jest.fn()
@@ -123,7 +123,7 @@ describe('handleLocalAuthentication', () => {
 		// Sentinel present by default → no enrollment change. Tests that exercise the invalidation path
 		// override this per-case.
 		mockedHasEnrollment.mockResolvedValue(true);
-		// Enrollment intact by default (Android native probe reports valid). Overridden per-case.
+		// Enrollment intact by default (Android native enrollment key reports valid). Overridden per-case.
 		mockedIsEnrollmentValid.mockResolvedValue(true);
 		mockedIsRelockPending.mockReturnValue(false);
 		mockedDisenroll.mockResolvedValue(undefined);
@@ -167,10 +167,10 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it('Android path: sentinel survives but native probe reports invalidated → forces passcode with reason', async () => {
+	it('Android path: sentinel survives but native enrollment key reports invalidated → forces passcode with reason', async () => {
 		mockedIsEnabled.mockReturnValue(true);
 		mockedHasEnrollment.mockResolvedValue(true); // Android keeps the sentinel after an enrollment change
-		mockedIsEnrollmentValid.mockResolvedValueOnce(false); // ...but the keystore probe key is invalidated
+		mockedIsEnrollmentValid.mockResolvedValueOnce(false); // ...but the keystore enrollment key is invalidated
 
 		await handleLocalAuthentication();
 
@@ -195,7 +195,7 @@ describe('handleLocalAuthentication', () => {
 			'isEnrollmentValid() rejects (broken bridge)',
 			() => {
 				mockedHasEnrollment.mockResolvedValue(true);
-				mockedIsEnrollmentValid.mockRejectedValueOnce(new Error('probe bridge failed'));
+				mockedIsEnrollmentValid.mockRejectedValueOnce(new Error('enrollment bridge failed'));
 			}
 		]
 	])('fail closed, not destructive: %s → forces passcode and keeps the enrollment', async (_label, arrange) => {
@@ -245,8 +245,10 @@ describe('handleLocalAuthentication', () => {
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'trustLost' });
 		// Flag already cleared by the migration, so no teardown here.
 		expect(mockedInvalidate).not.toHaveBeenCalled();
-		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(1, true);
-		expect(mockedSetRelockPending).toHaveBeenNthCalledWith(2, false);
+		// The marker is only cleared, never re-armed: reaching this branch with the flag off already
+		// requires isRelockPending() to be true.
+		expect(mockedSetRelockPending).toHaveBeenCalledTimes(1);
+		expect(mockedSetRelockPending).toHaveBeenCalledWith(false);
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
@@ -274,7 +276,7 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedSetRelockPending).not.toHaveBeenCalledWith(false);
 	});
 
-	it('biometry disabled → does not probe the sentinel', async () => {
+	it('biometry disabled → does not read the sentinel', async () => {
 		mockedIsEnabled.mockReturnValue(false);
 
 		await handleLocalAuthentication();
@@ -503,7 +505,7 @@ describe('biometryAuth', () => {
 			expect(mockedVerify).not.toHaveBeenCalled();
 			expect(mockedAuthenticateAsync).toHaveBeenCalledTimes(1);
 			// disableDeviceFallback is the whole point: a device PIN must not satisfy this. 'strong' is the
-			// other half — expo defaults to 'weak', which would accept a Class 2 face neither the probe key
+			// other half — expo defaults to 'weak', which would accept a Class 2 face neither the enrollment key
 			// nor the sentinel can see.
 			expect(mockedAuthenticateAsync).toHaveBeenCalledWith({
 				disableDeviceFallback: true,
@@ -528,7 +530,7 @@ describe('biometryAuth', () => {
 			expect(mockedAuthenticateAsync).not.toHaveBeenCalled();
 		});
 
-		it('reports enrollmentChanged from the silent probe without prompting', async () => {
+		it('reports enrollmentChanged from the silent check without prompting', async () => {
 			mockedIsEnrollmentValid.mockResolvedValueOnce(false);
 
 			await expect(biometryAuth()).resolves.toEqual({ kind: 'enrollmentChanged' });

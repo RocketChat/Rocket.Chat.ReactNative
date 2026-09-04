@@ -1,43 +1,43 @@
 import NativeBiometricEnrollment from '../native/NativeBiometricEnrollment';
-import { disenrollProbe, enrollProbe, isEnrollmentValid } from './nativeEnrollmentProbe';
+import { clearEnrollmentKey, bindEnrollmentKey, isEnrollmentValid } from './nativeEnrollmentCheck';
 
 jest.mock('../native/NativeBiometricEnrollment', () => ({
 	__esModule: true,
 	default: {
-		enrollProbe: jest.fn(),
-		disenrollProbe: jest.fn(),
+		bindEnrollmentKey: jest.fn(),
+		clearEnrollmentKey: jest.fn(),
 		isEnrollmentValid: jest.fn()
 	}
 }));
 
 const mockedNative = NativeBiometricEnrollment as jest.Mocked<typeof NativeBiometricEnrollment>;
 
-describe('nativeEnrollmentProbe', () => {
+describe('nativeEnrollmentCheck', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	describe('enrollProbe', () => {
+	describe('bindEnrollmentKey', () => {
 		it('passes the native verdict through', async () => {
-			mockedNative.enrollProbe.mockResolvedValueOnce(true);
-			expect(await enrollProbe()).toBe(true);
+			mockedNative.bindEnrollmentKey.mockResolvedValueOnce(true);
+			expect(await bindEnrollmentKey()).toBe(true);
 
-			mockedNative.enrollProbe.mockResolvedValueOnce(false);
-			expect(await enrollProbe()).toBe(false);
+			mockedNative.bindEnrollmentKey.mockResolvedValueOnce(false);
+			expect(await bindEnrollmentKey()).toBe(false);
 		});
 
-		// Swallowing this as a success would leave no probe key, which the next warm unlock reads as
+		// Swallowing this as a success would leave no enrollment key, which the next warm unlock reads as
 		// an enrollment change and tears biometry down for a change that never happened.
 		it('reports false when the bridge rejects', async () => {
-			mockedNative.enrollProbe.mockRejectedValueOnce(new Error('module unavailable'));
-			expect(await enrollProbe()).toBe(false);
+			mockedNative.bindEnrollmentKey.mockRejectedValueOnce(new Error('module unavailable'));
+			expect(await bindEnrollmentKey()).toBe(false);
 		});
 	});
 
-	describe('disenrollProbe', () => {
+	describe('clearEnrollmentKey', () => {
 		it('swallows a rejection: the key may already be gone', async () => {
-			mockedNative.disenrollProbe.mockRejectedValueOnce(new Error('module unavailable'));
-			await expect(disenrollProbe()).resolves.toBeUndefined();
+			mockedNative.clearEnrollmentKey.mockRejectedValueOnce(new Error('module unavailable'));
+			await expect(clearEnrollmentKey()).resolves.toBeUndefined();
 		});
 	});
 
