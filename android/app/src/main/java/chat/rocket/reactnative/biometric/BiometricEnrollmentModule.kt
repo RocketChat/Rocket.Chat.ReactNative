@@ -81,13 +81,6 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
         val keyStore: KeyStore
         try {
             keyStore = loadKeyStore()
-
-            if (!keyStore.containsAlias(KEY_ALIAS)) {
-                // Fail closed rather than self-heal a baseline onto the current enrollment.
-                Log.w(TAG, "isEnrollmentValid: probe alias missing — treating as enrollment change")
-                promise.resolve(false)
-                return
-            }
         } catch (e: Exception) {
             // Provider unavailable says nothing about the key's validity, so fail open here only.
             Log.w(TAG, "isEnrollmentValid: keystore unavailable", e)
@@ -97,6 +90,13 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
 
         // Sole gate on a warm unlock, and OEMs report invalidation inconsistently: any failure is a change.
         try {
+            if (!keyStore.containsAlias(KEY_ALIAS)) {
+                // Fail closed rather than self-heal a baseline onto the current enrollment.
+                Log.w(TAG, "isEnrollmentValid: probe alias missing — treating as enrollment change")
+                promise.resolve(false)
+                return
+            }
+
             val key = keyStore.getKey(KEY_ALIAS, null) as? SecretKey
             if (key == null) {
                 promise.resolve(false)
