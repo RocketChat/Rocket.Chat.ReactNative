@@ -96,10 +96,14 @@ describe('useActionSheetDetents', () => {
 });
 
 describe('getSheetContentPaddingBottom', () => {
-	const bottom = 32;
+	const bottom = 48;
 
 	beforeEach(() => {
 		mockIsAndroid = false;
+	});
+
+	it('falls back to the minimum padding when the safe-area bottom is 0', () => {
+		expect(getSheetContentPaddingBottom({ bottom: 0 })).toBe(32);
 	});
 
 	it('returns the safe-area bottom when no flags are set', () => {
