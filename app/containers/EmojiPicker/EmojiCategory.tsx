@@ -5,7 +5,7 @@ import { type ICustomEmojis, type IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
 import { EMOJI_BUTTON_SIZE } from './styles';
-import { emojisByCategory } from '../../lib/constants/emojis';
+import { emojisByCategory } from '../../lib/constants/emojis/data';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
