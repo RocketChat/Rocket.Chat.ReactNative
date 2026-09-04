@@ -142,7 +142,6 @@ const ActionSheet = memo(
 					ref={sheetRef}
 					detents={detents}
 					maxHeight={maxHeight}
-					insetAdjustment='automatic'
 					backgroundColor={colors.surfaceLight}
 					cornerRadius={16}
 					dimmed
