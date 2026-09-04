@@ -137,7 +137,7 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
-		if (sdk.current?.client?.host === server) {
+		if (sdk.host === server) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;
@@ -218,6 +218,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
 	} catch (e) {
 		yield put(selectServerFailure());
+		const currentRoot = yield* appSelector(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_INSIDE && currentRoot !== RootEnum.ROOT_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		}
 		log(e);
 	}
 };

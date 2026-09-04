@@ -11,7 +11,7 @@ export class Upload {
 		name: string | undefined;
 		fieldName?: string;
 	} | null;
-	private headers: { [key: string]: string };
+	private headers: Record<string, string>;
 	private formData: any;
 	private uploadTask: FileSystem.UploadTask | null;
 	private isCancelled: boolean;
@@ -28,7 +28,7 @@ export class Upload {
 
 	public setupRequest(
 		url: string,
-		headers: { [key: string]: string },
+		headers: Record<string, string>,
 		progressCallback?: (loaded: number, total: number) => void
 	): void {
 		this.uploadUrl = url;

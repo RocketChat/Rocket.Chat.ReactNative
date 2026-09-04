@@ -1,4 +1,4 @@
-import { type ICredentials } from '../../../definitions';
+import { type ILoginCredentials } from '../../../definitions';
 import { type IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
 import log from './log';
 
@@ -13,7 +13,7 @@ type TEventEmitterEmmitArgs =
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }
-	| { params: ICredentials }
+	| { params: ILoginCredentials }
 	| IEmitUserInteraction;
 
 class EventEmitter {

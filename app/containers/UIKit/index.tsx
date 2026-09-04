@@ -12,7 +12,7 @@ import {
 } from '@rocket.chat/ui-kit';
 
 import Markdown, { MarkdownPreview } from '../markdown';
-import Button from '../Button';
+import Button from './Button';
 import { FormTextInput } from '../TextInput';
 import { useBlockContext, textParser, useKitAppId } from './utils';
 import { translateText } from './translate';

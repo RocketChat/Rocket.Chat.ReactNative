@@ -10,7 +10,7 @@ export * from './IApps';
 export * from './IAttachment';
 export * from './ICannedResponse';
 export * from './ICertificate';
-export * from './ICredentials';
+export * from './ILoginCredentials';
 export * from './IEmoji';
 export * from './ILivechatDepartment';
 export * from './ILivechatTag';

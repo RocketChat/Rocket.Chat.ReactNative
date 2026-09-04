@@ -27,9 +27,6 @@ export default StyleSheet.create({
 	emph: {
 		fontStyle: 'italic'
 	},
-	strong: {
-		fontWeight: 'bold'
-	},
 	del: {
 		textDecorationLine: 'line-through'
 	},

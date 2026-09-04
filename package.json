@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.76.0",
+	"version": "4.77.0",
 	"private": true,
 	"packageManager": "pnpm@10.33.4",
 	"scripts": {
@@ -17,6 +17,7 @@
 		"snyk-protect": "snyk protect",
 		"postinstall": "patch-package",
 		"build-icon-set": "node scripts/build-icon-set.js",
+		"generate-emoji-data": "node scripts/generate-emoji-data.js",
 		"organize-translations": "node scripts/organize-translations.js",
 		"e2e:start": "RUNNING_E2E_TESTS=true react-native start",
 		"e2e:changed": "bash .github/scripts/e2e-changed.sh",
@@ -51,7 +52,7 @@
 		"@rocket.chat/media-signaling": "1.0.0-rc.1",
 		"@rocket.chat/message-parser": "0.31.36",
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto#main",
-		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f",
+		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#ecf4fedcf8ab6121e62a6b95bb48823afd805afd",
 		"@rocket.chat/ui-kit": "^0.39.0",
 		"@zoontek/react-native-navigation-bar": "^1.1.1",
 		"axios": "0.30.3",
@@ -194,6 +195,7 @@
 		"babel-plugin-react-compiler": "1.0.0",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"babel-preset-expo": "~54.0.9",
+		"emojibase-data": "17.0.0",
 		"eslint-plugin-react-native": "~5.0.0",
 		"fast-glob": "3.3.3",
 		"identity-obj-proxy": "^3.0.0",
