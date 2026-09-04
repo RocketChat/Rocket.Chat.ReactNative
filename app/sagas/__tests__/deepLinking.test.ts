@@ -447,6 +447,16 @@ describe('deepLinking saga — server already connected, should skip changing se
 		emitSpy.mockRestore();
 	});
 
+	const setupFailedUnlock = (error: Error) => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			if (key === `${TOKEN_KEY}-${HOST}`) return makeStoredUser();
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(localAuthenticate).mockRejectedValue(error);
+	};
+
 	// The catch must hand the error to logUnlessUserCanceled and bail, not fall through to the
 	// unknown-server path — a canceled unlock would otherwise re-add the server the user just locked.
 	it.each([
@@ -456,14 +466,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 		const { store, dispatchedActions } = setupStore();
 		const error = makeError();
-
-		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
-			if (key === 'currentServer') return 'https://other.server.com';
-			if (key === `${TOKEN_KEY}-${HOST}`) return makeStoredUser();
-			return null;
-		});
-		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
-		jest.mocked(localAuthenticate).mockRejectedValue(error);
+		setupFailedUnlock(error);
 
 		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
 		await flushSagaMicrotasks();
@@ -477,6 +480,39 @@ describe('deepLinking saga — server already connected, should skip changing se
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
 		emitSpy.mockRestore();
+	});
+
+	// Cold start: the deep link arrived over the splash screen, so bailing out with no root would
+	// leave the app with no navigator and only a force-quit to recover.
+	it('recovers the app root when the unlock fails with no root set', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlock(new UserCanceledError());
+
+		expect(store.getState().app.root).toBeUndefined();
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
+	});
+
+	// Warm app: a failed unlock must not re-initialize and throw the user out of where they were.
+	it('leaves an already-initialized root alone when the unlock fails', async () => {
+		const { store, dispatchedActions } = setupStore();
+		setupFailedUnlock(new UserCanceledError());
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const dispatchedBefore = dispatchedActions.length;
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.slice(dispatchedBefore)).not.toEqual(
+			expect.arrayContaining([expect.objectContaining({ type: APP.INIT })])
+		);
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
 	});
 });
 

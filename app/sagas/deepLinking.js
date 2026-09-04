@@ -269,6 +269,10 @@ const handleOpen = function* handleOpen({ params }) {
 			}
 		} catch (e) {
 			logUnlessUserCanceled(e);
+			// Don't fall through to the add-server flow — it would connect to the very server whose
+			// unlock just failed. fallbackNavigation only acts on a cold start, where returning here
+			// would otherwise leave the app stuck on the splash screen with no navigator.
+			yield fallbackNavigation();
 			return;
 		}
 		// if deep link is from a different server
