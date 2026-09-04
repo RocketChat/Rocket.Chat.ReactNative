@@ -9,6 +9,7 @@ import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants/localAuthentication';
 import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
+import log from '../../lib/methods/helpers/log';
 import { resolveBiometricTrust } from '../../lib/biometricTrustStore/resolveBiometricTrust';
 import { type BiometricInvalidationReason } from '../../definitions';
 import { getDiff, getLockedUntil } from './utils';
@@ -79,20 +80,30 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	}, [status]);
 
 	const onEndProcess = (p: string) => {
-		setTimeout(() => {
+		setTimeout(async () => {
 			if (sha256(p) === passcode) {
 				finishProcess();
-			} else {
-				attempts.current += 1;
-				if (attempts.current >= MAX_ATTEMPTS) {
-					setStatus(TYPE.LOCKED);
-					setLockedUntil(new Date().toISOString());
-					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-				} else {
-					ref?.current?.wrongPasscode();
-					setAttempts(attempts.current.toString());
-					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+				return;
+			}
+			attempts.current += 1;
+			const locked = attempts.current >= MAX_ATTEMPTS;
+			try {
+				// Every failure, the lockout-triggering one included: readStorage re-seeds the counter from
+				// here, so a count that stopped at MAX_ATTEMPTS - 1 would grant a remount an extra attempt.
+				await setAttempts(attempts.current.toString());
+				if (locked) {
+					// Awaited before the status flip, which mounts Locked and has it read this timer back.
+					await setLockedUntil(new Date().toISOString());
 				}
+			} catch (e) {
+				log(e);
+			}
+			if (locked) {
+				setStatus(TYPE.LOCKED);
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+			} else {
+				ref?.current?.wrongPasscode();
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
 			}
 		}, 200);
 	};

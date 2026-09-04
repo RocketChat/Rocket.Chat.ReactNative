@@ -1,6 +1,8 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import PasscodeEnter from './PasscodeEnter';
+import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_LENGTH } from '../../lib/constants/localAuthentication';
 import { biometryAuth } from '../../lib/methods/helpers/localAuthentication';
 import { biometricTrustStore } from '../../lib/biometricTrustStore';
 
@@ -140,5 +142,45 @@ describe('PasscodeEnter invalidation subtitle', () => {
 		const { queryByText } = render(<PasscodeEnter hasBiometry={false} finishProcess={jest.fn()} />);
 
 		expect(queryByText('Local_authentication_biometric_enrollment_changed')).toBeNull();
+	});
+});
+
+// The stored passcode is null (see the userPreferences mock), so any entered code is a wrong one.
+describe('PasscodeEnter failed attempts', () => {
+	const enterWrongPasscode = (getByTestId: ReturnType<typeof render>['getByTestId']) => {
+		for (let i = 0; i < PASSCODE_LENGTH; i += 1) {
+			fireEvent.press(getByTestId('passcode-button-1'));
+		}
+	};
+
+	beforeEach(async () => {
+		jest.clearAllMocks();
+		await AsyncStorage.clear();
+	});
+
+	it('persists a failure that does not reach the lockout', async () => {
+		const { getByTestId } = render(<PasscodeEnter hasBiometry={false} finishProcess={jest.fn()} />);
+		await waitFor(() => expect(getByTestId('passcode-button-1')).toBeTruthy());
+
+		enterWrongPasscode(getByTestId);
+
+		await waitFor(() => expect(AsyncStorage.getItem(ATTEMPTS_KEY)).resolves.toBe('1'));
+		await expect(AsyncStorage.getItem(LOCKED_OUT_TIMER_KEY)).resolves.toBeNull();
+	});
+
+	// readStorage seeds the counter from ATTEMPTS_KEY, so a lockout-triggering failure that skipped the
+	// write would leave "5" behind and hand a remount a free sixth attempt with no lock.
+	it('persists the failure that triggers the lockout, and writes the timer before locking', async () => {
+		await AsyncStorage.setItem(ATTEMPTS_KEY, String(MAX_ATTEMPTS - 1));
+
+		const { getByTestId, getByText } = render(<PasscodeEnter hasBiometry={false} finishProcess={jest.fn()} />);
+		await waitFor(() => expect(getByTestId('passcode-button-1')).toBeTruthy());
+
+		enterWrongPasscode(getByTestId);
+
+		// The locked screen only renders once the timer is readable, which is what the awaited write buys.
+		await waitFor(() => expect(getByText('Passcode_app_locked_title')).toBeTruthy());
+		await expect(AsyncStorage.getItem(ATTEMPTS_KEY)).resolves.toBe(String(MAX_ATTEMPTS));
+		await expect(AsyncStorage.getItem(LOCKED_OUT_TIMER_KEY)).resolves.not.toBeNull();
 	});
 });
