@@ -41,6 +41,11 @@ test('render several emojis', () => {
 	expect(unicodeEmoji).toBe('🐶🐱🍔🍦🚀');
 });
 
+test('render alias shortnames', () => {
+	const unicodeEmoji = renderShortnameToUnicode(':water_wave::thumbs_up::red_heart:');
+	expect(unicodeEmoji).toBe('🌊👍\uFE0F❤\uFE0F');
+});
+
 test('render flag_no emoji as the Norway flag', () => {
 	const { result } = renderHook(() => useShortnameToUnicode());
 	const unicodeEmoji = result.current.formatShortnameToUnicode(':flag_no:');
