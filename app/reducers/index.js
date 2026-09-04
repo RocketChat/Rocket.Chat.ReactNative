@@ -26,8 +26,10 @@ import usersRoles from './usersRoles';
 import troubleshootingNotification from './troubleshootingNotification';
 import supportedVersions from './supportedVersions';
 import inAppFeedback from './inAppFeedback';
+import apps from './apps';
 
 export default combineReducers({
+	apps,
 	settings,
 	login,
 	meteor,

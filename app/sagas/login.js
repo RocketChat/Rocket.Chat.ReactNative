@@ -31,6 +31,7 @@ import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancelled';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
+import { getAppsLanguages } from '../lib/methods/getAppsLanguages';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
@@ -201,6 +202,14 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	}
 };
 
+const fetchAppsLanguagesFork = function* fetchAppsLanguagesFork() {
+	try {
+		yield getAppsLanguages();
+	} catch (e) {
+		log(e);
+	}
+};
+
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
 		yield registerPushToken();
@@ -317,6 +326,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
+		yield fork(fetchAppsLanguagesFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
 		yield fork(subscribeSettingsFork);
