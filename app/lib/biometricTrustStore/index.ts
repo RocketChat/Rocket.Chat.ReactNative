@@ -65,7 +65,6 @@ export const biometricTrustStore: IBiometricTrustStore = {
 			if (!written) {
 				return { kind: 'unavailable' };
 			}
-			// A sentinel in non-authenticated storage detects no change, so tear it down before the marker.
 			if (!isAuthBackedStorage(written.storage)) {
 				await biometricTrustStore.disenroll();
 				return { kind: 'unavailable' };
