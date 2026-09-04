@@ -1,8 +1,8 @@
 import database from '../database';
-import { DEFAULT_EMOJIS } from '../constants/emojis';
+import { DEFAULT_EMOJIS } from '../constants/emojis/emojis';
 import migrations from '../database/model/migrations';
 import appSchema from '../database/schema/app';
-import { addFrequentlyUsed, getFrequentlyUsedEmojis } from './emojis';
+import { addFrequentlyUsed, getFrequentlyUsedEmojis, searchEmojis } from './emojis';
 
 jest.mock('../database', () => ({
 	__esModule: true,
@@ -113,6 +113,42 @@ describe('getFrequentlyUsedEmojis', () => {
 		);
 
 		await expect(getFrequentlyUsedEmojis(true)).resolves.toEqual(DEFAULT_EMOJIS);
+	});
+});
+
+describe('searchEmojis', () => {
+	it('matches the listed shortname', async () => {
+		await expect(searchEmojis('ocean')).resolves.toContain('ocean');
+	});
+
+	it('matches an alias and returns the listed shortname instead of the alias', async () => {
+		const result = await searchEmojis('water_wave');
+
+		expect(result).toContain('ocean');
+		expect(result).not.toContain('water_wave');
+	});
+
+	it('matches case insensitively, so the picker finds an emoji typed in caps', async () => {
+		await expect(searchEmojis('WATER_WAVE')).resolves.toContain('ocean');
+	});
+
+	it('ranks the exact shortname first, so a short keyword is not buried by longer names', async () => {
+		// The composer's autocomplete only shows the first few, so rank is what makes `fire` reachable.
+		await expect(searchEmojis('fire')).resolves.toHaveProperty('0', 'fire');
+		await expect(searchEmojis('heart')).resolves.toHaveProperty('0', 'heart');
+		await expect(searchEmojis('ok')).resolves.toHaveProperty('0', 'ok');
+	});
+
+	it('ranks an exact alias above a name that merely contains the keyword', async () => {
+		const result = await searchEmojis('cop');
+
+		expect(result.indexOf('police_officer')).toBeLessThan(result.indexOf('helicopter'));
+	});
+
+	it('returns only custom emojis when no shortname matches', async () => {
+		mockFetch.mockResolvedValue([{ name: 'rocketchat', extension: 'png' }]);
+
+		await expect(searchEmojis('notanemoji')).resolves.toEqual([{ name: 'rocketchat', extension: 'png' }]);
 	});
 });
 
