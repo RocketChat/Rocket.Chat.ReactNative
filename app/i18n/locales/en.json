@@ -232,7 +232,7 @@
   "decline": "Decline",
   "Deep_link_login_declined": "Sign-in link dismissed.",
   "Deep_link_login_description": "A link is asking to sign you in to {{server}}. Only continue if you opened this link yourself and trust it.",
-  "Deep_link_login_title": "Sign in to this server?",
+  "Deep_link_login_title": "Sign in to this workspace?",
   "Default": "Default",
   "Default_browser": "Default browser",
   "Defined_user_as_role": "defined {{user}} as {{role}}",

@@ -218,7 +218,7 @@
   "Dark_level": "Mørkt nivå",
   "decline": "Avslå",
   "Deep_link_login_description": "En lenke prøver å logge deg inn på {{server}}. Fortsett bare hvis du åpnet denne lenken selv og stoler på den.",
-  "Deep_link_login_title": "Logge inn på denne serveren?",
+  "Deep_link_login_title": "Logge inn på dette arbeidsområdet?",
   "Default": "Standard",
   "Default_browser": "Standard nettleser",
   "Defined_user_as_role": "definert {{user}} som {{role}}",

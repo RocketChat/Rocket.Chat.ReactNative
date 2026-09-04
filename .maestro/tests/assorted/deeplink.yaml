@@ -321,7 +321,7 @@ tags:
       link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&forceLoginPrompt=true')}
 - extendedWaitUntil:
     visible:
-      text: '.*Sign in to this server.*'
+      text: '.*Sign in to this workspace.*'
     timeout: 60000
 - assertVisible:
     text: '.*A link is asking to sign you in.*'
@@ -355,7 +355,7 @@ tags:
       link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name, '&forceLoginPrompt=true')}
 - extendedWaitUntil:
     visible:
-      text: '.*Sign in to this server.*'
+      text: '.*Sign in to this workspace.*'
     timeout: 60000
 # confirm the prompt — the app must sign in and navigate to the room.
 # android:id/button1 is the positive (confirm) button, disambiguating it from the "Login" button
