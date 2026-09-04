@@ -2,12 +2,17 @@ import NativeBiometricEnrollment from '../native/NativeBiometricEnrollment';
 
 // Android-only silent enrollment probe; no-op on iOS. See PLATFORMS.md, "The silent enrollment probe key".
 
-// Best effort: on failure the verify() backstop applies.
-export const enrollProbe = async (): Promise<void> => {
+/*
+ * Fails closed like isEnrollmentValid below: without a probe key the next warm unlock's silent check
+ * finds no alias and reports a change, so a swallowed failure here becomes a bogus "enrollment
+ * changed" teardown later. The caller refuses to enable biometry instead. The native module resolves
+ * false rather than rejecting for a keystore failure, so both paths answer false.
+ */
+export const enrollProbe = async (): Promise<boolean> => {
 	try {
-		await NativeBiometricEnrollment.enrollProbe();
+		return await NativeBiometricEnrollment.enrollProbe();
 	} catch {
-		// best effort
+		return false;
 	}
 };
 

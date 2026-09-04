@@ -26,7 +26,7 @@ jest.mock('../methods/helpers/deviceInfo', () => ({
 }));
 
 jest.mock('./nativeEnrollmentProbe', () => ({
-	enrollProbe: jest.fn(() => Promise.resolve()),
+	enrollProbe: jest.fn(() => Promise.resolve(true)),
 	disenrollProbe: jest.fn(() => Promise.resolve()),
 	isEnrollmentValid: jest.fn(() => Promise.resolve(true))
 }));
@@ -101,14 +101,6 @@ describe('biometricTrustStore', () => {
 			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 
-		it('binds the Android native probe in lockstep with the sentinel', async () => {
-			mockedKeychain.setGenericPassword.mockResolvedValueOnce(true as any);
-
-			await biometricTrustStore.enroll();
-
-			expect(mockedEnrollProbe).toHaveBeenCalledTimes(1);
-		});
-
 		it('does not bind the native probe when the sentinel write fails', async () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
 
@@ -162,10 +154,54 @@ describe('biometricTrustStore', () => {
 			});
 		});
 
+		describe('Android probe binding', () => {
+			beforeEach(() => {
+				mockIsAndroid = true;
+			});
+			afterEach(() => {
+				mockIsAndroid = false;
+			});
+
+			it('binds the native probe in lockstep with the sentinel', async () => {
+				mockedKeychain.setGenericPassword.mockResolvedValueOnce({
+					service: SENTINEL_SERVICE,
+					storage: Keychain.STORAGE_TYPE.AES_GCM
+				} as any);
+
+				expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
+				expect(mockedEnrollProbe).toHaveBeenCalledTimes(1);
+			});
+
+			// The probe key is the sole gate on a warm auto-lock unlock, so enabling biometry without one
+			// would hand the user a bogus "enrollment changed" teardown on the next unlock.
+			it('refuses to enable biometry when the probe key cannot be bound, and tears the sentinel down', async () => {
+				mockedKeychain.setGenericPassword.mockResolvedValueOnce({
+					service: SENTINEL_SERVICE,
+					storage: Keychain.STORAGE_TYPE.AES_GCM
+				} as any);
+				mockedEnrollProbe.mockResolvedValueOnce(false);
+
+				expect(await biometricTrustStore.enroll()).toEqual({ kind: 'unavailable' });
+				expect(mockedKeychain.resetGenericPassword).toHaveBeenCalledTimes(1);
+				// Marker left set would block the migration's grandfather rescue on every later launch.
+				expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+			});
+		});
+
 		it("accepts iOS's 'keychain' storage, which has no downgrade fallback", async () => {
 			mockedKeychain.setGenericPassword.mockResolvedValueOnce({ service: SENTINEL_SERVICE, storage: 'keychain' } as any);
 
 			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
+		});
+
+		// There is no iOS probe and its fallback resolves false, so the check stays behind isAndroid.
+		it('does not consult the probe on iOS', async () => {
+			mockedKeychain.setGenericPassword.mockResolvedValueOnce({ service: SENTINEL_SERVICE, storage: 'keychain' } as any);
+			mockedEnrollProbe.mockResolvedValueOnce(false);
+
+			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
+			expect(mockedEnrollProbe).not.toHaveBeenCalled();
+			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 	});
 

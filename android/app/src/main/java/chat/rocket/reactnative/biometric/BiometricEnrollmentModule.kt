@@ -56,7 +56,7 @@ class BiometricEnrollmentModule(reactContext: ReactApplicationContext) :
             }
             promise.resolve(true)
         } catch (e: Exception) {
-            // Needs a current enrollment + secure lock screen; without a probe the verify() path backstops.
+            // Needs a current enrollment + secure lock screen; the JS caller refuses to enable biometry.
             Log.w(TAG, "enrollProbe failed", e)
             promise.resolve(false)
         }

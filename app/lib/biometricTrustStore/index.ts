@@ -67,10 +67,15 @@ export const biometricTrustStore: IBiometricTrustStore = {
 				await biometricTrustStore.disenroll();
 				return { kind: 'unavailable' };
 			}
+			// Binds the Android probe key in lockstep with the sentinel. The iOS fallback answers false,
+			// hence the guard. Without a probe the next warm unlock reads the missing alias as a change.
+			if (isAndroid && !(await enrollProbe())) {
+				await biometricTrustStore.disenroll();
+				return { kind: 'unavailable' };
+			}
 			// Marks the install trust-initialized so invalidation can't reach the grandfather path.
+			// After the probe: a marker left behind on the failure path would block the grandfather rescue.
 			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
-			// Binds the Android probe key in lockstep with the sentinel. Best effort; no-op on iOS.
-			await enrollProbe();
 			return { kind: 'success' };
 		} catch (e) {
 			return classifyError(e);
