@@ -33,8 +33,19 @@ const unescapeHTML = (string: string) => {
 
 const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
+	const customEmojis = useCustomEmoji();
+
+	const replaceShortnameWithUnicode = (shortname: string) => {
+		const name = shortname.replace(/:/g, '');
+		
+		// a custom emoji sharing a built-in shortcode/alias must win
+		if (customEmojis(name)) {
+			return shortname;
+		}
+		return emojis[shortname] || shortname;
+	};
 	const formatShortnameToUnicode = (str: string) => {
-		str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
+		str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
 		str = str.replace(regAscii, (entire, _m1, m2, m3) => {
 			if (!m3 || !(unescapeHTML(m3) in ascii)) {
 				// if the ascii doesnt exist just return the entire match

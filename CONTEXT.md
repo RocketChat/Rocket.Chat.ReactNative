@@ -2,18 +2,18 @@
 
 ## Rooms & Conversations
 
-| Term                | Definition                                                                                                                     | Aliases to avoid              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                  | Chat, conversation            |
-| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open)                         | Membership, room entry        |
-| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                      | Public room                   |
-| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                    | Private room, private channel |
-| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                           | DM, PM, private message       |
-| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                | Reply chain                   |
-| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms | Sub-room, sub-channel         |
-| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                      | Workspace (a different thing) |
-| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                | Broadcast channel             |
-| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                     | Broadcast reply               |
+| Term                | Definition                                                                                                                            | Aliases to avoid              |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **Room**            | A server-side conversation container with shared state (name, type, settings)                                                         | Chat, conversation            |
+| **Subscription**    | A user's personal relationship to a Room, holding per-user state (unread count, favorite, muted, open) — never a **DDP Subscription** | Membership, room entry        |
+| **Channel**         | A public Room (type `'c'`) visible to all Workspace users                                                                             | Public room                   |
+| **Group**           | A private Room (type `'p'`) visible only to invited members                                                                           | Private room, private channel |
+| **Direct Message**  | A 1-on-1 private Room (type `'d'`) between two users                                                                                  | DM, PM, private message       |
+| **Thread**          | A branched conversation spawned from a single Message, identified by `tmid` (thread message id)                                       | Reply chain                   |
+| **Discussion**      | A separate Room spawned from a parent Room, identified by `prid` (parent room id) — unlike Threads, Discussions are full Rooms        | Sub-room, sub-channel         |
+| **Team**            | An organizational container that groups multiple Channels and users under a single entity                                             | Workspace (a different thing) |
+| **Broadcast Room**  | A Room where only authorized users can send Messages; other users can only Reply Broadcast to existing Messages                       | Broadcast channel             |
+| **Reply Broadcast** | The action of replying to a Message in a Broadcast Room when the current user cannot send regular Messages                            | Broadcast reply               |
 
 ## Messages
 
@@ -210,12 +210,13 @@ A **Reaction** and the frequently used emojis table store an emoji by _name_, ne
 
 ## Workspace & Connection
 
-| Term                  | Definition                                                                                                               | Aliases to avoid                           |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
-| **Workspace**         | A Rocket.Chat deployment the app connects to, with version, settings, and enterprise modules                             | Server (legacy), instance                  |
-| **Workspace History** | List of previously connected Workspaces for quick reconnection                                                           | Recent servers                             |
-| **Meteor Connect**    | The WebSocket connection to the Workspace's DDP (Distributed Data Protocol) endpoint                                     | Socket, connection                         |
-| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead | Staleness (stale/gray/fresh), socket probe |
+| Term                  | Definition                                                                                                                                                                                                                                                                                | Aliases to avoid                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Workspace**         | A Rocket.Chat deployment the app connects to, with version, settings, and enterprise modules                                                                                                                                                                                              | Server (legacy), instance                  |
+| **Workspace History** | List of previously connected Workspaces for quick reconnection                                                                                                                                                                                                                            | Recent servers                             |
+| **Meteor Connect**    | The WebSocket connection to the Workspace's DDP (Distributed Data Protocol) endpoint                                                                                                                                                                                                      | Socket, connection                         |
+| **Socket Health**     | Whether the Meteor Connect socket is genuinely alive — confirmed by a round trip when in doubt, reopened when known dead                                                                                                                                                                  | Staleness (stale/gray/fresh), socket probe |
+| **DDP Subscription**  | A live server-push feed on Meteor Connect, opened by name and parameters (`stream-room-messages`, `stream-notify-user`); the SDK derives its id from those parameters, so two callers asking for the same feed share one — distinct from a **Subscription**, which is a membership record | Stream, DDP stream, sub                    |
 
 ## Navigation & Layout
 

@@ -262,6 +262,24 @@ describe('ReactionsList Integration Tests', () => {
 		expect(screen.UNSAFE_getAllByType(ExpoImage).length).toBeGreaterThan(0);
 		expect(screen.queryByText(':custom_emoji:')).toBeNull();
 	});
+
+	it('still renders the per-emoji tab when the server omits names (falls back to usernames)', () => {
+		// The raw reaction payload only ever guarantees `usernames` - `names` is missing entirely
+		// on some servers/paths, not just an empty array.
+		const reactionsWithoutNames = [
+			{
+				_id: 'reaction4',
+				emoji: '🎉',
+				usernames: ['user5']
+			}
+		] as IReaction[];
+
+		renderWithRedux(<ReactionsList reactions={reactionsWithoutNames} />);
+
+		fireEvent.press(screen.getByTestId('tab-🎉'));
+		expect(screen.getByTestId('usersList-🎉')).toBeOnTheScreen();
+		expect(screen.getAllByText('user5').length).toBeGreaterThan(0);
+	});
 });
 
 generateSnapshots(stories);
