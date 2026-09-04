@@ -36,6 +36,7 @@ interface IArgs {
 const ChangePasscodeView = memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
+	const [requestId, setRequestId] = useState(0);
 	const { onShow, defer, onModalHide } = useDeferredModalSettle<Partial<IArgs>>();
 
 	useDeepCompareEffect(() => {
@@ -48,6 +49,7 @@ const ChangePasscodeView = memo(() => {
 
 	const showChangePasscode = (args: IArgs) => {
 		onShow(args);
+		setRequestId(current => current + 1);
 		setData(args);
 	};
 
@@ -72,7 +74,7 @@ const ChangePasscodeView = memo(() => {
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal} onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
-				<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
+				<PasscodeChoose key={requestId} finishProcess={onSubmit} force={data?.force} />
 				{!data?.force ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />
