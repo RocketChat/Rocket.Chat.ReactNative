@@ -109,10 +109,14 @@
 			"app/views/ChangePasscodeView.tsx",
 			"app/views/SecurityPrivacyView.tsx",
 			"app/containers/Passcode/**",
+			"app/lib/hooks/useDeferredModalSettle.ts",
 			"app/lib/methods/helpers/localAuthentication.ts",
 			"app/lib/biometricTrustStore/**",
 			"app/lib/native/NativeBiometricEnrollment.ts",
 			"app/definitions/IBiometricTrustStore.ts",
+			"app/sagas/init.js",
+			"app/sagas/deepLinking.js",
+			"app/sagas/login.js",
 			"android/app/src/main/java/chat/rocket/reactnative/biometric/**"
 		]
 	},
