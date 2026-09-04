@@ -1,12 +1,11 @@
 import ascii, { asciiRegexp } from './ascii';
 import { useAppSelector } from '../useAppSelector';
+import { useCustomEmoji } from '../useCustomEmoji';
 import { getUserSelector } from '../../../selectors/login';
 import { shortnameToUnicodeMap } from '../../constants/emojis/data';
 import { legacyShortnameToUnicodeMap } from '../../constants/emojis/legacyShortnamesMap';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
-const replaceShortNameWithUnicode = (shortname: string) =>
-	shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
 const regAscii = new RegExp(`((\\s|^)${asciiRegexp}(?=\\s|$|[!,.?]))`, 'gi');
 
 const unescapeHTML = (string: string) => {
@@ -37,12 +36,12 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 
 	const replaceShortnameWithUnicode = (shortname: string) => {
 		const name = shortname.replace(/:/g, '');
-		
+
 		// a custom emoji sharing a built-in shortcode/alias must win
 		if (customEmojis(name)) {
 			return shortname;
 		}
-		return emojis[shortname] || shortname;
+		return shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
 	};
 	const formatShortnameToUnicode = (str: string) => {
 		str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
