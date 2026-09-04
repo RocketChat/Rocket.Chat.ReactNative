@@ -457,8 +457,6 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(localAuthenticate).mockRejectedValue(error);
 	};
 
-	// The catch must hand the error to logUnlessUserCanceled and bail, not fall through to the
-	// unknown-server path — a canceled unlock would otherwise re-add the server the user just locked.
 	it.each([
 		['a failed unlock', () => new Error('unlock failed')],
 		['a canceled unlock', () => new UserCanceledError()]
