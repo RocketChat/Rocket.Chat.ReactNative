@@ -108,7 +108,7 @@ import { TOKEN_KEY } from '../../lib/constants/keys';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { getServerById } from '../../lib/database/services/Server';
-import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '../../lib/methods/helpers/localAuthentication';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
@@ -369,6 +369,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
 		jest.mocked(localAuthenticate).mockReset();
+		jest.mocked(logUnlessUserCanceled).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -446,9 +447,15 @@ describe('deepLinking saga — server already connected, should skip changing se
 		emitSpy.mockRestore();
 	});
 
-	it('drops the deep link when unlock is canceled for an existing secondary server', async () => {
+	// The catch must hand the error to logUnlessUserCanceled and bail, not fall through to the
+	// unknown-server path — a canceled unlock would otherwise re-add the server the user just locked.
+	it.each([
+		['a failed unlock', () => new Error('unlock failed')],
+		['a canceled unlock', () => new UserCanceledError()]
+	])('drops the deep link on %s for an existing secondary server', async (_label, makeError) => {
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 		const { store, dispatchedActions } = setupStore();
+		const error = makeError();
 
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
 			if (key === 'currentServer') return 'https://other.server.com';
@@ -456,13 +463,14 @@ describe('deepLinking saga — server already connected, should skip changing se
 			return null;
 		});
 		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
-		jest.mocked(localAuthenticate).mockRejectedValue(new Error('unlock canceled'));
+		jest.mocked(localAuthenticate).mockRejectedValue(error);
 
 		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
 		await flushSagaMicrotasks();
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(localAuthenticate)).toHaveBeenCalledWith(HOST);
+		expect(jest.mocked(logUnlessUserCanceled)).toHaveBeenCalledWith(error);
 		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
 		expect(dispatchedActions).not.toEqual(expect.arrayContaining([expect.objectContaining({ type: 'SERVER.SELECT_REQUEST' })]));
 		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
