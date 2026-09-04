@@ -161,6 +161,41 @@ type BiometricTrustOutcome =
 | `unavailable`        | `disenroll()` → `setEnabled(false)` | locked; modal hides biometry, **no** subtitle (can be benign — see `PLATFORMS.md`) |
 | `canceled` / `error` | none                                | locked; modal **keeps** the biometry button so the user can retry                  |
 
+Only `not_enrolled` and a genuinely absent sentinel produce `unavailable`; anything that merely
+_failed_ produces `error`. See "A failed check is not a change" below.
+
+### A failed check is not a change
+
+`invalidate()` is irreversible: it deletes the sentinel and the probe key, clears the flag, and the
+user has to re-opt-in from settings with no idea why the feature vanished. So only evidence about the
+_enrollment_ may reach it. A check that could not complete is not that evidence, and three routes
+used to conflate the two:
+
+- **`classifyPresenceError`** — expo flattens the transient `ERROR_HW_UNAVAILABLE` (busy sensor, HAL
+  hiccup) onto `not_available` together with `ERROR_NO_BIOMETRICS`, so mapping it to `unavailable`
+  destroyed the enrollment over a momentarily busy sensor. It falls through to `error` instead, as
+  `lockout` already did.
+- **`getRelockReason`** (`localAuthentication.ts`) — collapsed every `checkBiometricEnrollment()`
+  outcome that was not `valid` into "enrollment changed", including a throw from `hasEnrollment()` on
+  either platform. It now returns a third state, **`checkFailed`**: the passcode is forced (still
+  fail-closed, still overriding the auto-lock window) but nothing is torn down, no
+  "enrollment changed" subtitle is shown, and the relock marker is deliberately left as it is so a
+  persistent failure keeps forcing the passcode.
+- **`NativeBiometricEnrollment`'s fallback** — answered `false` on Android when the module was absent
+  from the build, which reads as an enrollment change for _every_ user on that build. It rejects
+  instead, which surfaces as `checkFailed`. `nativeEnrollmentProbe.isEnrollmentValid()` no longer
+  swallows that rejection into `false` either.
+
+A `checkFailed` unlock keeps the biometry opt-in, so it self-recovers: once the transient condition
+clears, the next check reads `valid` and biometry works again. A genuinely un-enrolled device instead
+keeps a dead biometry button for one session, and `hasSupportedBiometry()` re-gates it on the next
+lock.
+
+> Known gap: `BiometricEnrollmentModule.isEnrollmentValid` still answers `false` for _any_ probe
+> exception (`BiometricEnrollmentModule.kt`, final `catch`), because OEMs report invalidation
+> inconsistently. That route still reaches `invalidate()`; narrowing it trades detection strictness
+> for availability and has not been done.
+
 ### The disenroll-before-clear ordering invariant
 
 > On any invalidation, `disenroll()` **must** run before `setEnabled(false)`.

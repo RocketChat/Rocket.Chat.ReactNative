@@ -20,11 +20,9 @@ export const disenrollProbe = async (): Promise<void> => {
 	}
 };
 
-// Fail closed: the module never rejects, so a throw means a broken bridge.
-export const isEnrollmentValid = async (): Promise<boolean> => {
-	try {
-		return await NativeBiometricEnrollment.isEnrollmentValid();
-	} catch {
-		return false;
-	}
-};
+/*
+ * The module never rejects, so a throw means a broken bridge — which says nothing about the key's
+ * validity. Let it propagate: the caller turns it into `checkFailed` (passcode, enrollment kept)
+ * rather than `invalid` (permanent teardown). See ARCHITECTURE.md, "A failed check is not a change".
+ */
+export const isEnrollmentValid = (): Promise<boolean> => NativeBiometricEnrollment.isEnrollmentValid();

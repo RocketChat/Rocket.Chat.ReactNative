@@ -111,8 +111,10 @@ const classifyPresenceError = (error?: LocalAuthentication.LocalAuthenticationEr
 		case 'authentication_failed':
 			return { kind: 'canceled' };
 		case 'not_enrolled':
-		case 'not_available':
 			return { kind: 'unavailable' };
+		// 'not_available' deliberately falls through to the non-destructive default, as 'lockout' does:
+		// expo maps the transient ERROR_HW_UNAVAILABLE onto it alongside ERROR_NO_BIOMETRICS, and
+		// `unavailable` tears the enrollment down for good.
 		default:
 			return { kind: 'error', cause: error };
 	}
@@ -232,32 +234,40 @@ const hideSplashScreen = async () => {
 	}
 };
 
-// Non-prompting. Lets an enrollment change force the passcode even inside the auto-lock window.
-const hasBiometricEnrollmentChanged = async (): Promise<boolean> => {
-	if (!biometricTrustStore.isEnabled()) {
-		return false;
-	}
-	// Fail closed: anything but a clean valid read forces the passcode rather than leaving the session unlocked.
-	const enrollment = await checkBiometricEnrollment();
-	return enrollment.state !== 'valid';
-};
+/*
+ * Non-prompting. Lets an enrollment change force the passcode even inside the auto-lock window.
+ * `checkFailed` is a separate state on purpose: a trust check that could not complete must fail
+ * closed without failing destructive. See ARCHITECTURE.md, "A failed check is not a change".
+ */
+export type TRelockReason = 'none' | 'enrollmentChanged' | 'checkFailed';
 
-// Warm foreground surfaces the change live; cold launch reads the marker the init migration left.
-const isEnrollmentRelockRequired = async (): Promise<boolean> =>
-	(await hasBiometricEnrollmentChanged()) || biometricTrustStore.isRelockPending();
+const getRelockReason = async (): Promise<TRelockReason> => {
+	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
+	if (biometricTrustStore.isEnabled()) {
+		const enrollment = await checkBiometricEnrollment();
+		if (enrollment.state === 'error') {
+			log(enrollment.cause);
+			return 'checkFailed';
+		}
+		if (enrollment.state !== 'valid') {
+			return 'enrollmentChanged';
+		}
+	}
+	// Warm foreground surfaces the change live; cold launch reads the marker the init migration left.
+	return biometricTrustStore.isRelockPending() ? 'enrollmentChanged' : 'none';
+};
 
 interface IHandleLocalAuthentication {
 	canCloseModal?: boolean;
-	// Result of a check the caller already ran; omit it to compute here. `false` skips the recheck.
-	relockRequired?: boolean;
+	// Result of a check the caller already ran; omit it to compute here. `'none'` skips the recheck.
+	relockReason?: TRelockReason;
 }
 
-export const handleLocalAuthentication = async ({ canCloseModal = false, relockRequired }: IHandleLocalAuthentication = {}) => {
-	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
+export const handleLocalAuthentication = async ({ canCloseModal = false, relockReason }: IHandleLocalAuthentication = {}) => {
 	const biometryEnabled = biometricTrustStore.isEnabled();
 
-	const enrollmentChanged = relockRequired ?? (await isEnrollmentRelockRequired());
-	if (enrollmentChanged) {
+	const reason = relockReason ?? (await getRelockReason());
+	if (reason === 'enrollmentChanged') {
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
 		} else {
@@ -266,6 +276,17 @@ export const handleLocalAuthentication = async ({ canCloseModal = false, relockR
 		}
 		await openModal(false, canCloseModal, 'enrollmentChanged');
 		biometricTrustStore.setRelockPending(false);
+		return;
+	}
+
+	/*
+	 * The check itself failed — a busy sensor, a one-off keychain error, a broken bridge. Demand the
+	 * passcode and hide a biometry button we can't vouch for, but leave the enrollment intact: the
+	 * teardown is irreversible and the user would have to re-opt-in with no idea why. The relock
+	 * marker is deliberately left as it is, so a persistent failure keeps forcing the passcode.
+	 */
+	if (reason === 'checkFailed') {
+		await openModal(false, canCloseModal);
 		return;
 	}
 
@@ -307,16 +328,16 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			const autoLockTime = process.env.RUNNING_E2E_TESTS === 'true' ? E2E_TESTS_AUTO_LOCK_TIME : serverRecord?.autoLockTime;
 
 			// Must force the lock screen regardless of how recently the user authenticated.
-			const enrollmentChanged = await isEnrollmentRelockRequired();
+			const relockReason = await getRelockReason();
 
 			// if it was not possible to get `timesync` from server, the biometric enrollment changed, or the last authenticated session is older than the configured auto lock time, authentication is required
-			if (!timesync || enrollmentChanged || (autoLockTime && diffToLastSession >= autoLockTime)) {
+			if (!timesync || relockReason !== 'none' || (autoLockTime && diffToLastSession >= autoLockTime)) {
 				await hideSplashScreen();
 
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
-				await handleLocalAuthentication({ relockRequired: enrollmentChanged });
+				await handleLocalAuthentication({ relockReason });
 
 				// set isLocalAuthenticated to true
 				store.dispatch(setLocalAuthenticated(true));

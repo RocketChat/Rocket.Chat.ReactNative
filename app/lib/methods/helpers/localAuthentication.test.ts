@@ -179,27 +179,49 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it('fail closed: hasEnrollment() rejects (keychain error) → forces passcode with reason, never leaves screen exposed', async () => {
+	/*
+	 * A check that could not complete says nothing about the enrollment, so it must fail closed
+	 * (passcode, no biometry button) without failing destructive: invalidate() is irreversible and
+	 * would silently revoke an opted-in feature over a busy sensor or a one-off keychain error.
+	 */
+	it.each([
+		[
+			'hasEnrollment() rejects (keychain error)',
+			() => {
+				mockedHasEnrollment.mockRejectedValueOnce(new Error('keychain read failed'));
+			}
+		],
+		[
+			'isEnrollmentValid() rejects (broken bridge)',
+			() => {
+				mockedHasEnrollment.mockResolvedValue(true);
+				mockedIsEnrollmentValid.mockRejectedValueOnce(new Error('probe bridge failed'));
+			}
+		]
+	])('fail closed, not destructive: %s → forces passcode and keeps the enrollment', async (_label, arrange) => {
 		mockedIsEnabled.mockReturnValue(true);
+		arrange();
+
+		await handleLocalAuthentication();
+
+		// No `reason`: this is not an enrollment change, and the copy must not claim it was.
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
+		expect(lastEmitPayload()?.reason).toBeUndefined();
+		expect(mockedInvalidate).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
+		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+
+	// The marker is the only thing that survives the process, so a persistent failure must not clear it.
+	it('leaves a pending relock marker set when the check fails', async () => {
+		mockedIsEnabled.mockReturnValue(true);
+		mockedIsRelockPending.mockReturnValue(true);
 		mockedHasEnrollment.mockRejectedValueOnce(new Error('keychain read failed'));
 
 		await handleLocalAuthentication();
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
-		expect(mockedVerify).not.toHaveBeenCalled();
-	});
-
-	it('fail closed: isEnrollmentValid() rejects → forces passcode with reason', async () => {
-		mockedIsEnabled.mockReturnValue(true);
-		mockedHasEnrollment.mockResolvedValue(true);
-		mockedIsEnrollmentValid.mockRejectedValueOnce(new Error('probe bridge failed'));
-
-		await handleLocalAuthentication();
-
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
-		expect(mockedVerify).not.toHaveBeenCalled();
+		expect(mockedSetRelockPending).not.toHaveBeenCalledWith(false);
 	});
 
 	it('cold-launch path: migration already disabled biometry but left relock pending → still forces passcode with reason', async () => {
@@ -316,7 +338,7 @@ describe('localAuthenticate', () => {
 		expect(mockedDispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ isLocalAuthenticated: true }));
 	});
 
-	it('fail closed on warm resume: hasEnrollment() rejects inside the auto-lock window → forces passcode, does not reject', async () => {
+	it('fail closed on warm resume: hasEnrollment() rejects inside the auto-lock window → forces passcode, keeps biometry', async () => {
 		mockedHasEnrollment.mockReset();
 		mockedHasEnrollment.mockRejectedValue(new Error('keychain read failed'));
 		const serverRecord = {
@@ -333,7 +355,10 @@ describe('localAuthenticate', () => {
 
 		await expect(localAuthenticate('server-id')).resolves.toBeUndefined();
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		// Still forced despite the fresh session, but the enrollment survives a transient read failure.
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
+		expect(lastEmitPayload()?.reason).toBeUndefined();
+		expect(mockedInvalidate).not.toHaveBeenCalled();
 	});
 });
 
@@ -522,6 +547,14 @@ describe('biometryAuth', () => {
 			await expect(biometryAuth()).resolves.toEqual({ kind: 'error', cause: 'lockout' });
 		});
 
+		// expo flattens the transient ERROR_HW_UNAVAILABLE into 'not_available' together with
+		// ERROR_NO_BIOMETRICS, and `unavailable` would permanently tear the enrollment down.
+		it('maps an unavailable sensor to error, not to a teardown', async () => {
+			mockedAuthenticateAsync.mockResolvedValueOnce({ success: false, error: 'not_available' });
+
+			await expect(biometryAuth()).resolves.toEqual({ kind: 'error', cause: 'not_available' });
+		});
+
 		it('fails closed when the sentinel check throws', async () => {
 			const cause = new Error('keystore unavailable');
 			mockedHasEnrollment.mockRejectedValueOnce(cause);
@@ -645,7 +678,7 @@ describe('enableBiometry', () => {
 	});
 });
 
-describe('handleLocalAuthentication relockRequired option', () => {
+describe('handleLocalAuthentication relockReason option', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedIsEnabled.mockReturnValue(true);
@@ -660,8 +693,8 @@ describe('handleLocalAuthentication relockRequired option', () => {
 		});
 	});
 
-	it('trusts an explicit false instead of re-running the check', async () => {
-		await handleLocalAuthentication({ relockRequired: false });
+	it("trusts an explicit 'none' instead of re-running the check", async () => {
+		await handleLocalAuthentication({ relockReason: 'none' });
 
 		expect(mockedHasEnrollment).not.toHaveBeenCalled();
 		expect(mockedIsEnrollmentValid).not.toHaveBeenCalled();
@@ -675,13 +708,22 @@ describe('handleLocalAuthentication relockRequired option', () => {
 		expect(mockedHasEnrollment).toHaveBeenCalled();
 	});
 
-	it('forces the enrollment-changed unlock when passed true', async () => {
+	it("forces the enrollment-changed unlock when passed 'enrollmentChanged'", async () => {
 		mockedInvalidate.mockResolvedValueOnce(undefined);
 
-		await handleLocalAuthentication({ relockRequired: true });
+		await handleLocalAuthentication({ relockReason: 'enrollmentChanged' });
 
 		expect(mockedInvalidate).toHaveBeenCalledTimes(1);
 		expect(lastEmitPayload()?.reason).toBe('enrollmentChanged');
 		expect(mockedSetRelockPending).toHaveBeenLastCalledWith(false);
+	});
+
+	it("forces the passcode without a teardown when passed 'checkFailed'", async () => {
+		await handleLocalAuthentication({ relockReason: 'checkFailed' });
+
+		expect(mockedHasEnrollment).not.toHaveBeenCalled();
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
+		expect(lastEmitPayload()?.reason).toBeUndefined();
+		expect(mockedInvalidate).not.toHaveBeenCalled();
 	});
 });
