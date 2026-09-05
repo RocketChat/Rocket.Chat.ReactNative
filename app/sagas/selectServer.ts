@@ -118,9 +118,11 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		if (!serverRecord) {
 			throw new Error('Server not found');
 		}
+		const userRoles = (yield* appSelector(state => state.login?.user?.roles)) ?? [];
 		const supportedVersionsResult = yield* call(checkSupportedVersions, {
 			supportedVersions: serverRecord.supportedVersions,
-			serverVersion: serverRecord.version
+			serverVersion: serverRecord.version,
+			userRoles
 		});
 		yield put(setSupportedVersions(supportedVersionsResult));
 

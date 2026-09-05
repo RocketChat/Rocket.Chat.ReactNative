@@ -1,4 +1,4 @@
-import { type ISupportedVersionsData } from '../../definitions';
+import { type ISupportedVersionsData, type TSVMessage } from '../../definitions';
 import { checkSupportedVersions, getMessage } from './checkSupportedVersions';
 
 const MOCK_I18N = {
@@ -516,6 +516,141 @@ describe('getMessage', () => {
 			description: 'description_token',
 			type: 'info',
 			link: 'Docs page'
+		});
+	});
+
+	describe('role targeting', () => {
+		const buildMessages = (roles?: string[]): TSVMessage[] => [
+			{
+				remainingDays: 15,
+				title: 'targeted',
+				subtitle: 'subtitle_token',
+				description: 'description_token',
+				type: 'info',
+				...(roles ? { roles } : {}),
+				link: 'Docs page'
+			}
+		];
+
+		test('shows a message with no roles to every user', () => {
+			expect(
+				getMessage({ messages: buildMessages(), expiration: '2023-04-10T00:00:00.000Z', userRoles: ['user'] })
+			).toMatchObject({ title: 'targeted' });
+		});
+
+		test('shows a role-targeted message when the user has the role', () => {
+			expect(
+				getMessage({ messages: buildMessages(['admin']), expiration: '2023-04-10T00:00:00.000Z', userRoles: ['admin', 'user'] })
+			).toMatchObject({ title: 'targeted' });
+		});
+
+		test('hides a role-targeted message from users without the role', () => {
+			expect(
+				getMessage({ messages: buildMessages(['admin']), expiration: '2023-04-10T00:00:00.000Z', userRoles: ['user'] })
+			).toBeUndefined();
+		});
+
+		test('hides a role-targeted message when user roles are unknown', () => {
+			expect(getMessage({ messages: buildMessages(['admin']), expiration: '2023-04-10T00:00:00.000Z' })).toBeUndefined();
+		});
+	});
+});
+
+describe('checkSupportedVersions role targeting', () => {
+	const buildSupportedVersions = (roles?: string[]): ISupportedVersionsData => ({
+		timestamp: TODAY,
+		enforcementStartDate: TODAY,
+		messages: [
+			{
+				remainingDays: 15,
+				title: 'targeted',
+				subtitle: 'subtitle_token',
+				description: 'description_token',
+				type: 'info',
+				...(roles ? { roles } : {}),
+				link: 'Docs page'
+			}
+		],
+		i18n: MOCK_I18N,
+		versions: [
+			{
+				version: '1.4.0',
+				expiration: '2023-04-10T00:00:00.000Z'
+			}
+		]
+	});
+
+	test('shows a role-targeted message when the user has the role', () => {
+		expect(
+			checkSupportedVersions({
+				supportedVersions: buildSupportedVersions(['admin']),
+				serverVersion: '1.4.0',
+				userRoles: ['admin', 'user']
+			})
+		).toMatchObject({ status: 'warn', message: { title: 'targeted' } });
+	});
+
+	test('hides a role-targeted message from users without the role', () => {
+		const result = checkSupportedVersions({
+			supportedVersions: buildSupportedVersions(['admin']),
+			serverVersion: '1.4.0',
+			userRoles: ['user']
+		});
+		expect(result.status).toBe('supported');
+		expect(result.message).toBeUndefined();
+	});
+
+	test('hides a role-targeted message when user roles are unknown', () => {
+		const result = checkSupportedVersions({
+			supportedVersions: buildSupportedVersions(['admin']),
+			serverVersion: '1.4.0'
+		});
+		expect(result.status).toBe('supported');
+		expect(result.message).toBeUndefined();
+	});
+
+	describe('enforcement window', () => {
+		const buildEnforcementSupportedVersions = (roles?: string[]): ISupportedVersionsData => ({
+			timestamp: TODAY,
+			enforcementStartDate: '2023-04-15T00:00:00.000Z',
+			messages: [
+				{
+					remainingDays: 15,
+					title: 'targeted',
+					subtitle: 'subtitle_token',
+					description: 'description_token',
+					type: 'info',
+					...(roles ? { roles } : {}),
+					link: 'Docs page'
+				}
+			],
+			i18n: MOCK_I18N,
+			versions: [
+				{
+					version: '1.4.0',
+					expiration: '2023-03-10T00:00:00.000Z'
+				}
+			]
+		});
+
+		test('does not warn a non-targeted user during the enforcement grace window', () => {
+			const result = checkSupportedVersions({
+				supportedVersions: buildEnforcementSupportedVersions(['admin']),
+				serverVersion: '1.4.0',
+				userRoles: ['user']
+			});
+			expect(result.status).toBe('supported');
+			expect(result.message).toBeUndefined();
+		});
+
+		test('warns a targeted user during the enforcement grace window', () => {
+			expect(
+				checkSupportedVersions({
+					supportedVersions: buildEnforcementSupportedVersions(['admin']),
+					serverVersion: '1.4.0',
+					userRoles: ['admin']
+				})
+			).toMatchObject({ status: 'warn', message: { title: 'targeted' } });
 		});
 	});
 });
