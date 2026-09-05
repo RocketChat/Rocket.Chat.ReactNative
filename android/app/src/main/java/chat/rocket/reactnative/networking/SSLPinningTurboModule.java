@@ -30,11 +30,11 @@ import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
-import chat.rocket.reactnative.networking.ExpoImageClient;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
@@ -42,28 +42,39 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static String alias;
     private static ReactApplicationContext reactContext;
     private static OkHttpClient sharedClient;
+    private static String sharedClientAlias;
 
-    public static OkHttpClient getSharedOkHttpClient() {
-        if (sharedClient != null) {
+    public static synchronized OkHttpClient getSharedOkHttpClient() {
+        if (sharedClient != null && Objects.equals(sharedClientAlias, alias)) {
             return sharedClient;
         }
-        if (alias != null) {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .connectTimeout(0, TimeUnit.MILLISECONDS)
-                    .readTimeout(0, TimeUnit.MILLISECONDS)
-                    .writeTimeout(0, TimeUnit.MILLISECONDS)
-                    .cookieJar(new ReactCookieJarContainer());
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(0, TimeUnit.MILLISECONDS)
+                .readTimeout(0, TimeUnit.MILLISECONDS)
+                .writeTimeout(0, TimeUnit.MILLISECONDS)
+                .cookieJar(new ReactCookieJarContainer())
+                .addInterceptor(chain -> {
+                    okhttp3.Request original = chain.request();
+                    if (original.header("User-Agent") != null) {
+                        return chain.proceed(original);
+                    }
+                    okhttp3.Request request = original.newBuilder()
+                            .header("User-Agent", UserAgent.get())
+                            .build();
+                    return chain.proceed(request);
+                });
 
+        if (alias != null) {
             SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
             X509TrustManager trustManager = getTrustManagerFactory();
             if (sslSocketFactory != null) {
                 builder.sslSocketFactory(sslSocketFactory, trustManager);
             }
-
-            sharedClient = builder.build();
-            return sharedClient;
         }
-        return null;
+
+        sharedClient = builder.build();
+        sharedClientAlias = alias;
+        return sharedClient;
     }
 
     public SSLPinningTurboModule(ReactApplicationContext reactContext) {
@@ -85,25 +96,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     protected OkHttpClient getOkHttpClient() {
-        OkHttpClient shared = getSharedOkHttpClient();
-        if (shared != null) {
-            return shared;
-        }
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(0, TimeUnit.MILLISECONDS)
-                .readTimeout(0, TimeUnit.MILLISECONDS)
-                .writeTimeout(0, TimeUnit.MILLISECONDS)
-                .cookieJar(new ReactCookieJarContainer());
-
-        if (alias != null) {
-            SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
-            X509TrustManager trustManager = getTrustManagerFactory();
-            if (sslSocketFactory != null) {
-                builder.sslSocketFactory(sslSocketFactory, trustManager);
-            }
-        }
-
-        return builder.build();
+        return getSharedOkHttpClient();
     }
 
     @Override
