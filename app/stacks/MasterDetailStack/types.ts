@@ -222,5 +222,8 @@ export type MasterDetailInsideStackParamList = {
 		room: ISubscription;
 		thread: any; // TODO: Change
 	};
+	AttachmentView: {
+		attachment: IAttachment;
+	};
 	CallView: undefined;
 };
