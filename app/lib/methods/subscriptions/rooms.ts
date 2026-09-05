@@ -46,7 +46,7 @@ const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
 
-const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
+export const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -150,74 +150,77 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		const tmp = merge(subscription, room);
-		const sub = await getSubscriptionByRoomId(tmp.rid);
 
-		const batch: Model[] = [];
-		if (sub) {
-			try {
-				const update = sub.prepareUpdate(s => {
-					Object.assign(s, tmp);
-					if (subscription.announcement) {
-						if (subscription.announcement !== sub.announcement) {
-							s.bannerClosed = false;
-						}
-					}
-					if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
-						if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
-							s.hideUnreadStatus = !!subscription.hideUnreadStatus;
-						}
-					}
-				});
-				batch.push(update);
-			} catch (e) {
-				console.log(e);
-			}
-		} else {
-			try {
-				const create = subCollection.prepareCreate(s => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				});
-				batch.push(create);
-			} catch (e) {
-				console.log(e);
-			}
-		}
+		// Serialize the fetch, prepares and the batch under the writer lock so a concurrent
+		// writer can't call prepareUpdate on a record with pending changes.
+		await db.write(async () => {
+			const sub = await getSubscriptionByRoomId(tmp.rid);
 
-		const { subscribedRoom } = store.getState().room;
-		if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
-			const lastMessage = buildMessage(tmp.lastMessage);
-			const messagesCollection = db.get('messages');
-			let messageRecord = {} as TMessageModel | null;
-			if (lastMessage) {
-				messageRecord = await getMessageById(lastMessage._id);
-			}
-
-			if (messageRecord) {
-				batch.push(
-					messageRecord.prepareUpdate(() => {
-						Object.assign(messageRecord, lastMessage);
-					})
-				);
-			} else {
-				batch.push(
-					messagesCollection.prepareCreate(m => {
-						if (lastMessage) {
-							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-							if (m.subscription) {
-								m.subscription.id = lastMessage.rid;
+			const batch: Model[] = [];
+			if (sub) {
+				try {
+					const update = sub.prepareUpdate(s => {
+						Object.assign(s, tmp);
+						if (subscription.announcement) {
+							if (subscription.announcement !== sub.announcement) {
+								s.bannerClosed = false;
 							}
 						}
-						return Object.assign(m, lastMessage);
-					})
-				);
+						if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
+							if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
+								s.hideUnreadStatus = !!subscription.hideUnreadStatus;
+							}
+						}
+					});
+					batch.push(update);
+				} catch (e) {
+					console.log(e);
+				}
+			} else {
+				try {
+					const create = subCollection.prepareCreate(s => {
+						s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+						Object.assign(s, tmp);
+						if (s.roomUpdatedAt) {
+							s.roomUpdatedAt = new Date();
+						}
+					});
+					batch.push(create);
+				} catch (e) {
+					console.log(e);
+				}
 			}
-		}
 
-		await db.write(async () => {
+			const { subscribedRoom } = store.getState().room;
+			if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
+				const lastMessage = buildMessage(tmp.lastMessage);
+				const messagesCollection = db.get('messages');
+				let messageRecord = {} as TMessageModel | null;
+				if (lastMessage) {
+					messageRecord = await getMessageById(lastMessage._id);
+				}
+
+				if (messageRecord) {
+					batch.push(
+						messageRecord.prepareUpdate(() => {
+							Object.assign(messageRecord, lastMessage);
+						})
+					);
+				} else {
+					batch.push(
+						messagesCollection.prepareCreate(m => {
+							if (lastMessage) {
+								m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+								if (m.subscription) {
+									m.subscription.id = lastMessage.rid;
+								}
+							}
+							return Object.assign(m, lastMessage);
+						})
+					);
+				}
+			}
+
 			await db.batch(batch);
 		});
 
