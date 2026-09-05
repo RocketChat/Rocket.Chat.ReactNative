@@ -2,6 +2,26 @@ import { canOpenRoom } from './canOpenRoom';
 import sdk from '../services/sdk';
 import { getRoomByTypeAndName } from '../services/restApi';
 
+const mockFind = jest.fn();
+const mockQuery = jest.fn();
+
+jest.mock('../database', () => ({
+	__esModule: true,
+	default: {
+		active: {
+			get: jest.fn((collection: string) => {
+				if (collection === 'subscriptions') {
+					return {
+						find: mockFind,
+						query: mockQuery
+					};
+				}
+				return null;
+			})
+		}
+	}
+}));
+
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
 	default: {
@@ -18,6 +38,10 @@ const mockedGetRoomByTypeAndName = getRoomByTypeAndName as jest.Mock;
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	mockFind.mockRejectedValue(new Error('not found'));
+	mockQuery.mockReturnValue({
+		fetch: jest.fn().mockResolvedValue([])
+	});
 });
 
 describe('canOpenRoom — GROUP deeplink', () => {
@@ -138,7 +162,61 @@ describe('canOpenRoom — CHANNEL deeplink', () => {
 	});
 });
 
+describe('canOpenRoom — local subscription fast-path', () => {
+	const localSubFixture = {
+		rid: 'local-room-1',
+		t: 'c',
+		name: 'general',
+		fname: 'General Room',
+		prid: '',
+		uids: ['u1', 'u2'],
+		usernames: ['user1', 'user2']
+	};
+
+	it('returns room immediately from local DB when rid matches without calling REST API', async () => {
+		mockFind.mockResolvedValueOnce(localSubFixture);
+
+		const result = await canOpenRoom({ rid: 'local-room-1', path: '' });
+
+		expect(mockFind).toHaveBeenCalledWith('local-room-1');
+		expect(mockedGetRoomByTypeAndName).not.toHaveBeenCalled();
+		expect(mockedSdkPost).not.toHaveBeenCalled();
+		expect(result).toEqual(localSubFixture);
+	});
+
+	it('returns room immediately from local DB when path matches channel name without calling REST API', async () => {
+		mockQuery.mockReturnValueOnce({
+			fetch: jest.fn().mockResolvedValueOnce([localSubFixture])
+		});
+
+		const result = await canOpenRoom({ rid: '', path: 'channel/general' });
+
+		expect(mockedGetRoomByTypeAndName).not.toHaveBeenCalled();
+		expect(mockedSdkPost).not.toHaveBeenCalled();
+		expect(result).toEqual(localSubFixture);
+	});
+
+	it('returns room from local DB when model has asPlain() method', async () => {
+		const modelWithAsPlain = {
+			...localSubFixture,
+			asPlain: () => localSubFixture
+		};
+		mockFind.mockResolvedValueOnce(modelWithAsPlain);
+
+		const result = await canOpenRoom({ rid: 'local-room-1', path: '' });
+
+		expect(result).toEqual(localSubFixture);
+	});
+});
+
 describe('canOpenRoom — other paths', () => {
+	it('returns { rid } fallback when rid is provided but path is empty and not found locally', async () => {
+		mockFind.mockRejectedValueOnce(new Error('not found'));
+
+		const result = await canOpenRoom({ rid: 'remote-rid-123', path: '' });
+		expect(result).toEqual({ rid: 'remote-rid-123' });
+	});
+
 	it('returns false when no path and no rid', async () => {
 		const result = await canOpenRoom({ rid: '', path: '' });
 		expect(result).toBe(false);
