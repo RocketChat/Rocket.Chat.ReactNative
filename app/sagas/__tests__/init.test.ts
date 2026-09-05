@@ -10,6 +10,10 @@ jest.mock('../../lib/database/services/Server', () => ({
 	getAllServers: jest.fn()
 }));
 
+jest.mock('../../lib/methods/migrateTokenKeysToServerScoped', () => ({
+	migrateTokenKeysToServerScoped: jest.fn(() => Promise.resolve())
+}));
+
 jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn()
 }));

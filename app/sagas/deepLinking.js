@@ -10,7 +10,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
@@ -21,6 +21,7 @@ import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showConfirmationAlert } from '../lib/methods/helpers/info';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
@@ -36,6 +37,21 @@ const roomTypes = {
 	group: 'p',
 	channels: 'l'
 };
+
+const confirmDeepLinkLogin = (host, params = {}) =>
+	new Promise(resolve => {
+		if (process.env.RUNNING_E2E_TESTS === 'true' && params.forceLoginPrompt !== 'true') {
+			resolve(true);
+			return;
+		}
+		showConfirmationAlert({
+			title: I18n.t('Deep_link_login_title'),
+			message: I18n.t('Deep_link_login_description', { server: host }),
+			confirmationText: I18n.t('Login'),
+			onPress: () => resolve(true),
+			onCancel: () => resolve(false)
+		});
+	});
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
 	if (params.path && params.path.startsWith('invite/')) {
@@ -128,6 +144,29 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const declineDeepLinkLogin = function* declineDeepLinkLogin() {
+	// Only worth a toast while the app is up; on cold start there is no Toast mounted to show it.
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		showToast(I18n.t('Deep_link_login_declined'));
+	}
+	yield fallbackNavigation();
+};
+
+// Consent before touching anything on the deep link's server: a resume token means this link can
+// sign the user in, so every entry point asks through here while declining is still a no-op.
+const ensureDeepLinkLoginConsent = function* ensureDeepLinkLoginConsent(host, params) {
+	if (!params.token) {
+		return true;
+	}
+	const confirmed = yield call(confirmDeepLinkLogin, host, params);
+	if (!confirmed) {
+		yield declineDeepLinkLogin();
+		return false;
+	}
+	return true;
+};
+
 let consumedOAuthToken;
 
 const handleOAuth = function* handleOAuth({ params }) {
@@ -160,7 +199,7 @@ const handleSaml = function* handleSaml({ params }) {
 
 const handleShareExtension = function* handleOpen({ params }) {
 	const server = UserPreferences.getString(CURRENT_SERVER);
-	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+	const user = UserPreferences.getString(getServerUserIdKey(server));
 
 	if (!user) {
 		yield put(appInit());
@@ -227,7 +266,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
@@ -255,6 +294,9 @@ const handleOpen = function* handleOpen({ params }) {
 		} catch (e) {
 			// do nothing?
 		}
+		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
+			return;
+		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
 		if (!result.success) {
@@ -278,6 +320,11 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			if (!hostAlreadyConnected) {
 				yield take(types.SERVER.SELECT_SUCCESS);
+				// SERVER.SELECT_SUCCESS can land after the socket is already connected.
+				const connected = yield select(state => state.meteor.connected);
+				if (!connected) {
+					yield take(types.METEOR.SUCCESS);
+				}
 			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
@@ -339,7 +386,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
-		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+		UserPreferences.getString(getServerUserIdKey(host))
 	]);
 
 	const serverRecord = yield getServerById(host);
@@ -358,6 +405,9 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });
+			return;
+		}
+		if (!(yield ensureDeepLinkLoginConsent(host, params))) {
 			return;
 		}
 		// if deep link is from a different server

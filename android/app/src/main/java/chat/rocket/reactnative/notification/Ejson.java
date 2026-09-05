@@ -24,6 +24,7 @@ class Utils {
 public class Ejson {
     private static final String TAG = "RocketChat.Ejson";
     private static final String TOKEN_KEY = "reactnativemeteor_usertoken-";
+    private static final String TOKEN_KEY_SERVER_SCOPED_MIGRATED = "RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED";
     
     public String host;
     String rid;
@@ -135,33 +136,58 @@ public class Ejson {
     }
 
     public String token() {
+        String serverURL = serverURL();
         String userId = userId();
         MMKV mmkv = getMMKV();
-        
+
         if (mmkv == null) {
             Log.e(TAG, "token() called but MMKV is null");
             return "";
         }
-        
+
         if (userId == null || userId.isEmpty()) {
             Log.w(TAG, "token() called but userId is null or empty");
             return "";
         }
-        
-        String key = TOKEN_KEY.concat(userId);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Looking up token with key: " + key);
+
+        // Keep in sync with getUserTokenKey() (JS); falls back to the legacy userId-only slot
+        // until the JS migration runs.
+        String token = null;
+        if (serverURL != null && !serverURL.isEmpty()) {
+            String key = TOKEN_KEY.concat(serverURL).concat("-").concat(userId);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Looking up token with server-scoped key");
+            }
+            token = mmkv.decodeString(key);
         }
-        
-        String token = mmkv.decodeString(key);
-        
+
+        if (token == null || token.isEmpty()) {
+            token = decodeLegacyUserIdScopedToken(mmkv, userId);
+        }
+
         if (token == null || token.isEmpty()) {
             Log.w(TAG, "No token found in MMKV for userId");
         } else if (BuildConfig.DEBUG) {
             Log.d(TAG, "Successfully retrieved token from MMKV");
         }
-        
+
         return token != null ? token : "";
+    }
+
+    /**
+     * Reads the token from the legacy userId-only slot, used until {@code migrateTokenKeysToServerScoped}
+     * (JS init saga) moves it to the server-scoped slot and deletes it.
+     *
+     * @deprecated remove once the migration is universal.
+     */
+    @Deprecated
+    private String decodeLegacyUserIdScopedToken(MMKV mmkv, String userId) {
+        // The legacy slot is ambiguous across servers sharing a userId, so it is only readable
+        // before the migration runs.
+        if (mmkv.decodeBool(TOKEN_KEY_SERVER_SCOPED_MIGRATED, false)) {
+            return null;
+        }
+        return mmkv.decodeString(TOKEN_KEY.concat(userId));
     }
 
     public String userId() {

@@ -29,7 +29,8 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
+import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -150,7 +151,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		yield* call(migrateTokenKeysToServerScoped);
+		const userId = UserPreferences.getString(getServerUserIdKey(server));
 		let user = null;
 		if (userId) {
 			// search credentials on database
@@ -171,7 +173,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					requirePasswordChange: userRecord.requirePasswordChange
 				};
 			} else {
-				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
+				const token = UserPreferences.getString(getUserTokenKey(server, userId));
 				if (token) {
 					user = { token };
 				}

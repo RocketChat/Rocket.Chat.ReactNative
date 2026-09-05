@@ -62,7 +62,6 @@ public class LoadNotification {
     private static final String TAG = "RocketChat.LoadNotif";
     private int RETRY_COUNT = 0;
     private int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
-    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
     public void load(final Ejson ejson, Callback callback) {
         Log.i(TAG, "Starting notification load for message-id-only notification");

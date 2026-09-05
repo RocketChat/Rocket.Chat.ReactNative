@@ -105,11 +105,11 @@
         <receiver
             android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <receiver
             android:name="chat.rocket.reactnative.notification.DismissNotification"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false" >
         </receiver>
         <receiver
             android:name="chat.rocket.reactnative.notification.VideoConfBroadcast"

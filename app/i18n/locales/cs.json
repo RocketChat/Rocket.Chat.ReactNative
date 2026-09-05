@@ -225,6 +225,8 @@
   "Dark": "Temný",
   "Dark_level": "Temná úroveň",
   "decline": "Pokles",
+  "Deep_link_login_description": "Odkaz se vás pokouší přihlásit do {{server}}. Pokračujte pouze, pokud jste tento odkaz otevřeli sami a důvěřujete mu.",
+  "Deep_link_login_title": "Přihlásit se k tomuto pracovnímu prostoru?",
   "Default": "Výchozí",
   "Default_browser": "Výchozí prohlížeč",
   "Defined_user_as_role": "definováno {{user}} jako {{role}}",

@@ -99,7 +99,7 @@ import loginRoot from '../login';
 import { loginSuccess } from '../../actions/login';
 import { selectServerRequest, selectServerSuccess } from '../../actions/server';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
+import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../../lib/constants/keys';
 import { getPermissions } from '../../lib/methods/getPermissions';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '../../lib/testUtils/sagaStore';
 import type { RecordingStore } from '../../lib/testUtils/sagaStore';
@@ -115,7 +115,7 @@ const USER_B = { id: 'user-b', token: 'token-b', username: 'userb', name: 'User 
 describe('login saga — a workspace switch cancels the login bootstrap', () => {
 	beforeEach(() => {
 		UserPreferences.removeItem(`${TOKEN_KEY}-${SERVER_A}`);
-		UserPreferences.removeItem(`${TOKEN_KEY}-${USER_B.id}`);
+		UserPreferences.removeItem(getUserTokenKey(SERVER_A, USER_B.id));
 		UserPreferences.removeItem(CURRENT_SERVER);
 		jest.clearAllMocks();
 	});
@@ -144,7 +144,7 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 		await flushSagaMicrotasks();
 
 		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER_A}`)).toBeNull();
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${USER_B.id}`)).toBeNull();
+		expect(UserPreferences.getString(getUserTokenKey(SERVER_A, USER_B.id))).toBeNull();
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
 	});
 
@@ -158,7 +158,7 @@ describe('login saga — a workspace switch cancels the login bootstrap', () => 
 		await flushSagaMicrotasks();
 
 		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER_A}`)).toBe(USER_B.id);
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${USER_B.id}`)).toBe(USER_B.token);
+		expect(UserPreferences.getString(getUserTokenKey(SERVER_A, USER_B.id))).toBe(USER_B.token);
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_A);
 	});
 });

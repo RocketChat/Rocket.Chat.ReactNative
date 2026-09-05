@@ -173,6 +173,8 @@
   "Custom": "Aangepast",
   "Dark": "Donker",
   "Dark_level": "Donker niveau",
+  "Deep_link_login_description": "Een link probeert je aan te melden bij {{server}}. Ga alleen verder als je deze link zelf hebt geopend en je deze vertrouwt.",
+  "Deep_link_login_title": "Aanmelden bij deze werkruimte?",
   "Default": "Standaard",
   "Default_browser": "Standaard browser",
   "DELETE": "VERWIJDEREN",

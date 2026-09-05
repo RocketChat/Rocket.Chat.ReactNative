@@ -207,6 +207,8 @@
   "Dark": "Dunkel",
   "Dark_level": "Dunkelstufe",
   "decline": "Ablehnen",
+  "Deep_link_login_description": "Ein Link versucht, Sie bei {{server}} anzumelden. Fahren Sie nur fort, wenn Sie diesen Link selbst geöffnet haben und ihm vertrauen.",
+  "Deep_link_login_title": "Bei diesem Arbeitsbereich anmelden?",
   "Default": "Standard",
   "Default_browser": "Standard-Browser",
   "Defined_user_as_role": "hat {{user}} als {{role}} gesetzt",

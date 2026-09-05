@@ -70,7 +70,7 @@ import { RootEnum } from '../../definitions';
 import { SERVER } from '../../actions/actionsTypes';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
-import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
+import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '../../lib/constants/keys';
 import { getLoggedUserById } from '../../lib/database/services/LoggedUser';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { connect } from '../../lib/services/connect';
@@ -83,7 +83,12 @@ const SERVER_URL = 'https://new.rocket.chat';
 const USER_ID = 'user-new';
 const TOKEN = 'token-new';
 
-const keysToClear = [`${TOKEN_KEY}-${SERVER_URL}`, `${TOKEN_KEY}-${USER_ID}`, `${BASIC_AUTH_KEY}-${SERVER_URL}`, CURRENT_SERVER];
+const keysToClear = [
+	`${TOKEN_KEY}-${SERVER_URL}`,
+	getUserTokenKey(SERVER_URL, USER_ID),
+	`${BASIC_AUTH_KEY}-${SERVER_URL}`,
+	CURRENT_SERVER
+];
 
 const setupStore = (): RecordingStore => createRecordingStore(selectServerRoot);
 
@@ -110,9 +115,9 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_URL);
 	});
 
-	it('falls back to the token stored under the userId key when there is no record', async () => {
+	it('falls back to the token stored under the server-scoped key when there is no record', async () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
-		UserPreferences.setString(`${TOKEN_KEY}-${USER_ID}`, TOKEN);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockResolvedValue(null as any);
 
 		const { store } = setupStore();

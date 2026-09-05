@@ -41,7 +41,7 @@ final class WatchConnection: NSObject {
         }
 
         let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
-            guard let userId = mmkv.userId(for: item.identifier), let userToken = mmkv.userToken(for: userId) else {
+            guard let userId = mmkv.userId(for: item.identifier), let userToken = mmkv.userToken(for: userId, server: item.identifier) else {
                 return nil
             }
 
