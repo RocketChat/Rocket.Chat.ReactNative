@@ -81,6 +81,7 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 
 	return (
 		<Base
+		  key={"passcode-enter"}
 			ref={ref}
 			type={TYPE.ENTER}
 			title={I18n.t('Passcode_enter_title')}
