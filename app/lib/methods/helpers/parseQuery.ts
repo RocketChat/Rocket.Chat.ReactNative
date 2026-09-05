@@ -15,7 +15,9 @@ export default function (query: string) {
 	}
 
 	return (/^[?#]/.test(query) ? query.slice(1) : query).split('&').reduce((params: { [key: string]: string }, param) => {
-		const [key, value] = param.split('=');
+		const separatorIndex = param.indexOf('=');
+		const key = separatorIndex >= 0 ? param.slice(0, separatorIndex) : param;
+		const value = separatorIndex >= 0 ? param.slice(separatorIndex + 1) : '';
 		params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
 		return params;
 	}, {});
