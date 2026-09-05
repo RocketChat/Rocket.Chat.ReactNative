@@ -457,7 +457,7 @@ async function getLoginServices(server: string) {
 			loginServices = services;
 
 			const loginServicesReducer = loginServices.reduce((ret: IServices[], item: IServices) => {
-				const name = item.name || item.buttonLabelText || item.service;
+				const name = item.name || item.service || item.buttonLabelText;
 				const authType = determineAuthType(item);
 
 				if (authType !== 'not_supported') {

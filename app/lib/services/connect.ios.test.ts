@@ -1,4 +1,5 @@
-import { determineAuthType } from './connect';
+import { determineAuthType, getLoginServices } from './connect';
+import { setLoginServices } from '../../actions/login';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn() }
@@ -7,6 +8,14 @@ jest.mock('./voip/MediaSessionInstance', () => ({
 jest.mock('../methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('../methods/helpers/deviceInfo'),
 	isIOS: true
+}));
+
+const mockStoreDispatch = jest.fn();
+jest.mock('../store/auxStore', () => ({
+	store: {
+		dispatch: (action: unknown) => mockStoreDispatch(action),
+		getState: jest.fn()
+	}
 }));
 
 interface IServices {
@@ -141,6 +150,92 @@ describe('determineAuthType - iOS specific tests', () => {
 
 			const result = determineAuthType(services);
 			expect(result).toBe('not_supported');
+		});
+	});
+
+	describe('getLoginServices', () => {
+		const originalFetch = global.fetch;
+
+		afterEach(() => {
+			global.fetch = originalFetch;
+		});
+
+		it('should correctly map Apple OAuth with service name "apple" instead of buttonLabelText', async () => {
+			global.fetch = jest.fn().mockResolvedValue({
+				json: jest.fn().mockResolvedValue({
+					success: true,
+					services: [
+						{
+							_id: 'Accounts_OAuth_Apple',
+							service: 'apple',
+							buttonLabelText: 'Sign in with Apple',
+							buttonColor: '#000',
+							buttonLabelColor: '#FFF',
+							custom: false
+						}
+					]
+				})
+			}) as any;
+
+			await getLoginServices('https://open.rocket.chat');
+
+			expect(mockStoreDispatch).toHaveBeenCalledWith(
+				setLoginServices({
+					apple: {
+						_id: 'Accounts_OAuth_Apple',
+						service: 'apple',
+						buttonLabelText: 'Sign in with Apple',
+						buttonColor: '#000',
+						buttonLabelColor: '#FFF',
+						custom: false,
+						name: 'apple',
+						authType: 'apple'
+					}
+				})
+			);
+		});
+
+		it('should correctly map standard OAuth providers', async () => {
+			global.fetch = jest.fn().mockResolvedValue({
+				json: jest.fn().mockResolvedValue({
+					success: true,
+					services: [
+						{
+							_id: 'Accounts_OAuth_Google',
+							service: 'google',
+							buttonLabelText: '',
+							custom: false
+						}
+					]
+				})
+			}) as any;
+
+			await getLoginServices('https://open.rocket.chat');
+
+			expect(mockStoreDispatch).toHaveBeenCalledWith(
+				setLoginServices({
+					google: {
+						_id: 'Accounts_OAuth_Google',
+						service: 'google',
+						buttonLabelText: '',
+						custom: false,
+						name: 'google',
+						authType: 'oauth'
+					}
+				})
+			);
+		});
+
+		it('should dispatch empty object when server returns no services or failure', async () => {
+			global.fetch = jest.fn().mockResolvedValue({
+				json: jest.fn().mockResolvedValue({
+					success: false
+				})
+			}) as any;
+
+			await getLoginServices('https://open.rocket.chat');
+
+			expect(mockStoreDispatch).toHaveBeenCalledWith(setLoginServices({}));
 		});
 	});
 });
