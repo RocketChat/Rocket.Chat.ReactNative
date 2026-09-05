@@ -12,7 +12,7 @@ import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
-
+//test
 const Outside = createNativeStackNavigator({
 	screens: {
 		NewServerView,
