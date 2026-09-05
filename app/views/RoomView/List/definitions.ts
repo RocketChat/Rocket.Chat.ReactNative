@@ -8,7 +8,10 @@ export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends FlatListProps<TAnyMessageModel> {
+export interface IListProps extends Omit<
+	FlatListProps<TAnyMessageModel>,
+	'onScroll' | 'viewabilityConfigCallbackPairs' | 'onViewableItemsChanged' | 'viewabilityConfig'
+> {
 	listRef: TListRef;
 	jumpToBottom: () => void;
 	// Anchored Window: loaded rows' bottom isn't the Live Tail, so the scroll-offset

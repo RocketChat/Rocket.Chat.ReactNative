@@ -10,9 +10,11 @@ import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/ext
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
+import FloatingDateSeparator from '../../../../containers/Separator/FloatingDateSeparator';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
+import { useFloatingDate } from '../hooks/useFloatingDate';
 
 const styles = StyleSheet.create({
 	list: {
@@ -26,7 +28,15 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
+	const {
+		ts,
+		opacity: floatingDateOpacity,
+		scrollEvents: floatingDateScrollEvents,
+		viewabilityConfigCallbackPairs
+	} = useFloatingDate();
+
 	const scrollHandler = useAnimatedScrollHandler({
+		...floatingDateScrollEvents,
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
 				scheduleOnRN(setScrolledPastLimit, true);
@@ -68,7 +78,9 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 				onScroll={scrollHandler}
 				{...props}
 				{...scrollPersistTaps}
+				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
 			/>
+			<FloatingDateSeparator ts={ts} opacity={floatingDateOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);

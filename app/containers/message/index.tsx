@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import MessageTouchable from './components/Touchable/MessageTouchable';
 import { type TAnyMessageModel } from '../../definitions';
-import MessageSeparator from '../MessageSeparator';
+import MessageSeparator from '../Separator/MessageSeparator';
 import { MessageProvider } from './stores/MessageStore';
 
 interface IMessageContainerProps {
