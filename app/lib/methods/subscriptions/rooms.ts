@@ -51,6 +51,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 		const roomsCollection = db.get('rooms');
+		const messagesCollection = db.get('messages');
 
 		if (!subscription) {
 			try {
@@ -152,72 +153,69 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		const tmp = merge(subscription, room);
 		const sub = await getSubscriptionByRoomId(tmp.rid);
 
-		const batch: Model[] = [];
-		if (sub) {
-			try {
-				const update = sub.prepareUpdate(s => {
-					Object.assign(s, tmp);
-					if (subscription.announcement) {
-						if (subscription.announcement !== sub.announcement) {
-							s.bannerClosed = false;
-						}
-					}
-					if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
-						if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
-							s.hideUnreadStatus = !!subscription.hideUnreadStatus;
-						}
-					}
-				});
-				batch.push(update);
-			} catch (e) {
-				console.log(e);
-			}
-		} else {
-			try {
-				const create = subCollection.prepareCreate(s => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				});
-				batch.push(create);
-			} catch (e) {
-				console.log(e);
-			}
-		}
-
 		const { subscribedRoom } = store.getState().room;
-		if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
-			const lastMessage = buildMessage(tmp.lastMessage);
-			const messagesCollection = db.get('messages');
-			let messageRecord = {} as TMessageModel | null;
-			if (lastMessage) {
-				messageRecord = await getMessageById(lastMessage._id);
-			}
-
-			if (messageRecord) {
-				batch.push(
-					messageRecord.prepareUpdate(() => {
-						Object.assign(messageRecord, lastMessage);
-					})
-				);
-			} else {
-				batch.push(
-					messagesCollection.prepareCreate(m => {
-						if (lastMessage) {
-							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-							if (m.subscription) {
-								m.subscription.id = lastMessage.rid;
-							}
-						}
-						return Object.assign(m, lastMessage);
-					})
-				);
-			}
-		}
+		const lastMessage = tmp.lastMessage && subscribedRoom !== tmp.rid ? buildMessage(tmp.lastMessage) : null;
+		const messageRecord = lastMessage ? await getMessageById(lastMessage._id) : null;
 
 		await db.write(async () => {
+			const batch: Model[] = [];
+
+			try {
+				if (sub) {
+					batch.push(
+						sub.prepareUpdate(s => {
+							Object.assign(s, tmp);
+							if (subscription.announcement) {
+								if (subscription.announcement !== sub.announcement) {
+									s.bannerClosed = false;
+								}
+							}
+							if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
+								if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
+									s.hideUnreadStatus = !!subscription.hideUnreadStatus;
+								}
+							}
+						})
+					);
+				} else {
+					batch.push(
+						subCollection.prepareCreate(s => {
+							s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+							Object.assign(s, tmp);
+							if (s.roomUpdatedAt) {
+								s.roomUpdatedAt = new Date();
+							}
+						})
+					);
+				}
+			} catch (e) {
+				log(e);
+			}
+
+			if (lastMessage) {
+				try {
+					if (messageRecord) {
+						batch.push(
+							messageRecord.prepareUpdate(() => {
+								Object.assign(messageRecord, lastMessage);
+							})
+						);
+					} else {
+						batch.push(
+							messagesCollection.prepareCreate(m => {
+								m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+								if (m.subscription) {
+									m.subscription.id = lastMessage.rid;
+								}
+								return Object.assign(m, lastMessage);
+							})
+						);
+					}
+				} catch (e) {
+					log(e);
+				}
+			}
+
 			await db.batch(batch);
 		});
 
