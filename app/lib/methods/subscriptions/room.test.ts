@@ -3,6 +3,7 @@ import { InteractionManager } from 'react-native';
 import RoomSubscription from './room';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
+import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import database from '../../database';
 import log from '../helpers/log';
 import {
@@ -158,6 +159,52 @@ describe('RoomSubscription', () => {
 			await Promise.all([sub.updateMessage({ ...message }), sub.updateMessage({ ...message })]);
 
 			expect(loggedPendingChanges(log)).toBe(false);
+		});
+	});
+
+	describe('updateMessage urls preservation', () => {
+		it('keeps the existing resolved link preview when a partial sync payload carries no urls', async () => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(null);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			// Simulates a later partial-sync event for the same message that carries no url metadata
+			// (already normalized to [] upstream) — it must not wipe out the previously resolved preview.
+			await sub.updateMessage({ _id, rid, msg: 'hi', urls: [] } as any);
+
+			expect(messageRecord.urls).toEqual(existingUrls);
+		});
+
+		it('keeps the existing resolved link preview on the thread record when a partial sync payload carries no urls', async (): Promise<void> => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`);
+			const threadRecord = makeFakeRecord(`threads#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(threadRecord);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			await sub.updateMessage({ _id, rid, msg: 'hi', tlm: { $date: 1 }, urls: [] } as any);
+
+			expect(threadRecord.urls).toEqual(existingUrls);
+		});
+
+		it('keeps the existing resolved link preview on the thread message record when a partial sync payload carries no urls', async (): Promise<void> => {
+			const _id = 'KXse45i7gGYE8j4Xb';
+			const existingUrls = [{ url: 'https://example.com', title: 'Example' }];
+			const messageRecord = makeFakeRecord(`messages#${_id}`);
+			const threadMessageRecord = makeFakeRecord(`thread_messages#${_id}`, { urls: existingUrls });
+			(getMessageById as jest.Mock).mockResolvedValue(messageRecord);
+			(getThreadById as jest.Mock).mockResolvedValue(null);
+			(getThreadMessageById as jest.Mock).mockResolvedValue(threadMessageRecord);
+			mockDbBatch.mockImplementation(commitPreparedRecords);
+
+			await sub.updateMessage({ _id, rid, msg: 'hi', tmid: 'parent-thread-id', urls: [] } as any);
+
+			expect(threadMessageRecord.urls).toEqual(existingUrls);
 		});
 	});
 
