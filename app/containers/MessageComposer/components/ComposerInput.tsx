@@ -48,6 +48,8 @@ import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/extern
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
+const getMentionRoomTokenRegexp = (title: string) => new RegExp(`#${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=\\s|$)`, 'g');
+
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
@@ -59,6 +61,7 @@ export const ComposerInput = memo(
 		const textRef = useRef('');
 		const firstRender = useRef(true);
 		const selectionRef = useRef<IInputSelection>(defaultSelection);
+		const mentionRoomTokensRef = useRef<Record<string, string>>({});
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
@@ -169,12 +172,32 @@ export const ComposerInput = memo(
 			getSelection: () => selectionRef.current,
 			setInput,
 			onAutocompleteItemSelected,
+			resolveMentionRoomTokens: text => {
+				let resolved = text;
+				// longest title first, otherwise a token for `#foo` would consume the `#foo` in `#foo bar`
+				const tokens = Object.entries(mentionRoomTokensRef.current).sort(([a], [b]) => b.length - a.length);
+				for (const [title, name] of tokens) {
+					resolved = resolved.replace(getMentionRoomTokenRegexp(title), `#${name}`);
+				}
+				mentionRoomTokensRef.current = {};
+				return resolved;
+			},
 			focus
 		}));
+
+		const pruneMentionRoomTokens = (text: string) => {
+			if (!text) return;
+			for (const title of Object.keys(mentionRoomTokensRef.current)) {
+				if (!getMentionRoomTokenRegexp(title).test(text)) {
+					delete mentionRoomTokensRef.current[title];
+				}
+			}
+		};
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
 			const message = text.trim();
 			textRef.current = message;
+			pruneMentionRoomTokens(message);
 
 			if (forceUpdateDraftMessage) {
 				saveMessageDraft('');
@@ -277,9 +300,20 @@ export const ComposerInput = memo(
 				case '@':
 					mention = fetchIsAllOrHere(item) ? item.title : item.subtitle || item.title;
 					break;
-				case '#':
-					mention = item.subtitle ? item.subtitle : '';
+				case '#': {
+					const title = item.title || item.subtitle || '';
+					const claimed = mentionRoomTokensRef.current[title];
+					if (!item.subtitle || item.subtitle === title) {
+						mention = title;
+						delete mentionRoomTokensRef.current[title];
+					} else if (claimed && claimed !== item.subtitle) {
+						mention = item.subtitle;
+					} else {
+						mention = title;
+						mentionRoomTokensRef.current[title] = item.subtitle;
+					}
 					break;
+				}
 				case ':':
 					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
 					break;

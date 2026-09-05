@@ -21,6 +21,7 @@ import database from '../../lib/database';
 import { useMessageComposerApi } from './context';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { runSlashCommand } from '../../lib/services/restApi';
+import * as draftMessage from '../../lib/methods/draftMessage';
 
 jest.useFakeTimers();
 
@@ -190,6 +191,7 @@ beforeEach(() => {
 	showEmojiKeyboard = false;
 	showEmojiSearchbar = false;
 	(runSlashCommand as jest.Mock).mockClear();
+	(searchRemote as unknown as jest.Mock).mockReset().mockImplementation(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
 	// Default DB mocks used by autocomplete
 	(database.active.get as unknown as jest.Mock).mockImplementation(() => ({
 		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
@@ -570,6 +572,179 @@ describe('MessageComposer', () => {
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
 			expect(onSendMessage).toHaveBeenCalledWith('#general', false);
+		});
+
+		test('select # discussion shows fname in composer but sends the room name so it resolves as a mention', async () => {
+			const onSendMessage = jest.fn();
+			const saveDraftMessage = jest.spyOn(draftMessage, 'saveDraftMessage').mockResolvedValue(undefined);
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [
+				{ rid: 'r1', name: 'aBcD123xyz', fname: 'My Discussion', t: 'p' }
+			]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-My Discussion')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-My Discussion'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await advanceComposerTimers(3000);
+			await waitFor(() =>
+				expect(saveDraftMessage).toHaveBeenCalledWith(expect.objectContaining({ draftMessage: '#My Discussion' }))
+			);
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('#aBcD123xyz', false);
+			saveDraftMessage.mockRestore();
+		});
+
+		test('a discussion token is consumed on send and does not rewrite a later message', async () => {
+			const onSendMessage = jest.fn();
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [
+				{ rid: 'r1', name: 'aBcD123xyz', fname: 'My Discussion', t: 'p' }
+			]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-My Discussion')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-My Discussion'));
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenLastCalledWith('#aBcD123xyz', false);
+
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#My Discussion');
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenLastCalledWith('#My Discussion', false);
+		});
+
+		test('a token is dropped once its mention is deleted from the composer', async () => {
+			const onSendMessage = jest.fn();
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [
+				{ rid: 'r1', name: 'aBcD123xyz', fname: 'My Discussion', t: 'p' }
+			]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-My Discussion')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-My Discussion'));
+
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'hello');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'see #My Discussion later');
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledWith('see #My Discussion later', false);
+		});
+
+		test('a room whose name is its title clears a token left by a same named discussion', async () => {
+			const onSendMessage = jest.fn();
+			const rooms = [
+				{ rid: 'r1', name: 'general-xyz', fname: 'general', t: 'p' },
+				{ rid: 'r2', name: 'general', t: 'c' }
+			];
+			(searchRemote as unknown as jest.Mock).mockImplementation(() => rooms);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getAllByTestId('autocomplete-item-general')).toHaveLength(2));
+
+			await user.press(screen.getAllByTestId('autocomplete-item-general')[0]);
+			await advanceComposerTimers(100);
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#general #');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 10, end: 10 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getAllByTestId('autocomplete-item-general')).toHaveLength(2));
+			await user.press(screen.getAllByTestId('autocomplete-item-general')[1]);
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledWith('#general #general', false);
+		});
+
+		test('a longer discussion title is resolved before a shorter one that prefixes it', async () => {
+			const onSendMessage = jest.fn();
+			const rooms = [
+				{ rid: 'r1', name: 'foo-1', fname: 'foo', t: 'p' },
+				{ rid: 'r2', name: 'foobar-2', fname: 'foo bar', t: 'p' }
+			];
+			(searchRemote as unknown as jest.Mock).mockImplementation(() => rooms);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-foo')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-foo'));
+			await advanceComposerTimers(100);
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#foo #');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 6, end: 6 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-foo bar')).toBeOnTheScreen());
+			await user.press(screen.getByTestId('autocomplete-item-foo bar'));
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledWith('#foo-1 #foobar-2', false);
+		});
+
+		test('a second room sharing a display name is inserted by its real name so neither mention is ambiguous', async () => {
+			const onSendMessage = jest.fn();
+			const rooms = [
+				{ rid: 'r1', name: 'standup-1', fname: 'Standup', t: 'p' },
+				{ rid: 'r2', name: 'standup-2', fname: 'Standup', t: 'p' }
+			];
+			(searchRemote as unknown as jest.Mock).mockImplementation(() => rooms);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getAllByTestId('autocomplete-item-Standup')).toHaveLength(2));
+
+			await user.press(screen.getAllByTestId('autocomplete-item-Standup')[0]);
+			await advanceComposerTimers(100);
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#Standup #');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 10, end: 10 } }
+			});
+			await advanceComposerTimers();
+			await waitFor(() => expect(screen.getAllByTestId('autocomplete-item-Standup')).toHaveLength(2));
+			await user.press(screen.getAllByTestId('autocomplete-item-Standup')[1]);
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledWith('#standup-1 #standup-2', false);
 		});
 
 		test('select : emoji inserts emoji and sends, autocomplete hides', async () => {
