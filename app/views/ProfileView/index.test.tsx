@@ -10,6 +10,7 @@ import { TwoFactorCancelledError } from '../../lib/services/twoFactor/twoFactorC
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { setUser } from '../../actions/login';
+import I18n from '../../i18n';
 
 jest.mock('react-redux', () => ({
 	useDispatch: jest.fn()
@@ -70,7 +71,8 @@ const buildState = () => ({
 		Accounts_AllowUserAvatarChange: true,
 		Accounts_AllowUsernameChange: true,
 		Accounts_CustomFields: '',
-		Accounts_AllowDeleteOwnAccount: true
+		Accounts_AllowDeleteOwnAccount: true,
+		UTF8_User_Names_Validation: '[0-9a-zA-Z-_.]+'
 	}
 });
 
@@ -109,6 +111,27 @@ describe('ProfileView submit', () => {
 		expect(dispatch).toHaveBeenCalledWith(setUser({ ...user, name: 'Jane Doe', customFields: {} }));
 		expect(emitSpy).toHaveBeenCalled();
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+	});
+
+	it('does not save when the username contains invalid characters', async () => {
+		const { getByTestId, findByText } = renderProfile();
+
+		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus b');
+		fireEvent.press(getByTestId('profile-view-submit'));
+
+		await findByText(I18n.t('Username_invalid'));
+		expect(saveUserProfile).not.toHaveBeenCalled();
+	});
+
+	it('saves when the username is corrected to a valid value', async () => {
+		(saveUserProfile as jest.Mock).mockResolvedValue(true);
+
+		const { getByTestId } = renderProfile();
+
+		fireEvent.changeText(getByTestId('profile-view-username'), 'cygnus.b');
+		fireEvent.press(getByTestId('profile-view-submit'));
+
+		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledWith({ username: 'cygnus.b' }, {}));
 	});
 
 	it('asks for the current password before changing the email', async () => {
