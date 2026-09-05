@@ -1,5 +1,6 @@
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { createElement } from 'react';
+import { type NativeStackHeaderProps, type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { themes } from '../../../constants/colors';
 import { type TSupportedThemes } from '../../../../theme';
@@ -7,7 +8,9 @@ import sharedStyles from '../../../../views/Styles';
 import Header from '../../../../containers/Header';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	header: Header
+	// Native-stack calls `header(props)` inside SceneView's render, so a hook-using Header must be an element,
+	// or its hooks land on SceneView and vanish when a screen sets `headerShown: false` after mount.
+	header: (props: NativeStackHeaderProps) => createElement(Header, props)
 };
 
 export const drawerStyle = {
