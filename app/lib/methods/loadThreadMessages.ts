@@ -1,4 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 
@@ -7,7 +7,8 @@ import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { type TThreadMessageModel } from '../../definitions';
+import { type TThreadMessageModel, type TThreadModel } from '../../definitions';
+import { getThreadById } from '../database/services/Thread';
 import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
@@ -23,14 +24,47 @@ async function load({ tmid }: { tmid: string }) {
 	}
 }
 
-export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
+// The only refresh the threads record gets on open, so updates missed by the room stream reach the UI.
+async function prepareThreadUpsert(threadParent: TThreadModel | undefined, rid: string): Promise<Model | null> {
+	if (!threadParent) {
+		return null;
+	}
+	const threadsCollection = database.active.get('threads');
+	const threadRecord = await getThreadById(threadParent._id);
+	if (!threadRecord) {
+		return threadsCollection.prepareCreate(
+			protectedFunction((t: TThreadModel) => {
+				t._raw = sanitizedRaw({ id: threadParent._id }, threadsCollection.schema);
+				Object.assign(t, threadParent);
+				if (t.subscription) {
+					t.subscription.id = rid;
+				}
+			})
+		);
+	}
+	if (threadRecord._updatedAt < threadParent._updatedAt) {
+		return threadRecord.prepareUpdate(
+			protectedFunction((t: TThreadModel) => {
+				Object.assign(t, threadParent);
+			})
+		);
+	}
+	return null;
+}
+
+export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }): Promise<void> {
 	return new Promise<void>(async (resolve, reject) => {
 		try {
 			let data = await load({ tmid });
 			if (data && data.length) {
 				try {
-					data = data.filter((m: TThreadMessageModel) => m.tmid).map((m: TThreadMessageModel) => buildMessage(m));
+					data = data
+						.filter(Boolean)
+						.map((m: TThreadMessageModel) => buildMessage(m))
+						.filter((m: TThreadMessageModel | null): m is TThreadMessageModel => !!m);
 					data = await Encryption.decryptMessages(data);
+					const threadParent = data.find((m: TThreadMessageModel) => m._id === tmid);
+					data = data.filter((m: TThreadMessageModel) => m.tmid);
 					const db = database.active;
 					const threadMessagesCollection = db.get('thread_messages');
 					const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();
@@ -72,8 +106,10 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 						);
 					});
 
+					const threadToUpsert = await prepareThreadUpsert(threadParent, rid);
+
 					await db.write(async () => {
-						await db.batch([...threadMessagesToCreate, ...threadMessagesToUpdate]);
+						await db.batch([threadToUpsert, ...threadMessagesToCreate, ...threadMessagesToUpdate].filter(Boolean) as Model[]);
 					});
 				} catch (e) {
 					log(e);
