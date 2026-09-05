@@ -602,6 +602,7 @@
   "Settings_succesfully_changed": "Impostazioni modificate correttamente!",
   "Share": "Condividi",
   "Share_Link": "Condividi link",
+  "Share_no_valid_attachments": "Impossibile trovare il file condiviso",
   "Share_this_app": "Condividi questa app",
   "Show_message_actions": "Mostra azioni del messaggio",
   "Show_more": "Mostra altri",

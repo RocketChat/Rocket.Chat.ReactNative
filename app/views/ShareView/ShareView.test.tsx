@@ -119,6 +119,29 @@ describe('ShareView', () => {
 		jest.clearAllMocks();
 	});
 
+	it('getAttachments ignores null entries instead of throwing', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
+		(shareView as any).files = [{ filename: 'image.jpg', path: '/tmp/image.jpg', size: 1, mime: 'image/jpeg' }, null];
+
+		const { attachments, selected } = await shareView.getAttachments();
+
+		expect(attachments).toHaveLength(1);
+		expect(attachments[0].canUpload).toBe(true);
+		expect(selected).toBe(attachments[0]);
+	});
+
+	it('getAttachments returns an empty selected attachment when every file is invalid', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		shareView.getPermissionMobileUpload = jest.fn().mockResolvedValue(true);
+		(shareView as any).files = [null];
+
+		const { attachments, selected } = await shareView.getAttachments();
+
+		expect(attachments).toHaveLength(0);
+		expect(selected).toBeUndefined();
+	});
+
 	it('selectFile selects the attachment and opens the alt text action sheet', () => {
 		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
 		const setInput = jest.fn();

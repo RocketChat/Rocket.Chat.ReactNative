@@ -25,6 +25,7 @@ import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
 import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
+import { showToast } from '../../lib/methods/helpers/showToast';
 import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';
 
@@ -107,19 +108,21 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (mediaUris) {
 			try {
 				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri)));
-				const attachments = info.map(file => {
-					if (!file.exists) {
-						return null;
-					}
+				const attachments = info
+					.map(file => {
+						if (!file.exists) {
+							return null;
+						}
 
-					return {
-						filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-						description: '',
-						size: file.size,
-						mime: mime.lookup(file.uri),
-						path: file.uri
-					};
-				}) as IFileToShare[];
+						return {
+							filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+							description: '',
+							size: file.size,
+							mime: mime.lookup(file.uri) || '',
+							path: file.uri
+						};
+					})
+					.filter((file): file is IFileToShare => !!file);
 				this.setState({
 					// text,
 					attachments
@@ -310,7 +313,12 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 	shareMessage = (room: TSubscriptionModel) => {
 		const { attachments, text, serverInfo } = this.state;
-		const { navigation } = this.props;
+		const { navigation, shareExtensionParams } = this.props;
+
+		if (shareExtensionParams?.mediaUris && !attachments.length) {
+			showToast(I18n.t('Share_no_valid_attachments'));
+			return;
+		}
 
 		navigation.navigate('ShareView', {
 			room,
@@ -519,4 +527,5 @@ const mapStateToProps = ({ login, server, share, settings }: IApplicationState) 
 			: undefined
 });
 
+export { ShareListView };
 export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ShareListView)));

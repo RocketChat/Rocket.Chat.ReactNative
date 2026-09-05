@@ -506,6 +506,7 @@
   "Settings_succesfully_changed": "設定が更新されました！",
   "Share": "シェア",
   "Share_Link": "リンクをシェアする",
+  "Share_no_valid_attachments": "共有されたファイルが見つかりませんでした",
   "Share_this_app": "このアプリをシェアする",
   "Show_message_actions": "メッセージのアクションを表示",
   "Show_Password": "パスワードを表示",
