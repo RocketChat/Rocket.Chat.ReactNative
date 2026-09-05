@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { type AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import type { AudioStatus } from 'expo-audio';
 
 import { useTheme } from '../../theme';
 import styles from './styles';
@@ -47,7 +47,7 @@ const AudioPlayer = ({
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
 
-	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+	const onPlaybackStatusUpdate = (status: AudioStatus): void => {
 		if (status) {
 			onPlaying(status);
 			handlePlaybackStatusUpdate(status);
@@ -55,37 +55,37 @@ const AudioPlayer = ({
 		}
 	};
 
-	const onPlaying = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.isPlaying) {
+	const onPlaying = (data: AudioStatus): void => {
+		if (data.isLoaded && data.playing) {
 			setPaused(false);
 		} else {
 			setPaused(true);
 		}
 	};
 
-	const handlePlaybackStatusUpdate = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.durationMillis) {
-			const durationSeconds = data.durationMillis / 1000;
-			duration.value = durationSeconds > 0 ? durationSeconds : 0;
-			const currentSecond = data.positionMillis / 1000;
-			if (currentSecond <= durationSeconds) {
-				currentTime.value = currentSecond;
-			}
+	const handlePlaybackStatusUpdate = (data: AudioStatus): void => {
+		if (!data.isLoaded) return;
+		const durationSeconds = data.duration || 0;
+		duration.value = durationSeconds > 0 ? durationSeconds : 0;
+		const currentSecond = data.currentTime || 0;
+		if (currentSecond <= durationSeconds) {
+			currentTime.value = currentSecond;
 		}
 	};
 
-	const onEnd = (data: AVPlaybackStatus) => {
+	const onEnd = (data: AudioStatus) => {
 		if (data.isLoaded && data.didJustFinish) {
 			try {
 				setPaused(true);
 				currentTime.value = 0;
+				AudioManager.setPositionAsync(audioUri.current, 0);
 			} catch {
 				// do nothing
 			}
 		}
 	};
 
-	const setPosition = async (time: number) => {
+	const setPosition = async (time: number): Promise<void> => {
 		await AudioManager.setPositionAsync(audioUri.current, time);
 	};
 

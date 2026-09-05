@@ -1,4 +1,4 @@
-import { type AVPlaybackStatus, Audio } from 'expo-av';
+import { createAudioPlayer, setAudioModeAsync, type AudioPlayer, type AudioStatus } from 'expo-audio';
 import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';
@@ -6,18 +6,31 @@ import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '../../definitions';
-import { AUDIO_MODE } from '../constants/audio';
 import { emitter } from './helpers';
+import log from './helpers/log';
+import { AUDIO_MODE } from '../constants/audio';
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
 class AudioManagerClass {
-	private audioQueue: { [audioKey: string]: Audio.Sound };
+	private audioQueue: { [audioKey: string]: AudioPlayer };
+	private audioUris: { [audioKey: string]: string };
+	private audioPositions: { [audioKey: string]: number };
+	private audioRates: { [audioKey: string]: number };
+	private audioSubscriptions: { [audioKey: string]: () => void };
+	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
 
 	constructor() {
 		this.audioQueue = {};
+		this.audioUris = {};
+		this.audioPositions = {};
+		this.audioRates = {};
+		this.audioSubscriptions = {};
+		this.audioCallbacks = {};
+		this.audioMeta = {};
 		this.audioPlaying = '';
 		this.audiosRendered = new Set<string>();
 	}
@@ -30,67 +43,115 @@ class AudioManagerClass {
 		this.audiosRendered.delete(audioKey);
 	};
 
-	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
+	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.addAudioRendered(audioKey);
+		this.audioUris[audioKey] = uri;
+		this.audioMeta[audioKey] = { msgId, rid };
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
 		}
-		const { sound } = await Audio.Sound.createAsync({ uri }, { androidImplementation: 'MediaPlayer' });
+
+		const sound = createAudioPlayer({ uri });
 		this.audioQueue[audioKey] = sound;
 		return audioKey;
 	}
 
 	async playAudio(audioKey: string) {
 		if (this.audioPlaying) {
-			await this.pauseAudio();
+			this.pauseAudio();
 		}
-		await Audio.setAudioModeAsync(AUDIO_MODE);
-		await this.audioQueue[audioKey]?.playAsync();
-		this.audioPlaying = audioKey;
-		emitter.emit('audioFocused', audioKey);
+
+		// If player was released, recreate it
+		if (!this.audioQueue[audioKey] && this.audioUris[audioKey]) {
+			const sound = createAudioPlayer({ uri: this.audioUris[audioKey] });
+			this.audioQueue[audioKey] = sound;
+
+			if (this.audioPositions[audioKey] !== undefined) {
+				await sound.seekTo(this.audioPositions[audioKey]);
+			}
+
+			// Re-register the callback if it exists
+			if (this.audioCallbacks[audioKey]) {
+				const sub = sound.addListener('playbackStatusUpdate', status => {
+					this.onPlaybackStatusUpdate(audioKey, status, this.audioCallbacks[audioKey]);
+				});
+				if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
+			}
+		}
+
+		try {
+			await setAudioModeAsync(AUDIO_MODE);
+			this.audioPlaying = audioKey;
+			this.setRateAsync(audioKey, this.audioRates[audioKey]);
+			this.audioQueue[audioKey]?.play();
+			emitter.emit('audioFocused', audioKey);
+		} catch {
+			// Ignore playback start errors
+		}
 	}
 
-	async pauseAudio() {
+	pauseAudio() {
 		if (this.audioPlaying) {
-			await this.audioQueue[this.audioPlaying]?.pauseAsync();
+			this.audioQueue[this.audioPlaying]?.pause();
 			this.audioPlaying = '';
 		}
 	}
 
 	async setPositionAsync(audioKey: string, time: number) {
+		this.audioPositions[audioKey] = time;
 		try {
-			await this.audioQueue[audioKey]?.setPositionAsync(time);
+			await this.audioQueue[audioKey]?.seekTo(time);
 		} catch {
 			// Do nothing
 		}
 	}
 
-	async setRateAsync(audioKey: string, value = 1.0) {
+	setRateAsync(audioKey: string, value = 1.0) {
+		this.audioRates[audioKey] = value;
+		if (!audioKey || this.audioPlaying !== audioKey) {
+			return;
+		}
+
 		try {
-			await this.audioQueue[audioKey].setRateAsync(value, true);
+			this.audioQueue[audioKey]?.setPlaybackRate(value);
 		} catch {
 			// Do nothing
 		}
 	}
 
-	onPlaybackStatusUpdate(audioKey: string, status: AVPlaybackStatus, callback: (status: AVPlaybackStatus) => void) {
+	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
 		if (status) {
 			callback(status);
 			this.onEnd(audioKey, status);
 		}
 	}
 
-	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AVPlaybackStatus) => void): void {
-		return this.audioQueue[audioKey]?.setOnPlaybackStatusUpdate(status =>
-			this.onPlaybackStatusUpdate(audioKey, status, callback)
-		);
+	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void) {
+		this.audioCallbacks[audioKey] = callback;
+		this.audioSubscriptions[audioKey]?.();
+		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
+			this.onPlaybackStatusUpdate(audioKey, status, callback);
+		});
+		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
 	}
 
-	async onEnd(audioKey: string, status: AVPlaybackStatus) {
+	getCurrentStatus(audioKey: string): AudioStatus | null {
+		return this.audioQueue[audioKey]?.currentStatus ?? null;
+	}
+
+	async onEnd(audioKey: string, status: AudioStatus) {
+		if (!this.audioQueue[audioKey]) {
+			return;
+		}
+
 		if (status.isLoaded && status.didJustFinish) {
 			try {
-				await this.audioQueue[audioKey]?.stopAsync();
+				this.audioSubscriptions[audioKey]?.();
+				delete this.audioSubscriptions[audioKey];
+				this.audioQueue[audioKey].release();
+				delete this.audioQueue[audioKey];
+				this.audioPositions[audioKey] = 0;
 				this.audioPlaying = '';
 				emitter.emit('audioFocused', '');
 				await this.playNextAudioInSequence(audioKey);
@@ -127,7 +188,6 @@ class AudioManagerClass {
 			} else {
 				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
 			}
-
 			const [message] = await db
 				.get('messages')
 				.query(...whereClause)
@@ -153,20 +213,23 @@ class AudioManagerClass {
 		if (!rid) {
 			return;
 		}
-		const regExp = new RegExp(rid);
-		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => regExp.test(audioKey));
+		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => this.audioMeta[audioKey]?.rid === rid);
 		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
 		try {
-			await Promise.all(
-				roomAudiosLoaded.map(async audio => {
-					await audio?.stopAsync();
-					await audio?.unloadAsync();
-				})
-			);
-		} catch {
-			// Do nothing
+			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
+		} catch (error) {
+			log(error);
 		}
-		roomAudioKeysLoaded.forEach(key => delete this.audioQueue[key]);
+		roomAudioKeysLoaded.forEach(key => {
+			this.audioSubscriptions[key]?.();
+			delete this.audioSubscriptions[key];
+			delete this.audioCallbacks[key];
+			delete this.audioQueue[key];
+			delete this.audioUris[key];
+			delete this.audioPositions[key];
+			delete this.audioRates[key];
+			delete this.audioMeta[key];
+		});
 		this.audioPlaying = '';
 	}
 }

@@ -40,10 +40,10 @@ jest.mock('../../theme', () => ({
 }));
 
 const mockTaskCancel = jest.fn();
-let capturedFocusCb: Function | undefined;
-let capturedBlurCb: Function | undefined;
+let capturedFocusCb: (() => void) | undefined;
+let capturedBlurCb: (() => void) | undefined;
 let mockUnsubscribe: jest.Mock;
-let capturedAudioFocusedCb: Function | undefined;
+let capturedAudioFocusedCb: ((audioFocused: string) => void) | undefined;
 
 const defaultProps = {
 	fileUri: 'file:///audio.mp3',
@@ -67,7 +67,7 @@ describe('AudioPlayer', () => {
 		capturedFocusCb = undefined;
 		capturedBlurCb = undefined;
 		mockUnsubscribe = jest.fn();
-		const mockAddListener = jest.fn((event: string, cb: Function) => {
+		const mockAddListener = jest.fn((event: string, cb: () => void) => {
 			if (event === 'focus') capturedFocusCb = cb;
 			if (event === 'blur') capturedBlurCb = cb;
 			return mockUnsubscribe;
@@ -75,7 +75,7 @@ describe('AudioPlayer', () => {
 		(useNavigation as jest.Mock).mockReturnValue({ navigate: jest.fn(), addListener: mockAddListener });
 
 		capturedAudioFocusedCb = undefined;
-		(emitter.on as jest.Mock).mockImplementation((event: string, cb: Function) => {
+		(emitter.on as jest.Mock).mockImplementation((event: string, cb: (audioFocused: string) => void) => {
 			if (event === 'audioFocused') capturedAudioFocusedCb = cb;
 		});
 	});
@@ -273,7 +273,7 @@ describe('AudioPlayer', () => {
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true }));
+			act(() => statusCb({ isLoaded: true, playing: true }));
 
 			fireEvent.press(getByTestId('play-button'));
 
@@ -299,7 +299,7 @@ describe('AudioPlayer', () => {
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true }));
+			act(() => statusCb({ isLoaded: true, playing: true }));
 
 			await waitFor(() => expect(getByTestId('play-button').props.accessibilityLabel).toBe('Pause'));
 		});
@@ -310,10 +310,10 @@ describe('AudioPlayer', () => {
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true }));
+			act(() => statusCb({ isLoaded: true, playing: true }));
 			await waitFor(() => expect(getByTestId('play-button').props.accessibilityLabel).toBe('Pause'));
 
-			act(() => statusCb({ isLoaded: true, isPlaying: false }));
+			act(() => statusCb({ isLoaded: true, playing: false }));
 			await waitFor(() => expect(getByTestId('play-button').props.accessibilityLabel).toBe('Play'));
 		});
 
@@ -324,13 +324,13 @@ describe('AudioPlayer', () => {
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 30000, positionMillis: 1000 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 30, currentTime: 1 }));
 			expect(currentTimeValue.value).toBe(1);
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 30000, positionMillis: 2000 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 30, currentTime: 2 }));
 			expect(currentTimeValue.value).toBe(2);
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 30000, positionMillis: 3000 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 30, currentTime: 3 }));
 			expect(currentTimeValue.value).toBe(3);
 		});
 	});
@@ -356,7 +356,7 @@ describe('AudioPlayer', () => {
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true }));
+			act(() => statusCb({ isLoaded: true, playing: true }));
 
 			await waitFor(() => expect(queryByTestId('playback-speed')).not.toBeNull());
 		});
@@ -383,7 +383,7 @@ describe('AudioPlayer', () => {
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true }));
+			act(() => statusCb({ isLoaded: true, playing: true }));
 
 			await waitFor(() => expect(activateKeepAwake).toHaveBeenCalled());
 		});
@@ -466,24 +466,24 @@ describe('AudioPlayer', () => {
 	});
 
 	describe('onPlaybackStatusUpdate callback chain', () => {
-		it('sets paused to false (audioState: playing) when status has isPlaying: true', async () => {
+		it('sets paused to false (audioState: playing) when status has playing: true', async () => {
 			const { queryByTestId } = render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true }));
+			act(() => statusCb({ isLoaded: true, playing: true }));
 
 			await waitFor(() => expect(queryByTestId('playback-speed')).not.toBeNull());
 		});
 
-		it('keeps paused true when status has isPlaying: false', async () => {
+		it('keeps paused true when status has playing: false', async () => {
 			const { queryByTestId } = render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb({ isLoaded: true, isPlaying: false }));
+			act(() => statusCb({ isLoaded: true, playing: false }));
 
 			await act(async () => {});
 
@@ -500,13 +500,13 @@ describe('AudioPlayer', () => {
 			const durationValue = sharedValueMock.mock.results[0].value as { value: number };
 			const currentTimeValue = sharedValueMock.mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, durationMillis: 10000, positionMillis: 3000, isPlaying: false }));
+			act(() => statusCb({ isLoaded: true, duration: 10, currentTime: 3, playing: false }));
 
 			expect(durationValue.value).toBe(10);
 			expect(currentTimeValue.value).toBe(3);
 		});
 
-		it('does not update currentTime.value when positionMillis exceeds durationMillis', async () => {
+		it('does not update currentTime.value when currentTime exceeds duration', async () => {
 			render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
@@ -514,14 +514,14 @@ describe('AudioPlayer', () => {
 
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, durationMillis: 5000, positionMillis: 2000, isPlaying: false }));
+			act(() => statusCb({ isLoaded: true, duration: 5, currentTime: 2, playing: false }));
 			expect(currentTimeValue.value).toBe(2);
 
-			act(() => statusCb({ isLoaded: true, durationMillis: 5000, positionMillis: 9000, isPlaying: false }));
+			act(() => statusCb({ isLoaded: true, duration: 5, currentTime: 9, playing: false }));
 			expect(currentTimeValue.value).toBe(2);
 		});
 
-		it('does not update shared values when durationMillis is absent', async () => {
+		it('does not update shared values when duration is absent', async () => {
 			render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
@@ -529,7 +529,7 @@ describe('AudioPlayer', () => {
 
 			const durationValue = (useSharedValue as jest.Mock).mock.results[0].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: false }));
+			act(() => statusCb({ isLoaded: true, playing: false }));
 
 			expect(durationValue.value).toBe(0);
 		});
@@ -542,9 +542,9 @@ describe('AudioPlayer', () => {
 
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 5000, positionMillis: 4000 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 5, currentTime: 4 }));
 
-			act(() => statusCb({ isLoaded: true, isPlaying: false, didJustFinish: true }));
+			act(() => statusCb({ isLoaded: true, playing: false, didJustFinish: true, currentTime: 5, duration: 5 }));
 
 			await waitFor(() => {
 				expect(queryByTestId('playback-speed')).toBeNull();
@@ -560,16 +560,16 @@ describe('AudioPlayer', () => {
 
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 10000, positionMillis: 0 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 0 }));
 			expect(currentTimeValue.value).toBe(0);
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 10000, positionMillis: 2500 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 2.5 }));
 			expect(currentTimeValue.value).toBe(2.5);
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 10000, positionMillis: 5000 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 5 }));
 			expect(currentTimeValue.value).toBe(5);
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 10000, positionMillis: 7500 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 7.5 }));
 			expect(currentTimeValue.value).toBe(7.5);
 		});
 
@@ -580,7 +580,7 @@ describe('AudioPlayer', () => {
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 			const durationValue = (useSharedValue as jest.Mock).mock.results[0].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 10000, positionMillis: 0 }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 0 }));
 
 			expect(durationValue.value).toBe(10);
 		});
@@ -592,7 +592,7 @@ describe('AudioPlayer', () => {
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: false, durationMillis: 10000, positionMillis: 3500 }));
+			act(() => statusCb({ isLoaded: true, playing: false, duration: 10, currentTime: 3.5 }));
 
 			expect(currentTimeValue.value).toBe(3.5);
 		});
@@ -604,19 +604,19 @@ describe('AudioPlayer', () => {
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 			const currentTimeValue = (useSharedValue as jest.Mock).mock.results[1].value as { value: number };
 
-			act(() => statusCb({ isLoaded: true, isPlaying: true, durationMillis: 10000, positionMillis: 7777 }));
-			act(() => statusCb({ isLoaded: true, isPlaying: false, didJustFinish: true }));
+			act(() => statusCb({ isLoaded: true, playing: true, duration: 10, currentTime: 7.777 }));
+			act(() => statusCb({ isLoaded: true, playing: false, didJustFinish: true, currentTime: 10, duration: 10 }));
 
 			expect(currentTimeValue.value).toBe(0);
 		});
 
-		it('does not crash when status is null', async () => {
+		it('does not crash or update state when status is not loaded', async () => {
 			render(<AudioPlayer {...defaultProps} />);
 
 			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 			const statusCb = (AudioManager.setOnPlaybackStatusUpdate as jest.Mock).mock.calls[0][1] as Function;
 
-			act(() => statusCb(null));
+			act(() => statusCb({ isLoaded: false }));
 
 			await act(async () => {});
 		});
@@ -634,7 +634,7 @@ describe('AudioPlayer', () => {
 			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
 
 			act(() => {
-				statusCb({ isLoaded: true, isPlaying: true, positionMillis: 5000, durationMillis: 30000 });
+				statusCb({ isLoaded: true, playing: true, currentTime: 5, duration: 30 });
 			});
 
 			expect(currentTimeValue.value).toBe(5);
