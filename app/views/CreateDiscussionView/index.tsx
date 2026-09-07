@@ -168,13 +168,14 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 					</View>
 
 					{isEncryptionEnabled ? (
-						<>
+						<View style={styles.encryptionContainer}>
 							<List.Item
 								title='Encrypted'
 								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} testID='room-actions-encrypt' />}
 								additionalAccessibilityLabel={encrypted}
+								backgroundColor={colors.surfaceTint}
 							/>
-						</>
+						</View>
 					) : null}
 
 					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}
