@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
-import { categories } from '../../lib/constants/emojis';
+import { categories } from '../../lib/constants/emojis/categories';
 import { type IEmoji } from '../../definitions';
 import { addFrequentlyUsed } from '../../lib/methods/emojis';
 import { type IEmojiPickerProps, EventTypes } from './interfaces';
