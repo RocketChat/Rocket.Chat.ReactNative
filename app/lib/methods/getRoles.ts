@@ -121,8 +121,8 @@ export function getRoles(): Promise<void> {
 					setRoles();
 					return allRecords.length;
 				});
-				return resolve();
 			}
+			return resolve();
 		} catch (e) {
 			log(e);
 			return resolve();

@@ -559,10 +559,13 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
+export const toggleMuteUserInRoom = (rid: string, username: string | undefined, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
 		return sdk.post(mute ? 'rooms.muteUser' : 'rooms.unmuteUser', { roomId: rid, userId });
+	}
+	if (!username) {
+		throw new Error('muteUserInRoom requires a username on servers older than 6.8.0');
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
@@ -1035,7 +1038,6 @@ export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } =
 };
 
 export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
-	// {} when TOTP is enabled
 	// RC 3.6.0
 	return sdk.post('users.resetE2EKey');
 }
@@ -1109,7 +1111,7 @@ export const registerPushToken = async (): Promise<void> => {
 	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
 	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
 	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
-	if (!sdk.current) {
+	if (!sdk.isInitialized) {
 		return;
 	}
 
@@ -1145,15 +1147,18 @@ export const registerPushToken = async (): Promise<void> => {
 };
 
 // TODO: add voip token removal
-export const removePushToken = (): Promise<boolean | void> => {
+export const removePushToken = async (): Promise<void> => {
 	const token = getDeviceToken();
-	if (token) {
-		lastToken = '';
-		lastVoipToken = '';
-		// RC 0.60.0
-		return sdk.current.del('push.token', { token });
+	if (!token) {
+		return;
 	}
-	return Promise.resolve();
+	lastToken = '';
+	lastVoipToken = '';
+	if (!sdk.isInitialized) {
+		return;
+	}
+	// RC 0.60.0
+	await sdk.del('push.token', { token });
 };
 
 // RC 6.6.0

@@ -7,7 +7,8 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
-import { twoFactor } from '../../lib/services/twoFactor';
+import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -118,6 +119,11 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		}
 	};
 
+	const resetTwoFactorState = () => {
+		setValue('currentPassword', '');
+		setTwoFactorCode(null);
+	};
+
 	const changePasswordFromProfileView = async () => {
 		const { currentPassword, newPassword, confirmNewPassword } = inputValues;
 		if (newPassword !== confirmNewPassword) {
@@ -146,8 +152,12 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
 					setTwoFactorCode(code as any);
 					return handleSetNewPassword();
-				} catch {
-					// cancelled twoFactor modal
+				} catch (twoFactorError) {
+					resetTwoFactorState();
+					if (isTwoFactorCancelled(twoFactorError)) {
+						return;
+					}
+					return handleSaveUserProfileError(twoFactorError, 'saving_profile');
 				}
 			}
 
@@ -157,8 +167,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 				return;
 			}
 
-			setValue('currentPassword', '');
-			setTwoFactorCode(null);
+			resetTwoFactorState();
 			handleSaveUserProfileError(e, 'saving_profile');
 		} finally {
 			setValue('saving', false);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import { type IAttachment, type IUserMessage } from '../../../definitions';
 import { isImageBase64 } from '../../../lib/methods/isImageBase64';
@@ -15,7 +15,6 @@ import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
-import { useFile } from './useFile';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
 	if (file.image_url) {
@@ -80,7 +79,9 @@ export const useMediaAutoDownload = ({
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
+	// Local overrides (downloaded uri, decrypted state) win over the file prop, which may still carry the remote url
+	const [fileOverrides, setFileOverrides] = useState<Partial<IAttachment> | null>(null);
+	const currentFile = fileOverrides ? { ...file, ...fileOverrides } : file;
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
@@ -152,17 +153,13 @@ export const useMediaAutoDownload = ({
 	};
 
 	const updateCurrentFile = (uri: string) => {
-		setCurrentFile({
-			title_link: uri
-		});
+		setFileOverrides(prev => ({ ...prev, title_link: uri }));
 		dispatchDownloadEvent('download_succeeded');
 	};
 
 	const setDecrypted = () => {
 		if (isEncrypted) {
-			setCurrentFile({
-				e2e: 'done'
-			});
+			setFileOverrides(prev => ({ ...prev, e2e: 'done' }));
 		}
 	};
 

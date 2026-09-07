@@ -30,6 +30,9 @@ const useUserData = (rid: string) => {
 					const result = await getUserInfo(rid);
 					if (result.success) {
 						const { user } = result;
+						if (!user.username) {
+							return;
+						}
 						const username = useRealName && user.name ? user.name : user.username;
 						setUser({
 							username,

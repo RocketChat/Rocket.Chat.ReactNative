@@ -137,7 +137,11 @@ export const onPressAppleLogin = async () => {
 				AppleAuthentication.AppleAuthenticationScope.EMAIL
 			]
 		});
-		await loginOAuthOrSso({ fullName, email, identityToken });
+		if (!identityToken) {
+			logEvent(events.ENTER_WITH_APPLE_F);
+			return;
+		}
+		await loginOAuthOrSso({ fullName: fullName ?? {}, email, identityToken });
 	} catch {
 		logEvent(events.ENTER_WITH_APPLE_F);
 	}

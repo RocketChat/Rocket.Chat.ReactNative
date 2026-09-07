@@ -6,12 +6,11 @@ import { SERVERS_TABLE } from '../model';
 const getCollection = (db: TServerDatabase) => db.get(SERVERS_TABLE);
 
 export const getServerById = async (server: string): Promise<TServerModel | null> => {
-	const db = database.servers;
-	const serverCollection = getCollection(db);
 	try {
-		const result = await serverCollection.find(server);
-		return result;
+		return await getCollection(database.servers).find(server);
 	} catch {
 		return null;
 	}
 };
+
+export const getAllServers = (): Promise<TServerModel[]> => getCollection(database.servers).query().fetch();

@@ -2,6 +2,7 @@ import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import { type ISubscription } from '@rocket.chat/sdk/interfaces';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
@@ -18,7 +19,6 @@ import { Encryption } from '../../encryption';
 import {
 	type IMessage,
 	type TMessageModel,
-	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel,
 	type IDeleteMessageBulkParams
@@ -32,7 +32,7 @@ import markMessagesRead from '../helpers/markMessagesRead';
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private promises?: Promise<TSubscriptionModel[]>;
+	private promises?: Promise<(ISubscription | undefined)[]>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
@@ -68,7 +68,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}

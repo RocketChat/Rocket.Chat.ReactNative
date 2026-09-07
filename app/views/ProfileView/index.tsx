@@ -26,7 +26,8 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor';
+import { twoFactor } from '../../lib/services/twoFactor/twoFactor';
+import { isTwoFactorCancelled } from '../../lib/services/twoFactor/twoFactorCancelled';
 import { getUserSelector } from '../../selectors/login';
 import { type ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -50,6 +51,8 @@ const MAX_NICKNAME_LENGTH = 120;
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
+type TwoFactorChallengeOutcome = { status: 'retried' } | { status: 'cancelled' } | { status: 'failed'; error: unknown };
+
 const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(I18n.t('Name_required')),
@@ -205,19 +208,20 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		}
 	};
 
-	// Returns true if a 2FA retry was issued and submit should yield to it.
-	const handleTwoFactorChallenge = async (e: any): Promise<boolean> => {
+	const handleTwoFactorChallenge = async (e: any): Promise<TwoFactorChallengeOutcome> => {
 		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
-			return false;
+			return { status: 'failed', error: e };
 		}
 		try {
 			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
 			setTwoFactorCode(code as any);
 			await submit();
-			return true;
-		} catch {
-			// cancelled twoFactor modal
-			return false;
+			return { status: 'retried' };
+		} catch (twoFactorError) {
+			if (isTwoFactorCancelled(twoFactorError)) {
+				return { status: 'cancelled' };
+			}
+			return { status: 'failed', error: twoFactorError };
 		}
 	};
 
@@ -249,12 +253,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			const { email } = getValues();
 			setFieldErrorsFromResponse(e, email);
 
-			const retried = await handleTwoFactorChallenge(e);
-			if (retried) return;
+			const twoFactorOutcome = await handleTwoFactorChallenge(e);
+			if (twoFactorOutcome.status === 'retried') return;
+
+			resetSavingState();
+			if (twoFactorOutcome.status === 'cancelled') return;
 
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			resetSavingState();
-			handleSaveUserProfileError(e, 'saving_profile');
+			handleSaveUserProfileError(twoFactorOutcome.error, 'saving_profile');
 		}
 	};
 

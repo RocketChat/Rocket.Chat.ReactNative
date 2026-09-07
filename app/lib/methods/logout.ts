@@ -60,24 +60,30 @@ export async function removeServerDatabase({ server }: { server: string }): Prom
 	}
 }
 
+async function logoutFromServer(server: string, resume: string): Promise<void> {
+	try {
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+		await sdk.login({ resume });
+
+		const token = getDeviceToken();
+		if (token) {
+			await sdk.del('push.token', { token });
+		}
+
+		await sdk.logout();
+	} catch (e) {
+		log(e);
+	}
+}
+
 export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		if (userId) {
 			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
-			try {
-				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume });
-
-				const token = getDeviceToken();
-				if (token) {
-					await sdk.del('push.token', { token });
-				}
-
-				await sdk.logout();
-			} catch (e) {
-				log(e);
+			if (resume) {
+				await logoutFromServer(server, resume);
 			}
 		}
 
@@ -104,14 +110,13 @@ export async function logout({ server }: { server: string }): Promise<void> {
 		log(e);
 	}
 
-	try {
-		// RC 0.60.0
-		await sdk.current.logout();
-	} catch (e) {
-		log(e);
-	}
-
-	if (sdk.current) {
+	if (sdk.isInitialized) {
+		try {
+			// RC 0.60.0
+			await sdk.logout();
+		} catch (e) {
+			log(e);
+		}
 		disconnect();
 	}
 

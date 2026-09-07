@@ -7,15 +7,21 @@ import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
-import { twoFactor } from './twoFactor';
+import { twoFactor } from './twoFactor/twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import { waitForLoginReady } from './waitForLoginReady';
-import sdk from './sdk';
+import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
-import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
+import {
+	type ILoginCredentials,
+	type ICredentialsPasswordAPI,
+	type ILoggedUser,
+	STATUSES,
+	type TUserStatus
+} from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -48,6 +54,7 @@ let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
+let userPresenceListener: Promise<IStreamDataListener> | undefined;
 let notifyLoggedListener: any;
 let logoutListener: any;
 
@@ -61,50 +68,27 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		store.dispatch(connectRequest());
 
-		if (connectingListener) {
-			connectingListener.then(stopListener);
-		}
-
-		if (connectedListener) {
-			connectedListener.then(stopListener);
-		}
-
-		if (closeListener) {
-			closeListener.then(stopListener);
-		}
-
-		if (pendingHangupsConnectedListener) {
-			pendingHangupsConnectedListener.then(stopListener);
-		}
-
-		if (usersListener) {
-			usersListener.then(stopListener);
-		}
-
-		if (notifyAllListener) {
-			notifyAllListener.then(stopListener);
-		}
-
-		if (rolesListener) {
-			rolesListener.then(stopListener);
-		}
-
-		if (notifyLoggedListener) {
-			notifyLoggedListener.then(stopListener);
-		}
-
-		if (logoutListener) {
-			logoutListener.then(stopListener);
-		}
+		[
+			connectingListener,
+			connectedListener,
+			closeListener,
+			pendingHangupsConnectedListener,
+			usersListener,
+			notifyAllListener,
+			rolesListener,
+			userPresenceListener,
+			notifyLoggedListener,
+			logoutListener
+		].forEach(listener => listener?.then(stopListener));
 
 		unsubscribeRooms();
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		sdk.initialize(server);
-		getSettings();
+		getSettings(server);
 
-		sdk.current
+		sdk
 			.connect()
 			.then(() => {
 				console.log('connected');
@@ -113,11 +97,11 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 				console.log('connect error', err);
 			});
 
-		connectingListener = sdk.current.onStreamData('connecting', () => {
+		connectingListener = sdk.onStreamData('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		connectedListener = sdk.current.onStreamData('connected', () => {
+		connectedListener = sdk.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -133,12 +117,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
 		let pendingHangupsDrainArmed = false;
 
-		closeListener = sdk.current.onStreamData('close', () => {
+		closeListener = sdk.onStreamData('close', () => {
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});
 
-		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', async () => {
+		pendingHangupsConnectedListener = sdk.onStreamData('connected', async () => {
 			if (!pendingHangupsDrainArmed) return;
 			pendingHangupsDrainArmed = false;
 			if (pendingHangups.size === 0) return;
@@ -150,12 +134,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		usersListener = sdk.current.onStreamData(
+		usersListener = sdk.onStreamData(
 			'users',
 			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		notifyAllListener = sdk.current.onStreamData(
+		notifyAllListener = sdk.onStreamData(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -193,13 +177,13 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		rolesListener = sdk.current.onStreamData(
+		rolesListener = sdk.onStreamData(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
 
 		// RC 4.1
-		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
+		userPresenceListener = sdk.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
 			const [, status, statusText, statusSource, statusExpiresAtRaw] = userStatus;
@@ -215,7 +199,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		notifyLoggedListener = sdk.current.onStreamData(
+		notifyLoggedListener = sdk.onStreamData(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -306,21 +290,27 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+		logoutListener = sdk.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
 }
 
-function stopListener(listener: any): boolean {
-	return listener && listener.stop();
+function stopListener(listener: any): void {
+	listener?.stop();
 }
 
-async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
+async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
+	if (!sdk.isInitialized) {
+		throw new Error('Cannot login before a server is selected');
+	}
 	// RC 0.64.0
-	await sdk.current.login(credentials);
+	const currentLogin = await sdk.login(credentials);
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current.currentLogin?.result;
+	const result = currentLogin?.result;
+	if (!result) {
+		throw new Error('Login failed: missing login result');
+	}
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
@@ -329,89 +319,73 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
-	if (result) {
-		const user: ILoggedUser = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
-			showMessageInMainThread,
-			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
-			bio: result.me.bio,
-			nickname: result.me.nickname,
-			requirePasswordChange: result.me.requirePasswordChange
-		};
-		return user;
+	const user: ILoggedUser = {
+		id: result.userId,
+		token: result.authToken,
+		username: result.me.username,
+		name: result.me.name,
+		language: result.me.language,
+		status: result.me.status as TUserStatus,
+		statusText: result.me.statusText,
+		customFields: result.me.customFields,
+		statusLivechat: result.me.statusLivechat,
+		emails: result.me.emails,
+		roles: result.me.roles,
+		avatarETag: result.me.avatarETag,
+		showMessageInMainThread,
+		enableMessageParserEarlyAdoption,
+		alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
+		bio: result.me.bio,
+		nickname: result.me.nickname,
+		requirePasswordChange: result.me.requirePasswordChange
+	};
+	return user;
+}
+
+function toPasswordLogin(params: ILoginCredentials): ICredentialsPasswordAPI | undefined {
+	if ('ldap' in params) {
+		return { user: params.username, password: params.ldapPass };
+	}
+	if ('crowd' in params) {
+		return { user: params.username, password: params.crowdPassword };
+	}
+	if ('password' in params) {
+		return params;
 	}
 }
 
-function normalizeTOTPParams(params: ICredentials): ICredentials {
-	const serverVersion = store.getState().server.version;
-	if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.9.0')) {
-		const user = params.user ?? params.username;
-		const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-		return { user, password };
-	}
-	return params;
-}
+async function loginTOTP(params: ILoginCredentials, options?: { retryWithPassword?: boolean }): Promise<ILoggedUser> {
+	try {
+		return await login(params);
+	} catch (e: any) {
+		if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
+			const { details, error } = e.data;
+			const code = await twoFactor({
+				params,
+				method: details?.method || 'totp',
+				invalid: (details.error || error) === 'totp-invalid'
+			});
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const result = await login(params);
-			if (result) {
-				return resolve(result);
+			const passwordParams = options?.retryWithPassword ? toPasswordLogin(params) : undefined;
+			if (passwordParams) {
+				store.dispatch(setUser({ username: passwordParams.user || passwordParams.username }));
+
+				return loginTOTP({ ...passwordParams, code: code?.twoFactorCode }, options);
 			}
-		} catch (e: any) {
-			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-				const { details, error } = e.data;
-				try {
-					const code = await twoFactor({
-						params,
-						method: details?.method || 'totp',
-						invalid: (details.error || error) === 'totp-invalid'
-					});
 
-					if (loginEmailPassword) {
-						store.dispatch(setUser({ username: params.user || params.username }));
-
-						params = normalizeTOTPParams(params);
-
-						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
-					}
-
-					return resolve(
-						loginTOTP({
-							totp: {
-								login: {
-									...params
-								},
-								code: code?.twoFactorCode
-							}
-						})
-					);
-				} catch {
-					// twoFactor was canceled
-					return reject();
+			return loginTOTP({
+				totp: {
+					login: params,
+					code: code?.twoFactorCode
 				}
-			} else {
-				reject(e);
-			}
+			});
 		}
-	});
+		throw e;
+	}
 }
 
 function loginWithPassword({ user, password }: { user: string; password: string }): Promise<ILoggedUser> {
-	let params: ICredentials = { user, password };
+	let params: ILoginCredentials = { user, password };
 	const state = store.getState();
 
 	if (state.settings.LDAP_Enable) {
@@ -429,24 +403,23 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 		};
 	}
 
-	return loginTOTP(params, true);
+	return loginTOTP(params, { retryWithPassword: true });
 }
 
-async function loginOAuthOrSso(params: ICredentials) {
-	const result = await loginTOTP(params, false);
+async function loginOAuthOrSso(params: ILoginCredentials) {
+	const result = await loginTOTP(params);
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
-function abort() {
-	if (sdk.current) {
-		return sdk.current.abort();
+function abort(): void {
+	if (sdk.isInitialized) {
+		sdk.abort();
 	}
 }
 
-function disconnect() {
-	const result = sdk.disconnect();
+function disconnect(): void {
+	sdk.disconnect();
 	mediaSessionInstance.reset();
-	return result;
 }
 
 async function getWebsocketInfo({

@@ -14,7 +14,7 @@ export class Upload {
 
 	public setupRequest(
 		url: string,
-		headers: { [key: string]: string },
+		headers: Record<string, string>,
 		progressCallback?: (loaded: number, total: number) => void
 	): void {
 		this.xhr.open('POST', url);
