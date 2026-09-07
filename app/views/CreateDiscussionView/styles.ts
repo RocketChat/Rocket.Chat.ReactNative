@@ -50,6 +50,6 @@ export default StyleSheet.create({
 		maxHeight: '25%'
 	},
 	encryptionContainer: {
-		marginTop: 10
+		marginTop: 12
 	}
 });
