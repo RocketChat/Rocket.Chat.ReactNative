@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
@@ -7,7 +8,7 @@ import sharedStyles from '../../../../views/Styles';
 import Header from '../../../../containers/Header';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	header: Header
+	header: props => createElement(Header, props)
 };
 
 export const drawerStyle = {
