@@ -3,19 +3,15 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { toggleFollowThread } from '../../../../../lib/methods/toggleFollowThread';
 import { ThreadRightButtons } from '../ThreadRightButtons';
 
-const mockAppState = { login: { user: { id: 'u1', username: 'user', token: 'tok' } } };
+let mockAppState = { login: { user: { id: 'u1', username: 'user', token: 'tok' } } };
 jest.mock('../../../../../lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockAppState) => unknown) => selector(mockAppState)
 }));
 
-let mockIsFollowingThread = false;
+let mockFollowersByThread: Record<string, string[]> = {};
 jest.mock('../../../hooks/useThreadFollowing', () => ({
-	useThreadFollowing: (tmid: string, userId: string) => {
-		mockFollowingArgs.push({ tmid, userId });
-		return mockIsFollowingThread;
-	}
+	useThreadFollowing: (tmid: string, userId: string) => mockFollowersByThread[tmid]?.includes(userId) ?? false
 }));
-const mockFollowingArgs: { tmid: string; userId: string }[] = [];
 
 jest.mock('../../../../../lib/methods/toggleFollowThread', () => ({ toggleFollowThread: jest.fn() }));
 
@@ -40,8 +36,8 @@ jest.mock('../../../../../containers/Header/components/HeaderButton', () => {
 describe('ThreadRightButtons', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockFollowingArgs.length = 0;
-		mockIsFollowingThread = false;
+		mockFollowersByThread = {};
+		mockAppState = { login: { user: { id: 'u1', username: 'user', token: 'tok' } } };
 	});
 
 	it('renders the follow button when the thread is not followed', () => {
@@ -54,7 +50,7 @@ describe('ThreadRightButtons', () => {
 	});
 
 	it('renders the unfollow button when the thread is followed', () => {
-		mockIsFollowingThread = true;
+		mockFollowersByThread = { 'tmid-1': ['u1'] };
 
 		render(<ThreadRightButtons tmid='tmid-1' />);
 
@@ -64,10 +60,19 @@ describe('ThreadRightButtons', () => {
 		expect(screen.queryByTestId('room-view-header-follow')).not.toBeOnTheScreen();
 	});
 
-	it('reads the following state for the thread and the logged user', () => {
+	it('shows the follow state for the displayed Thread and current user', () => {
+		mockFollowersByThread = { 'tmid-1': ['u1'] };
 		render(<ThreadRightButtons tmid='tmid-1' />);
+		expect(screen.getByTestId('room-view-header-unfollow')).toBeOnTheScreen();
 
-		expect(mockFollowingArgs[0]).toEqual({ tmid: 'tmid-1', userId: 'u1' });
+		screen.rerender(<ThreadRightButtons tmid='tmid-2' />);
+		expect(screen.getByTestId('room-view-header-follow')).toBeOnTheScreen();
+		expect(screen.queryByTestId('room-view-header-unfollow')).not.toBeOnTheScreen();
+
+		mockAppState = { login: { user: { id: 'u2', username: 'other', token: 'tok' } } };
+		screen.rerender(<ThreadRightButtons tmid='tmid-1' />);
+		expect(screen.getByTestId('room-view-header-follow')).toBeOnTheScreen();
+		expect(screen.queryByTestId('room-view-header-unfollow')).not.toBeOnTheScreen();
 	});
 
 	it('follows the thread when it is not followed yet', () => {
@@ -79,7 +84,7 @@ describe('ThreadRightButtons', () => {
 	});
 
 	it('unfollows the thread when it is followed', () => {
-		mockIsFollowingThread = true;
+		mockFollowersByThread = { 'tmid-1': ['u1'] };
 
 		render(<ThreadRightButtons tmid='tmid-1' />);
 

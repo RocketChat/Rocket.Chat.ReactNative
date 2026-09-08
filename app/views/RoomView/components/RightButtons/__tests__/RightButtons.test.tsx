@@ -147,6 +147,25 @@ describe('RightButtons routing', () => {
 		expect(roomMock.mounts.count).toBe(1);
 	});
 
+	it.each([
+		['c', undefined, 'c', 'INVITED', undefined],
+		['c', 'INVITED', 'c', undefined, 'room-right-buttons-stub'],
+		['l', undefined, 'l', 'queued', undefined],
+		['l', 'queued', 'l', undefined, 'omnichannel-right-buttons-stub'],
+		['c', undefined, 'l', undefined, 'omnichannel-right-buttons-stub']
+	])('updates buttons when the same Room changes from %s/%s to %s/%s', (t, status, nextType, nextStatus, expected) => {
+		const room = { rid: 'rid-1', t, status };
+		const roomStore = createRoomStore(room);
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+
+		act(() => {
+			Object.assign(room, { t: nextType, status: nextStatus });
+			roomStore.setState({ roomUpdate: { t: nextType, status: nextStatus } } as Partial<ReturnType<RoomStore['getState']>>);
+		});
+
+		expectOnlyStub(expected);
+	});
+
 	it('remounts the room buttons after the tmid is cleared', () => {
 		const roomStore = createRoomStore({ rid: 'rid-1', t: 'c' });
 		render(<RightButtons rid='rid-1' roomStore={roomStore} />);

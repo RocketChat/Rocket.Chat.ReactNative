@@ -497,7 +497,7 @@ importers:
         specifier: ^1.75.0
         version: 1.75.0
       oxlint-plugin-complexity:
-        specifier: ^2.1.8
+        specifier: 2.1.8
         version: 2.1.8
       patch-package:
         specifier: ~8.0.1
@@ -2675,7 +2675,7 @@ packages:
       react-native: '*'
 
   '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd}
+    resolution: {gitHosted: true, integrity: sha512-+W+SeN/RcKRANWw8xjfl4916ldSrgEgVHTvabJwYNoxxLaOyrHs2rjeNk/0gxKO4fjMo0kd+lU0wck3QH4A6OA==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd}
     version: 2.0.0-mobile
 
   '@rocket.chat/ui-kit@0.39.0':

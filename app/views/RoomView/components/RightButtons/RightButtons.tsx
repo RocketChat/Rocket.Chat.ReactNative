@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
-import { useStore } from 'zustand';
 
 import { type RoomStore } from '../../definitions';
+import { useRoomWithUpdateFromStore } from '../../stores/RoomStoreContext';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';
@@ -13,7 +13,7 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const room = useStore(roomStore, s => s.room);
+	const room = useRoomWithUpdateFromStore(roomStore);
 
 	if (!rid) {
 		return null;

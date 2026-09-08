@@ -82,7 +82,15 @@ jest.mock('../../../../../containers/Header/components/HeaderButton', () => {
 			iconName: string;
 			onPress: () => void;
 			testID: string;
-		}) => ReactActual.createElement('Item', { accessibilityLabel, color, disabled, iconName, onPress, testID }),
+		}) =>
+			ReactActual.createElement('Item', {
+				accessibilityLabel,
+				color,
+				disabled,
+				iconName,
+				onPress,
+				testID
+			}),
 		BadgeUnread: () => null
 	};
 });
@@ -160,7 +168,8 @@ describe('RoomRightButtons', () => {
 		expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
 	});
 
-	it('colors the notification button and routes to the push troubleshoot screen on notification issues', () => {
+	it.each([false, true])('routes notification issues to push troubleshooting (master-detail: %s)', isMasterDetail => {
+		mockIsMasterDetail = isMasterDetail;
 		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
 
@@ -168,10 +177,15 @@ describe('RoomRightButtons', () => {
 
 		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '#f00');
 		fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('PushTroubleshootView', undefined);
+		expect(mockNavigation.navigate).toHaveBeenCalledWith(
+			...(isMasterDetail
+				? ['ModalStackNavigator', { screen: 'PushTroubleshootView', params: undefined }]
+				: ['PushTroubleshootView', undefined])
+		);
 	});
 
-	it('routes to the notification preferences screen when notifications are disabled for the room', () => {
+	it.each([false, true])('routes disabled Room notifications to preferences (master-detail: %s)', isMasterDetail => {
+		mockIsMasterDetail = isMasterDetail;
 		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true } };
 		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
 
@@ -179,7 +193,10 @@ describe('RoomRightButtons', () => {
 
 		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('color', '');
 		fireEvent.press(screen.getByTestId('room-view-push-troubleshoot'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('NotificationPrefView', { rid: 'rid-1', room: { id: 'rid-1' } });
+		const params = { rid: 'rid-1', room: { id: 'rid-1' } };
+		expect(mockNavigation.navigate).toHaveBeenCalledWith(
+			...(isMasterDetail ? ['ModalStackNavigator', { screen: 'NotificationPrefView', params }] : ['NotificationPrefView', params])
+		);
 	});
 
 	it('does not navigate from the notification button without a subscription', () => {
@@ -231,9 +248,7 @@ describe('RoomRightButtons', () => {
 		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 2 unread');
 	});
 
-	it('navigates to the threads, search and encryption screens on stack mode', () => {
-		mockHasE2EEWarning = true;
-		mockCanToggleEncryption = true;
+	it('navigates to the threads and search screens on stack mode', () => {
 		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 
 		renderRoomRightButtons();
@@ -243,15 +258,10 @@ describe('RoomRightButtons', () => {
 
 		fireEvent.press(screen.getByTestId('room-view-search'));
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('SearchMessagesView', { rid: 'rid-1', t: 'c', encrypted: true });
-
-		fireEvent.press(screen.getByTestId('room-view-header-encryption'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('E2EEToggleRoomView', { rid: 'rid-1' });
 	});
 
 	it('navigates through the modal stack on master-detail mode', () => {
 		mockIsMasterDetail = true;
-		mockHasE2EEWarning = true;
-		mockCanToggleEncryption = true;
 		mockRoomState = { room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 
 		renderRoomRightButtons();
@@ -267,11 +277,26 @@ describe('RoomRightButtons', () => {
 			screen: 'SearchMessagesView',
 			params: { rid: 'rid-1', t: 'c', encrypted: true, showCloseModal: true }
 		});
+	});
+
+	it.each([false, true])('offers encryption navigation while other buttons are disabled (master-detail: %s)', isMasterDetail => {
+		mockIsMasterDetail = isMasterDetail;
+		mockHasE2EEWarning = true;
+		mockCanToggleEncryption = true;
+		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
+		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
+		renderRoomRightButtons();
+
+		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('disabled', true);
+		expect(screen.getByTestId('room-view-search')).toHaveProp('disabled', true);
+		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('disabled', true);
+		expect(screen.getByTestId('room-view-header-encryption')).toHaveProp('disabled', false);
 
 		fireEvent.press(screen.getByTestId('room-view-header-encryption'));
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('ModalStackNavigator', {
-			screen: 'E2EEToggleRoomView',
-			params: { rid: 'rid-1' }
-		});
+		expect(mockNavigation.navigate).toHaveBeenCalledWith(
+			...(isMasterDetail
+				? ['ModalStackNavigator', { screen: 'E2EEToggleRoomView', params: { rid: 'rid-1' } }]
+				: ['E2EEToggleRoomView', { rid: 'rid-1' }])
+		);
 	});
 });
