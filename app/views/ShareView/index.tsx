@@ -48,6 +48,7 @@ interface IShareViewState {
 	attachments: IShareAttachment[];
 	text: string;
 	room: TSubscriptionModel;
+	roomRead: { room: TSubscriptionModel };
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
@@ -75,7 +76,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
 	private messageActionStore: TMessageActionStore;
-	private cachedRoomRead?: { room: TSubscriptionModel };
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -88,13 +88,15 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuoteMessageIds.
 		this.messageActionStore = createMessageActionStore();
 
+		const room = props.route.params?.room ?? ({} as TSubscriptionModel);
 		this.state = {
 			selected: {} as IShareAttachment,
 			loading: false,
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
-			room: props.route.params?.room ?? {},
+			room,
+			roomRead: { room },
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
 			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
@@ -383,16 +385,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
 
-	private getRoomRead = () => {
-		const { room } = this.state;
-		if (this.cachedRoomRead?.room !== room) {
-			this.cachedRoomRead = { room };
-		}
-		return this.cachedRoomRead;
-	};
-
 	renderContent = () => {
-		const { attachments, selected, text, room, thread } = this.state;
+		const { attachments, selected, text, room, roomRead, thread } = this.state;
 		const { theme } = this.props;
 
 		if (attachments.length) {
@@ -401,7 +395,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					store={this.messageActionStore}
 					rid={room.rid}
 					t={room.t}
-					roomRead={this.getRoomRead()}
+					roomRead={roomRead}
 					tmid={this.getThreadId(thread)}
 					sharing
 					onSendMessage={this.send}

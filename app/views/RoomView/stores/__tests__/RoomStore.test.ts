@@ -1,4 +1,3 @@
-import database from '../../../../lib/database';
 import { loadThreadMessages } from '../../../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../../../lib/methods/readMessages';
 import { getUserInfo } from '../../../../lib/services/restApi';
@@ -6,7 +5,8 @@ import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
 import getMessages from '../../services/getMessages';
-import { createRoomStore, observeRoom, roomAttrsUpdateColumns } from '../RoomStore';
+import { createRoomStore, observeRoom } from '../RoomStore';
+import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
@@ -35,7 +35,6 @@ jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 }));
 jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 
-const mockGet = database.active.get as jest.Mock;
 const mockGetMessages = getMessages as unknown as jest.Mock;
 const mockLoadThreadMessages = loadThreadMessages as jest.Mock;
 const mockReadMessages = readMessages as jest.Mock;
@@ -53,24 +52,7 @@ const createObservedStore = ({ rid = 'rid-1', initialRoom }: { rid?: string; ini
 	return store;
 };
 
-const setupObserve = () => {
-	let emit: ((rows: any[]) => void) | undefined;
-	const unsubscribe = jest.fn();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe };
-		}
-	}));
-	const query = jest.fn(() => ({ observeWithColumns }));
-	mockGet.mockReturnValue({ query });
-	return {
-		observeWithColumns,
-		query,
-		unsubscribe,
-		emit: (rows: any[]) => emit?.(rows)
-	};
-};
+const setupObserve = setupObserveRoomDatabase;
 
 describe('RoomStore', () => {
 	beforeEach(() => {
@@ -83,14 +65,42 @@ describe('RoomStore', () => {
 
 	it('observes the tracked database columns with their model-field translations', () => {
 		const { observeWithColumns } = setupObserve();
-		const store = createObservedStore({ initialRoom: stubRoom });
+		createObservedStore({ initialRoom: stubRoom });
 
-		expect(store).toBeDefined();
-		expect(observeWithColumns).toHaveBeenCalledWith([...Object.values(roomAttrsUpdateColumns), 'last_message']);
-	});
-
-	it.each(['roles', 'encrypted', 'E2EKey'])('keeps %s tracked so useReadOnly/useE2EEStatus stay reactive', key => {
-		expect(Object.keys(roomAttrsUpdateColumns)).toContain(key);
+		expect(observeWithColumns).toHaveBeenCalledWith([
+			'f',
+			'ro',
+			'blocked',
+			'blocker',
+			'archived',
+			'tunread',
+			'tunread_user',
+			'tunread_group',
+			'muted',
+			'ignored',
+			'jitsi_timeout',
+			'announcement',
+			'sys_mes',
+			'topic',
+			'name',
+			'fname',
+			'roles',
+			'banner_closed',
+			'visitor',
+			'join_code_required',
+			'team_main',
+			'team_id',
+			'status',
+			'on_hold',
+			't',
+			'auto_translate',
+			'auto_translate_language',
+			'unmuted',
+			'e2e_key',
+			'encrypted',
+			'inviter',
+			'last_message'
+		]);
 	});
 
 	it('exposes the initial room synchronously on creation', () => {
@@ -203,16 +213,7 @@ describe('RoomStore', () => {
 	});
 
 	it('keeps two observers of the same store in sync on repeated unchanged emissions', () => {
-		const callbacks = new Set<(rows: any[]) => void>();
-		const observeWithColumns = jest.fn(() => ({
-			subscribe: (cb: (rows: any[]) => void) => {
-				callbacks.add(cb);
-				return { unsubscribe: jest.fn(() => callbacks.delete(cb)) };
-			}
-		}));
-		mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
-		const emit = (rows: any[]) => callbacks.forEach(cb => cb(rows));
-
+		const { emit } = setupObserve();
 		const mutable = { ...subRoom, topic: 'same' };
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
 		observeRoom('rid-1', store);

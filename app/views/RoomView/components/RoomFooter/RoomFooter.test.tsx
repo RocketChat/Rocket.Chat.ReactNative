@@ -2,11 +2,11 @@ import { type ReactNode } from 'react';
 import { render, screen } from '@testing-library/react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { createStore as createZustandStore } from 'zustand';
 
-import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
+import { type RoomStore } from '../../definitions';
 import { RoomScreenContext } from '../../stores/RoomScreenContext';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { RoomFooter } from './RoomFooter';
 
 // I18n identity: banner assertions match on the translation key itself.
@@ -50,25 +50,6 @@ const makeReduxStore = ({ settings = {}, permissions = {}, enterpriseModules = [
 		settings,
 		permissions,
 		enterpriseModules
-	}));
-
-const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
-	createZustandStore<RoomState>(() => ({
-		room: { room: { rid: 'rid-1', t: 'c' } },
-		observedValues: {},
-		joined: true,
-		subscribed: true,
-		member: {},
-		roomUserId: null,
-		canAutoTranslate: false,
-		canForwardGuest: false,
-		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
-		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
-		join: jest.fn(),
-		joinRoom: jest.fn(() => Promise.resolve()),
-		resumeRoom: jest.fn(() => Promise.resolve()),
-		...overrides
 	}));
 
 const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loading = false) =>

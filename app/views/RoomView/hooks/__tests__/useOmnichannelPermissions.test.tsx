@@ -1,8 +1,7 @@
 import { renderHook } from '@testing-library/react-native';
-import { createStore } from 'zustand';
 
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
 
 jest.mock('../../../../lib/hooks/usePermissions', () => ({
@@ -10,24 +9,6 @@ jest.mock('../../../../lib/hooks/usePermissions', () => ({
 }));
 
 const mockUsePermissions = usePermissions as jest.Mock;
-
-const makeRoomStore = (): RoomStore =>
-	createStore<RoomState>(() => ({
-		room: { room: { rid: 'rid-1', t: 'l' } },
-		observedValues: {},
-		joined: true,
-		subscribed: true,
-		member: {},
-		roomUserId: null,
-		canAutoTranslate: false,
-		canForwardGuest: false,
-		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
-		init: jest.fn(),
-		join: jest.fn(),
-		joinRoom: jest.fn(() => Promise.resolve()),
-		resumeRoom: jest.fn(() => Promise.resolve())
-	}));
 
 describe('useOmnichannelPermissions', () => {
 	beforeEach(() => {

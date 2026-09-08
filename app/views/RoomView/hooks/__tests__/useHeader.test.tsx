@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
-import { createStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomStore } from '../../definitions';
+import { makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
@@ -26,29 +26,10 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation
 }));
 
-const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
-	createStore<RoomState>(() => ({
-		room: { room: { rid: 'rid-1', t: 'c', name: 'general' } },
-		observedValues: {},
-		joined: true,
-		subscribed: true,
-		member: {},
-		roomUserId: null,
-		canAutoTranslate: false,
-		canForwardGuest: false,
-		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
-		init: jest.fn(),
-		join: jest.fn(),
-		joinRoom: jest.fn(() => Promise.resolve()),
-		resumeRoom: jest.fn(() => Promise.resolve()),
-		...overrides
-	}));
-
 describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockTestStore = makeRoomStore();
+		mockTestStore = makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', name: 'general' } } });
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {

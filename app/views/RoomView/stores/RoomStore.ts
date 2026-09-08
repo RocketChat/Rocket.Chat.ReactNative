@@ -19,7 +19,7 @@ import {
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 
-export const roomAttrsUpdateColumns = {
+const roomAttrsUpdateColumns = {
 	f: 'f',
 	ro: 'ro',
 	blocked: 'blocked',
@@ -228,17 +228,16 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
 			return;
 		}
-		const observedValues = Object.fromEntries(
-			roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
-		) as Partial<TSubscriptionModel>;
 		store.setState({
 			subscribed: true,
 			joined: true,
 			lastMessageFromAgent,
-			observedValues,
 			...(roomChanged
 				? {
-						room: { room: next }
+						room: { room: next },
+						observedValues: Object.fromEntries(
+							roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
+						) as Partial<TSubscriptionModel>
 					}
 				: {})
 		});

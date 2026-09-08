@@ -1,8 +1,8 @@
 import { InteractionManager } from 'react-native';
-import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { type RoomState, type RoomStore, type TRoomInitResult } from '../../definitions';
+import { type RoomStore, type TRoomInitResult } from '../../definitions';
+import { makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { useRoomInit } from '../useRoomInit';
 
 jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
@@ -15,24 +15,6 @@ interface IRenderRoomInitParams {
 	roomStore: RoomStore;
 	onThreadMessagesLoaded: () => void;
 }
-
-const makeRoomStore = (): RoomStore =>
-	createStore<RoomState>(() => ({
-		room: { room: { rid: 'rid-1', t: 'c' } },
-		observedValues: {},
-		joined: true,
-		subscribed: true,
-		member: {},
-		roomUserId: null,
-		canAutoTranslate: false,
-		canForwardGuest: false,
-		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
-		init: jest.fn(() => Promise.resolve<TRoomInitResult>({ status: 'loaded', lastSeen: null })),
-		join: jest.fn(),
-		joinRoom: jest.fn(() => Promise.resolve()),
-		resumeRoom: jest.fn(() => Promise.resolve())
-	}));
 
 // A store whose init() only resolves when the test says so, so an in-flight init can be observed.
 const makeDeferredRoomStore = () => {

@@ -1,12 +1,12 @@
 import { act, render, renderHook } from '@testing-library/react-native';
 import { memo } from 'react';
 
-import database from '../../../../lib/database';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import { useHeader } from '../../hooks/useHeader';
 import { ComposerProvider, useComposerRoom, useIsAutocompleteVisible, useUpdateAutocompleteVisible } from '../ComposerStore';
 import { createRoomStore, observeRoom } from '../RoomStore';
 import { RoomStoreContext, useRoomFromStore, useRoomReadFromStore } from '../RoomStoreContext';
+import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
@@ -33,7 +33,6 @@ jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigati
 const mockSetOptions = jest.fn();
 const mockNavigation = { setOptions: mockSetOptions };
 const mockGoRoomActionsView = jest.fn();
-const mockGet = database.active.get as jest.Mock;
 
 type Room = {
 	rid: string;
@@ -46,17 +45,7 @@ type Room = {
 	[key: string]: any;
 };
 
-const setupDatabase = () => {
-	const callbacks = new Set<(rows: Room[]) => void>();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (callback: (rows: Room[]) => void) => {
-			callbacks.add(callback);
-			return { unsubscribe: jest.fn(() => callbacks.delete(callback)) };
-		}
-	}));
-	mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
-	return { emit: (rows: Room[]) => callbacks.forEach(callback => callback(rows)) };
-};
+const setupDatabase = setupObserveRoomDatabase;
 
 const preview = (overrides: Partial<Room> = {}): Room => ({ rid: 'rid-1', t: 'c', name: 'general', ...overrides });
 const subscription = (overrides: Partial<Room> = {}): Room => ({ id: 'sub-1', ...preview(), ...overrides });

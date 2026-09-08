@@ -1,10 +1,10 @@
 import { act, renderHook } from '@testing-library/react-native';
-import { createStore } from 'zustand';
 
 import { toggleFollowMessage } from '../../../../lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
 import { getUserSelector } from '../../../../selectors/login';
-import { type RoomState, type RoomStore } from '../../definitions';
+import { type RoomState } from '../../definitions';
+import { makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
@@ -64,27 +64,8 @@ const mockUser = { id: 'u1', username: 'user', token: 'tok', showMessageInMainTh
 
 const { useAppSelector } = jest.requireMock('../../../../lib/hooks/useAppSelector');
 
-const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
-	createStore<RoomState>(() => ({
-		room: { room: { rid: 'rid-1', t: 'c', name: 'general' } },
-		observedValues: {},
-		joined: true,
-		subscribed: true,
-		member: {},
-		roomUserId: null,
-		canAutoTranslate: false,
-		canForwardGuest: false,
-		canViewCannedResponse: false,
-		lastMessageFromAgent: false,
-		init: jest.fn(),
-		join: jest.fn(),
-		joinRoom: jest.fn(() => Promise.resolve()),
-		resumeRoom: jest.fn(() => Promise.resolve()),
-		...overrides
-	}));
-
 const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, tmid?: string) => {
-	const roomStore = makeRoomStore(roomStoreOverrides);
+	const roomStore = makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', name: 'general' } }, ...roomStoreOverrides });
 
 	const { result } = renderHook(
 		() =>
