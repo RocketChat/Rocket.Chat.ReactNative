@@ -282,7 +282,12 @@ export default class RoomSubscription {
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
+								const { urls } = m;
 								Object.assign(m, message);
+
+								if (!message.urls?.length && urls?.length) {
+									m.urls = urls;
+								}
 							})
 						)
 					);
@@ -309,7 +314,12 @@ export default class RoomSubscription {
 						batch.push(
 							threadRecord.prepareUpdate(
 								protectedFunction((t: TThreadModel) => {
+									const { urls } = t;
 									Object.assign(t, message);
+
+									if (!message.urls?.length && urls?.length) {
+										t.urls = urls;
+									}
 								})
 							)
 						);
@@ -337,7 +347,12 @@ export default class RoomSubscription {
 						batch.push(
 							threadMessageRecord.prepareUpdate(
 								protectedFunction((tm: TThreadMessageModel) => {
+									const { urls } = tm;
 									Object.assign(tm, message);
+
+									if (!message.urls?.length && urls?.length) {
+										tm.urls = urls;
+									}
 									if (message.tmid) {
 										tm.rid = message.tmid;
 										delete tm.tmid;
