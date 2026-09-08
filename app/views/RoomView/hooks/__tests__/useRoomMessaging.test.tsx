@@ -90,7 +90,7 @@ describe('useRoomMessaging', () => {
 			</MessageActionProvider>
 		);
 
-		act(() => result.current.messageActionStore.getState().actions.startQuote('quoted-message'));
+		act(() => result.current.messageActionStore.getState().actions.setQuoteMessageIds(['quoted-message']));
 		expect(actionProbe.getByTestId('action').props.children).toBe('quote');
 
 		let sendPromise: void;
