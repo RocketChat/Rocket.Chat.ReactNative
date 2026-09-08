@@ -3,8 +3,8 @@ import { AccessibilityInfo } from 'react-native';
 import { type ReactNode } from 'react';
 
 import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
-import { createComposerStore, ComposerStoreContext } from '../../../../views/RoomView/stores/ComposerStore';
-import { type ComposerStore } from '../../../../views/RoomView/definitions';
+import { createComposerStore, ComposerStoreContext } from '../../ComposerStore';
+import { type ComposerStore } from '../../ComposerStore';
 
 const externalState = {
 	rid: 'rid-1',
@@ -15,9 +15,7 @@ const externalState = {
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),
 	onRemoveQuoteMessage: jest.fn(),
-	onSendMessage: jest.fn(),
-	setQuotesAndText: jest.fn(),
-	getText: jest.fn(() => '')
+	onSendMessage: jest.fn()
 };
 
 const setup = () => {

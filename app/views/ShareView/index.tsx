@@ -31,13 +31,14 @@ import {
 	type IShareAttachment,
 	type IUser,
 	RootEnum,
-	type TSubscriptionModel,
 	type TThreadModel
 } from '../../definitions';
+import { type TRoomOrPreview } from '../../definitions/TRoom';
+import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
+import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
-import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { appStart } from '../../actions/app';
 
@@ -47,8 +48,8 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IShareAttachment[];
 	text: string;
-	room: TSubscriptionModel;
-	roomRead: { room: TSubscriptionModel };
+	room: TRoomOrPreview;
+	roomRead: RoomRead;
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
@@ -88,7 +89,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuoteMessageIds.
 		this.messageActionStore = createMessageActionStore();
 
-		const room = props.route.params?.room ?? ({} as TSubscriptionModel);
+		const room = props.route.params?.room ?? { rid: '', t: '' };
 		this.state = {
 			selected: {} as IShareAttachment,
 			loading: false,

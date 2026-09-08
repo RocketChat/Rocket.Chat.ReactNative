@@ -9,7 +9,8 @@ import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription'
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '../../../definitions';
 import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
-import { type IRoomViewProps, type IRoomViewState } from '../definitions';
+import { type IRoomViewProps } from '../definitions';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import { type RoomStore } from '../definitions';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
@@ -22,7 +23,7 @@ interface IUseHeaderParams {
 }
 
 interface IGetRoomHeaderPropsParams {
-	room: IRoomViewState['room'];
+	room: TRoomOrPreview;
 	tmid?: string;
 	roomName?: string;
 	roomUserId?: string | null;

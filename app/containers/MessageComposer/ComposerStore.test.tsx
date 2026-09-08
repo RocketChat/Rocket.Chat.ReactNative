@@ -1,7 +1,7 @@
 import { useContext, type ReactNode } from 'react';
 import { act, render, renderHook } from '@testing-library/react-native';
 
-import { type ComposerState } from '../../definitions';
+import { type ComposerState } from './ComposerStore';
 import {
 	ComposerProvider,
 	ComposerStoreContext,
@@ -15,10 +15,8 @@ import {
 	useEditRequest,
 	useOnRemoveQuoteMessage,
 	useOnSendMessage,
-	useSetQuotesAndText,
-	useGetText,
 	useUpdateAutocompleteVisible
-} from '../ComposerStore';
+} from './ComposerStore';
 
 const room = { rid: 'rid-1', t: 'c' };
 
@@ -31,9 +29,7 @@ const fullProps = () => ({
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),
 	onRemoveQuoteMessage: jest.fn(),
-	onSendMessage: jest.fn(),
-	setQuotesAndText: jest.fn(),
-	getText: jest.fn(() => 'text')
+	onSendMessage: jest.fn()
 });
 
 const useAllComposerHooks = () => ({
@@ -47,8 +43,6 @@ const useAllComposerHooks = () => ({
 	editRequest: useEditRequest(),
 	onRemoveQuoteMessage: useOnRemoveQuoteMessage(),
 	onSendMessage: useOnSendMessage(),
-	setQuotesAndText: useSetQuotesAndText(),
-	getText: useGetText(),
 	updateAutocompleteVisible: useUpdateAutocompleteVisible()
 });
 
@@ -60,10 +54,10 @@ describe('ComposerStore', () => {
 		const { result } = renderHook(() => useAllComposerHooks(), { wrapper });
 
 		// isAutocompleteVisible/updateAutocompleteVisible are store-owned, not seeded props.
-		const { roomRead: _roomRead, ...propsWithoutRead } = props;
+		const { roomRead, ...propsWithoutRead } = props;
 		expect(result.current).toEqual({
 			...propsWithoutRead,
-			room: props.roomRead.room,
+			room: roomRead.room,
 			isAutocompleteVisible: false,
 			updateAutocompleteVisible: expect.any(Function)
 		});

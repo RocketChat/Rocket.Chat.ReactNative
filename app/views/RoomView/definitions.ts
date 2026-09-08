@@ -7,15 +7,15 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import {
 	type IBaseScreen,
 	type IEmoji,
-	type ILastMessage,
 	type IMessage,
 	type IMessageEditAttachment,
-	type IVisitor,
 	type RoomType,
 	type TAnyMessageModel,
-	type TSubscriptionModel,
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
+import { type TRoomOrPreview, type TRoomObservedFields } from '../../definitions/TRoom';
+import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
+import { type TSubscriptionModel } from '../../definitions/ISubscription';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
 import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
@@ -30,7 +30,7 @@ export interface IRoomScreenInput {
 	t: string;
 	tmid?: string;
 	name?: string;
-	initialRoom: IRoomViewState['room'];
+	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
 }
 
@@ -52,45 +52,11 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-export type RoomRead = { room: IRoomViewState['room'] };
-
 export interface IRoomViewState {
-	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				visitor?: IVisitor;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
-		  };
+	room: TRoomOrPreview;
 	member: any;
 	lastSeen: Date | null;
 }
-
-export type ComposerState = {
-	rid?: string;
-	t?: string;
-	tmid?: string;
-	roomRead: RoomRead;
-	sharing?: boolean;
-	isAutocompleteVisible: boolean;
-	editCancel?: () => void;
-	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
-	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage?: (message?: string, tshow?: boolean) => void;
-	setQuotesAndText?: (text: string, quotes: string[]) => void;
-	getText?: () => string | undefined;
-	updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => void;
-};
-
-export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible' | 'updateAutocompleteVisible'>;
 
 export interface IUseE2EEStatusResult {
 	showMissingE2EEKey: boolean;
@@ -153,7 +119,7 @@ export type TRoomInitResult =
 
 export interface RoomState {
 	room: RoomRead;
-	observedValues: Partial<TSubscriptionModel>;
+	observedValues: TRoomObservedFields;
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];
@@ -174,8 +140,6 @@ export interface IJoinRoomContext {
 }
 
 export type RoomStore = StoreApi<RoomState>;
-
-export type ComposerStore = StoreApi<ComposerState>;
 
 export type TGetMessageInfoResult = {
 	id: string;
@@ -252,8 +216,6 @@ export interface IUseMessageActionsResult {
 	onReactionInit: (messageId: string) => void;
 	onMessageLongPress: (message: TAnyMessageModel) => void;
 	onReplyInit: (messageId: string) => Promise<void>;
-	setQuotesAndText: (text: string, quotes: string[]) => void;
-	getText: () => string | undefined;
 }
 
 export interface IRoomMessageListProps

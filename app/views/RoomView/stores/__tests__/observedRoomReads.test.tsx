@@ -3,7 +3,12 @@ import { memo } from 'react';
 
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import { useHeader } from '../../hooks/useHeader';
-import { ComposerProvider, useComposerRoom, useIsAutocompleteVisible, useUpdateAutocompleteVisible } from '../ComposerStore';
+import {
+	ComposerProvider,
+	useComposerRoom,
+	useIsAutocompleteVisible,
+	useUpdateAutocompleteVisible
+} from '../../../../containers/MessageComposer/ComposerStore';
 import { createRoomStore, observeRoom } from '../RoomStore';
 import { RoomStoreContext, useRoomFromStore, useRoomReadFromStore } from '../RoomStoreContext';
 import { setupObserveRoomDatabase } from './observeRoomHarness';

@@ -16,7 +16,7 @@ import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../.
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
 import { type IUpload } from '../../../../definitions';
-import { useComposerRid, useComposerTmid } from '../../../../views/RoomView/stores/ComposerStore';
+import { useComposerRid, useComposerTmid } from '../../ComposerStore';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, type IDurationRef } from './Duration';
 import AudioPlayer from '../../../AudioPlayer';

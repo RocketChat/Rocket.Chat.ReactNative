@@ -5,7 +5,7 @@ import { useFocused } from '../../context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
-import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
+import { useComposerSharing } from '../../ComposerStore';
 
 export const Left = (): ReactElement | null => {
 	const sharing = useComposerSharing();

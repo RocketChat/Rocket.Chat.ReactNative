@@ -1,9 +1,10 @@
 import { takeInquiry, takeResume } from '../../../ee/omnichannel/lib';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
-import { type IJoinRoomContext, type IRoomViewState } from '../definitions';
+import { type IJoinRoomContext } from '../definitions';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 
-export const joinRoom = async (room: IRoomViewState['room'], { requestJoinCode, onJoin }: IJoinRoomContext): Promise<void> => {
+export const joinRoom = async (room: TRoomOrPreview, { requestJoinCode, onJoin }: IJoinRoomContext): Promise<void> => {
 	logEvent(events.ROOM_JOIN);
 	try {
 		if (room.t === 'l') {
@@ -25,7 +26,7 @@ export const joinRoom = async (room: IRoomViewState['room'], { requestJoinCode, 
 	}
 };
 
-export const resumeRoom = async (room: IRoomViewState['room'], onJoin: () => void): Promise<void> => {
+export const resumeRoom = async (room: TRoomOrPreview, onJoin: () => void): Promise<void> => {
 	logEvent(events.ROOM_RESUME);
 	try {
 		if (room.t === 'l') {

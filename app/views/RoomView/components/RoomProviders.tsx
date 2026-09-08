@@ -1,7 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { type TComposerExternalState } from '../definitions';
-import { ComposerProvider } from '../stores/ComposerStore';
+import { type TComposerExternalState, ComposerProvider } from '../../../containers/MessageComposer/ComposerStore';
 import { type TMessageActionStore, MessageActionProvider } from '../../../containers/message/stores/MessageActionStore';
 
 type IRoomProvidersProps = TComposerExternalState & {
@@ -20,9 +19,7 @@ export const RoomProviders = ({
 	editCancel,
 	editRequest,
 	onRemoveQuoteMessage,
-	onSendMessage,
-	setQuotesAndText,
-	getText
+	onSendMessage
 }: IRoomProvidersProps): ReactElement => (
 	<MessageActionProvider store={store}>
 		<ComposerProvider
@@ -34,9 +31,7 @@ export const RoomProviders = ({
 			editCancel={editCancel}
 			editRequest={editRequest}
 			onRemoveQuoteMessage={onRemoveQuoteMessage}
-			onSendMessage={onSendMessage}
-			setQuotesAndText={setQuotesAndText}
-			getText={getText}>
+			onSendMessage={onSendMessage}>
 			{children}
 		</ComposerProvider>
 	</MessageActionProvider>

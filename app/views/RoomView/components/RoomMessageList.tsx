@@ -4,7 +4,8 @@ import { isRoomFederated } from '../../../lib/methods/isRoomFederated';
 import { getUserSelector } from '../../../selectors/login';
 import { type RoomType } from '../../../definitions';
 import { A11yGateProvider } from '../../../containers/message/stores/A11yGate';
-import { type IRoomMessageListProps, type IRoomViewState } from '../definitions';
+import { type IRoomMessageListProps } from '../definitions';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import { useRoomStore, useRoom } from '../stores/RoomStoreContext';
 import List from '../List';
 import { RoomMessageProvider } from './RoomMessageProvider';
@@ -12,7 +13,7 @@ import { RoomMessageProvider } from './RoomMessageProvider';
 const EMPTY_HIDE_SYSTEM_MESSAGES: string[] = [];
 
 // FIXME: handle servers with version < 3.0.0
-const getHideSystemMessages = (room: IRoomViewState['room'], Hide_System_Messages?: string[]): string[] => {
+const getHideSystemMessages = (room: TRoomOrPreview, Hide_System_Messages?: string[]): string[] => {
 	const { sysMes } = room;
 	if (Array.isArray(sysMes)) {
 		return sysMes;

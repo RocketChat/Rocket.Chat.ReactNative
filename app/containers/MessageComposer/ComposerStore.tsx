@@ -1,7 +1,26 @@
 import { createContext, useContext, useEffect, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
+import { type StoreApi } from 'zustand';
 
-import { type ComposerState, type ComposerStore, type TComposerExternalState } from '../definitions';
+import { type IMessage, type IMessageEditAttachment } from '../../definitions';
+import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
+
+export type ComposerState = {
+	roomRead: RoomRead;
+	rid?: string;
+	t?: string;
+	tmid?: string;
+	sharing?: boolean;
+	isAutocompleteVisible: boolean;
+	editCancel?: () => void;
+	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
+	onRemoveQuoteMessage?: (messageId: string) => void;
+	onSendMessage?: (message?: string, tshow?: boolean) => void;
+	updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => void;
+};
+
+export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible' | 'updateAutocompleteVisible'>;
+export type ComposerStore = StoreApi<ComposerState>;
 
 export const createComposerStore = (initial: TComposerExternalState) =>
 	createStore<ComposerState>()(set => ({
@@ -49,7 +68,5 @@ export const useEditCancel = (): ComposerState['editCancel'] => useComposerStore
 export const useEditRequest = (): ComposerState['editRequest'] => useComposerStore(s => s.editRequest);
 export const useOnRemoveQuoteMessage = (): ComposerState['onRemoveQuoteMessage'] => useComposerStore(s => s.onRemoveQuoteMessage);
 export const useOnSendMessage = (): ComposerState['onSendMessage'] => useComposerStore(s => s.onSendMessage);
-export const useSetQuotesAndText = (): ComposerState['setQuotesAndText'] => useComposerStore(s => s.setQuotesAndText);
-export const useGetText = (): ComposerState['getText'] => useComposerStore(s => s.getText);
 export const useUpdateAutocompleteVisible = (): ComposerState['updateAutocompleteVisible'] =>
 	useComposerStore(s => s.updateAutocompleteVisible);

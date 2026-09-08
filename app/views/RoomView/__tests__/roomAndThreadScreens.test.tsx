@@ -41,7 +41,7 @@ jest.mock('../List', () => {
 	const { createElement } = require('react');
 	const { Pressable, View } = require('react-native');
 	const { useRoomScreen } = require('../stores/RoomScreenContext');
-	const { useComposerTmid, useOnSendMessage } = require('../stores/ComposerStore');
+	const { useComposerTmid, useOnSendMessage } = require('../../../containers/MessageComposer/ComposerStore');
 	return {
 		__esModule: true,
 		default: () => {

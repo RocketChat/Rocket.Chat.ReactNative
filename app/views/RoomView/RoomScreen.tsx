@@ -51,9 +51,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 		onRemoveQuoteMessage,
 		onReactionInit,
 		onReactionPress,
-		onReplyInit,
-		setQuotesAndText,
-		getText
+		onReplyInit
 	} = useRoomMessaging({
 		rid,
 		t,
@@ -91,9 +89,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 					onRemoveQuoteMessage={onRemoveQuoteMessage}
 					editCancel={onEditCancel}
 					editRequest={onEditRequest}
-					onSendMessage={sendMessage}
-					setQuotesAndText={setQuotesAndText}
-					getText={getText}>
+					onSendMessage={sendMessage}>
 					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
 						{!tmid ? <RoomAnnouncementBanner /> : null}
 						<RoomMessageList
