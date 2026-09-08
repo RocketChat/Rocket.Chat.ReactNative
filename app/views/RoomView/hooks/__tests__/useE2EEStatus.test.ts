@@ -3,7 +3,7 @@ import { createStore } from 'zustand';
 
 import { type IRoomViewState, type RoomStore } from '../../definitions';
 import { useE2EEStatus } from '../useE2EEStatus';
-import { makeRoomReads } from '../../__tests__/roomStoreFixture';
+import { makeRoomSnapshotState } from '../../__tests__/roomStoreFixture';
 
 let mockState = {
 	server: { version: '7.0.0' },
@@ -16,7 +16,7 @@ jest.mock('../../../../lib/hooks/useAppSelector', () => ({
 jest.mock('../../../../lib/store/auxStore', () => ({ store: { getState: () => mockState } }));
 jest.mock('@rocket.chat/mobile-crypto', () => ({}));
 
-const createRoomStore = (room: IRoomViewState['room']) => createStore(() => makeRoomReads(room)) as RoomStore;
+const createRoomStore = (room: IRoomViewState['room']) => createStore(() => makeRoomSnapshotState(room)) as RoomStore;
 
 describe('useE2EEStatus', () => {
 	beforeEach(() => {
@@ -62,7 +62,7 @@ describe('useE2EEStatus', () => {
 
 		act(() => {
 			room.E2EKey = 'key';
-			store.setState(makeRoomReads(room));
+			store.setState(makeRoomSnapshotState(room));
 		});
 
 		expect(result.current).toEqual({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false });

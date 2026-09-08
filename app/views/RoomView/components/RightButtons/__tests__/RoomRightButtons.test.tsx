@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { events, logEvent } from '../../../../../lib/methods/helpers/log';
 import { type RoomStore } from '../../../definitions';
 import { RoomRightButtons } from '../RoomRightButtons';
-import { makeRoomReads } from '../../../__tests__/roomStoreFixture';
+import { makeRoomSnapshotState } from '../../../__tests__/roomStoreFixture';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('../../../../../lib/methods/helpers/log', () => ({
@@ -40,7 +40,7 @@ jest.mock('../../../../../lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockAppState) => unknown) => selector(mockAppState)
 }));
 
-let mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general' });
+let mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general' });
 jest.mock('zustand', () => ({
 	useStore: (_store: unknown, selector: (state: typeof mockRoomState) => unknown) => selector(mockRoomState)
 }));
@@ -121,7 +121,7 @@ describe('RoomRightButtons', () => {
 			login: { user: { id: 'u1', username: 'user', token: 'tok' } },
 			troubleshootingNotification: { issuesWithNotifications: false }
 		};
-		mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general' });
+		mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general' });
 		mockHasE2EEWarning = false;
 		mockUnreads = { tunread: [], tunreadUser: [], tunreadGroup: [], isSelfDm: false, subscription: undefined };
 		mockCanToggleEncryption = false;
@@ -143,7 +143,7 @@ describe('RoomRightButtons', () => {
 	});
 
 	it('hides the call button on a self DM', () => {
-		mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'd', name: 'user' });
+		mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'd', name: 'user' });
 		mockUnreads = { ...mockUnreads, isSelfDm: true };
 
 		renderRoomRightButtons();
@@ -192,7 +192,7 @@ describe('RoomRightButtons', () => {
 
 	it.each([false, true])('routes disabled Room notifications to preferences (master-detail: %s)', isMasterDetail => {
 		mockIsMasterDetail = isMasterDetail;
-		mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true });
+		mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true });
 		mockUnreads = { ...mockUnreads, subscription: { id: 'rid-1' } };
 
 		renderRoomRightButtons();
@@ -206,7 +206,7 @@ describe('RoomRightButtons', () => {
 	});
 
 	it('does not navigate from the notification button without a subscription', () => {
-		mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true });
+		mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general', disableNotifications: true });
 
 		renderRoomRightButtons();
 
@@ -255,7 +255,7 @@ describe('RoomRightButtons', () => {
 	});
 
 	it('navigates to the threads and search screens on stack mode', () => {
-		mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general', encrypted: true });
+		mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general', encrypted: true });
 
 		renderRoomRightButtons();
 
@@ -268,7 +268,7 @@ describe('RoomRightButtons', () => {
 
 	it('navigates through the modal stack on master-detail mode', () => {
 		mockIsMasterDetail = true;
-		mockRoomState = makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general', encrypted: true });
+		mockRoomState = makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general', encrypted: true });
 
 		renderRoomRightButtons();
 

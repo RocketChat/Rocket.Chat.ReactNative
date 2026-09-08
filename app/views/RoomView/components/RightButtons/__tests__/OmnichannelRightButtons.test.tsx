@@ -7,7 +7,7 @@ import { type RoomStore } from '../../../definitions';
 import { closeLivechat } from '../../../services/closeLivechat';
 import { placeLivechatOnHold } from '../../../services/placeLivechatOnHold';
 import { OmnichannelRightButtons } from '../OmnichannelRightButtons';
-import { makeRoomReads } from '../../../__tests__/roomStoreFixture';
+import { makeRoomSnapshotState } from '../../../__tests__/roomStoreFixture';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('@react-navigation/native', () => ({
@@ -30,7 +30,7 @@ jest.mock('../../../../../lib/hooks/useSetting', () => ({
 }));
 
 let mockRoomState = {
-	...makeRoomReads({ rid: 'rid-1', t: 'l', id: 'rid-1', departmentId: 'department-1' }),
+	...makeRoomSnapshotState({ rid: 'rid-1', t: 'l', id: 'rid-1', departmentId: 'department-1' }),
 	canForwardGuest: false
 };
 jest.mock('zustand', () => ({
@@ -81,7 +81,7 @@ describe('OmnichannelRightButtons', () => {
 		mockIsMasterDetail = false;
 		mockLivechatRequestComment = false;
 		mockRoomState = {
-			...makeRoomReads({ rid: 'rid-1', t: 'l', id: 'rid-1', departmentId: 'department-1' }),
+			...makeRoomSnapshotState({ rid: 'rid-1', t: 'l', id: 'rid-1', departmentId: 'department-1' }),
 			canForwardGuest: false
 		};
 		mockCanReturnQueue = false;

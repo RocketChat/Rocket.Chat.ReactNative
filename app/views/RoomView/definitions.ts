@@ -14,7 +14,6 @@ import {
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
 import { type TRoomOrPreview } from '../../definitions/TRoom';
-import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
 import { type RoomSnapshot } from '../../lib/roomObservation';
 import { type TSubscriptionModel } from '../../definitions/ISubscription';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
@@ -119,7 +118,6 @@ export type TRoomInitResult =
 	| { status: 'failed' };
 
 export interface RoomState {
-	room: RoomRead;
 	roomSnapshot: RoomSnapshot;
 	joined: boolean;
 	subscribed: boolean;

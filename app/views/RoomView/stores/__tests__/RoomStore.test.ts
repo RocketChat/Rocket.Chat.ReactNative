@@ -6,6 +6,7 @@ import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscripti
 import log from '../../../../lib/methods/helpers/log';
 import getMessages from '../../services/getMessages';
 import { createRoomStore, observeRoom } from '../RoomStore';
+import { getRoom } from '../../../../lib/roomObservation';
 import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
@@ -105,7 +106,7 @@ describe('RoomStore', () => {
 		setupObserveRoomDatabase();
 		const store = createObservedStore({ initialRoom: stubRoom });
 
-		expect(store.getState().room.room).toBe(stubRoom);
+		expect(getRoom(store.getState().roomSnapshot)).toBe(stubRoom);
 		expect(store.getState().joined).toBe(true);
 		expect(store.getState().subscribed).toBe(false);
 		expect(store.getState().member).toEqual({});
@@ -119,7 +120,7 @@ describe('RoomStore', () => {
 
 		expect(store.getState().subscribed).toBe(false);
 		expect(store.getState().joined).toBe(false);
-		expect(store.getState().room.room).toBe(stubRoom);
+		expect(getRoom(store.getState().roomSnapshot)).toBe(stubRoom);
 	});
 
 	it('keeps a DM joined even with no subscription yet', () => {
@@ -144,22 +145,22 @@ describe('RoomStore', () => {
 		expect(store.getState().subscribed).toBe(true);
 	});
 
-	it('replaces the observed read when the same model instance re-emits a mutated column', () => {
+	it('replaces the snapshot when the same model instance re-emits a mutated column', () => {
 		const { emit } = setupObserveRoomDatabase();
 		const mutable = { ...subRoom, topic: 'old' };
 		const store = createObservedStore({ initialRoom: stubRoom });
 
 		emit([mutable]);
-		const first = store.getState().room;
-		expect((first.room as any).topic).toBe('old');
+		const first = store.getState().roomSnapshot;
+		expect((getRoom(first) as any).topic).toBe('old');
 
 		// observeWithColumns re-emits the same cached instance, mutated in place
 		mutable.topic = 'new';
 		emit([mutable]);
 
-		expect(store.getState().room.room).toBe(mutable);
-		expect((store.getState().room.room as any).topic).toBe('new');
-		expect(store.getState().room).not.toBe(first);
+		expect(getRoom(store.getState().roomSnapshot)).toBe(mutable);
+		expect((getRoom(store.getState().roomSnapshot) as any).topic).toBe('new');
+		expect(store.getState().roomSnapshot).not.toBe(first);
 	});
 
 	it('keeps room pointing at the live model instance when only lastMessage changes on a Livechat row', () => {
@@ -179,7 +180,7 @@ describe('RoomStore', () => {
 		emit([mutable]);
 
 		expect(store.getState().lastMessageFromAgent).toBe(true);
-		expect(store.getState().room.room).toBe(mutable);
+		expect(getRoom(store.getState().roomSnapshot)).toBe(mutable);
 	});
 
 	it('replaces room when the subscription row is recreated with identical attributes', () => {
@@ -192,7 +193,7 @@ describe('RoomStore', () => {
 		emit([recreated]);
 
 		expect(store.getState().subscribed).toBe(true);
-		expect(store.getState().room.room).toBe(recreated);
+		expect(getRoom(store.getState().roomSnapshot)).toBe(recreated);
 	});
 
 	it('retains tracked values when observation is reattached to the same store', () => {
@@ -200,14 +201,14 @@ describe('RoomStore', () => {
 		const mutable = { ...subRoom, topic: 'same' };
 		const store = createObservedStore({ initialRoom: stubRoom });
 		emit([mutable]);
-		const first = store.getState().room;
+		const first = store.getState().roomSnapshot;
 
 		const cleanup = observeRoom('rid-1', store);
 		cleanup();
 		observeRoom('rid-1', store);
 		emit([mutable]);
 
-		expect(store.getState().room).toBe(first);
+		expect(store.getState().roomSnapshot).toBe(first);
 	});
 
 	it('keeps the snapshot when observation reattaches to the same store and the record is unchanged', () => {
@@ -233,11 +234,11 @@ describe('RoomStore', () => {
 		observeRoom('rid-1', store);
 
 		emit([mutable]);
-		const first = store.getState().room;
+		const first = store.getState().roomSnapshot;
 
 		emit([mutable]);
 
-		expect(store.getState().room).toBe(first);
+		expect(store.getState().roomSnapshot).toBe(first);
 	});
 
 	it('derives the agent-authored flag from a Livechat row', () => {
@@ -450,7 +451,7 @@ describe('RoomStore', () => {
 			expect(mockGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1', t: 'c' });
 		});
 
-		it('anchors the unread divider on the room read at the retry, not the one the run started with', async () => {
+		it('anchors the unread divider on the room snapshot at the retry, not the one the run started with', async () => {
 			const { emit } = setupObserveRoomDatabase();
 			const unreadRoom = { ...subRoom, alert: true, ls: new Date('2026-02-02T00:00:00.000Z') };
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));

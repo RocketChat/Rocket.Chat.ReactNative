@@ -2,6 +2,7 @@ import { act, render } from '@testing-library/react-native';
 
 import { createRoomStore, observeRoom } from '../RoomStore';
 import { RoomStoreContext, useRoomStore, useRoom } from '../RoomStoreContext';
+import { getRoom } from '../../../../lib/roomObservation';
 import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
@@ -68,21 +69,22 @@ describe('useRoom', () => {
 		expect(spy).toHaveBeenLastCalledWith('new');
 	});
 
-	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', () => {
+	it('re-renders a `s.roomSnapshot` selector only when a tracked field of the same instance changes', () => {
 		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		observeRoom('rid-1', store);
 		const spy = jest.fn();
 
-		const PlainReader = () => {
-			const room = useRoomStore(s => s.room.room);
+		const SnapshotReader = () => {
+			const snapshot = useRoomStore(s => s.roomSnapshot);
+			const room = getRoom(snapshot);
 			spy('topic' in room ? room.topic : undefined);
 			return null;
 		};
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<PlainReader />
+				<SnapshotReader />
 			</RoomStoreContext.Provider>
 		);
 
@@ -90,11 +92,14 @@ describe('useRoom', () => {
 		act(() => emit([mutable]));
 		const callsAfterFirstEmit = spy.mock.calls.length;
 
-		// Same reference, mutated in place — the plain `room` selector sees no reference change and skips the re-render.
+		act(() => emit([mutable]));
+		expect(spy.mock.calls.length).toBe(callsAfterFirstEmit);
+		expect(spy).toHaveBeenLastCalledWith('old');
+
 		mutable.topic = 'new';
 		act(() => emit([mutable]));
 
-		expect(spy.mock.calls.length).toBe(callsAfterFirstEmit);
-		expect(spy).toHaveBeenLastCalledWith('old');
+		expect(spy.mock.calls.length).toBe(callsAfterFirstEmit + 1);
+		expect(spy).toHaveBeenLastCalledWith('new');
 	});
 });

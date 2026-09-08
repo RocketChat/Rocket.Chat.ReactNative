@@ -127,7 +127,6 @@ const createRoomState =
 		roomUserId: string | null | undefined = null
 	): StateCreator<RoomState> =>
 	(set, get) => ({
-		room: { room: initialRoom },
 		roomSnapshot: createRoomSnapshot(initialRoom),
 		joined: true,
 		subscribed: 'id' in initialRoom,
@@ -197,7 +196,7 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 		if (nextFields) {
 			fields = nextFields;
 		}
-		store.setState(snapshot ? { ...rest, roomSnapshot: snapshot, room: { room: getRoom(snapshot) } } : rest);
+		store.setState(snapshot ? { ...rest, roomSnapshot: snapshot } : rest);
 	});
 	onReady?.();
 	return () => subscription.unsubscribe();

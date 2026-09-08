@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { type RoomStore } from '../../definitions';
 import { RoomScreenContext } from '../../stores/RoomScreenContext';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
-import { makeRoomStore } from '../../__tests__/roomStoreFixture';
+import { makeRoomSnapshotState, makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { RoomFooter } from './RoomFooter';
 
 // I18n identity: banner assertions match on the translation key itself.
@@ -66,7 +66,7 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loadi
 
 describe('RoomFooter', () => {
 	it('renders the on-hold state when the room is on hold', () => {
-		renderFooter(makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', onHold: true } } }));
+		renderFooter(makeRoomStore(makeRoomSnapshotState({ rid: 'rid-1', t: 'c', onHold: true })));
 
 		expect(screen.getByTestId('room-view-chat-on-hold')).toBeOnTheScreen();
 		expect(screen.getByTestId('room-view-chat-on-hold-button')).toHaveTextContent('Resume');
@@ -74,13 +74,13 @@ describe('RoomFooter', () => {
 	});
 
 	it('disables the resume button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', onHold: true } } }), makeReduxStore(), true);
+		renderFooter(makeRoomStore(makeRoomSnapshotState({ rid: 'rid-1', t: 'c', onHold: true })), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-chat-on-hold-button')).toBeDisabled();
 	});
 
 	it('renders the Join state when the user has not joined a channel', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { room: { rid: 'rid-1', t: 'c' } } }));
+		renderFooter(makeRoomStore({ joined: false, ...makeRoomSnapshotState({ rid: 'rid-1', t: 'c' }) }));
 
 		expect(screen.getByTestId('room-view-join')).toBeOnTheScreen();
 		expect(screen.getByTestId('room-view-join-button')).toHaveTextContent('Join');
@@ -88,13 +88,13 @@ describe('RoomFooter', () => {
 	});
 
 	it('renders the Take it state for an unjoined livechat room', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { room: { rid: 'rid-1', t: 'l' } } }));
+		renderFooter(makeRoomStore({ joined: false, ...makeRoomSnapshotState({ rid: 'rid-1', t: 'l' }) }));
 
 		expect(screen.getByTestId('room-view-join-button')).toHaveTextContent('Take_it');
 	});
 
 	it('disables the join button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { room: { rid: 'rid-1', t: 'c' } } }), makeReduxStore(), true);
+		renderFooter(makeRoomStore({ joined: false, ...makeRoomSnapshotState({ rid: 'rid-1', t: 'c' }) }), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-join-button')).toBeDisabled();
 	});
@@ -113,26 +113,29 @@ describe('RoomFooter', () => {
 	});
 
 	it('renders the read-only banner when the room is read only', () => {
-		renderFooter(makeRoomStore({ room: { room: { id: 'sub-1', rid: 'rid-1', t: 'c', ro: true, roles: [] } } as any }));
+		renderFooter(makeRoomStore(makeRoomSnapshotState({ id: 'sub-1', rid: 'rid-1', t: 'c', ro: true, roles: [] } as any)));
 
 		expect(screen.getByText('This_room_is_read_only')).toBeOnTheScreen();
 	});
 
 	it('renders the blocked banner for a blocked direct message', () => {
-		renderFooter(makeRoomStore({ room: { room: { id: 'sub-1', rid: 'rid-1', t: 'd', blocked: true } } as any }));
+		renderFooter(makeRoomStore(makeRoomSnapshotState({ id: 'sub-1', rid: 'rid-1', t: 'd', blocked: true } as any)));
 
 		expect(screen.getByText('This_room_is_blocked')).toBeOnTheScreen();
 	});
 
 	it('renders the invalid-version banner for a federated room without a federation object', () => {
-		renderFooter(makeRoomStore({ room: { room: { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true } } as any }));
+		renderFooter(makeRoomStore(makeRoomSnapshotState({ id: 'sub-1', rid: 'rid-1', t: 'c', federated: true } as any)));
 
 		expect(screen.getByText('Federation_Matrix_room_description_invalid_version')).toBeOnTheScreen();
 	});
 
 	it('renders the disabled banner for a native-federated room when federation is off', () => {
 		const room = { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true, federation: { version: 1, mrid: 'm', origin: 'o' } };
-		renderFooter(makeRoomStore({ room: { room } as any }), makeReduxStore({ settings: { Federation_Matrix_enabled: false } }));
+		renderFooter(
+			makeRoomStore(makeRoomSnapshotState(room as any)),
+			makeReduxStore({ settings: { Federation_Matrix_enabled: false } })
+		);
 
 		expect(screen.getByText('Federation_Matrix_room_description_disabled')).toBeOnTheScreen();
 	});
@@ -140,7 +143,7 @@ describe('RoomFooter', () => {
 	it('renders the missing-module banner when federation is enabled but the module is not', () => {
 		const room = { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true, federation: { version: 1, mrid: 'm', origin: 'o' } };
 		renderFooter(
-			makeRoomStore({ room: { room } as any }),
+			makeRoomStore(makeRoomSnapshotState(room as any)),
 			makeReduxStore({ settings: { Federation_Matrix_enabled: true }, enterpriseModules: [] })
 		);
 

@@ -13,6 +13,7 @@ import {
 } from '../../../../containers/MessageComposer/ComposerStore';
 import { createRoomStore, observeRoom } from '../RoomStore';
 import { RoomStoreContext, useRoomFromStore } from '../RoomStoreContext';
+import { getRoom } from '../../../../lib/roomObservation';
 import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
@@ -245,13 +246,13 @@ describe('observed Room reads', () => {
 		const cleanupB = observeRoom('rid-1', storeB);
 		const room = subscription({ name: 'shared' });
 		first.emit([room]);
-		expect(storeA.getState().room.room).toBe(room);
-		expect(storeB.getState().room.room).toBe(room);
+		expect(getRoom(storeA.getState().roomSnapshot)).toBe(room);
+		expect(getRoom(storeB.getState().roomSnapshot)).toBe(room);
 		cleanupA();
 		const replacement = subscription({ id: 'sub-2', name: 'replacement' });
 		first.emit([replacement]);
-		expect(storeA.getState().room.room).toBe(room);
-		expect(storeB.getState().room.room).toBe(replacement);
+		expect(getRoom(storeA.getState().roomSnapshot)).toBe(room);
+		expect(getRoom(storeB.getState().roomSnapshot)).toBe(replacement);
 		cleanupB();
 	});
 
@@ -274,10 +275,10 @@ describe('observed Room reads', () => {
 		expect(membership.result.current).toBe(true);
 		act(() => emit([]));
 		expect(store.getState()).toMatchObject({ subscribed: false, joined: false });
-		expect(store.getState().room.room).toBe(invited);
+		expect(getRoom(store.getState().roomSnapshot)).toBe(invited);
 		invited.status = 'OPEN';
 		act(() => emit([invited]));
-		expect((store.getState().room.room as Room).status).toBe('OPEN');
+		expect((getRoom(store.getState().roomSnapshot) as Room).status).toBe('OPEN');
 		expect(membership.result.current).toBe(false);
 		const dmStore = createRoomStore({ rid: 'dm-1', initialRoom: preview({ rid: 'dm-1', t: 'd' }) });
 		const dmObservation = setupObserveRoomDatabase();

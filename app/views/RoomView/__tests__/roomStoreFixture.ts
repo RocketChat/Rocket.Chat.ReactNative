@@ -9,8 +9,7 @@ const DEFAULT_ROOM = { rid: 'rid-1', t: 'c' };
 
 export const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({
-		room: { room: DEFAULT_ROOM },
-		roomSnapshot: createRoomSnapshot(overrides.room?.room ?? DEFAULT_ROOM),
+		roomSnapshot: createRoomSnapshot(DEFAULT_ROOM),
 		joined: true,
 		subscribed: true,
 		member: {},
@@ -26,9 +25,6 @@ export const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		...overrides
 	}));
 
-export const makeRoomReads = (
+export const makeRoomSnapshotState = (
 	roomDouble: Partial<Omit<TSubscriptionModel, 't'>> & { t?: string }
-): Pick<RoomState, 'room' | 'roomSnapshot'> => {
-	const room = roomDouble as TRoomOrPreview;
-	return { room: { room }, roomSnapshot: createRoomSnapshot(room) };
-};
+): Pick<RoomState, 'roomSnapshot'> => ({ roomSnapshot: createRoomSnapshot(roomDouble as TRoomOrPreview) });

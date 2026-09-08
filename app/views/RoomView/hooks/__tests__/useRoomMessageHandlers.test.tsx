@@ -4,7 +4,7 @@ import { toggleFollowMessage } from '../../../../lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '../../../../actions/messages';
 import { getUserSelector } from '../../../../selectors/login';
 import { type RoomState } from '../../definitions';
-import { makeRoomStore } from '../../__tests__/roomStoreFixture';
+import { makeRoomSnapshotState, makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { RoomStoreContext } from '../../stores/RoomStoreContext';
 import { useRoomMessageHandlers } from '../useRoomMessageHandlers';
 
@@ -65,7 +65,7 @@ const mockUser = { id: 'u1', username: 'user', token: 'tok', showMessageInMainTh
 const { useAppSelector } = jest.requireMock('../../../../lib/hooks/useAppSelector');
 
 const renderRoomMessageHandlers = (roomStoreOverrides: Partial<RoomState> = {}, tmid?: string) => {
-	const roomStore = makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', name: 'general' } }, ...roomStoreOverrides });
+	const roomStore = makeRoomStore({ ...makeRoomSnapshotState({ rid: 'rid-1', t: 'c', name: 'general' }), ...roomStoreOverrides });
 
 	const { result } = renderHook(
 		() =>
