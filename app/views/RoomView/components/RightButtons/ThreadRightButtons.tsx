@@ -8,7 +8,11 @@ import { toggleFollowThread } from '../../../../lib/methods/toggleFollowThread';
 import { getUserSelector } from '../../../../selectors/login';
 import { useThreadFollowing } from '../../hooks/useThreadFollowing';
 
-export const ThreadRightButtons = ({ tmid }: { tmid: string }): ReactElement => {
+interface IThreadRightButtonsProps {
+	tmid: string;
+}
+
+export const ThreadRightButtons = ({ tmid }: IThreadRightButtonsProps): ReactElement => {
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const isFollowingThread = useThreadFollowing(tmid, userId);
 
