@@ -54,8 +54,7 @@ const makeReduxStore = ({ settings = {}, permissions = {}, enterpriseModules = [
 
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createZustandStore<RoomState>(() => ({
-		room: { rid: 'rid-1', t: 'c' },
-		roomUpdate: {},
+		room: { room: { rid: 'rid-1', t: 'c' } },
 		joined: true,
 		subscribed: true,
 		member: {},
@@ -68,7 +67,8 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve()),
-		...overrides
+		...overrides,
+		...(overrides.room && !('room' in overrides.room) ? { room: { room: overrides.room } } : {})
 	}));
 
 const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loading = false) =>
@@ -85,7 +85,7 @@ const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loadi
 
 describe('RoomFooter', () => {
 	it('renders the on-hold state when the room is on hold', () => {
-		renderFooter(makeRoomStore({ room: { rid: 'rid-1', t: 'c', onHold: true } }));
+		renderFooter(makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', onHold: true } } }));
 
 		expect(screen.getByTestId('room-view-chat-on-hold')).toBeOnTheScreen();
 		expect(screen.getByTestId('room-view-chat-on-hold-button')).toHaveTextContent('Resume');
@@ -93,13 +93,13 @@ describe('RoomFooter', () => {
 	});
 
 	it('disables the resume button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ room: { rid: 'rid-1', t: 'c', onHold: true } }), makeReduxStore(), true);
+		renderFooter(makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', onHold: true } } }), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-chat-on-hold-button')).toBeDisabled();
 	});
 
 	it('renders the Join state when the user has not joined a channel', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'c' } }));
+		renderFooter(makeRoomStore({ joined: false, room: { room: { rid: 'rid-1', t: 'c' } } }));
 
 		expect(screen.getByTestId('room-view-join')).toBeOnTheScreen();
 		expect(screen.getByTestId('room-view-join-button')).toHaveTextContent('Join');
@@ -107,13 +107,13 @@ describe('RoomFooter', () => {
 	});
 
 	it('renders the Take it state for an unjoined livechat room', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'l' } }));
+		renderFooter(makeRoomStore({ joined: false, room: { room: { rid: 'rid-1', t: 'l' } } }));
 
 		expect(screen.getByTestId('room-view-join-button')).toHaveTextContent('Take_it');
 	});
 
 	it('disables the join button while a request is in flight', () => {
-		renderFooter(makeRoomStore({ joined: false, room: { rid: 'rid-1', t: 'c' } }), makeReduxStore(), true);
+		renderFooter(makeRoomStore({ joined: false, room: { room: { rid: 'rid-1', t: 'c' } } }), makeReduxStore(), true);
 
 		expect(screen.getByTestId('room-view-join-button')).toBeDisabled();
 	});

@@ -135,7 +135,7 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 
-	const room = useStore(roomStore, s => s.room);
+	const room = useStore(roomStore, s => s.room.room);
 	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
 	const canReturnQueue = useCanReturnQueue(room.t === 'l');
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);

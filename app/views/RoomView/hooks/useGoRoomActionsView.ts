@@ -16,11 +16,11 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const isMasterDetail = useMasterDetail();
 	// `t` comes from the store (seeded at mount) rather than route.params, which navigation can wipe.
-	const rid = useStore(roomStore, s => s.room.rid);
+	const rid = useStore(roomStore, s => s.room.room.rid);
 	const { room, member, joined, canForwardGuest, canViewCannedResponse } = useStore(
 		roomStore,
 		useShallow(s => ({
-			room: s.room,
+			room: s.room.room,
 			member: s.member,
 			joined: s.joined,
 			canForwardGuest: s.canForwardGuest,

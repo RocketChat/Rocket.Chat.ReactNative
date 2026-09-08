@@ -2,7 +2,7 @@ import { act, render } from '@testing-library/react-native';
 
 import database from '../../../../lib/database';
 import { createRoomStore, observeRoom } from '../RoomStore';
-import { RoomStoreContext, useRoomStore, useRoomWithUpdate } from '../RoomStoreContext';
+import { RoomStoreContext, useRoomStore, useRoom } from '../RoomStoreContext';
 
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
@@ -49,7 +49,7 @@ const setupObserve = () => {
 	return { emit: (rows: any[]) => emit?.(rows) };
 };
 
-describe('useRoomWithUpdate', () => {
+describe('useRoom', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
@@ -61,7 +61,7 @@ describe('useRoomWithUpdate', () => {
 		const spy = jest.fn();
 
 		const Probe = () => {
-			const room = useRoomWithUpdate();
+			const room = useRoom();
 			spy('topic' in room ? room.topic : undefined);
 			return null;
 		};
@@ -91,7 +91,7 @@ describe('useRoomWithUpdate', () => {
 		const spy = jest.fn();
 
 		const PlainProbe = () => {
-			const room = useRoomStore(s => s.room);
+			const room = useRoomStore(s => s.room.room);
 			spy('topic' in room ? room.topic : undefined);
 			return null;
 		};

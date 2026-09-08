@@ -11,7 +11,7 @@ import RoomScreen from './RoomScreen';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
-import { useRoomWithUpdateFromStore } from './stores/RoomStoreContext';
+import { useRoomFromStore } from './stores/RoomStoreContext';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 
@@ -25,7 +25,7 @@ const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
-	const room = useRoomWithUpdateFromStore(roomStore);
+	const room = useRoomFromStore(roomStore);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 

@@ -10,7 +10,7 @@ const externalState = {
 	rid: 'rid-1',
 	t: 'c',
 	tmid: undefined,
-	room: { rid: 'rid-1', t: 'c' },
+	roomRead: { room: { rid: 'rid-1', t: 'c' } },
 	sharing: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),

@@ -101,15 +101,17 @@ jest.mock('../../lib/database/services/Message', () => ({
 const initialContext = {
 	rid: 'rid',
 	tmid: undefined,
-	room: {
-		rid: 'rid',
-		t: 'd',
-		tmid: undefined,
-		name: 'Rocket Chat',
-		fname: 'Rocket Chat',
-		usernames: ['user1', 'user2'],
-		prid: undefined,
-		federated: false
+	roomRead: {
+		room: {
+			rid: 'rid',
+			t: 'd',
+			tmid: undefined,
+			name: 'Rocket Chat',
+			fname: 'Rocket Chat',
+			usernames: ['user1', 'user2'],
+			prid: undefined,
+			federated: false
+		}
 	},
 	sharing: false,
 	editCancel: jest.fn(),
@@ -623,7 +625,7 @@ describe('MessageComposer', () => {
 
 		test('select ! canned response inserts text and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
-			render(<Render context={{ onSendMessage, room: { ...initialContext.room, t: 'l' } }} />);
+			render(<Render context={{ onSendMessage, roomRead: { room: { ...initialContext.roomRead.room, t: 'l' } } }} />);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '!');

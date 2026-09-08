@@ -2,11 +2,11 @@ import { type ReactElement } from 'react';
 
 import I18n from '../../../../i18n';
 import { type ITakeOrJoinProps } from '../../definitions';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore, useRoom } from '../../stores/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
 export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps): ReactElement => {
-	const room = useRoomWithUpdate();
+	const room = useRoom();
 	const joinRoom = useRoomStore(s => s.joinRoom);
 
 	const onPressJoin = (): Promise<void> => joinRoom(() => joinCodeRef.current?.show());

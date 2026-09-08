@@ -17,7 +17,7 @@ export const RoomMessageActions = ({
 	onReactionPress,
 	jumpToMessage
 }: IRoomMessageActionsProps) => {
-	const room = useRoomStore(s => s.room);
+	const room = useRoomStore(s => s.room.room);
 	const user = useAppSelector(getUserSelector);
 	const readOnly = useReadOnly();
 

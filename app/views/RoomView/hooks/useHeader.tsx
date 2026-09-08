@@ -1,7 +1,6 @@
 import { type ComponentProps, useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import RoomHeader from '../../../containers/RoomHeader';
@@ -77,11 +76,7 @@ const getRoomHeaderProps = ({
 export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderParams): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-	const room = useStore(roomStore, s => s.room);
-	const roomUpdate = useStore(
-		roomStore,
-		useShallow(s => s.roomUpdate)
-	);
+	const roomRead = useStore(roomStore, s => s.room);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 
@@ -102,6 +97,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			return;
 		}
 
+		const room = roomRead.room;
 		const headerProps = getRoomHeaderProps({ room, tmid, roomName, roomUserId, onPress: goRoomActionsView });
 		navigation.setOptions({
 			headerTitle: () => (
@@ -124,5 +120,5 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				/>
 			)
 		});
-	}, [rid, tmid, roomName, room, roomUpdate, roomUserId, navigation, goRoomActionsView]);
+	}, [rid, tmid, roomName, roomRead, roomUserId, navigation, goRoomActionsView]);
 };

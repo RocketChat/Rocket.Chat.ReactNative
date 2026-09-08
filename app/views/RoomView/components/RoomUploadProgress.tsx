@@ -6,7 +6,7 @@ import { useRoomStore } from '../stores/RoomStoreContext';
 import UploadProgress from './UploadProgress';
 
 export const RoomUploadProgress = () => {
-	const rid = useRoomStore(s => s.room.rid);
+	const rid = useRoomStore(s => s.room.room.rid);
 	const user = useAppSelector(getUserSelector);
 	const baseUrl = useAppSelector(state => state.server.server);
 	const { width } = useWindowDimensions();

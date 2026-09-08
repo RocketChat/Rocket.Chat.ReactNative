@@ -32,7 +32,7 @@ jest.mock('../../../lib/hooks/useAppSelector', () => ({
 }));
 
 let mockRoomState = {
-	room: { rid: 'rid-1', t: 'c', name: 'general' },
+	room: { room: { rid: 'rid-1', t: 'c', name: 'general' } },
 	canForwardGuest: false
 };
 jest.mock('zustand', () => ({
@@ -79,7 +79,7 @@ describe('RightButtons', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockRoomState = {
-			room: { rid: 'rid-1', t: 'c', name: 'general' },
+			room: { room: { rid: 'rid-1', t: 'c', name: 'general' } },
 			canForwardGuest: false
 		};
 		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
@@ -106,7 +106,7 @@ describe('RightButtons', () => {
 	});
 
 	it('renders the omnichannel kebab for a non-preview livechat room', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'l', name: 'chat' } as any };
+		mockRoomState = { ...mockRoomState, room: { room: { rid: 'rid-1', t: 'l', name: 'chat' } } as any };
 		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(queryByTestId('room-view-header-omnichannel-kebab')).toBeTruthy();
 	});
@@ -117,7 +117,7 @@ describe('RightButtons', () => {
 	});
 
 	it('renders the encryption toggle when there is an E2EE warning', () => {
-		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', encrypted: true } as any };
+		mockRoomState = { ...mockRoomState, room: { room: { rid: 'rid-1', t: 'c', encrypted: true } } as any };
 		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false };
 		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(queryByTestId('room-view-header-encryption')).toBeTruthy();

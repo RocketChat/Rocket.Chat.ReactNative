@@ -30,7 +30,7 @@ const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement 
 	const isMasterDetail = useMasterDetail();
 	const baseUrl = useAppSelector(state => state.server.server);
 	const { id: userId, token } = useAppSelector(getUserSelector);
-	const room = useStore(roomStore, s => s.room);
+	const room = useStore(roomStore, s => s.room.room);
 	const { t } = room;
 	const title = 'id' in room ? room.name : undefined;
 

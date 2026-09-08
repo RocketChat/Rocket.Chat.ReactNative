@@ -11,7 +11,8 @@ const EMPTY_UNREADS: string[] = [];
 export function useSubscriptionUnreads(roomStore: RoomStore, userId?: string): IUseSubscriptionUnreadsResult {
 	return useStore(
 		roomStore,
-		useShallow(({ room }): IUseSubscriptionUnreadsResult => {
+		useShallow(({ room: roomRead }): IUseSubscriptionUnreadsResult => {
+			const room = roomRead.room;
 			if (!('id' in room)) {
 				return {
 					tunread: EMPTY_UNREADS,

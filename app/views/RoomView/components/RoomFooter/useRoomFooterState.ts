@@ -1,5 +1,5 @@
 import { useSetting } from '../../../../lib/hooks/useSetting';
-import { useRoomStore, useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoomStore, useRoom } from '../../stores/RoomStoreContext';
 import { useFooterMessage } from './useFooterMessage';
 
 export type TRoomFooterState =
@@ -10,7 +10,7 @@ export type TRoomFooterState =
 	| { kind: 'composer' };
 
 export const useRoomFooterState = (): TRoomFooterState => {
-	const room = useRoomWithUpdate();
+	const room = useRoom();
 	const joined = useRoomStore(s => s.joined);
 	const airGappedRestrictionRemainingDays = useSetting('Cloud_Workspace_AirGapped_Restrictions_Remaining_Days') as
 		| number

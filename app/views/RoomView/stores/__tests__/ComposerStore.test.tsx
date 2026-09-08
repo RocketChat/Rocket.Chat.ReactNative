@@ -26,7 +26,7 @@ const fullProps = () => ({
 	rid: 'rid-1',
 	t: 'c',
 	tmid: 'tmid-1',
-	room,
+	roomRead: { room },
 	sharing: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),
@@ -60,7 +60,13 @@ describe('ComposerStore', () => {
 		const { result } = renderHook(() => useAllComposerHooks(), { wrapper });
 
 		// isAutocompleteVisible/updateAutocompleteVisible are store-owned, not seeded props.
-		expect(result.current).toEqual({ ...props, isAutocompleteVisible: false, updateAutocompleteVisible: expect.any(Function) });
+		const { roomRead: _roomRead, ...propsWithoutRead } = props;
+		expect(result.current).toEqual({
+			...propsWithoutRead,
+			room: props.roomRead.room,
+			isAutocompleteVisible: false,
+			updateAutocompleteVisible: expect.any(Function)
+		});
 	});
 
 	it('toggles isAutocompleteVisible when updateAutocompleteVisible is called', () => {
@@ -81,7 +87,7 @@ describe('ComposerStore', () => {
 		expect(result.current.isAutocompleteVisible).toBe(false);
 	});
 
-	it('re-renders useComposerRoom when roomUpdate changes, even with the same room reference', () => {
+	it('re-renders useComposerRoom when the observed read changes, even with the same room reference', () => {
 		const mutableRoom = { rid: 'rid-1', t: 'c', name: 'old' };
 		const spy = jest.fn();
 
@@ -90,17 +96,17 @@ describe('ComposerStore', () => {
 			spy(room && 'name' in room ? room.name : undefined);
 			return null;
 		};
-		const Parent = ({ roomUpdate }: { roomUpdate: ComposerState['roomUpdate'] }) => (
-			<ComposerProvider {...fullProps()} room={mutableRoom} roomUpdate={roomUpdate}>
+		const Parent = ({ roomRead }: { roomRead: ComposerState['roomRead'] }) => (
+			<ComposerProvider {...fullProps()} roomRead={roomRead}>
 				<Probe />
 			</ComposerProvider>
 		);
 
-		const { rerender } = render(<Parent roomUpdate={{}} />);
+		const { rerender } = render(<Parent roomRead={{ room: mutableRoom }} />);
 		expect(spy).toHaveBeenLastCalledWith('old');
 
 		mutableRoom.name = 'new';
-		rerender(<Parent roomUpdate={{ name: 'new' }} />);
+		rerender(<Parent roomRead={{ room: mutableRoom }} />);
 		expect(spy).toHaveBeenLastCalledWith('new');
 	});
 

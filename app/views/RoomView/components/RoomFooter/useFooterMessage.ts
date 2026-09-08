@@ -4,7 +4,7 @@ import { useSetting } from '../../../../lib/hooks/useSetting';
 import { isBlocked } from '../../../../lib/methods/helpers/room';
 import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../../../lib/methods/isRoomFederated';
 import { useReadOnly } from '../../hooks/useReadOnly';
-import { useRoomWithUpdate } from '../../stores/RoomStoreContext';
+import { useRoom } from '../../stores/RoomStoreContext';
 
 const getFederatedFooterDescription = (
 	federatedRoom: IRoomFederated,
@@ -24,7 +24,7 @@ const getFederatedFooterDescription = (
 };
 
 export const useFooterMessage = (): string | null => {
-	const room = useRoomWithUpdate();
+	const room = useRoom();
 	const readOnly = useReadOnly();
 	const federationMatrixEnabled = useSetting('Federation_Matrix_enabled');
 	const federationServiceEnabled = useSetting('Federation_Service_Enabled');

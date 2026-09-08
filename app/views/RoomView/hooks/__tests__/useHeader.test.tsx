@@ -5,13 +5,14 @@ import { type RoomState, type RoomStore } from '../../definitions';
 import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
+const mockGoRoomActionsView = jest.fn();
 
-jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
+jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => mockGoRoomActionsView) }));
 jest.mock('../../components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('../../components/RightButtons', () => ({ __esModule: true, default: 'RightButtons' }));
 jest.mock('../../../../containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
 jest.mock('../../../../lib/methods/helpers', () => ({
-	getRoomTitle: jest.fn(() => 'Room Title'),
+	getRoomTitle: jest.fn(room => room?.name ?? 'Room Title'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
@@ -27,8 +28,7 @@ jest.mock('@react-navigation/native', () => ({
 
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({
-		room: { rid: 'rid-1', t: 'c', name: 'general' },
-		roomUpdate: {},
+		room: { room: { rid: 'rid-1', t: 'c', name: 'general' } },
 		joined: true,
 		subscribed: true,
 		member: {},
@@ -60,14 +60,16 @@ describe('useHeader', () => {
 		expect(options).not.toHaveProperty('headerRight');
 	});
 
-	it('re-fires the title effect when a rendered field changes even though the room reference is stable', () => {
-		mockTestStore = makeRoomStore({ roomUpdate: { topic: 'old' } });
+	it('re-fires the title effect when a tracked field changes on the live room model', () => {
+		const mutableRoom = { rid: 'rid-1', t: 'c', name: 'general', topic: 'old' } as any;
+		mockTestStore = makeRoomStore({ room: { room: mutableRoom } });
 
 		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
-			mockTestStore.setState({ roomUpdate: { topic: 'new' } });
+			mutableRoom.topic = 'new';
+			mockTestStore.setState({ room: { room: mutableRoom } });
 		});
 		expect(mockSetOptions).toHaveBeenCalledTimes(3);
 		expect(mockSetOptions.mock.calls[2][0]).toHaveProperty('headerTitle');
@@ -80,7 +82,7 @@ describe('useHeader', () => {
 		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
 
 		act(() => {
-			mockTestStore.setState({ room: { rid: 'rid-1', t: 'c', name: 'parent-channel' }, roomUpdate: { topic: 'new' } });
+			mockTestStore.setState({ room: { room: { rid: 'rid-1', t: 'c', name: 'parent-channel', topic: 'new' } as any } });
 		});
 		const nextTitleOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
 		expect(nextTitleOptions.headerTitle().props.title).toBe('Thread name');

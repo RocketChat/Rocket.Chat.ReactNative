@@ -19,7 +19,7 @@ jest.mock('../../../../lib/methods/helpers/log', () => ({
 }));
 
 const mockState = {
-	room: { rid: 'rid-1', t: 'l' } as { rid: string; t: string },
+	room: { room: { rid: 'rid-1', t: 'l' } },
 	member: { _id: 'm1' },
 	joined: true,
 	canForwardGuest: true,
@@ -36,7 +36,7 @@ describe('useGoRoomActionsView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
-		mockState.room = { rid: 'rid-1', t: 'l' };
+		mockState.room = { room: { rid: 'rid-1', t: 'l' } };
 	});
 
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {

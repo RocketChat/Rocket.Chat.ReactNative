@@ -25,7 +25,7 @@ describe('useRoomRemoved', () => {
 	});
 
 	it('emits a popToTop navigation and error alert when the removed room matches the current rid', () => {
-		renderRoomRemoved('rid-removed-alert', true, { rid: 'rid-removed-alert', t: 'c' });
+		renderRoomRemoved('rid-removed-alert', true, { room: { rid: 'rid-removed-alert', t: 'c' } } as any);
 
 		EventEmitterReal.emit('ROOM_REMOVED', { rid: 'rid-removed-alert' });
 
@@ -34,7 +34,7 @@ describe('useRoomRemoved', () => {
 	});
 
 	it('does not show an error alert when the removed room is a livechat room', () => {
-		renderRoomRemoved('rid-removed-livechat', false, { rid: 'rid-removed-livechat', t: 'l' });
+		renderRoomRemoved('rid-removed-livechat', false, { room: { rid: 'rid-removed-livechat', t: 'l' } } as any);
 
 		EventEmitterReal.emit('ROOM_REMOVED', { rid: 'rid-removed-livechat' });
 
@@ -43,7 +43,7 @@ describe('useRoomRemoved', () => {
 	});
 
 	it('ignores room-removed events for a different rid', () => {
-		renderRoomRemoved('rid-removed-ignore', false, { rid: 'rid-removed-ignore', t: 'c' });
+		renderRoomRemoved('rid-removed-ignore', false, { room: { rid: 'rid-removed-ignore', t: 'c' } } as any);
 
 		EventEmitterReal.emit('ROOM_REMOVED', { rid: 'some-other-rid' });
 

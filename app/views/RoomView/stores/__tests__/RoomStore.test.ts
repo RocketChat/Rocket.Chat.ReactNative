@@ -5,7 +5,6 @@ import { getUserInfo } from '../../../../lib/services/restApi';
 import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
-import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../../constants';
 import getMessages from '../../services/getMessages';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
@@ -82,11 +81,52 @@ describe('RoomStore', () => {
 		mockLoadThreadMessages.mockResolvedValue(undefined);
 	});
 
+	it('observes the tracked database columns with their model-field translations', () => {
+		const { observeWithColumns } = setupObserve();
+		const store = createObservedStore({ initialRoom: stubRoom });
+
+		expect(store).toBeDefined();
+		expect(observeWithColumns).toHaveBeenCalledWith([
+			'f',
+			'ro',
+			'blocked',
+			'blocker',
+			'archived',
+			'tunread',
+			'tunread_user',
+			'tunread_group',
+			'muted',
+			'ignored',
+			'jitsi_timeout',
+			'announcement',
+			'sys_mes',
+			'topic',
+			'name',
+			'fname',
+			'roles',
+			'banner_closed',
+			'visitor',
+			'join_code_required',
+			'team_main',
+			'team_id',
+			'status',
+			'on_hold',
+			't',
+			'auto_translate',
+			'auto_translate_language',
+			'unmuted',
+			'e2e_key',
+			'encrypted',
+			'inviter',
+			'last_message'
+		]);
+	});
+
 	it('exposes the initial room synchronously on creation', () => {
 		setupObserve();
 		const store = createObservedStore({ initialRoom: stubRoom });
 
-		expect(store.getState().room).toBe(stubRoom);
+		expect(store.getState().room.room).toBe(stubRoom);
 		expect(store.getState().joined).toBe(true);
 		expect(store.getState().subscribed).toBe(false);
 		expect(store.getState().member).toEqual({});
@@ -100,7 +140,7 @@ describe('RoomStore', () => {
 
 		expect(store.getState().subscribed).toBe(false);
 		expect(store.getState().joined).toBe(false);
-		expect(store.getState().room).toBe(stubRoom);
+		expect(store.getState().room.room).toBe(stubRoom);
 	});
 
 	it('keeps a DM joined even with no subscription yet', () => {
@@ -125,22 +165,22 @@ describe('RoomStore', () => {
 		expect(store.getState().subscribed).toBe(true);
 	});
 
-	it('rebuilds a fresh roomUpdate snapshot when the same model instance re-emits a mutated column', () => {
+	it('replaces the observed read when the same model instance re-emits a mutated column', () => {
 		const { emit } = setupObserve();
 		const mutable = { ...subRoom, topic: 'old' };
 		const store = createObservedStore({ initialRoom: stubRoom });
 
 		emit([mutable]);
-		const first = store.getState().roomUpdate;
-		expect(first.topic).toBe('old');
+		const first = store.getState().room;
+		expect((first.room as any).topic).toBe('old');
 
 		// observeWithColumns re-emits the same cached instance, mutated in place
 		mutable.topic = 'new';
 		emit([mutable]);
 
-		expect(store.getState().room).toBe(mutable);
-		expect(store.getState().roomUpdate.topic).toBe('new');
-		expect(store.getState().roomUpdate).not.toBe(first);
+		expect(store.getState().room.room).toBe(mutable);
+		expect((store.getState().room.room as any).topic).toBe('new');
+		expect(store.getState().room).not.toBe(first);
 	});
 
 	it('keeps room pointing at the live model instance when only lastMessage changes on a Livechat row', () => {
@@ -160,7 +200,7 @@ describe('RoomStore', () => {
 		emit([mutable]);
 
 		expect(store.getState().lastMessageFromAgent).toBe(true);
-		expect(store.getState().room).toBe(mutable);
+		expect(store.getState().room.room).toBe(mutable);
 	});
 
 	it('replaces room when the subscription row is recreated with identical attributes', () => {
@@ -173,7 +213,22 @@ describe('RoomStore', () => {
 		emit([recreated]);
 
 		expect(store.getState().subscribed).toBe(true);
-		expect(store.getState().room).toBe(recreated);
+		expect(store.getState().room.room).toBe(recreated);
+	});
+
+	it('retains tracked values when observation is reattached to the same store', () => {
+		const { emit } = setupObserve();
+		const mutable = { ...subRoom, topic: 'same' };
+		const store = createObservedStore({ initialRoom: stubRoom });
+		emit([mutable]);
+		const first = store.getState().room;
+
+		const cleanup = observeRoom('rid-1', store);
+		cleanup();
+		observeRoom('rid-1', store);
+		emit([mutable]);
+
+		expect(store.getState().room).toBe(first);
 	});
 
 	it('derives the agent-authored flag from a Livechat row', () => {
@@ -446,9 +501,5 @@ describe('RoomStore', () => {
 		store.getState().join();
 
 		expect(store.getState().joined).toBe(true);
-	});
-
-	it('roomAttrsUpdateColumns has exactly one entry per roomAttrsUpdate key', () => {
-		expect(Object.keys(roomAttrsUpdateColumns).sort()).toEqual([...roomAttrsUpdate].sort());
 	});
 });

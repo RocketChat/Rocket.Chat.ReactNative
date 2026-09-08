@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState, type ReactElement, type
 import { createStore, useStore } from 'zustand';
 
 import { type ComposerState, type ComposerStore, type TComposerExternalState } from '../definitions';
-import { useRoomWithUpdateFromStore } from './RoomStoreContext';
 
 export const createComposerStore = (initial: TComposerExternalState) =>
 	createStore<ComposerState>()(set => ({
@@ -42,7 +41,7 @@ export const ComposerProvider = ({ children, ...state }: { children: ReactNode }
 export const useComposerRid = (): ComposerState['rid'] => useComposerStore(s => s.rid);
 export const useComposerType = (): ComposerState['t'] => useComposerStore(s => s.t);
 export const useComposerTmid = (): ComposerState['tmid'] => useComposerStore(s => s.tmid);
-export const useComposerRoom = (): ComposerState['room'] => useRoomWithUpdateFromStore(useComposerStoreApi());
+export const useComposerRoom = (): ComposerState['roomRead']['room'] => useComposerStore(s => s.roomRead).room;
 export const useComposerSharing = (): ComposerState['sharing'] => useComposerStore(s => s.sharing);
 export const useIsAutocompleteVisible = (): ComposerState['isAutocompleteVisible'] =>
 	useComposerStore(s => s.isAutocompleteVisible);

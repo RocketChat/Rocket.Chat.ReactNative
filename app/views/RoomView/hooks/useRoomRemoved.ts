@@ -10,7 +10,7 @@ import { type RoomStore } from '../definitions';
 const handleRoomRemoved = (removedRid: string, rid: string | undefined, isMasterDetail: boolean, roomStore: RoomStore) => {
 	if (removedRid === rid) {
 		Navigation.popToTop(isMasterDetail);
-		const currentRoom = roomStore.getState().room;
+		const currentRoom = roomStore.getState().room.room;
 		if (currentRoom.t !== 'l') {
 			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(currentRoom) }), I18n.t('Oops'));
 		}

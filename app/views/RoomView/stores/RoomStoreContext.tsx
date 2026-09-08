@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
-import { useStore, type StoreApi } from 'zustand';
+import { useStore } from 'zustand';
 
-import { type RoomState, type RoomStore } from '../definitions';
+import { type IRoomViewState, type RoomState, type RoomStore } from '../definitions';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 
@@ -15,13 +15,10 @@ const useRoomStoreApi = (): RoomStore => {
 
 export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => useStore(useRoomStoreApi(), selector);
 
-const useRerenderOnRoomMutatedInPlace = <S extends { roomUpdate?: unknown }>(store: StoreApi<S>): void => {
-	useStore(store, s => s.roomUpdate);
+export const useRoomReadFromStore = (store: RoomStore): RoomState['room'] => useStore(store, s => s.room);
+
+export const useRoomFromStore = (store: RoomStore): IRoomViewState['room'] => {
+	return useRoomReadFromStore(store).room;
 };
 
-export const useRoomWithUpdateFromStore = <S extends { room: unknown; roomUpdate?: unknown }>(store: StoreApi<S>): S['room'] => {
-	useRerenderOnRoomMutatedInPlace(store);
-	return useStore(store, s => s.room);
-};
-
-export const useRoomWithUpdate = (): RoomState['room'] => useRoomWithUpdateFromStore(useRoomStoreApi());
+export const useRoom = (): IRoomViewState['room'] => useRoomFromStore(useRoomStoreApi());

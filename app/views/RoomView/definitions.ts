@@ -52,7 +52,8 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-export type TRoomUpdate = keyof TSubscriptionModel;
+/** The wrapper identity changes for tracked emissions; `room` remains the live model instance. */
+export type RoomRead = { room: IRoomViewState['room'] };
 
 export interface IRoomViewState {
 	room:
@@ -70,7 +71,6 @@ export interface IRoomViewState {
 				sysMes?: boolean;
 				onHold?: boolean;
 		  };
-	roomUpdate: Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
 	member: any;
 	lastSeen: Date | null;
 }
@@ -79,8 +79,7 @@ export type ComposerState = {
 	rid?: string;
 	t?: string;
 	tmid?: string;
-	room: IRoomViewState['room'];
-	roomUpdate?: IRoomViewState['roomUpdate'];
+	roomRead: RoomRead;
 	sharing?: boolean;
 	isAutocompleteVisible: boolean;
 	editCancel?: () => void;
@@ -166,8 +165,7 @@ export type TRoomInitResult =
 	| { status: 'failed' };
 
 export interface RoomState {
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
+	room: RoomRead;
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];

@@ -9,7 +9,7 @@ import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type IRoomViewState, type TMessageRowProps } from '../definitions';
 
 const useIsIgnored = (authorId?: string): boolean =>
-	useRoomStore(s => (authorId && 'id' in s.room ? (s.room.ignored?.includes(authorId) ?? false) : false));
+	useRoomStore(s => (authorId && 'id' in s.room.room ? (s.room.room.ignored?.includes(authorId) ?? false) : false));
 
 const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
 	let dateSeparator: TAnyMessageModel['ts'] | null = null;
@@ -33,7 +33,7 @@ const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageM
 };
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
-	const room = useRoomStore(s => s.room);
+	const room = useRoomStore(s => s.room.room);
 	const isIgnored = useIsIgnored(item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);
 	const { lastSeen } = useRoomScreen();

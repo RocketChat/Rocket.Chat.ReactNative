@@ -393,7 +393,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					store={this.messageActionStore}
 					rid={room.rid}
 					t={room.t}
-					room={room}
+					roomRead={{ room }}
 					tmid={this.getThreadId(thread)}
 					sharing
 					onSendMessage={this.send}

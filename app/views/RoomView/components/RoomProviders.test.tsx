@@ -27,7 +27,7 @@ describe('RoomProviders', () => {
 			{ rid: 'rid-2', t: 'c' }
 		];
 		const Parent = ({ roomIndex }: { roomIndex: number }) => (
-			<RoomProviders store={store} rid='rid-1' t='c' room={rooms[roomIndex]} sharing={false}>
+			<RoomProviders store={store} rid='rid-1' t='c' roomRead={{ room: rooms[roomIndex] }} sharing={false}>
 				{children}
 			</RoomProviders>
 		);
@@ -52,7 +52,7 @@ describe('RoomProviders', () => {
 		};
 
 		render(
-			<RoomProviders store={store} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
+			<RoomProviders store={store} rid='rid-1' t='c' roomRead={{ room: { rid: 'rid-1', t: 'c' } }}>
 				<Probe />
 			</RoomProviders>
 		);

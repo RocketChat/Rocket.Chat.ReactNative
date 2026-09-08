@@ -15,8 +15,7 @@ export const RoomProviders = ({
 	rid,
 	t,
 	tmid,
-	room,
-	roomUpdate,
+	roomRead,
 	sharing,
 	editCancel,
 	editRequest,
@@ -30,8 +29,7 @@ export const RoomProviders = ({
 			rid={rid}
 			t={t}
 			tmid={tmid}
-			room={room}
-			roomUpdate={roomUpdate}
+			roomRead={roomRead}
 			sharing={sharing}
 			editCancel={editCancel}
 			editRequest={editRequest}
