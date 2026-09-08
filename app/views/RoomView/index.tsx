@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { getRoomTitle } from '../../lib/methods/helpers';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { type IInviteSubscription } from '../../definitions';
+import { getRoom, type RoomSnapshot } from '../../lib/roomObservation';
 import { type IRoomScreenInput, type IRoomViewProps } from './definitions';
 import { EncryptedRoom } from './components/EncryptedRoom';
 import { InvitedRoomScreen } from './components/InvitedRoomScreen';
@@ -19,20 +21,26 @@ interface IRoomGateProps extends IRoomViewProps {
 	input: IRoomScreenInput;
 }
 
+const getInvite = (snapshot: RoomSnapshot): IInviteSubscription | null => {
+	const room = getRoom(snapshot);
+	return 'id' in room && isInviteSubscription(room) ? room : null;
+};
+
 const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	const { rid, t, tmid, name, initialRoom, roomUserId } = input;
 
 	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
-	const { room } = useRoomFromStore(roomStore);
+	const { room, snapshot } = useRoomFromStore(roomStore);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 
 	useHeader({ rid, tmid, name, roomStore });
 
-	if ('id' in room && isInviteSubscription(room)) {
-		return <InvitedRoomScreen room={room} />;
+	const invite = getInvite(snapshot);
+	if (invite) {
+		return <InvitedRoomScreen room={invite} />;
 	}
 
 	if ('encrypted' in room) {

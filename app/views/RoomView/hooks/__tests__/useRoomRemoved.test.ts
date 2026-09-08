@@ -6,6 +6,7 @@ import EventEmitterReal from '../../../../lib/methods/helpers/events';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { type TRoomOrPreview } from '../../../../definitions/TRoom';
+import { createRoomSnapshot } from '../../../../lib/roomObservation';
 import { useRoomRemoved } from '../useRoomRemoved';
 
 jest.mock('../../../../lib/methods/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
@@ -16,7 +17,9 @@ const mockPopToTop = Navigation.popToTop as jest.Mock;
 const mockShowErrorAlert = showErrorAlert as jest.Mock;
 
 const renderRoomRemoved = (rid: string | undefined, isMasterDetail: boolean, room: TRoomOrPreview) => {
-	return renderHook(() => useRoomRemoved(rid, isMasterDetail, createStore(() => ({ room })) as any));
+	return renderHook(() =>
+		useRoomRemoved(rid, isMasterDetail, createStore(() => ({ roomSnapshot: createRoomSnapshot(room) })) as any)
+	);
 };
 
 describe('useRoomRemoved', () => {
@@ -25,7 +28,7 @@ describe('useRoomRemoved', () => {
 	});
 
 	it('emits a popToTop navigation and error alert when the removed room matches the current rid', () => {
-		renderRoomRemoved('rid-removed-alert', true, { room: { rid: 'rid-removed-alert', t: 'c' } } as any);
+		renderRoomRemoved('rid-removed-alert', true, { rid: 'rid-removed-alert', t: 'c' } as any);
 
 		EventEmitterReal.emit('ROOM_REMOVED', { rid: 'rid-removed-alert' });
 
@@ -34,7 +37,7 @@ describe('useRoomRemoved', () => {
 	});
 
 	it('does not show an error alert when the removed room is a livechat room', () => {
-		renderRoomRemoved('rid-removed-livechat', false, { room: { rid: 'rid-removed-livechat', t: 'l' } } as any);
+		renderRoomRemoved('rid-removed-livechat', false, { rid: 'rid-removed-livechat', t: 'l' } as any);
 
 		EventEmitterReal.emit('ROOM_REMOVED', { rid: 'rid-removed-livechat' });
 
@@ -43,7 +46,7 @@ describe('useRoomRemoved', () => {
 	});
 
 	it('ignores room-removed events for a different rid', () => {
-		renderRoomRemoved('rid-removed-ignore', false, { room: { rid: 'rid-removed-ignore', t: 'c' } } as any);
+		renderRoomRemoved('rid-removed-ignore', false, { rid: 'rid-removed-ignore', t: 'c' } as any);
 
 		EventEmitterReal.emit('ROOM_REMOVED', { rid: 'some-other-rid' });
 

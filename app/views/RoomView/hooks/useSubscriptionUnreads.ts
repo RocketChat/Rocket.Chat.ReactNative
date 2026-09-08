@@ -2,6 +2,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
+import { getRoom } from '../../../lib/roomObservation';
 import { type TSubscriptionModel } from '../../../definitions';
 import { type IUseSubscriptionUnreadsResult } from '../definitions';
 import { type RoomStore } from '../definitions';
@@ -11,8 +12,8 @@ const EMPTY_UNREADS: string[] = [];
 export function useSubscriptionUnreads(roomStore: RoomStore, userId?: string): IUseSubscriptionUnreadsResult {
 	return useStore(
 		roomStore,
-		useShallow(({ room: roomRead }): IUseSubscriptionUnreadsResult => {
-			const room = roomRead.room;
+		useShallow(({ roomSnapshot }): IUseSubscriptionUnreadsResult => {
+			const room = getRoom(roomSnapshot);
 			if (!('id' in room)) {
 				return {
 					tunread: EMPTY_UNREADS,

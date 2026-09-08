@@ -5,12 +5,13 @@ import { getRoomTitle } from '../../../lib/methods/helpers';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import Navigation from '../../../lib/navigation/appNavigation';
+import { getRoom } from '../../../lib/roomObservation';
 import { type RoomStore } from '../definitions';
 
 const handleRoomRemoved = (removedRid: string, rid: string | undefined, isMasterDetail: boolean, roomStore: RoomStore) => {
 	if (removedRid === rid) {
 		Navigation.popToTop(isMasterDetail);
-		const currentRoom = roomStore.getState().room.room;
+		const currentRoom = getRoom(roomStore.getState().roomSnapshot);
 		if (currentRoom.t !== 'l') {
 			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(currentRoom) }), I18n.t('Oops'));
 		}

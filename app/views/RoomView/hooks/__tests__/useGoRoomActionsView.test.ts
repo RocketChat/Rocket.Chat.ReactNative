@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
+import { createRoomSnapshot } from '../../../../lib/roomObservation';
 import { useGoRoomActionsView } from '../useGoRoomActionsView';
 
 const mockNavigate = jest.fn();
@@ -19,7 +20,7 @@ jest.mock('../../../../lib/methods/helpers/log', () => ({
 }));
 
 const mockState = {
-	room: { room: { rid: 'rid-1', t: 'l' } },
+	roomSnapshot: createRoomSnapshot({ rid: 'rid-1', t: 'l' } as any),
 	member: { _id: 'm1' },
 	joined: true,
 	canForwardGuest: true,
@@ -36,7 +37,7 @@ describe('useGoRoomActionsView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
-		mockState.room = { room: { rid: 'rid-1', t: 'l' } };
+		mockState.roomSnapshot = createRoomSnapshot({ rid: 'rid-1', t: 'l' } as any);
 	});
 
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {

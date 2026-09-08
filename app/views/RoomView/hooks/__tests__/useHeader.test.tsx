@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 
 import { type RoomStore } from '../../definitions';
-import { makeRoomStore } from '../../__tests__/roomStoreFixture';
+import { makeRoomReads, makeRoomStore } from '../../__tests__/roomStoreFixture';
 import { useHeader } from '../useHeader';
 
 let mockTestStore: RoomStore;
@@ -29,7 +29,7 @@ jest.mock('@react-navigation/native', () => ({
 describe('useHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockTestStore = makeRoomStore({ room: { room: { rid: 'rid-1', t: 'c', name: 'general' } } });
+		mockTestStore = makeRoomStore(makeRoomReads({ rid: 'rid-1', t: 'c', name: 'general' }));
 	});
 
 	it('sets only the headerLeft spacer and returns when rid is missing', () => {
@@ -44,14 +44,14 @@ describe('useHeader', () => {
 
 	it('re-fires the title effect when a tracked field changes on the live room model', () => {
 		const mutableRoom = { rid: 'rid-1', t: 'c', name: 'general', topic: 'old' } as any;
-		mockTestStore = makeRoomStore({ room: { room: mutableRoom } });
+		mockTestStore = makeRoomStore(makeRoomReads(mutableRoom));
 
 		renderHook(() => useHeader({ rid: 'rid-1', tmid: undefined, name: 'general', roomStore: mockTestStore }));
 		expect(mockSetOptions).toHaveBeenCalledTimes(2);
 
 		act(() => {
 			mutableRoom.topic = 'new';
-			mockTestStore.setState({ room: { room: mutableRoom } });
+			mockTestStore.setState(makeRoomReads(mutableRoom));
 		});
 		expect(mockSetOptions).toHaveBeenCalledTimes(3);
 		expect(mockSetOptions.mock.calls[2][0]).toHaveProperty('headerTitle');
@@ -64,7 +64,7 @@ describe('useHeader', () => {
 		expect(titleOptions.headerTitle().props.title).toBe('Thread name');
 
 		act(() => {
-			mockTestStore.setState({ room: { room: { rid: 'rid-1', t: 'c', name: 'parent-channel', topic: 'new' } as any } });
+			mockTestStore.setState(makeRoomReads({ rid: 'rid-1', t: 'c', name: 'parent-channel', topic: 'new' }));
 		});
 		const nextTitleOptions = mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
 		expect(nextTitleOptions.headerTitle().props.title).toBe('Thread name');

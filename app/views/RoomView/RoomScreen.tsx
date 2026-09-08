@@ -13,7 +13,7 @@ import { RoomLoadFailed } from './components/RoomLoadFailed';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { RoomMessageList } from './components/RoomMessageList';
 import { RoomUploadProgress } from './components/RoomUploadProgress';
-import { RoomStoreContext } from './stores/RoomStoreContext';
+import { RoomStoreContext, useRoomFromStore } from './stores/RoomStoreContext';
 import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useRoomMessaging } from './hooks/useRoomMessaging';
 import { useRoomSubscription } from './hooks/useRoomSubscription';
@@ -26,8 +26,8 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 
+	const { room } = useRoomFromStore(roomStore);
 	const roomRead = useStore(roomStore, s => s.room);
-	const room = roomRead.room;
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 
 	const {

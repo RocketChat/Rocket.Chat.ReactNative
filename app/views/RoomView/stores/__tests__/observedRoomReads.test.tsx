@@ -3,6 +3,8 @@ import { memo } from 'react';
 
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import { useHeader } from '../../hooks/useHeader';
+import { MessageRow } from '../../components/MessageRow';
+import { useReadOnly } from '../../hooks/useReadOnly';
 import {
 	ComposerProvider,
 	useComposerRoom,
@@ -34,10 +36,28 @@ jest.mock('../../../../lib/services/restApi', () => ({ getUserInfo: jest.fn() })
 jest.mock('../../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
 jest.mock('../../services/joinRoom', () => ({ joinRoom: jest.fn(), resumeRoom: jest.fn() }));
 jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigation }));
+jest.mock('../../../../containers/message', () => ({
+	__esModule: true,
+	default: ({ isIgnored }: { isIgnored: boolean }) => {
+		mockRenderMessage(isIgnored);
+		return null;
+	}
+}));
+jest.mock('../../LoadMore', () => ({ __esModule: true, default: 'LoadMore' }));
+jest.mock('../../hooks/useThreadBadgeColor', () => ({ useThreadBadgeColor: () => undefined }));
+jest.mock('../RoomScreenContext', () => ({ useRoomScreen: () => ({ lastSeen: null }) }));
+jest.mock('../../../../lib/hooks/useAppSelector', () => ({
+	useAppSelector: (selector: (state: any) => unknown) => selector(mockReduxState)
+}));
 
 const mockSetOptions = jest.fn();
 const mockNavigation = { setOptions: mockSetOptions };
 const mockGoRoomActionsView = jest.fn();
+const mockRenderMessage = jest.fn();
+const mockReduxState = {
+	login: { user: { username: 'me', roles: [] } },
+	permissions: { 'post-readonly': ['owner'] }
+};
 
 type Room = {
 	rid: string;
@@ -169,6 +189,52 @@ describe('observed Room reads', () => {
 			emit([room]);
 		});
 		expect(renderSpy).toHaveBeenLastCalledWith('after', true);
+	});
+
+	it('shows a Message as ignored when the Ignored User list changes on the same instance', () => {
+		const { emit } = setupObserveRoomDatabase();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
+		observeRoom('rid-1', store);
+		const room = subscription({ ignored: [] });
+		act(() => emit([room]));
+
+		render(
+			<RoomStoreContext.Provider value={store}>
+				<MessageRow
+					item={{ id: 'message-1', ts: new Date(), u: { _id: 'noisy-user' } } as any}
+					previousItem={undefined as any}
+					onLongPress={jest.fn()}
+				/>
+			</RoomStoreContext.Provider>
+		);
+		expect(mockRenderMessage).toHaveBeenLastCalledWith(false);
+
+		act(() => {
+			room.ignored = ['noisy-user'];
+			emit([room]);
+		});
+
+		expect(mockRenderMessage).toHaveBeenLastCalledWith(true);
+	});
+
+	it('lifts the read-only restriction when the Room roles change on the same instance', () => {
+		const { emit } = setupObserveRoomDatabase();
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
+		observeRoom('rid-1', store);
+		const room = subscription({ ro: true, roles: [] });
+		act(() => emit([room]));
+
+		const readOnly = renderHook(() => useReadOnly(), {
+			wrapper: ({ children }) => <RoomStoreContext.Provider value={store}>{children}</RoomStoreContext.Provider>
+		});
+		expect(readOnly.result.current).toBe(true);
+
+		act(() => {
+			room.roles = ['owner'];
+			emit([room]);
+		});
+
+		expect(readOnly.result.current).toBe(false);
 	});
 
 	it('keeps observation cleanup isolated for two screens sharing a Room id', () => {

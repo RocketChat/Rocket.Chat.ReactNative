@@ -4,7 +4,7 @@ import { type IRoomMessageActionsProps } from '../definitions';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
 import { useReadOnly } from '../hooks/useReadOnly';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoom } from '../stores/RoomStoreContext';
 
 export const RoomMessageActions = ({
 	tmid,
@@ -17,7 +17,7 @@ export const RoomMessageActions = ({
 	onReactionPress,
 	jumpToMessage
 }: IRoomMessageActionsProps) => {
-	const room = useRoomStore(s => s.room.room);
+	const { room } = useRoom();
 	const user = useAppSelector(getUserSelector);
 	const readOnly = useReadOnly();
 

@@ -20,7 +20,7 @@ import {
 import { useActionSheet } from '../../../containers/ActionSheet';
 import ReactionsList from '../../../containers/ReactionsList';
 import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoom } from '../stores/RoomStoreContext';
 import { blockAction as blockActionService } from '../services/blockAction';
 import { fetchThreadName as fetchThreadNameService } from '../services/fetchThreadName';
 import { toggleFollowThread as toggleFollowThreadService } from '../../../lib/methods/toggleFollowThread';
@@ -36,7 +36,7 @@ export function useRoomMessageHandlers({
 	const isMasterDetail = useMasterDetail();
 	const { showActionSheet } = useActionSheet();
 
-	const room = useRoomStore(s => s.room.room);
+	const { room } = useRoom();
 	const rid = room.rid;
 
 	const onDiscussionPress = async (drid: TAnyMessageModel['drid']) => {

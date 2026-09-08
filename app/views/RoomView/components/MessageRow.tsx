@@ -1,15 +1,18 @@
 import dayjs from '../../../lib/dayjs';
-import { useRoomStore } from '../stores/RoomStoreContext';
+import { useRoom } from '../stores/RoomStoreContext';
 import { useRoomScreen } from '../stores/RoomScreenContext';
 import Message from '../../../containers/message';
 import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type RoomType, type TAnyMessageModel } from '../../../definitions';
+import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type IRoomViewState, type TMessageRowProps } from '../definitions';
 
-const useIsIgnored = (authorId?: string): boolean =>
-	useRoomStore(s => (authorId && 'id' in s.room.room ? (s.room.room.ignored?.includes(authorId) ?? false) : false));
+const isAuthorIgnored = (snapshot: RoomSnapshot, authorId?: string): boolean => {
+	const room = getRoom(snapshot);
+	return !!authorId && 'id' in room && (room.ignored?.includes(authorId) ?? false);
+};
 
 const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageModel, lastSeen: IRoomViewState['lastSeen']) => {
 	let dateSeparator: TAnyMessageModel['ts'] | null = null;
@@ -33,8 +36,8 @@ const getMessageSeparators = (item: TAnyMessageModel, previousItem: TAnyMessageM
 };
 
 export const MessageRow = ({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) => {
-	const room = useRoomStore(s => s.room.room);
-	const isIgnored = useIsIgnored(item?.u?._id);
+	const { room, snapshot } = useRoom();
+	const isIgnored = isAuthorIgnored(snapshot, item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);
 	const { lastSeen } = useRoomScreen();
 	const { dateSeparator, showUnreadSeparator } = getMessageSeparators(item, previousItem, lastSeen);

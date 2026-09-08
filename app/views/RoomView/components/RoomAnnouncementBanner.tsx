@@ -1,16 +1,28 @@
 import I18n from '../../../i18n';
 import { useCloseBanner } from '../hooks/useCloseBanner';
+import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 import { useRoom } from '../stores/RoomStoreContext';
 import Banner from './Banner';
 
-export const RoomAnnouncementBanner = () => {
-	const { room } = useRoom();
-	const closeBanner = useCloseBanner(room);
+const getAnnouncement = (snapshot: RoomSnapshot): { text?: string; bannerClosed?: boolean } | null => {
+	const room = getRoom(snapshot);
+	return 'id' in room ? { text: room.announcement, bannerClosed: room.bannerClosed } : null;
+};
 
-	if (!('id' in room)) {
+export const RoomAnnouncementBanner = () => {
+	const { room, snapshot } = useRoom();
+	const closeBanner = useCloseBanner(room);
+	const announcement = getAnnouncement(snapshot);
+
+	if (!announcement) {
 		return null;
 	}
 	return (
-		<Banner title={I18n.t('Announcement')} text={room.announcement} bannerClosed={room.bannerClosed} closeBanner={closeBanner} />
+		<Banner
+			title={I18n.t('Announcement')}
+			text={announcement.text}
+			bannerClosed={announcement.bannerClosed}
+			closeBanner={closeBanner}
+		/>
 	);
 };

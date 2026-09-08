@@ -11,6 +11,8 @@ import LeftButtons from '../components/LeftButtons';
 import RightButtons from '../components/RightButtons/RightButtons';
 import { type IRoomViewProps } from '../definitions';
 import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { getRoom } from '../../../lib/roomObservation';
+import { useRoomFromStore } from '../../../lib/hooks/useRoom';
 import { type RoomStore } from '../definitions';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
 
@@ -77,7 +79,7 @@ const getRoomHeaderProps = ({
 export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderParams): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
-	const roomRead = useStore(roomStore, s => s.room);
+	const { snapshot } = useRoomFromStore(roomStore);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 
@@ -98,7 +100,7 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 			return;
 		}
 
-		const room = roomRead.room;
+		const room = getRoom(snapshot);
 		const headerProps = getRoomHeaderProps({ room, tmid, roomName, roomUserId, onPress: goRoomActionsView });
 		navigation.setOptions({
 			headerTitle: () => (
@@ -121,5 +123,5 @@ export const useHeader = ({ rid, tmid, name: roomName, roomStore }: IUseHeaderPa
 				/>
 			)
 		});
-	}, [rid, tmid, roomName, roomRead, roomUserId, navigation, goRoomActionsView]);
+	}, [rid, tmid, roomName, snapshot, roomUserId, navigation, goRoomActionsView]);
 };
