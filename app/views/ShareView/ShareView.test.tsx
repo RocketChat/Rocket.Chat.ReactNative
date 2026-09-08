@@ -155,6 +155,10 @@ const makeInstance = ({
 };
 
 describe('ShareView', () => {
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockGetSubscriptionByRoomId.mockResolvedValue({
@@ -342,7 +346,6 @@ describe('ShareView', () => {
 
 		expect(setInput).toHaveBeenCalledWith('shared text');
 		expect(shareView.getSelectedMessageIds()).toEqual(['quote-1']);
-		jest.useRealTimers();
 	});
 
 	it('keeps selected attachment fallback and reload behavior when attachments are removed', () => {
@@ -470,7 +473,6 @@ describe('ShareView', () => {
 		expect(originComposerRef.current?.getText()).toBe('Share text');
 		expect(originStore.getState().action).toEqual({ kind: 'quote', messageIds: ['share-quote'] });
 		act(() => shareRender.unmount());
-		jest.useRealTimers();
 	});
 
 	it.each(['success', 'failure'] as const)('bridges real callbacks through ShareView send %s', async outcome => {
@@ -549,7 +551,6 @@ describe('ShareView', () => {
 		const expectedOriginAction = outcome === 'failure' ? { kind: 'quote', messageIds: ['share-quote'] } : null;
 		expect(originStore.getState().action).toEqual(expectedOriginAction);
 		uploadSpy.mockRestore();
-		jest.useRealTimers();
 	});
 
 	it('saves and restores selected attachment text through the rendered composer', () => {
