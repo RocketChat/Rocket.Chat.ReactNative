@@ -1,12 +1,10 @@
 import { createRef } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Text } from 'react-native';
-import { createStore } from 'zustand';
 
 import { ComposerInput } from './ComposerInput';
 import { MessageComposerProvider, useAutocompleteParams } from '../context';
 import { ComposerProvider } from '../ComposerStore';
-import { RoomStoreContext } from '../../../views/RoomView/stores/RoomStoreContext';
 import { createMessageActionStore, MessageActionProvider } from '../../message/stores/MessageActionStore';
 import { type IComposerInput } from '../interfaces';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
@@ -40,6 +38,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({ useAltTextSupported: jest.fn(() => false) }));
 jest.mock('../../../lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
+jest.mock('../../../lib/methods/helpers/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
 jest.mock('../../../lib/methods/helpers/externalInput', () => ({ isExternalKeyboardConnected: jest.fn(() => false) }));
 jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
@@ -59,16 +58,10 @@ const composerState = {
 	rid: 'room-1',
 	t: 'c',
 	tmid: undefined,
-	room: undefined,
+	room: { rid: 'room-1', t: 'c' },
 	sharing: false,
 	onRemoveQuoteMessage: jest.fn()
 };
-
-const createRoomStore = () =>
-	createStore<any>()(() => ({
-		room: composerState.room,
-		roomUpdate: undefined
-	}));
 
 const renderInput = ({
 	action,
@@ -79,20 +72,17 @@ const renderInput = ({
 } = {}) => {
 	const composerRef = createRef<IComposerInput>();
 	const inputRef = createRef<any>();
-	const roomStore = createRoomStore();
 	const messageActionStore = createMessageActionStore(action);
 	const tree = (
 		<MessageActionProvider store={messageActionStore}>
-			<RoomStoreContext.Provider value={roomStore}>
-				<ComposerProvider {...(composerState as any)} sharing={sharing}>
-					<MessageComposerProvider>
-						<>
-							<ComposerInput ref={composerRef} inputRef={inputRef} />
-							<AutocompleteProbe />
-						</>
-					</MessageComposerProvider>
-				</ComposerProvider>
-			</RoomStoreContext.Provider>
+			<ComposerProvider {...(composerState as any)} sharing={sharing}>
+				<MessageComposerProvider>
+					<>
+						<ComposerInput ref={composerRef} inputRef={inputRef} />
+						<AutocompleteProbe />
+					</>
+				</MessageComposerProvider>
+			</ComposerProvider>
 		</MessageActionProvider>
 	);
 	const rendered = render(tree);

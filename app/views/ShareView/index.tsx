@@ -31,9 +31,9 @@ import {
 	type IShareAttachment,
 	type IUser,
 	RootEnum,
-	type TSubscriptionModel,
 	type TThreadModel
 } from '../../definitions';
+import { type TRoomOrPreview } from '../../definitions/TRoom';
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
@@ -50,7 +50,7 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IShareAttachment[];
 	text: string;
-	room: TSubscriptionModel;
+	room: TRoomOrPreview;
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
@@ -96,7 +96,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
-			room: props.route.params?.room ?? {},
+			room: props.route.params?.room ?? { rid: '', t: '' },
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
 			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList

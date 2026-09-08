@@ -2,37 +2,15 @@ import { createContext, useContext, useEffect, useState, type ReactElement, type
 import { createStore, useStore } from 'zustand';
 import { type StoreApi } from 'zustand';
 
-import {
-	type IMessage,
-	type IMessageEditAttachment,
-	type ILastMessage,
-	type IVisitor,
-	type TSubscriptionModel
-} from '../../definitions';
-import { useRoomWithUpdateFromStore } from '../../views/RoomView/stores/RoomStoreContext';
+import { type IMessage, type IMessageEditAttachment } from '../../definitions';
+import { type IRoomWithUpdateState, useRoomWithUpdateFromStore } from '../../lib/hooks/useRoomWithUpdateFromStore';
+import { type TRoomOrPreview } from '../../definitions/TRoom';
 
-type ComposerRoom =
-	| TSubscriptionModel
-	| {
-			rid: string;
-			t: string;
-			name?: string;
-			fname?: string;
-			prid?: string;
-			visitor?: IVisitor;
-			joinCodeRequired?: boolean;
-			status?: string;
-			lastMessage?: ILastMessage;
-			sysMes?: boolean;
-			onHold?: boolean;
-	  };
-
-export type ComposerState = {
+export type ComposerState = IRoomWithUpdateState & {
+	room: TRoomOrPreview;
 	rid?: string;
 	t?: string;
 	tmid?: string;
-	room: ComposerRoom;
-	roomUpdate?: Partial<TSubscriptionModel>;
 	sharing?: boolean;
 	isAutocompleteVisible: boolean;
 	editCancel?: () => void;

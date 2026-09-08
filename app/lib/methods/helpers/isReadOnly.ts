@@ -2,6 +2,8 @@ import { store as reduxStore } from '../../store/auxStore';
 import { type ISubscription } from '../../../definitions';
 import { hasPermission } from './helpers';
 
+type ReadOnlyRoom = Pick<Partial<ISubscription>, 'rid' | 'archived' | 'muted' | 'ro' | 'unmuted'>;
+
 const canPostReadOnly = async (room: Partial<ISubscription>, username?: string) => {
 	// RC 6.4.0
 	const isUnmuted = !!room?.unmuted?.find(m => m === username);
@@ -27,7 +29,7 @@ const evaluateReadOnly = (room: Partial<ISubscription>, username: string | undef
 	return false;
 };
 
-export const isReadOnly = async (room: Partial<ISubscription>, username?: string): Promise<boolean> => {
+export const isReadOnly = async (room: ReadOnlyRoom, username?: string): Promise<boolean> => {
 	if (room.archived || isMuted(room, username)) {
 		return true;
 	}

@@ -7,15 +7,14 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import {
 	type IBaseScreen,
 	type IEmoji,
-	type ILastMessage,
 	type IMessage,
 	type IMessageEditAttachment,
-	type IVisitor,
 	type RoomType,
 	type TAnyMessageModel,
-	type TSubscriptionModel,
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
+import { type TRoomOrPreview, type TRoomUpdatePatch } from '../../definitions/TRoom';
+import { type TSubscriptionModel } from '../../definitions/ISubscription';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
 import { type IMessageActions, type IMessageActionsProps } from '../../containers/MessageActions';
@@ -30,7 +29,7 @@ export interface IRoomScreenInput {
 	t: string;
 	tmid?: string;
 	name?: string;
-	initialRoom: IRoomViewState['room'];
+	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
 }
 
@@ -52,25 +51,9 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-export type TRoomUpdate = keyof TSubscriptionModel;
-
 export interface IRoomViewState {
-	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				visitor?: IVisitor;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
-		  };
-	roomUpdate: Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
+	room: TRoomOrPreview;
+	roomUpdate: TRoomUpdatePatch;
 	member: any;
 	lastSeen: Date | null;
 }
@@ -147,8 +130,8 @@ export type TRoomInitResult =
 	| { status: 'failed' };
 
 export interface RoomState {
-	room: IRoomViewState['room'];
-	roomUpdate: IRoomViewState['roomUpdate'];
+	room: TRoomOrPreview;
+	roomUpdate: TRoomUpdatePatch;
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];

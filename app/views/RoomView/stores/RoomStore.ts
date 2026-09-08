@@ -9,6 +9,7 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
@@ -22,7 +23,7 @@ import { joinRoom, resumeRoom } from '../services/joinRoom';
 
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
 
-const EMPTY_ROOM: IRoomViewState['room'] = { rid: '', t: '' };
+const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: IRoomViewState['member'] = {};
 
 const INIT_MAX_ATTEMPTS = 3;
@@ -33,7 +34,7 @@ interface IDirectMessageMember {
 	member: IRoomViewState['member'];
 }
 
-const getRoomMember = async (room: IRoomViewState['room']): Promise<IDirectMessageMember> => {
+const getRoomMember = async (room: TRoomOrPreview): Promise<IDirectMessageMember> => {
 	if ('id' in room && room.t === 'd' && !isGroupChat(room)) {
 		const roomUserId = getUidDirectMessage(room);
 		try {
@@ -61,7 +62,7 @@ type TLoadRoomResult =
 
 const loadRoom = async (
 	rid: string,
-	room: IRoomViewState['room'],
+	room: TRoomOrPreview,
 	joined: boolean,
 	{ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams
 ): Promise<TLoadRoomResult> => {
@@ -117,7 +118,7 @@ const loadRoom = async (
 const createRoomState =
 	(
 		rid: string | undefined,
-		initialRoom: IRoomViewState['room'] = EMPTY_ROOM,
+		initialRoom: TRoomOrPreview = EMPTY_ROOM,
 		roomUserId: string | null | undefined = null
 	): StateCreator<RoomState> =>
 	(set, get) => ({
@@ -179,7 +180,7 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 		.get('subscriptions')
 		.query(Q.where('rid', rid))
 		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
-	const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
+	const subscription = observable.subscribe((rows: TRoomOrPreview[]) => {
 		const next = rows[0];
 		const previous = store.getState();
 		if (!next) {
@@ -216,6 +217,6 @@ export const createRoomStore = ({
 	roomUserId
 }: {
 	rid?: string;
-	initialRoom: IRoomViewState['room'];
+	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
 }): RoomStore => createStore<RoomState>(createRoomState(rid, initialRoom, roomUserId));
