@@ -1,7 +1,7 @@
 const data = {
 	server: 'https://mobile.qa.rocket.chat',
 	alternateServer: 'https://stable.rocket.chat',
-	candidateServer: 'https://candidate.qa.rocket.chat/',
+	candidateServer: 'https://candidate.qa.rocket.chat',
 	...output.account,
     accounts: [],
 	channels: {
