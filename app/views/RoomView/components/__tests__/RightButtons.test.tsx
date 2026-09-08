@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import RightButtons from '../RightButtons';
+import RightButtons from '../RightButtons/RightButtons';
 
 const mockNavigation = { navigate: jest.fn(), push: jest.fn() };
 jest.mock('@react-navigation/native', () => ({
@@ -72,7 +72,7 @@ jest.mock('../../../../containers/Header/components/HeaderButton', () => {
 		BadgeUnread: () => null
 	};
 });
-jest.mock('../HeaderCallButton', () => {
+jest.mock('../RightButtons/HeaderCallButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		HeaderCallButton: (props: any) => ReactActual.createElement('CallButton', { ...props, testID: 'room-view-header-call' })
