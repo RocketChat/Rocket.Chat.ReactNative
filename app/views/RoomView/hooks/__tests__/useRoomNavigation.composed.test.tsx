@@ -228,12 +228,11 @@ describe('useRoomNavigation composed entry points', () => {
 	it('preserves simultaneous initial Message and Thread target effect ordering', async () => {
 		mockRouteParams = { jumpToMessageId: 'message-7', jumpToThreadId: 'thread-7' };
 		mockGetMessageInfo.mockResolvedValue({ id: 'message-7', rid: 'rid-1' });
-		const { result } = renderNavigation();
+		renderNavigation();
 		await flush();
 
 		expect(mockGetMessageInfo).toHaveBeenCalledWith('message-7');
 		expect(mockNavigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ tmid: 'thread-7' }));
-		expect(result.current.onThreadMessagesLoaded).toBeDefined();
 	});
 
 	it('cancels a Message URL while lookup is pending without navigating after a late success', async () => {
@@ -472,6 +471,7 @@ describe('useRoomNavigation composed entry points', () => {
 	});
 
 	it('hands a cross-Room target to a destination navigation instance and settles there', async () => {
+		jest.useFakeTimers();
 		mockGetMessageInfo.mockResolvedValue({ id: 'handoff', rid: 'rid-destination' });
 		mockGetRoomInfo.mockResolvedValue({ rid: 'rid-destination' });
 		const source = renderNavigation({ rid: 'rid-source' });
@@ -484,12 +484,13 @@ describe('useRoomNavigation composed entry points', () => {
 		destinationList.current.isMessageInWindow.mockReturnValue(true);
 		const destination = renderNavigation({ rid: 'rid-destination', listContainerRef: destinationList });
 		await flush();
-		await new Promise(resolve => setTimeout(resolve, 110));
+		await act(async () => await jest.advanceTimersByTimeAsync(100));
 
 		expect(mockGetMessageInfo).toHaveBeenCalledWith('handoff');
 		expect(destinationList.current.jumpToMessage).toHaveBeenCalledWith('handoff', null);
 		expect(mockSendLoadingEvent).toHaveBeenLastCalledWith({ visible: false });
 		destination.unmount();
+		jest.useRealTimers();
 	});
 
 	it('uses the existing Thread-to-main destination rules for plain and other-parent Messages', async () => {

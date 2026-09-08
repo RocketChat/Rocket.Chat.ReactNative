@@ -33,8 +33,6 @@ const waitForFabricCommit = (): Promise<void> =>
 		setTimeout(resolve, FABRIC_COMMIT_DELAY);
 	});
 
-// Fire onChange whenever a one-shot route param transitions to a new truthy value (undefined -> id, or
-// id -> different id). onChange is live-mirrored so an unstable inline callback doesn't retrigger the effect.
 function useChangedParam(value: string | undefined, onChange: (value: string) => void) {
 	const onChangeRef = useLiveRef(onChange);
 	const prevRef = useRef(value);
@@ -61,6 +59,8 @@ export function useRoomNavigation({
 	const loadedThreadRef = useRef<string | undefined>(undefined);
 	const jumpGenerationRef = useRef(0);
 
+	const isCurrentJump = (generation: number): boolean => jumpGenerationRef.current === generation;
+
 	const cancelJumpToMessage = (): void => {
 		jumpGenerationRef.current += 1;
 		listContainerRef.current?.cancelJumpToMessage();
@@ -77,16 +77,16 @@ export function useRoomNavigation({
 		});
 	};
 
-	const navToThread = async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
+	const navToThread = async (message: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
 		if (!rid) {
 			return;
 		}
-		if (!item.tmid) {
-			if ('tlm' in item) {
+		if (!message.tmid) {
+			if ('tlm' in message) {
 				return navigation.push('RoomView', {
 					rid,
-					tmid: item.id,
-					name: makeThreadName(item),
+					tmid: message.id,
+					name: makeThreadName(message),
 					t: SubscriptionType.THREAD,
 					roomUserId: roomUserIdRef.current
 				});
@@ -95,8 +95,8 @@ export function useRoomNavigation({
 		}
 
 		const roomUserId = roomUserIdRef.current;
-		const jumpToMessageId = 'id' in item ? item.id : '';
-		const knownName = 'id' in item && 'tmsg' in item ? (item.tmsg ?? '') : '';
+		const jumpToMessageId = 'id' in message ? message.id : '';
+		const knownName = 'id' in message && 'tmsg' in message ? (message.tmsg ?? '') : '';
 		let cancelled = false;
 		const cancelThread = () => {
 			cancelled = true;
@@ -105,7 +105,7 @@ export function useRoomNavigation({
 		sendLoadingEvent({ visible: true, onCancel: cancelThread });
 		let threadName: string | undefined;
 		try {
-			threadName = await fetchThreadName(rid, item.tmid, jumpToMessageId, knownName);
+			threadName = await fetchThreadName(rid, message.tmid, jumpToMessageId, knownName);
 		} catch (error) {
 			sendLoadingEvent({ visible: false });
 			throw error;
@@ -115,13 +115,13 @@ export function useRoomNavigation({
 			return;
 		}
 		const isUndecryptable =
-			'id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE;
+			'id' in message && 't' in message && message.t === E2E_MESSAGE_TYPE && 'e2e' in message && message.e2e !== E2E_STATUS.DONE;
 		if (!jumpToMessageId) {
 			setTimeout(() => sendLoadingEvent({ visible: false }), 300);
 		}
 		return navigation.push('RoomView', {
 			rid,
-			tmid: item.tmid,
+			tmid: message.tmid,
 			name: isUndecryptable ? I18n.t('Encrypted_message') : threadName,
 			t: SubscriptionType.THREAD,
 			roomUserId,
@@ -130,7 +130,6 @@ export function useRoomNavigation({
 	};
 
 	const executeJump = async (message: TGetMessageInfoResult, generation: number): Promise<boolean> => {
-		const isCurrent = () => jumpGenerationRef.current === generation;
 		const inThisThread = !!message.tmid && message.tmid === tmid;
 		const inThisRoom = !message.tmid && message.rid === rid;
 		if (!inThisThread && !inThisRoom) {
@@ -152,9 +151,9 @@ export function useRoomNavigation({
 			inWindow,
 			{ loadSurroundingMessages, getLocalAnchorTs }
 		);
-		if (!isCurrent()) return false;
+		if (!isCurrentJump(generation)) return false;
 		await waitForFabricCommit();
-		if (!isCurrent()) return false;
+		if (!isCurrentJump(generation)) return false;
 		await listContainerRef.current?.jumpToMessage(message.id, highTsMs);
 		return true;
 	};
@@ -165,7 +164,7 @@ export function useRoomNavigation({
 		try {
 			sendLoadingEvent({ visible: true, onCancel: cancelJumpToMessage });
 			const message = await getMessageInfo(messageId);
-			if (jumpGenerationRef.current !== generation) return;
+			if (!isCurrentJump(generation)) return;
 			if (!message) {
 				cancelJumpToMessage();
 				return;
@@ -176,7 +175,7 @@ export function useRoomNavigation({
 				sendLoadingEvent({ visible: false });
 			}
 		} catch (error: any) {
-			if (jumpGenerationRef.current !== generation) return;
+			if (!isCurrentJump(generation)) return;
 			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
 				showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
 			} else {
@@ -186,8 +185,6 @@ export function useRoomNavigation({
 		}
 	};
 
-	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
-	// message id reads as an undefined -> id edge and re-fires, instead of matching a stale param.
 	const consumeJumpParam = (messageId: string) => {
 		pendingJumpRef.current = undefined;
 		jumpToMessage(messageId);
@@ -235,7 +232,10 @@ export function useRoomNavigation({
 	useChangedParam(route.params?.jumpToMessageId, onJumpParamChanged);
 	useChangedParam(route.params?.jumpToThreadId, id => navToThread({ tmid: id }));
 
-	const onThreadPress = useDebounce((item: TAnyMessageModel) => navToThread(item), 1000, { leading: true, trailing: false });
+	const onThreadPress = useDebounce((message: TAnyMessageModel) => navToThread(message), 1000, {
+		leading: true,
+		trailing: false
+	});
 
 	const jumpToMessageByUrl = async (messageUrl?: string, isFromReply?: boolean) => {
 		if (!messageUrl) {
