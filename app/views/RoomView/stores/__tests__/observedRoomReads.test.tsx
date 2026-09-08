@@ -179,7 +179,7 @@ describe('observed Room reads', () => {
 		const invited = subscription({ status: 'INVITED', inviter: 'owner' });
 		const membership = renderHook(
 			() => {
-				const room = useRoomFromStore(store);
+				const { room } = useRoomFromStore(store);
 				return 'id' in room && isInviteSubscription(room as any);
 			},
 			{ wrapper: ({ children }) => <RoomStoreContext.Provider value={store}>{children}</RoomStoreContext.Provider> }

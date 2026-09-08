@@ -77,7 +77,7 @@ describe('useCloseBanner', () => {
 
 		const wrapper = ({ children }: { children: ReactNode }) =>
 			createElement(RoomStoreContext.Provider, { value: store }, children);
-		const { result } = renderHook(() => useCloseBanner(useRoom()), { wrapper });
+		const { result } = renderHook(() => useCloseBanner(useRoom().room), { wrapper });
 
 		original._topic = 'new';
 		act(() => emit([original]));

@@ -13,7 +13,7 @@ interface IRightButtonsProps {
 }
 
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const room = useRoomFromStore(roomStore);
+	const { room } = useRoomFromStore(roomStore);
 
 	if (!rid) {
 		return null;

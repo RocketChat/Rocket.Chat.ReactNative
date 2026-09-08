@@ -6,7 +6,7 @@ import { useRoomStore, useRoom } from '../../stores/RoomStoreContext';
 import { FooterAction } from './FooterAction';
 
 export const TakeOrJoin = ({ joinCodeRef }: ITakeOrJoinProps): ReactElement => {
-	const room = useRoom();
+	const { room } = useRoom();
 	const joinRoom = useRoomStore(s => s.joinRoom);
 
 	const onPressJoin = (): Promise<void> => joinRoom(() => joinCodeRef.current?.show());

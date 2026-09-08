@@ -4,7 +4,7 @@ import { useRoom } from '../stores/RoomStoreContext';
 import Banner from './Banner';
 
 export const RoomAnnouncementBanner = () => {
-	const room = useRoom();
+	const { room } = useRoom();
 	const closeBanner = useCloseBanner(room);
 
 	if (!('id' in room)) {

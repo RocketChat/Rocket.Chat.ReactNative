@@ -44,10 +44,11 @@ const room: { current: RoomState['room'] } = { current: { room: { rid: 'rid-1', 
 
 jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
-	const store = createStore(() => ({ room: { room: {} } }));
+	const { createRoomSnapshot } = require('../../../lib/roomObservation');
+	const store = createStore(() => ({ room: { room: {} }, roomSnapshot: createRoomSnapshot({}) }));
 	return {
 		createRoomStore: () => {
-			store.setState({ room: room.current }, true);
+			store.setState({ room: room.current, roomSnapshot: createRoomSnapshot(room.current.room) }, true);
 			return store;
 		},
 		observeRoom: (_rid: string, _store: unknown, onReady: () => void) => {

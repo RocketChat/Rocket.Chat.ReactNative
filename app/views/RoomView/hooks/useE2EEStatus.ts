@@ -6,7 +6,7 @@ import { useRoomFromStore } from '../stores/RoomStoreContext';
 
 export const useE2EEStatus = (roomStore: RoomStore): IUseE2EEStatusResult => {
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);
-	const room = useRoomFromStore(roomStore);
+	const { room } = useRoomFromStore(roomStore);
 
 	if (!('encrypted' in room)) {
 		return { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };

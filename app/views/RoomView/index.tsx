@@ -25,7 +25,7 @@ const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
-	const room = useRoomFromStore(roomStore);
+	const { room } = useRoomFromStore(roomStore);
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 

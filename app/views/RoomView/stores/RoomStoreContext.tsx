@@ -1,8 +1,9 @@
 import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';
 
-import { type IRoomViewState, type RoomState, type RoomStore } from '../definitions';
+import { type RoomState, type RoomStore } from '../definitions';
 import { useRoomReadFromStore } from '../../../lib/hooks/useRoomReadFromStore';
+import { useRoomFromStore, type IUseRoomResult } from '../../../lib/hooks/useRoom';
 
 export const RoomStoreContext = createContext<RoomStore | null>(null);
 
@@ -16,8 +17,6 @@ const useRoomStoreApi = (): RoomStore => {
 
 export const useRoomStore = <T,>(selector: (state: RoomState) => T): T => useStore(useRoomStoreApi(), selector);
 
-export { useRoomReadFromStore };
+export { useRoomReadFromStore, useRoomFromStore };
 
-export const useRoomFromStore = (store: RoomStore): IRoomViewState['room'] => useRoomReadFromStore(store).room;
-
-export const useRoom = (): IRoomViewState['room'] => useRoomFromStore(useRoomStoreApi());
+export const useRoom = (): IUseRoomResult => useRoomFromStore(useRoomStoreApi());

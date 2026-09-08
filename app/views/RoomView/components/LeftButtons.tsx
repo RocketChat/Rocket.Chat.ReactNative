@@ -9,8 +9,8 @@ import { getUserSelector } from '../../../selectors/login';
 import { HeaderBackButton } from '../../../containers/Header/components/HeaderBackButton';
 import { useUnreadsCount } from '../hooks/useUnreadsCount';
 import { useGoRoomActionsView } from '../hooks/useGoRoomActionsView';
-import { useStore } from 'zustand';
 import { type RoomStore } from '../definitions';
+import { useRoomFromStore } from '../stores/RoomStoreContext';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -30,7 +30,7 @@ const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement 
 	const isMasterDetail = useMasterDetail();
 	const baseUrl = useAppSelector(state => state.server.server);
 	const { id: userId, token } = useAppSelector(getUserSelector);
-	const room = useStore(roomStore, s => s.room.room);
+	const { room } = useRoomFromStore(roomStore);
 	const { t } = room;
 	const title = 'id' in room ? room.name : undefined;
 

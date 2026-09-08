@@ -35,7 +35,7 @@ export const RoomRightButtons = ({ rid, roomStore }: IRoomRightButtonsProps): Re
 	const threadsEnabled = useSetting('Threads_enabled') as boolean;
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 
-	const room = useRoomFromStore(roomStore);
+	const { room } = useRoomFromStore(roomStore);
 	const { hasE2EEWarning } = useE2EEStatus(roomStore);
 	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(roomStore, userId);
 	const [canToggleEncryption] = usePermissions(['toggle-room-e2e-encryption'], rid);

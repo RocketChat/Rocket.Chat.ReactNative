@@ -37,7 +37,7 @@ export const RoomMessageList = ({
 	reactionInit,
 	errorActionsShow
 }: IRoomMessageListProps) => {
-	const room = useRoom();
+	const { room } = useRoom();
 	const canAutoTranslate = useRoomStore(s => s.canAutoTranslate);
 	const showMessageInMainThread = useAppSelector(state => getUserSelector(state).showMessageInMainThread ?? false);
 	const serverVersion = useAppSelector(state => state.server.version);

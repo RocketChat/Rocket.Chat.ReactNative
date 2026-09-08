@@ -45,7 +45,7 @@ describe('useRoom', () => {
 		const spy = jest.fn();
 
 		const Reader = () => {
-			const room = useRoom();
+			const { room } = useRoom();
 			spy('topic' in room ? room.topic : undefined);
 			return null;
 		};

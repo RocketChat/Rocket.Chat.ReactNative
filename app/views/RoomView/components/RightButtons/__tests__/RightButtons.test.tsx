@@ -3,6 +3,7 @@ import { createStore } from 'zustand';
 
 import { type RoomStore } from '../../../definitions';
 import RightButtons from '../RightButtons';
+import { makeRoomReads } from '../../../__tests__/roomStoreFixture';
 
 jest.mock('../OmnichannelRightButtons', () => {
 	const ReactActual = jest.requireActual('react');
@@ -63,7 +64,7 @@ const expectOnlyStub = (present?: string) => {
 };
 
 const createRoomStore = (room: Record<string, unknown>) => {
-	const store = createStore(() => ({ room: { room } }));
+	const store = createStore(() => makeRoomReads(room));
 	return store as typeof store & RoomStore;
 };
 
@@ -126,7 +127,7 @@ describe('RightButtons routing', () => {
 		expectOnlyStub('room-right-buttons-stub');
 		expect(roomMock.mounts.count).toBe(1);
 
-		act(() => roomStore.setState({ room: { room: { rid: 'rid-1', t: 'l' } } }));
+		act(() => roomStore.setState(makeRoomReads({ rid: 'rid-1', t: 'l' })));
 
 		expectOnlyStub('omnichannel-right-buttons-stub');
 		expect(omnichannelMock.mounts.count).toBe(1);
@@ -160,7 +161,7 @@ describe('RightButtons routing', () => {
 
 		act(() => {
 			Object.assign(room, { t: nextType, status: nextStatus });
-			roomStore.setState({ room: { room } });
+			roomStore.setState(makeRoomReads(room));
 		});
 
 		expectOnlyStub(expected);

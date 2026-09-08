@@ -31,7 +31,7 @@ export const OmnichannelRightButtons = ({ rid, roomStore }: IOmnichannelRightBut
 
 	const livechatRequestComment = useSetting('Livechat_request_comment_when_closing_conversation') as boolean;
 
-	const room = useRoomFromStore(roomStore);
+	const { room } = useRoomFromStore(roomStore);
 	const canForwardGuest = useStore(roomStore, s => s.canForwardGuest);
 	const canReturnQueue = useCanReturnQueue(true);
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);

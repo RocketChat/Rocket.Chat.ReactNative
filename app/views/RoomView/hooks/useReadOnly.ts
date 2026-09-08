@@ -5,7 +5,7 @@ import { getUserSelector } from '../../../selectors/login';
 import { useRoom } from '../stores/RoomStoreContext';
 
 export const useReadOnly = (): boolean => {
-	const room = useRoom();
+	const { room } = useRoom();
 	const user = useAppSelector(getUserSelector);
 	const postReadOnlyPermission = useAppSelector(state => state.permissions['post-readonly']);
 

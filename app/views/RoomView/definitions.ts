@@ -15,6 +15,7 @@ import {
 } from '../../definitions';
 import { type TRoomOrPreview, type TRoomObservedFields } from '../../definitions/TRoom';
 import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
+import { type RoomSnapshot } from '../../lib/roomObservation';
 import { type TSubscriptionModel } from '../../definitions/ISubscription';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
@@ -119,6 +120,7 @@ export type TRoomInitResult =
 
 export interface RoomState {
 	room: RoomRead;
+	roomSnapshot: RoomSnapshot;
 	observedValues: TRoomObservedFields;
 	joined: boolean;
 	subscribed: boolean;

@@ -24,7 +24,7 @@ const getFederatedFooterDescription = (
 };
 
 export const useFooterMessage = (): string | null => {
-	const room = useRoom();
+	const { room } = useRoom();
 	const readOnly = useReadOnly();
 	const federationMatrixEnabled = useSetting('Federation_Matrix_enabled');
 	const federationServiceEnabled = useSetting('Federation_Service_Enabled');

@@ -20,7 +20,7 @@ const setup = (opts: {
 	airGappedRemainingDays?: number | undefined;
 	footerMessage?: string;
 }) => {
-	mockUseRoomWithUpdate.mockReturnValue(opts.room ?? {});
+	mockUseRoomWithUpdate.mockReturnValue({ room: opts.room ?? {} });
 	mockUseRoomStore.mockReturnValue(opts.joined ?? true);
 	mockUseAppSelector.mockReturnValue(opts.airGappedRemainingDays);
 	mockUseFooterMessage.mockReturnValue(opts.footerMessage ?? '');

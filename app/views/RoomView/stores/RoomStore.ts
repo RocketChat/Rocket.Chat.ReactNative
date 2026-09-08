@@ -19,6 +19,7 @@ import {
 } from '../definitions';
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
+import { createRoomSnapshot, getRoom } from '../../../lib/roomObservation';
 
 const roomObservedColumns = {
 	f: 'f',
@@ -156,6 +157,7 @@ const createRoomState =
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: { room: initialRoom },
+		roomSnapshot: createRoomSnapshot(initialRoom),
 		observedValues: {},
 		joined: true,
 		subscribed: 'id' in initialRoom,
@@ -171,8 +173,8 @@ const createRoomState =
 				return { status: 'skipped' };
 			}
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
-				const { room: roomRead, joined } = get();
-				const room = roomRead.room;
+				const { roomSnapshot, joined } = get();
+				const room = getRoom(roomSnapshot);
 				const result = await loadRoom(rid, room, joined, { tmid, onThreadMessagesLoaded, signal });
 				if (signal?.aborted || result.status === 'skipped') {
 					return { status: 'skipped' };
@@ -199,11 +201,11 @@ const createRoomState =
 		join: () => set({ joined: true }),
 
 		joinRoom: (requestJoinCode?: () => void): Promise<void> =>
-			joinRoom(get().room.room, {
+			joinRoom(getRoom(get().roomSnapshot), {
 				requestJoinCode,
 				onJoin: get().join
 			}),
-		resumeRoom: (): Promise<void> => resumeRoom(get().room.room, get().join)
+		resumeRoom: (): Promise<void> => resumeRoom(getRoom(get().roomSnapshot), get().join)
 	});
 
 export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
@@ -218,13 +220,13 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 		const next = rows[0];
 		const previous = store.getState();
 		if (!next) {
-			store.setState({ subscribed: false, ...(previous.room.room.t !== 'd' ? { joined: false } : {}) });
+			store.setState({ subscribed: false, ...(getRoom(previous.roomSnapshot).t !== 'd' ? { joined: false } : {}) });
 			return;
 		}
 		const trackedValuesChanged = observedFields.some(
 			attr => previous.observedValues[attr] !== (next as TSubscriptionModel)[attr]
 		);
-		const roomChanged = next !== previous.room.room || trackedValuesChanged;
+		const roomChanged = next !== getRoom(previous.roomSnapshot) || trackedValuesChanged;
 		const lastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
 		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
 			return;
@@ -236,6 +238,7 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 			...(roomChanged
 				? {
 						room: { room: next },
+						roomSnapshot: createRoomSnapshot(next),
 						observedValues: Object.fromEntries(
 							observedFields.map(attr => [attr, (next as TSubscriptionModel)[attr]])
 						) as RoomState['observedValues']

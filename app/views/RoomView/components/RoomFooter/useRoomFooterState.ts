@@ -10,7 +10,7 @@ export type TRoomFooterState =
 	| { kind: 'composer' };
 
 export const useRoomFooterState = (): TRoomFooterState => {
-	const room = useRoom();
+	const { room } = useRoom();
 	const joined = useRoomStore(s => s.joined);
 	const airGappedRestrictionRemainingDays = useSetting('Cloud_Workspace_AirGapped_Restrictions_Remaining_Days') as
 		| number
