@@ -49,7 +49,7 @@ import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-const composerPlaceholder = (snapshot: RoomSnapshot, tmid?: string): string => {
+const getComposerPlaceholder = (snapshot: RoomSnapshot, tmid?: string): string => {
 	if (tmid) {
 		return I18n.t('Add_thread_reply');
 	}
@@ -81,7 +81,7 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
-		const placeholder = composerPlaceholder(snapshot, tmid);
+		const placeholder = getComposerPlaceholder(snapshot, tmid);
 		const isOmnichannel = isOmnichannelRoom(snapshot);
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;

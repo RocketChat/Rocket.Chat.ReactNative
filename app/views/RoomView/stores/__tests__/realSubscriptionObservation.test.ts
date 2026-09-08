@@ -50,7 +50,7 @@ describe('real Subscription record through the Room store observer', () => {
 		expect(snapshotCount()).toBe(1);
 	});
 
-	it('reads the same roles array back when the rewritten payload serialises identically', () => {
+	it('pins the WatermelonDB @json memo the content comparison relies on: an identical payload rewrite returns the same array instance', () => {
 		const record = createSubscriptionRecord();
 		const roles = record.roles;
 

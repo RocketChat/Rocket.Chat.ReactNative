@@ -3,12 +3,12 @@ import { useTheme, type TSupportedThemes } from '../../../theme';
 import { getBadgeColor } from '../../../lib/methods/helpers/room';
 import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 
-const badgeColorForSnapshot = (snapshot: RoomSnapshot, messageId: string, theme: TSupportedThemes): string | undefined =>
+const getThreadBadgeColor = (snapshot: RoomSnapshot, messageId: string, theme: TSupportedThemes): string | undefined =>
 	getBadgeColor({ subscription: getRoom(snapshot), messageId, theme });
 
 export const useThreadBadgeColor = (messageId: string): string | undefined => {
 	const { theme } = useTheme();
 	const { snapshot } = useRoom();
 
-	return badgeColorForSnapshot(snapshot, messageId, theme);
+	return getThreadBadgeColor(snapshot, messageId, theme);
 };

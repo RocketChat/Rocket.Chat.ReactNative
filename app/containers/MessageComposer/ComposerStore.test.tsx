@@ -90,8 +90,18 @@ describe('ComposerStore', () => {
 			spy(room.name);
 			return null;
 		};
+		const props = fullProps();
 		const Parent = ({ roomSnapshot }: { roomSnapshot: RoomSnapshot }) => (
-			<ComposerProvider {...fullProps()} roomSnapshot={roomSnapshot}>
+			<ComposerProvider
+				rid={props.rid}
+				t={props.t}
+				tmid={props.tmid}
+				roomSnapshot={roomSnapshot}
+				sharing={props.sharing}
+				editCancel={props.editCancel}
+				editRequest={props.editRequest}
+				onRemoveQuoteMessage={props.onRemoveQuoteMessage}
+				onSendMessage={props.onSendMessage}>
 				<Reader />
 			</ComposerProvider>
 		);

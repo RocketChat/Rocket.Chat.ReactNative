@@ -5,7 +5,7 @@ import { getUserSelector } from '../../../selectors/login';
 import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 import { useRoom } from '../stores/RoomStoreContext';
 
-const readOnlyForSnapshot = (
+const getReadOnly = (
 	snapshot: RoomSnapshot,
 	username: string,
 	postReadOnlyPermission: string[] | undefined,
@@ -23,5 +23,5 @@ export const useReadOnly = (): boolean => {
 	const user = useAppSelector(getUserSelector);
 	const postReadOnlyPermission = useAppSelector(state => state.permissions['post-readonly']);
 
-	return readOnlyForSnapshot(snapshot, user.username as string, postReadOnlyPermission, user.roles ?? []);
+	return getReadOnly(snapshot, user.username as string, postReadOnlyPermission, user.roles ?? []);
 };

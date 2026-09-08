@@ -4,24 +4,30 @@ import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 import { useRoom } from '../stores/RoomStoreContext';
 import Banner from './Banner';
 
-const getAnnouncement = (snapshot: RoomSnapshot): { text?: string; bannerClosed?: boolean } | null => {
+const hasAnnouncement = (snapshot: RoomSnapshot): boolean => 'id' in getRoom(snapshot);
+
+const getAnnouncementText = (snapshot: RoomSnapshot): string | undefined => {
 	const room = getRoom(snapshot);
-	return 'id' in room ? { text: room.announcement, bannerClosed: room.bannerClosed } : null;
+	return 'id' in room ? room.announcement : undefined;
+};
+
+const isBannerClosed = (snapshot: RoomSnapshot): boolean | undefined => {
+	const room = getRoom(snapshot);
+	return 'id' in room ? room.bannerClosed : undefined;
 };
 
 export const RoomAnnouncementBanner = () => {
 	const { room, snapshot } = useRoom();
 	const closeBanner = useCloseBanner(room);
-	const announcement = getAnnouncement(snapshot);
 
-	if (!announcement) {
+	if (!hasAnnouncement(snapshot)) {
 		return null;
 	}
 	return (
 		<Banner
 			title={I18n.t('Announcement')}
-			text={announcement.text}
-			bannerClosed={announcement.bannerClosed}
+			text={getAnnouncementText(snapshot)}
+			bannerClosed={isBannerClosed(snapshot)}
 			closeBanner={closeBanner}
 		/>
 	);
