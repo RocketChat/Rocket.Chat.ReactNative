@@ -36,6 +36,12 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun handleText(intent: Intent) {
+        // Contacts share as text/* (e.g. text/x-vcard) with the payload in
+        // EXTRA_STREAM, not EXTRA_TEXT — handle it as media.
+        if (intent.hasExtra(Intent.EXTRA_STREAM)) {
+            handleMedia(intent, "data")
+            return
+        }
         // Handle sharing text
         val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
         if (sharedText != null) {
@@ -51,7 +57,7 @@ class ShareActivity : AppCompatActivity() {
         var valid = true
 
         val uris = when (intent.action) {
-            Intent.ACTION_SEND -> listOf(intent.getParcelableExtra(Intent.EXTRA_STREAM) as Uri?)
+            Intent.ACTION_SEND -> listOf(intent.getParcelableExtra(Intent.EXTRA_STREAM) as? Uri)
             Intent.ACTION_SEND_MULTIPLE -> intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)
             else -> null
         }
@@ -106,6 +112,7 @@ class ShareActivity : AppCompatActivity() {
         return when {
             mimeType?.startsWith("image/") == true -> ".jpeg"
             mimeType?.startsWith("video/") == true -> ".mp4"
+            mimeType == "text/x-vcard" || mimeType == "text/vcard" -> ".vcf"
             else -> "" // Ignore the file if the type is not recognized
         }
     }
