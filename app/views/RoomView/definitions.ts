@@ -13,7 +13,7 @@ import {
 	type TAnyMessageModel,
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
-import { type TRoomOrPreview, type TRoomUpdatePatch } from '../../definitions/TRoom';
+import { type TRoomOrPreview, type TRoomObservedFields } from '../../definitions/TRoom';
 import { type TSubscriptionModel } from '../../definitions/ISubscription';
 import { type TActionSheetOptions } from '../../containers/ActionSheet';
 import { type IMessageComposerRef } from '../../containers/MessageComposer/interfaces';
@@ -53,7 +53,7 @@ export interface IFooterPreviewProps {
 
 export interface IRoomViewState {
 	room: TRoomOrPreview;
-	roomUpdate: TRoomUpdatePatch;
+	roomUpdate: TRoomObservedFields;
 	member: any;
 	lastSeen: Date | null;
 }
@@ -131,7 +131,7 @@ export type TRoomInitResult =
 
 export interface RoomState {
 	room: TRoomOrPreview;
-	roomUpdate: TRoomUpdatePatch;
+	roomUpdate: TRoomObservedFields;
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];

@@ -1,6 +1,6 @@
-import { type TRoomUpdate } from '../../definitions/TRoom';
+import { type TRoomObservedField } from '../../definitions/TRoom';
 
-export const roomAttrsUpdateColumns: Record<TRoomUpdate, string> = {
+export const roomObservedColumns: Record<TRoomObservedField, string> = {
 	f: 'f',
 	ro: 'ro',
 	blocked: 'blocked',

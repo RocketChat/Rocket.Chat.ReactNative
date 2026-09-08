@@ -17,7 +17,7 @@ export type TPreviewRoom = {
 
 export type TRoomOrPreview = TSubscriptionModel | TPreviewRoom;
 
-export const roomAttrsUpdate = [
+export const roomObservedFields = [
 	'f',
 	'ro',
 	'blocked',
@@ -51,5 +51,5 @@ export const roomAttrsUpdate = [
 	'inviter'
 ] as const satisfies readonly (keyof ISubscription)[];
 
-export type TRoomUpdate = (typeof roomAttrsUpdate)[number];
-export type TRoomUpdatePatch = Partial<Pick<ISubscription, TRoomUpdate>>;
+export type TRoomObservedField = (typeof roomObservedFields)[number];
+export type TRoomObservedFields = Partial<Pick<ISubscription, TRoomObservedField>>;

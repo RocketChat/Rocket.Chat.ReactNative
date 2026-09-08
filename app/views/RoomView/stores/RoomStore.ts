@@ -9,7 +9,7 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { roomAttrsUpdate, type TRoomOrPreview } from '../../../definitions/TRoom';
+import { roomObservedFields, type TRoomOrPreview } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
@@ -17,11 +17,11 @@ import {
 	type RoomStore,
 	type TRoomInitResult
 } from '../definitions';
-import { roomAttrsUpdateColumns } from '../constants';
+import { roomObservedColumns } from '../constants';
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 
-const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
+const OBSERVED_COLUMNS = Object.values(roomObservedColumns);
 
 const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: IRoomViewState['member'] = {};
@@ -188,7 +188,7 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 			return;
 		}
 		const roomChanged =
-			next !== previous.room || roomAttrsUpdate.some(attr => previous.roomUpdate[attr] !== (next as TSubscriptionModel)[attr]);
+			next !== previous.room || roomObservedFields.some(attr => previous.roomUpdate[attr] !== (next as TSubscriptionModel)[attr]);
 		const lastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
 		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
 			return;
@@ -201,7 +201,7 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 				? {
 						room: next,
 						roomUpdate: Object.fromEntries(
-							roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
+							roomObservedFields.map(attr => [attr, (next as TSubscriptionModel)[attr]])
 						) as IRoomViewState['roomUpdate']
 					}
 				: {})
