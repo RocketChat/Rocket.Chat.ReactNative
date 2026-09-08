@@ -1,5 +1,5 @@
-import { createRef, useEffect, type ReactElement } from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { createRef, type ReactElement, type RefObject } from 'react';
+import { act, fireEvent, render, renderHook, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { initStore } from '../../lib/store/auxStore';
@@ -8,7 +8,7 @@ import { appStart } from '../../actions/app';
 import { RootEnum } from '../../definitions';
 import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { MessageComposerContainer, type IMessageComposerRef } from '../../containers/MessageComposer';
-import { createMessageActionStore } from '../../containers/message/stores/MessageActionStore';
+import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { useChooseMedia } from '../../containers/MessageComposer/hooks/useChooseMedia';
 
 jest.mock('expo-document-picker', () => ({
@@ -64,11 +64,16 @@ const mockGetSubscriptionByRoomId = require('../../lib/database/services/Subscri
 
 initStore(mockedStore);
 
-const OriginMediaProbe = ({ onReady }: { onReady: (chooseFile: () => Promise<void>) => void }): ReactElement | null => {
-	const { chooseFile } = useChooseMedia({ rid: 'room-id', tmid: undefined, permissionToUpload: true });
-	useEffect(() => onReady(chooseFile), [chooseFile, onReady]);
-	return null;
-};
+const renderOriginChooseMedia = (originStore: TMessageActionStore, originComposerRef: RefObject<IMessageComposerRef | null>) =>
+	renderHook(() => useChooseMedia({ rid: 'room-id', tmid: undefined, permissionToUpload: true }), {
+		wrapper: ({ children }: { children: ReactElement }) => (
+			<Provider store={mockedStore}>
+				<RoomProviders store={originStore} rid='room-id' t='c' room={{ rid: 'room-id', t: 'c' } as any}>
+					<MessageComposerContainer ref={originComposerRef}>{children}</MessageComposerContainer>
+				</RoomProviders>
+			</Provider>
+		)
+	});
 
 const makeInstance = ({
 	mime,
@@ -430,23 +435,15 @@ describe('ShareView', () => {
 		const originStore = createMessageActionStore();
 		act(() => originStore.getState().actions.setQuoteMessageIds(['origin-quote']));
 		const originComposerRef = createRef<IMessageComposerRef>();
-		let chooseFile!: () => Promise<void>;
-		render(
-			<Provider store={mockedStore}>
-				<RoomProviders store={originStore} rid='room-id' t='c' room={{ rid: 'room-id', t: 'c' } as any}>
-					<MessageComposerContainer ref={originComposerRef}>
-						<OriginMediaProbe onReady={callback => (chooseFile = callback)} />
-					</MessageComposerContainer>
-				</RoomProviders>
-			</Provider>
-		);
+		const { result } = renderOriginChooseMedia(originStore, originComposerRef);
 		await act(async () => {
 			await Promise.resolve();
 			fireEvent.changeText(screen.getByTestId('message-composer-input'), 'origin text');
 		});
 		await act(async () => {
-			await chooseFile();
+			await result.current.chooseFile();
 		});
+		expect(documentPicker).toHaveBeenCalledTimes(1);
 
 		const navigationParams = navigate.mock.calls[0][1];
 		expect(navigationParams.startShareView().text).toBe('origin text');
@@ -488,23 +485,15 @@ describe('ShareView', () => {
 		const originStore = createMessageActionStore();
 		act(() => originStore.getState().actions.setQuoteMessageIds(['origin-quote']));
 		const originComposerRef = createRef<IMessageComposerRef>();
-		let chooseFile!: () => Promise<void>;
-		render(
-			<Provider store={mockedStore}>
-				<RoomProviders store={originStore} rid='room-id' t='c' room={{ rid: 'room-id', t: 'c' } as any}>
-					<MessageComposerContainer ref={originComposerRef}>
-						<OriginMediaProbe onReady={callback => (chooseFile = callback)} />
-					</MessageComposerContainer>
-				</RoomProviders>
-			</Provider>
-		);
+		const { result } = renderOriginChooseMedia(originStore, originComposerRef);
 		await act(async () => {
 			await Promise.resolve();
 			fireEvent.changeText(screen.getByTestId('message-composer-input'), 'origin text');
 		});
 		await act(async () => {
-			await chooseFile();
+			await result.current.chooseFile();
 		});
+		expect(documentPicker).toHaveBeenCalledTimes(1);
 		const navigationParams = navigate.mock.calls[0][1];
 
 		const shareView = makeInstance({ mime: 'application/pdf', serverVersion: '8.3.0' });
