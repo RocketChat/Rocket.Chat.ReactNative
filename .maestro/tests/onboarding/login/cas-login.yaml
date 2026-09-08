@@ -1,0 +1,60 @@
+appId: ${APP_ID}
+name: CAS Login
+onFlowStart:
+  - runFlow: ../../../helpers/setup.yaml
+tags:
+  - test-2
+
+---
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-candidate-login.yaml
+
+- extendedWaitUntil:
+    visible:
+      text: 'Continue with CAS'
+    timeout: 60000
+- tapOn: 'Continue with CAS'
+- extendedWaitUntil:
+    visible:
+      text: 'CAS Login'
+    timeout: 10000
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'username'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Username'
+          index: 1
+- inputText: ${output.data.cas.username}
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'password'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'Password'
+          index: 1
+- inputText: ${output.data.cas.password}
+- runFlow: '../../../helpers/hide-keyboard.yaml'
+- tapOn: 'Sign in'
+- runFlow:
+    when:
+      visible: '.*Save password to Google Password Manager.*'
+      platform: Android
+    commands:
+      - tapOn: "Never"
+- extendedWaitUntil:
+    visible:
+        id: 'rooms-list-view'
+    timeout: 60000
