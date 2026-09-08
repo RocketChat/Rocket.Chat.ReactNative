@@ -8,6 +8,7 @@ import { ComposerProvider } from '../ComposerStore';
 import { createMessageActionStore, MessageActionProvider } from '../../message/stores/MessageActionStore';
 import { type IComposerInput } from '../interfaces';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import { createRoomSnapshot } from '../../../lib/roomObservation';
 
 jest.mock('react-native', () => {
 	const actual = jest.requireActual('react-native');
@@ -58,7 +59,7 @@ const composerState = {
 	rid: 'room-1',
 	t: 'c',
 	tmid: undefined,
-	roomRead: { room: { rid: 'room-1', t: 'c' } },
+	roomSnapshot: createRoomSnapshot({ rid: 'room-1', t: 'c' }),
 	sharing: false,
 	onRemoveQuoteMessage: jest.fn()
 };

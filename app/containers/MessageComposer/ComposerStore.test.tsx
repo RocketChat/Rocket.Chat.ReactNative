@@ -1,7 +1,7 @@
 import { useContext, type ReactNode } from 'react';
 import { act, render, renderHook } from '@testing-library/react-native';
 
-import { type ComposerState } from './ComposerStore';
+import { createRoomSnapshot, type RoomSnapshot } from '../../lib/roomObservation';
 import {
 	ComposerProvider,
 	ComposerStoreContext,
@@ -24,7 +24,7 @@ const fullProps = () => ({
 	rid: 'rid-1',
 	t: 'c',
 	tmid: 'tmid-1',
-	roomRead: { room },
+	roomSnapshot: createRoomSnapshot(room),
 	sharing: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),
@@ -36,7 +36,7 @@ const useAllComposerHooks = () => ({
 	rid: useComposerRid(),
 	t: useComposerType(),
 	tmid: useComposerTmid(),
-	room: useComposerRoom(),
+	roomResult: useComposerRoom(),
 	sharing: useComposerSharing(),
 	isAutocompleteVisible: useIsAutocompleteVisible(),
 	editCancel: useEditCancel(),
@@ -54,10 +54,10 @@ describe('ComposerStore', () => {
 		const { result } = renderHook(() => useAllComposerHooks(), { wrapper });
 
 		// isAutocompleteVisible/updateAutocompleteVisible are store-owned, not seeded props.
-		const { roomRead, ...propsWithoutRead } = props;
+		const { roomSnapshot, ...propsWithoutRoom } = props;
 		expect(result.current).toEqual({
-			...propsWithoutRead,
-			room: roomRead.room,
+			...propsWithoutRoom,
+			roomResult: { room, snapshot: roomSnapshot },
 			isAutocompleteVisible: false,
 			updateAutocompleteVisible: expect.any(Function)
 		});
@@ -81,26 +81,26 @@ describe('ComposerStore', () => {
 		expect(result.current.isAutocompleteVisible).toBe(false);
 	});
 
-	it('re-renders useComposerRoom when the observed read changes, even with the same room reference', () => {
+	it('re-renders useComposerRoom when a new snapshot carries the same mutated room instance', () => {
 		const mutableRoom = { rid: 'rid-1', t: 'c', name: 'old' };
 		const spy = jest.fn();
 
 		const Reader = () => {
-			const room = useComposerRoom();
-			spy(room && 'name' in room ? room.name : undefined);
+			const { room } = useComposerRoom();
+			spy(room.name);
 			return null;
 		};
-		const Parent = ({ roomRead }: { roomRead: ComposerState['roomRead'] }) => (
-			<ComposerProvider {...fullProps()} roomRead={roomRead}>
+		const Parent = ({ roomSnapshot }: { roomSnapshot: RoomSnapshot }) => (
+			<ComposerProvider {...fullProps()} roomSnapshot={roomSnapshot}>
 				<Reader />
 			</ComposerProvider>
 		);
 
-		const { rerender } = render(<Parent roomRead={{ room: mutableRoom }} />);
+		const { rerender } = render(<Parent roomSnapshot={createRoomSnapshot(mutableRoom)} />);
 		expect(spy).toHaveBeenLastCalledWith('old');
 
 		mutableRoom.name = 'new';
-		rerender(<Parent roomRead={{ room: mutableRoom }} />);
+		rerender(<Parent roomSnapshot={createRoomSnapshot(mutableRoom)} />);
 		expect(spy).toHaveBeenLastCalledWith('new');
 	});
 

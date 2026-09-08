@@ -10,6 +10,7 @@ import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { MessageComposerContainer, type IMessageComposerRef } from '../../containers/MessageComposer';
 import { createMessageActionStore, type TMessageActionStore } from '../../containers/message/stores/MessageActionStore';
 import { useChooseMedia } from '../../containers/MessageComposer/hooks/useChooseMedia';
+import { createRoomSnapshot } from '../../lib/roomObservation';
 
 jest.mock('expo-document-picker', () => ({
 	getDocumentAsync: jest.fn()
@@ -68,7 +69,7 @@ const renderOriginChooseMedia = (originStore: TMessageActionStore, originCompose
 	renderHook(() => useChooseMedia({ rid: 'room-id', tmid: undefined, permissionToUpload: true }), {
 		wrapper: ({ children }: { children: ReactElement }) => (
 			<Provider store={mockedStore}>
-				<RoomProviders store={originStore} rid='room-id' t='c' roomRead={{ room: { rid: 'room-id', t: 'c' } }}>
+				<RoomProviders store={originStore} rid='room-id' t='c' roomSnapshot={createRoomSnapshot({ rid: 'room-id', t: 'c' })}>
 					<MessageComposerContainer ref={originComposerRef}>{children}</MessageComposerContainer>
 				</RoomProviders>
 			</Provider>
@@ -140,8 +141,7 @@ const makeInstance = ({
 			}
 		],
 		text: '',
-		room: { rid: 'room-id', t: 'c' } as any,
-		roomRead: { room: { rid: 'room-id', t: 'c' } as any },
+		roomSnapshot: createRoomSnapshot({ rid: 'room-id', t: 'c' } as any),
 		thread: '',
 		maxFileSize: undefined,
 		mediaAllowList: undefined

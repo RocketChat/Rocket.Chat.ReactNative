@@ -45,8 +45,23 @@ import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/externalInput';
+import { getRoom, type RoomSnapshot } from '../../../lib/roomObservation';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
+
+const composerPlaceholder = (snapshot: RoomSnapshot, tmid?: string): string => {
+	if (tmid) {
+		return I18n.t('Add_thread_reply');
+	}
+	const room = getRoom(snapshot);
+	const placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
+	if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
+		return `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
+	}
+	return placeholder;
+};
+
+const isOmnichannelRoom = (snapshot: RoomSnapshot): boolean => getRoom(snapshot).t === 'l';
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
@@ -55,7 +70,7 @@ export const ComposerInput = memo(
 		const tmid = useComposerTmid();
 		const sharing = useComposerSharing();
 		const messageActionStore = useMessageActionStoreApi();
-		const room = useComposerRoom();
+		const { snapshot } = useComposerRoom();
 		const action = useMessageAction();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
@@ -66,13 +81,8 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
-		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
-		if (!tmid) {
-			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
-			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
-				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
-			}
-		}
+		const placeholder = composerPlaceholder(snapshot, tmid);
+		const isOmnichannel = isOmnichannelRoom(snapshot);
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
@@ -362,7 +372,7 @@ export const ComposerInput = memo(
 				setAutocompleteParams({ text: autocompleteText, type: ':' });
 				return;
 			}
-			if (lastWord.match(/^!/) && room?.t === 'l') {
+			if (lastWord.match(/^!/) && isOmnichannel) {
 				setAutocompleteParams({ text: autocompleteText, type: '!' });
 				return;
 			}

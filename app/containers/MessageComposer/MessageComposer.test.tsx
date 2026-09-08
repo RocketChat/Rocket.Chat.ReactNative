@@ -23,6 +23,7 @@ import { useMessageComposerApi } from './context';
 import { type IMessageComposerRef } from './interfaces';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { runSlashCommand } from '../../lib/services/restApi';
+import { createRoomSnapshot, getRoom } from '../../lib/roomObservation';
 
 jest.useFakeTimers();
 
@@ -102,18 +103,16 @@ jest.mock('../../lib/database/services/Message', () => ({
 const initialContext = {
 	rid: 'rid',
 	tmid: undefined,
-	roomRead: {
-		room: {
-			rid: 'rid',
-			t: 'd',
-			tmid: undefined,
-			name: 'Rocket Chat',
-			fname: 'Rocket Chat',
-			usernames: ['user1', 'user2'],
-			prid: undefined,
-			federated: false
-		}
-	},
+	roomSnapshot: createRoomSnapshot({
+		rid: 'rid',
+		t: 'd',
+		tmid: undefined,
+		name: 'Rocket Chat',
+		fname: 'Rocket Chat',
+		usernames: ['user1', 'user2'],
+		prid: undefined,
+		federated: false
+	} as any),
 	sharing: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(),
@@ -628,7 +627,14 @@ describe('MessageComposer', () => {
 
 		test('select ! canned response inserts text and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
-			render(<Render context={{ onSendMessage, roomRead: { room: { ...initialContext.roomRead.room, t: 'l' } } }} />);
+			render(
+				<Render
+					context={{
+						onSendMessage,
+						roomSnapshot: createRoomSnapshot({ ...getRoom(initialContext.roomSnapshot), t: 'l' } as any)
+					}}
+				/>
+			);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '!');

@@ -20,6 +20,7 @@ import Navigation from '../../../lib/navigation/appNavigation';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
+import { createRoomSnapshot } from '../../../lib/roomObservation';
 
 jest.useFakeTimers();
 
@@ -72,9 +73,14 @@ initStore(mockedStore);
 
 const composerContext = {
 	rid: 'rid',
-	roomRead: {
-		room: { rid: 'rid', t: 'd', name: 'Rocket Chat', fname: 'Rocket Chat', usernames: ['user1', 'user2'], federated: false }
-	},
+	roomSnapshot: createRoomSnapshot({
+		rid: 'rid',
+		t: 'd',
+		name: 'Rocket Chat',
+		fname: 'Rocket Chat',
+		usernames: ['user1', 'user2'],
+		federated: false
+	} as any),
 	sharing: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(),

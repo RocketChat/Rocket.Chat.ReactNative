@@ -26,8 +26,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const { colors } = useTheme();
 	const isMasterDetail = useMasterDetail();
 
-	const { room } = useRoomFromStore(roomStore);
-	const roomRead = useStore(roomStore, s => s.room);
+	const { room, snapshot } = useRoomFromStore(roomStore);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 
 	const {
@@ -83,7 +82,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 					store={messageActionStore}
 					rid={room.rid}
 					t={room.t}
-					roomRead={roomRead}
+					roomSnapshot={snapshot}
 					tmid={tmid}
 					sharing={false}
 					onRemoveQuoteMessage={onRemoveQuoteMessage}

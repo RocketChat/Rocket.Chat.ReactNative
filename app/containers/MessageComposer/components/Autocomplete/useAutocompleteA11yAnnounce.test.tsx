@@ -5,12 +5,13 @@ import { type ReactNode } from 'react';
 import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
 import { createComposerStore, ComposerStoreContext } from '../../ComposerStore';
 import { type ComposerStore } from '../../ComposerStore';
+import { createRoomSnapshot } from '../../../../lib/roomObservation';
 
 const externalState = {
 	rid: 'rid-1',
 	t: 'c',
 	tmid: undefined,
-	roomRead: { room: { rid: 'rid-1', t: 'c' } },
+	roomSnapshot: createRoomSnapshot({ rid: 'rid-1', t: 'c' }),
 	sharing: false,
 	editCancel: jest.fn(),
 	editRequest: jest.fn(() => Promise.resolve()),

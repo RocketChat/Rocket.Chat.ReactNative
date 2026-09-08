@@ -33,8 +33,7 @@ import {
 	RootEnum,
 	type TThreadModel
 } from '../../definitions';
-import { type TRoomOrPreview } from '../../definitions/TRoom';
-import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
+import { createRoomSnapshot, getRoom, type RoomSnapshot } from '../../lib/roomObservation';
 import { RoomProviders } from '../RoomView/components/RoomProviders';
 import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
@@ -48,8 +47,7 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IShareAttachment[];
 	text: string;
-	room: TRoomOrPreview;
-	roomRead: RoomRead;
+	roomSnapshot: RoomSnapshot;
 	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
@@ -89,15 +87,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// ShareView only ever uses the quote flow; real ids arrive later via startShareView -> setQuoteMessageIds.
 		this.messageActionStore = createMessageActionStore();
 
-		const room = props.route.params?.room ?? { rid: '', t: '' };
 		this.state = {
 			selected: {} as IShareAttachment,
 			loading: false,
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
-			room,
-			roomRead: { room },
+			roomSnapshot: createRoomSnapshot(props.route.params?.room ?? { rid: '', t: '' }),
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
 			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
@@ -137,7 +133,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	setHeader = () => {
-		const { room, thread, readOnly, attachments } = this.state;
+		const { roomSnapshot, thread, readOnly, attachments } = this.state;
+		const room = getRoom(roomSnapshot);
 		const { navigation, theme } = this.props;
 
 		const options: NativeStackNavigationOptions = {
@@ -175,7 +172,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	getPermissionMobileUpload = async () => {
-		const { room } = this.state;
+		const room = getRoom(this.state.roomSnapshot);
 		const db = database.active;
 		const permissionsCollection = db.get('permissions');
 		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
@@ -186,7 +183,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	getReadOnly = async () => {
-		const { room } = this.state;
+		const room = getRoom(this.state.roomSnapshot);
 		const { user } = this.props;
 		const readOnly = await isReadOnly(room, user.username);
 		return readOnly;
@@ -248,7 +245,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread } = this.state;
+		const { attachments, text, thread } = this.state;
+		const room = getRoom(this.state.roomSnapshot);
 		const { navigation, server, user, dispatch } = this.props;
 		// flush the composer caption into the selected attachment before sending
 		this.saveSelectedDescription();
@@ -387,7 +385,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	renderContent = () => {
-		const { attachments, selected, text, room, roomRead, thread } = this.state;
+		const { attachments, selected, text, roomSnapshot, thread } = this.state;
+		const room = getRoom(roomSnapshot);
 		const { theme } = this.props;
 
 		if (attachments.length) {
@@ -396,7 +395,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					store={this.messageActionStore}
 					rid={room.rid}
 					t={room.t}
-					roomRead={roomRead}
+					roomSnapshot={roomSnapshot}
 					tmid={this.getThreadId(thread)}
 					sharing
 					onSendMessage={this.send}
@@ -434,7 +433,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { readOnly, room } = this.state;
+		const { readOnly } = this.state;
+		const room = getRoom(this.state.roomSnapshot);
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (

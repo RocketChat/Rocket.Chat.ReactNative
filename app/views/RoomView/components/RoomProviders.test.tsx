@@ -2,6 +2,7 @@ import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
 import { useComposerRid, useComposerSharing } from '../../../containers/MessageComposer/ComposerStore';
+import { createRoomSnapshot } from '../../../lib/roomObservation';
 import {
 	createMessageActionStore,
 	useIsBeingEdited,
@@ -27,7 +28,7 @@ describe('RoomProviders', () => {
 			{ rid: 'rid-2', t: 'c' }
 		];
 		const Parent = ({ roomIndex }: { roomIndex: number }) => (
-			<RoomProviders store={store} rid='rid-1' t='c' roomRead={{ room: rooms[roomIndex] }} sharing={false}>
+			<RoomProviders store={store} rid='rid-1' t='c' roomSnapshot={createRoomSnapshot(rooms[roomIndex])} sharing={false}>
 				{children}
 			</RoomProviders>
 		);
@@ -64,13 +65,13 @@ describe('RoomProviders', () => {
 
 		render(
 			<>
-				<RoomProviders store={store} rid='rid-1' t='c' roomRead={{ room: { rid: 'rid-1', t: 'c' } }}>
+				<RoomProviders store={store} rid='rid-1' t='c' roomSnapshot={createRoomSnapshot({ rid: 'rid-1', t: 'c' })}>
 					<>
 						<RowReader />
 						<ComposerReader />
 					</>
 				</RoomProviders>
-				<RoomProviders store={otherStore} rid='rid-1' t='c' roomRead={{ room: { rid: 'rid-1', t: 'c' } }}>
+				<RoomProviders store={otherStore} rid='rid-1' t='c' roomSnapshot={createRoomSnapshot({ rid: 'rid-1', t: 'c' })}>
 					<OtherReader />
 				</RoomProviders>
 			</>

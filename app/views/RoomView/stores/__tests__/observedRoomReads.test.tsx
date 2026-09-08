@@ -12,7 +12,7 @@ import {
 	useUpdateAutocompleteVisible
 } from '../../../../containers/MessageComposer/ComposerStore';
 import { createRoomStore, observeRoom } from '../RoomStore';
-import { RoomStoreContext, useRoomFromStore, useRoomReadFromStore } from '../RoomStoreContext';
+import { RoomStoreContext, useRoomFromStore } from '../RoomStoreContext';
 import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
@@ -169,11 +169,11 @@ describe('observed Room reads', () => {
 		let updateAutocomplete: ReturnType<typeof useUpdateAutocompleteVisible> | undefined;
 		const Reader = memo(() => {
 			updateAutocomplete = useUpdateAutocompleteVisible();
-			renderSpy(useComposerRoom()?.name, useIsAutocompleteVisible());
+			renderSpy(useComposerRoom().room.name, useIsAutocompleteVisible());
 			return null;
 		});
 		const Bridge = () => (
-			<ComposerProvider rid='rid-1' t='c' roomRead={useRoomReadFromStore(roomStore)}>
+			<ComposerProvider rid='rid-1' t='c' roomSnapshot={useRoomFromStore(roomStore).snapshot}>
 				<Reader />
 			</ComposerProvider>
 		);
