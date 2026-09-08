@@ -81,7 +81,7 @@ export const useAutocompleteParams = (): State['autocompleteParams'] => useCompo
 export const useComposerAttachments = (): State['attachments'] => useComposerStore(state => state.attachments);
 
 // TODO: rename
-type TMessageInnerContext = {
+export type TMessageInnerContext = {
 	sendMessage(): void;
 	onEmojiSelected(emoji: IEmoji): void;
 	// TODO: action should be required
