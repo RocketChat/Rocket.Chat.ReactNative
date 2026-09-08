@@ -1,4 +1,4 @@
-import { roomAttrsUpdate } from './constants';
+import { roomAttrsUpdate } from '../../definitions/TRoom';
 
 describe('roomAttrsUpdate invariant', () => {
 	// useReadOnly / useE2EEStatus derive synchronously from the observed room, so they only stay

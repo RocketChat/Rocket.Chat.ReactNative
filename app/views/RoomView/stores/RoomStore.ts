@@ -9,7 +9,7 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { type TRoomOrPreview } from '../../../definitions/TRoom';
+import { roomAttrsUpdate, type TRoomOrPreview } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
@@ -17,7 +17,7 @@ import {
 	type RoomStore,
 	type TRoomInitResult
 } from '../definitions';
-import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../constants';
+import { roomAttrsUpdateColumns } from '../constants';
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 

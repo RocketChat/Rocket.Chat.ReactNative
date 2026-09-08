@@ -1,5 +1,5 @@
 import { type ILastMessage } from './IMessage';
-import { type IVisitor, type TSubscriptionModel } from './ISubscription';
+import { type ISubscription, type IVisitor, type TSubscriptionModel } from './ISubscription';
 
 export type TPreviewRoom = {
 	rid: string;
@@ -16,5 +16,40 @@ export type TPreviewRoom = {
 };
 
 export type TRoomOrPreview = TSubscriptionModel | TPreviewRoom;
-export type TRoomUpdate = keyof TSubscriptionModel;
-export type TRoomUpdatePatch = Partial<Pick<TSubscriptionModel, TRoomUpdate>>;
+
+export const roomAttrsUpdate = [
+	'f',
+	'ro',
+	'blocked',
+	'blocker',
+	'archived',
+	'tunread',
+	'tunreadUser',
+	'tunreadGroup',
+	'muted',
+	'ignored',
+	'jitsiTimeout',
+	'announcement',
+	'sysMes',
+	'topic',
+	'name',
+	'fname',
+	'roles',
+	'bannerClosed',
+	'visitor',
+	'joinCodeRequired',
+	'teamMain',
+	'teamId',
+	'status',
+	'onHold',
+	't',
+	'autoTranslate',
+	'autoTranslateLanguage',
+	'unmuted',
+	'E2EKey',
+	'encrypted',
+	'inviter'
+] as const satisfies readonly (keyof ISubscription)[];
+
+export type TRoomUpdate = (typeof roomAttrsUpdate)[number];
+export type TRoomUpdatePatch = Partial<Pick<ISubscription, TRoomUpdate>>;

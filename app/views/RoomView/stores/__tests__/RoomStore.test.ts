@@ -5,7 +5,8 @@ import { getUserInfo } from '../../../../lib/services/restApi';
 import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
-import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../../constants';
+import { roomAttrsUpdate } from '../../../../definitions/TRoom';
+import { roomAttrsUpdateColumns } from '../../constants';
 import getMessages from '../../services/getMessages';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
