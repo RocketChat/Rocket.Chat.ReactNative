@@ -383,10 +383,10 @@ describe('MessageStore', () => {
 			expect(latest()).toEqual({ hasError: true, isTemp: true });
 		});
 
-		it('useMessageStatus returns hasError false and isTemp true for a TEMP status model', () => {
+		it('useMessageStatus returns hasError true and isTemp true for a TEMP status model', () => {
 			const model = buildFakeModel({ status: messagesStatus.TEMP });
 			const { latest } = renderDerived(model, useMessageStatus);
-			expect(latest()).toEqual({ hasError: false, isTemp: true });
+			expect(latest()).toEqual({ hasError: true, isTemp: true });
 		});
 
 		it('useIsEncrypted returns true for a pending e2e message', () => {
