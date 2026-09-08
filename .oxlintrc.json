@@ -1,7 +1,7 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
 	"plugins": ["import", "react", "jest"],
-	"jsPlugins": ["eslint-plugin-react-native", "oxlint-plugin-complexity"],
+	"jsPlugins": ["eslint-plugin-react-native"],
 	"categories": {
 		"correctness": "off"
 	},
@@ -46,8 +46,7 @@
 		"require-await": "error",
 		"react/exhaustive-deps": "warn",
 		"react/rules-of-hooks": "error",
-		"react/react-compiler": "warn",
-		"complexity/complexity": ["warn", { "cyclomatic": 1000, "cognitive": 15 }]
+		"react/react-compiler": "warn"
 	},
 	"overrides": [
 		{
@@ -98,7 +97,6 @@
 			"files": ["jest.setup.js", "__mocks__/**/*.js", "**/*.test.{js,ts,tsx}"],
 			"rules": {
 				"complexity": "off",
-				"complexity/complexity": "off",
 				"max-depth": "off",
 				"max-nested-callbacks": "off",
 				"max-params": "off",
