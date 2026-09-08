@@ -99,19 +99,6 @@ export interface IUseE2EEStatusResult {
 	showE2EEDisabledRoom: boolean;
 }
 
-export interface IJumpToMessageArgs {
-	messageId: string;
-	isFromReply?: boolean;
-	rid?: string;
-	tmid?: string;
-	t?: string;
-	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void | Promise<void>;
-	navToThread: (message: TGetMessageInfoResult) => void | Promise<void>;
-	cancel: () => void;
-	isCancelled: () => boolean;
-}
-
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
@@ -305,21 +292,6 @@ export interface IUseSubscriptionUnreadsResult {
 	tunreadGroup: string[];
 	isSelfDm: boolean;
 	subscription?: TSubscriptionModel;
-}
-
-export interface IUseJumpToMessageParams {
-	rid?: string;
-	tmid?: string;
-	t?: string;
-	listContainerRef: RefObject<IListContainerRef | null>;
-	navToRoom: (message: TGetMessageInfoResult) => void | Promise<void>;
-	navToThread: (message: TGetMessageInfoResult | { tmid: string }) => void | Promise<void>;
-}
-
-export interface IUseJumpToMessageResult {
-	jumpToMessage: (messageId: string, isFromReply?: boolean) => Promise<void>;
-	cancelJumpToMessage: () => void;
-	onThreadMessagesLoaded: () => void;
 }
 
 export interface IUseRoomNavigationParams {
