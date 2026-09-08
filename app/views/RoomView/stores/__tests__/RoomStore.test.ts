@@ -210,6 +210,21 @@ describe('RoomStore', () => {
 		expect(store.getState().room).toBe(first);
 	});
 
+	it('keeps the snapshot when observation reattaches to the same store and the record is unchanged', () => {
+		const { emit } = setupObserveRoomDatabase();
+		const mutable = { ...subRoom, topic: 'same' };
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		const cleanup = observeRoom('rid-1', store);
+		emit([mutable]);
+		const first = store.getState().roomSnapshot;
+		cleanup();
+
+		observeRoom('rid-1', store);
+		emit([mutable]);
+
+		expect(store.getState().roomSnapshot).toBe(first);
+	});
+
 	it('keeps two observers of the same store in sync on repeated unchanged emissions', () => {
 		const { emit } = setupObserveRoomDatabase();
 		const mutable = { ...subRoom, topic: 'same' };

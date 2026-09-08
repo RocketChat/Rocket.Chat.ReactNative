@@ -9,7 +9,7 @@ import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateM
 import log from '../../../lib/methods/helpers/log';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '../../../definitions';
-import { type TRoomObservedField, type TRoomOrPreview } from '../../../definitions/TRoom';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
 	type IRoomViewState,
@@ -19,43 +19,14 @@ import {
 } from '../definitions';
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
-import { createRoomSnapshot, getRoom } from '../../../lib/roomObservation';
-
-const roomObservedColumns = {
-	f: 'f',
-	ro: 'ro',
-	blocked: 'blocked',
-	blocker: 'blocker',
-	archived: 'archived',
-	tunread: 'tunread',
-	tunreadUser: 'tunread_user',
-	tunreadGroup: 'tunread_group',
-	muted: 'muted',
-	ignored: 'ignored',
-	jitsiTimeout: 'jitsi_timeout',
-	announcement: 'announcement',
-	sysMes: 'sys_mes',
-	topic: 'topic',
-	name: 'name',
-	fname: 'fname',
-	roles: 'roles',
-	bannerClosed: 'banner_closed',
-	visitor: 'visitor',
-	joinCodeRequired: 'join_code_required',
-	teamMain: 'team_main',
-	teamId: 'team_id',
-	status: 'status',
-	onHold: 'on_hold',
-	t: 't',
-	autoTranslate: 'auto_translate',
-	autoTranslateLanguage: 'auto_translate_language',
-	unmuted: 'unmuted',
-	E2EKey: 'e2e_key',
-	encrypted: 'encrypted',
-	inviter: 'inviter'
-} satisfies Record<TRoomObservedField, string>;
-const observedFields = Object.keys(roomObservedColumns) as TRoomObservedField[];
-const OBSERVED_COLUMNS = Object.values(roomObservedColumns);
+import {
+	createRoomSnapshot,
+	getRoom,
+	getRoomObservationPatch,
+	getRoomObservedFieldValues,
+	roomObservedColumns,
+	type TRoomObservedFields
+} from '../../../lib/roomObservation';
 
 const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: IRoomViewState['member'] = {};
@@ -158,7 +129,6 @@ const createRoomState =
 	(set, get) => ({
 		room: { room: initialRoom },
 		roomSnapshot: createRoomSnapshot(initialRoom),
-		observedValues: {},
 		joined: true,
 		subscribed: 'id' in initialRoom,
 		member: EMPTY_MEMBER,
@@ -212,39 +182,22 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 	if (!rid) {
 		return () => {};
 	}
-	const observable = database.active
-		.get('subscriptions')
-		.query(Q.where('rid', rid))
-		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
+	let fields: TRoomObservedFields = getRoomObservedFieldValues(getRoom(store.getState().roomSnapshot));
+	const observable = database.active.get('subscriptions').query(Q.where('rid', rid)).observeWithColumns(roomObservedColumns);
 	const subscription = observable.subscribe((rows: TRoomOrPreview[]) => {
-		const next = rows[0];
-		const previous = store.getState();
-		if (!next) {
-			store.setState({ subscribed: false, ...(getRoom(previous.roomSnapshot).t !== 'd' ? { joined: false } : {}) });
-			return;
-		}
-		const trackedValuesChanged = observedFields.some(
-			attr => previous.observedValues[attr] !== (next as TSubscriptionModel)[attr]
+		const { roomSnapshot, subscribed, joined, lastMessageFromAgent } = store.getState();
+		const patch = getRoomObservationPatch(
+			{ fields, snapshot: roomSnapshot, subscribed, joined, lastMessageFromAgent },
+			rows[0] as TSubscriptionModel | undefined
 		);
-		const roomChanged = next !== getRoom(previous.roomSnapshot) || trackedValuesChanged;
-		const lastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
-		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
+		if (!patch) {
 			return;
 		}
-		store.setState({
-			subscribed: true,
-			joined: true,
-			lastMessageFromAgent,
-			...(roomChanged
-				? {
-						room: { room: next },
-						roomSnapshot: createRoomSnapshot(next),
-						observedValues: Object.fromEntries(
-							observedFields.map(attr => [attr, (next as TSubscriptionModel)[attr]])
-						) as RoomState['observedValues']
-					}
-				: {})
-		});
+		const { fields: nextFields, snapshot, ...rest } = patch;
+		if (nextFields) {
+			fields = nextFields;
+		}
+		store.setState(snapshot ? { ...rest, roomSnapshot: snapshot, room: { room: getRoom(snapshot) } } : rest);
 	});
 	onReady?.();
 	return () => subscription.unsubscribe();

@@ -79,6 +79,25 @@ describe('observed Room reads', () => {
 		expect(mockSetOptions.mock.calls.at(-1)[0].headerTitle().props).toMatchObject({ title: 'new', subtitle: 'after' });
 	});
 
+	it('renders a consumer once on Room open and not again on an identical server sync', () => {
+		const { emit } = setupObserveRoomDatabase();
+		const room = subscription({ name: 'general' });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: room });
+		observeRoom('rid-1', store);
+		const renderSpy = jest.fn();
+		const Reader = memo(() => {
+			const { room: observed } = useRoomFromStore(store);
+			renderSpy((observed as Room).name);
+			return null;
+		});
+		render(<Reader />);
+		expect(renderSpy).toHaveBeenCalledTimes(1);
+
+		act(() => emit([room]));
+
+		expect(renderSpy).toHaveBeenCalledTimes(1);
+	});
+
 	it('keeps the thread title while updating the parent Room title', () => {
 		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });

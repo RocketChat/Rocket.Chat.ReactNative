@@ -45,10 +45,10 @@ export const setupRealSubscriptionObservation = ({
 }: { rid?: string; record?: TSubscriptionModel } = {}) => {
 	const observedDatabase = setupObserveRoomDatabase();
 	const store = createRoomStore({ rid, initialRoom: record });
-	const snapshots = [store.getState().room];
+	const snapshots = [store.getState().roomSnapshot];
 	store.subscribe(state => {
-		if (state.room !== snapshots[snapshots.length - 1]) {
-			snapshots.push(state.room);
+		if (state.roomSnapshot !== snapshots[snapshots.length - 1]) {
+			snapshots.push(state.roomSnapshot);
 		}
 	});
 	const detach = observeRoom(rid, store);

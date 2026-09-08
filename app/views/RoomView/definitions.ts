@@ -13,7 +13,7 @@ import {
 	type TAnyMessageModel,
 	type IUseRoomMessageHandlersResult
 } from '../../definitions';
-import { type TRoomOrPreview, type TRoomObservedFields } from '../../definitions/TRoom';
+import { type TRoomOrPreview } from '../../definitions/TRoom';
 import { type RoomRead } from '../../lib/hooks/useRoomReadFromStore';
 import { type RoomSnapshot } from '../../lib/roomObservation';
 import { type TSubscriptionModel } from '../../definitions/ISubscription';
@@ -121,7 +121,6 @@ export type TRoomInitResult =
 export interface RoomState {
 	room: RoomRead;
 	roomSnapshot: RoomSnapshot;
-	observedValues: TRoomObservedFields;
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];

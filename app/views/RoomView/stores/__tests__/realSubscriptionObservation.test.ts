@@ -28,7 +28,7 @@ jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 
 describe('real Subscription record through the Room store observer', () => {
-	it.failing('keeps one snapshot when a sync rewrites roles with a content-equal payload (ticket 05 un-skips)', () => {
+	it('keeps one snapshot when a sync rewrites roles with a content-equal payload', () => {
 		const record = createSubscriptionRecord();
 		const { emit, snapshotCount } = setupRealSubscriptionObservation({ record });
 
@@ -41,7 +41,7 @@ describe('real Subscription record through the Room store observer', () => {
 		expect(snapshotCount()).toBe(afterFirstEmission);
 	});
 
-	it.failing('keeps one snapshot on the first emission of the record the store was created with (ticket 05 un-skips)', () => {
+	it('keeps one snapshot on the first emission of the record the store was created with', () => {
 		const record = createSubscriptionRecord();
 		const { emit, snapshotCount } = setupRealSubscriptionObservation({ record });
 

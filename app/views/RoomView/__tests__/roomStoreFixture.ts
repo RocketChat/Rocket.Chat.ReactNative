@@ -11,7 +11,6 @@ export const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { room: DEFAULT_ROOM },
 		roomSnapshot: createRoomSnapshot(overrides.room?.room ?? DEFAULT_ROOM),
-		observedValues: {},
 		joined: true,
 		subscribed: true,
 		member: {},
