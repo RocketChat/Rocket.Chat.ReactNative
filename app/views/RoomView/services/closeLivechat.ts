@@ -43,7 +43,5 @@ export const closeLivechat = async ({
 			screen: 'CloseLivechatView',
 			params: { rid, departmentId, departmentInfo, tagsList }
 		});
-	} catch {
-		return undefined;
-	}
+	} catch {}
 };

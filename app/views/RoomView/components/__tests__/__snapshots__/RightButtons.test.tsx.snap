@@ -12,7 +12,7 @@ exports[`RightButtons disables the encryption button when the user cannot toggle
     accessibilityLabel="Call label"
     disabled={true}
     rid="rid-1"
-    testID="room-view-header-call"
+    testID="header-call-button-stub"
   />
   <Item
     accessibilityLabel="Threads"
@@ -44,7 +44,7 @@ exports[`RightButtons enables the encryption button when the user can toggle enc
     accessibilityLabel="Call label"
     disabled={true}
     rid="rid-1"
-    testID="room-view-header-call"
+    testID="header-call-button-stub"
   />
   <Item
     accessibilityLabel="Threads"
@@ -84,13 +84,31 @@ exports[`RightButtons hides the call button on a self DM 1`] = `
 </Container>
 `;
 
+exports[`RightButtons hides the threads button when threads are disabled 1`] = `
+<Container>
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={false}
+    rid="rid-1"
+    testID="header-call-button-stub"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={false}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
 exports[`RightButtons renders call, threads and search for a regular channel 1`] = `
 <Container>
   <CallButton
     accessibilityLabel="Call label"
     disabled={false}
     rid="rid-1"
-    testID="room-view-header-call"
+    testID="header-call-button-stub"
   />
   <Item
     accessibilityLabel="Threads"
@@ -126,6 +144,38 @@ exports[`RightButtons renders only the kebab for an active omnichannel room 1`] 
 </Container>
 `;
 
+exports[`RightButtons renders the encryption button when the room has e2ee disabled 1`] = `
+<Container>
+  <Item
+    disabled={true}
+    iconName="encrypted"
+    onPress={[Function]}
+    testID="room-view-header-encryption"
+  />
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={true}
+    rid="rid-1"
+    testID="header-call-button-stub"
+  />
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={true}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={true}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
 exports[`RightButtons renders the follow button for an unfollowed thread 1`] = `
 <Container>
   <Item
@@ -150,7 +200,7 @@ exports[`RightButtons renders the push troubleshoot button when notifications ar
     accessibilityLabel="Call label"
     disabled={false}
     rid="rid-1"
-    testID="room-view-header-call"
+    testID="header-call-button-stub"
   />
   <Item
     accessibilityLabel="Threads"
@@ -183,7 +233,7 @@ exports[`RightButtons renders the push troubleshoot button when there are notifi
     accessibilityLabel="Call label"
     disabled={false}
     rid="rid-1"
-    testID="room-view-header-call"
+    testID="header-call-button-stub"
   />
   <Item
     accessibilityLabel="Threads"

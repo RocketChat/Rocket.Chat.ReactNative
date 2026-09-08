@@ -75,14 +75,15 @@ jest.mock('../../../../containers/Header/components/HeaderButton', () => {
 jest.mock('../RightButtons/HeaderCallButton', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
-		HeaderCallButton: (props: any) => ReactActual.createElement('CallButton', { ...props, testID: 'room-view-header-call' })
+		HeaderCallButton: ({ rid, disabled, accessibilityLabel }: { rid: string; disabled: boolean; accessibilityLabel: string }) =>
+			ReactActual.createElement('CallButton', { rid, disabled, accessibilityLabel, testID: 'header-call-button-stub' })
 	};
 });
 
 const allTestIDs = [
 	'room-view-search',
 	'room-view-header-threads',
-	'room-view-header-call',
+	'header-call-button-stub',
 	'room-view-header-encryption',
 	'room-view-push-troubleshoot',
 	'room-view-header-omnichannel-kebab',
@@ -169,7 +170,7 @@ describe('RightButtons', () => {
 
 	it('renders call, threads and search for a regular channel', () => {
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
-		expectOnly(queryByTestId, ['room-view-header-call', 'room-view-header-threads', 'room-view-search']);
+		expectOnly(queryByTestId, ['header-call-button-stub', 'room-view-header-threads', 'room-view-search']);
 		expect(toJSON()).toMatchSnapshot();
 	});
 
@@ -180,7 +181,7 @@ describe('RightButtons', () => {
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
 			'room-view-header-encryption',
-			'room-view-header-call',
+			'header-call-button-stub',
 			'room-view-header-threads',
 			'room-view-search'
 		]);
@@ -191,11 +192,25 @@ describe('RightButtons', () => {
 
 	it('disables the encryption button when the user cannot toggle encryption', () => {
 		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
+		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
+		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expectOnly(queryByTestId, [
+			'room-view-header-encryption',
+			'header-call-button-stub',
+			'room-view-header-threads',
+			'room-view-search'
+		]);
+		expect(queryByTestId('room-view-header-encryption')).toHaveProp('disabled', true);
+		expect(toJSON()).toMatchSnapshot();
+	});
+
+	it('renders the encryption button when the room has e2ee disabled', () => {
+		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
 		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
 			'room-view-header-encryption',
-			'room-view-header-call',
+			'header-call-button-stub',
 			'room-view-header-threads',
 			'room-view-search'
 		]);
@@ -208,7 +223,7 @@ describe('RightButtons', () => {
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
 			'room-view-push-troubleshoot',
-			'room-view-header-call',
+			'header-call-button-stub',
 			'room-view-header-threads',
 			'room-view-search'
 		]);
@@ -221,12 +236,40 @@ describe('RightButtons', () => {
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
 			'room-view-push-troubleshoot',
-			'room-view-header-call',
+			'header-call-button-stub',
 			'room-view-header-threads',
 			'room-view-search'
 		]);
 		expect(queryByTestId('room-view-push-troubleshoot')).toHaveProp('color', '');
 		expect(toJSON()).toMatchSnapshot();
+	});
+
+	it('hides the threads button when threads are disabled', () => {
+		mockAppState = {
+			...mockAppState,
+			settings: { Threads_enabled: false, Livechat_request_comment_when_closing_conversation: false }
+		};
+		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expectOnly(queryByTestId, ['header-call-button-stub', 'room-view-search']);
+		expect(toJSON()).toMatchSnapshot();
+	});
+
+	it('labels the threads button with the direct mention unread count', () => {
+		mockHeaderHooks = { ...mockHeaderHooks, tunread: ['tm-1'], tunreadUser: ['tm-1'] };
+		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(queryByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 1 unread, direct mention');
+	});
+
+	it('labels the threads button with the group mention unread count', () => {
+		mockHeaderHooks = { ...mockHeaderHooks, tunread: ['tm-1'], tunreadGroup: ['tm-1'] };
+		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(queryByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 1 unread, group mention');
+	});
+
+	it('labels the threads button with the plain unread count', () => {
+		mockHeaderHooks = { ...mockHeaderHooks, tunread: ['tm-1', 'tm-2'] };
+		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
+		expect(queryByTestId('room-view-header-threads')).toHaveProp('accessibilityLabel', 'Threads, 2 unread');
 	});
 
 	it('hides the call button on a self DM', () => {
