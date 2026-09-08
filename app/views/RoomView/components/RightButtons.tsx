@@ -1,16 +1,12 @@
 import { type ReactElement } from 'react';
 import { useStore } from 'zustand';
 import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../../containers/ActionSheet';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { type ISubscription, type SubscriptionType, type TUserStatus } from '../../../definitions';
-import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
-import { type ILivechatTag } from '../../../definitions/ILivechatTag';
 import i18n from '../../../i18n';
 import { getRoomTitle, isGroupChat, showConfirmationAlert, showErrorAlert } from '../../../lib/methods/helpers';
-import { closeLivechat as closeLivechatService } from '../../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import getRoomAccessibilityLabel from '../../../lib/helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
@@ -18,16 +14,18 @@ import { useSetting } from '../../../lib/hooks/useSetting';
 import { useCanReturnQueue } from '../../../ee/omnichannel/hooks/useCanReturnQueue';
 import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../../lib/services/restApi';
+import { returnLivechat } from '../../../lib/services/restApi';
 import { getUserSelector } from '../../../selectors/login';
-import { type TNavigation } from '../../../stacks/stackType';
-import { type ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';
 import { HeaderCallButton } from './HeaderCallButton';
 import { useCanPlaceLivechatOnHold } from '../hooks/useCanPlaceLivechatOnHold';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../hooks/useSubscriptionUnreads';
 import { useThreadFollowing } from '../hooks/useThreadFollowing';
+import { navigateToScreen, type TRoomStackNavigation } from '../hooks/navigateToScreen';
+import { closeLivechat } from '../services/closeLivechat';
+import { getRoomHeaderFields } from '../services/getRoomHeaderFields';
+import { placeLivechatOnHold } from '../services/placeLivechatOnHold';
 import { toggleFollowThread } from '../../../lib/methods/toggleFollowThread';
 import { type RoomStore } from '../definitions';
 
@@ -37,95 +35,8 @@ interface IRightButtonsProps {
 	roomStore: RoomStore;
 }
 
-type RightButtonsNavigation = NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
-
-type RightButtonsScreen = keyof (ChatsStackParamList & TNavigation);
-
-const navigateToScreen = <Screen extends RightButtonsScreen>({
-	navigation,
-	isMasterDetail,
-	screen,
-	params
-}: {
-	navigation: RightButtonsNavigation;
-	isMasterDetail: boolean;
-	screen: Screen;
-	params?: (ChatsStackParamList & TNavigation)[Screen];
-}) => {
-	if (isMasterDetail) {
-		const navigateToModal = navigation.navigate as (
-			screen: 'ModalStackNavigator',
-			params: { screen: Screen; params?: typeof params }
-		) => void;
-		navigateToModal('ModalStackNavigator', { screen, params });
-		return;
-	}
-	const navigateDirect: (screen: Screen, params?: (ChatsStackParamList & TNavigation)[Screen]) => void = navigation.navigate;
-	navigateDirect(screen, params);
-};
-
-const placeOnHoldLivechat = (rid: string, navigation: RightButtonsNavigation) => {
-	showConfirmationAlert({
-		title: i18n.t('Are_you_sure_question_mark'),
-		message: i18n.t('Would_like_to_place_on_hold'),
-		confirmationText: i18n.t('Yes'),
-		onPress: async () => {
-			try {
-				await onHoldLivechat(rid);
-				navigation.navigate('RoomsListView');
-			} catch (e: any) {
-				showErrorAlert(e.data?.error, i18n.t('Oops'));
-			}
-		}
-	});
-};
-
-const closeLivechat = async ({
-	rid,
-	departmentId,
-	isMasterDetail,
-	livechatRequestComment,
-	navigation
-}: {
-	rid: string;
-	departmentId?: string;
-	isMasterDetail: boolean;
-	livechatRequestComment: boolean;
-	navigation: RightButtonsNavigation;
-}) => {
-	try {
-		let departmentInfo: ILivechatDepartment | undefined;
-		let tagsList: ILivechatTag[] | undefined;
-
-		if (departmentId) {
-			const result = await getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
-			}
-		}
-
-		if (departmentInfo?.requestTagBeforeClosingChat) {
-			tagsList = await getTagsList();
-		}
-
-		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
-			const comment = i18n.t('Chat_closed_by_agent');
-			return closeLivechatService({ rid, isMasterDetail, comment });
-		}
-
-		navigateToScreen({
-			navigation,
-			isMasterDetail,
-			screen: 'CloseLivechatView',
-			params: { rid, departmentId, departmentInfo, tagsList }
-		});
-	} catch {
-		// do nothing
-	}
-};
-
 const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElement | null => {
-	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>>();
+	const navigation = useNavigation<TRoomStackNavigation>();
 	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
@@ -140,8 +51,7 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 	const canReturnQueue = useCanReturnQueue(room.t === 'l');
 	const canPlaceLivechatOnHold = useCanPlaceLivechatOnHold(roomStore);
 
-	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
-	const hasE2EEWarning = !!('encrypted' in room && (showMissingE2EEKey || showE2EEDisabledRoom));
+	const { hasE2EEWarning } = useE2EEStatus(roomStore);
 
 	const isFollowingThread = useThreadFollowing(tmid, userId);
 	const { tunread, tunreadUser, tunreadGroup, isSelfDm, subscription } = useSubscriptionUnreads(roomStore, userId);
@@ -151,9 +61,7 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 	const { status } = room;
 	const roomName = getRoomTitle(room);
 	const roomIsGroupChat = isGroupChat(room as ISubscription);
-	const teamMain = 'teamMain' in room ? room.teamMain : false;
-	const encrypted = 'encrypted' in room ? room.encrypted : undefined;
-	const departmentId = 'id' in room ? room.departmentId : undefined;
+	const { teamMain, encrypted, departmentId } = getRoomHeaderFields(room);
 
 	const goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
@@ -186,7 +94,7 @@ const RightButtons = ({ rid, tmid, roomStore }: IRightButtonsProps): ReactElemen
 			options.push({
 				title: i18n.t('Place_chat_on_hold'),
 				icon: 'pause',
-				onPress: () => rid && placeOnHoldLivechat(rid, navigation)
+				onPress: () => rid && placeLivechatOnHold({ rid, navigation })
 			});
 		}
 

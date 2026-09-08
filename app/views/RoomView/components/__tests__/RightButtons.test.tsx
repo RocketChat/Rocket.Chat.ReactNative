@@ -41,7 +41,7 @@ jest.mock('zustand', () => ({
 jest.mock('../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => false }));
 jest.mock('../../hooks/useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => false }));
 
-let mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
+let mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };
 jest.mock('../../hooks/useE2EEStatus', () => ({ useE2EEStatus: () => mockE2EEStatus }));
 
 let mockHeaderHooks = {
@@ -110,7 +110,7 @@ describe('RightButtons', () => {
 			room: { rid: 'rid-1', t: 'c', name: 'general' },
 			canForwardGuest: false
 		};
-		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
+		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };
 		mockHeaderHooks = {
 			isFollowingThread: false,
 			tunread: [],
@@ -175,7 +175,7 @@ describe('RightButtons', () => {
 
 	it('enables the encryption button when the user can toggle encryption', () => {
 		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
-		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false };
+		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true };
 		mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
@@ -191,7 +191,7 @@ describe('RightButtons', () => {
 
 	it('disables the encryption button when the user cannot toggle encryption', () => {
 		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', name: 'general', encrypted: true } };
-		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: true };
+		mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true };
 		const { queryByTestId, toJSON } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expectOnly(queryByTestId, [
 			'room-view-header-encryption',

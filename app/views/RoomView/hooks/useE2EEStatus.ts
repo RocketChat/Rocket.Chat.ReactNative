@@ -9,11 +9,11 @@ export const useE2EEStatus = (roomStore: RoomStore): IUseE2EEStatusResult => {
 	const room = useRoomWithUpdateFromStore(roomStore);
 
 	if (!('encrypted' in room)) {
-		return { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
+		return { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };
 	}
 
 	const showMissingE2EEKey = isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: room.encrypted, E2EKey: room.E2EKey });
 	const showE2EEDisabledRoom = isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: room.encrypted });
 
-	return { showMissingE2EEKey, showE2EEDisabledRoom };
+	return { showMissingE2EEKey, showE2EEDisabledRoom, hasE2EEWarning: showMissingE2EEKey || showE2EEDisabledRoom };
 };
