@@ -3,9 +3,10 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { useContext, useState, createContext, type Dispatch, type SetStateAction } from 'react';
 
 import { videoConfJoin } from '../../lib/methods/videoConf';
+import { translateText } from './translate';
 import { type IText } from './interfaces';
 
-export const textParser = ([{ text }]: IText[]) => text;
+export const textParser = ([text]: (IText | undefined)[], appId?: string) => translateText(text, appId);
 
 export const defaultContext: any = {
 	action: (...args: any) => console.log(args),
@@ -15,6 +16,8 @@ export const defaultContext: any = {
 };
 
 export const KitContext = createContext(defaultContext);
+
+export const useKitAppId = (): string | undefined => useContext(KitContext).appId;
 
 type TObjectReturn = {
 	loading: boolean;

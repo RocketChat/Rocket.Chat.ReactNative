@@ -67,6 +67,7 @@ export interface IAutocompleteSlashCommand {
 	title: string;
 	subtitle?: string;
 	type: '/';
+	appId?: string;
 }
 
 export interface IAutocompleteSlashCommandPreview {

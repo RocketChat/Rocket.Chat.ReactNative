@@ -6,6 +6,7 @@ import { type TNavigation } from '../stacks/stackType';
 import { type TColors, type TSupportedThemes } from '../theme';
 
 export * from './ERoomType';
+export * from './IApps';
 export * from './IAttachment';
 export * from './ICannedResponse';
 export * from './ICertificate';

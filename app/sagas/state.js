@@ -7,6 +7,7 @@ import { RootEnum } from '../definitions';
 import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
+import { getAppsLanguages } from '../lib/methods/getAppsLanguages';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -30,6 +31,9 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		yield localAuthenticate(server);
 
 		recoverSocket().catch(e => log(e));
+
+		// refetch so app installs/updates since the last login are picked up
+		getAppsLanguages().catch(e => log(e));
 
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
