@@ -53,8 +53,8 @@ tags:
       visible: '.*Save password to Google Password Manager.*'
       platform: Android
     commands:
-      - tapOn: "Never"
+      - tapOn: 'Never'
 - extendedWaitUntil:
     visible:
-        id: 'rooms-list-view'
+      id: 'rooms-list-view'
     timeout: 60000
