@@ -18,10 +18,6 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockNavigation,
 	useRoute: () => ({ params: mockRouteParams })
 }));
-jest.mock('../../../../lib/methods/helpers', () => {
-	const actual = jest.requireActual('../../../../lib/methods/helpers');
-	return { ...actual, useDebounce: actual.useDebounce };
-});
 jest.mock('../../../../lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('../../../../lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
 jest.mock('../../../../containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
