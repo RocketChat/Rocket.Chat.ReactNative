@@ -134,16 +134,16 @@ describe('observed Room reads', () => {
 		const { emit } = setupDatabase();
 		const roomStore = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		observeRoom('rid-1', roomStore);
-		const probe = jest.fn();
+		const renderSpy = jest.fn();
 		let updateAutocomplete: ReturnType<typeof useUpdateAutocompleteVisible> | undefined;
-		const Probe = memo(() => {
+		const Reader = memo(() => {
 			updateAutocomplete = useUpdateAutocompleteVisible();
-			probe(useComposerRoom()?.name, useIsAutocompleteVisible());
+			renderSpy(useComposerRoom()?.name, useIsAutocompleteVisible());
 			return null;
 		});
 		const Bridge = () => (
 			<ComposerProvider rid='rid-1' t='c' roomRead={useRoomReadFromStore(roomStore)}>
-				<Probe />
+				<Reader />
 			</ComposerProvider>
 		);
 		render(
@@ -157,7 +157,7 @@ describe('observed Room reads', () => {
 			room.name = 'after';
 			emit([room]);
 		});
-		expect(probe).toHaveBeenLastCalledWith('after', true);
+		expect(renderSpy).toHaveBeenLastCalledWith('after', true);
 	});
 
 	it('keeps observation cleanup isolated for two screens sharing a Room id', () => {

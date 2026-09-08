@@ -19,40 +19,7 @@ import {
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 
-const roomAttrsUpdate = [
-	'f',
-	'ro',
-	'blocked',
-	'blocker',
-	'archived',
-	'tunread',
-	'tunreadUser',
-	'tunreadGroup',
-	'muted',
-	'ignored',
-	'jitsiTimeout',
-	'announcement',
-	'sysMes',
-	'topic',
-	'name',
-	'fname',
-	'roles',
-	'bannerClosed',
-	'visitor',
-	'joinCodeRequired',
-	'teamMain',
-	'teamId',
-	'status',
-	'onHold',
-	't',
-	'autoTranslate',
-	'autoTranslateLanguage',
-	'unmuted',
-	'E2EKey',
-	'encrypted',
-	'inviter'
-] as const;
-const roomAttrsUpdateColumns: Record<(typeof roomAttrsUpdate)[number], string> = {
+export const roomAttrsUpdateColumns = {
 	f: 'f',
 	ro: 'ro',
 	blocked: 'blocked',
@@ -84,10 +51,9 @@ const roomAttrsUpdateColumns: Record<(typeof roomAttrsUpdate)[number], string> =
 	E2EKey: 'e2e_key',
 	encrypted: 'encrypted',
 	inviter: 'inviter'
-};
+} satisfies Partial<Record<keyof TSubscriptionModel, string>>;
+const roomAttrsUpdate = Object.keys(roomAttrsUpdateColumns) as (keyof typeof roomAttrsUpdateColumns)[];
 const OBSERVED_COLUMNS = Object.values(roomAttrsUpdateColumns);
-// Retain tracked values across cleanup and reattach for this per-screen store; this is not a Room-ID registry.
-const observedValuesByStore = new WeakMap<RoomStore, Partial<TSubscriptionModel>>();
 
 const EMPTY_ROOM: IRoomViewState['room'] = { rid: '', t: '' };
 const EMPTY_MEMBER: IRoomViewState['member'] = {};
@@ -189,6 +155,7 @@ const createRoomState =
 	): StateCreator<RoomState> =>
 	(set, get) => ({
 		room: { room: initialRoom },
+		observedValues: {},
 		joined: true,
 		subscribed: 'id' in initialRoom,
 		member: EMPTY_MEMBER,
@@ -246,7 +213,6 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 		.get('subscriptions')
 		.query(Q.where('rid', rid))
 		.observeWithColumns([...OBSERVED_COLUMNS, 'last_message']);
-	let observedValues = observedValuesByStore.get(store);
 	const subscription = observable.subscribe((rows: IRoomViewState['room'][]) => {
 		const next = rows[0];
 		const previous = store.getState();
@@ -254,20 +220,22 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 			store.setState({ subscribed: false, ...(previous.room.room.t !== 'd' ? { joined: false } : {}) });
 			return;
 		}
-		const trackedValuesChanged = roomAttrsUpdate.some(attr => observedValues?.[attr] !== (next as TSubscriptionModel)[attr]);
+		const trackedValuesChanged = roomAttrsUpdate.some(
+			attr => previous.observedValues[attr] !== (next as TSubscriptionModel)[attr]
+		);
 		const roomChanged = next !== previous.room.room || trackedValuesChanged;
 		const lastMessageFromAgent = next.t === 'l' && !!(next.lastMessage && !next.lastMessage.token && next.lastMessage.u);
 		if (!roomChanged && previous.subscribed && lastMessageFromAgent === previous.lastMessageFromAgent) {
 			return;
 		}
-		observedValues = Object.fromEntries(
+		const observedValues = Object.fromEntries(
 			roomAttrsUpdate.map(attr => [attr, (next as TSubscriptionModel)[attr]])
 		) as Partial<TSubscriptionModel>;
-		observedValuesByStore.set(store, observedValues);
 		store.setState({
 			subscribed: true,
 			joined: true,
 			lastMessageFromAgent,
+			observedValues,
 			...(roomChanged
 				? {
 						room: { room: next }

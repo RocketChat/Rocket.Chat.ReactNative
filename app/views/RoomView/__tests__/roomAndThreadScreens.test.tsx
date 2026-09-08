@@ -35,7 +35,7 @@ jest.mock('../components/JoinCode', () => {
 	};
 });
 
-// The List mock is the screen's probe: it reads this RoomView's `lastSeen` and sends through this
+// The List mock reads this RoomView's `lastSeen` and sends through this
 // RoomView's composer, so a per-screen value can be asserted per screen.
 jest.mock('../List', () => {
 	const { createElement } = require('react');
@@ -64,7 +64,7 @@ jest.mock('../List', () => {
 		}
 	};
 });
-// The composer itself is out of scope here; the List probe is what sends through the screen's store.
+// The composer itself is out of scope here; the List mock is what sends through the screen's store.
 jest.mock('../../../containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));

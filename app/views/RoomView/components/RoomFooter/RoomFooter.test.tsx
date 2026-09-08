@@ -55,6 +55,7 @@ const makeReduxStore = ({ settings = {}, permissions = {}, enterpriseModules = [
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createZustandStore<RoomState>(() => ({
 		room: { room: { rid: 'rid-1', t: 'c' } },
+		observedValues: {},
 		joined: true,
 		subscribed: true,
 		member: {},
@@ -67,8 +68,7 @@ const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 		join: jest.fn(),
 		joinRoom: jest.fn(() => Promise.resolve()),
 		resumeRoom: jest.fn(() => Promise.resolve()),
-		...overrides,
-		...(overrides.room && !('room' in overrides.room) ? { room: { room: overrides.room } } : {})
+		...overrides
 	}));
 
 const renderFooter = (roomStore: RoomStore, reduxStore = makeReduxStore(), loading = false) =>
@@ -132,26 +132,26 @@ describe('RoomFooter', () => {
 	});
 
 	it('renders the read-only banner when the room is read only', () => {
-		renderFooter(makeRoomStore({ room: { id: 'sub-1', rid: 'rid-1', t: 'c', ro: true, roles: [] } as any }));
+		renderFooter(makeRoomStore({ room: { room: { id: 'sub-1', rid: 'rid-1', t: 'c', ro: true, roles: [] } } as any }));
 
 		expect(screen.getByText('This_room_is_read_only')).toBeOnTheScreen();
 	});
 
 	it('renders the blocked banner for a blocked direct message', () => {
-		renderFooter(makeRoomStore({ room: { id: 'sub-1', rid: 'rid-1', t: 'd', blocked: true } as any }));
+		renderFooter(makeRoomStore({ room: { room: { id: 'sub-1', rid: 'rid-1', t: 'd', blocked: true } } as any }));
 
 		expect(screen.getByText('This_room_is_blocked')).toBeOnTheScreen();
 	});
 
 	it('renders the invalid-version banner for a federated room without a federation object', () => {
-		renderFooter(makeRoomStore({ room: { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true } as any }));
+		renderFooter(makeRoomStore({ room: { room: { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true } } as any }));
 
 		expect(screen.getByText('Federation_Matrix_room_description_invalid_version')).toBeOnTheScreen();
 	});
 
 	it('renders the disabled banner for a native-federated room when federation is off', () => {
 		const room = { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true, federation: { version: 1, mrid: 'm', origin: 'o' } };
-		renderFooter(makeRoomStore({ room: room as any }), makeReduxStore({ settings: { Federation_Matrix_enabled: false } }));
+		renderFooter(makeRoomStore({ room: { room } as any }), makeReduxStore({ settings: { Federation_Matrix_enabled: false } }));
 
 		expect(screen.getByText('Federation_Matrix_room_description_disabled')).toBeOnTheScreen();
 	});
@@ -159,7 +159,7 @@ describe('RoomFooter', () => {
 	it('renders the missing-module banner when federation is enabled but the module is not', () => {
 		const room = { id: 'sub-1', rid: 'rid-1', t: 'c', federated: true, federation: { version: 1, mrid: 'm', origin: 'o' } };
 		renderFooter(
-			makeRoomStore({ room: room as any }),
+			makeRoomStore({ room: { room } as any }),
 			makeReduxStore({ settings: { Federation_Matrix_enabled: true }, enterpriseModules: [] })
 		);
 

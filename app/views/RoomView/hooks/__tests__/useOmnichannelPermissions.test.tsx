@@ -14,6 +14,7 @@ const mockUsePermissions = usePermissions as jest.Mock;
 const makeRoomStore = (): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { room: { rid: 'rid-1', t: 'l' } },
+		observedValues: {},
 		joined: true,
 		subscribed: true,
 		member: {},

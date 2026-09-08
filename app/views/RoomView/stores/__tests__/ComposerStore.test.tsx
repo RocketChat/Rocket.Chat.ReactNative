@@ -91,14 +91,14 @@ describe('ComposerStore', () => {
 		const mutableRoom = { rid: 'rid-1', t: 'c', name: 'old' };
 		const spy = jest.fn();
 
-		const Probe = () => {
+		const Reader = () => {
 			const room = useComposerRoom();
 			spy(room && 'name' in room ? room.name : undefined);
 			return null;
 		};
 		const Parent = ({ roomRead }: { roomRead: ComposerState['roomRead'] }) => (
 			<ComposerProvider {...fullProps()} roomRead={roomRead}>
-				<Probe />
+				<Reader />
 			</ComposerProvider>
 		);
 
@@ -122,13 +122,13 @@ describe('ComposerStore', () => {
 		const props = fullProps();
 		const spy = jest.fn();
 
-		const Probe = () => {
+		const Reader = () => {
 			spy(useContext(ComposerStoreContext));
 			return null;
 		};
 		const Parent = ({ sharing }: { sharing: boolean }) => (
 			<ComposerProvider {...props} sharing={sharing}>
-				<Probe />
+				<Reader />
 			</ComposerProvider>
 		);
 

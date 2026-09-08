@@ -60,7 +60,7 @@ describe('useRoom', () => {
 		observeRoom('rid-1', store);
 		const spy = jest.fn();
 
-		const Probe = () => {
+		const Reader = () => {
 			const room = useRoom();
 			spy('topic' in room ? room.topic : undefined);
 			return null;
@@ -68,7 +68,7 @@ describe('useRoom', () => {
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<Probe />
+				<Reader />
 			</RoomStoreContext.Provider>
 		);
 		expect(spy).toHaveBeenLastCalledWith('old');
@@ -90,7 +90,7 @@ describe('useRoom', () => {
 		observeRoom('rid-1', store);
 		const spy = jest.fn();
 
-		const PlainProbe = () => {
+		const PlainReader = () => {
 			const room = useRoomStore(s => s.room.room);
 			spy('topic' in room ? room.topic : undefined);
 			return null;
@@ -98,7 +98,7 @@ describe('useRoom', () => {
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<PlainProbe />
+				<PlainReader />
 			</RoomStoreContext.Provider>
 		);
 

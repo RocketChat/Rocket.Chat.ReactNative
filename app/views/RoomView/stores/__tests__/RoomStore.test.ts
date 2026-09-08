@@ -6,7 +6,7 @@ import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
 import getMessages from '../../services/getMessages';
-import { createRoomStore, observeRoom } from '../RoomStore';
+import { createRoomStore, observeRoom, roomAttrsUpdateColumns } from '../RoomStore';
 
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
@@ -86,40 +86,11 @@ describe('RoomStore', () => {
 		const store = createObservedStore({ initialRoom: stubRoom });
 
 		expect(store).toBeDefined();
-		expect(observeWithColumns).toHaveBeenCalledWith([
-			'f',
-			'ro',
-			'blocked',
-			'blocker',
-			'archived',
-			'tunread',
-			'tunread_user',
-			'tunread_group',
-			'muted',
-			'ignored',
-			'jitsi_timeout',
-			'announcement',
-			'sys_mes',
-			'topic',
-			'name',
-			'fname',
-			'roles',
-			'banner_closed',
-			'visitor',
-			'join_code_required',
-			'team_main',
-			'team_id',
-			'status',
-			'on_hold',
-			't',
-			'auto_translate',
-			'auto_translate_language',
-			'unmuted',
-			'e2e_key',
-			'encrypted',
-			'inviter',
-			'last_message'
-		]);
+		expect(observeWithColumns).toHaveBeenCalledWith([...Object.values(roomAttrsUpdateColumns), 'last_message']);
+	});
+
+	it.each(['roles', 'encrypted', 'E2EKey'])('keeps %s tracked so useReadOnly/useE2EEStatus stay reactive', key => {
+		expect(Object.keys(roomAttrsUpdateColumns)).toContain(key);
 	});
 
 	it('exposes the initial room synchronously on creation', () => {
@@ -226,6 +197,30 @@ describe('RoomStore', () => {
 		const cleanup = observeRoom('rid-1', store);
 		cleanup();
 		observeRoom('rid-1', store);
+		emit([mutable]);
+
+		expect(store.getState().room).toBe(first);
+	});
+
+	it('keeps two observers of the same store in sync on repeated unchanged emissions', () => {
+		const callbacks = new Set<(rows: any[]) => void>();
+		const observeWithColumns = jest.fn(() => ({
+			subscribe: (cb: (rows: any[]) => void) => {
+				callbacks.add(cb);
+				return { unsubscribe: jest.fn(() => callbacks.delete(cb)) };
+			}
+		}));
+		mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
+		const emit = (rows: any[]) => callbacks.forEach(cb => cb(rows));
+
+		const mutable = { ...subRoom, topic: 'same' };
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
+		observeRoom('rid-1', store);
+		observeRoom('rid-1', store);
+
+		emit([mutable]);
+		const first = store.getState().room;
+
 		emit([mutable]);
 
 		expect(store.getState().room).toBe(first);

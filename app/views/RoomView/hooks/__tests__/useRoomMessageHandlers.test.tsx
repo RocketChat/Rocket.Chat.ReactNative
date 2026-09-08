@@ -67,6 +67,7 @@ const { useAppSelector } = jest.requireMock('../../../../lib/hooks/useAppSelecto
 const makeRoomStore = (overrides: Partial<RoomState> = {}): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { room: { rid: 'rid-1', t: 'c', name: 'general' } },
+		observedValues: {},
 		joined: true,
 		subscribed: true,
 		member: {},

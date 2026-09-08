@@ -75,6 +75,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
 	private messageActionStore: TMessageActionStore;
+	private cachedRoomRead?: { room: TSubscriptionModel };
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -382,6 +383,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
 
+	private getRoomRead = () => {
+		const { room } = this.state;
+		if (this.cachedRoomRead?.room !== room) {
+			this.cachedRoomRead = { room };
+		}
+		return this.cachedRoomRead;
+	};
+
 	renderContent = () => {
 		const { attachments, selected, text, room, thread } = this.state;
 		const { theme } = this.props;
@@ -392,7 +401,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					store={this.messageActionStore}
 					rid={room.rid}
 					t={room.t}
-					roomRead={{ room }}
+					roomRead={this.getRoomRead()}
 					tmid={this.getThreadId(thread)}
 					sharing
 					onSendMessage={this.send}

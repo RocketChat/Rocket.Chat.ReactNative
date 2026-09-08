@@ -52,7 +52,6 @@ export interface IFooterPreviewProps {
 	message: string;
 }
 
-/** The wrapper identity changes for tracked emissions; `room` remains the live model instance. */
 export type RoomRead = { room: IRoomViewState['room'] };
 
 export interface IRoomViewState {
@@ -154,6 +153,7 @@ export type TRoomInitResult =
 
 export interface RoomState {
 	room: RoomRead;
+	observedValues: Partial<TSubscriptionModel>;
 	joined: boolean;
 	subscribed: boolean;
 	member: IRoomViewState['member'];

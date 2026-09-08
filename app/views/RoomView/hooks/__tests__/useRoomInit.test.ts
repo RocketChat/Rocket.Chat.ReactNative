@@ -19,6 +19,7 @@ interface IRenderRoomInitParams {
 const makeRoomStore = (): RoomStore =>
 	createStore<RoomState>(() => ({
 		room: { room: { rid: 'rid-1', t: 'c' } },
+		observedValues: {},
 		joined: true,
 		subscribed: true,
 		member: {},

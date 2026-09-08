@@ -13,7 +13,7 @@ describe('RoomProviders', () => {
 		const store = createMessageActionStore();
 		const sharingRenderSpy = jest.fn();
 
-		const SharingProbe = () => {
+		const SharingReader = () => {
 			sharingRenderSpy(useComposerSharing());
 			return null;
 		};
@@ -21,7 +21,7 @@ describe('RoomProviders', () => {
 		// Kept as a single stable element reference so React can bail out of re-rendering it
 		// when only a sibling slice (room) changes — recreating it per render would force a
 		// re-render regardless of zustand's selector isolation, defeating the point of this test.
-		const children = <SharingProbe />;
+		const children = <SharingReader />;
 		const rooms = [
 			{ rid: 'rid-1', t: 'c' },
 			{ rid: 'rid-2', t: 'c' }
@@ -44,7 +44,7 @@ describe('RoomProviders', () => {
 		const isBeingEditedSpy = jest.fn();
 		const ridSpy = jest.fn();
 
-		const Probe = () => {
+		const Reader = () => {
 			actionSpy(useMessageAction());
 			isBeingEditedSpy(useIsBeingEdited('msg-1'));
 			ridSpy(useComposerRid());
@@ -53,7 +53,7 @@ describe('RoomProviders', () => {
 
 		render(
 			<RoomProviders store={store} rid='rid-1' t='c' roomRead={{ room: { rid: 'rid-1', t: 'c' } }}>
-				<Probe />
+				<Reader />
 			</RoomProviders>
 		);
 
