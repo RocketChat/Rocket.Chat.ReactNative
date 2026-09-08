@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import { createStore as createReduxStore } from 'redux';
 
 import RoomGate from '../index';
-import { type IRoomViewProps, type RoomState } from '../definitions';
+import { type IRoomViewProps } from '../definitions';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
 
@@ -40,7 +41,7 @@ jest.mock('../hooks/useE2EEStatus', () => ({
 jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
 jest.mock('../../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
 
-const room: { current: RoomState['room'] } = { current: { rid: 'rid-1', t: 'c' } };
+const room: { current: TRoomOrPreview } = { current: { rid: 'rid-1', t: 'c' } };
 
 jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
@@ -99,7 +100,7 @@ describe('RoomGate', () => {
 	});
 
 	it('keeps the room screen unmounted while the room is an invite', () => {
-		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c' } as RoomState['room'];
+		room.current = { id: 'sub-1', rid: 'rid-1', t: 'c' } as TRoomOrPreview;
 		jest.mocked(isInviteSubscription).mockReturnValue(true);
 
 		renderGate();
@@ -109,7 +110,7 @@ describe('RoomGate', () => {
 	});
 
 	it('keeps the room screen unmounted while the E2EE key is missing', () => {
-		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as RoomState['room'];
+		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true });
 
 		renderGate();
@@ -119,7 +120,7 @@ describe('RoomGate', () => {
 	});
 
 	it('keeps the room screen unmounted while the session has E2EE disabled', () => {
-		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as RoomState['room'];
+		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
 		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true });
 
 		renderGate();

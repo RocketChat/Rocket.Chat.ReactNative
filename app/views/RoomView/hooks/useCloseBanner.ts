@@ -1,7 +1,7 @@
 import database from '../../../lib/database';
-import { type IRoomViewState } from '../definitions';
+import { type TRoomOrPreview } from '../../../definitions/TRoom';
 
-export function useCloseBanner(room: IRoomViewState['room']): () => Promise<void> {
+export function useCloseBanner(room: TRoomOrPreview): () => Promise<void> {
 	return async () => {
 		if ('id' in room) {
 			try {

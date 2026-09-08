@@ -9,6 +9,8 @@ const REPO_ROOT = path.resolve(__dirname, '../../..');
 // A11yGate/MessageA11y* live under containers/message but are part of the RoomView compiler contract.
 // Named individually (not a directory scan) so pre-existing, unrelated files in that folder aren't pulled in.
 const EXTRA_FILES: string[] = [
+	// ComposerStore moved into the shared MessageComposer module but remains part of the RoomView provider contract.
+	path.resolve(__dirname, '../../containers/MessageComposer/ComposerStore.tsx'),
 	path.resolve(__dirname, '../../containers/message/stores/A11yGate.tsx'),
 	path.resolve(__dirname, '../../containers/message/components/MessageA11yOrder.tsx'),
 	path.resolve(__dirname, '../../containers/message/components/MessageA11yIndex.tsx')

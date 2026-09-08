@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { type RoomStore } from '../../definitions';
-import { useRoomWithUpdateFromStore } from '../../stores/RoomStoreContext';
+import { useRoomWithUpdateFromStore } from '../../../../lib/hooks/useRoomWithUpdateFromStore';
 import { OmnichannelRightButtons } from './OmnichannelRightButtons';
 import { RoomRightButtons } from './RoomRightButtons';
 import { ThreadRightButtons } from './ThreadRightButtons';

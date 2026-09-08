@@ -2,7 +2,7 @@ import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../../lib/
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { type IUseE2EEStatusResult } from '../definitions';
 import { type RoomStore } from '../definitions';
-import { useRoomWithUpdateFromStore } from '../stores/RoomStoreContext';
+import { useRoomWithUpdateFromStore } from '../../../lib/hooks/useRoomWithUpdateFromStore';
 
 export const useE2EEStatus = (roomStore: RoomStore): IUseE2EEStatusResult => {
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);

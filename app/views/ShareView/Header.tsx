@@ -7,7 +7,8 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
-import { type ISubscription, type TThreadModel } from '../../definitions';
+import { type TThreadModel } from '../../definitions';
+import { type TRoomOrPreview } from '../../definitions/TRoom';
 import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { getMessageById } from '../../lib/database/services/Message';
 
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 });
 
 interface IHeader {
-	room: ISubscription;
+	room: TRoomOrPreview;
 	thread: TThreadModel | string;
 }
 

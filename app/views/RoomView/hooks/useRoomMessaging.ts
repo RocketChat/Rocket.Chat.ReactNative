@@ -55,9 +55,7 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 		onReactionPress,
 		onReactionInit,
 		onMessageLongPress,
-		onReplyInit,
-		setQuotesAndText,
-		getText
+		onReplyInit
 	} = useMessageActions({
 		messageActionStore,
 		showActionSheet,
@@ -104,8 +102,6 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 		onRemoveQuoteMessage,
 		onReactionInit,
 		onReactionPress,
-		onReplyInit,
-		setQuotesAndText,
-		getText
+		onReplyInit
 	};
 }

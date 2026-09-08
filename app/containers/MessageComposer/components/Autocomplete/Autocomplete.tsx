@@ -8,7 +8,7 @@ import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { type IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { useComposerRid, useUpdateAutocompleteVisible } from '../../../../views/RoomView/stores/ComposerStore';
+import { useComposerRid, useUpdateAutocompleteVisible } from '../../ComposerStore';
 import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
 import { useStyle } from './styles';
 

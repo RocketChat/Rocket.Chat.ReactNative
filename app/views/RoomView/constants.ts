@@ -1,40 +1,6 @@
-import { type TRoomUpdate } from './definitions';
+import { type TRoomObservedField } from '../../definitions/TRoom';
 
-export const roomAttrsUpdate = [
-	'f',
-	'ro',
-	'blocked',
-	'blocker',
-	'archived',
-	'tunread',
-	'tunreadUser',
-	'tunreadGroup',
-	'muted',
-	'ignored',
-	'jitsiTimeout',
-	'announcement',
-	'sysMes',
-	'topic',
-	'name',
-	'fname',
-	'roles',
-	'bannerClosed',
-	'visitor',
-	'joinCodeRequired',
-	'teamMain',
-	'teamId',
-	'status',
-	'onHold',
-	't',
-	'autoTranslate',
-	'autoTranslateLanguage',
-	'unmuted',
-	'E2EKey',
-	'encrypted',
-	'inviter'
-] as const satisfies readonly TRoomUpdate[];
-
-export const roomAttrsUpdateColumns: Record<(typeof roomAttrsUpdate)[number], string> = {
+export const roomObservedColumns: Record<TRoomObservedField, string> = {
 	f: 'f',
 	ro: 'ro',
 	blocked: 'blocked',

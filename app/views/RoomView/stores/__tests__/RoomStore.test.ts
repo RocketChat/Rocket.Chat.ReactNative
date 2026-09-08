@@ -5,7 +5,8 @@ import { getUserInfo } from '../../../../lib/services/restApi';
 import { isGroupChat } from '../../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../../lib/methods/isInviteSubscription';
 import log from '../../../../lib/methods/helpers/log';
-import { roomAttrsUpdate, roomAttrsUpdateColumns } from '../../constants';
+import { roomObservedFields } from '../../../../definitions/TRoom';
+import { roomObservedColumns } from '../../constants';
 import getMessages from '../../services/getMessages';
 import { createRoomStore, observeRoom } from '../RoomStore';
 
@@ -448,7 +449,7 @@ describe('RoomStore', () => {
 		expect(store.getState().joined).toBe(true);
 	});
 
-	it('roomAttrsUpdateColumns has exactly one entry per roomAttrsUpdate key', () => {
-		expect(Object.keys(roomAttrsUpdateColumns).sort()).toEqual([...roomAttrsUpdate].sort());
+	it('roomObservedColumns has exactly one entry per roomObservedFields key', () => {
+		expect(Object.keys(roomObservedColumns).sort()).toEqual([...roomObservedFields].sort());
 	});
 });

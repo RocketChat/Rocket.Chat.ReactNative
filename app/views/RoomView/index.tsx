@@ -11,7 +11,7 @@ import RoomScreen from './RoomScreen';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
-import { useRoomWithUpdateFromStore } from './stores/RoomStoreContext';
+import { useRoomWithUpdateFromStore } from '../../lib/hooks/useRoomWithUpdateFromStore';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
 
