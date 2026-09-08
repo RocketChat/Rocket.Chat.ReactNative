@@ -9,7 +9,7 @@ import { getRoomTitle, isGroupChat } from '../../../lib/methods/helpers';
 import { isInviteSubscription } from '../../../lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '../../../definitions';
 import LeftButtons from '../components/LeftButtons';
-import RightButtons from '../components/RightButtons';
+import RightButtons from '../components/RightButtons/RightButtons';
 import { type IRoomViewProps } from '../definitions';
 import { type TRoomOrPreview } from '../../../definitions/TRoom';
 import { type RoomStore } from '../definitions';

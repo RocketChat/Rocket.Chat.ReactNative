@@ -82,7 +82,7 @@ describe('RoomProviders', () => {
 		expect(otherActionSpy).toHaveBeenLastCalledWith(null);
 		expect(isBeingEditedSpy).toHaveBeenLastCalledWith(false);
 
-		act(() => store.getState().actions.startEditing('msg-1'));
+		act(() => store.getState().actions.requestEditing('msg-1'));
 
 		expect(rowActionSpy).toHaveBeenLastCalledWith({ kind: 'edit', messageId: 'msg-1' });
 		expect(composerActionSpy).toHaveBeenLastCalledWith({ kind: 'edit', messageId: 'msg-1' });

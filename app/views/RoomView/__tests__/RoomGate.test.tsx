@@ -36,7 +36,7 @@ jest.mock('../components/RoomRouteInvalid', () => {
 });
 jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({
-	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false }))
+	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));
 jest.mock('../../../lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
 jest.mock('../../../lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
@@ -75,7 +75,7 @@ describe('RoomGate', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		room.current = { rid: 'rid-1', t: 'c' };
-		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: false });
+		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false });
 		jest.mocked(isInviteSubscription).mockReturnValue(false);
 	});
 
@@ -111,7 +111,7 @@ describe('RoomGate', () => {
 
 	it('keeps the room screen unmounted while the E2EE key is missing', () => {
 		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
-		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: true, showE2EEDisabledRoom: false });
+		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: true, showE2EEDisabledRoom: false, hasE2EEWarning: true });
 
 		renderGate();
 
@@ -121,7 +121,7 @@ describe('RoomGate', () => {
 
 	it('keeps the room screen unmounted while the session has E2EE disabled', () => {
 		room.current = { rid: 'rid-1', t: 'c', encrypted: true } as TRoomOrPreview;
-		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: true });
+		jest.mocked(useE2EEStatus).mockReturnValue({ showMissingE2EEKey: false, showE2EEDisabledRoom: true, hasE2EEWarning: true });
 
 		renderGate();
 

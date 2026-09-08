@@ -1,8 +1,8 @@
 import { type ReactElement, useEffect, useRef } from 'react';
 
-import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
-import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
+import * as HeaderButton from '../../../../containers/Header/components/HeaderButton';
+import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
+import { useNewMediaCall } from '../../../../lib/hooks/useNewMediaCall';
 
 const DOUBLE_TAP_WINDOW_MS = 300;
 
