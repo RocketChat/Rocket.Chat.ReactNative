@@ -5,6 +5,7 @@ import { type IRoomViewState } from '../../definitions';
 import { useCloseBanner } from '../useCloseBanner';
 import { createRoomStore, observeRoom } from '../../stores/RoomStore';
 import { RoomStoreContext, useRoom } from '../../stores/RoomStoreContext';
+import { setupObserveRoomDatabase } from '../../stores/__tests__/observeRoomHarness';
 
 let insideWrite = false;
 const mockWrite = jest.fn(async (fn: () => Promise<void>) => {
@@ -15,10 +16,9 @@ const mockWrite = jest.fn(async (fn: () => Promise<void>) => {
 		insideWrite = false;
 	}
 });
-const mockGet = jest.fn();
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
-	default: { active: { get: (...args: unknown[]) => mockGet(...args), write: (fn: () => Promise<void>) => mockWrite(fn) } }
+	default: { active: { get: jest.fn(), write: (fn: () => Promise<void>) => mockWrite(fn) } }
 }));
 jest.mock('../../../../lib/methods/readMessages', () => ({ readMessages: jest.fn() }));
 jest.mock('../../../../lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn() }));
@@ -40,17 +40,7 @@ describe('useCloseBanner', () => {
 	});
 
 	it('routes a current observed Room read to the original model after mutation and replacement', async () => {
-		let emit: (rows: IRoomViewState['room'][]) => void = () => {};
-		mockGet.mockReturnValue({
-			query: () => ({
-				observeWithColumns: () => ({
-					subscribe: (callback: (rows: IRoomViewState['room'][]) => void) => {
-						emit = callback;
-						return { unsubscribe: jest.fn() };
-					}
-				})
-			})
-		});
+		const { emit } = setupObserveRoomDatabase();
 
 		const createRoom = () => {
 			let model!: {

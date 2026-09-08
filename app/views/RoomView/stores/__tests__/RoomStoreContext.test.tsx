@@ -1,8 +1,8 @@
 import { act, render } from '@testing-library/react-native';
 
-import database from '../../../../lib/database';
 import { createRoomStore, observeRoom } from '../RoomStore';
 import { RoomStoreContext, useRoomStore, useRoom } from '../RoomStoreContext';
+import { setupObserveRoomDatabase } from './observeRoomHarness';
 
 jest.mock('../../../../lib/database', () => ({
 	__esModule: true,
@@ -31,23 +31,7 @@ jest.mock('../../../../lib/methods/isInviteSubscription', () => ({
 }));
 jest.mock('../../../../lib/methods/helpers/log', () => jest.fn());
 
-const mockGet = database.active.get as jest.Mock;
-
 const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old' };
-
-const setupObserve = () => {
-	let emit: ((rows: any[]) => void) | undefined;
-	const unsubscribe = jest.fn();
-	const observeWithColumns = jest.fn(() => ({
-		subscribe: (cb: (rows: any[]) => void) => {
-			emit = cb;
-			return { unsubscribe };
-		}
-	}));
-	const query = jest.fn(() => ({ observeWithColumns }));
-	mockGet.mockReturnValue({ query });
-	return { emit: (rows: any[]) => emit?.(rows) };
-};
 
 describe('useRoom', () => {
 	beforeEach(() => {
@@ -55,7 +39,7 @@ describe('useRoom', () => {
 	});
 
 	it('re-renders with the fresh field when the same room instance re-emits a mutated tracked column', () => {
-		const { emit } = setupObserve();
+		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		observeRoom('rid-1', store);
 		const spy = jest.fn();
@@ -85,7 +69,7 @@ describe('useRoom', () => {
 	});
 
 	it('does NOT re-render a plain `s.room` selector on the same mutated-in-place emit (documents why the hook exists)', () => {
-		const { emit } = setupObserve();
+		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: subRoom });
 		observeRoom('rid-1', store);
 		const spy = jest.fn();

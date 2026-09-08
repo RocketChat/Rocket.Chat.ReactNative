@@ -1,8 +1,7 @@
 import database from '../../../../lib/database';
 
-const mockGet = database.active.get as jest.Mock;
-
 export const setupObserveRoomDatabase = () => {
+	const mockGet = database.active.get as jest.Mock;
 	const callbacks = new Set<(rows: any[]) => void>();
 	const observeWithColumns = jest.fn(() => ({
 		subscribe: (callback: (rows: any[]) => void) => {

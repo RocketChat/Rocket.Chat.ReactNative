@@ -45,8 +45,6 @@ type Room = {
 	[key: string]: any;
 };
 
-const setupDatabase = setupObserveRoomDatabase;
-
 const preview = (overrides: Partial<Room> = {}): Room => ({ rid: 'rid-1', t: 'c', name: 'general', ...overrides });
 const subscription = (overrides: Partial<Room> = {}): Room => ({ id: 'sub-1', ...preview(), ...overrides });
 
@@ -56,7 +54,7 @@ describe('observed Room reads', () => {
 	});
 
 	it('propagates a same-instance tracked mutation through the actual store and header', () => {
-		const { emit } = setupDatabase();
+		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		observeRoom('rid-1', store);
 
@@ -77,7 +75,7 @@ describe('observed Room reads', () => {
 	});
 
 	it('keeps the thread title while updating the parent Room title', () => {
-		const { emit } = setupDatabase();
+		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		observeRoom('rid-1', store);
 		renderHook(() => useHeader({ rid: 'rid-1', tmid: 'tmid-1', name: 'Thread', roomStore: store }));
@@ -99,7 +97,7 @@ describe('observed Room reads', () => {
 	});
 
 	it('skips no-op and untracked mutations but propagates replacement rows', () => {
-		const { emit } = setupDatabase();
+		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		observeRoom('rid-1', store);
 		renderHook(() => useHeader({ rid: 'rid-1', roomStore: store }));
@@ -120,7 +118,7 @@ describe('observed Room reads', () => {
 
 	it('filters changed Room references through ComposerProvider and retains local autocomplete state', () => {
 		const room = subscription({ name: 'before' });
-		const { emit } = setupDatabase();
+		const { emit } = setupObserveRoomDatabase();
 		const roomStore = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		observeRoom('rid-1', roomStore);
 		const renderSpy = jest.fn();
@@ -150,7 +148,7 @@ describe('observed Room reads', () => {
 	});
 
 	it('keeps observation cleanup isolated for two screens sharing a Room id', () => {
-		const first = setupDatabase();
+		const first = setupObserveRoomDatabase();
 		const storeA = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		const storeB = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		const cleanupA = observeRoom('rid-1', storeA);
@@ -168,7 +166,7 @@ describe('observed Room reads', () => {
 	});
 
 	it('preserves membership transitions, DM no-row behavior, and invite classification', () => {
-		const { emit } = setupDatabase();
+		const { emit } = setupObserveRoomDatabase();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: preview() });
 		observeRoom('rid-1', store);
 		emit([]);
@@ -192,7 +190,7 @@ describe('observed Room reads', () => {
 		expect((store.getState().room.room as Room).status).toBe('OPEN');
 		expect(membership.result.current).toBe(false);
 		const dmStore = createRoomStore({ rid: 'dm-1', initialRoom: preview({ rid: 'dm-1', t: 'd' }) });
-		const dmObservation = setupDatabase();
+		const dmObservation = setupObserveRoomDatabase();
 		observeRoom('dm-1', dmStore);
 		dmObservation.emit([]);
 		expect(dmStore.getState()).toMatchObject({ subscribed: false, joined: true });
