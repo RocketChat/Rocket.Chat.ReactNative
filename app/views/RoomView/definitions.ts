@@ -97,6 +97,7 @@ export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible'
 export interface IUseE2EEStatusResult {
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;
+	hasE2EEWarning: boolean;
 }
 
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
