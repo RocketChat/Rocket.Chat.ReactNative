@@ -1,7 +1,7 @@
 import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
-import { setUser } from '../../actions/login';
+import { setLoginServices, setUser } from '../../actions/login';
 import database from '../database';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
@@ -638,6 +638,49 @@ describe('connect — stream-notify-logged updateAvatar', () => {
 		const updated = { avatarETag: '' };
 		await mockUserUpdate.mock.calls[0][0](updated);
 		expect(updated.avatarETag).toBe('newEtag');
+	});
+});
+
+describe('getLoginServices (non-iOS)', () => {
+	const originalFetch = global.fetch;
+
+	afterEach(() => {
+		global.fetch = originalFetch;
+	});
+
+	it('should filter out Apple authentication on non-iOS devices', async () => {
+		global.fetch = jest.fn().mockResolvedValue({
+			json: jest.fn().mockResolvedValue({
+				success: true,
+				services: [
+					{
+						_id: 'Accounts_OAuth_Apple',
+						service: 'apple',
+						buttonLabelText: 'Sign in with Apple',
+						custom: false
+					},
+					{
+						_id: 'Accounts_OAuth_Google',
+						service: 'google',
+						custom: false
+					}
+				]
+			})
+		}) as any;
+
+		await getLoginServices('https://open.rocket.chat');
+
+		expect(mockStoreDispatch).toHaveBeenCalledWith(
+			setLoginServices({
+				google: {
+					_id: 'Accounts_OAuth_Google',
+					service: 'google',
+					custom: false,
+					name: 'google',
+					authType: 'oauth'
+				}
+			})
+		);
 	});
 });
 
