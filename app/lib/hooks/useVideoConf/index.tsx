@@ -7,9 +7,11 @@ import { getUserSelector } from '../../../selectors/login';
 import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 import { showErrorAlert } from '../../methods/helpers/info';
 import log from '../../methods/helpers/log';
-import { handleAndroidBltPermission } from '../../methods/videoConf';
+import { handleAndroidBltPermission } from '../../methods/handleAndroidBltPermission';
+import { openConferenceCall } from '../../methods/openConferenceCall';
 import { videoConferenceGetCapabilities } from '../../services/restApi';
 import { useAppSelector } from '../useAppSelector';
+import { isConferenceWindowEnabled } from '../useConferenceWindow';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
 
@@ -56,23 +58,30 @@ export const useVideoConf = (
 	const showInitCallActionSheet = async () => {
 		try {
 			const canInit = await canInitAnCall();
-			if (canInit) {
-				showActionSheet({
-					children: <StartACallActionSheet rid={rid} roomType={roomType} />,
-					portraitSnaps: ['60%'],
-					landscapeSnaps: ['90%'],
-					enableContentPanningGesture: false,
-					fullContainer: true
-				});
+			if (!canInit) {
+				return;
+			}
 
-				const permission = await Camera.getCameraPermissionsAsync();
-				if (!permission?.granted) {
-					try {
-						await Camera.requestCameraPermissionsAsync();
-						handleAndroidBltPermission();
-					} catch (error) {
-						log(error);
-					}
+			if (isConferenceWindowEnabled()) {
+				await openConferenceCall({ rid });
+				return;
+			}
+
+			showActionSheet({
+				children: <StartACallActionSheet rid={rid} roomType={roomType} />,
+				portraitSnaps: ['60%'],
+				landscapeSnaps: ['90%'],
+				enableContentPanningGesture: false,
+				fullContainer: true
+			});
+
+			const permission = await Camera.getCameraPermissionsAsync();
+			if (!permission?.granted) {
+				try {
+					await Camera.requestCameraPermissionsAsync();
+					handleAndroidBltPermission();
+				} catch (error) {
+					log(error);
 				}
 			}
 		} catch (error) {

@@ -39,6 +39,7 @@ import TeamChannelsView from '../views/TeamChannelsView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
+import ConferenceView from '../views/ConferenceView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
@@ -122,6 +123,7 @@ const AddChannelTeamViewScreen = AddChannelTeamView as any;
 const AddExistingChannelViewScreen = AddExistingChannelView as any;
 const CannedResponseDetailScreen = CannedResponseDetail as any;
 const JitsiMeetViewScreen = JitsiMeetView as any;
+const ConferenceViewScreen: ComponentType<StaticScreenProps<undefined>> = ConferenceView as any;
 const ChangeAvatarViewScreen = ChangeAvatarView as any;
 const UserNotificationPrefViewScreen: ComponentType<StaticScreenProps<undefined>> = UserNotificationPrefView as any;
 const SettingsViewScreen: ComponentType<StaticScreenProps<undefined>> = SettingsView as any;
@@ -199,6 +201,10 @@ const ChatsStack = createNativeStackNavigator({
 		CannedResponseDetail: CannedResponseDetailScreen,
 		JitsiMeetView: createNativeStackScreen({
 			screen: JitsiMeetViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
+		}),
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceViewScreen,
 			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		})
 	}

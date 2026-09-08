@@ -176,6 +176,7 @@ export type ChatsStackParamList = {
 		onlyAudio?: boolean;
 		videoConf?: boolean;
 	};
+	ConferenceView: undefined;
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
