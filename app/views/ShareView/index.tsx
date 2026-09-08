@@ -379,8 +379,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	}
 
 	onRemoveQuoteMessage = (messageId: string) => {
-		const newSelectedMessages = this.getSelectedMessageIds().filter(item => item !== messageId);
-		this.messageActionStore.getState().actions.setQuoteMessageIds(newSelectedMessages);
+		this.messageActionStore.getState().actions.removeQuote(messageId);
 	};
 
 	renderContent = () => {

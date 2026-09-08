@@ -91,7 +91,7 @@ describe('useMessageActions', () => {
 
 		it('onEditInit no-ops when an action is already in progress', () => {
 			const { result, messageActionStore } = renderMessageActions();
-			messageActionStore.getState().actions.startQuote('other-msg');
+			messageActionStore.getState().actions.requestQuote('other-msg');
 
 			act(() => result.current.onEditInit('msg-1'));
 
@@ -100,7 +100,7 @@ describe('useMessageActions', () => {
 
 		it('onEditCancel clears the current action', () => {
 			const { result, messageActionStore } = renderMessageActions();
-			messageActionStore.getState().actions.startEditing('msg-1');
+			messageActionStore.getState().actions.requestEditing('msg-1');
 
 			act(() => result.current.onEditCancel());
 
@@ -110,7 +110,7 @@ describe('useMessageActions', () => {
 		it('onEditRequest clears the action then calls editMessage', async () => {
 			mockEditMessage.mockResolvedValue(undefined);
 			const { result, messageActionStore } = renderMessageActions();
-			messageActionStore.getState().actions.startEditing('msg-1');
+			messageActionStore.getState().actions.requestEditing('msg-1');
 
 			await act(async () => {
 				await result.current.onEditRequest({ id: 'msg-1', msg: 'edited', rid: RID });
@@ -144,7 +144,7 @@ describe('useMessageActions', () => {
 
 		it('onQuoteInit appends to an in-progress quote', () => {
 			const { result, messageActionStore } = renderMessageActions();
-			messageActionStore.getState().actions.startQuote('msg-1');
+			messageActionStore.getState().actions.requestQuote('msg-1');
 
 			act(() => result.current.onQuoteInit('msg-2'));
 
@@ -153,8 +153,8 @@ describe('useMessageActions', () => {
 
 		it('onRemoveQuoteMessage removes a quoted message id', () => {
 			const { result, messageActionStore } = renderMessageActions();
-			messageActionStore.getState().actions.startQuote('msg-1');
-			messageActionStore.getState().actions.addQuote('msg-2');
+			messageActionStore.getState().actions.requestQuote('msg-1');
+			messageActionStore.getState().actions.requestQuote('msg-2');
 
 			act(() => result.current.onRemoveQuoteMessage('msg-1'));
 
@@ -205,7 +205,7 @@ describe('useMessageActions', () => {
 
 		it('onReactionInit no-ops when an action is already in progress', () => {
 			const { result, messageActionStore, showActionSheet } = renderMessageActions();
-			messageActionStore.getState().actions.startQuote('other-msg');
+			messageActionStore.getState().actions.requestQuote('other-msg');
 
 			act(() => result.current.onReactionInit('msg-1'));
 
@@ -243,7 +243,7 @@ describe('useMessageActions', () => {
 
 		it('no-ops when an action other than quote is already in progress', () => {
 			const { result, messageActionStore, refs } = renderMessageActions();
-			messageActionStore.getState().actions.startEditing('other-msg');
+			messageActionStore.getState().actions.requestEditing('other-msg');
 			const message = { id: 'msg-1' } as any;
 
 			act(() => result.current.onMessageLongPress(message));
@@ -253,7 +253,7 @@ describe('useMessageActions', () => {
 
 		it('allows a long-press while quoting (kind === quote)', () => {
 			const { result, messageActionStore, refs } = renderMessageActions();
-			messageActionStore.getState().actions.startQuote('other-msg');
+			messageActionStore.getState().actions.requestQuote('other-msg');
 			const message = { id: 'msg-1' } as any;
 
 			act(() => result.current.onMessageLongPress(message));
