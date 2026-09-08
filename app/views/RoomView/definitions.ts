@@ -75,25 +75,6 @@ export interface IRoomViewState {
 	lastSeen: Date | null;
 }
 
-export type ComposerState = {
-	rid?: string;
-	t?: string;
-	tmid?: string;
-	room: IRoomViewState['room'];
-	roomUpdate?: IRoomViewState['roomUpdate'];
-	sharing?: boolean;
-	isAutocompleteVisible: boolean;
-	editCancel?: () => void;
-	editRequest?: (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: IMessageEditAttachment[] }) => Promise<void>;
-	onRemoveQuoteMessage?: (messageId: string) => void;
-	onSendMessage?: (message?: string, tshow?: boolean) => void;
-	setQuotesAndText?: (text: string, quotes: string[]) => void;
-	getText?: () => string | undefined;
-	updateAutocompleteVisible: (updatedAutocompleteVisible: boolean) => void;
-};
-
-export type TComposerExternalState = Omit<ComposerState, 'isAutocompleteVisible' | 'updateAutocompleteVisible'>;
-
 export interface IUseE2EEStatusResult {
 	showMissingE2EEKey: boolean;
 	showE2EEDisabledRoom: boolean;
@@ -189,8 +170,6 @@ export interface IJoinRoomContext {
 
 export type RoomStore = StoreApi<RoomState>;
 
-export type ComposerStore = StoreApi<ComposerState>;
-
 export type TGetMessageInfoResult = {
 	id: string;
 	rid: string | undefined;
@@ -266,8 +245,6 @@ export interface IUseMessageActionsResult {
 	onReactionInit: (messageId: string) => void;
 	onMessageLongPress: (message: TAnyMessageModel) => void;
 	onReplyInit: (messageId: string) => Promise<void>;
-	setQuotesAndText: (text: string, quotes: string[]) => void;
-	getText: () => string | undefined;
 }
 
 export interface IRoomMessageListProps

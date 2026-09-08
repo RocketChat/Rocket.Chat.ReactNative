@@ -1,4 +1,4 @@
-import { useEffect, type ReactElement } from 'react';
+import { useEffect, type ReactElement, type RefObject } from 'react';
 import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
@@ -12,16 +12,48 @@ import { mockedStore } from '../../reducers/mockedStore';
 import { type IPermissionsState } from '../../reducers/permissions';
 import { type IMessage, type IShareAttachment, type TMessageActionState } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
-import { type ComposerState } from '../../views/RoomView/definitions';
-import { ComposerProvider } from '../../views/RoomView/stores/ComposerStore';
+import { type ComposerState } from './ComposerStore';
+import { ComposerProvider } from './ComposerStore';
 import { MessageActionProvider } from '../message/stores/MessageActionStore';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
 import { searchRemote } from '../../lib/methods/search';
 import database from '../../lib/database';
 import { useMessageComposerApi } from './context';
+import { type IMessageComposerRef } from './interfaces';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { runSlashCommand } from '../../lib/services/restApi';
+import { useChooseMedia } from './hooks/useChooseMedia';
+import { useMessageActionStoreApi } from '../message/stores/MessageActionStore';
+import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
+
+jest.mock('expo-document-picker', () => ({
+	getDocumentAsync: jest.fn()
+}));
+
+jest.mock('../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
+	__esModule: true,
+	default: {
+		openCamera: jest.fn(),
+		openPicker: jest.fn()
+	}
+}));
+
+jest.mock('../../lib/database/services/Subscription', () => ({
+	getSubscriptionByRoomId: jest.fn()
+}));
+
+jest.mock('../../lib/database/services/Thread', () => ({
+	getThreadById: jest.fn()
+}));
+
+jest.mock('../../lib/navigation/appNavigation', () => ({
+	navigate: jest.fn()
+}));
+
+jest.mock('../../lib/hooks/useAltTextSupported', () => ({
+	useAltTextSupported: jest.fn()
+}));
 
 jest.useFakeTimers();
 
@@ -121,16 +153,18 @@ const initialContext = {
 const Render = ({
 	context,
 	action,
-	children
+	children,
+	forwardedRef
 }: {
 	context?: Partial<ComposerState>;
 	action?: TMessageActionState;
 	children?: ReactElement;
+	forwardedRef?: RefObject<IMessageComposerRef | null>;
 }) => (
 	<Provider store={mockedStore}>
 		<MessageActionProvider initialAction={action}>
 			<ComposerProvider {...initialContext} {...context}>
-				<MessageComposerContainer>
+				<MessageComposerContainer ref={forwardedRef}>
 					<>
 						<ComposerAttachments />
 						{children}
@@ -140,6 +174,29 @@ const Render = ({
 		</MessageActionProvider>
 	</Provider>
 );
+
+type MediaTransferProbe = ReturnType<typeof useChooseMedia>;
+let mediaTransferProbe: MediaTransferProbe;
+let mediaActionStore: ReturnType<typeof useMessageActionStoreApi>;
+const mediaTransferProbes: Record<string, MediaTransferProbe> = {};
+const mediaActionStores: Record<string, ReturnType<typeof useMessageActionStoreApi>> = {};
+
+const MediaTransferProbe = ({
+	name = 'default',
+	rid = 'rid',
+	tmid = 'thread-id'
+}: {
+	name?: string;
+	rid?: string;
+	tmid?: string;
+}) => {
+	const probe = useChooseMedia({ rid, tmid, permissionToUpload: true });
+	mediaTransferProbe = probe;
+	mediaTransferProbes[name] = probe;
+	mediaActionStore = useMessageActionStoreApi();
+	mediaActionStores[name] = mediaActionStore;
+	return null;
+};
 
 const AttachmentSeeder = ({ attachments }: { attachments: IShareAttachment[] }) => {
 	const { addAttachments } = useMessageComposerApi();
@@ -210,6 +267,23 @@ beforeEach(() => {
 	sharedValue.value = false; // reset before each test
 	sharedValueSearchbar.value = false;
 	keyboardHeightSharedValue.value = 0;
+	mediaTransferProbe = undefined as unknown as MediaTransferProbe;
+	mediaActionStore = undefined as unknown as ReturnType<typeof useMessageActionStoreApi>;
+	Object.keys(mediaTransferProbes).forEach(key => delete mediaTransferProbes[key]);
+	Object.keys(mediaActionStores).forEach(key => delete mediaActionStores[key]);
+	(useAltTextSupported as jest.Mock).mockReturnValue(false);
+	(require('expo-document-picker').getDocumentAsync as jest.Mock).mockReset();
+	const imagePicker = require('../../lib/methods/helpers/ImagePicker/ImagePicker').default;
+	imagePicker.openCamera.mockReset();
+	imagePicker.openPicker.mockReset();
+	require('../../lib/database/services/Subscription').getSubscriptionByRoomId.mockResolvedValue({
+		rid: 'rid',
+		t: 'c',
+		roles: [],
+		observe: () => ({ subscribe: () => ({ unsubscribe: jest.fn() }) })
+	});
+	require('../../lib/database/services/Thread').getThreadById.mockResolvedValue({ id: 'thread-id' });
+	require('../../lib/navigation/appNavigation').navigate.mockClear();
 });
 
 describe('MessageComposer', () => {
@@ -806,6 +880,169 @@ describe('MessageComposer', () => {
 			);
 			expect(onSendMessage).not.toHaveBeenCalled();
 			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
+		});
+
+		test('clears input after a delayed successful upload, including text typed while uploading', async () => {
+			let resolveUpload!: () => void;
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>(resolve => (resolveUpload = resolve)));
+			render(
+				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-0');
+			await screen.findByTestId('composer-quote-abc');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			const sendPromise = user.press(screen.getByTestId('message-composer-send'));
+			await waitFor(() => expect(sendFileMessage).toHaveBeenCalled());
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
+			resolveUpload();
+			await sendPromise;
+
+			await waitFor(() => expect(composerRef.current?.getText()).toBe(''));
+			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
+			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
+		});
+
+		test('restores input and keeps attachments after a failed upload', async () => {
+			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			render(
+				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-0');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
+			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
+			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+		});
+	});
+
+	describe('media transfer ownership', () => {
+		const attachment = { filename: 'legacy.pdf', size: 12, mime: 'application/pdf', path: 'file:///tmp/legacy.pdf' };
+
+		test('legacy transfer reads current text while retaining Quote IDs captured by the initiating render', async () => {
+			let resolveDocument!: (result: unknown) => void;
+			(require('expo-document-picker').getDocumentAsync as jest.Mock).mockReturnValueOnce(
+				new Promise(resolve => (resolveDocument = resolve))
+			);
+			const ref = { current: null } as RefObject<IMessageComposerRef | null>;
+			render(
+				<Render forwardedRef={ref} action={{ kind: 'quote', messageIds: ['old-quote'] }}>
+					<MediaTransferProbe />
+				</Render>
+			);
+			await waitFor(() => expect(mediaTransferProbe).toBeDefined());
+
+			const choosePromise = mediaTransferProbe.chooseFile();
+			ref.current?.setInput('awaiting text');
+			mediaActionStore.getState().actions.startReacting('react-now');
+			resolveDocument({
+				canceled: false,
+				assets: [{ name: attachment.filename, size: attachment.size, mimeType: attachment.mime, uri: attachment.path }]
+			});
+			await choosePromise;
+			ref.current?.setInput('current text');
+			mediaActionStore.getState().actions.startReacting('react-after-resolution');
+
+			const navigate = require('../../lib/navigation/appNavigation').navigate as jest.Mock;
+			const params = navigate.mock.calls[0][1];
+			expect(params.startShareView()).toEqual({ text: 'current text', selectedMessages: ['old-quote'] });
+			params.finishShareView('', []);
+			expect(ref.current?.getText()).toBe('');
+			expect(mediaActionStore.getState().action).toBeNull();
+		});
+
+		test.each(['chooseFile', 'takePhoto', 'chooseFromLibrary'] as const)(
+			'%s cancellation leaves input and Quotes unchanged',
+			async method => {
+				const ref = { current: null } as RefObject<IMessageComposerRef | null>;
+				render(
+					<Render forwardedRef={ref} action={{ kind: 'quote', messageIds: ['kept-quote'] }}>
+						<MediaTransferProbe />
+					</Render>
+				);
+				await waitFor(() => expect(mediaTransferProbe).toBeDefined());
+				ref.current?.setInput('kept text');
+				if (method === 'chooseFile') {
+					(require('expo-document-picker').getDocumentAsync as jest.Mock).mockResolvedValueOnce({ canceled: true });
+				} else {
+					const imagePicker = require('../../lib/methods/helpers/ImagePicker/ImagePicker').default;
+					imagePicker[method === 'takePhoto' ? 'openCamera' : 'openPicker'].mockRejectedValueOnce(new Error('cancelled'));
+				}
+
+				await mediaTransferProbe[method]();
+				expect(require('../../lib/navigation/appNavigation').navigate).not.toHaveBeenCalled();
+				expect(ref.current?.getText()).toBe('kept text');
+				expect(mediaActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['kept-quote'] });
+			}
+		);
+
+		test('same-rid Room and Thread composers transfer and restore independently', async () => {
+			const roomRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			const threadRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			const Dual = () => (
+				<Provider store={mockedStore}>
+					<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['room-quote'] }}>
+						<ComposerProvider {...initialContext} tmid={undefined}>
+							<MessageComposerContainer ref={roomRef}>
+								<MediaTransferProbe name='room' rid='same-rid' tmid='' />
+							</MessageComposerContainer>
+						</ComposerProvider>
+					</MessageActionProvider>
+					<MessageActionProvider initialAction={{ kind: 'quote', messageIds: ['thread-quote'] }}>
+						<ComposerProvider {...initialContext} tmid='thread-id'>
+							<MessageComposerContainer ref={threadRef}>
+								<MediaTransferProbe name='thread' rid='same-rid' tmid='thread-id' />
+							</MessageComposerContainer>
+						</ComposerProvider>
+					</MessageActionProvider>
+				</Provider>
+			);
+			(require('expo-document-picker').getDocumentAsync as jest.Mock).mockResolvedValue({
+				canceled: false,
+				assets: [{ name: 'x.pdf', size: 1, mimeType: 'application/pdf', uri: 'file:///x.pdf' }]
+			});
+			render(<Dual />);
+			await waitFor(() => expect(mediaTransferProbes.room).toBeDefined());
+			roomRef.current?.setInput('room text');
+			threadRef.current?.setInput('thread text');
+			await Promise.all([mediaTransferProbes.room.chooseFile(), mediaTransferProbes.thread.chooseFile()]);
+
+			const navigate = require('../../lib/navigation/appNavigation').navigate as jest.Mock;
+			expect(navigate).toHaveBeenCalledTimes(2);
+			const roomParams = navigate.mock.calls.find(([, params]) => params.thread === '')[1];
+			const threadParams = navigate.mock.calls.find(([, params]) => params.thread?.id === 'thread-id')[1];
+			expect(roomParams.startShareView().text).toBe('room text');
+			expect(threadParams.startShareView().text).toBe('thread text');
+			roomParams.finishShareView('room restored', ['room-restored']);
+			threadParams.finishShareView('thread restored', ['thread-restored']);
+			expect(roomRef.current?.getText()).toBe('room restored');
+			expect(threadRef.current?.getText()).toBe('thread restored');
+			expect(mediaActionStores.room.getState().action).toEqual({ kind: 'quote', messageIds: ['room-restored'] });
+			expect(mediaActionStores.thread.getState().action).toEqual({ kind: 'quote', messageIds: ['thread-restored'] });
+		});
+
+		test('alt-text capable workspaces keep selected media inline', async () => {
+			(useAltTextSupported as jest.Mock).mockReturnValue(true);
+			(require('expo-document-picker').getDocumentAsync as jest.Mock).mockResolvedValueOnce({
+				canceled: false,
+				assets: [{ name: 'inline.pdf', size: 1, mimeType: 'application/pdf', uri: 'file:///inline.pdf' }]
+			});
+			render(
+				<Render>
+					<MediaTransferProbe />
+				</Render>
+			);
+			await waitFor(() => expect(mediaTransferProbe).toBeDefined());
+			await mediaTransferProbe.chooseFile();
+			await waitFor(() => expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen());
+			expect(require('../../lib/navigation/appNavigation').navigate).not.toHaveBeenCalled();
 		});
 	});
 });

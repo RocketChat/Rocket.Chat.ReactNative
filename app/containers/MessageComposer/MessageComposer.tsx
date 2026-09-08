@@ -4,12 +4,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
-import {
-	useComposerRid,
-	useComposerSharing,
-	useComposerStoreApi,
-	useComposerTmid
-} from '../../views/RoomView/stores/ComposerStore';
+import { useComposerRid, useComposerSharing, useComposerStoreApi, useComposerTmid } from './ComposerStore';
 import { useMessageActionKind, useMessageActionStoreApi } from '../message/stores/MessageActionStore';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
@@ -103,7 +98,7 @@ export const MessageComposer = ({
 	const handleSendMessage = async () => {
 		if (!rid) return;
 
-		const { editRequest, onSendMessage, setQuotesAndText } = composerStore.getState();
+		const { editRequest, onSendMessage } = composerStore.getState();
 		const { action } = messageActionStore.getState();
 		const editingMessageId = action?.kind === 'edit' ? action.messageId : undefined;
 		const quotedMessageIds = action?.kind === 'quote' ? action.messageIds : [];
@@ -151,7 +146,8 @@ export const MessageComposer = ({
 					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
 				});
 				clearAttachments();
-				setQuotesAndText?.('', []);
+				messageActionStore.getState().actions.setQuoteMessageIds([]);
+				composerInputComponentRef.current?.setInput('');
 				return;
 			} catch (e) {
 				log(e);
@@ -250,6 +246,8 @@ export const MessageComposer = ({
 			value={{
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
+				getText: () => composerInputComponentRef.current?.getText(),
+				setInput: text => composerInputComponentRef.current?.setInput(text),
 				closeEmojiKeyboardAndAction,
 				focus: focusComposerInput
 			}}>

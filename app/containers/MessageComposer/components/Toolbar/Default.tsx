@@ -5,7 +5,7 @@ import { ActionsButton, BaseButton } from '../Buttons';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
-import { useComposerSharing } from '../../../../views/RoomView/stores/ComposerStore';
+import { useComposerSharing } from '../../ComposerStore';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {

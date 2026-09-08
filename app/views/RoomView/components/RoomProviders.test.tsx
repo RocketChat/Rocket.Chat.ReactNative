@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import { RoomProviders } from './RoomProviders';
-import { useComposerRid, useComposerSharing } from '../stores/ComposerStore';
+import { useComposerRid, useComposerSharing } from '../../../containers/MessageComposer/ComposerStore';
 import {
 	createMessageActionStore,
 	useIsBeingEdited,
@@ -40,30 +40,53 @@ describe('RoomProviders', () => {
 
 	it('resolves useMessageAction/useIsBeingEdited to the store passed in props, not some other store', () => {
 		const store = createMessageActionStore();
-		const actionSpy = jest.fn();
+		const otherStore = createMessageActionStore();
+		const rowActionSpy = jest.fn();
+		const composerActionSpy = jest.fn();
+		const otherActionSpy = jest.fn();
 		const isBeingEditedSpy = jest.fn();
 		const ridSpy = jest.fn();
 
-		const Probe = () => {
-			actionSpy(useMessageAction());
+		const RowProbe = () => {
+			rowActionSpy(useMessageAction());
+			return null;
+		};
+		const ComposerProbe = () => {
+			composerActionSpy(useMessageAction());
 			isBeingEditedSpy(useIsBeingEdited('msg-1'));
 			ridSpy(useComposerRid());
 			return null;
 		};
+		const OtherProbe = () => {
+			otherActionSpy(useMessageAction());
+			return null;
+		};
 
 		render(
-			<RoomProviders store={store} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
-				<Probe />
-			</RoomProviders>
+			<>
+				<RoomProviders store={store} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
+					<>
+						<RowProbe />
+						<ComposerProbe />
+					</>
+				</RoomProviders>
+				<RoomProviders store={otherStore} rid='rid-1' t='c' room={{ rid: 'rid-1', t: 'c' }}>
+					<OtherProbe />
+				</RoomProviders>
+			</>
 		);
 
 		expect(ridSpy).toHaveBeenLastCalledWith('rid-1');
-		expect(actionSpy).toHaveBeenLastCalledWith(null);
+		expect(rowActionSpy).toHaveBeenLastCalledWith(null);
+		expect(composerActionSpy).toHaveBeenLastCalledWith(null);
+		expect(otherActionSpy).toHaveBeenLastCalledWith(null);
 		expect(isBeingEditedSpy).toHaveBeenLastCalledWith(false);
 
 		act(() => store.getState().actions.startEditing('msg-1'));
 
-		expect(actionSpy).toHaveBeenLastCalledWith({ kind: 'edit', messageId: 'msg-1' });
+		expect(rowActionSpy).toHaveBeenLastCalledWith({ kind: 'edit', messageId: 'msg-1' });
+		expect(composerActionSpy).toHaveBeenLastCalledWith({ kind: 'edit', messageId: 'msg-1' });
+		expect(otherActionSpy).toHaveBeenLastCalledWith(null);
 		expect(isBeingEditedSpy).toHaveBeenLastCalledWith(true);
 	});
 });

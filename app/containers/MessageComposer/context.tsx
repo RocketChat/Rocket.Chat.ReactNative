@@ -84,6 +84,8 @@ export const useComposerAttachments = (): State['attachments'] => useComposerSto
 type TMessageInnerContext = {
 	sendMessage(): void;
 	onEmojiSelected(emoji: IEmoji): void;
+	getText(): string | undefined;
+	setInput(text: string): void;
 	// TODO: onClosed should be required
 	closeEmojiKeyboardAndAction(onClosed?: Function, params?: any): void;
 	focus(): void;
@@ -93,6 +95,8 @@ type TMessageInnerContext = {
 export const MessageInnerContext = createContext<TMessageInnerContext>({
 	sendMessage: () => {},
 	onEmojiSelected: () => {},
+	getText: () => '',
+	setInput: () => {},
 	closeEmojiKeyboardAndAction: () => {},
 	focus: () => {}
 });

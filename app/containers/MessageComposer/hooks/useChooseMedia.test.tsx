@@ -11,17 +11,14 @@ jest.mock('../../../lib/hooks/useAppSelector', () => ({
 }));
 
 jest.mock('../context', () => ({
-	useMessageComposerApi: jest.fn()
-}));
-
-jest.mock('../../../views/RoomView/stores/ComposerStore', () => ({
-	useSetQuotesAndText: jest.fn(),
-	useGetText: jest.fn()
+	useMessageComposerApi: jest.fn(),
+	MessageInnerContext: require('react').createContext({ getText: jest.fn(() => 'draft'), setInput: jest.fn() })
 }));
 
 jest.mock('../../message/stores/MessageActionStore', () => ({
 	useMessageActionKind: jest.fn(),
-	useQuotedMessageIds: jest.fn(() => [])
+	useQuotedMessageIds: jest.fn(() => []),
+	useMessageActionStoreApi: jest.fn(() => ({ getState: () => ({ actions: { setQuoteMessageIds: jest.fn() } }) }))
 }));
 
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
@@ -51,8 +48,6 @@ jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 const mockGetDocumentAsync = require('expo-document-picker').getDocumentAsync as jest.Mock;
 const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSelector as jest.Mock;
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
-const mockUseSetQuotesAndText = require('../../../views/RoomView/stores/ComposerStore').useSetQuotesAndText as jest.Mock;
-const mockUseGetText = require('../../../views/RoomView/stores/ComposerStore').useGetText as jest.Mock;
 const mockUseMessageActionKind = require('../../message/stores/MessageActionStore').useMessageActionKind as jest.Mock;
 const mockUseQuotedMessageIds = require('../../message/stores/MessageActionStore').useQuotedMessageIds as jest.Mock;
 const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
@@ -75,8 +70,6 @@ describe('useChooseMedia', () => {
 			})
 		);
 		mockUseMessageComposerApi.mockReturnValue({ addAttachments });
-		mockUseSetQuotesAndText.mockReturnValue(jest.fn());
-		mockUseGetText.mockReturnValue(jest.fn(() => 'draft'));
 		mockUseMessageActionKind.mockReturnValue(null);
 		mockGetSubscriptionByRoomId.mockResolvedValue({ rid: 'room-id', t: 'c' });
 		mockGetThreadById.mockResolvedValue({ id: 'thread-id' });

@@ -32,14 +32,8 @@ import {
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
-import {
-	useComposerRid,
-	useComposerRoom,
-	useComposerSharing,
-	useComposerTmid,
-	useSetQuotesAndText
-} from '../../../views/RoomView/stores/ComposerStore';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useComposerRid, useComposerRoom, useComposerSharing, useComposerTmid } from '../ComposerStore';
+import { useMessageAction, useMessageActionStoreApi } from '../../message/stores/MessageActionStore';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
@@ -60,7 +54,7 @@ export const ComposerInput = memo(
 		const rid = useComposerRid();
 		const tmid = useComposerTmid();
 		const sharing = useComposerSharing();
-		const setQuotesAndText = useSetQuotesAndText();
+		const messageActionStore = useMessageActionStoreApi();
 		const room = useComposerRoom();
 		const action = useMessageAction();
 		const focused = useFocused();
@@ -97,7 +91,9 @@ export const ComposerInput = memo(
 				if (draftMessage) {
 					const parsedDraft = parseJson(draftMessage);
 					if (parsedDraft?.msg || parsedDraft?.quotes) {
-						setQuotesAndText?.(parsedDraft.msg, parsedDraft.quotes);
+						if (sharing) return;
+						messageActionStore.getState().actions.setQuoteMessageIds(parsedDraft.quotes || []);
+						setInput(parsedDraft.msg || '');
 					} else {
 						setInput(draftMessage);
 					}

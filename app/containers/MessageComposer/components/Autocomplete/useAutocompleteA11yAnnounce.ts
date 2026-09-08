@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import I18n from '../../../../i18n';
-import { useIsAutocompleteVisible } from '../../../../views/RoomView/stores/ComposerStore';
+import { useIsAutocompleteVisible } from '../../ComposerStore';
 
 const DELAY_TO_AVOID_KEYBOARD_ANNOUNCEMENT_CONFLICT = 800;
 
