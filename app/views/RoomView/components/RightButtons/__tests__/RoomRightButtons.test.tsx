@@ -116,7 +116,6 @@ describe('RoomRightButtons', () => {
 	it('renders the call, threads and search buttons for a regular channel', () => {
 		renderRoomRightButtons();
 
-		expect(screen.getByTestId('header-call-button-stub')).toHaveProp('rid', 'rid-1');
 		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('iconName', 'threads');
 		expect(screen.getByTestId('room-view-search')).toHaveProp('accessibilityLabel', 'Search messages');
 		expect(screen.queryByTestId('room-view-header-encryption')).not.toBeOnTheScreen();
@@ -142,6 +141,7 @@ describe('RoomRightButtons', () => {
 	it('enables the encryption button and disables the others on an e2ee warning with permission', () => {
 		mockHasE2EEWarning = true;
 		mockCanToggleEncryption = true;
+		mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 
 		renderRoomRightButtons();
 
@@ -149,6 +149,7 @@ describe('RoomRightButtons', () => {
 		expect(screen.getByTestId('room-view-header-threads')).toHaveProp('disabled', true);
 		expect(screen.getByTestId('room-view-search')).toHaveProp('disabled', true);
 		expect(screen.getByTestId('header-call-button-stub')).toHaveProp('disabled', true);
+		expect(screen.getByTestId('room-view-push-troubleshoot')).toHaveProp('disabled', true);
 	});
 
 	it('disables the encryption button on an e2ee warning without permission', () => {

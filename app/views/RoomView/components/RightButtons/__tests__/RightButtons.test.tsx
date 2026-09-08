@@ -62,7 +62,10 @@ const expectOnlyStub = (present?: string) => {
 	});
 };
 
-const createRoomStore = (room: Record<string, unknown>) => createStore(() => ({ room })) as unknown as RoomStore;
+const createRoomStore = (room: Record<string, unknown>) => {
+	const store = createStore(() => ({ room }));
+	return store as typeof store & RoomStore;
+};
 
 describe('RightButtons routing', () => {
 	beforeEach(() => {
@@ -117,8 +120,8 @@ describe('RightButtons routing', () => {
 	});
 
 	it('swaps the room buttons for the omnichannel buttons when the room type changes in place', () => {
-		const roomStore = createStore(() => ({ room: { rid: 'rid-1', t: 'c' } as Record<string, unknown> }));
-		render(<RightButtons rid='rid-1' roomStore={roomStore as unknown as RoomStore} />);
+		const roomStore = createRoomStore({ rid: 'rid-1', t: 'c' });
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 
 		expectOnlyStub('room-right-buttons-stub');
 		expect(roomMock.mounts.count).toBe(1);
@@ -146,12 +149,13 @@ describe('RightButtons routing', () => {
 
 	it('remounts the room buttons after the tmid is cleared', () => {
 		const roomStore = createRoomStore({ rid: 'rid-1', t: 'c' });
-		render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
+		render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 
+		screen.rerender(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
 		screen.rerender(<RightButtons rid='rid-1' roomStore={roomStore} />);
 
 		expectOnlyStub('room-right-buttons-stub');
-		expect(roomMock.mounts.count).toBe(1);
+		expect(roomMock.mounts.count).toBe(2);
 		expect(threadMock.mounts.count).toBe(1);
 	});
 });
