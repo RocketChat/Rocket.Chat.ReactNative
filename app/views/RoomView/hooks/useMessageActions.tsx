@@ -31,11 +31,7 @@ export function useMessageActions({
 	};
 
 	const onEditInit = (messageId: string) => {
-		const { action, actions } = messageActionStore.getState();
-		if (action) {
-			return;
-		}
-		actions.startEditing(messageId);
+		messageActionStore.getState().actions.requestEditing(messageId);
 	};
 
 	const onEditCancel = () => {
@@ -56,17 +52,7 @@ export function useMessageActions({
 	};
 
 	const onQuoteInit = (messageId: string) => {
-		const { action, actions } = messageActionStore.getState();
-		if (action?.kind === 'quote') {
-			if (!action.messageIds.includes(messageId)) {
-				actions.addQuote(messageId);
-			}
-			return;
-		}
-		if (action) {
-			return;
-		}
-		actions.startQuote(messageId);
+		messageActionStore.getState().actions.requestQuote(messageId);
 	};
 
 	const onRemoveQuoteMessage = (messageId: string) => {
