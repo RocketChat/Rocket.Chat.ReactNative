@@ -13,7 +13,7 @@ import { useSetting } from '../../../../lib/hooks/useSetting';
 import { returnLivechat } from '../../../../lib/services/restApi';
 import { type RoomStore } from '../../definitions';
 import { useCanPlaceLivechatOnHold } from '../../hooks/useCanPlaceLivechatOnHold';
-import { navigateToScreen, type TRoomStackNavigation } from '../../hooks/navigateToScreen';
+import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
 import { closeLivechat } from '../../services/closeLivechat';
 import { getRoomHeaderFields } from '../../services/getRoomHeaderFields';
 import { placeLivechatOnHold } from '../../services/placeLivechatOnHold';

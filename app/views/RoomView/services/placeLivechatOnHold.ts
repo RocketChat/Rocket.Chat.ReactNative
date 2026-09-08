@@ -1,7 +1,7 @@
 import i18n from '../../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../../lib/methods/helpers';
 import { onHoldLivechat } from '../../../lib/services/restApi';
-import { type TRoomStackNavigation } from '../hooks/navigateToScreen';
+import { type TRoomStackNavigation } from './navigateToScreen';
 
 export const placeLivechatOnHold = ({ rid, navigation }: { rid: string; navigation: TRoomStackNavigation }): void => {
 	showConfirmationAlert({

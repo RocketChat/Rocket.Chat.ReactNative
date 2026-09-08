@@ -1,7 +1,7 @@
 import { showConfirmationAlert, showErrorAlert } from '../../../../lib/methods/helpers';
 import { onHoldLivechat } from '../../../../lib/services/restApi';
 import { placeLivechatOnHold } from '../placeLivechatOnHold';
-import { type TRoomStackNavigation } from '../../hooks/navigateToScreen';
+import { type TRoomStackNavigation } from '../navigateToScreen';
 
 jest.mock('../../../../lib/methods/helpers', () => ({
 	showConfirmationAlert: jest.fn(),

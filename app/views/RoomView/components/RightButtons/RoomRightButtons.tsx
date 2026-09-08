@@ -17,7 +17,7 @@ import { useTheme } from '../../../../theme';
 import { type RoomStore } from '../../definitions';
 import { useE2EEStatus } from '../../hooks/useE2EEStatus';
 import { useSubscriptionUnreads } from '../../hooks/useSubscriptionUnreads';
-import { navigateToScreen, type TRoomStackNavigation } from '../../hooks/navigateToScreen';
+import { navigateToScreen, type TRoomStackNavigation } from '../../services/navigateToScreen';
 import { getRoomHeaderFields } from '../../services/getRoomHeaderFields';
 import { HeaderCallButton } from './HeaderCallButton';
 

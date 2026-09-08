@@ -5,7 +5,7 @@ import { closeLivechat as closeLivechatService } from '../../../lib/methods/help
 import { showErrorAlert } from '../../../lib/methods/helpers/info';
 import log from '../../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList } from '../../../lib/services/restApi';
-import { navigateToScreen, type TRoomStackNavigation } from '../hooks/navigateToScreen';
+import { navigateToScreen, type TRoomStackNavigation } from './navigateToScreen';
 
 export const closeLivechat = async ({
 	rid,
