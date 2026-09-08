@@ -13,7 +13,7 @@ export function useUnreadsCount(rid?: string): number | null {
 				? database.active
 						.get<TSubscriptionModel>('subscriptions')
 						.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(rid)))
-						.observeWithColumns(['unread'])
+						.observeWithColumns(['unread', 'hide_unread_status'])
 				: undefined,
 		[rid]
 	);
