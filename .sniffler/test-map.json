@@ -165,12 +165,20 @@
 		"dependsOn": ["app/views/LegalView.tsx", "app/views/LoginView/**", "app/views/RegisterView/**", "app/sagas/login.js"]
 	},
 	{
+		"test": ".maestro/tests/onboarding/login/cas-login.yaml",
+		"dependsOn": ["app/views/LoginView/**", "app/containers/LoginServices/**", "app/sagas/login.js"]
+	},
+	{
 		"test": ".maestro/tests/onboarding/login/invalid-credentials.yaml",
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
 	},
 	{
 		"test": ".maestro/tests/onboarding/login/login.yaml",
 		"dependsOn": ["app/views/LoginView/**", "app/sagas/login.js"]
+	},
+	{
+		"test": ".maestro/tests/onboarding/login/saml-login.yaml",
+		"dependsOn": ["app/views/LoginView/**", "app/containers/LoginServices/**", "app/sagas/login.js"]
 	},
 	{
 		"test": ".maestro/tests/onboarding/register/create-account.yaml",
