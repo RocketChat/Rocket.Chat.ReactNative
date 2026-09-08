@@ -1,7 +1,7 @@
 import { useContext, type ReactNode } from 'react';
 import { act, render, renderHook } from '@testing-library/react-native';
 
-import { type ComposerState } from '../definitions';
+import { type ComposerState } from '../../definitions';
 import {
 	ComposerProvider,
 	ComposerStoreContext,
@@ -18,7 +18,7 @@ import {
 	useSetQuotesAndText,
 	useGetText,
 	useUpdateAutocompleteVisible
-} from './ComposerStore';
+} from '../ComposerStore';
 
 const room = { rid: 'rid-1', t: 'c' };
 

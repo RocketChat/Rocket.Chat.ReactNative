@@ -5,10 +5,6 @@ import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { tsToMs } from '../../../lib/dayjs';
 import { type TAnyMessageModel } from '../../../definitions';
 
-/**
- * The single Newer Loader above `aboveTs`: `nearest` = lowest ts (the upper bracket of the target's
- * Chunk), `closestToLiveTail` = highest ts (the boundary loader the rejoin climbs toward).
- */
 export const findNewerLoaderAbove = async (
 	rid: string,
 	aboveTs: Date | number | string,
@@ -28,10 +24,6 @@ export const findNewerLoaderAbove = async (
 	return rows[0] ?? null;
 };
 
-/**
- * ts of the nearest Newer Loader above the target = the upper bracket of its Chunk; null when the
- * cached region runs contiguous to the Live Tail (caller falls back to the target's own ts).
- */
 const getLocalAnchorTs = async (rid: string, targetTs: Date | number | string): Promise<number | null> => {
 	const loader = await findNewerLoaderAbove(rid, targetTs, 'nearest');
 

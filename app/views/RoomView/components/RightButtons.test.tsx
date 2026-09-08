@@ -35,11 +35,11 @@ let mockRoomState = {
 	room: { rid: 'rid-1', t: 'c', name: 'general' },
 	canForwardGuest: false
 };
+jest.mock('zustand', () => ({
+	useStore: (_store: unknown, selector: (state: typeof mockRoomState) => unknown) => selector(mockRoomState)
+}));
 jest.mock('../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => false }));
 jest.mock('../hooks/useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => false }));
-jest.mock('../stores/RoomStore', () => ({
-	useRoomStoreByRid: (_rid: string | undefined, selector: (state: typeof mockRoomState) => unknown) => selector(mockRoomState)
-}));
 
 let mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false };
 jest.mock('../hooks/useE2EEStatus', () => ({ useE2EEStatus: () => mockE2EEStatus }));
@@ -75,6 +75,7 @@ jest.mock('../../../containers/Header/components/HeaderButton', () => {
 jest.mock('./HeaderCallButton', () => ({ HeaderCallButton: () => null }));
 
 describe('RightButtons', () => {
+	const roomStore = {} as any;
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockRoomState = {
@@ -94,31 +95,31 @@ describe('RightButtons', () => {
 	});
 
 	it('renders nothing without a rid', () => {
-		const { toJSON } = render(<RightButtons />);
+		const { toJSON } = render(<RightButtons roomStore={roomStore} />);
 		expect(toJSON()).toBeNull();
 	});
 
 	it('renders search and threads buttons for a regular channel', () => {
-		const { queryByTestId } = render(<RightButtons rid='rid-1' />);
+		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(queryByTestId('room-view-search')).toBeTruthy();
 		expect(queryByTestId('room-view-header-threads')).toBeTruthy();
 	});
 
 	it('renders the omnichannel kebab for a non-preview livechat room', () => {
 		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'l', name: 'chat' } as any };
-		const { queryByTestId } = render(<RightButtons rid='rid-1' />);
+		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(queryByTestId('room-view-header-omnichannel-kebab')).toBeTruthy();
 	});
 
 	it('renders the follow toggle when a tmid is present', () => {
-		const { queryByTestId } = render(<RightButtons rid='rid-1' tmid='tmid-1' />);
+		const { queryByTestId } = render(<RightButtons rid='rid-1' tmid='tmid-1' roomStore={roomStore} />);
 		expect(queryByTestId('room-view-header-follow')).toBeTruthy();
 	});
 
 	it('renders the encryption toggle when there is an E2EE warning', () => {
 		mockRoomState = { ...mockRoomState, room: { rid: 'rid-1', t: 'c', encrypted: true } as any };
 		mockE2EEStatus = { showMissingE2EEKey: true, showE2EEDisabledRoom: false };
-		const { queryByTestId } = render(<RightButtons rid='rid-1' />);
+		const { queryByTestId } = render(<RightButtons rid='rid-1' roomStore={roomStore} />);
 		expect(queryByTestId('room-view-header-encryption')).toBeTruthy();
 	});
 });

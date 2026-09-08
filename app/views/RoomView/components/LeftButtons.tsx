@@ -9,7 +9,8 @@ import { getUserSelector } from '../../../selectors/login';
 import { HeaderBackButton } from '../../../containers/Header/components/HeaderBackButton';
 import { useUnreadsCount } from '../hooks/useUnreadsCount';
 import { useGoRoomActionsView } from '../hooks/useGoRoomActionsView';
-import { useRoomStoreByRid } from '../stores/RoomStore';
+import { useStore } from 'zustand';
+import { type RoomStore } from '../definitions';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -20,15 +21,16 @@ const styles = StyleSheet.create({
 interface ILeftButtonsProps {
 	rid?: string;
 	tmid?: string;
+	roomStore: RoomStore;
 }
 
-const LeftButtons = ({ rid, tmid }: ILeftButtonsProps): ReactElement | null => {
+const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement | null => {
 	const { goBack } = useAppNavigation();
-	const goRoomActionsView = useGoRoomActionsView(rid);
+	const goRoomActionsView = useGoRoomActionsView(roomStore);
 	const isMasterDetail = useMasterDetail();
 	const baseUrl = useAppSelector(state => state.server.server);
 	const { id: userId, token } = useAppSelector(getUserSelector);
-	const room = useRoomStoreByRid(rid, s => s.room);
+	const room = useStore(roomStore, s => s.room);
 	const { t } = room;
 	const title = 'id' in room ? room.name : undefined;
 

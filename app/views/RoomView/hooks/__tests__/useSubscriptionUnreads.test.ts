@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react-native';
 
 import database from '../../../../lib/database';
 import { getUidDirectMessage } from '../../../../lib/methods/helpers/helpers';
-import { peekOrCreateRoomStore, releaseRoomStore } from '../../stores/RoomStore';
+import { createRoomStore, observeRoom } from '../../stores/RoomStore';
 import { useSubscriptionUnreads } from '../useSubscriptionUnreads';
 
 jest.mock('../../../../lib/database', () => ({
@@ -19,6 +19,7 @@ jest.mock('../../../../lib/methods/helpers/helpers', () => ({
 
 const mockGet = database.active.get as jest.Mock;
 const mockGetUidDirectMessage = getUidDirectMessage as jest.Mock;
+let observedStore: any;
 
 const stubRoom = { rid: 'rid-1', t: 'c' };
 
@@ -33,7 +34,8 @@ const setupObservedRoom = (rid: string) => {
 		}
 	}));
 	mockGet.mockReturnValue({ query: jest.fn(() => ({ observeWithColumns })) });
-	peekOrCreateRoomStore({ rid, initialRoom: stubRoom });
+	observedStore = createRoomStore({ rid, initialRoom: stubRoom });
+	observeRoom(rid, observedStore);
 	return { emitRow: (row: any) => act(() => emit?.([row])) };
 };
 
@@ -43,14 +45,12 @@ describe('useSubscriptionUnreads', () => {
 		mockGetUidDirectMessage.mockReturnValue(undefined);
 	});
 
-	afterEach(() => {
-		releaseRoomStore('rid-1');
-	});
+	afterEach(() => {});
 
 	it('maps the observed subscription to the tunread trio and isSelfDm', () => {
 		mockGetUidDirectMessage.mockReturnValue('user-1');
 		const { emitRow } = setupObservedRoom('rid-1');
-		const { result } = renderHook(() => useSubscriptionUnreads('rid-1', 'user-1'));
+		const { result } = renderHook(() => useSubscriptionUnreads(observedStore, 'user-1'));
 
 		const row = { id: 'sub-1', rid: 'rid-1', t: 'd', tunread: ['a', 'b'], tunreadUser: ['a'], tunreadGroup: ['b'] };
 		emitRow(row);
@@ -64,7 +64,7 @@ describe('useSubscriptionUnreads', () => {
 
 	it('reports empty unreads while the room has no subscription row yet', () => {
 		setupObservedRoom('rid-1');
-		const { result } = renderHook(() => useSubscriptionUnreads('rid-1', 'user-1'));
+		const { result } = renderHook(() => useSubscriptionUnreads(observedStore, 'user-1'));
 
 		expect(result.current.tunread).toEqual([]);
 		expect(result.current.isSelfDm).toBe(false);
@@ -72,7 +72,7 @@ describe('useSubscriptionUnreads', () => {
 	});
 
 	it('falls back to empty unreads without a rid', () => {
-		const { result } = renderHook(() => useSubscriptionUnreads(undefined, 'user-1'));
+		const { result } = renderHook(() => useSubscriptionUnreads(createRoomStore({ initialRoom: { rid: '', t: '' } }), 'user-1'));
 
 		expect(result.current.tunread).toEqual([]);
 		expect(result.current.subscription).toBeUndefined();

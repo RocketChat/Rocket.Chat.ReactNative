@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '../../../lib/database';
-import { peekOrCreateRoomStore, releaseRoomStore } from '../stores/RoomStore';
+import { createRoomStore, observeRoom } from '../stores/RoomStore';
 import { RoomScreenContext } from '../stores/RoomScreenContext';
 import { RoomStoreContext } from '../stores/RoomStoreContext';
 import { MessageRow } from './MessageRow';
@@ -68,16 +68,12 @@ describe('MessageRow', () => {
 		jest.clearAllMocks();
 	});
 
-	// Release the 'rid-1' store the case acquires, isolating via the public API (no test-only reset).
-	afterEach(() => {
-		releaseRoomStore('rid-1');
-	});
-
 	it('re-renders with fresh isIgnored when the same room instance re-emits a mutated ignored list', () => {
 		const { emit } = setupObserve();
 		const sub: any = { id: 'sub-1', rid: 'rid-1', t: 'c', ignored: [] };
 		const item: any = { id: 'msg-1', ts: new Date('2024-01-01T10:00:00Z'), u: { _id: 'author-1' } };
-		const store = peekOrCreateRoomStore({ rid: 'rid-1', initialRoom: sub });
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: sub });
+		observeRoom('rid-1', store);
 
 		render(
 			<RoomStoreContext.Provider value={store}>

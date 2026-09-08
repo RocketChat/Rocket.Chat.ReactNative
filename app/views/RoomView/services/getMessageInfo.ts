@@ -11,7 +11,6 @@ const getMessageInfo = async (messageId: string): Promise<TGetMessageInfoResult 
 			rid: message?.subscription?.id,
 			tmid: message.tmid,
 			msg: message.msg,
-			// ts lets a locally-cached but out-of-window target derive its own Anchored Window bound.
 			ts: message.ts
 		};
 	}

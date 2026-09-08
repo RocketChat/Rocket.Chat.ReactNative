@@ -3,10 +3,7 @@ import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { joinRoom as joinRoomService } from '../../../lib/services/restApi';
 import { type IJoinRoomContext, type IRoomViewState } from '../definitions';
 
-export const joinRoomImpl = async (
-	room: IRoomViewState['room'],
-	{ requestJoinCode, onJoin }: IJoinRoomContext
-): Promise<void> => {
+export const joinRoom = async (room: IRoomViewState['room'], { requestJoinCode, onJoin }: IJoinRoomContext): Promise<void> => {
 	logEvent(events.ROOM_JOIN);
 	try {
 		if (room.t === 'l') {
@@ -28,10 +25,7 @@ export const joinRoomImpl = async (
 	}
 };
 
-export const resumeRoomImpl = async (
-	room: IRoomViewState['room'],
-	{ onJoin }: Pick<IJoinRoomContext, 'onJoin'>
-): Promise<void> => {
+export const resumeRoom = async (room: IRoomViewState['room'], onJoin: () => void): Promise<void> => {
 	logEvent(events.ROOM_RESUME);
 	try {
 		if (room.t === 'l') {

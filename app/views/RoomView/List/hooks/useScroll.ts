@@ -257,7 +257,7 @@ export const useScroll = ({
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
-	const jumpToMessage: IListContainerRef['jumpToMessage'] = (messageId, highTs) =>
+	const jumpToMessage: IListContainerRef['jumpToMessage'] = (messageId, highTsMs) =>
 		new Promise<void>(resolve => {
 			// Cancel any previous in-flight jump before starting a new one.
 			if (pendingJump.current) {
@@ -272,7 +272,7 @@ export const useScroll = ({
 			lastJumpTargetId.current = messageId;
 			scrollFailRetries.current = 0;
 			jumpGrowthRetries.current = 0;
-			const anchored = typeof highTs === 'number' && Number.isFinite(highTs);
+			const anchored = typeof highTsMs === 'number' && Number.isFinite(highTsMs);
 			const jump: IPendingJump = {
 				messageId,
 				anchored,
@@ -289,7 +289,7 @@ export const useScroll = ({
 			// Non-contiguous target → set the Anchored Window (re-seeds a QUERY_SIZE window onto the target's Chunk).
 			// Contiguous / thread / local targets keep their current window.
 			if (anchored) {
-				setHighTs(highTs as number);
+				setHighTs(highTsMs as number);
 			}
 
 			// Target may already be present (contiguous / local): resolve synchronously, still one scroll.

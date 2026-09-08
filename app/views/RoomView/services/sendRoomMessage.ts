@@ -8,7 +8,6 @@ interface ISendRoomMessageParams {
 	tmid?: string;
 	user: Parameters<typeof sendMessage>[3];
 	tshow?: boolean;
-	// The screen owns `lastSeen`, so clearing its unread divider on a successful send is a callback.
 	onMessageSent: () => void;
 	resetAction: () => void;
 }

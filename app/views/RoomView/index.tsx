@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getRoomTitle } from '../../lib/methods/helpers';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
@@ -9,7 +9,8 @@ import { MissingRoomE2EEKey } from './components/MissingRoomE2EEKey';
 import { RoomRouteInvalid } from './components/RoomRouteInvalid';
 import RoomScreen from './RoomScreen';
 import { parseRoomRoute } from './services/parseRoomRoute';
-import { useRoomStoreForScreen } from './stores/RoomStore';
+import { createRoomStore, observeRoom } from './stores/RoomStore';
+import { type RoomStore } from './definitions';
 import { useRoomWithUpdateFromStore } from './stores/RoomStoreContext';
 import { useE2EEStatus } from './hooks/useE2EEStatus';
 import { useHeader } from './hooks/useHeader';
@@ -21,12 +22,14 @@ interface IRoomGateProps extends IRoomViewProps {
 const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 	const { rid, t, tmid, name, initialRoom, roomUserId } = input;
 
-	const roomStore = useRoomStoreForScreen({ rid, initialRoom, roomUserId });
+	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
+	const [ready, setReady] = useState(false);
+	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
 	const room = useRoomWithUpdateFromStore(roomStore);
 
-	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(rid);
+	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
 
-	useHeader({ rid, tmid, name });
+	useHeader({ rid, tmid, name, roomStore });
 
 	if ('id' in room && isInviteSubscription(room)) {
 		return <InvitedRoomScreen room={room} />;
@@ -42,7 +45,7 @@ const RoomGate = ({ route, navigation, input }: IRoomGateProps) => {
 		}
 	}
 
-	return <RoomScreen route={route} rid={rid} t={t} tmid={tmid} roomStore={roomStore} />;
+	return <RoomScreen route={route} rid={rid} t={t} tmid={tmid} roomStore={roomStore} ready={ready} />;
 };
 
 const RoomView = ({ route, navigation }: IRoomViewProps) => {

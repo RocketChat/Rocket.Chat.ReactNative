@@ -15,7 +15,7 @@ import { useMessageActions } from './useMessageActions';
 import { useRoomInit } from './useRoomInit';
 import { useRoomNavigation } from './useRoomNavigation';
 
-export function useRoomMessaging({ rid, t, tmid, roomStore, roomUserId, quoteMessageId }: IUseRoomMessagingParams) {
+export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, quoteMessageId }: IUseRoomMessagingParams) {
 	const isAuthenticated = useAppSelector(state => state.login.isAuthenticated);
 	const user = useAppSelector(getUserSelector);
 	const isMasterDetail = useMasterDetail();
@@ -70,7 +70,7 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, roomUserId, quoteMes
 		messageErrorActionsRef
 	});
 
-	const roomScreen = useRoomInit({ rid, tmid, isAuthenticated, roomStore, onThreadMessagesLoaded });
+	const roomScreen = useRoomInit({ rid, tmid, isAuthenticated, roomStore, onThreadMessagesLoaded, ready });
 
 	const sendMessage = (message?: string, tshow?: boolean) =>
 		sendRoomMessage({

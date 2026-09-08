@@ -233,9 +233,9 @@ describe('MessageRoomStore', () => {
 	});
 
 	describe('live callbacks', () => {
-		const wrap = (config: Partial<MessageRoomState>) => (
+		const wrap = (reactionInit?: MessageRoomState['reactionInit']) => (
 			<Provider store={mockedStore}>
-				<MessageRoomProvider timeFormat='fixed-format' {...config}>
+				<MessageRoomProvider timeFormat='fixed-format' reactionInit={reactionInit}>
 					<ReactionInitConsumer />
 				</MessageRoomProvider>
 			</Provider>
@@ -254,8 +254,8 @@ describe('MessageRoomStore', () => {
 			const first = jest.fn();
 			const second = jest.fn();
 
-			const { rerender } = render(wrap({ reactionInit: first }));
-			act(() => rerender(wrap({ reactionInit: second })));
+			const { rerender } = render(wrap(first));
+			act(() => rerender(wrap(second)));
 
 			fireEvent.press(screen.getByText('reaction'));
 
@@ -264,26 +264,26 @@ describe('MessageRoomStore', () => {
 		});
 
 		it('keeps the callback identity stable across rerenders', () => {
-			const { rerender } = render(wrap({ reactionInit: jest.fn() }));
+			const { rerender } = render(wrap(jest.fn()));
 			const renderCallsBefore = renderSpy.mock.calls.length;
 
-			act(() => rerender(wrap({ reactionInit: jest.fn() })));
+			act(() => rerender(wrap(jest.fn())));
 
 			expect(renderSpy.mock.calls.length).toBe(renderCallsBefore);
 		});
 
 		it('stays undefined when the provider does not supply the callback', () => {
-			render(wrap({}));
+			render(wrap());
 
 			expect(renderSpy).toHaveBeenLastCalledWith(undefined);
 		});
 
 		it('becomes defined when the provider starts supplying the callback', () => {
 			const reactionInit = jest.fn();
-			const { rerender } = render(wrap({}));
+			const { rerender } = render(wrap());
 			expect(renderSpy).toHaveBeenLastCalledWith(undefined);
 
-			act(() => rerender(wrap({ reactionInit })));
+			act(() => rerender(wrap(reactionInit)));
 			fireEvent.press(screen.getByText('reaction'));
 
 			expect(reactionInit).toHaveBeenCalledWith('message-id');

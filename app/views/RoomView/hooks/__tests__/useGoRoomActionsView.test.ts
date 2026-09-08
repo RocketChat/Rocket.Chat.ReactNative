@@ -28,8 +28,8 @@ const mockState = {
 jest.mock('../../../../ee/omnichannel/hooks/useCanReturnQueue', () => ({ useCanReturnQueue: () => true }));
 jest.mock('../useCanPlaceLivechatOnHold', () => ({ useCanPlaceLivechatOnHold: () => true }));
 
-jest.mock('../../stores/RoomStore', () => ({
-	useRoomStoreByRid: (_rid: string | undefined, selector: (state: typeof mockState) => unknown) => selector(mockState)
+jest.mock('zustand', () => ({
+	useStore: (_store: unknown, selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
 
 describe('useGoRoomActionsView', () => {
@@ -40,7 +40,7 @@ describe('useGoRoomActionsView', () => {
 	});
 
 	it('pushes RoomActionsView with omnichannel permissions outside master-detail', () => {
-		const { result } = renderHook(() => useGoRoomActionsView('rid-1'));
+		const { result } = renderHook(() => useGoRoomActionsView({} as any));
 
 		result.current();
 
@@ -61,7 +61,7 @@ describe('useGoRoomActionsView', () => {
 
 	it('navigates through ModalStackNavigator on master-detail', () => {
 		mockIsMasterDetail = true;
-		const { result } = renderHook(() => useGoRoomActionsView('rid-1'));
+		const { result } = renderHook(() => useGoRoomActionsView({} as any));
 
 		result.current();
 

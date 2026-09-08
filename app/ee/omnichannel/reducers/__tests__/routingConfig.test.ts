@@ -1,7 +1,7 @@
-import { inquiryReset } from '../actions/inquiry';
-import { routingConfigSuccess } from '../actions/routingConfig';
-import { selectServerRequest } from '../../../actions/server';
-import routingConfig, { initialState } from './routingConfig';
+import { inquiryReset } from '../../actions/inquiry';
+import { routingConfigSuccess } from '../../actions/routingConfig';
+import { selectServerRequest } from '../../../../actions/server';
+import routingConfig, { initialState } from '../routingConfig';
 
 describe('routingConfig reducer', () => {
 	it('stores the server value', () => {
