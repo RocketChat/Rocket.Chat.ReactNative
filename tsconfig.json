@@ -18,6 +18,7 @@
 		"resolveJsonModule": true,
 		"paths": {
 			"~/*": ["./app/*"],
+			"~/scripts/*": ["./scripts/*"],
 			"~/.rnstorybook/*": ["./.rnstorybook/*"]
 		}
 	},
