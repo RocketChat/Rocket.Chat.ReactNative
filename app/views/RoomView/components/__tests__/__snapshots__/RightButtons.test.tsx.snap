@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RightButtons disables the encryption button when the user cannot toggle encryption 1`] = `
+<Container>
+  <Item
+    disabled={true}
+    iconName="encrypted"
+    onPress={[Function]}
+    testID="room-view-header-encryption"
+  />
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={true}
+    rid="rid-1"
+    testID="room-view-header-call"
+  />
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={true}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={true}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
+exports[`RightButtons enables the encryption button when the user can toggle encryption 1`] = `
+<Container>
+  <Item
+    disabled={false}
+    iconName="encrypted"
+    onPress={[Function]}
+    testID="room-view-header-encryption"
+  />
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={true}
+    rid="rid-1"
+    testID="room-view-header-call"
+  />
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={true}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={true}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
+exports[`RightButtons hides the call button on a self DM 1`] = `
+<Container>
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={false}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={false}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
+exports[`RightButtons renders call, threads and search for a regular channel 1`] = `
+<Container>
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={false}
+    rid="rid-1"
+    testID="room-view-header-call"
+  />
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={false}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={false}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
+exports[`RightButtons renders nothing for a queued omnichannel room 1`] = `null`;
+
+exports[`RightButtons renders nothing for an invited room 1`] = `null`;
+
+exports[`RightButtons renders nothing without a rid 1`] = `null`;
+
+exports[`RightButtons renders only the kebab for an active omnichannel room 1`] = `
+<Container>
+  <Item
+    iconName="kebab"
+    onPress={[Function]}
+    testID="room-view-header-omnichannel-kebab"
+  />
+</Container>
+`;
+
+exports[`RightButtons renders the follow button for an unfollowed thread 1`] = `
+<Container>
+  <Item
+    accessibilityLabel="Follow thread"
+    iconName="notification-disabled"
+    onPress={[Function]}
+    testID="room-view-header-follow"
+  />
+</Container>
+`;
+
+exports[`RightButtons renders the push troubleshoot button when notifications are disabled for the room 1`] = `
+<Container>
+  <Item
+    color=""
+    disabled={false}
+    iconName="notification-disabled"
+    onPress={[Function]}
+    testID="room-view-push-troubleshoot"
+  />
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={false}
+    rid="rid-1"
+    testID="room-view-header-call"
+  />
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={false}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={false}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
+exports[`RightButtons renders the push troubleshoot button when there are notification issues 1`] = `
+<Container>
+  <Item
+    color="#f00"
+    disabled={false}
+    iconName="notification-disabled"
+    onPress={[Function]}
+    testID="room-view-push-troubleshoot"
+  />
+  <CallButton
+    accessibilityLabel="Call label"
+    disabled={false}
+    rid="rid-1"
+    testID="room-view-header-call"
+  />
+  <Item
+    accessibilityLabel="Threads"
+    badge={[Function]}
+    disabled={false}
+    iconName="threads"
+    onPress={[Function]}
+    testID="room-view-header-threads"
+  />
+  <Item
+    accessibilityLabel="Search messages"
+    disabled={false}
+    iconName="search"
+    onPress={[Function]}
+    testID="room-view-search"
+  />
+</Container>
+`;
+
+exports[`RightButtons renders the unfollow button for a followed thread 1`] = `
+<Container>
+  <Item
+    accessibilityLabel="Unfollow thread"
+    iconName="notification"
+    onPress={[Function]}
+    testID="room-view-header-unfollow"
+  />
+</Container>
+`;
