@@ -4,9 +4,8 @@ import { createStore, useStore } from 'zustand';
 import { type TMessageActionState } from '../../../definitions';
 
 type TMessageActionActions = {
-	startEditing(messageId: string): void;
-	startQuote(messageId: string): void;
-	addQuote(messageId: string): void;
+	requestEditing(messageId: string): void;
+	requestQuote(messageId: string): void;
 	removeQuote(messageId: string): void;
 	startReacting(messageId: string): void;
 	setQuoteMessageIds(messageIds: string[]): void;
@@ -20,21 +19,26 @@ type MessageActionState = {
 };
 
 export const createMessageActionStore = (initialAction?: TMessageActionState) =>
-	createStore<MessageActionState>()(set => ({
+	createStore<MessageActionState>()((set, get) => ({
 		action: initialAction ?? null,
 		actions: {
-			startEditing: messageId => set({ action: { kind: 'edit', messageId } }),
-			startQuote: messageId => set({ action: { kind: 'quote', messageIds: [messageId] } }),
-			addQuote: messageId =>
-				set(state => {
-					if (state.action?.kind !== 'quote') {
-						return { action: { kind: 'quote', messageIds: [messageId] } };
-					}
-					if (state.action.messageIds.includes(messageId)) {
-						return {};
-					}
-					return { action: { kind: 'quote', messageIds: [...state.action.messageIds, messageId] } };
-				}),
+			requestEditing: messageId => {
+				if (get().action !== null) {
+					return;
+				}
+				set({ action: { kind: 'edit', messageId } });
+			},
+			requestQuote: messageId => {
+				const { action } = get();
+				if (action === null) {
+					set({ action: { kind: 'quote', messageIds: [messageId] } });
+					return;
+				}
+				if (action.kind !== 'quote' || action.messageIds.includes(messageId)) {
+					return;
+				}
+				set({ action: { kind: 'quote', messageIds: [...action.messageIds, messageId] } });
+			},
 			removeQuote: messageId =>
 				set(state => {
 					if (state.action?.kind !== 'quote') {
