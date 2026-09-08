@@ -9,21 +9,26 @@ export type TRoomScreen = keyof TRoomStackParamList;
 
 export type TRoomStackNavigation = NativeStackNavigationProp<TRoomStackParamList, 'RoomView'>;
 
+type TScreenParams<Screen extends TRoomScreen> = undefined extends TRoomStackParamList[Screen]
+	? { params?: TRoomStackParamList[Screen] }
+	: { params: TRoomStackParamList[Screen] };
+
+type TNavigateToScreenOptions<Screen extends TRoomScreen> = {
+	navigation: TRoomStackNavigation;
+	isMasterDetail: boolean;
+	screen: Screen;
+} & TScreenParams<Screen>;
+
 export const navigateToScreen = <Screen extends TRoomScreen>({
 	navigation,
 	isMasterDetail,
 	screen,
 	params
-}: {
-	navigation: TRoomStackNavigation;
-	isMasterDetail: boolean;
-	screen: Screen;
-	params?: TRoomStackParamList[Screen];
-}): void => {
+}: TNavigateToScreenOptions<Screen>): void => {
 	if (isMasterDetail) {
 		const navigateToModal = navigation.navigate as (
 			screen: 'ModalStackNavigator',
-			params: { screen: Screen; params?: typeof params }
+			params: { screen: Screen; params?: TRoomStackParamList[Screen] }
 		) => void;
 		navigateToModal('ModalStackNavigator', { screen, params });
 		return;

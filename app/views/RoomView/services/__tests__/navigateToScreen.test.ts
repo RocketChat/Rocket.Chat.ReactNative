@@ -33,4 +33,11 @@ describe('navigateToScreen', () => {
 
 		expect(navigate).toHaveBeenCalledWith('PushTroubleshootView', undefined);
 	});
+
+	it('rejects routes with required params when params are missing', () => {
+		// @ts-expect-error ThreadMessagesView requires rid and t
+		navigateToScreen({ navigation, isMasterDetail: false, screen: 'ThreadMessagesView' });
+
+		expect(navigate).toHaveBeenCalledWith('ThreadMessagesView', undefined);
+	});
 });
