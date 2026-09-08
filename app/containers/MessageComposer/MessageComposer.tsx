@@ -49,6 +49,7 @@ export const MessageComposer = ({
 		getSelection: () => ({ start: 0, end: 0 }),
 		setInput: () => {},
 		onAutocompleteItemSelected: () => {},
+		resolveMentionRoomTokens: (text: string) => text,
 		focus: () => {}
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
@@ -173,7 +174,7 @@ export const MessageComposer = ({
 		}
 
 		// Text message
-		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
+		onSendMessage?.(composerInputComponentRef.current.resolveMentionRoomTokens(textFromInput), alsoSendThreadToChannel);
 	};
 
 	const onKeyboardItemSelected = (eventType: EventTypes, emoji?: IEmoji) => {
