@@ -1,0 +1,83 @@
+appId: ${APP_ID}
+name: SAML Login
+onFlowStart:
+  - runFlow: ../../../helpers/setup.yaml
+tags:
+  - test-2
+  
+---
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-candidate-login.yaml
+
+- extendedWaitUntil:
+    visible:
+      text: 'Login on web'
+    timeout: 60000
+- tapOn: "Login on web"
+
+# On Android, chrome may ask to add account to the device
+- runFlow:
+    when:
+      visible: '.*Add account to device.*'
+      platform: Android
+    commands:
+      - tapOn: 'Stay signed out'
+- runFlow:
+    when:
+      visible: '.*Chrome notifications make things easier.*'
+      platform: Android
+    commands:
+      - tapOn: 'No thanks'
+
+# On Android, chrome shows a prompt for notifications
+- runFlow:
+    when:
+      visible: '.*wants to send you notifications.*'
+      platform: Android
+    commands:
+      - tapOn: 'Block'
+
+- extendedWaitUntil:
+    visible:
+      text: 'Email or username'
+    timeout: 60000
+- scrollUntilVisible:
+    element: "SAML"
+- tapOn: "SAML"
+- extendedWaitUntil:
+    visible: "Enter your username and password"
+    timeout: 10000
+- tapOn:
+    text: 'Username'
+- inputText: ${output.data.saml.username}
+- tapOn:
+    text: 'Password'
+- inputText: ${output.data.saml.password}
+- tapOn: 'Login'
+
+# Both Android and iOS have a prompt to save the password to the device's password manager
+- runFlow:
+    when:
+      visible: '.*Save password to Google Password Manager.*'
+      platform: Android
+    commands:
+      - tapOn: 'Never'
+- runFlow:
+    when:
+      visible: '.*Save Password.*'
+      platform: iOS
+    commands:
+      - tapOn: 'Never for this Website'
+
+# On iOS, we have a prompt to open the app via deeplink
+- runFlow:
+    when:
+      visible: '.*Open this page in “Rocket.Chat”?.*'
+      platform: iOS
+    commands:
+      - tapOn: 'Open'
+
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
